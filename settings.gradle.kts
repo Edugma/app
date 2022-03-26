@@ -1,14 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-include(":data:nodes")
-
-
-include(":domain:nodes")
-
-
-include(":features:nodes")
-
-
 pluginManagement {
     repositories {
         gradlePluginPortal()
@@ -36,7 +27,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "mospolyhelper"
+rootProject.name = "edugma"
 
 include(":app")
 
@@ -45,12 +36,16 @@ include(":data")
 include(":data:base")
 include(":data:schedule")
 include(":data:account")
+include(":data:nodes")
+
 
 
 include(":domain")
 include(":domain:base")
 include(":domain:schedule")
 include(":domain:account")
+include(":domain:nodes")
+
 
 
 include(":features")
@@ -62,4 +57,7 @@ include(":features:schedule")
 include(":features:account")
 include(":features:misc")
 include(":features:home")
+include(":features:nodes")
+
+
 

@@ -9,7 +9,7 @@ android {
     compileSdk = Config.compileSdk
 
     defaultConfig {
-        applicationId = "com.mospolytech.mospolyhelper"
+        applicationId = "io.edugma.android"
         minSdk = Config.minSdk
         targetSdk = Config.targetSdkVersion
         versionCode = 11
