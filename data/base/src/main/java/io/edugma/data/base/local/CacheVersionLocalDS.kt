@@ -1,6 +1,8 @@
 package io.edugma.data.base.local
 
 import io.edugma.data.base.model.Cached
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import java.time.ZonedDateTime
 import kotlin.time.Duration
 
@@ -20,5 +22,9 @@ class CacheVersionLocalDS(
         val obj = cache.get<T>(key)
         val isExpired = version.isExpired(expire, prefix + key)
         return Cached(obj, isExpired)
+    }
+
+    inline fun <reified T> getFlow(key: String, expire: Duration): Flow<Cached<T?>> {
+        return flow { emit(get(key, expire)) }
     }
 }
