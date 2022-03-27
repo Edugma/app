@@ -1,0 +1,83 @@
+package io.edugma.features.account.main
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import coil.compose.rememberImagePainter
+import coil.transform.CircleCropTransformation
+import io.edugma.features.base.core.utils.ClickListener
+import io.edugma.features.base.core.utils.MaterialTheme3
+import io.edugma.features.base.core.utils.dp
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun AuthCard(
+    avatar: String?,
+    name: String?,
+    onClick: ClickListener
+) {
+    Card(
+        modifier = Modifier
+            .padding(horizontal = 4.dp, vertical = 4.dp)
+            .heightIn(180.dp)
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        onClick = onClick
+    ) {
+        Column(
+            Modifier
+                .padding(horizontal = 15.dp, vertical = 10.dp)
+                .fillMaxWidth()
+        ) {
+            Text(
+                text = "Авторизация",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally),
+                textAlign = TextAlign.Center
+            )
+            Box(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Spacer(Modifier.height(15.dp))
+                    avatar?.let {
+                        Image(
+                            painter = rememberImagePainter(
+                                data = avatar,
+                                builder = {
+                                    transformations(CircleCropTransformation())
+                                }
+                            ),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(50.dp)
+                        )
+                    }
+                    name?.let {
+                        Text(
+                            text = name,
+                            style = MaterialTheme3.typography.bodySmall,
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+
+                }
+            }
+        }
+    }
+}

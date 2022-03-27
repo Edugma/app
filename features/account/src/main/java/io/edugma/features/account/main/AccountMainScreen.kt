@@ -1,8 +1,6 @@
 package io.edugma.features.account.main
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -11,6 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.edugma.features.account.main.model.MenuUi
+import io.edugma.features.base.core.utils.MaterialTheme3
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -24,133 +23,55 @@ fun AccountMainScreen(viewModel: AccountMainViewModel = getViewModel()) {
 @ExperimentalMaterialApi
 @Composable
 fun AccountContent(state: AccountMenuState, onClickListener: (MenuUi) -> Unit) {
-    Column(Modifier.padding(top = 10.dp).fillMaxSize()) {
+    Column(
+        Modifier
+            .padding(top = 20.dp, start = 4.dp, end = 4.dp)
+            .fillMaxSize()
+    ) {
+        Text(
+            text = "Сервисы",
+            style = MaterialTheme3.typography.headlineMedium,
+            modifier = Modifier.padding(start = 16.dp)
+        )
+        Spacer(Modifier.height(20.dp))
         Row(
             Modifier
-                .height(100.dp)
+                .height(190.dp)
                 .fillMaxWidth()
         ) {
-            Card(
-                modifier = Modifier
-                    .padding(horizontal = 5.dp, vertical = 5.dp)
-                    .fillMaxHeight()
-                    .fillMaxWidth(0.6f),
-                shape = RoundedCornerShape(16.dp),
-                onClick = {onClickListener.invoke(MenuUi.Auth)}
-            ) {
-                Box(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
-                    Text(text = "Авторизация")
-                }
+            Column {
+                PersonalCard(
+                    "Бакалавр 4 курса группы 181-721",
+                    "Информационные системы и технологии") { onClickListener.invoke(MenuUi.Personal) }
+                StudentsCard {onClickListener.invoke(MenuUi.Students)}
             }
+            AuthCard(
+                "https://sun1-87.userapi.com/s/v1/ig2/feSw8tuo4BrzUcXYwbxg51Be4whUnWNvTp7uAviBLqD4fewyzhZcvkJXFnOUJL0Rzf07-YiRCMkOKXH-F5C9e3-D.jpg?size=50x0&quality=96&crop=0,0,996,996&ava=1",
+                "Дындин Александр Владимирович"
+            ) {onClickListener.invoke(MenuUi.Auth)}
         }
         Row(
             Modifier
                 .height(100.dp)
                 .fillMaxWidth()
         ) {
-            Card(
-                modifier = Modifier
-                    .padding(horizontal = 5.dp, vertical = 5.dp)
-                    .fillMaxHeight()
-                    .fillMaxWidth(0.6f),
-                shape = RoundedCornerShape(16.dp),
-                onClick = {onClickListener.invoke(MenuUi.Personal)}
-            ) {
-                Column(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
-                    Text(text = "Информация")
-                }
-            }
-
-            Card(
-                modifier = Modifier
-                    .padding(horizontal = 5.dp, vertical = 5.dp)
-                    .fillMaxHeight()
-                    .fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
-                onClick = {onClickListener.invoke(MenuUi.Students)}
-            ) {
-                Column(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
-                    Text(text = "Студенты")
-                }
-            }
+            UsualCard(modifier = Modifier.fillMaxWidth(0.5f), name = "Преподаватели") { onClickListener.invoke(MenuUi.Teachers) }
+            UsualCard(modifier = Modifier,name = "Одногруппники") { onClickListener.invoke(MenuUi.Classmates) }
         }
         Row(
             Modifier
                 .height(100.dp)
                 .fillMaxWidth()
         ) {
-            Card(
-                modifier = Modifier
-                    .padding(horizontal = 5.dp, vertical = 5.dp)
-                    .fillMaxHeight()
-                    .fillMaxWidth(0.5f),
-                shape = RoundedCornerShape(16.dp),
-                onClick = {onClickListener.invoke(MenuUi.Teachers)}
-            ) {
-                Box(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
-                    Text(text = "Преподаватели")
-                }
-            }
-            Card(
-                modifier = Modifier
-                    .padding(horizontal = 5.dp, vertical = 5.dp)
-                    .fillMaxHeight()
-                    .fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
-                onClick = {onClickListener.invoke(MenuUi.Classmates)}
-            ) {
-                Box(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
-                    Text(text = "Одногруппники")
-                }
-            }
+            UsualCard(modifier = Modifier.fillMaxWidth(0.5f),name = "Оплаты") { onClickListener.invoke(MenuUi.Payments) }
+            UsualCard(modifier = Modifier,name = "Справки, заявления") { onClickListener.invoke(MenuUi.Applications) }
         }
         Row(
             Modifier
                 .height(100.dp)
                 .fillMaxWidth()
         ) {
-            Card(
-                modifier = Modifier
-                    .padding(horizontal = 5.dp, vertical = 5.dp)
-                    .fillMaxHeight()
-                    .fillMaxWidth(0.3f),
-                shape = RoundedCornerShape(16.dp),
-                onClick = {onClickListener.invoke(MenuUi.Payments)}
-            ) {
-                Box(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
-                    Text(text = "Оплаты")
-                }
-            }
-            Card(
-                modifier = Modifier
-                    .padding(horizontal = 5.dp, vertical = 5.dp)
-                    .fillMaxHeight()
-                    .fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
-                onClick = {onClickListener.invoke(MenuUi.Applications)}
-            ) {
-                Box(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
-                    Text(text = "Справки, заявления")
-                }
-            }
-        }
-        Row(
-            Modifier
-                .height(100.dp)
-                .fillMaxWidth()
-        ) {
-            Card(
-                modifier = Modifier
-                    .padding(horizontal = 5.dp, vertical = 5.dp)
-                    .fillMaxHeight()
-                    .fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
-                onClick = {onClickListener.invoke(MenuUi.Marks)}
-            ) {
-                Box(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
-                    Text(text = "Оценки")
-                }
-            }
+            UsualCard(name = "Успеваемость") { onClickListener.invoke(MenuUi.Marks) }
         }
     }
 }
