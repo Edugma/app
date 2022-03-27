@@ -56,7 +56,7 @@ data class AuthState(
     val savePassword: Boolean = false,
     val auth: Boolean = false,
     val isLoading: Boolean = false,
-    val name: String? = "Дындин Александр Владимирович",
+    val name: String? = "Александр",
     val avatar: String? = "https://e.mospolytech.ru/old/img/photos/upc_ea66854573a60ed7938e5ac57a32cc69_1562662162.jpg"
 )
 
