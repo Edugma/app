@@ -119,6 +119,7 @@ object Libs {
             const val release = "org.kodein.db:kodein-db-android:${Versions.kodeinDB}"
             const val kotlinxSerializer = "org.kodein.db:kodein-db-serializer-kotlinx:${Versions.kodeinDB}"
         }
+        const val store = "com.dropbox.mobile.store:store4:${Versions.store}"
     }
 
     object Di {
@@ -153,6 +154,7 @@ object Versions {
 
     // Storage
     const val kodeinDB = "0.9.0-beta"
+    const val store = "4.0.4-KT15"
 
     // Compose
     const val compose = "1.1.1"

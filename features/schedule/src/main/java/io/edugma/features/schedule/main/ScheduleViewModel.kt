@@ -29,7 +29,6 @@ class ScheduleViewModel(
 
                 state = state.copy(
                     isPreloading = false,
-                    isLoading = false,
                     weeks = weeks,
                     schedulePos = schedulePos,
                     weeksPos = weekPos,
@@ -68,7 +67,7 @@ class ScheduleViewModel(
                 if (!it.isFinalFailure) {
                     mutateState {
                         val schedule = it.getOrDefault(emptyList())
-                        val isLoading = it.isLoading && !state.isPreloading
+                        val isLoading = it.isLoading// && !state.isPreloading
 
                         state = state.copy(
                             schedule = schedule,
