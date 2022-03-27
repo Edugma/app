@@ -1,85 +1,139 @@
 package io.edugma.features.account.authorization
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Scaffold
-import androidx.compose.material.TextField
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.Typed2Listener
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
+import com.airbnb.lottie.compose.*
+import io.edugma.features.account.R
+import io.edugma.features.base.core.utils.*
+import io.edugma.features.base.elements.*
 import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun AuthScreen(viewModel: AuthViewModel = getViewModel()) {
     val state by viewModel.state.collectAsState()
 
-    AuthContent(state,
-    onLoginClick = {login, password -> viewModel.authorize(login, password)},
-    onLoggedClick = {viewModel.back()})
+    AuthContent(
+        state = state,
+        onLoginClick = { viewModel.authorize()},
+        onLoggedClick = {viewModel.back()},
+        onLoginChange = {viewModel.setLogin(it)},
+        onPasswordChange = {viewModel.setPassword(it)},
+        onCheckBoxChanged = {viewModel.setCheckBox(it)},
+    )
 }
 
 @Composable
-fun AuthContent(state: AuthState, onLoginClick: Typed2Listener<String, String>, onLoggedClick: ClickListener) {
-    Scaffold(topBar = {
-        TopAppBar(title = {Text("Авторизация", fontSize = 22.sp)},
-        navigationIcon = {IconButton(onClick = { onLoggedClick.invoke() }) {Icon(Icons.Filled.ArrowBack, contentDescription = "Назад") }})
-    }) {
+fun AuthContent(
+    state: AuthState,
+    onLoginClick: ClickListener,
+    onLoggedClick: ClickListener,
+    onPasswordChange: Typed1Listener<String>,
+    onLoginChange: Typed1Listener<String>,
+    onCheckBoxChanged: Typed1Listener<Boolean>
+) {
+    Column {
+        PrimaryTopAppBar(title = "Авторизация", onBackClick = onLoggedClick)
         if (state.auth) {
             Authorized(state = state) { onLoggedClick.invoke() }
         } else {
-            NotAuthorized(state = state) {login, password -> onLoginClick.invoke(login, password)}
+            NotAuthorized(state = state, onAuthorize = onLoginClick, onPasswordChange, onLoginChange, onCheckBoxChanged)
         }
     }
 }
 
 @Composable
-fun NotAuthorized(state: AuthState, onAuthorize: Typed2Listener<String,String>) {
-    var login by rememberSaveable { mutableStateOf("") }
-    var password by rememberSaveable { mutableStateOf("") }
+fun NotAuthorized(
+    state: AuthState,
+    onAuthorize: ClickListener,
+    onPasswordChange: Typed1Listener<String>,
+    onLoginChange: Typed1Listener<String>,
+    onCheckBoxChanged: Typed1Listener<Boolean>) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp).fillMaxWidth()
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .padding(horizontal = 32.dp)
+            .fillMaxWidth()
+            .fillMaxHeight(0.7f)
     ) {
-        TextField(
-            value = login,
-            onValueChange = {
-                login = it
-            },
-            label = { Text("Логин") }
+        TextBox(
+            value = state.login,
+            title = "Логин",
+            onValueChange = onLoginChange)
+        SpacerHeight(height = 12.dp)
+        TextBox(
+            value = state.password,
+            title = "Пароль",
+            onValueChange = onPasswordChange,
+            passwordMode = true
         )
-        TextField(
-            value = password,
-            onValueChange = {
-                password = it
-            },
-            label = { Text("Пароль") }
+        SpacerHeight(height = 12.dp)
+        CheckBox(
+            title = "Запомнить меня",
+            value = state.savePassword,
+            onValueChange = onCheckBoxChanged,
+            modifier = Modifier.fillMaxWidth()
         )
-        Button(onClick = { onAuthorize.invoke(login, password) }) {
-            Text(text = "Войти")
+        SpacerHeight(height = 12.dp)
+        if (state.isLoading) {
+            CircularProgressIndicator()
+        } else {
+            ButtonView(text = "Войти", onClick = onAuthorize)
         }
     }
 }
 @Composable
 fun Authorized(state: AuthState, listener: ClickListener) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp).fillMaxWidth()
+    ConstraintLayout(
+        modifier = Modifier
+            .padding(horizontal = 16.dp, vertical = 10.dp)
+            .fillMaxSize()
     ) {
-        Text(text = "Привет ${state.name}")
-        Button(onClick = { listener.invoke() }) {
-            Text(text = "Перейти к меню")
+        val (anim, text, button) = createRefs()
+        val randomAnim = remember { R.raw.sch_relax_1 }
+        val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(randomAnim))
+        val progress by animateLottieCompositionAsState(
+            composition,
+            iterations = LottieConstants.IterateForever
+        )
+        Column(modifier = Modifier.fillMaxHeight(0.6f).constrainAs(anim) {
+            top.linkTo(parent.top)
+        }) {
+            LottieAnimation(
+                composition,
+                progress,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.8f)
+
+            )
+            Text(
+                text = "Привет, ${state.name}!",
+                style = MaterialTheme3.typography.titleLarge,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
         }
+        ButtonView(
+            text = "Перейти к меню",
+            onClick = listener,
+            modifier = Modifier
+                .constrainAs(text) {
+                    bottom.linkTo(parent.bottom)
+                    linkTo(parent.start, parent.end)
+                    width = Dimension.fillToConstraints
+                }
+        )
     }
 }
