@@ -6,11 +6,13 @@ import io.edugma.domain.account.model.Personal
 import io.edugma.domain.account.repository.PersonalRepository
 import io.edugma.features.base.core.mvi.BaseMutator
 import io.edugma.domain.base.utils.execute
+import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.mvi.BaseViewModelFull
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class PersonalViewModel(private val repository: PersonalRepository) :
-    BaseViewModelFull<PersonalState, PersonalMutator, Nothing>(PersonalState(), ::PersonalMutator) {
+    BaseViewModel<PersonalState>(PersonalState()) {
 
         init {
             load()
@@ -18,78 +20,39 @@ class PersonalViewModel(private val repository: PersonalRepository) :
 
     fun load() {
         viewModelScope.launch {
-            repository.getPersonalInfo().execute(
-                onStart = {
-                    mutateState {
-                        setPersonalLoading(true)
-                    }
-                },
-                onSuccess = {
-                    mutateState {
-                        setPersonalData(it)
-                    }
-                },
-                onError = {
-                    mutateState {
-                        setPersonalError(true)
-                    }
+            repository.getPersonalInfo().zip(repository.getOrders()) { data, orders ->
+                when {
+                    data.isSuccess && orders.isSuccess -> data.map {it to orders.getOrThrow() }
+                    else -> Result.failure(data.exceptionOrNull() ?: orders.exceptionOrNull()!!)
                 }
-            )
-        }
-        viewModelScope.launch {
-            repository.getOrders().execute(
-                onStart = {
-                    mutateState {
-                        setOrdersLoading(true)
-                    }
-                },
-                onSuccess = {
-                    mutateState {
-                        setOrdersData(it)
-                    }
-                },
-                onError = {
-                    mutateState {
-                        setOrdersError(true)
-                    }
-                }
-            )
+            }
+                .execute(
+                    onStart = { setLoading(true) },
+                    onSuccess = { setData(it.first, it.second) },
+                    onError = { setLoading(false) }
+                )
         }
     }
 
+    fun setLoading(loading: Boolean) {
+        mutateState {
+            state = state.copy(isLoading = if (!state.isPlaceholders) loading else true)
+        }
+    }
+
+    fun setData(personal: Personal, orders: List<Order>) {
+        mutateState { state = state.copy(
+            personal = personal,
+            orders = orders,
+            isLoading = false,
+            isPlaceholders = false
+        ) }
+    }
 }
 
 data class PersonalState(
     val personal: Personal? = null,
     val orders: List<Order> = emptyList(),
-    val isPersonalLoading: Boolean = false,
-    val isPersonalError: Boolean = false,
-    val isOrdersLoading: Boolean = false,
-    val isOrdersError: Boolean = false
+    val isLoading: Boolean = false,
+    val isPlaceholders: Boolean = true
 )
-
-class PersonalMutator : BaseMutator<PersonalState>() {
-    fun setOrdersData(data: List<Order>) {
-        state = state.copy(orders = data, isOrdersLoading = false, isOrdersError = false)
-    }
-
-    fun setOrdersLoading(isLoading: Boolean) {
-        state = state.copy(isOrdersLoading = isLoading, isOrdersError = !isLoading && state.isOrdersError)
-    }
-
-    fun setOrdersError(isError: Boolean) {
-        state = state.copy(isOrdersError = isError, isOrdersLoading = false)
-    }
-
-    fun setPersonalData(data: Personal) {
-        state = state.copy(personal = data, isPersonalLoading = false, isOrdersError = false)
-    }
-
-    fun setPersonalLoading(isLoading: Boolean) {
-        state = state.copy(isPersonalLoading = isLoading, isOrdersError = !isLoading && state.isOrdersError)
-    }
-
-    fun setPersonalError(isError: Boolean) {
-        state = state.copy(isOrdersError = isError, isPersonalLoading = false)
-    }
-}

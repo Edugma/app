@@ -20,16 +20,18 @@ import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun AuthScreen(viewModel: AuthViewModel = getViewModel()) {
-    val state by viewModel.state.collectAsState()
+    with (viewModel) {
+        val state by state.collectAsState()
 
-    AuthContent(
-        state = state,
-        onLoginClick = { viewModel.authorize()},
-        onLoggedClick = {viewModel.back()},
-        onLoginChange = {viewModel.setLogin(it)},
-        onPasswordChange = {viewModel.setPassword(it)},
-        onCheckBoxChanged = {viewModel.setCheckBox(it)},
-    )
+        AuthContent(
+            state = state,
+            onLoginClick = ::authorize,
+            onLoggedClick = ::back,
+            onLoginChange = ::setLogin,
+            onPasswordChange = ::setPassword,
+            onCheckBoxChanged = ::setCheckBox,
+        )
+    }
 }
 
 @Composable
@@ -57,7 +59,8 @@ fun NotAuthorized(
     onAuthorize: ClickListener,
     onPasswordChange: Typed1Listener<String>,
     onLoginChange: Typed1Listener<String>,
-    onCheckBoxChanged: Typed1Listener<Boolean>) {
+    onCheckBoxChanged: Typed1Listener<Boolean>
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,

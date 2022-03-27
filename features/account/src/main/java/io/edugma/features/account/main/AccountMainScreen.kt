@@ -8,6 +8,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.edugma.domain.account.model.print
+import io.edugma.features.account.main.cards.AuthCard
+import io.edugma.features.account.main.cards.PersonalCard
+import io.edugma.features.account.main.cards.StudentsCard
+import io.edugma.features.account.main.cards.UsualCard
 import io.edugma.features.account.main.model.MenuUi
 import io.edugma.features.base.core.utils.MaterialTheme3
 import org.koin.androidx.compose.getViewModel
@@ -40,14 +45,15 @@ fun AccountContent(state: AccountMenuState, onClickListener: (MenuUi) -> Unit) {
                 .fillMaxWidth()
         ) {
             Column {
+                val info = state.personal?.let { "${it.type.print()} ${it.course} курса группы ${it.group}" }
                 PersonalCard(
-                    "Бакалавр 4 курса группы 181-721",
-                    "Информационные системы и технологии") { onClickListener.invoke(MenuUi.Personal) }
+                    info,
+                    state.personal?.direction) { onClickListener.invoke(MenuUi.Personal) }
                 StudentsCard {onClickListener.invoke(MenuUi.Students)}
             }
             AuthCard(
-                "https://sun1-87.userapi.com/s/v1/ig2/feSw8tuo4BrzUcXYwbxg51Be4whUnWNvTp7uAviBLqD4fewyzhZcvkJXFnOUJL0Rzf07-YiRCMkOKXH-F5C9e3-D.jpg?size=50x0&quality=96&crop=0,0,996,996&ava=1",
-                "Дындин Александр Владимирович"
+                state.personal?.avatarUrl,
+                state.personal?.name
             ) {onClickListener.invoke(MenuUi.Auth)}
         }
         Row(

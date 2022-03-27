@@ -1,4 +1,4 @@
-package io.edugma.features.account.main
+package io.edugma.features.account.main.cards
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -16,7 +16,6 @@ import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.MaterialTheme3
-import io.edugma.features.base.core.utils.dp
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -67,6 +66,7 @@ fun AuthCard(
                         )
                     }
                     name?.let {
+                        Spacer(Modifier.height(5.dp))
                         Text(
                             text = name,
                             style = MaterialTheme3.typography.bodySmall,
