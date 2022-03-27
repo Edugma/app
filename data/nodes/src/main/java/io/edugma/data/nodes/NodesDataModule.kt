@@ -10,5 +10,5 @@ import retrofit2.Retrofit
 
 val nodesDataModule = module {
     single { get<Retrofit>(named(DiConst.Schedule)).create(NodesService::class.java) }
-    single<NodesRepository> { NodesRepositoryImpl(get(), get()) }
+    single<NodesRepository> { NodesRepositoryImpl(get(), get(), get()) }
 }

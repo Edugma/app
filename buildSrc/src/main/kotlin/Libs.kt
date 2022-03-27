@@ -8,7 +8,8 @@ object Libs {
 
 
     object KotlinX {
-        const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerialization}"
+        const val serializationJson = "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerialization}"
+        const val serializationCbor = "org.jetbrains.kotlinx:kotlinx-serialization-cbor:${Versions.kotlinxSerialization}"
 
         object Coroutines {
             private const val version = "1.5.2"
