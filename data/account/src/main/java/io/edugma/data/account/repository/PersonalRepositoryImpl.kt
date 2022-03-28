@@ -1,6 +1,5 @@
 package io.edugma.data.account.repository
 
-import android.util.Log
 import io.edugma.data.account.api.AccountService
 import io.edugma.data.base.local.PreferencesDS
 import io.edugma.data.base.local.getJsonLazy
@@ -11,9 +10,6 @@ import io.edugma.domain.account.repository.PersonalRepository
 import io.edugma.domain.base.utils.onSuccess
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 class PersonalRepositoryImpl(
     private val api: AccountService,

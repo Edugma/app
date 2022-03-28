@@ -1,5 +1,6 @@
 package io.edugma.data.base.local
 
+import android.util.Log
 import io.edugma.data.base.model.PreferenceDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -32,4 +33,17 @@ inline fun <reified T> PreferencesDS.flowOf(key: String): Flow<Result<T?>> {
 
 suspend inline fun <reified T> PreferencesDS.get(key: String, defaultValue: T): T {
     return get<T>(key).getOrNull() ?: defaultValue
+}
+
+suspend inline fun<reified T> PreferencesDS.getJsonLazy(name: String = T::class.simpleName.orEmpty()): T? {
+    return try {
+        Json.decodeFromString(getJson(name).getOrNull()?.value.orEmpty())
+    } catch (e: Throwable) {
+        Log.e("serialize error!", name)
+        null
+    }
+}
+
+suspend inline fun<reified T> PreferencesDS.setJsonLazy(data: T, name: String = T::class.simpleName.orEmpty()) {
+    setJson(Json.encodeToString(data), name)
 }

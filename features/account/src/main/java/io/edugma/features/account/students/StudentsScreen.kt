@@ -1,18 +1,19 @@
 package io.edugma.features.account.students
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -21,9 +22,15 @@ import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import io.edugma.domain.account.model.Student
 import io.edugma.domain.account.model.print
+import io.edugma.features.account.R
 import io.edugma.features.base.core.utils.ClickListener
+import io.edugma.features.base.core.utils.FluentIcons
+import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.base.elements.ErrorView
+import io.edugma.features.base.elements.TextBox
+import io.edugma.features.base.elements.TextWithIcon
+import io.edugma.features.base.elements.placeholder
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -42,82 +49,104 @@ fun StudentsContent(state: StudentsState,
                       backListener: ClickListener,
                       inputListener: Typed1Listener<String>
 ) {
-    var name by rememberSaveable { mutableStateOf("") }
-    Scaffold(topBar = {
-        TopAppBar(title = { TextField(value = name,
-            onValueChange = {
-                inputListener.invoke(it)
-                name = it }, label = { Text("ФИО")})},
-            navigationIcon = { IconButton(onClick = { backListener.invoke() }) { Icon(Icons.Filled.ArrowBack, contentDescription = "Назад") } })
-    }) {
-        LazyColumn(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)
-        ) {
-            if (state.isError && state.data.isEmpty()) {
-                item {
-                    ErrorView {
-                        retryListener.invoke()
+    Column(verticalArrangement = Arrangement.Center) {
+        Row(modifier = Modifier.padding(end = 16.dp), verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = backListener) {
+                Icon(painter = painterResource(FluentIcons.ic_fluent_arrow_left_20_filled), contentDescription = null)
+            }
+            TextBox(
+                modifier = Modifier.fillMaxWidth(),
+                value = state.query,
+                title = "ФИО или группа студента",
+                onValueChange = inputListener)
+        }
+        LazyColumn(modifier = Modifier.padding(8.dp)) {
+                if (state.isPlaceholders) {
+                    items(5) {
+                        Student(null, placeholders = true)
+                    }
+                } else {
+                    items(state.data) {
+                        Student(it)
                     }
                 }
-            } else {
-                items(state.data) {
-                    Student(it)
-                    Spacer(modifier = Modifier.padding(2.dp))
-                }
-            }
         }
     }
 }
 
 @Composable
-fun Student(student: Student?) {
-    Card(shape = MaterialTheme.shapes.medium, elevation = 2.dp, modifier = Modifier.fillMaxWidth()) {
-        ConstraintLayout(modifier = Modifier.padding(5.dp)) {
-            val (name, image, type, group) = createRefs()
-            Text(text = student?.name.orEmpty(),
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.constrainAs(name) {
+fun Student(student: Student?, placeholders: Boolean = false) {
+    var isExpanded by rememberSaveable { mutableStateOf(false) }
+    ConstraintLayout(modifier = Modifier
+        .padding(5.dp)
+        .fillMaxWidth()
+        .clickable { isExpanded = !isExpanded }
+    ) {
+        val (name, image, type, divider) = createRefs()
+        Text(text = student?.name.orEmpty(),
+            style = MaterialTheme3.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
+            modifier = Modifier
+                .constrainAs(name) {
                     start.linkTo(image.end)
                     end.linkTo(parent.end)
                     width = Dimension.fillToConstraints
                 }
-                    .padding(start = 10.dp))
-            Text(text = student?.educationType?.print().orEmpty(),
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.constrainAs(type) {
-                    start.linkTo(image.end)
-                    end.linkTo(parent.end)
-                    top.linkTo(name.bottom)
-                    width = Dimension.fillToConstraints
-                }
-                    .padding(start = 10.dp))
-            Text(text = student?.group.orEmpty(),
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.constrainAs(group) {
-                    start.linkTo(image.end)
-                    end.linkTo(parent.end)
-                    top.linkTo(type.bottom)
-                    width = Dimension.fillToConstraints
-                }
-                    .padding(start = 10.dp))
-            student?.avatar?.let {
-                Image(
-                    painter = rememberImagePainter(
-                        data = it,
-                        builder = {
-                            transformations(CircleCropTransformation())
-                        }
-                    ),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(100.dp)
-                        .constrainAs(image) {
-                            start.linkTo(parent.start)
-                            top.linkTo(parent.top)
-                        }
+                .padding(start = 10.dp)
+                .placeholder(placeholders)
+        )
+        Column(modifier = Modifier.padding(start = 10.dp).constrainAs(type) {
+            linkTo(name.bottom, divider.top, bias = 0f)
+            linkTo(name.start, parent.end)
+            width = Dimension.fillToConstraints
+        }) {
+            if (placeholders) {
+                TextWithIcon(
+                    text = "",
+                    icon = painterResource(id = R.drawable.acc_ic_teacher_24),
+                    modifier = Modifier.placeholder(true)
                 )
+            } else {
+                student?.educationType?.print()?.let {
+                    TextWithIcon(
+                        text = it,
+                        icon = painterResource(id = R.drawable.acc_ic_teacher_24)
+                    )
+                }
+                if (isExpanded) {
+                    student?.specialization?.let {
+                        TextWithIcon(text = it, icon = painterResource(id = FluentIcons.ic_fluent_book_24_regular))
+                    }
+                    student?.direction?.let {
+                        TextWithIcon(text = it, icon = painterResource(id = FluentIcons.ic_fluent_book_open_24_regular))
+                    }
+                    student?.group?.let {
+                        TextWithIcon(text = it, icon = painterResource(id = FluentIcons.ic_fluent_people_24_regular))
+                    }
+                }
             }
-
         }
+        Image(
+            painter = rememberImagePainter(
+                data = student?.avatar,
+                builder = {
+                    transformations(CircleCropTransformation())
+                }
+            ),
+            contentDescription = null,
+            modifier = Modifier
+                .size(100.dp)
+                .constrainAs(image) {
+                    start.linkTo(parent.start)
+                    bottom.linkTo(divider.top)
+                    linkTo(parent.top, divider.top, bias = 0f)
+                }
+                .placeholder(placeholders)
+        )
+        Divider(modifier = Modifier.constrainAs(divider) {
+            start.linkTo(image.end)
+            end.linkTo(parent.end)
+            bottom.linkTo(parent.bottom)
+            width = Dimension.fillToConstraints
+        })
     }
 }

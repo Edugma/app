@@ -31,9 +31,7 @@ fun TextWithIcon(modifier: Modifier = Modifier, text: String?, icon: ImageVector
 @Composable
 fun TextWithIcon(modifier: Modifier = Modifier, text: String?, icon: Painter) {
     Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(5.dp)) {
-        icon.let {
-            Icon(icon, "", modifier = Modifier.padding(end = 8.dp))
-        }
+        Icon(icon, "", modifier = Modifier.padding(end = 8.dp))
         Text(
             text = text.orEmpty(),
             style = MaterialTheme3.typography.bodyMedium,
