@@ -1,9 +1,6 @@
 package io.edugma.android.features
 
-import io.edugma.features.base.core.mvi.BaseViewModelFull
+import io.edugma.features.base.core.mvi.BaseViewModel
 
-class MainViewModel : BaseViewModelFull<Unit, Nothing, Nothing>(
-    Unit,
-    { error(Unit) }
-) {
+class MainViewModel : BaseViewModel<Unit>(Unit) {
 }

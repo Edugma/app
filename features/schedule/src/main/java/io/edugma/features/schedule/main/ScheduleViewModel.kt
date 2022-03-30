@@ -9,7 +9,7 @@ import io.edugma.domain.schedule.model.lesson.LessonInfo
 import io.edugma.domain.schedule.model.schedule.ScheduleDay
 import io.edugma.domain.schedule.usecase.ScheduleUseCase
 import io.edugma.features.base.core.mvi.BaseViewModel
-import io.edugma.features.base.core.mvi.SimpleMutator
+import io.edugma.features.base.core.mvi.impl.SimpleMutator
 import io.edugma.features.base.navigation.ScheduleScreens
 import io.edugma.features.schedule.model.WeekUiModel
 import kotlinx.coroutines.launch

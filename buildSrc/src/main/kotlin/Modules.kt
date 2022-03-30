@@ -1,6 +1,24 @@
 object Modules {
     const val App = ":app"
 
+    object Data {
+        private const val prefix = ":data"
+
+        const val Base = "$prefix:base"
+        const val Nodes = "$prefix:nodes"
+        const val Schedule = "$prefix:schedule"
+        const val Account = "$prefix:account"
+    }
+
+    object Domain {
+        private const val prefix = ":domain"
+
+        const val Base = "$prefix:base"
+        const val Nodes = "$prefix:nodes"
+        const val Schedule = "$prefix:schedule"
+        const val Account = "$prefix:account"
+    }
+
     object Features {
         private const val prefix = ":features"
 
@@ -16,24 +34,13 @@ object Modules {
         const val Home = "$prefix:home"
         const val Schedule = "$prefix:schedule"
         const val Account = "$prefix:account"
-        const val Misc = "$prefix:misc"
-    }
 
-    object Domain {
-        private const val prefix = ":domain"
 
-        const val Base = "$prefix:base"
-        const val Nodes = "$prefix:nodes"
-        const val Schedule = "$prefix:schedule"
-        const val Account = "$prefix:account"
-    }
+        object Misc {
+            private const val prefix1 = ":misc"
 
-    object Data {
-        private const val prefix = ":data"
-
-        const val Base = "$prefix:base"
-        const val Nodes = "$prefix:nodes"
-        const val Schedule = "$prefix:schedule"
-        const val Account = "$prefix:account"
+            const val Menu = "$prefix$prefix1:menu"
+            const val Settings = "$prefix$prefix1:settings"
+        }
     }
 }
