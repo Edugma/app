@@ -14,7 +14,7 @@ class App : Application() {
             androidLogger(Level.ERROR)
             androidContext(this@App)
             androidSharedPreferences(this@App, io.edugma.android.BuildConfig.APPLICATION_ID)
-            modules(io.edugma.android.appModules)
+            modules(appModules)
         }
     }
 }

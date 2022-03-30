@@ -15,6 +15,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import io.edugma.features.base.core.navigation.compose.rememberNavController
 import io.edugma.features.base.navigation.MainScreen
 import io.edugma.android.appScreens
+import io.edugma.features.base.core.navigation.compose.getRoute
+import io.edugma.features.base.navigation.nodes.NodesScreens
 import org.koin.androidx.compose.getViewModel
 
 val showNavBar = listOf(
@@ -36,7 +38,7 @@ fun MainContent(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = MainScreen.Home.route,
+            startDestination = NodesScreens.Main.getRoute() + "?screen={screen}",
             modifier = Modifier.padding(innerPadding)
         ) {
             appScreens()

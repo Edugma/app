@@ -16,7 +16,7 @@ class StoreImpl<Key, Data>(
     override fun get(key: Key, forceUpdate: Boolean): Flow<Lce<Data?>> =
         reader(key).transform { (data, isExpired) ->
             val needUpdate = isExpired || forceUpdate
-            emit(data.map { it!! }.loading(needUpdate))
+            emit(data.loading(needUpdate))
             if (needUpdate) {
                 emitAll(
                     fetcher(key)
