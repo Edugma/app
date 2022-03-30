@@ -11,6 +11,9 @@ import io.edugma.features.base.core.baseFeaturesModule
 import io.edugma.features.schedule.scheduleFeaturesModule
 import io.edugma.android.features.mainModule
 import io.edugma.data.nodes.nodesDataModule
+import io.edugma.features.misc.menu.miscMenuFeaturesModule
+import io.edugma.features.misc.settings.settingsFeaturesModule
+import io.edugma.features.nodes.nodesFeaturesModule
 
 val appModules = listOf(
     mainModule,
@@ -30,8 +33,12 @@ val appModules = listOf(
 
     // Features modules
     baseFeaturesModule,
+    nodesFeaturesModule,
     scheduleFeaturesModule,
     accountFeaturesModule,
+
+    miscMenuFeaturesModule,
+    settingsFeaturesModule,
 
 
 

@@ -55,9 +55,11 @@ include(":features:base:navigation")
 include(":features:base:elements")
 include(":features:schedule")
 include(":features:account")
-include(":features:misc")
 include(":features:home")
 include(":features:nodes")
 
+include(":features:misc")
+include(":features:misc:menu")
+include(":features:misc:settings")
 
 

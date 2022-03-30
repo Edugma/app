@@ -158,7 +158,7 @@ private val AppLightColorScheme2 = lightColors(
 )
 
 @Composable
-fun MospolyhelperTheme(
+fun AppTheme(
     isDarkTheme: Boolean = isSystemInDarkTheme(),
     isDynamicColor: Boolean = false,
     content: @Composable () -> Unit

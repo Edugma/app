@@ -6,11 +6,15 @@ dependencies {
     implementation(project(Modules.Features.Base.Core))
     implementation(project(Modules.Features.Base.Navigation))
     implementation(project(Modules.Features.Base.Elements))
+
     implementation(project(Modules.Features.Nodes))
     implementation(project(Modules.Features.Home))
     implementation(project(Modules.Features.Schedule))
     implementation(project(Modules.Features.Account))
-    implementation(project(Modules.Features.Misc))
+
+    implementation(project(Modules.Features.Misc.Menu))
+    implementation(project(Modules.Features.Misc.Settings))
+
 
     implementation(project(Modules.Data.Nodes))
     implementation(project(Modules.Data.Schedule))

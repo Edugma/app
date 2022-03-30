@@ -10,7 +10,7 @@ import androidx.core.view.WindowCompat
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.imePadding
 import com.google.accompanist.insets.systemBarsPadding
-import io.edugma.features.base.core.theme.MospolyhelperTheme
+import io.edugma.features.base.core.theme.AppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
-            MospolyhelperTheme {
+            AppTheme {
                 ProvideWindowInsets {
                     Surface(color = MaterialTheme.colorScheme.background) {
                         Box(
