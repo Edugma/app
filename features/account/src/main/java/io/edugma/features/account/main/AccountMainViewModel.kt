@@ -1,13 +1,30 @@
 package io.edugma.features.account.main
 
+import androidx.lifecycle.viewModelScope
+import io.edugma.domain.account.repository.PersonalRepository
 import io.edugma.features.account.main.model.MenuUi
 import io.edugma.features.account.main.model.MenuUi.*
 import io.edugma.features.base.core.mvi.BaseMutator
+import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.mvi.BaseViewModelFull
 import io.edugma.features.base.navigation.AccountScreens
+import kotlinx.coroutines.launch
 
-class AccountMainViewModel :
-    BaseViewModelFull<AccountMenuState, AccountMenuMutator, Nothing>(AccountMenuState(), ::AccountMenuMutator) {
+class AccountMainViewModel(val personalRepository: PersonalRepository) :
+    BaseViewModel<AccountMenuState>(AccountMenuState()) {
+
+    init {
+        load()
+    }
+
+    fun load() {
+        viewModelScope.launch {
+            val info = personalRepository.getLocalPersonalInfo()
+            mutateState {
+                state = state.copy(personal = info)
+            }
+        }
+    }
 
     fun navigateToAuth() {
         router.navigateTo(AccountScreens.Authorization)
@@ -44,7 +61,8 @@ class AccountMainViewModel :
 
 data class AccountMenuState(
     val menu: List<MenuUi> = listOf(Auth,
-        Personal, Students, Teachers, Classmates, Payments, Applications, Marks)
+        Personal, Students, Teachers, Classmates, Payments, Applications, Marks),
+    val personal: io.edugma.domain.account.model.Personal? = null
 )
 
 class AccountMenuMutator : BaseMutator<AccountMenuState>() {

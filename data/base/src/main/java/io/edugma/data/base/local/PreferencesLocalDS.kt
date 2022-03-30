@@ -26,4 +26,5 @@ class PreferencesLocalDS(
     override fun flowOfPreferences(key: String): Flow<PreferenceDao?> {
         return db.flowOf(db.keyById<PreferenceDao>(key))
     }
+
 }

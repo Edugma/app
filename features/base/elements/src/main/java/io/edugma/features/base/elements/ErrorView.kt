@@ -4,12 +4,14 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import io.edugma.features.base.core.utils.ClickListener
 
 @Composable
-fun ErrorView(message: String = "Произошла ошибка", retryAction: ClickListener) {
+@Preview
+fun ErrorView(message: String = "Произошла ошибка", retryAction: ClickListener = {}) {
     ConstraintLayout {
         val (button, text) = createRefs()
         Text(text = message,

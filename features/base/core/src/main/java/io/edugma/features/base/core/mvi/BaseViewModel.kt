@@ -18,7 +18,7 @@ abstract class BaseViewModel<TState>(
 
 
 // State and actions
-abstract class BaseViewModel1<TState, TAction>(
+abstract class BaseActionViewModel<TState, TAction>(
     initialState: TState
 ) : BaseViewModelFull<TState, SimpleMutator<TState>, TAction>(
     initialState,

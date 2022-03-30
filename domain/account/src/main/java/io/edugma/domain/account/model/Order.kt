@@ -10,4 +10,8 @@ data class Order(
     @Serializable(LocalDateConverter::class)
     val date: LocalDate,
     val additionalInfo: String?
-)
+) {
+    companion object {
+        const val TAG = "ORDERS"
+    }
+}
