@@ -6,17 +6,17 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.FluentIcons
-import io.edugma.features.base.core.utils.MaterialTheme3
+import io.edugma.features.base.core.utils.*
 
 @Composable
 fun PrimaryTopAppBar(
     title: String,
     modifier: Modifier = Modifier,
+    subtitle: String? = null,
     onBackClick: ClickListener,
     showLoading: Boolean = false,
     actions: @Composable RowScope.() -> Unit = {},
@@ -32,13 +32,26 @@ fun PrimaryTopAppBar(
                     .height(50.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = title,
-                    modifier = Modifier
-                        .weight(1f, fill = true),
-                    style = MaterialTheme3.typography.titleMedium,
-                    textAlign = TextAlign.Center
-                )
+                Box(
+                    Modifier.weight(1f, fill = true)
+                ) {
+                    Column(
+                        Modifier.align(Alignment.Center)
+                    ) {
+                        Text(
+                            text = title,
+                            style = MaterialTheme3.typography.titleMedium
+                        )
+                        if (subtitle != null) {
+                            WithContentAlpha(alpha = ContentAlpha.medium) {
+                                Text(
+                                    text = subtitle,
+                                    style = MaterialTheme3.typography.labelSmall
+                                )
+                            }
+                        }
+                    }
+                }
                 Box(Modifier.width(50.dp)) {
                     if (showLoading) {
                         CircularProgressIndicator(

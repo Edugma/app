@@ -18,6 +18,7 @@ import io.edugma.features.base.elements.PrimaryTopAppBar
 import io.edugma.features.schedule.R
 import org.koin.androidx.compose.getViewModel
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun ScheduleScreen(viewModel: ScheduleViewModel = getViewModel()) {
@@ -35,6 +36,7 @@ fun ScheduleScreen(viewModel: ScheduleViewModel = getViewModel()) {
         )
     }
 }
+private val dateTimeFormat = DateTimeFormatter.ofPattern("d MMMM, yyyy")
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -55,6 +57,7 @@ fun ScheduleContent(
 
             PrimaryTopAppBar(
                 title = stringResource(R.string.sch_schedule),
+                subtitle = state.selectedDate.format(dateTimeFormat),
                 showLoading = state.isLoading,
                 onBackClick = onBackClick
             )
