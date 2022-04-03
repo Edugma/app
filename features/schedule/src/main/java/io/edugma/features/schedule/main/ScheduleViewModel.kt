@@ -3,8 +3,11 @@ package io.edugma.features.schedule.main
 import androidx.lifecycle.viewModelScope
 import io.edugma.domain.base.utils.getOrDefault
 import io.edugma.domain.base.utils.isFinalFailure
+import io.edugma.domain.base.utils.onFailure
+import io.edugma.domain.base.utils.onSuccess
 import io.edugma.domain.schedule.model.lesson.Lesson
 import io.edugma.domain.schedule.model.lesson.LessonDateTime
+import io.edugma.domain.schedule.model.lesson.LessonDisplaySettings
 import io.edugma.domain.schedule.model.lesson.LessonInfo
 import io.edugma.domain.schedule.model.schedule.ScheduleDay
 import io.edugma.domain.schedule.usecase.ScheduleUseCase
@@ -12,6 +15,7 @@ import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.mvi.impl.SimpleMutator
 import io.edugma.features.base.navigation.ScheduleScreens
 import io.edugma.features.schedule.model.WeekUiModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
@@ -76,6 +80,26 @@ class ScheduleViewModel(
                     }
                 }
             }
+        }
+
+        viewModelScope.launch {
+            useCase.getSelectedSource()
+                .onSuccess {
+                    val lessonDisplaySettings = it?.let {
+                        useCase.getLessonDisplaySettings(it.type)
+                    } ?: LessonDisplaySettings.Default
+                    mutateState {
+                        state = state.copy(
+                            lessonDisplaySettings = lessonDisplaySettings
+                        )
+                    }
+                }.onFailure {
+                    mutateState {
+                        state = state.copy(
+                            lessonDisplaySettings = LessonDisplaySettings.Default
+                        )
+                    }
+                }.collect()
         }
     }
 
@@ -150,6 +174,7 @@ data class ScheduleState(
     val isError: Boolean = false,
     val schedule: List<ScheduleDay> = emptyList(),
     val weeks: List<WeekUiModel> = emptyList(),
+    val lessonDisplaySettings: LessonDisplaySettings = LessonDisplaySettings.Default,
 
     val selectedDate: LocalDate = LocalDate.now(),
     val schedulePos: Int = 0,

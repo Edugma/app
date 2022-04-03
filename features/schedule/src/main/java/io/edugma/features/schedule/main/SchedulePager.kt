@@ -22,6 +22,7 @@ import com.google.accompanist.pager.PagerState
 import io.edugma.domain.schedule.model.group.Group
 import io.edugma.domain.schedule.model.lesson.Lesson
 import io.edugma.domain.schedule.model.lesson.LessonDateTime
+import io.edugma.domain.schedule.model.lesson.LessonDisplaySettings
 import io.edugma.domain.schedule.model.lesson.LessonTime
 import io.edugma.domain.schedule.model.place.Place
 import io.edugma.domain.schedule.model.schedule.LessonsByTime
@@ -43,6 +44,7 @@ private val relaxAnims = listOf(
 @Composable
 fun SchedulePager(
     scheduleDays: List<ScheduleDay>,
+    lessonDisplaySettings: LessonDisplaySettings,
     pagerState: PagerState,
     onLessonClick: Typed2Listener<Lesson, LessonDateTime>
 ) {
@@ -55,7 +57,8 @@ fun SchedulePager(
 
         if (scheduleDay.lessons.isNotEmpty()) {
             LessonList(
-                scheduleDay.lessons,
+                lessons = scheduleDay.lessons,
+                lessonDisplaySettings = lessonDisplaySettings,
                 onLessonClick = { lesson, time ->
                     onLessonClick(lesson, LessonDateTime(scheduleDay.date, time))
                 }
@@ -103,6 +106,7 @@ fun DateContent(date: LocalDate) {
 @Composable
 fun LessonList(
     lessons: List<LessonsByTime>,
+    lessonDisplaySettings: LessonDisplaySettings,
     isLoading: Boolean = false,
     onLessonClick: Typed2Listener<Lesson, LessonTime>
 ) {
@@ -110,6 +114,7 @@ fun LessonList(
         for (lessonsByTime in lessons) {
             LessonPlace(
                 lessonsByTime = lessonsByTime,
+                lessonDisplaySettings = lessonDisplaySettings,
                 isLoading = isLoading,
                 onLessonClick = { lesson, lessonTime ->
                     onLessonClick(lesson, lessonTime)
@@ -122,6 +127,7 @@ fun LessonList(
 
 fun LazyListScope.LessonPlace(
     lessonsByTime: LessonsByTime,
+    lessonDisplaySettings: LessonDisplaySettings,
     isLoading: Boolean = false,
     onLessonClick: Typed2Listener<Lesson, LessonTime>
 ) {
@@ -131,6 +137,7 @@ fun LazyListScope.LessonPlace(
     items(lessonsByTime.lessons) { lesson ->
         LessonContent(
             lesson = lesson,
+            displaySettings = lessonDisplaySettings,
             isLoading = isLoading,
             onLessonClick = { onLessonClick(it, lessonsByTime.time) }
         )
@@ -165,5 +172,9 @@ fun ScheduleDayPlaceHolder() {
         )
     }
 
-    LessonList(lessons = lessons, isLoading = true) { _, _ -> }
+    LessonList(
+        lessons = lessons,
+        lessonDisplaySettings = LessonDisplaySettings.Default,
+        isLoading = true
+    ) { _, _ -> }
 }

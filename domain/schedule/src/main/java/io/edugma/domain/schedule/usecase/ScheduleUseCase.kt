@@ -1,6 +1,7 @@
 package io.edugma.domain.schedule.usecase
 
 import io.edugma.domain.base.utils.Lce
+import io.edugma.domain.schedule.model.lesson.LessonDisplaySettings
 import io.edugma.domain.schedule.model.place.PlaceFilters
 import io.edugma.domain.schedule.model.review.LessonTimesReview
 import io.edugma.domain.schedule.model.schedule.LessonsByTime
@@ -56,5 +57,40 @@ class ScheduleUseCase(
 
     fun getScheduleDay(schedule: List<ScheduleDay>, date: LocalDate): List<LessonsByTime> {
         return schedule.firstOrNull { it.date == date }?.lessons ?: emptyList()
+    }
+
+    fun getLessonDisplaySettings(scheduleSourceType: ScheduleSources): LessonDisplaySettings {
+        return when (scheduleSourceType) {
+            ScheduleSources.Group -> LessonDisplaySettings(
+                showTeachers = true,
+                showGroups = false,
+                showPlaces = true
+            )
+            ScheduleSources.Teacher -> LessonDisplaySettings(
+                showTeachers = false,
+                showGroups = true,
+                showPlaces = true
+            )
+            ScheduleSources.Student -> LessonDisplaySettings(
+                showTeachers = true,
+                showGroups = false,
+                showPlaces = true
+            )
+            ScheduleSources.Place -> LessonDisplaySettings(
+                showTeachers = true,
+                showGroups = true,
+                showPlaces = false
+            )
+            ScheduleSources.Subject -> LessonDisplaySettings(
+                showTeachers = true,
+                showGroups = true,
+                showPlaces = true
+            )
+            ScheduleSources.Complex -> LessonDisplaySettings(
+                showTeachers = true,
+                showGroups = true,
+                showPlaces = true
+            )
+        }
     }
 }

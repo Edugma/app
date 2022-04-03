@@ -75,6 +75,7 @@ fun ScheduleContent(
 
                 SchedulePager(
                     scheduleDays = state.schedule,
+                    lessonDisplaySettings = state.lessonDisplaySettings,
                     pagerState = schedulePagerState,
                     onLessonClick = onLessonClick
                 )

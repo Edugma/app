@@ -16,16 +16,19 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.edugma.domain.schedule.model.group.Group
 import io.edugma.domain.schedule.model.lesson.Lesson
+import io.edugma.domain.schedule.model.lesson.LessonDisplaySettings
 import io.edugma.domain.schedule.model.place.Place
 import io.edugma.domain.schedule.model.teacher.Teacher
 import io.edugma.domain.schedule.utils.getShortName
 import io.edugma.features.base.core.utils.*
+import io.edugma.features.base.elements.SpacerHeight
 import io.edugma.features.base.elements.placeholder
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun LessonContent(
     lesson: Lesson,
+    displaySettings: LessonDisplaySettings,
     isLoading: Boolean = false,
     onLessonClick: Typed1Listener<Lesson>
 ) {
@@ -35,19 +38,29 @@ fun LessonContent(
         modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
         onClick = { onLessonClick(lesson) }
     ) {
-        Column(modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 15.dp, bottom = 18.dp)) {
+        Column(modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 15.dp, bottom = 16.dp)) {
             WithContentAlpha(ContentAlpha.medium) {
                 LessonHeader(lesson.type, isLoading)
             }
-            Spacer(Modifier.height(4.dp))
+            SpacerHeight(4.dp)
             LessonTitle(lesson.title, isLoading)
-            Spacer(Modifier.height(6.dp))
+            SpacerHeight(4.dp)
             WithContentAlpha(ContentAlpha.medium) {
-                TeachersContent(lesson.teachers, isLoading)
-                Spacer(Modifier.height(4.dp))
-                GroupsContent(lesson.groups, isLoading)
-                Spacer(Modifier.height(4.dp))
-                PlacesContent(lesson.places, isLoading)
+                if (displaySettings.showTeachers) {
+                    SpacerHeight(2.dp)
+                    TeachersContent(lesson.teachers, isLoading)
+                    SpacerHeight(2.dp)
+                }
+                if (displaySettings.showGroups) {
+                    SpacerHeight(2.dp)
+                    GroupsContent(lesson.groups, isLoading)
+                    SpacerHeight(2.dp)
+                }
+                if (displaySettings.showPlaces) {
+                    SpacerHeight(2.dp)
+                    PlacesContent(lesson.places, isLoading)
+                    SpacerHeight(2.dp)
+                }
             }
         }
     }
