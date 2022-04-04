@@ -2,11 +2,7 @@ package io.edugma.features.schedule.main
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -23,8 +19,10 @@ import io.edugma.domain.schedule.utils.getShortName
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.SpacerHeight
 import io.edugma.features.base.elements.placeholder
+import io.edugma.features.schedule.model.ScheduleItem
+import java.time.format.DateTimeFormatter
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LessonContent(
     lesson: Lesson,
@@ -33,9 +31,10 @@ fun LessonContent(
     onLessonClick: Typed1Listener<Lesson>
 ) {
     Card(
-        elevation = 4.dp,
         shape = RoundedCornerShape(25.dp),
-        modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
+        modifier = Modifier
+            .padding(horizontal = 10.dp, vertical = 5.dp)
+            .fillMaxWidth(),
         onClick = { onLessonClick(lesson) }
     ) {
         Column(modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 15.dp, bottom = 16.dp)) {
@@ -174,4 +173,73 @@ fun PlacesContent(places: List<Place>, isLoading: Boolean = false) {
                 .align(Alignment.CenterVertically),
         )
     }
+}
+
+private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LessonWindow(lessonWindow: ScheduleItem.Window) {
+    val timeFrom = remember(lessonWindow) { lessonWindow.timeFrom.format(timeFormatter) }
+    val timeTo = remember(lessonWindow) { lessonWindow.timeTo.format(timeFormatter) }
+
+    val timeText = remember(lessonWindow) {
+        getTimeText(lessonWindow.totalMinutes)
+    }
+
+    Card(
+        shape = RoundedCornerShape(25.dp),
+        modifier = Modifier
+            .padding(horizontal = 10.dp, vertical = 15.dp)
+            .fillMaxWidth(),
+        containerColor = MaterialTheme3.colorScheme.secondaryContainer
+    ) {
+        Column(modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 15.dp, bottom = 16.dp)) {
+            Text(
+                text = "Окно на $timeText",
+                style = MaterialTheme.typography.titleMedium
+            )
+            WithContentAlpha(alpha = ContentAlpha.medium) {
+                Text(
+                    text = "$timeFrom - $timeTo",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+        }
+    }
+}
+
+private fun getTimeText(totalMinutes: Long): String {
+    var resTime = ""
+
+    val windowTimeHours = totalMinutes / 60L
+    if (windowTimeHours != 0L) {
+        // *1 час .. *2, *3, *4 часа .. *5, *6, *7, *8, *9, *0 часов .. искл. - 11 - 14
+        val lastNumberOfHours = windowTimeHours % 10
+        val endingHours = when {
+            windowTimeHours in 11L..14L -> "ов"
+            lastNumberOfHours == 1L -> ""
+            lastNumberOfHours in 2L..4L -> "а"
+            else -> "ов"
+        }
+        resTime += "$windowTimeHours час$endingHours"
+    }
+
+    val windowTimeMinutes = totalMinutes % 60
+    if (windowTimeMinutes != 0L) {
+        // *1 минута .. *2, *3, *4 минуты .. *5, *6, *7, *8, *9, *0 минут .. искл. - 11 - 14
+        val lastNumberOfMinutes = windowTimeMinutes % 10
+        val endingMinutes = when {
+            windowTimeMinutes in 11L..14L -> ""
+            lastNumberOfMinutes == 1L -> "а"
+            lastNumberOfMinutes in 2L..4L -> "ы"
+            else -> ""
+        }
+        if (resTime.isNotEmpty()) {
+            resTime += " "
+        }
+        resTime += "$windowTimeMinutes минут$endingMinutes"
+    }
+
+    return resTime
 }

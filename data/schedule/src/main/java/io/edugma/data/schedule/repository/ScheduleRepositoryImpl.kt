@@ -47,11 +47,11 @@ class ScheduleRepositoryImpl(
     private val scheduleStore = StoreImpl<ScheduleSource, List<ScheduleDay>>(
         fetcher = { key -> service.getSchedule(key.type.name.lowercase(), key.key) },
         reader = { key ->
-            cachedDS.getFlow<ScheduleDao>(CacheConst.Schedule, expireAt)
+            cachedDS.getFlow<ScheduleDao>(CacheConst.Schedule + key, expireAt)
                 .map { it.map { it?.days } }
         },
         writer = { key, data ->
-            flowOf(cachedDS.save(ScheduleDao.from(key, data), CacheConst.Schedule))
+            flowOf(cachedDS.save(ScheduleDao.from(key, data), CacheConst.Schedule + key))
         },
         expireAt = 1.days
     )

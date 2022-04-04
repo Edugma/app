@@ -17,7 +17,7 @@ class ComposeNavigator(
     init {
         scope.launch {
             router.commandBuffer.collect {
-                processCommand(it)
+                kotlin.runCatching { processCommand(it) }
             }
         }
     }

@@ -5,8 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -84,24 +83,22 @@ fun ScheduleSourcesContent(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SourceType(
     sourceType: ScheduleSources,
     isSelected: Boolean,
     onSourceTypeSelected: Typed1Listener<ScheduleSources>
 ) {
-    val color = if (isSelected) MaterialTheme3.colorScheme.primary else MaterialTheme3.colorScheme.surface
-    val textColor = if (isSelected) MaterialTheme3.colorScheme.onPrimary else MaterialTheme3.colorScheme.onSurface
+    val color = if (isSelected) MaterialTheme3.colorScheme.primary else MaterialTheme3.colorScheme.surfaceVariant
     Card(
         onClick = { onSourceTypeSelected(sourceType) },
         modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
-        backgroundColor = color
+        containerColor = color
     ) {
         Text(
             text = sourceType.toString(),
-            modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
-            color = textColor
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
         )
     }
 }

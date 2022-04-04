@@ -18,7 +18,9 @@ class MainActivity : ComponentActivity() {
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
-            AppTheme {
+            AppTheme(
+                isDynamicColor = true
+            ) {
                 ProvideWindowInsets {
                     Surface(color = MaterialTheme.colorScheme.background) {
                         Box(

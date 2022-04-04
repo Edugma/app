@@ -11,7 +11,7 @@ data class WeekUiModel(
 ) {
     companion object {
         fun fromSchedule(
-            schedule: List<ScheduleDay>,
+            schedule: List<ScheduleDayUiModel>,
             today: LocalDate = LocalDate.now()
         ): List<WeekUiModel> {
             val dateFrom = schedule.firstOrNull()?.date?.getFloorMonday()
@@ -24,7 +24,9 @@ data class WeekUiModel(
                         DayUiModel(
                             date,
                             date == today,
-                            schedule.firstOrNull { it.date == date }?.lessons?.size ?: 0
+                            schedule.firstOrNull { it.date == date }?.lessons
+                                ?.filterIsInstance<ScheduleItem.LessonByTime>()
+                                ?.size ?: 0
                         )
                     }
                 )

@@ -14,7 +14,9 @@ import io.edugma.domain.schedule.usecase.ScheduleUseCase
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.mvi.impl.SimpleMutator
 import io.edugma.features.base.navigation.ScheduleScreens
+import io.edugma.features.schedule.model.ScheduleDayUiModel
 import io.edugma.features.schedule.model.WeekUiModel
+import io.edugma.features.schedule.utils.toUiModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -74,7 +76,7 @@ class ScheduleViewModel(
                         val isLoading = it.isLoading// && !state.isPreloading
 
                         state = state.copy(
-                            schedule = schedule,
+                            schedule = schedule.toUiModel(),
                             isLoading = isLoading
                         )
                     }
@@ -172,7 +174,7 @@ data class ScheduleState(
     val isPreloading: Boolean = true,
     val isLoading: Boolean = false,
     val isError: Boolean = false,
-    val schedule: List<ScheduleDay> = emptyList(),
+    val schedule: List<ScheduleDayUiModel> = emptyList(),
     val weeks: List<WeekUiModel> = emptyList(),
     val lessonDisplaySettings: LessonDisplaySettings = LessonDisplaySettings.Default,
 

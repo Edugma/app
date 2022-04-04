@@ -25,7 +25,7 @@ fun ScheduleCard(
     Card(
         modifier = Modifier
             .padding(horizontal = 4.dp, vertical = 4.dp)
-            .height(120.dp)
+            .height(150.dp)
             .fillMaxWidth(0.6f),
         shape = RoundedCornerShape(16.dp),
         onClick = onScheduleClick
