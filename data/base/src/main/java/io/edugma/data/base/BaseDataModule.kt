@@ -35,7 +35,7 @@ val baseDataModule = module {
     }
 
     single(named(DiConst.Schedule)) {
-        buildRetrofitBuilder(get(), "https://mph-schedule.herokuapp.com/")
+        buildRetrofitBuilder(get(), "http://devspare.mospolytech.ru:8002/")
     }
     single<Retrofit>(named(DiConst.Schedule)) { get<Retrofit.Builder>(named(DiConst.Schedule)).build() }
 

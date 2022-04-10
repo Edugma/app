@@ -49,7 +49,7 @@ fun ScheduleMenuContent(
         Spacer(Modifier.height(20.dp))
         Row(
             Modifier
-                .height(70.dp)
+                .height(90.dp)
                 .fillMaxWidth()
         ) {
             ScheduleSourcesCard(state.source, onScheduleSourceClick)

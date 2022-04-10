@@ -1,7 +1,7 @@
 object Libs {
     object Plugins {
-        const val Android = "com.android.tools.build:gradle:${Versions.gradle}"
-        const val Kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
+        //const val Android = "com.android.tools.build:gradle:${Versions.gradle}"
+        //const val Kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
         const val KotlinxSerialization =
             "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerialization}"
     }
@@ -135,14 +135,11 @@ object Libs {
 }
 
 object Versions {
-    const val gradle = "7.1.2"
-    const val kotlin = "1.6.10"
-
-    const val kotlinCoroutines = "1.6.0"
+    const val kotlinCoroutines = "1.6.1"
     const val kotlinxSerialization = "1.3.2"
 
     // Di
-    const val koin = "3.1.5"
+    const val koin = "3.1.6"
 
     // Image loading
     const val coil = "1.4.0"
@@ -159,20 +156,20 @@ object Versions {
 
     // Compose
     const val compose = "1.1.1"
-    const val composeMaterial3 = "1.0.0-alpha08"
+    const val composeMaterial3 = "1.0.0-alpha09"
     const val composeMaterial = "1.1.1"
     const val accompanist = "0.23.1"
 
     // AndroidX
     const val lifecycle = "2.4.1"
-    const val navigation = "2.4.1"
+    const val navigation = "2.4.2"
     const val coreKtx = "1.7.0"
     const val appcompat = "1.4.1"
 
     // UI
     const val material = "1.5.0"
     const val constraintLayout = "1.0.0"
-    const val lottie = "5.0.2"
-    const val materialDateTimePicker = "0.6.3"
-    const val fluentIcons = "1.1.157@aar"
+    const val lottie = "5.0.3"
+    const val materialDateTimePicker = "0.7.0"
+    const val fluentIcons = "1.1.166@aar"
 }

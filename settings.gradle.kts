@@ -7,7 +7,7 @@ pluginManagement {
         mavenCentral()
     }
 
-    val androidGradleVersion = "7.1.2"
+    val androidGradleVersion = "7.1.3"
     val kotlinVersion = "1.6.10"
 
     plugins {

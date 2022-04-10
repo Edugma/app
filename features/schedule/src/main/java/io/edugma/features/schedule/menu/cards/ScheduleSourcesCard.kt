@@ -23,7 +23,7 @@ fun ScheduleSourcesCard(
     Card(
         modifier = Modifier
             .padding(horizontal = 4.dp, vertical = 4.dp)
-            .height(70.dp)
+            .height(90.dp)
             .fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         onClick = onScheduleSourceClick
