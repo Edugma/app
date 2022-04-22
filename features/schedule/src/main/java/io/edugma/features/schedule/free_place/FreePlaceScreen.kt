@@ -165,7 +165,7 @@ fun FreePlaceContent(
                             )
                             WithContentAlpha(alpha = ContentAlpha.medium) {
                                 Text(
-                                    text = "Занятий в это время: " + item.second.size.toString(),
+                                    text = "Занятий в это время: " + item.second.toString(),
                                     style = MaterialTheme3.typography.bodySmall
                                 )
                             }

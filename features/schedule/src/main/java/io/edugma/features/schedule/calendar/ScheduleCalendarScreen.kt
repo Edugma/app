@@ -69,7 +69,7 @@ fun CalendarThree(schedule: List<ScheduleDay>, cellCount: Int) {
                 Divider(Modifier.height(1.dp))
                 day.lessons.forEach { lessonsByTime ->
                     Text(
-                        text = lessonsByTime.time.startTime.toString() + " - " + lessonsByTime.time.endTime.toString(),
+                        text = lessonsByTime.time.start.toString() + " - " + lessonsByTime.time.end.toString(),
                         style = MaterialTheme.typography.labelMedium,
                         modifier = Modifier.padding(horizontal = 4.dp)
                     )

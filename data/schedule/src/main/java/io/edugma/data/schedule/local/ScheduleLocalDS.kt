@@ -10,29 +10,29 @@ import org.kodein.db.*
 class ScheduleLocalDS(
     private val db: DB
 ) {
-    fun saveSchedule(source: ScheduleSource, schedule: List<ScheduleDay>?) {
-        db.put(
-            ScheduleDao.from(source, schedule)
-        )
-    }
-
-    fun getSchedule(source: ScheduleSource): Result<List<ScheduleDay>> {
-        return runCatching {
-            //val key = db.keyFrom(source.id)
-            db.getById<ScheduleDao>(source.id)?.days ?: emptyList()
-        }
-    }
-
-    fun setSelectedSource(source: ScheduleSourceFull) {
-        db.put(
-            ScheduleSourceFullDao.from(source, "Selected")
-        )
-    }
-
-    fun getSelectedSource(): Result<ScheduleSourceFull?> {
-        return runCatching {
-            val a = db.flowOf(db.keyById<ScheduleSourceFullDao>("Selected"))
-            db.getById<ScheduleSourceFullDao>("Selected")?.source
-        }
-    }
+//    fun saveSchedule(source: ScheduleSource, schedule: List<ScheduleDay>?) {
+//        db.put(
+//            ScheduleDao.from(source, schedule)
+//        )
+//    }
+//
+//    fun getSchedule(source: ScheduleSource): Result<List<ScheduleDay>> {
+//        return runCatching {
+//            //val key = db.keyFrom(source.id)
+//            db.getById<ScheduleDao>(source.id)?.days ?: emptyList()
+//        }
+//    }
+//
+//    fun setSelectedSource(source: ScheduleSourceFull) {
+//        db.put(
+//            ScheduleSourceFullDao.from(source, "Selected")
+//        )
+//    }
+//
+//    fun getSelectedSource(): Result<ScheduleSourceFull?> {
+//        return runCatching {
+//            val a = db.flowOf(db.keyById<ScheduleSourceFullDao>("Selected"))
+//            db.getById<ScheduleSourceFullDao>("Selected")?.source
+//        }
+//    }
 }

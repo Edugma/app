@@ -22,13 +22,13 @@ fun getClosestLessons(
         if (now in lessonToAdd.time) {
             closestLessons.add(lessonToAddIndex)
 
-        } else if (now < lessonToAdd.time.startTime) {
+        } else if (now < lessonToAdd.time.start) {
             if (firstCeilingLessonIndex == -1 ||
-                lessonToAdd.time.startTime < lessons[firstCeilingLessonIndex].time.startTime) {
+                lessonToAdd.time.start < lessons[firstCeilingLessonIndex].time.start) {
                 firstCeilingLessonIndex = lessonToAddIndex
             }
 
-            if (lessonToAdd.time.startTime <= latestTimeToCombine) {
+            if (lessonToAdd.time.start <= latestTimeToCombine) {
                 closestLessons.add(lessonToAddIndex)
             }
         }

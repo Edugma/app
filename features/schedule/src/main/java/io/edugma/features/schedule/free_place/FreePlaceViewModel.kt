@@ -9,6 +9,7 @@ import io.edugma.domain.schedule.model.source.ScheduleSources
 import io.edugma.domain.schedule.usecase.ScheduleUseCase
 import io.edugma.features.base.core.mvi.BaseMutator
 import io.edugma.domain.base.utils.onFailure
+import io.edugma.domain.schedule.model.place.PlaceInfo
 import io.edugma.features.base.core.mvi.BaseViewModelFull
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -95,7 +96,7 @@ data class FreePlaceState(
     val filterQuery: String = "",
     val places: List<Place> = emptyList(),
     val filteredPlaces: List<Place> = emptyList(),
-    val freePlaces: Map<Place, List<LessonDateTimes>> = emptyMap()
+    val freePlaces: Map<PlaceInfo, Int> = emptyMap()
 ) {
     companion object {
         val minPerDay = LocalTime.MAX.toSecondOfDay() / 60
@@ -160,7 +161,7 @@ class FreePlaceMutator : BaseMutator<FreePlaceState>() {
             copy(filteredPlaces = it)
         }
 
-    fun setFreePlaces(freePlaces: Map<Place, List<LessonDateTimes>>) =
+    fun setFreePlaces(freePlaces: Map<PlaceInfo, Int>) =
         set(state.freePlaces, freePlaces) {
             copy(freePlaces = it)
         }

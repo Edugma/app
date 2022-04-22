@@ -120,9 +120,9 @@ private fun LessonDateTime(lessonDateTime: LessonDateTime) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         WithContentAlpha(ContentAlpha.medium) {
-            val timeStart = lessonDateTime.time.startTime.format(lessonTimeFormat)
-            val timeEnd = lessonDateTime.time.endTime.format(lessonTimeFormat)
-            val date = lessonDateTime.date.format(lessonDateFormat)
+            val timeStart = lessonDateTime.time.start.format(lessonTimeFormat)
+            val timeEnd = lessonDateTime.time.end.format(lessonTimeFormat)
+            val startDate = lessonDateTime.startDate.format(lessonDateFormat) + "!!"
             Row(
                 Modifier.padding(start = 16.dp, end = 8.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -148,7 +148,7 @@ private fun LessonDateTime(lessonDateTime: LessonDateTime) {
                 )
                 SpacerWidth(3.dp)
                 Text(
-                    text = date,
+                    text = startDate,
                     style = MaterialTheme3.typography.bodySmall,
                     modifier = Modifier.padding(bottom = 1.dp)
                 )

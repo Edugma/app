@@ -18,10 +18,8 @@ data class LessonDateTimes(
 @Serializable
 data class LessonDateTime(
     @Serializable(with = LocalDateConverter::class)
-    val date: LocalDate,
+    val startDate: LocalDate,
+    @Serializable(with = LocalDateConverter::class)
+    val endDate: LocalDate? = null,
     val time: LessonTime
 )
-
-fun LessonDateTime.toDateTimeRange(): ClosedRange<LocalDateTime> {
-    return LocalDateTime.of(date, time.startTime)..LocalDateTime.of(date, time.endTime)
-}

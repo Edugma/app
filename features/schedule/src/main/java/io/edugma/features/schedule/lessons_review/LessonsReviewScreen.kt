@@ -103,7 +103,7 @@ fun RegularLessonTime(lessonTime: LessonReviewDay) {
                 dateTo = lessonTime.dateTo
             )
             Text(
-                text = "${lessonTime.time.startTime} - ${lessonTime.time.endTime}",
+                text = "${lessonTime.time.start} - ${lessonTime.time.end}",
                 style = MaterialTheme.typography.bodySmall
             )
         }

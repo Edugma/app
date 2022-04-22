@@ -30,13 +30,13 @@ fun List<LessonsByTime>.toUiModel(): List<ScheduleItem> {
 }
 
 private fun getWindowOrNull(before: LessonTime, next: LessonTime): ScheduleItem.Window? {
-    val totalMinutes = before.endTime.until(next.startTime, ChronoUnit.MINUTES)
+    val totalMinutes = before.end.until(next.start, ChronoUnit.MINUTES)
     return if (totalMinutes < 15) {
         null
     } else {
         ScheduleItem.Window(
-            timeFrom = before.endTime,
-            timeTo = next.startTime,
+            timeFrom = before.end,
+            timeTo = next.start,
             totalMinutes = totalMinutes
         )
     }

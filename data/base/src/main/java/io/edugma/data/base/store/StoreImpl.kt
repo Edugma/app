@@ -1,9 +1,8 @@
 package io.edugma.data.base.store
 
+import android.util.Log
 import io.edugma.data.base.model.Cached
-import io.edugma.domain.base.utils.Lce
-import io.edugma.domain.base.utils.loading
-import io.edugma.domain.base.utils.onSuccess
+import io.edugma.domain.base.utils.*
 import kotlinx.coroutines.flow.*
 import kotlin.time.Duration
 
@@ -22,6 +21,8 @@ class StoreImpl<Key, Data>(
                     fetcher(key)
                         .onSuccess { newData ->
                             writer(key, newData).collect()
+                        }.onFailure {
+                            Log.e(this@StoreImpl.TAG, "Fail to fetch data", it)
                         }.map { it.loading(false) }
                 )
             }

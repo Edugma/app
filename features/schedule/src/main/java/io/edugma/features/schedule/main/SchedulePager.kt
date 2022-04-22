@@ -26,7 +26,6 @@ import io.edugma.domain.schedule.model.lesson.LessonDisplaySettings
 import io.edugma.domain.schedule.model.lesson.LessonTime
 import io.edugma.domain.schedule.model.place.Place
 import io.edugma.domain.schedule.model.schedule.LessonsByTime
-import io.edugma.domain.schedule.model.schedule.ScheduleDay
 import io.edugma.domain.schedule.model.teacher.Teacher
 import io.edugma.features.base.core.utils.Typed2Listener
 import io.edugma.features.base.elements.placeholder
@@ -63,7 +62,7 @@ fun SchedulePager(
                 lessons = scheduleDay.lessons,
                 lessonDisplaySettings = lessonDisplaySettings,
                 onLessonClick = { lesson, time ->
-                    onLessonClick(lesson, LessonDateTime(scheduleDay.date, time))
+                    onLessonClick(lesson, LessonDateTime(scheduleDay.date, null, time))
                 }
             )
         } else {
@@ -161,7 +160,7 @@ private fun LazyListScope.LessonPlace(
 @Composable
 private fun LessonTimeContent(lessonTime: LessonTime, isLoading: Boolean = false) {
     Text(
-        text = "${lessonTime.startTime} - ${lessonTime.endTime}",
+        text = "${lessonTime.start} - ${lessonTime.end}",
         style = MaterialTheme.typography.titleSmall,
         modifier = Modifier
             .padding(horizontal = 34.dp)

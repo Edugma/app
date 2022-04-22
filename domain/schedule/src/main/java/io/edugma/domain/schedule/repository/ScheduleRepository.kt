@@ -4,6 +4,7 @@ import io.edugma.domain.base.utils.Lce
 import io.edugma.domain.schedule.model.lesson.LessonDateTimes
 import io.edugma.domain.schedule.model.place.Place
 import io.edugma.domain.schedule.model.place.PlaceFilters
+import io.edugma.domain.schedule.model.place.PlaceInfo
 import io.edugma.domain.schedule.model.review.LessonTimesReview
 import io.edugma.domain.schedule.model.schedule.ScheduleDay
 import io.edugma.domain.schedule.model.source.ScheduleSource
@@ -19,6 +20,6 @@ interface ScheduleRepository {
 
     fun getSchedule(source: ScheduleSource, forceUpdate: Boolean = false): Flow<Lce<List<ScheduleDay>>>
     fun getLessonsReview(source: ScheduleSource): Flow<Result<List<LessonTimesReview>>>
-    fun findFreePlaces(filters: PlaceFilters): Flow<Result<Map<Place, List<LessonDateTimes>>>>
+    fun findFreePlaces(filters: PlaceFilters): Flow<Result<Map<PlaceInfo, Int>>>
     fun getSourceTypes(): Flow<Result<List<ScheduleSources>>>
 }
