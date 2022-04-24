@@ -15,6 +15,7 @@ val appScreens = screens {
     groupScreen<MainScreen.Schedule, ScheduleScreens.Menu> {
         io.edugma.features.schedule.screens(this)
         io.edugma.features.schedule.schedule_info.screens(this)
+        io.edugma.features.schedule.calendar.screens(this)
     }
     accountScreens()
     miscMenuScreens()

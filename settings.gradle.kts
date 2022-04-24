@@ -1,5 +1,8 @@
 @file:Suppress("UnstableApiUsage")
 
+include(":features:schedule:calendar")
+
+
 include(":features:schedule:schedule_info")
 
 

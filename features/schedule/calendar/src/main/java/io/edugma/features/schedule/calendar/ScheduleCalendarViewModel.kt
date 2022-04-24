@@ -6,21 +6,26 @@ import io.edugma.domain.base.utils.isFinalFailure
 import io.edugma.domain.schedule.model.schedule.ScheduleDay
 import io.edugma.domain.schedule.usecase.ScheduleUseCase
 import io.edugma.features.base.core.mvi.BaseMutator
+import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.mvi.BaseViewModelFull
+import io.edugma.features.schedule.calendar.model.ScheduleCalendarWeek
+import io.edugma.features.schedule.calendar.model.toCalendarUiModel
 import kotlinx.coroutines.launch
 
 class ScheduleCalendarViewModel(
     private val useCase: ScheduleUseCase
-) : BaseViewModelFull<ScheduleCalendarState, ScheduleCalendarMutator, Nothing>(
-    ScheduleCalendarState(),
-    ::ScheduleCalendarMutator
-){
+) : BaseViewModel<ScheduleCalendarState>(ScheduleCalendarState()){
     init {
         viewModelScope.launch {
             useCase.getSchedule().collect {
                 if (!it.isFinalFailure) {
                     mutateState {
-                        setSchedule(it.getOrDefault(emptyList()))
+
+                        val schedule = it.getOrDefault(emptyList()).toCalendarUiModel()
+
+                        if (state.schedule != schedule) {
+                            state = state.copy(schedule = schedule)
+                        }
                     }
                 }
             }
@@ -29,13 +34,5 @@ class ScheduleCalendarViewModel(
 }
 
 data class ScheduleCalendarState(
-    val schedule: List<ScheduleDay> = emptyList()
+    val schedule: List<ScheduleCalendarWeek> = emptyList()
 )
-
-class ScheduleCalendarMutator : BaseMutator<ScheduleCalendarState>() {
-    fun setSchedule(schedule: List<ScheduleDay>) {
-        if (state.schedule != schedule) {
-            state = state.copy(schedule = schedule)
-        }
-    }
-}

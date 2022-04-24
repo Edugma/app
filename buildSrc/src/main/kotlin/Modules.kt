@@ -39,6 +39,7 @@ object Modules {
             private const val prefix1 = ":schedule"
 
             const val ScheduleInfo = "$prefix$prefix1:schedule_info"
+            const val Calendar = "$prefix$prefix1:calendar"
         }
 
 

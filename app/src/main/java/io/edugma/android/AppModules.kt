@@ -34,6 +34,7 @@ val appModules = listOf(
     nodesFeaturesModule,
     io.edugma.features.schedule.module,
     io.edugma.features.schedule.schedule_info.module,
+    io.edugma.features.schedule.calendar.module,
     accountFeaturesModule,
 
     miscMenuFeaturesModule,
