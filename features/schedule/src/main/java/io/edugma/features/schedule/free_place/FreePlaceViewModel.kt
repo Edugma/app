@@ -10,6 +10,7 @@ import io.edugma.domain.schedule.usecase.ScheduleUseCase
 import io.edugma.features.base.core.mvi.BaseMutator
 import io.edugma.domain.base.utils.onFailure
 import io.edugma.domain.schedule.model.place.PlaceInfo
+import io.edugma.domain.schedule.repository.FreePlaceRepository
 import io.edugma.features.base.core.mvi.BaseViewModelFull
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -18,6 +19,7 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 
 class FreePlaceViewModel(
+    private val repository: FreePlaceRepository,
     private val useCase: ScheduleUseCase
 ) : BaseViewModelFull<FreePlaceState, FreePlaceMutator, Nothing>(
     FreePlaceState(),
@@ -70,7 +72,7 @@ class FreePlaceViewModel(
 
     fun onFindFreePlaces() {
         viewModelScope.launch {
-            useCase.findFreePlaces(
+            repository.findFreePlaces(
                 PlaceFilters(
                     ids = state.value.places.map { it.id },
                     dateTimeFrom = LocalDateTime.of(state.value.date, state.value.timeFrom),

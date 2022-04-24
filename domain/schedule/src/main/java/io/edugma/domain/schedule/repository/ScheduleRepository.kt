@@ -1,6 +1,7 @@
 package io.edugma.domain.schedule.repository
 
 import io.edugma.domain.base.utils.Lce
+import io.edugma.domain.schedule.model.compact.CompactSchedule
 import io.edugma.domain.schedule.model.lesson.LessonDateTimes
 import io.edugma.domain.schedule.model.place.Place
 import io.edugma.domain.schedule.model.place.PlaceFilters
@@ -13,6 +14,8 @@ import io.edugma.domain.schedule.model.source.ScheduleSources
 import kotlinx.coroutines.flow.Flow
 
 interface ScheduleRepository {
+    fun getRawSchedule(source: ScheduleSource): Flow<Lce<CompactSchedule?>>
+
     fun getSources(type: ScheduleSources): Flow<Result<List<ScheduleSourceFull>>>
 
     suspend fun setSelectedSource(source: ScheduleSourceFull)
@@ -20,6 +23,5 @@ interface ScheduleRepository {
 
     fun getSchedule(source: ScheduleSource, forceUpdate: Boolean = false): Flow<Lce<List<ScheduleDay>>>
     fun getLessonsReview(source: ScheduleSource): Flow<Result<List<LessonTimesReview>>>
-    fun findFreePlaces(filters: PlaceFilters): Flow<Result<Map<PlaceInfo, Int>>>
     fun getSourceTypes(): Flow<Result<List<ScheduleSources>>>
 }

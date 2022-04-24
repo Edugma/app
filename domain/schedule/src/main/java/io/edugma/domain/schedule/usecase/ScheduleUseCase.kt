@@ -52,9 +52,6 @@ class ScheduleUseCase(
                 }
             }
 
-    fun findFreePlaces(filters: PlaceFilters) =
-        repository.findFreePlaces(filters)
-
     fun getScheduleDay(schedule: List<ScheduleDay>, date: LocalDate): List<LessonsByTime> {
         return schedule.firstOrNull { it.date == date }?.lessons ?: emptyList()
     }

@@ -35,6 +35,12 @@ object Modules {
         const val Schedule = "$prefix:schedule"
         const val Account = "$prefix:account"
 
+        object Schedule2 {
+            private const val prefix1 = ":schedule"
+
+            const val ScheduleInfo = "$prefix$prefix1:schedule_info"
+        }
+
 
         object Misc {
             private const val prefix1 = ":misc"

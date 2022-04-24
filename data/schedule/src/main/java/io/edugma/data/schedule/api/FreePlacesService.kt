@@ -5,6 +5,7 @@ import io.edugma.domain.schedule.model.place.PlaceFilters
 import io.edugma.domain.schedule.model.place.PlaceInfo
 import kotlinx.coroutines.flow.Flow
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 
@@ -14,7 +15,7 @@ interface FreePlacesService {
         @Body filters: PlaceFilters
     ): Flow<Result<Map<PlaceInfo, Int>>>
 
-    @POST("/schedule/places/occupancy/{placeId}")
+    @GET("/schedule/places/occupancy/{placeId}")
     fun getPlaceOccupancy(
         @Path("placeId") placeId: String,
     ): Flow<Result<List<PlaceDailyOccupancy>>>

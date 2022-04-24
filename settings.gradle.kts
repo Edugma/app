@@ -1,5 +1,8 @@
 @file:Suppress("UnstableApiUsage")
 
+include(":features:schedule:schedule_info")
+
+
 pluginManagement {
     repositories {
         gradlePluginPortal()
@@ -13,7 +16,7 @@ pluginManagement {
     plugins {
         id("com.android.application") version androidGradleVersion apply false
         id("com.android.library") version androidGradleVersion  apply false
-        kotlin("android") version kotlinVersion apply false
+        kotlin("android") version "1.6.21" apply false
         kotlin("plugin.serialization") version kotlinVersion apply false
         id("org.jetbrains.kotlin.jvm") version "1.6.10"
     }

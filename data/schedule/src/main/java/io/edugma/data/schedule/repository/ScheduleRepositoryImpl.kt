@@ -10,6 +10,7 @@ import io.edugma.data.schedule.api.ScheduleInfoService
 import io.edugma.data.schedule.api.ScheduleService
 import io.edugma.data.schedule.api.ScheduleSourcesService
 import io.edugma.data.schedule.model.ScheduleDao
+import io.edugma.domain.base.utils.Lce
 import io.edugma.domain.base.utils.map
 import io.edugma.domain.schedule.model.compact.CompactLessonFeatures
 import io.edugma.domain.schedule.model.compact.CompactSchedule
@@ -36,15 +37,17 @@ import kotlin.time.Duration.Companion.days
 
 class ScheduleRepositoryImpl(
     private val scheduleService: ScheduleService,
-    private val scheduleInfoService: ScheduleInfoService,
     private val scheduleSourcesService: ScheduleSourcesService,
-    private val freePlacesService: FreePlacesService,
     private val cachedDS: CacheVersionLocalDS,
     private val preferencesDS: PreferencesDS
 ) : ScheduleRepository {
     override fun getSourceTypes() =
         scheduleSourcesService.getSourceTypes()
             .flowOn(Dispatchers.IO)
+
+    override fun getRawSchedule(source: ScheduleSource): Flow<Lce<CompactSchedule?>> {
+        return scheduleStore.get(source, false)
+    }
 
     override fun getSources(type: ScheduleSources) =
         scheduleSourcesService.getSources(type.name.lowercase())
@@ -78,10 +81,6 @@ class ScheduleRepositoryImpl(
 
     override fun getLessonsReview(source: ScheduleSource) =
         scheduleService.getLessonsReview(source.type.name.lowercase(), source.key)
-            .flowOn(Dispatchers.IO)
-
-    override fun findFreePlaces(filters: PlaceFilters) =
-        freePlacesService.findFreePlaces(filters)
             .flowOn(Dispatchers.IO)
 }
 

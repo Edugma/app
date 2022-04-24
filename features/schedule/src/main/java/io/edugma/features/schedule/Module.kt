@@ -10,12 +10,12 @@ import io.edugma.features.schedule.sources.ScheduleSourcesViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-val scheduleFeaturesModule = module {
+val module = module {
     viewModel { ScheduleMenuViewModel(get()) }
     viewModel { ScheduleViewModel(get()) }
     viewModel { LessonsReviewViewModel(get()) }
     viewModel { ScheduleCalendarViewModel(get()) }
-    viewModel { FreePlaceViewModel(get()) }
+    viewModel { FreePlaceViewModel(get(), get()) }
     viewModel { ScheduleSourcesViewModel(get()) }
     viewModel { LessonInfoViewModel() }
 }
