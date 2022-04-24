@@ -1,5 +1,7 @@
 package io.edugma.features.schedule.main
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -7,9 +9,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import coil.ImageLoader
+import coil.ImageLoaderFactory
+import coil.compose.rememberImagePainter
+import coil.memory.MemoryCache
+import coil.request.CachePolicy
+import coil.request.ImageRequest
 import io.edugma.domain.schedule.model.group.Group
 import io.edugma.domain.schedule.model.lesson.Lesson
 import io.edugma.domain.schedule.model.lesson.LessonDisplaySettings
@@ -18,6 +29,8 @@ import io.edugma.domain.schedule.model.teacher.Teacher
 import io.edugma.domain.schedule.utils.getShortName
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.SpacerHeight
+import io.edugma.features.base.elements.SpacerSize
+import io.edugma.features.base.elements.SpacerWidth
 import io.edugma.features.base.elements.placeholder
 import io.edugma.features.schedule.model.ScheduleItem
 import java.time.format.DateTimeFormatter
@@ -187,14 +200,33 @@ fun LessonWindow(lessonWindow: ScheduleItem.Window) {
         getTimeText(lessonWindow.totalMinutes)
     }
 
-    Card(
-        shape = RoundedCornerShape(25.dp),
-        modifier = Modifier
-            .padding(horizontal = 10.dp, vertical = 15.dp)
+    Row(
+        Modifier
+            .padding(horizontal = 10.dp, vertical = 6.dp)
             .fillMaxWidth(),
-        containerColor = MaterialTheme3.colorScheme.secondaryContainer
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Column(modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 15.dp, bottom = 16.dp)) {
+        val urls = listOf(
+            "https://img.icons8.com/fluency/200/cup.png",
+            "https://img.icons8.com/fluency/192/kfc-chicken.png",
+            "https://img.icons8.com/fluency/200/controller.png",
+            "https://img.icons8.com/fluency/200/sunbathe.png"
+        )
+        val url = remember { urls.random() }
+
+        Image(
+            painter = rememberImagePainter(data = url),
+            contentDescription = null,
+            modifier = Modifier
+                .padding(start = 16.dp)
+                .size(60.dp),
+            contentScale = ContentScale.Inside,
+            alignment = Alignment.Center
+        )
+        Column(
+            modifier = Modifier
+                .padding(start = 14.dp, end = 12.dp, top = 11.dp, bottom = 14.dp)
+        ) {
             Text(
                 text = "Окно на $timeText",
                 style = MaterialTheme.typography.titleMedium
