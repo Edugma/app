@@ -9,6 +9,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.edugma.domain.base.utils.capitalized
@@ -220,11 +222,25 @@ private fun CalendarItem(
                     modifier = Modifier.padding(horizontal = 10.dp)
                 )
                 WithContentAlpha(ContentAlpha.medium) {
+                    val text = buildAnnotatedString {
+                        lessonsByTime.lessons.forEachIndexed { index, lesson ->
+                            append(cutTitle(lesson.subject.title))
+                            append(" (")
+                            if (lesson.type.isImportant) {
+                                pushStyle(SpanStyle(color = MaterialTheme3.colorScheme.error))
+                                append(getShortType(lesson.type.title))
+                                pop()
+                            } else {
+                                append(getShortType(lesson.type.title))
+                            }
+                            append(")")
+                            if (index != lessonsByTime.lessons.lastIndex) {
+                                append("\n")
+                            }
+                        }
+                    }
                     Text(
-                        text = lessonsByTime.lessons
-                            .joinToString(separator = "\n") {
-                                cutTitle(it.subject.title) + " (${getShortType(it.type.title)})"
-                            },
+                        text = text,
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier.padding(horizontal = 10.dp)
                     )
