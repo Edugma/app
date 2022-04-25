@@ -7,12 +7,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.edugma.features.base.core.utils.ClickListener
+import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.schedule.R
 
 
@@ -21,13 +23,14 @@ import io.edugma.features.schedule.R
 fun ScheduleAppWidgetCard(
     onLessonsReviewClick: ClickListener
 ) {
-    Card(
+    Surface(
         modifier = Modifier
             .padding(horizontal = 4.dp, vertical = 4.dp)
             .fillMaxHeight()
             .fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        onClick = onLessonsReviewClick
+        shape = MaterialTheme3.shapes.medium,
+        onClick = onLessonsReviewClick,
+        tonalElevation = 4.dp
     ) {
         Box(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
             Text(text = "Виджет")

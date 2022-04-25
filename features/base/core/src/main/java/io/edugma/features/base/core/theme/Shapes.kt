@@ -16,9 +16,9 @@ val AppShapes = Shapes(
 
 internal object ShapeTokens {
     // autocomplete menu, select menu, snackbars, standard menu, and text fields
-    val CornerExtraSmall = RoundedCornerShape(4.0.dp)
+    val CornerExtraSmall = RoundedCornerShape(8.0.dp)
     // chips
-    val CornerSmall = RoundedCornerShape(8.0.dp)
+    val CornerSmall = RoundedCornerShape(16.0.dp)
     // cards and small FABs
     val CornerMedium = RoundedCornerShape(24.0.dp)
     // extended FABs, FABs, and navigation drawers

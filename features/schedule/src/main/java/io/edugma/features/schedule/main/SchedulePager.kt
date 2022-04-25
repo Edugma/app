@@ -30,6 +30,7 @@ import io.edugma.domain.schedule.model.place.PlaceType
 import io.edugma.domain.schedule.model.schedule.LessonsByTime
 import io.edugma.domain.schedule.model.teacher.Teacher
 import io.edugma.features.base.core.utils.Typed2Listener
+import io.edugma.features.base.elements.SpacerHeight
 import io.edugma.features.base.elements.placeholder
 import io.edugma.features.schedule.R
 import io.edugma.features.schedule.model.ScheduleDayUiModel
@@ -136,6 +137,9 @@ fun LessonList(
                 }
             }
         }
+        item {
+            SpacerHeight(24.dp)
+        }
     }
 }
 
@@ -165,7 +169,7 @@ private fun LessonTimeContent(lessonTime: LessonTime, isLoading: Boolean = false
         text = "${lessonTime.start} - ${lessonTime.end}",
         style = MaterialTheme.typography.titleSmall,
         modifier = Modifier
-            .padding(horizontal = 34.dp)
+            .padding(start = 34.dp, end = 34.dp, top = 4.dp, bottom = 2.dp)
             .placeholder(visible = isLoading)
     )
 }

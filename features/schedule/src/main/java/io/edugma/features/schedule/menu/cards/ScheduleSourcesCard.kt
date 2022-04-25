@@ -7,11 +7,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.edugma.features.base.core.utils.ClickListener
+import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.schedule.menu.ScheduleMenuState
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -20,13 +22,14 @@ fun ScheduleSourcesCard(
     state: ScheduleMenuState.SourceState,
     onScheduleSourceClick: ClickListener
 ) {
-    Card(
+    Surface(
         modifier = Modifier
             .padding(horizontal = 4.dp, vertical = 4.dp)
             .height(90.dp)
             .fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        onClick = onScheduleSourceClick
+        shape = MaterialTheme3.shapes.medium,
+        onClick = onScheduleSourceClick,
+        tonalElevation = 4.dp
     ) {
         Box(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
             Text(text = state.selectedSource?.title ?: "Выберите расписание")

@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,13 +30,14 @@ fun CalendarCard(
     date: LocalDate,
     onScheduleCalendarClick: ClickListener
 ) {
-    Card(
+    Surface(
         modifier = Modifier
             .padding(horizontal = 4.dp, vertical = 4.dp)
             .height(150.dp)
             .fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        onClick = onScheduleCalendarClick
+        shape = MaterialTheme3.shapes.medium,
+        onClick = onScheduleCalendarClick,
+        tonalElevation = 4.dp
     ) {
         Column(
             Modifier

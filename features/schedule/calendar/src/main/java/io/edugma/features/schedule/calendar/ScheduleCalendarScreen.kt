@@ -189,11 +189,13 @@ private fun CalendarItem(
     onItemClick: ClickListener,
     modifier: Modifier = Modifier
 ) {
-    Card(
+    Surface(
         onClick = onItemClick,
+        shape = MaterialTheme3.shapes.medium,
         modifier = modifier
             .fillMaxHeight()
-            .padding(start = 7.dp, end = 7.dp, top = 7.dp, bottom = 7.dp)
+            .padding(start = 7.dp, end = 7.dp, top = 7.dp, bottom = 7.dp),
+        tonalElevation = 4.dp
     ) {
         Column(
             Modifier

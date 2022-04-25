@@ -28,23 +28,6 @@ import java.time.format.DateTimeFormatter
 
 
 @Composable
-fun LessonType(type: LessonType, isLoading: Boolean = false) {
-    val color = if (type.isImportant) {
-        MaterialTheme3.colorScheme.error
-    } else {
-        Color.Unspecified
-    }
-    Text(
-        text = type.title.uppercase(),
-        style = MaterialTheme.typography.labelSmall,
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
-        modifier = Modifier.placeholder(visible = isLoading),
-        color = color
-    )
-}
-
-@Composable
 fun LessonTitle(subject: LessonSubject, isLoading: Boolean = false) {
     Text(
         text = subject.title,

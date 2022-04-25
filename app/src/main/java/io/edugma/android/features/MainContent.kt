@@ -1,12 +1,17 @@
 package io.edugma.android.features
 
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -16,6 +21,8 @@ import io.edugma.features.base.core.navigation.compose.rememberNavController
 import io.edugma.features.base.navigation.MainScreen
 import io.edugma.android.appScreens
 import io.edugma.features.base.core.navigation.compose.getRoute
+import io.edugma.features.base.core.utils.MaterialTheme3
+import io.edugma.features.base.core.utils.withAlpha
 import io.edugma.features.base.navigation.nodes.NodesScreens
 import org.koin.androidx.compose.getViewModel
 
@@ -36,12 +43,25 @@ fun MainContent(
     Scaffold(
         bottomBar = { BottomNav(navController) }
     ) { innerPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = NodesScreens.Main.getRoute() + "?screen={screen}",
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            appScreens()
+        Box(modifier = Modifier.padding(innerPadding).fillMaxSize()) {
+            NavHost(
+                navController = navController,
+                startDestination = NodesScreens.Main.getRoute() + "?screen={screen}",
+            ) {
+                appScreens()
+            }
+            Box(
+                Modifier.background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            MaterialTheme3.colorScheme.background.withAlpha(0f),
+                            MaterialTheme3.colorScheme.background
+                        )
+                    )
+                ).fillMaxWidth()
+                    .height(10.dp)
+                    .align(Alignment.BottomCenter)
+            )
         }
     }
 }
@@ -58,7 +78,9 @@ fun BottomNav(navController: NavHostController) {
     val currentDestination = navBackStackEntry?.destination
 
     if (true || currentDestination?.route in showNavBar) {
-        NavigationBar {
+        NavigationBar(
+            tonalElevation = 0.dp
+        ) {
             items.forEach { screen ->
                 val selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
                 NavigationBarItem(
@@ -76,7 +98,8 @@ fun BottomNav(navController: NavHostController) {
                             launchSingleTop = true
                             restoreState = true
                         }
-                    }
+                    },
+                    modifier = Modifier.clip(MaterialTheme3.shapes.medium)
                 )
             }
         }

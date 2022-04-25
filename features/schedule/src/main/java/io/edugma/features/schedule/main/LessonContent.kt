@@ -35,11 +35,13 @@ fun LessonContent(
     isLoading: Boolean = false,
     onLessonClick: Typed1Listener<Lesson>
 ) {
-    Card(
+    Surface(
         modifier = Modifier
-            .padding(horizontal = 10.dp, vertical = 5.dp)
+            .padding(horizontal = 10.dp, vertical = 6.dp)
             .fillMaxWidth(),
-        onClick = { onLessonClick(lesson) }
+        onClick = { onLessonClick(lesson) },
+        shape = MaterialTheme3.shapes.medium,
+        tonalElevation = 4.dp
     ) {
         Column(modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 15.dp, bottom = 16.dp)) {
             WithContentAlpha(ContentAlpha.medium) {
