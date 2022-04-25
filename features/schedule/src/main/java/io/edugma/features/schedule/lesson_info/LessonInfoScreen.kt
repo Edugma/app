@@ -70,10 +70,10 @@ private fun LessonInfoContent(
                 )
                 SpacerHeight(height = 32.dp)
                 LessonType(
-                    type = state.lessonInfo?.lesson?.type ?: ""
+                    type = state.lessonInfo?.lesson?.type?.title ?: ""
                 )
                 LessonTitle(
-                    title = state.lessonInfo?.lesson?.title ?: ""
+                    title = state.lessonInfo?.lesson?.subject?.title ?: ""
                 )
                 SpacerHeight(height = 4.dp)
                 state.lessonInfo?.dateTime?.let { LessonDateTime(lessonDateTime = it) }

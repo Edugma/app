@@ -24,7 +24,9 @@ import io.edugma.domain.schedule.model.lesson.Lesson
 import io.edugma.domain.schedule.model.lesson.LessonDateTime
 import io.edugma.domain.schedule.model.lesson.LessonDisplaySettings
 import io.edugma.domain.schedule.model.lesson.LessonTime
+import io.edugma.domain.schedule.model.lesson_subject.LessonSubject
 import io.edugma.domain.schedule.model.place.Place
+import io.edugma.domain.schedule.model.place.PlaceType
 import io.edugma.domain.schedule.model.schedule.LessonsByTime
 import io.edugma.domain.schedule.model.teacher.Teacher
 import io.edugma.features.base.core.utils.Typed2Listener
@@ -175,11 +177,11 @@ fun ScheduleDayPlaceHolder() {
             time = LessonTime(LocalTime.now(), LocalTime.now()),
             lessons = listOf(
                 Lesson(
-                    "",
-                    "Qwerty qwerty",
+                    LessonSubject("", ""),
+                    io.edugma.domain.schedule.model.lesson_type.LessonType("", "Qwerty qwerty", false),
                     listOf(Teacher("", "")),
                     listOf(Group("", "")),
-                    listOf(Place("", "", ""))
+                    listOf(Place("", "", PlaceType.Undefined, ""))
                 )
             )
         )

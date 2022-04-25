@@ -21,10 +21,17 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun ScheduleScreen(viewModel: ScheduleViewModel = getViewModel()) {
+fun ScheduleScreen(
+    viewModel: ScheduleViewModel = getViewModel(),
+    date: LocalDate? = null
+) {
     val state by viewModel.state.collectAsState()
 
-    if (state.schedule.isNotEmpty() || state.isPreloading) {
+    LaunchedEffect(Unit) {
+        viewModel.initDate(date)
+    }
+
+    if (!state.schedule.isNullOrEmpty() || state.isPreloading) {
         ScheduleContent(
             state,
             viewModel::exit,
@@ -77,7 +84,7 @@ fun ScheduleContent(
                 schedulePagerState.onPageChanged { onSchedulePosChanged(it) }
 
                 SchedulePager(
-                    scheduleDays = state.schedule,
+                    scheduleDays = state.schedule ?: emptyList(),
                     lessonDisplaySettings = state.lessonDisplaySettings,
                     pagerState = schedulePagerState,
                     onLessonClick = onLessonClick
@@ -88,6 +95,7 @@ fun ScheduleContent(
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun BoxScope.Fab(isVisible: Boolean, onClick: () -> Unit) {
     AnimatedVisibility(
@@ -95,8 +103,8 @@ fun BoxScope.Fab(isVisible: Boolean, onClick: () -> Unit) {
         modifier = Modifier
             .align(Alignment.BottomEnd)
             .padding(24.dp),
-        enter = fadeIn() + slideInVertically { it / 2 },
-        exit = slideOutVertically { it / 2 } + fadeOut(),
+        enter = fadeIn() + slideInVertically { it / 2 } + scaleIn(),
+        exit = slideOutVertically { it / 2 } + fadeOut() + scaleOut(),
     ) {
         ExtendedFloatingActionButton(
             onClick = onClick,

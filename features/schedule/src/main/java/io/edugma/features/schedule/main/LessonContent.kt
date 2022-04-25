@@ -1,9 +1,7 @@
 package io.edugma.features.schedule.main
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -11,26 +9,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil.ImageLoader
-import coil.ImageLoaderFactory
 import coil.compose.rememberImagePainter
-import coil.memory.MemoryCache
-import coil.request.CachePolicy
-import coil.request.ImageRequest
 import io.edugma.domain.schedule.model.group.Group
 import io.edugma.domain.schedule.model.lesson.Lesson
 import io.edugma.domain.schedule.model.lesson.LessonDisplaySettings
+import io.edugma.domain.schedule.model.lesson_subject.LessonSubject
+import io.edugma.domain.schedule.model.lesson_type.LessonType
 import io.edugma.domain.schedule.model.place.Place
 import io.edugma.domain.schedule.model.teacher.Teacher
 import io.edugma.domain.schedule.utils.getShortName
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.SpacerHeight
-import io.edugma.features.base.elements.SpacerSize
-import io.edugma.features.base.elements.SpacerWidth
 import io.edugma.features.base.elements.placeholder
 import io.edugma.features.schedule.model.ScheduleItem
 import java.time.format.DateTimeFormatter
@@ -44,7 +36,6 @@ fun LessonContent(
     onLessonClick: Typed1Listener<Lesson>
 ) {
     Card(
-        shape = RoundedCornerShape(25.dp),
         modifier = Modifier
             .padding(horizontal = 10.dp, vertical = 5.dp)
             .fillMaxWidth(),
@@ -55,7 +46,7 @@ fun LessonContent(
                 LessonHeader(lesson.type, isLoading)
             }
             SpacerHeight(4.dp)
-            LessonTitle(lesson.title, isLoading)
+            LessonTitle(lesson.subject, isLoading)
             SpacerHeight(4.dp)
             WithContentAlpha(ContentAlpha.medium) {
                 if (displaySettings.showTeachers) {
@@ -79,25 +70,31 @@ fun LessonContent(
 }
 
 @Composable
-fun LessonHeader(type: String, isLoading: Boolean = false) {
+fun LessonHeader(type: LessonType, isLoading: Boolean = false) {
     LessonType(type, isLoading)
 }
 
 @Composable
-fun LessonType(type: String, isLoading: Boolean = false) {
+fun LessonType(type: LessonType, isLoading: Boolean = false) {
+    val color = if (type.isImportant) {
+        MaterialTheme3.colorScheme.error
+    } else {
+        Color.Unspecified
+    }
     Text(
-        text = type.uppercase(),
+        text = type.title.uppercase(),
         style = MaterialTheme.typography.labelSmall,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
-        modifier = Modifier.placeholder(visible = isLoading)
+        modifier = Modifier.placeholder(visible = isLoading),
+        color = color
     )
 }
 
 @Composable
-fun LessonTitle(title: String, isLoading: Boolean = false) {
+fun LessonTitle(subject: LessonSubject, isLoading: Boolean = false) {
     Text(
-        text = title,
+        text = subject.title,
         style = MaterialTheme.typography.titleMedium,
         modifier = Modifier
             .fillMaxWidth()

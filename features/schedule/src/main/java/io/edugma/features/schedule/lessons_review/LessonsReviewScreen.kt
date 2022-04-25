@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.flowlayout.FlowRow
 import io.edugma.domain.base.utils.capitalized
+import io.edugma.domain.schedule.model.lesson_subject.LessonSubject
 import io.edugma.domain.schedule.model.review.LessonReviewDay
 import io.edugma.domain.schedule.model.review.LessonTimesReview
 import io.edugma.features.base.core.utils.ClickListener
@@ -72,10 +73,16 @@ fun LessonTimesReviewContent(lessonTimesReview: LessonTimesReview) {
                 .padding(horizontal = 16.dp, vertical = 10.dp)
                 .fillMaxWidth()
         ) {
-            LessonTitle(lessonTimesReview.lessonTitle)
+            LessonTitle(LessonSubject(lessonTimesReview.lessonTitle, lessonTimesReview.lessonTitle))
             lessonTimesReview.days.forEach { lessonTimesReviewByType ->
                 Spacer(Modifier.height(10.dp))
-                LessonType(lessonTimesReviewByType.lessonType)
+                LessonType(
+                    io.edugma.domain.schedule.model.lesson_type.LessonType(
+                        lessonTimesReviewByType.lessonType,
+                        lessonTimesReviewByType.lessonType,
+                        false
+                    )
+                )
                 Spacer(Modifier.height(3.dp))
                 FlowRow(
                     mainAxisSpacing = 19.dp,

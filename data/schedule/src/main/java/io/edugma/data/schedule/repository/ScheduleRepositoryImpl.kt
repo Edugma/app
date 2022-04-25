@@ -5,8 +5,6 @@ import io.edugma.data.base.consts.PrefConst
 import io.edugma.data.base.local.*
 import io.edugma.data.base.model.map
 import io.edugma.data.base.store.StoreImpl
-import io.edugma.data.schedule.api.FreePlacesService
-import io.edugma.data.schedule.api.ScheduleInfoService
 import io.edugma.data.schedule.api.ScheduleService
 import io.edugma.data.schedule.api.ScheduleSourcesService
 import io.edugma.data.schedule.model.ScheduleDao
@@ -20,8 +18,9 @@ import io.edugma.domain.schedule.model.lesson.Lesson
 import io.edugma.domain.schedule.model.lesson.LessonDateTime
 import io.edugma.domain.schedule.model.lesson.LessonDateTimes
 import io.edugma.domain.schedule.model.lesson.LessonTime
+import io.edugma.domain.schedule.model.lesson_subject.LessonSubject
+import io.edugma.domain.schedule.model.lesson_type.LessonType
 import io.edugma.domain.schedule.model.place.Place
-import io.edugma.domain.schedule.model.place.PlaceFilters
 import io.edugma.domain.schedule.model.schedule.LessonsByTime
 import io.edugma.domain.schedule.model.schedule.ScheduleDay
 import io.edugma.domain.schedule.model.source.ScheduleSource
@@ -86,8 +85,19 @@ class ScheduleRepositoryImpl(
 
 fun CompactLessonFeatures.toModel(info: ScheduleInfo): Lesson {
     return Lesson(
-        title = info.subjectsInfo.first { it.id == subjectId }.title,
-        type = info.typesInfo.first { it.id == typeId }.title,
+        subject = info.subjectsInfo.first { it.id == subjectId }.let {
+            LessonSubject(
+                id = it.id,
+                title = it.title
+            )
+        },
+        type = info.typesInfo.first { it.id == typeId }.let {
+            LessonType(
+                id = it.id,
+                title = it.title,
+                isImportant = it.isImportant
+            )
+        },
         teachers = teachersId.map { id ->
             val temp = info.teachersInfo.first { it.id == id }
             Teacher(
@@ -107,6 +117,7 @@ fun CompactLessonFeatures.toModel(info: ScheduleInfo): Lesson {
             Place(
                 id = temp.id,
                 title = temp.title,
+                type = temp.type,
                 description = temp.title
             )
         },

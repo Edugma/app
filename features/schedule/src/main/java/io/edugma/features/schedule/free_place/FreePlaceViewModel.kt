@@ -10,6 +10,7 @@ import io.edugma.domain.schedule.usecase.ScheduleUseCase
 import io.edugma.features.base.core.mvi.BaseMutator
 import io.edugma.domain.base.utils.onFailure
 import io.edugma.domain.schedule.model.place.PlaceInfo
+import io.edugma.domain.schedule.model.place.PlaceType
 import io.edugma.domain.schedule.repository.FreePlaceRepository
 import io.edugma.features.base.core.mvi.BaseViewModelFull
 import kotlinx.coroutines.flow.collect
@@ -40,7 +41,11 @@ class FreePlaceViewModel(
     init {
         viewModelScope.launch {
             useCase.getSources(ScheduleSources.Place)
-                .onSuccess { mutateState { setPlaces(it.map { Place(it.key, it.title, it.description) }) } }
+                .onSuccess {
+                    mutateState {
+                        setPlaces(it.map { Place(it.key, it.title, PlaceType.Undefined, it.description) })
+                    }
+                }
                 .onFailure { mutateState { setPlaces(emptyList()) } }
                 .collect()
         }

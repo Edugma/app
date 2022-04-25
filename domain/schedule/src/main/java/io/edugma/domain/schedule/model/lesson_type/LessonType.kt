@@ -5,5 +5,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class LessonType(
     val id: String,
-    val title: String
+    val title: String,
+    val isImportant: Boolean
 )

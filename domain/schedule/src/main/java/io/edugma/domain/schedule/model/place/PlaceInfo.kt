@@ -3,11 +3,13 @@ package io.edugma.domain.schedule.model.place
 import io.edugma.domain.base.model.Location
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 @Serializable
 sealed class PlaceInfo : Comparable<PlaceInfo> {
     abstract val id: String
     abstract val title: String
+    abstract val type: PlaceType
 
     private fun getTypeNumber(): Int {
         return when (this) {
@@ -32,6 +34,8 @@ sealed class PlaceInfo : Comparable<PlaceInfo> {
     data class Building(
         override val id: String,
         override val title: String,
+        @Transient
+        override val type: PlaceType = PlaceType.Building,
         val areaAlias: String? = null,
         val street: String? = null,
         val building: String? = null,
@@ -46,6 +50,8 @@ sealed class PlaceInfo : Comparable<PlaceInfo> {
     data class Online(
         override val id: String,
         override val title: String,
+        @Transient
+        override val type: PlaceType = PlaceType.Online,
         val url: String? = null,
         val description: Map<String, String>? = null
     ) : PlaceInfo()
@@ -55,6 +61,8 @@ sealed class PlaceInfo : Comparable<PlaceInfo> {
     data class Other(
         override val id: String,
         override val title: String,
+        @Transient
+        override val type: PlaceType = PlaceType.Other,
         val description: Map<String, String>? = null
     ) : PlaceInfo()
 
@@ -63,6 +71,8 @@ sealed class PlaceInfo : Comparable<PlaceInfo> {
     data class Unclassified(
         override val id: String,
         override val title: String,
+        @Transient
+        override val type: PlaceType = PlaceType.Undefined,
         val description: Map<String, String>? = null
     ) : PlaceInfo()
 }

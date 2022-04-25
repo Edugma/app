@@ -8,9 +8,11 @@ import io.edugma.domain.schedule.usecase.ScheduleUseCase
 import io.edugma.features.base.core.mvi.BaseMutator
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.mvi.BaseViewModelFull
+import io.edugma.features.base.navigation.ScheduleScreens
 import io.edugma.features.schedule.calendar.model.ScheduleCalendarWeek
 import io.edugma.features.schedule.calendar.model.toCalendarUiModel
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 class ScheduleCalendarViewModel(
     private val useCase: ScheduleUseCase
@@ -30,6 +32,12 @@ class ScheduleCalendarViewModel(
                 }
             }
         }
+    }
+
+    fun onDayClick(date: LocalDate) {
+        router.replaceScreen(
+            ScheduleScreens.Main(date = date)
+        )
     }
 }
 

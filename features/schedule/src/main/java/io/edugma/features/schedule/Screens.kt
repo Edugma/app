@@ -12,7 +12,11 @@ import io.edugma.features.schedule.sources.ScheduleSourcesScreen
 
 val screens = screens {
     addScreen<ScheduleScreens.Menu> { ScheduleMenuScreen() }
-    addScreen<ScheduleScreens.Main> { ScheduleScreen() }
+    addScreen<ScheduleScreens.Main> {
+        ScheduleScreen(
+            date = getArg(ScheduleScreens.Main::date.name)
+        )
+    }
     addScreen<ScheduleScreens.LessonsReview> { LessonsReviewScreen() }
     addScreen<ScheduleScreens.Source> { ScheduleSourcesScreen() }
     addScreen<ScheduleScreens.FreePlace> { FreePlaceScreen() }

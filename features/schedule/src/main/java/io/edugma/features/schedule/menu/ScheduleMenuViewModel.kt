@@ -58,7 +58,7 @@ class ScheduleMenuViewModel(
     }
 
     fun onScheduleClick() {
-        router.navigateTo(ScheduleScreens.Main)
+        router.navigateTo(ScheduleScreens.Main())
     }
 
     fun onLessonsReviewClick() {
