@@ -16,6 +16,7 @@ val appScreens = screens {
         io.edugma.features.schedule.screens(this)
         io.edugma.features.schedule.schedule_info.screens(this)
         io.edugma.features.schedule.calendar.screens(this)
+        io.edugma.features.schedule.lessons_review.screens(this)
     }
     accountScreens()
     miscMenuScreens()

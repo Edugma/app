@@ -24,13 +24,10 @@ import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.ContentAlpha
 import io.edugma.features.base.core.utils.WithContentAlpha
 import io.edugma.features.base.elements.PrimaryTopAppBar
-import io.edugma.features.schedule.main.LessonTitle
-import io.edugma.features.schedule.main.LessonType
 import org.koin.androidx.compose.getViewModel
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import io.edugma.features.schedule.R
 
 @Composable
 fun LessonsReviewScreen(
@@ -48,7 +45,7 @@ fun LessonsReviewContent(
 ) {
     Column(Modifier.fillMaxSize()) {
         PrimaryTopAppBar(
-            title = stringResource(R.string.sch_lessons_review),
+            title = stringResource(R.string.schedule_les_rev_lessons_review),
             onBackClick = onBackClick
         )
         LazyColumn(modifier = Modifier.fillMaxSize()) {
