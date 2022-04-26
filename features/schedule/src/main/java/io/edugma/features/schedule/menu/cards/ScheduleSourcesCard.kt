@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.MaterialTheme3
+import io.edugma.features.base.elements.TonalCard
 import io.edugma.features.schedule.menu.ScheduleMenuState
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -22,14 +23,12 @@ fun ScheduleSourcesCard(
     state: ScheduleMenuState.SourceState,
     onScheduleSourceClick: ClickListener
 ) {
-    Surface(
+    TonalCard(
         modifier = Modifier
             .padding(horizontal = 4.dp, vertical = 4.dp)
             .height(90.dp)
             .fillMaxWidth(),
-        shape = MaterialTheme3.shapes.medium,
         onClick = onScheduleSourceClick,
-        tonalElevation = 4.dp
     ) {
         Box(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
             Text(text = state.selectedSource?.title ?: "Выберите расписание")

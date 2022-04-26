@@ -23,6 +23,7 @@ import io.edugma.domain.schedule.model.teacher.Teacher
 import io.edugma.domain.schedule.utils.getShortName
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.SpacerHeight
+import io.edugma.features.base.elements.TonalCard
 import io.edugma.features.base.elements.placeholder
 import io.edugma.features.schedule.model.ScheduleItem
 import java.time.format.DateTimeFormatter
@@ -35,13 +36,11 @@ fun LessonContent(
     isLoading: Boolean = false,
     onLessonClick: Typed1Listener<Lesson>
 ) {
-    Surface(
+    TonalCard(
         modifier = Modifier
             .padding(horizontal = 10.dp, vertical = 6.dp)
             .fillMaxWidth(),
-        onClick = { onLessonClick(lesson) },
-        shape = MaterialTheme3.shapes.medium,
-        tonalElevation = 4.dp
+        onClick = { onLessonClick(lesson) }
     ) {
         Column(modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 15.dp, bottom = 16.dp)) {
             WithContentAlpha(ContentAlpha.medium) {

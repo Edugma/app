@@ -22,6 +22,7 @@ import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.datetime.time.timepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
+import io.edugma.features.base.elements.PrimaryButton
 import io.edugma.features.base.elements.SpacerFill
 import io.edugma.features.base.elements.SpacerHeight
 import org.koin.androidx.compose.getViewModel
@@ -81,7 +82,7 @@ fun FreePlaceContent(
                         style = MaterialTheme3.typography.titleMedium
                     )
                     SpacerFill()
-                    Button(onClick = { dialogDatePickerState.show() }) {
+                    PrimaryButton(onClick = { dialogDatePickerState.show() }) {
                         Text(text = state.date.format(dateFormat))
                     }
                 }
@@ -95,7 +96,7 @@ fun FreePlaceContent(
                         style = MaterialTheme3.typography.titleMedium
                     )
                     SpacerFill()
-                    Button(onClick = { dialogTimePickerFromState.show() }) {
+                    PrimaryButton(onClick = { dialogTimePickerFromState.show() }) {
                         Text(text = state.timeFrom.format(timeFormat))
                     }
                 }
@@ -109,7 +110,7 @@ fun FreePlaceContent(
                         style = MaterialTheme3.typography.titleMedium
                     )
                     SpacerFill()
-                    Button(onClick = { dialogTimePickerToState.show() }) {
+                    PrimaryButton(onClick = { dialogTimePickerToState.show() }) {
                         Text(text = state.timeTo.format(timeFormat))
                     }
                 }
@@ -143,7 +144,7 @@ fun FreePlaceContent(
                         }
                     }
                 }
-                Button(onClick = onFindFreePlaces) {
+                PrimaryButton(onClick = onFindFreePlaces) {
                     Text(text = "Найти свободные аудитории")
                 }
                 val freePlaces = remember(state.freePlaces) {

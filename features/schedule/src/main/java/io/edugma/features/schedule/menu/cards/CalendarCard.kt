@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.base.core.utils.dp
+import io.edugma.features.base.elements.TonalCard
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import io.edugma.features.schedule.R
@@ -30,14 +31,12 @@ fun CalendarCard(
     date: LocalDate,
     onScheduleCalendarClick: ClickListener
 ) {
-    Surface(
+    TonalCard(
         modifier = Modifier
             .padding(horizontal = 4.dp, vertical = 4.dp)
             .height(150.dp)
             .fillMaxWidth(),
-        shape = MaterialTheme3.shapes.medium,
         onClick = onScheduleCalendarClick,
-        tonalElevation = 4.dp
     ) {
         Column(
             Modifier

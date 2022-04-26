@@ -18,6 +18,7 @@ import io.edugma.domain.schedule.model.schedule.ScheduleDay
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.PrimaryTopAppBar
 import io.edugma.features.base.elements.SpacerHeight
+import io.edugma.features.base.elements.TonalCard
 import io.edugma.features.schedule.calendar.model.ScheduleCalendarWeek
 import org.koin.androidx.compose.getViewModel
 import java.time.LocalDate
@@ -189,13 +190,11 @@ private fun CalendarItem(
     onItemClick: ClickListener,
     modifier: Modifier = Modifier
 ) {
-    Surface(
+    TonalCard(
         onClick = onItemClick,
-        shape = MaterialTheme3.shapes.medium,
         modifier = modifier
             .fillMaxHeight()
-            .padding(start = 7.dp, end = 7.dp, top = 7.dp, bottom = 7.dp),
-        tonalElevation = 4.dp
+            .padding(start = 7.dp, end = 7.dp, top = 7.dp, bottom = 7.dp)
     ) {
         Column(
             Modifier

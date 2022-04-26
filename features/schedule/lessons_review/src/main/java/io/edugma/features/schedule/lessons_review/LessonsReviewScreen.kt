@@ -27,6 +27,7 @@ import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.base.core.utils.WithContentAlpha
 import io.edugma.features.base.elements.PrimaryTopAppBar
 import io.edugma.features.base.elements.SpacerHeight
+import io.edugma.features.base.elements.TonalCard
 import io.edugma.features.base.elements.placeholder
 import org.koin.androidx.compose.getViewModel
 import java.time.DayOfWeek
@@ -82,9 +83,8 @@ fun LessonTimesReviewContent(lessonTimesReview: LessonTimesReview) {
         ) {
             lessonTimesReview.days.forEach { lessonTimesReviewByType ->
                 Spacer(Modifier.height(10.dp))
-                Surface(
+                TonalCard(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = MaterialTheme3.shapes.medium,
                     tonalElevation = 3.dp
                 ) {
                     Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 10.dp, bottom = 12.dp)) {

@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.Typed1Listener
+import io.edugma.features.base.elements.PrimaryButton
 import io.edugma.features.base.elements.SpacerHeight
 import org.koin.androidx.compose.getViewModel
 
@@ -44,10 +45,9 @@ private fun NodesMainContent(
                 modifier = Modifier.fillMaxWidth()
             )
             SpacerHeight(height = 32.dp)
-            Button(
+            PrimaryButton(
                 onClick = onEnterNodeUrl,
-                modifier = Modifier.fillMaxWidth().height(50.dp),
-                shape = RoundedCornerShape(12.dp)
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Применить")
             }

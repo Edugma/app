@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.MaterialTheme3
+import io.edugma.features.base.elements.TonalCard
 import io.edugma.features.schedule.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -22,14 +23,12 @@ import io.edugma.features.schedule.R
 fun FindFreePlaceCard(
     onFreePlaceClick: ClickListener
 ) {
-    Surface(
+    TonalCard(
         modifier = Modifier
             .padding(horizontal = 4.dp, vertical = 4.dp)
             .fillMaxHeight()
             .fillMaxWidth(),
-        shape = MaterialTheme3.shapes.medium,
         onClick = onFreePlaceClick,
-        tonalElevation = 4.dp
     ) {
         Box(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
             Text(text = stringResource(R.string.sch_find_free_place))
