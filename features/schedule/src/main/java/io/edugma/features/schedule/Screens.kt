@@ -7,7 +7,6 @@ import io.edugma.features.schedule.free_place.FreePlaceScreen
 import io.edugma.features.schedule.main.ScheduleScreen
 import io.edugma.features.schedule.menu.ScheduleMenuScreen
 import io.edugma.features.schedule.lesson_info.LessonInfoScreen
-import io.edugma.features.schedule.sources.ScheduleSourcesScreen
 
 val screens = screens {
     addScreen<ScheduleScreens.Menu> { ScheduleMenuScreen() }
@@ -16,7 +15,6 @@ val screens = screens {
             date = getArg(ScheduleScreens.Main::date.name)
         )
     }
-    addScreen<ScheduleScreens.Source> { ScheduleSourcesScreen() }
     addScreen<ScheduleScreens.FreePlace> { FreePlaceScreen() }
     addScreen<ScheduleScreens.LessonInfo> {
         LessonInfoScreen(

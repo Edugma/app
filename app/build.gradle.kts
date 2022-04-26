@@ -13,6 +13,7 @@ dependencies {
     implementation(project(Modules.Features.Schedule2.ScheduleInfo))
     implementation(project(Modules.Features.Schedule2.Calendar))
     implementation(project(Modules.Features.Schedule2.LessonsReview))
+    implementation(project(Modules.Features.Schedule2.Sources))
     implementation(project(Modules.Features.Account))
 
     implementation(project(Modules.Features.Misc.Menu))

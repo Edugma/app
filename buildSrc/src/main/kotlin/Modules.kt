@@ -41,6 +41,7 @@ object Modules {
             const val ScheduleInfo = "$prefix$prefix1:schedule_info"
             const val Calendar = "$prefix$prefix1:calendar"
             const val LessonsReview = "$prefix$prefix1:lessons_review"
+            const val Sources = "$prefix$prefix1:sources"
         }
 
 
