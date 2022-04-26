@@ -1,14 +1,8 @@
 @file:Suppress("UnstableApiUsage")
 
 include(":features:schedule:sources")
-
-
 include(":features:schedule:lessons_review")
-
-
 include(":features:schedule:calendar")
-
-
 include(":features:schedule:schedule_info")
 
 
