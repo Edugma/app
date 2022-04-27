@@ -25,13 +25,13 @@ val appModules = listOf(
     // Data modules
     baseDataModule,
     nodesDataModule,
-    ScheduleDataModule.module,
+    ScheduleDataModule.deps,
     accountDataModule,
 
 
     // Domain modules
     baseDomainModule,
-    ScheduleDomainModule.module,
+    ScheduleDomainModule.deps,
     accountDomainModule,
 
 
@@ -39,11 +39,11 @@ val appModules = listOf(
     baseFeaturesModule,
     nodesFeaturesModule,
 
-    ScheduleFeatureModule.module,
-    ScheduleInfoFeatureModule.module,
-    ScheduleCalendarFeatureModule.module,
-    ScheduleLessonsReviewFeatureModule.module,
-    ScheduleSourcesFeatureModule.module,
+    ScheduleFeatureModule.deps,
+    ScheduleInfoFeatureModule.deps,
+    ScheduleCalendarFeatureModule.deps,
+    ScheduleLessonsReviewFeatureModule.deps,
+    ScheduleSourcesFeatureModule.deps,
 
     accountFeaturesModule,
     miscMenuFeaturesModule,

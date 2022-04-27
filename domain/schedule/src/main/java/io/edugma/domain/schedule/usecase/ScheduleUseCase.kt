@@ -10,27 +10,23 @@ import io.edugma.domain.schedule.model.source.ScheduleSource
 import io.edugma.domain.schedule.model.source.ScheduleSourceFull
 import io.edugma.domain.schedule.model.source.ScheduleSources
 import io.edugma.domain.schedule.repository.ScheduleRepository
+import io.edugma.domain.schedule.repository.ScheduleSourcesRepository
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.transformLatest
 import java.time.LocalDate
 
 class ScheduleUseCase(
-    private val repository: ScheduleRepository
+    private val repository: ScheduleRepository,
+    private val scheduleSourcesRepository: ScheduleSourcesRepository
 ) {
-    fun getSourceTypes() =
-        repository.getSourceTypes()
-
     fun getSources(type: ScheduleSources) =
-        repository.getSources(type)
-
-    suspend fun setSelectedSource(source: ScheduleSourceFull) =
-        repository.setSelectedSource(source)
+        scheduleSourcesRepository.getSources(type)
 
     fun getSelectedSource() =
-        repository.getSelectedSource()
+        scheduleSourcesRepository.getSelectedSource()
 
     fun getSchedule() =
-        repository.getSelectedSource()
+        scheduleSourcesRepository.getSelectedSource()
             .transformLatest {
                 val source = it.getOrNull()
                 if (source == null) {
@@ -42,7 +38,7 @@ class ScheduleUseCase(
 
 
     fun getLessonsReview() =
-        repository.getSelectedSource()
+        scheduleSourcesRepository.getSelectedSource()
             .transformLatest {
                 val source = it.getOrNull()
                 if (source == null) {

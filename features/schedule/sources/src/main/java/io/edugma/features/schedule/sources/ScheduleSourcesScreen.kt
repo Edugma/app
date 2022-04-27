@@ -1,5 +1,6 @@
 package io.edugma.features.schedule.sources
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,48 +9,52 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import io.edugma.domain.schedule.model.source.ScheduleSourceFull
 import io.edugma.domain.schedule.model.source.ScheduleSources
+import io.edugma.domain.schedule.model.source.ScheduleSourcesTabs
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.core.utils.ContentAlpha
-import io.edugma.features.base.elements.InitialAvatar
-import io.edugma.features.base.elements.PrimaryTopAppBar
+import io.edugma.features.base.elements.*
 import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun ScheduleSourcesScreen(viewModel: ScheduleSourcesViewModel = getViewModel()) {
     val state by viewModel.state.collectAsState()
-    
+
     ScheduleSourcesContent(
-        state,
-        viewModel::exit,
-        viewModel::onQueryChange,
-        viewModel::onSelectSourceType,
-        viewModel::onSelectSource
+        state = state,
+        onBackClick = viewModel::exit,
+        onQueryChange = viewModel::onQueryChange,
+        onTabSelected = viewModel::onSelectTab,
+        onSourceSelected = viewModel::onSelectSource,
+        onAddFavorite = viewModel::onAddFavorite,
+        onDeleteFavorite = viewModel::onDeleteFavorite
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ScheduleSourcesContent(
     state: ScheduleSourceState,
     onBackClick: ClickListener,
     onQueryChange: Typed1Listener<String>,
-    onSourceTypeSelected: Typed1Listener<ScheduleSources>,
-    onSourceSelected: Typed1Listener<ScheduleSourceFull>
+    onTabSelected: Typed1Listener<ScheduleSourcesTabs>,
+    onSourceSelected: Typed1Listener<ScheduleSourceFull>,
+    onAddFavorite: Typed1Listener<ScheduleSourceFull>,
+    onDeleteFavorite: Typed1Listener<ScheduleSourceFull>
 ) {
-    
+
     Column {
         PrimaryTopAppBar(
             title = "Выбор расписания",
             onBackClick = onBackClick
         )
 
-        OutlinedTextField(
+        PrimarySearchField(
             value = state.query,
             onValueChange = onQueryChange,
-            colors = TextFieldDefaults
-                .outlinedTextFieldColors(textColor = MaterialTheme3.colorScheme.onBackground),
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
@@ -65,19 +70,32 @@ fun ScheduleSourcesContent(
         LazyRow(
             modifier = Modifier.fillMaxWidth()
         ) {
-            items(state.sourceTypes) { sourceType ->
-                SourceType(
-                    sourceType,
-                    sourceType == state.selectedSourceType,
-                    onSourceTypeSelected
+            item {
+                SpacerWidth(10.dp)
+            }
+            items(state.tabs) { tab ->
+                SourceTypeTab(
+                    tab,
+                    tab == state.selectedTab,
+                    onTabSelected = onTabSelected
                 )
+            }
+            item {
+                SpacerWidth(10.dp)
             }
         }
         LazyColumn(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxSize()
         ) {
-            items(state.filteredSources) { source ->
-                SourceItem(source, onSourceSelected)
+            items(state.filteredSources, key = { state.selectedTab to it.key }) { source ->
+                SourceItem(
+                    source = source,
+                    isFavorite = state.selectedTab == ScheduleSourcesTabs.Favorite,
+                    onItemClick = onSourceSelected,
+                    onAddFavorite = onAddFavorite,
+                    onDeleteFavorite = onDeleteFavorite,
+                    modifier = Modifier.animateItemPlacement(),
+                )
             }
         }
     }
@@ -85,45 +103,71 @@ fun ScheduleSourcesContent(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SourceType(
-    sourceType: ScheduleSources,
+fun SourceTypeTab(
+    tab: ScheduleSourcesTabs,
     isSelected: Boolean,
-    onSourceTypeSelected: Typed1Listener<ScheduleSources>
+    onTabSelected: Typed1Listener<ScheduleSourcesTabs>
 ) {
-    val color = if (isSelected) MaterialTheme3.colorScheme.primary else MaterialTheme3.colorScheme.surfaceVariant
-    Card(
-        onClick = { onSourceTypeSelected(sourceType) },
-        modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
-        containerColor = color
+    val color = if (isSelected)
+        MaterialTheme3.colorScheme.secondaryContainer
+    else
+        MaterialTheme3.colorScheme.surface
+
+    val title = when (tab) {
+        ScheduleSourcesTabs.Favorite -> "Избранное"
+        ScheduleSourcesTabs.Group -> "Группы"
+        ScheduleSourcesTabs.Teacher -> "Преподаватели"
+        ScheduleSourcesTabs.Student -> "Студенты"
+        ScheduleSourcesTabs.Place -> "Места занятий"
+        ScheduleSourcesTabs.Subject -> "Предметы"
+        ScheduleSourcesTabs.Complex -> "Расширенный поиск"
+    }
+
+    TonalCard(
+        onClick = { onTabSelected(tab) },
+        modifier = Modifier.padding(horizontal = 6.dp, vertical = 5.dp),
+        color = color,
+        shape = MaterialTheme3.shapes.small
     ) {
         Text(
-            text = sourceType.toString(),
-            modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
+            text = title,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
         )
     }
 }
 
 @Composable
-fun SourceItem(source: ScheduleSourceFull, onItemClick: Typed1Listener<ScheduleSourceFull>) {
+fun SourceItem(
+    source: ScheduleSourceFull,
+    isFavorite: Boolean,
+    onItemClick: Typed1Listener<ScheduleSourceFull>,
+    onAddFavorite: Typed1Listener<ScheduleSourceFull>,
+    onDeleteFavorite: Typed1Listener<ScheduleSourceFull>,
+    modifier: Modifier = Modifier
+) {
     Column(
-        Modifier
+        modifier
             .clickable(onClick = { onItemClick(source) })
             .fillMaxWidth()
     ) {
-        Spacer(Modifier.height(5.dp))
-        Row {
-            Spacer(Modifier.width(5.dp))
+        Row(Modifier.padding(vertical = 5.dp)) {
+            SpacerWidth(16.dp)
             val initials = when (source.type) {
-                ScheduleSources.Group -> source.title.split('-').joinToString(separator = "") { it.take(1) }
-                ScheduleSources.Teacher -> source.title.split(' ').joinToString(separator = "") { it.take(1) }
-                ScheduleSources.Student -> source.title.split(' ').joinToString(separator = "") { it.take(1) }
+                ScheduleSources.Group -> source.title.split('-')
+                    .joinToString(separator = "") { it.take(1) }
+                ScheduleSources.Teacher -> source.title.split(' ')
+                    .joinToString(separator = "") { it.take(1) }
+                ScheduleSources.Student -> source.title.split(' ')
+                    .joinToString(separator = "") { it.take(1) }
                 ScheduleSources.Place -> source.title
-                ScheduleSources.Subject -> source.title.split(' ').joinToString(separator = "") { it.take(1) }
-                ScheduleSources.Complex -> source.title.split(' ').joinToString(separator = "") { it.take(1) }
+                ScheduleSources.Subject -> source.title.split(' ')
+                    .joinToString(separator = "") { it.take(1) }
+                ScheduleSources.Complex -> source.title.split(' ')
+                    .joinToString(separator = "") { it.take(1) }
             }
             InitialAvatar(url = source.avatarUrl, initials)
-            Spacer(Modifier.width(5.dp))
-            Column {
+            SpacerWidth(8.dp)
+            Column(Modifier.weight(1f)) {
                 Text(
                     text = source.title,
                     style = MaterialTheme3.typography.titleSmall
@@ -135,8 +179,33 @@ fun SourceItem(source: ScheduleSourceFull, onItemClick: Typed1Listener<ScheduleS
                     )
                 }
             }
+            IconButton(
+                onClick = {
+                    if (isFavorite) {
+                        onDeleteFavorite(source)
+                    } else {
+                        onAddFavorite(source)
+                    }
+                }
+            ) {
+                val tintColor = if (isFavorite) {
+                    MaterialTheme3.colorScheme.primary
+                } else {
+                    LocalContentColor.current
+                }
+                val painter = if (isFavorite) {
+                    painterResource(FluentIcons.ic_fluent_star_24_filled)
+                } else {
+                    painterResource(FluentIcons.ic_fluent_star_24_regular)
+                }
+                Icon(
+                    painter = painter,
+                    contentDescription = null,
+                    tint = tintColor
+                )
+            }
+            SpacerWidth(16.dp)
         }
-        Spacer(Modifier.height(5.dp))
     }
 }
 

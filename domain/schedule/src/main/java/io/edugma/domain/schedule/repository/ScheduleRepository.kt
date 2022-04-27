@@ -16,12 +16,6 @@ import kotlinx.coroutines.flow.Flow
 interface ScheduleRepository {
     fun getRawSchedule(source: ScheduleSource): Flow<Lce<CompactSchedule?>>
 
-    fun getSources(type: ScheduleSources): Flow<Result<List<ScheduleSourceFull>>>
-
-    suspend fun setSelectedSource(source: ScheduleSourceFull)
-    fun getSelectedSource(): Flow<Result<ScheduleSourceFull?>>
-
     fun getSchedule(source: ScheduleSource, forceUpdate: Boolean = false): Flow<Lce<List<ScheduleDay>>>
     fun getLessonsReview(source: ScheduleSource): Flow<Result<List<LessonTimesReview>>>
-    fun getSourceTypes(): Flow<Result<List<ScheduleSources>>>
 }

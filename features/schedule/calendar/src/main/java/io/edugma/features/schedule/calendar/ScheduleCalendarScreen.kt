@@ -72,10 +72,8 @@ private fun CalendarThree(
     LazyColumn(Modifier.fillMaxSize()) {
         items(schedule) { week ->
             SpacerHeight(8.dp)
-            Surface(
-
-            ) {
-                Column(Modifier.fillMaxWidth().padding(horizontal = 10.dp)) {
+            Surface {
+                Column(Modifier.fillMaxWidth().padding(horizontal = 2.dp)) {
                     Row(
                         Modifier
                             .fillMaxWidth()
@@ -199,13 +197,12 @@ private fun CalendarItem(
         Column(
             Modifier
                 .fillMaxWidth()
-                .padding(top = 4.dp, bottom = 12.dp)
+                .padding(top = 4.dp, bottom = 14.dp, start = 12.dp, end = 12.dp)
         ) {
             Text(
                 text = dateFormat.format(day.date).capitalized(),
                 style = MaterialTheme.typography.titleSmall,
                 modifier = Modifier
-                    .padding(horizontal = 8.dp)
                     .align(Alignment.CenterHorizontally),
                 color = MaterialTheme3.colorScheme.secondary
             )
@@ -219,8 +216,7 @@ private fun CalendarItem(
                 }
                 Text(
                     text = "•" + lessonsByTime.time.start.toString() + " - " + lessonsByTime.time.end.toString(),
-                    style = MaterialTheme.typography.labelMedium,
-                    modifier = Modifier.padding(horizontal = 10.dp)
+                    style = MaterialTheme.typography.labelMedium
                 )
                 WithContentAlpha(ContentAlpha.medium) {
                     val text = buildAnnotatedString {
@@ -242,8 +238,7 @@ private fun CalendarItem(
                     }
                     Text(
                         text = text,
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier.padding(horizontal = 10.dp)
+                        style = MaterialTheme.typography.bodySmall
                     )
                 }
             }

@@ -9,7 +9,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 object ScheduleInfoFeatureModule {
-    val module = module {
+    val deps = module {
         viewModel { PlaceInfoViewModel(get(), get()) }
     }
 

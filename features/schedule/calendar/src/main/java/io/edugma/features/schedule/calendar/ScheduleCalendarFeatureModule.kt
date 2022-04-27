@@ -7,7 +7,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 object ScheduleCalendarFeatureModule {
-    val module = module {
+    val deps = module {
         viewModel { ScheduleCalendarViewModel(get()) }
     }
 

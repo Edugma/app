@@ -38,11 +38,11 @@ fun LessonContent(
 ) {
     TonalCard(
         modifier = Modifier
-            .padding(horizontal = 10.dp, vertical = 6.dp)
+            .padding(horizontal = 8.dp, vertical = 6.dp)
             .fillMaxWidth(),
         onClick = { onLessonClick(lesson) }
     ) {
-        Column(modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 15.dp, bottom = 16.dp)) {
+        Column(Modifier.padding(start = 24.dp, end = 24.dp, top = 15.dp, bottom = 16.dp)) {
             WithContentAlpha(ContentAlpha.medium) {
                 LessonHeader(lesson.type, isLoading)
             }

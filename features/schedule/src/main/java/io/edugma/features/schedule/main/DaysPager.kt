@@ -25,6 +25,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import io.edugma.features.base.core.utils.*
+import io.edugma.features.base.elements.TonalCard
 import io.edugma.features.schedule.model.DayUiModel
 import io.edugma.features.schedule.model.WeekUiModel
 import java.time.LocalDate
@@ -104,7 +105,7 @@ fun RowScope.DayContent(
     val backgroundColor = if (day.isToday)
         MaterialTheme3.colorScheme.secondaryContainer
     else
-        MaterialTheme3.colorScheme.surfaceVariant
+        MaterialTheme3.colorScheme.surface
 
     val borderColor by animateColorAsState(
         if (isSelected) colorFrom else Color.Transparent,
@@ -126,14 +127,14 @@ fun RowScope.DayContent(
             )
         }
         Spacer(Modifier.height(3.5.dp))
-        Card(
+        TonalCard(
             onClick = { onDayClick(day.date) },
             modifier = Modifier
                 .padding(start = 3.dp, end = 3.dp, top = 1.dp, bottom = 1.dp)
                 .size(39.dp),
-            shape = CircleShape,
+            shape = MaterialTheme3.shapes.small,
             border = border,
-            containerColor = backgroundColor
+            color = backgroundColor
         ) {
             Box(Modifier.padding(start = 3.dp, end = 3.dp).fillMaxSize()) {
                 Text(

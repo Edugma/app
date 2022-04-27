@@ -7,7 +7,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 object ScheduleLessonsReviewFeatureModule {
-    val module = module {
+    val deps = module {
         viewModel { LessonsReviewViewModel(get()) }
     }
 
