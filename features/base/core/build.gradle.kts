@@ -13,6 +13,7 @@ dependencies {
     api(Libs.AndroidX.Compose.uiToolingPreview)
     api(Libs.AndroidX.lifecycleRuntime)
     api(Libs.AndroidX.Compose.activity)
+    api(Libs.AndroidX.splashScreen)
 
     api(Libs.Accompanist.systemUiController)
     api(Libs.Accompanist.flowLayout)

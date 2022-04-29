@@ -12,7 +12,6 @@ object Libs {
         const val serializationCbor = "org.jetbrains.kotlinx:kotlinx-serialization-cbor:${Versions.kotlinxSerialization}"
 
         object Coroutines {
-            private const val version = "1.5.2"
             const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinCoroutines}"
             const val jvm = "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:${Versions.kotlinCoroutines}"
             const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.kotlinCoroutines}"
@@ -27,6 +26,7 @@ object Libs {
         const val lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}"
 
         const val startup = "androidx.startup:startup-runtime:1.1.0"
+        const val splashScreen = "androidx.core:core-splashscreen:${Versions.splashScreen}"
 
         object Compose {
             const val activity = "androidx.activity:activity-compose:1.3.1"
@@ -37,9 +37,6 @@ object Libs {
             const val material3 = "androidx.compose.material3:material3:${Versions.composeMaterial3}"
             const val material = "androidx.compose.material:material:${Versions.compose}"
             //const val material = "androidx.compose.material:material:$version"
-
-
-
 
 
             const val foundation = "androidx.compose.foundation:foundation:${Versions.compose}"
@@ -172,4 +169,5 @@ object Versions {
     const val lottie = "5.0.3"
     const val materialDateTimePicker = "0.7.0"
     const val fluentIcons = "1.1.166@aar"
+    const val splashScreen = "1.0.0-beta02"
 }
