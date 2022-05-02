@@ -11,6 +11,7 @@ import androidx.core.view.WindowCompat
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.imePadding
 import com.google.accompanist.insets.systemBarsPadding
+import com.google.android.material.color.DynamicColors
 import io.edugma.features.base.core.theme.AppTheme
 
 class MainActivity : ComponentActivity() {

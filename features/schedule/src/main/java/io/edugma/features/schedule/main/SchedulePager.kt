@@ -185,7 +185,7 @@ fun ScheduleDayPlaceHolder() {
                     io.edugma.domain.schedule.model.lesson_type.LessonType("", "Qwerty qwerty", false),
                     listOf(Teacher("", "")),
                     listOf(Group("", "")),
-                    listOf(Place("", "", PlaceType.Undefined, ""))
+                    listOf(Place("", "", PlaceType.Undefined))
                 )
             )
         )

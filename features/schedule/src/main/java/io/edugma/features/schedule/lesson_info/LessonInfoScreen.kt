@@ -235,7 +235,7 @@ private fun LessonPlaces(
                 .split(' ')
                 .joinToString(separator = "") { it.take(1) },
             title = place.title,
-            description = place.description,
+            description = "",
             onItemClick = { onItemClick(place.id) }
         )
         if (index != places.size - 1) {

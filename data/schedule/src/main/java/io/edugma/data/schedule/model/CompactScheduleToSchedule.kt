@@ -178,8 +178,7 @@ fun CompactLessonFeatures.toModel(info: ScheduleInfo): Lesson {
             Place(
                 id = temp.id,
                 title = temp.title,
-                type = temp.type,
-                description = temp.title
+                type = temp.type
             )
         },
     )

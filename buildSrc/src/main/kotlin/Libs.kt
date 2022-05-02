@@ -28,6 +28,11 @@ object Libs {
         const val startup = "androidx.startup:startup-runtime:1.1.0"
         const val splashScreen = "androidx.core:core-splashscreen:${Versions.splashScreen}"
 
+        object Glance {
+            const val appWidget = "androidx.glance:glance-appwidget:${Versions.glance}"
+            const val wearTiles = "androidx.glance:glance-wear-tiles:${Versions.glance}"
+        }
+
         object Compose {
             const val activity = "androidx.activity:activity-compose:1.3.1"
             const val ui = "androidx.compose.ui:ui:${Versions.compose}"
@@ -164,10 +169,11 @@ object Versions {
     const val appcompat = "1.4.1"
 
     // UI
-    const val material = "1.5.0"
+    const val material = "1.6.0-rc01"
     const val constraintLayout = "1.0.0"
     const val lottie = "5.0.3"
     const val materialDateTimePicker = "0.7.0"
     const val fluentIcons = "1.1.166@aar"
     const val splashScreen = "1.0.0-beta02"
+    const val glance = "1.0.0-alpha03"
 }

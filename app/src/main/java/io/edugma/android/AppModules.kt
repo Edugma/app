@@ -14,6 +14,7 @@ import io.edugma.features.misc.menu.miscMenuFeaturesModule
 import io.edugma.features.misc.settings.settingsFeaturesModule
 import io.edugma.features.nodes.nodesFeaturesModule
 import io.edugma.features.schedule.ScheduleFeatureModule
+import io.edugma.features.schedule.appwidget.ScheduleAppwidgetModule
 import io.edugma.features.schedule.calendar.ScheduleCalendarFeatureModule
 import io.edugma.features.schedule.lessons_review.ScheduleLessonsReviewFeatureModule
 import io.edugma.features.schedule.schedule_info.ScheduleInfoFeatureModule
@@ -44,6 +45,7 @@ val appModules = listOf(
     ScheduleCalendarFeatureModule.deps,
     ScheduleLessonsReviewFeatureModule.deps,
     ScheduleSourcesFeatureModule.deps,
+    ScheduleAppwidgetModule.deps,
 
     accountFeaturesModule,
     miscMenuFeaturesModule,

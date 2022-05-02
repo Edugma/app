@@ -14,6 +14,7 @@ dependencies {
     implementation(project(Modules.Features.Schedule2.Calendar))
     implementation(project(Modules.Features.Schedule2.LessonsReview))
     implementation(project(Modules.Features.Schedule2.Sources))
+    implementation(project(Modules.Features.Schedule2.AppWidget))
     implementation(project(Modules.Features.Account))
 
     implementation(project(Modules.Features.Misc.Menu))

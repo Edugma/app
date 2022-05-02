@@ -16,7 +16,6 @@
         <activity
             android:name="io.edugma.android.features.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.AppTheme.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
