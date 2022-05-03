@@ -42,7 +42,7 @@ fun LessonContent(
             .fillMaxWidth(),
         onClick = { onLessonClick(lesson) }
     ) {
-        Column(Modifier.padding(start = 24.dp, end = 24.dp, top = 15.dp, bottom = 16.dp)) {
+        Column(Modifier.padding(start = 24.dp, end = 24.dp, top = 13.dp, bottom = 16.dp)) {
             WithContentAlpha(ContentAlpha.medium) {
                 LessonHeader(lesson.type, isLoading)
             }

@@ -7,14 +7,8 @@ import io.edugma.data.schedule.api.ScheduleInfoService
 import io.edugma.data.schedule.api.ScheduleService
 import io.edugma.data.schedule.api.ScheduleSourcesService
 import io.edugma.data.schedule.local.ScheduleLocalDS
-import io.edugma.data.schedule.repository.FreePlaceRepositoryImpl
-import io.edugma.data.schedule.repository.ScheduleInfoRepositoryImpl
-import io.edugma.data.schedule.repository.ScheduleRepositoryImpl
-import io.edugma.data.schedule.repository.ScheduleSourcesRepositoryImpl
-import io.edugma.domain.schedule.repository.FreePlaceRepository
-import io.edugma.domain.schedule.repository.ScheduleInfoRepository
-import io.edugma.domain.schedule.repository.ScheduleRepository
-import io.edugma.domain.schedule.repository.ScheduleSourcesRepository
+import io.edugma.data.schedule.repository.*
+import io.edugma.domain.schedule.repository.*
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -30,5 +24,6 @@ object ScheduleDataModule {
         single<ScheduleInfoRepository> { ScheduleInfoRepositoryImpl(get(), get()) }
         single<FreePlaceRepository> { FreePlaceRepositoryImpl(get()) }
         single<ScheduleSourcesRepository> { ScheduleSourcesRepositoryImpl(get(), get(), get()) }
+        single<LessonsReviewRepository> { LessonsReviewRepositoryImpl(get()) }
     }
 }

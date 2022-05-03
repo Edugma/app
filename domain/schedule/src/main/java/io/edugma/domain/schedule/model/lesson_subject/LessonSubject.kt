@@ -10,4 +10,12 @@ data class LessonSubject(
     override fun compareTo(other: LessonSubject): Int {
         return title.compareTo(other.title)
     }
+
+    companion object {
+        fun from(info: LessonSubjectInfo) =
+            LessonSubject(
+                id = info.id,
+                title = info.title
+            )
+    }
 }

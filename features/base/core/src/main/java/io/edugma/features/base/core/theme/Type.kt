@@ -124,7 +124,7 @@ val AppTypography = Typography(
         fontWeight = FontWeight.SemiBold,
         fontSize = 10.0.sp,
         //lineHeight = 16.sp,
-        letterSpacing = 1.0.sp
+        letterSpacing = 0.8.sp
     )
 )
 

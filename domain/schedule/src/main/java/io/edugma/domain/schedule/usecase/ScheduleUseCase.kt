@@ -36,18 +36,6 @@ class ScheduleUseCase(
                 }
             }
 
-
-    fun getLessonsReview() =
-        scheduleSourcesRepository.getSelectedSource()
-            .transformLatest {
-                val source = it.getOrNull()
-                if (source == null) {
-                    emit(Result.failure<List<LessonTimesReview>>(Exception()))
-                } else {
-                    emitAll(repository.getLessonsReview(ScheduleSource(source.type, source.key)))
-                }
-            }
-
     fun getScheduleDay(schedule: List<ScheduleDay>, date: LocalDate): List<LessonsByTime> {
         return schedule.firstOrNull { it.date == date }?.lessons ?: emptyList()
     }

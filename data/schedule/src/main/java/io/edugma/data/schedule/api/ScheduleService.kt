@@ -44,12 +44,4 @@ interface ScheduleService {
     fun login(
         @Body loginRequest: LoginRequest
     ): Flow<Result<CompactSchedule>>
-
-    // Lessons review
-    @GET("/lessons/review/{type}/{key}")
-    fun getLessonsReview(
-        @Path("type") type: String,
-        @Path("key") key: String
-    ): Flow<Result<List<LessonTimesReview>>>
-
 }
