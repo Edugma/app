@@ -18,6 +18,7 @@ import androidx.glance.appwidget.cornerRadius
 import androidx.glance.layout.*
 import androidx.glance.state.GlanceStateDefinition
 import androidx.glance.state.PreferencesGlanceStateDefinition
+import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
@@ -68,8 +69,6 @@ private fun CurrentLessonContent(state: CurrentLessonState) {
     val mod = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         GlanceModifier
             .cornerRadius(20.dp)
-            //.background(getColorAttribute(android.R.attr.colorBackground))
-            //.background(MaterialTheme3.colorScheme.background)
             .background(com.google.android.material.R.color.m3_sys_color_dynamic_dark_surface_variant)
 
     } else {
@@ -79,9 +78,9 @@ private fun CurrentLessonContent(state: CurrentLessonState) {
     Column(
         modifier = GlanceModifier
             .fillMaxWidth()
-            .height(106.dp)
+            .height(130.dp)
             .appWidgetBackground()
-            .padding(8.dp)
+            .padding(10.dp)
             .then(mod)
     ) {
 //        Column(
@@ -152,42 +151,76 @@ private fun LessonContent(time: LessonTime, lesson: Lesson) {
                 text = lesson.type.title,
                 style = TextStyle(
                     fontSize = 10.sp,
-                    color = ColorProvider(MaterialTheme3.colorScheme.onSecondaryContainer)
+                    color = ColorProvider(R.color.appwidget_onSecondaryContainer)
                 ),
                 maxLines = 1,
                 modifier = GlanceModifier
-                    .background(MaterialTheme3.colorScheme.secondaryContainer)
+                    .background(R.color.appwidget_secondaryContainer)
                     .padding(horizontal = 3.dp)
             )
         }
         Text(
             text = lesson.subject.title,
             style = TextStyle(
-                fontSize = 10.sp,
+                fontSize = 11.5.sp,
+                fontWeight = FontWeight.Medium
             ),
-            maxLines = 1
+            maxLines = 2
         )
-        Text(
-            text = lesson.teachers.joinToString { it.getShortName() },
-            style = TextStyle(
-                fontSize = 10.sp,
-            ),
-            maxLines = 1
-        )
-        Text(
-            text = lesson.groups.joinToString { it.title },
-            style = TextStyle(
-                fontSize = 10.sp,
-            ),
-            maxLines = 1
-        )
-        Text(
-            text = lesson.places.joinToString { it.title },
-            style = TextStyle(
-                fontSize = 10.sp,
-            ),
-            maxLines = 1
-        )
+        Spacer(GlanceModifier.width(1.dp).height(1.dp))
+        Row {
+            Image(
+                provider = ImageProvider(
+                    R.drawable.schedule_app_ic_fluent_hat_graduation_12_regular
+                ),
+                contentDescription = null,
+                modifier = GlanceModifier.size(12.dp)
+            )
+            Spacer(GlanceModifier.width(3.dp).height(1.dp))
+            Text(
+                text = lesson.teachers.joinToString { it.getShortName() },
+                style = TextStyle(
+                    fontSize = 10.5.sp,
+                ),
+                maxLines = 1
+            )
+        }
+        Spacer(GlanceModifier.width(1.dp).height(1.dp))
+        Row {
+            Image(
+                provider = ImageProvider(
+                    R.drawable.schedule_app_ic_fluent_people_16_regular
+                ),
+                contentDescription = null,
+                modifier = GlanceModifier.size(12.dp)
+            )
+            Spacer(GlanceModifier.width(3.dp).height(1.dp))
+            Text(
+                text = lesson.groups.joinToString { it.title },
+                style = TextStyle(
+                    fontSize = 10.5.sp,
+                ),
+                maxLines = 1
+            )
+        }
+        Spacer(GlanceModifier.width(1.dp).height(1.dp))
+        Row {
+            Image(
+                provider = ImageProvider(
+                    R.drawable.schedule_app_ic_fluent_location_12_regular
+                ),
+                contentDescription = null,
+                modifier = GlanceModifier.size(12.dp)
+            )
+            Spacer(GlanceModifier.width(3.dp).height(1.dp))
+            Text(
+                text = lesson.places.joinToString { it.title },
+                style = TextStyle(
+                    fontSize = 10.5.sp,
+                ),
+                maxLines = 1
+            )
+        }
     }
 }
 

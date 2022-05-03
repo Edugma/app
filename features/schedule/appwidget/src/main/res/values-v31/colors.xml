@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ResourceName">
-    <color name="appwidget_text">@color/m3_sys_color_dynamic_dark_on_surface_variant</color>
+    <color name="appwidget_text">@color/m3_sys_color_dynamic_dark_outline</color>
+    <color name="appwidget_secondaryContainer">@color/m3_sys_color_dynamic_dark_secondary_container</color>
+    <color name="appwidget_onSecondaryContainer">@color/m3_sys_color_dynamic_dark_on_secondary_container</color>
 </resources>
