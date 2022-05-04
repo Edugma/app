@@ -48,10 +48,9 @@ fun AuthCard(
                 modifier = Modifier.fillMaxSize()
             ) {
                 Column(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.align(Alignment.Center),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Spacer(Modifier.height(15.dp))
                     avatar?.let {
                         Image(
                             painter = rememberImagePainter(

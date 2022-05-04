@@ -101,7 +101,7 @@ private fun CollapsingToolbar(
                 .placeholder(placeholders)
         )
         Text(
-            text = "${personal?.type?.print()} ${personal?.course} курса группы ${personal?.group}",
+            text = "${personal?.degreeLevel} ${personal?.course} курса группы ${personal?.group}",
             style = MaterialTheme3.typography.bodySmall,
             modifier = Modifier
                 .constrainAs(info) {
@@ -113,7 +113,7 @@ private fun CollapsingToolbar(
         )
         Image(
             painter = rememberImagePainter(
-                data = personal?.avatarUrl,
+                data = personal?.avatar,
                 builder = {
                     transformations(CircleCropTransformation())
                 }
@@ -138,19 +138,19 @@ fun Personal(personal: Personal?, placeholders: Boolean) {
             icon = painterResource(id = FluentIcons.ic_fluent_building_24_regular), 
             modifier = Modifier.placeholder(placeholders))
         TextWithIcon(
-            text = personal?.direction, 
+            text = personal?.specialty,
             icon = painterResource(id = R.drawable.acc_ic_teacher_24),
             modifier = Modifier.placeholder(placeholders))
+//        TextWithIcon(
+//            text = "Общежитие ${personal?.dormitory} комната ${personal?.dormitoryRoom}",
+//            icon = painterResource(id = FluentIcons.ic_fluent_home_24_regular),
+//            modifier = Modifier.placeholder(placeholders))
         TextWithIcon(
-            text = "Общежитие ${personal?.dormitory} комната ${personal?.dormitoryRoom}", 
-            icon = painterResource(id = FluentIcons.ic_fluent_home_24_regular),
-            modifier = Modifier.placeholder(placeholders))
-        TextWithIcon(
-            text = (if (personal?.isPaid == true) "Контрактная" else "Бюджетная" ) + " основа обучения",
+            text = (personal?.finance ) + " основа обучения",
             icon = painterResource(id = FluentIcons.ic_fluent_money_24_regular),
             modifier = Modifier.placeholder(placeholders))
         TextWithIcon(
-            text = "${personal?.startYear} - ${personal?.endYear} года обучения",
+            text = "${personal?.enterYear} года поступления",
             icon = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
             modifier = Modifier.placeholder(placeholders))
     }

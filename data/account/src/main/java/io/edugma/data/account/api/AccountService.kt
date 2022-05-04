@@ -3,11 +3,12 @@ package io.edugma.data.account.api
 import io.edugma.domain.account.model.*
 import io.edugma.domain.base.model.PagingDTO
 import kotlinx.coroutines.flow.Flow
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface AccountService {
+
+    @POST("/login")
+    fun login(@Body login: Login): Flow<Result<Token>>
 
     @GET("/peoples/classmates")
     fun getClassmates(): Flow<Result<List<Student>>>
@@ -47,7 +48,7 @@ interface AccountService {
         @Path("course") course: String
     ): Flow<Result<List<Marks>>>
 
-    @GET("/personal")
+    @GET("/personal2")
     fun getPersonalInfo(): Flow<Result<Personal>>
 
     @GET("/personal/orders")

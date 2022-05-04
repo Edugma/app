@@ -13,12 +13,12 @@ class PreferencesLocalDS(
     private val db: DB
 ) : PreferencesDS {
 
-    override suspend fun setJson(str: String, key: String): Unit =
+    override suspend fun setString(str: String, key: String): Unit =
         withContext(Dispatchers.IO) {
             db.put(PreferenceDao(key, str))
         }
 
-    override suspend fun getJson(key: String): Result<PreferenceDao?> =
+    override suspend fun getString(key: String): Result<PreferenceDao?> =
         withContext(Dispatchers.IO) {
             kotlin.runCatching { db.getById(key) }
         }

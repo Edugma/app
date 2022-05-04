@@ -12,7 +12,7 @@ class TokenInterceptor(
 ) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        val token = runBlocking { preferences.get(PrefKeys.Token, "") }
+        val token = runBlocking { preferences.get(PrefKeys.TokenKey, "") }
         return if (token.isEmpty()) {
             chain
                 .request()
@@ -21,7 +21,7 @@ class TokenInterceptor(
             chain
                 .request()
                 .newBuilder()
-                .addHeader(PrefKeys.Token,  token)
+                .addHeader(PrefKeys.TokenKey,  token)
                 .build()
                 .let { chain.proceed(it) }
         }
