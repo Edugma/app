@@ -25,9 +25,9 @@ val baseDataModule = module {
     single { OkHttpClient.Builder() }
     single {
         get<OkHttpClient.Builder>()
-            .connectTimeout(60, TimeUnit.SECONDS)
-            .readTimeout(60, TimeUnit.SECONDS)
-            .writeTimeout(60, TimeUnit.SECONDS)
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .writeTimeout(10, TimeUnit.SECONDS)
             .addInterceptor(get<TokenInterceptor>())
             .addInterceptor(get<ApiVersionInterceptor>())
             .addInterceptor(get<HttpLoggingInterceptor>())
@@ -41,7 +41,7 @@ val baseDataModule = module {
 
 
     single(named(DiConst.Account)) {
-        buildRetrofitBuilder(get(), "https://mph-account.herokuapp.com/")
+        buildRetrofitBuilder(get(), "http://devspare.mospolytech.ru:8003/")
     }
     single<Retrofit>(named(DiConst.Account)) { get<Retrofit.Builder>(named(DiConst.Account)).build() }
 

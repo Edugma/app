@@ -18,7 +18,7 @@ class PreferencesLocalDS(
             db.put(PreferenceDao(key, str))
         }
 
-    override suspend fun getString(key: String): Result<PreferenceDao?> =
+    override suspend fun getPreference(key: String): Result<PreferenceDao?> =
         withContext(Dispatchers.IO) {
             kotlin.runCatching { db.getById(key) }
         }

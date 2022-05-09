@@ -1,9 +1,6 @@
 package io.edugma.domain.base.utils
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.*
 
 ///**
 // * Launches a new coroutine and repeats `block` every time the Fragment's viewLifecycleOwner
@@ -39,6 +36,9 @@ fun<T> Flow<Result<T>>.onSuccess(action: suspend (value: T) -> Unit) =
 
 fun<T> Flow<Result<T>>.onFailure(action: suspend (exception: Throwable) -> Unit) =
     onEach { it.onFailure { action(it) } }
+
+fun<T, R> Flow<Result<T>>.mapResult(action: (T) -> R): Flow<Result<R>> =
+    map { it.map(action) }
 
 suspend fun<T> Flow<Result<T>>.execute(
     onStart: (() -> Unit)? = null,

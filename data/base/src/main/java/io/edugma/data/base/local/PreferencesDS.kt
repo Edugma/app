@@ -10,7 +10,7 @@ import kotlinx.serialization.json.Json
 
 interface PreferencesDS {
     suspend fun setString(str: String, key: String)
-    suspend fun getString(key: String): Result<PreferenceDao?>
+    suspend fun getPreference(key: String): Result<PreferenceDao?>
     fun flowOfPreferences(key: String): Flow<PreferenceDao?>
 }
 
@@ -22,8 +22,12 @@ suspend inline fun <reified T> PreferencesDS.set(obj: T, key: String): Result<Un
 }
 
 suspend inline fun <reified T> PreferencesDS.get(key: String): Result<T?> {
-    val json = getString(key)
+    val json = getPreference(key)
     return json.mapCatching { it?.let { Json.decodeFromString(it.value) } }
+}
+
+suspend fun PreferencesDS.getSourceValue(key: String): String? {
+    return getPreference(key).mapCatching { it?.value }.getOrNull()
 }
 
 inline fun <reified T> PreferencesDS.flowOf(key: String): Flow<Result<T?>> {
@@ -37,7 +41,7 @@ suspend inline fun <reified T> PreferencesDS.get(key: String, defaultValue: T): 
 
 suspend inline fun<reified T> PreferencesDS.getJsonLazy(name: String = T::class.simpleName.orEmpty()): T? {
     return try {
-        Json.decodeFromString(getString(name).getOrNull()?.value.orEmpty())
+        Json.decodeFromString(getPreference(name).getOrNull()?.value.orEmpty())
     } catch (e: Throwable) {
         Log.e("serialize error!", name)
         null
