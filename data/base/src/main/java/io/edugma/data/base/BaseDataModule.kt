@@ -3,6 +3,7 @@ package io.edugma.data.base
 import io.edugma.data.base.consts.DiConst
 import io.edugma.data.base.local.*
 import io.edugma.data.base.repository.EventRepository
+import io.edugma.data.base.utils.PathProvider
 import io.edugma.data.base.utils.retrofit.buildRetrofitBuilder
 import io.edugma.data.base.utils.retrofit.interceptors.ApiVersionInterceptor
 import io.edugma.data.base.utils.retrofit.interceptors.TokenInterceptor
@@ -14,6 +15,7 @@ import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
 
 val baseDataModule = module {
+    single { PathProvider(get()) }
     single { TokenInterceptor(get()) }
     single { ApiVersionInterceptor() }
 
