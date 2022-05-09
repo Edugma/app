@@ -53,13 +53,13 @@ fun PersonalContent(state: PersonalState, backListener: ClickListener) {
                Personal(state.personal, state.isPlaceholders)
            }
             if (state.isPlaceholders) {
-                items(10) {
+                items(3) {
                     SpacerHeight(height = 3.dp)
                     Order(null, state.isPlaceholders)
                     Divider()
                 }
             } else {
-                items(state.orders) {
+                items(state.personal?.orders ?: emptyList()) {
                     SpacerHeight(height = 3.dp)
                     Order(it, state.isPlaceholders)
                     Divider()
@@ -157,7 +157,7 @@ fun Personal(personal: Personal?, placeholders: Boolean) {
 }
 
 @Composable
-fun Order(order: Order?, placeholders: Boolean) {
+fun Order(order: String?, placeholders: Boolean) {
     ConstraintLayout(
         Modifier
             .padding(10.dp)
@@ -166,7 +166,7 @@ fun Order(order: Order?, placeholders: Boolean) {
     ) {
         val (number, date, info) = createRefs()
         Text(
-            text = "Приказ №${order?.number}",
+            text = "Приказ №",
             style = MaterialTheme3.typography.titleSmall,
             modifier = Modifier
                 .constrainAs(number) {
@@ -178,7 +178,7 @@ fun Order(order: Order?, placeholders: Boolean) {
                 .placeholder(placeholders)
         )
         Text(
-            text = order?.date?.format().orEmpty(),
+            text = "",
             style = MaterialTheme3.typography.labelMedium,
             modifier = Modifier
                 .constrainAs(date) {
@@ -188,17 +188,15 @@ fun Order(order: Order?, placeholders: Boolean) {
                 .defaultMinSize(minWidth = 50.dp)
                 .placeholder(placeholders)
         )
-        if (placeholders || order?.additionalInfo?.isNotNull() == true) {
-            Text(
-                text = order?.additionalInfo.orEmpty(),
-                style = MaterialTheme3.typography.bodySmall,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .constrainAs(info) {
-                        linkTo(number.bottom, parent.bottom, bias = 1f, topMargin = 5.dp)
-                    }
-                    .placeholder(placeholders)
-            )
-        }
+        Text(
+            text = order.orEmpty(),
+            style = MaterialTheme3.typography.bodySmall,
+            modifier = Modifier
+                .fillMaxWidth()
+                .constrainAs(info) {
+                    linkTo(number.bottom, parent.bottom, bias = 1f, topMargin = 5.dp)
+                }
+                .placeholder(placeholders)
+        )
     }
 }

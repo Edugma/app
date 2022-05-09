@@ -38,7 +38,7 @@ fun<T> Flow<Result<T>>.onFailure(action: suspend (exception: Throwable) -> Unit)
     onEach { it.onFailure { action(it) } }
 
 fun<T, R> Flow<Result<T>>.mapResult(action: (T) -> R): Flow<Result<R>> =
-    map { it.map(action) }
+    map { it.mapCatching(action) }
 
 suspend fun<T> Flow<Result<T>>.execute(
     onStart: (() -> Unit)? = null,

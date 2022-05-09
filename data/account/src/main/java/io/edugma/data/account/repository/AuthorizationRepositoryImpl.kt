@@ -2,7 +2,10 @@ package io.edugma.data.account.repository
 
 import io.edugma.data.account.api.AccountService
 import io.edugma.data.base.local.PreferencesDS
+import io.edugma.data.base.local.deleteJsonLazy
+import io.edugma.data.base.local.getSourceValue
 import io.edugma.domain.account.model.Login
+import io.edugma.domain.account.model.Personal
 import io.edugma.domain.account.repository.AuthorizationRepository
 import io.edugma.domain.base.PrefKeys.TokenKey
 import io.edugma.domain.base.utils.mapResult
@@ -23,7 +26,12 @@ class AuthorizationRepositoryImpl(
             .flowOn(Dispatchers.IO)
     }
 
-    override suspend fun getSavedToken(): String? = localStore.getPreference(TokenKey).getOrNull()?.value
+    override suspend fun logout() {
+        localStore.deleteJsonLazy<Personal>()
+        localStore.delete(TokenKey)
+    }
+
+    override suspend fun getSavedToken(): String? = localStore.getSourceValue(TokenKey)
 
     private suspend fun saveToken(token: String) {
         localStore.setString(token, TokenKey)

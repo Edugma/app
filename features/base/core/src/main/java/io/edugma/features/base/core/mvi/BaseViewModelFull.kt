@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.edugma.features.base.core.navigation.core.Router
+import io.edugma.features.base.core.utils.ScreenResultProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,6 +20,8 @@ abstract class BaseViewModelFull<TState, TMutator : BaseMutator<TState>, TAction
 ): ViewModel(), StateStore<TState, TMutator>, KoinComponent {
 
     val router: Router by inject()
+
+    protected val screenResultProvider: ScreenResultProvider by inject()
 
     private val _state = MutableStateFlow(initialState)
     val state = _state.asStateFlow()

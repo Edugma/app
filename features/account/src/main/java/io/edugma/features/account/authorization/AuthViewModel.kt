@@ -5,7 +5,9 @@ import io.edugma.domain.account.repository.AuthorizationRepository
 import io.edugma.domain.account.repository.PersonalRepository
 import io.edugma.domain.base.utils.onFailure
 import io.edugma.domain.base.utils.onSuccess
+import io.edugma.features.account.main.UpdateMenu
 import io.edugma.features.base.core.mvi.BaseActionViewModel
+import io.edugma.features.base.core.utils.isNotNull
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.zip
@@ -16,20 +18,45 @@ class AuthViewModel(
     private val personalRepository: PersonalRepository
     ) : BaseActionViewModel<AuthState, AuthAction>(AuthState()) {
 
-    fun authorize() {
+    init {
         viewModelScope.launch {
-            authorizationRepository.authorization(state.value.login, state.value.password)
-                .zip(personalRepository.getPersonalInfo()) { _, personal -> personal }
-                .onStart { mutateState { state = state.copy(isLoading = true) } }
-                .onSuccess {
-                    loggedIn(true)
+            if (authorizationRepository.getSavedToken().isNotNull()) {
+                personalRepository.getLocalPersonalInfo()?.let {
                     mutateState {
                         state = state.copy(name = it.name, avatar = it.avatar)
                     }
+                    loggedIn(true)
+                } ?: run { collectPersonalInfo() }
+            }
+        }
+    }
+
+    fun authorize() {
+        viewModelScope.launch {
+                authorizationRepository.authorization(state.value.login, state.value.password)
+                    .onStart { mutateState { state = state.copy(isLoading = true) } }
+                    .onSuccess {
+                        collectPersonalInfo()
+                    }
+                    .onFailure {
+                        loggedIn(false)
+                        sendAction(AuthAction.ShowErrorMessage(it))
+                    }
+                    .collect()
+            }
+        }
+
+    private fun collectPersonalInfo() {
+        viewModelScope.launch {
+            personalRepository.getPersonalInfo()
+                .onSuccess {
+                    mutateState {
+                        state = state.copy(name = it.name, avatar = it.avatar)
+                    }
+                    loggedIn(true)
                 }
                 .onFailure {
-                    loggedIn(false)
-                    sendAction(AuthAction.ShowErrorMessage(it))
+                    exit()
                 }
                 .collect()
         }
@@ -39,6 +66,7 @@ class AuthViewModel(
         mutateState {
             state = state.copy(isLoading = false, auth = success)
         }
+        viewModelScope.launch { screenResultProvider.sendEvent(UpdateMenu) }
     }
 
     fun setLogin(text: String) {
@@ -59,8 +87,12 @@ class AuthViewModel(
         }
     }
 
-    fun back() {
-        router.exit()
+    fun logout() {
+        viewModelScope.launch {
+            authorizationRepository.logout()
+            screenResultProvider.sendEvent(UpdateMenu)
+            exit()
+        }
     }
 
 }

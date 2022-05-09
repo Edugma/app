@@ -4,10 +4,7 @@ import io.edugma.data.base.model.PreferenceDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
-import org.kodein.db.DB
-import org.kodein.db.flowOf
-import org.kodein.db.getById
-import org.kodein.db.keyById
+import org.kodein.db.*
 
 class PreferencesLocalDS(
     private val db: DB
@@ -26,5 +23,10 @@ class PreferencesLocalDS(
     override fun flowOfPreferences(key: String): Flow<PreferenceDao?> {
         return db.flowOf(db.keyById<PreferenceDao>(key))
     }
+
+    override suspend fun delete(key: String): Unit =
+        withContext(Dispatchers.IO) {
+            db.deleteById<PreferenceDao>(key)
+        }
 
 }

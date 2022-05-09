@@ -7,7 +7,9 @@ import io.edugma.features.account.main.model.MenuUi.*
 import io.edugma.features.base.core.mvi.BaseMutator
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.mvi.BaseViewModelFull
+import io.edugma.features.base.core.utils.ScreenResult
 import io.edugma.features.base.navigation.AccountScreens
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class AccountMainViewModel(val personalRepository: PersonalRepository) :
@@ -15,9 +17,16 @@ class AccountMainViewModel(val personalRepository: PersonalRepository) :
 
     init {
         load()
+        viewModelScope.launch {
+            screenResultProvider.getEvents().collectLatest {
+                when (it) {
+                    UpdateMenu -> load()
+                }
+            }
+        }
     }
 
-    fun load() {
+    private fun load() {
         viewModelScope.launch {
             val info = personalRepository.getLocalPersonalInfo()
             mutateState {
@@ -72,3 +81,5 @@ class AccountMenuMutator : BaseMutator<AccountMenuState>() {
         }
     }
 }
+
+object UpdateMenu: ScreenResult

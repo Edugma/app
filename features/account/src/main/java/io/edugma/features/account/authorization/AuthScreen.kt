@@ -1,6 +1,8 @@
 package io.edugma.features.account.authorization
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -8,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -26,10 +29,11 @@ fun AuthScreen(viewModel: AuthViewModel = getViewModel()) {
         AuthContent(
             state = state,
             onLoginClick = ::authorize,
-            onLoggedClick = ::back,
+            onLoggedClick = ::exit,
             onLoginChange = ::setLogin,
             onPasswordChange = ::setPassword,
             onCheckBoxChanged = ::setCheckBox,
+            onLogout = ::logout
         )
     }
 }
@@ -41,10 +45,17 @@ fun AuthContent(
     onLoggedClick: ClickListener,
     onPasswordChange: Typed1Listener<String>,
     onLoginChange: Typed1Listener<String>,
-    onCheckBoxChanged: Typed1Listener<Boolean>
+    onCheckBoxChanged: Typed1Listener<Boolean>,
+    onLogout: ClickListener
 ) {
     Column {
-        PrimaryTopAppBar(title = "Авторизация", onBackClick = onLoggedClick)
+        PrimaryTopAppBar(title = "Авторизация", onBackClick = onLoggedClick, actions = {
+            if (state.auth) {
+                IconButton(onClick = onLogout, modifier = Modifier.fillMaxHeight()) {
+                    Icon(painter = painterResource(id = FluentIcons.ic_fluent_sign_out_24_regular), contentDescription = null)
+                }
+            }
+        })
         if (state.auth) {
             Authorized(state = state) { onLoggedClick.invoke() }
         } else {
@@ -68,6 +79,7 @@ fun NotAuthorized(
             .padding(horizontal = 32.dp)
             .fillMaxWidth()
             .fillMaxHeight(0.7f)
+            .verticalScroll(rememberScrollState())
     ) {
         TextBox(
             value = state.login,
@@ -102,16 +114,18 @@ fun Authorized(state: AuthState, listener: ClickListener) {
             .padding(horizontal = 16.dp, vertical = 10.dp)
             .fillMaxSize()
     ) {
-        val (anim, text, button) = createRefs()
+        val (anim, button) = createRefs()
         val randomAnim = remember { R.raw.sch_relax_1 }
         val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(randomAnim))
         val progress by animateLottieCompositionAsState(
             composition,
             iterations = LottieConstants.IterateForever
         )
-        Column(modifier = Modifier.fillMaxHeight(0.6f).constrainAs(anim) {
-            top.linkTo(parent.top)
-        }) {
+        Column(modifier = Modifier
+            .fillMaxHeight(0.6f)
+            .constrainAs(anim) {
+                top.linkTo(parent.top)
+            }) {
             LottieAnimation(
                 composition,
                 progress,
@@ -132,7 +146,7 @@ fun Authorized(state: AuthState, listener: ClickListener) {
             text = "Перейти к меню",
             onClick = listener,
             modifier = Modifier
-                .constrainAs(text) {
+                .constrainAs(button) {
                     bottom.linkTo(parent.bottom)
                     linkTo(parent.start, parent.end)
                     width = Dimension.fillToConstraints

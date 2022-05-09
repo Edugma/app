@@ -11,6 +11,7 @@ import kotlinx.serialization.json.Json
 interface PreferencesDS {
     suspend fun setString(str: String, key: String)
     suspend fun getPreference(key: String): Result<PreferenceDao?>
+    suspend fun delete(key: String)
     fun flowOfPreferences(key: String): Flow<PreferenceDao?>
 }
 
@@ -40,14 +41,13 @@ suspend inline fun <reified T> PreferencesDS.get(key: String, defaultValue: T): 
 }
 
 suspend inline fun<reified T> PreferencesDS.getJsonLazy(name: String = T::class.simpleName.orEmpty()): T? {
-    return try {
-        Json.decodeFromString(getPreference(name).getOrNull()?.value.orEmpty())
-    } catch (e: Throwable) {
-        Log.e("serialize error!", name)
-        null
-    }
+    return get<T>(name).getOrNull()
 }
 
 suspend inline fun<reified T> PreferencesDS.setJsonLazy(data: T, name: String = T::class.simpleName.orEmpty()) {
-    setString(Json.encodeToString(data), name)
+    set(data, name)
+}
+
+suspend inline fun<reified T> PreferencesDS.deleteJsonLazy(name: String = T::class.simpleName.orEmpty()) {
+    delete(name)
 }
