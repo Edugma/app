@@ -30,6 +30,15 @@ Edugma - децентрализованное приложение для уче
 - [KodeinDB](https://docs.kodein.org/kodein-db/) - NoSQL база данных с kotlinx.serialization для сериализации под капотом
 
 ## Скриншоты
+Пример применения динамических цветов из Material You (Android 12+)
+
+![material_you](https://github.com/edugma/app/raw/develop/screenshots/material_you.png)
+
+Остальное
+
+![screenshots_1](https://github.com/edugma/app/raw/develop/screenshots/screenshots_1.png)
+
+### Скриншоты прошлого приложения
 
 ![screenshots 1](https://github.com/mospolyhelper/mospolyhelper-android/raw/master/screenshots/screenshots_1.png)
 ![screenshots 2](https://github.com/mospolyhelper/mospolyhelper-android/raw/master/screenshots/screenshots_2.png)
