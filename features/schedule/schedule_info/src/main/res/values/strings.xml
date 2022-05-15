@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="schedule_sch_inf_auditorium_number">аудитория %1$s</string>
+    <string name="schedule_sch_inf_floor">%1$s-й этаж</string>
+    <string name="schedule_sch_inf_building">Корпус %1$s</string>
+    <string name="schedule_sch_inf_description">Описание</string>
+</resources>

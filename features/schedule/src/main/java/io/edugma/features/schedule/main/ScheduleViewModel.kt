@@ -3,15 +3,24 @@ package io.edugma.features.schedule.main
 import androidx.lifecycle.viewModelScope
 import io.edugma.domain.base.utils.getOrDefault
 import io.edugma.domain.base.utils.isFinalFailure
+import io.edugma.domain.base.utils.onFailure
+import io.edugma.domain.base.utils.onSuccess
 import io.edugma.domain.schedule.model.lesson.Lesson
 import io.edugma.domain.schedule.model.lesson.LessonDateTime
+import io.edugma.domain.schedule.model.lesson.LessonDisplaySettings
 import io.edugma.domain.schedule.model.lesson.LessonInfo
 import io.edugma.domain.schedule.model.schedule.ScheduleDay
 import io.edugma.domain.schedule.usecase.ScheduleUseCase
 import io.edugma.features.base.core.mvi.BaseViewModel
-import io.edugma.features.base.core.mvi.SimpleMutator
+import io.edugma.features.base.core.mvi.impl.SimpleMutator
+import io.edugma.features.base.core.mvi.prop
 import io.edugma.features.base.navigation.ScheduleScreens
+import io.edugma.features.schedule.model.ScheduleDayUiModel
 import io.edugma.features.schedule.model.WeekUiModel
+import io.edugma.features.schedule.utils.toUiModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
@@ -22,14 +31,15 @@ class ScheduleViewModel(
     init {
         setupMutator {
             forProp { schedule }.onChanged {
-                val weeks = WeekUiModel.fromSchedule(state.schedule)
-                val schedulePos = state.getSchedulePos(state.selectedDate)
+                val schedule = state.schedule ?: return@onChanged
+
+                val weeks = WeekUiModel.fromSchedule(schedule)
+                val schedulePos = schedule.getSchedulePos(state.selectedDate)
                 val weekPos = state.getWeeksPos(state.selectedDate)
                 val dayOfWeekPos = state.getDayOfWeekPos(state.selectedDate)
 
                 state = state.copy(
                     isPreloading = false,
-                    isLoading = false,
                     weeks = weeks,
                     schedulePos = schedulePos,
                     weeksPos = weekPos,
@@ -38,7 +48,8 @@ class ScheduleViewModel(
             }
 
             forProp { selectedDate }.onChanged {
-                val schedulePos = state.getSchedulePos(state.selectedDate)
+                val schedule = state.schedule ?: return@onChanged
+                val schedulePos = schedule.getSchedulePos(state.selectedDate)
                 val weekPos = state.getWeeksPos(state.selectedDate)
                 val dayOfWeekPos = state.getDayOfWeekPos(state.selectedDate)
                 val dateIsToday = state.selectedDate == LocalDate.now()
@@ -52,7 +63,7 @@ class ScheduleViewModel(
             }
 
             forProp { schedulePos }.onChanged {
-                val date = state.schedule.getOrNull(state.schedulePos)?.date ?: LocalDate.now()
+                val date = state.schedule?.getOrNull(state.schedulePos)?.date ?: LocalDate.now()
                 state = state.copy(selectedDate = date)
             }
 
@@ -68,15 +79,35 @@ class ScheduleViewModel(
                 if (!it.isFinalFailure) {
                     mutateState {
                         val schedule = it.getOrDefault(emptyList())
-                        val isLoading = it.isLoading && !state.isPreloading
+                        val isLoading = it.isLoading// && !state.isPreloading
 
                         state = state.copy(
-                            schedule = schedule,
+                            schedule = schedule.toUiModel(),
                             isLoading = isLoading
                         )
                     }
                 }
             }
+        }
+
+        viewModelScope.launch {
+            useCase.getSelectedSource()
+                .onSuccess {
+                    val lessonDisplaySettings = it?.let {
+                        useCase.getLessonDisplaySettings(it.type)
+                    } ?: LessonDisplaySettings.Default
+                    mutateState {
+                        state = state.copy(
+                            lessonDisplaySettings = lessonDisplaySettings
+                        )
+                    }
+                }.onFailure {
+                    mutateState {
+                        state = state.copy(
+                            lessonDisplaySettings = LessonDisplaySettings.Default
+                        )
+                    }
+                }.collect()
         }
     }
 
@@ -88,7 +119,9 @@ class ScheduleViewModel(
 
     fun onSchedulePosChanged(schedulePos: Int) {
         mutateState {
-            state = state.copy(schedulePos = state.coerceSchedulePos(schedulePos))
+            state.schedule?.apply {
+                state = state.copy(schedulePos = coerceSchedulePos(schedulePos))
+            }
         }
     }
 
@@ -114,6 +147,36 @@ class ScheduleViewModel(
             )
         )
     }
+
+    fun initDate(date: LocalDate?) {
+        if (date != null) {
+            val schedule = state.value.schedule
+            if (schedule == null) {
+                viewModelScope.launch {
+                    val newSchedule = state.prop { this.schedule }
+                        .filterNotNull()
+                        .first()
+                    fixAndSetDate(date, newSchedule)
+                }
+            } else {
+                fixAndSetDate(date, schedule)
+            }
+        }
+    }
+
+    private fun fixAndSetDate(date: LocalDate, schedule: List<ScheduleDayUiModel>) {
+        mutateState {
+            var fixedDate = date
+            val firstDate = schedule.first().date
+            val lastDate = schedule.last().date
+            if (date < firstDate) {
+                fixedDate = firstDate
+            } else if (date > lastDate) {
+                fixedDate = lastDate
+            }
+            state = state.copy(selectedDate = fixedDate)
+        }
+    }
 }
 
 private fun initState(): ScheduleState {
@@ -135,22 +198,23 @@ private fun ScheduleState.getDayOfWeekPos(date: LocalDate): Int {
     return date.dayOfWeek.value - 1
 }
 
-private fun ScheduleState.getSchedulePos(date: LocalDate): Int {
+private fun List<ScheduleDayUiModel>.getSchedulePos(date: LocalDate): Int {
     return coerceSchedulePos(
-        schedule.indexOfFirst { it.date == date }.coerceAtLeast(0)
+        this.indexOfFirst { it.date == date }.coerceAtLeast(0)
     )
 }
 
-private fun ScheduleState.coerceSchedulePos(schedulePos: Int): Int {
-    return schedulePos.coerceIn(0, (schedule.size - 1).coerceAtLeast(0))
+private fun List<ScheduleDayUiModel>.coerceSchedulePos(schedulePos: Int): Int {
+    return schedulePos.coerceIn(0, (size - 1).coerceAtLeast(0))
 }
 
 data class ScheduleState(
     val isPreloading: Boolean = true,
     val isLoading: Boolean = false,
     val isError: Boolean = false,
-    val schedule: List<ScheduleDay> = emptyList(),
+    val schedule: List<ScheduleDayUiModel>? = null,
     val weeks: List<WeekUiModel> = emptyList(),
+    val lessonDisplaySettings: LessonDisplaySettings = LessonDisplaySettings.Default,
 
     val selectedDate: LocalDate = LocalDate.now(),
     val schedulePos: Int = 0,

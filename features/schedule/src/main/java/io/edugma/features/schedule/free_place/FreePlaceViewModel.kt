@@ -9,6 +9,9 @@ import io.edugma.domain.schedule.model.source.ScheduleSources
 import io.edugma.domain.schedule.usecase.ScheduleUseCase
 import io.edugma.features.base.core.mvi.BaseMutator
 import io.edugma.domain.base.utils.onFailure
+import io.edugma.domain.schedule.model.place.PlaceInfo
+import io.edugma.domain.schedule.model.place.PlaceType
+import io.edugma.domain.schedule.repository.FreePlaceRepository
 import io.edugma.features.base.core.mvi.BaseViewModelFull
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -17,6 +20,7 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 
 class FreePlaceViewModel(
+    private val repository: FreePlaceRepository,
     private val useCase: ScheduleUseCase
 ) : BaseViewModelFull<FreePlaceState, FreePlaceMutator, Nothing>(
     FreePlaceState(),
@@ -37,7 +41,11 @@ class FreePlaceViewModel(
     init {
         viewModelScope.launch {
             useCase.getSources(ScheduleSources.Place)
-                .onSuccess { mutateState { setPlaces(it.map { Place(it.key, it.title, it.description) }) } }
+                .onSuccess {
+                    mutateState {
+                        setPlaces(it.map { Place(it.key, it.title, PlaceType.Undefined) })
+                    }
+                }
                 .onFailure { mutateState { setPlaces(emptyList()) } }
                 .collect()
         }
@@ -69,7 +77,7 @@ class FreePlaceViewModel(
 
     fun onFindFreePlaces() {
         viewModelScope.launch {
-            useCase.findFreePlaces(
+            repository.findFreePlaces(
                 PlaceFilters(
                     ids = state.value.places.map { it.id },
                     dateTimeFrom = LocalDateTime.of(state.value.date, state.value.timeFrom),
@@ -95,7 +103,7 @@ data class FreePlaceState(
     val filterQuery: String = "",
     val places: List<Place> = emptyList(),
     val filteredPlaces: List<Place> = emptyList(),
-    val freePlaces: Map<Place, List<LessonDateTimes>> = emptyMap()
+    val freePlaces: Map<PlaceInfo, Int> = emptyMap()
 ) {
     companion object {
         val minPerDay = LocalTime.MAX.toSecondOfDay() / 60
@@ -160,7 +168,7 @@ class FreePlaceMutator : BaseMutator<FreePlaceState>() {
             copy(filteredPlaces = it)
         }
 
-    fun setFreePlaces(freePlaces: Map<Place, List<LessonDateTimes>>) =
+    fun setFreePlaces(freePlaces: Map<PlaceInfo, Int>) =
         set(state.freePlaces, freePlaces) {
             copy(freePlaces = it)
         }

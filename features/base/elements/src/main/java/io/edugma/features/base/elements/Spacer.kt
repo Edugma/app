@@ -29,3 +29,13 @@ fun SpacerHeight(intrinsicSize: IntrinsicSize, modifier: Modifier = Modifier) {
 fun SpacerSize(size: Dp, modifier: Modifier = Modifier) {
     Spacer(modifier.size(size))
 }
+
+@Composable
+fun RowScope.SpacerFill(modifier: Modifier = Modifier) {
+    Spacer(modifier = Modifier.weight(1f))
+}
+
+@Composable
+fun ColumnScope.SpacerFill(modifier: Modifier = Modifier) {
+    Spacer(modifier = Modifier.weight(1f))
+}

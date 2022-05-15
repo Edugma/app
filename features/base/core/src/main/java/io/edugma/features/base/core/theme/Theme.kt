@@ -94,6 +94,7 @@ private val AppLightColorScheme = lightColorScheme(
     outline = md_theme_light_outline,
     inverseOnSurface = md_theme_light_inverseOnSurface,
     inverseSurface = md_theme_light_inverseSurface,
+    inversePrimary = md_theme_light_inversePrimary,
 )
 private val AppDarkColorScheme = darkColorScheme(
 
@@ -122,6 +123,7 @@ private val AppDarkColorScheme = darkColorScheme(
     outline = md_theme_dark_outline,
     inverseOnSurface = md_theme_dark_inverseOnSurface,
     inverseSurface = md_theme_dark_inverseSurface,
+    inversePrimary = md_theme_dark_inversePrimary,
 )
 
 
@@ -158,7 +160,7 @@ private val AppLightColorScheme2 = lightColors(
 )
 
 @Composable
-fun MospolyhelperTheme(
+fun AppTheme(
     isDarkTheme: Boolean = isSystemInDarkTheme(),
     isDynamicColor: Boolean = false,
     content: @Composable () -> Unit
@@ -188,7 +190,8 @@ fun MospolyhelperTheme(
     ) {
         MaterialTheme(
             colorScheme = myColorScheme,
-            typography = AppTypography
+            typography = AppTypography,
+            shapes = AppShapes
         ) {
             content()
         }

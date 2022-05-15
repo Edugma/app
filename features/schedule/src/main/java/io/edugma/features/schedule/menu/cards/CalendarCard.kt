@@ -2,8 +2,9 @@ package io.edugma.features.schedule.menu.cards
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -14,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.base.core.utils.dp
+import io.edugma.features.base.elements.TonalCard
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import io.edugma.features.schedule.R
@@ -22,19 +24,19 @@ private val dayOfWeekFormat = DateTimeFormatter.ofPattern("EEEE")
 private val dayOfMonthFormat = DateTimeFormatter.ofPattern("dd")
 private val monthFormat = DateTimeFormatter.ofPattern("MMMM")
 
-@OptIn(ExperimentalMaterialApi::class)
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CalendarCard(
     date: LocalDate,
     onScheduleCalendarClick: ClickListener
 ) {
-    Card(
+    TonalCard(
         modifier = Modifier
             .padding(horizontal = 4.dp, vertical = 4.dp)
             .height(150.dp)
             .fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        onClick = onScheduleCalendarClick
+        onClick = onScheduleCalendarClick,
     ) {
         Column(
             Modifier

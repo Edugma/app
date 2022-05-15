@@ -49,13 +49,20 @@ fun ScheduleMenuContent(
         Spacer(Modifier.height(20.dp))
         Row(
             Modifier
-                .height(190.dp)
+                .height(90.dp)
                 .fillMaxWidth()
         ) {
-            Column {
-                ScheduleSourcesCard(state.source, onScheduleSourceClick)
-                ScheduleCard(state.main, onScheduleClick)
-            }
+            ScheduleSourcesCard(state.source, onScheduleSourceClick)
+        }
+        Row(
+            Modifier
+                .height(150.dp)
+                .fillMaxWidth()
+        ) {
+            ScheduleCard(
+                state.main,
+                onScheduleClick
+            )
             CalendarCard(
                 state.date,
                 onScheduleCalendarClick
@@ -68,6 +75,14 @@ fun ScheduleMenuContent(
         ) {
             LessonsReviewCard(onLessonsReviewClick)
             FindFreePlaceCard(onFreePlaceClick)
+        }
+        Row(
+            Modifier
+                .height(100.dp)
+                .fillMaxWidth()
+        ) {
+            ChangeHistoryCard({})
+            ScheduleAppWidgetCard({})
         }
     }
 }

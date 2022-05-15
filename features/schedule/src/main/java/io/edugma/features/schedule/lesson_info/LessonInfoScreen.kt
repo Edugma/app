@@ -38,14 +38,20 @@ fun LessonInfoScreen(
 
     LessonInfoContent(
         state = state,
-        onBackClick = viewModel::exit
+        onBackClick = viewModel::exit,
+        onTeacherClick = viewModel::onTeacherClick,
+        onGroupClick = viewModel::onGroupClick,
+        onPlaceClick = viewModel::onPlaceClick,
     )
 }
 
 @Composable
 private fun LessonInfoContent(
     state: LessonInfoState,
-    onBackClick: ClickListener
+    onBackClick: ClickListener,
+    onTeacherClick: Typed1Listener<String>,
+    onGroupClick: Typed1Listener<String>,
+    onPlaceClick: Typed1Listener<String>,
 ) {
     Column(
         Modifier
@@ -64,10 +70,10 @@ private fun LessonInfoContent(
                 )
                 SpacerHeight(height = 32.dp)
                 LessonType(
-                    type = state.lessonInfo?.lesson?.type ?: ""
+                    type = state.lessonInfo?.lesson?.type?.title ?: ""
                 )
                 LessonTitle(
-                    title = state.lessonInfo?.lesson?.title ?: ""
+                    title = state.lessonInfo?.lesson?.subject?.title ?: ""
                 )
                 SpacerHeight(height = 4.dp)
                 state.lessonInfo?.dateTime?.let { LessonDateTime(lessonDateTime = it) }
@@ -76,15 +82,18 @@ private fun LessonInfoContent(
         }
         SpacerHeight(height = 8.dp)
         LessonTeachers(
-            teachers = state.lessonInfo?.lesson?.teachers ?: emptyList()
+            teachers = state.lessonInfo?.lesson?.teachers ?: emptyList(),
+            onItemClick = onTeacherClick
         )
         SpacerHeight(height = 14.dp)
         LessonPlaces(
-            places = state.lessonInfo?.lesson?.places ?: emptyList()
+            places = state.lessonInfo?.lesson?.places ?: emptyList(),
+            onItemClick = onPlaceClick
         )
         SpacerHeight(height = 14.dp)
         LessonGroups(
-            groups = state.lessonInfo?.lesson?.groups ?: emptyList()
+            groups = state.lessonInfo?.lesson?.groups ?: emptyList(),
+            onItemClick = onGroupClick
         )
         SpacerHeight(height = 14.dp)
     }
@@ -120,9 +129,9 @@ private fun LessonDateTime(lessonDateTime: LessonDateTime) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         WithContentAlpha(ContentAlpha.medium) {
-            val timeStart = lessonDateTime.time.startTime.format(lessonTimeFormat)
-            val timeEnd = lessonDateTime.time.endTime.format(lessonTimeFormat)
-            val date = lessonDateTime.date.format(lessonDateFormat)
+            val timeStart = lessonDateTime.time.start.format(lessonTimeFormat)
+            val timeEnd = lessonDateTime.time.end.format(lessonTimeFormat)
+            val startDate = lessonDateTime.startDate.format(lessonDateFormat) + "!!"
             Row(
                 Modifier.padding(start = 16.dp, end = 8.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -148,7 +157,7 @@ private fun LessonDateTime(lessonDateTime: LessonDateTime) {
                 )
                 SpacerWidth(3.dp)
                 Text(
-                    text = date,
+                    text = startDate,
                     style = MaterialTheme3.typography.bodySmall,
                     modifier = Modifier.padding(bottom = 1.dp)
                 )
@@ -158,7 +167,10 @@ private fun LessonDateTime(lessonDateTime: LessonDateTime) {
 }
 
 @Composable
-private fun LessonTeachers(teachers: List<Teacher>) {
+private fun LessonTeachers(
+    teachers: List<Teacher>,
+    onItemClick: Typed1Listener<String>
+) {
     WithContentAlpha(ContentAlpha.medium) {
         Row(
             Modifier.padding(start = 16.dp, end = 8.dp),
@@ -185,7 +197,7 @@ private fun LessonTeachers(teachers: List<Teacher>) {
                 .joinToString(separator = "") { it.take(1) },
             title = teacher.name,
             description = "Информация о преподавателе",
-            onItemClick = {}
+            onItemClick = { onItemClick(teacher.id) }
         )
         if (index != teachers.size - 1) {
             Divider(Modifier.padding(start = 70.dp, end = 20.dp))
@@ -194,7 +206,10 @@ private fun LessonTeachers(teachers: List<Teacher>) {
 }
 
 @Composable
-private fun LessonPlaces(places: List<Place>) {
+private fun LessonPlaces(
+    places: List<Place>,
+    onItemClick: Typed1Listener<String>
+) {
     WithContentAlpha(ContentAlpha.medium) {
         Row(
             Modifier.padding(start = 16.dp, end = 8.dp),
@@ -220,8 +235,8 @@ private fun LessonPlaces(places: List<Place>) {
                 .split(' ')
                 .joinToString(separator = "") { it.take(1) },
             title = place.title,
-            description = place.description,
-            onItemClick = {}
+            description = "",
+            onItemClick = { onItemClick(place.id) }
         )
         if (index != places.size - 1) {
             Divider(Modifier.padding(start = 70.dp, end = 20.dp))
@@ -230,7 +245,10 @@ private fun LessonPlaces(places: List<Place>) {
 }
 
 @Composable
-private fun LessonGroups(groups: List<Group>) {
+private fun LessonGroups(
+    groups: List<Group>,
+    onItemClick: Typed1Listener<String>
+) {
     WithContentAlpha(ContentAlpha.medium) {
         Row(
             Modifier.padding(start = 16.dp, end = 8.dp),
@@ -257,7 +275,7 @@ private fun LessonGroups(groups: List<Group>) {
                 .joinToString(separator = "") { it.take(1) },
             title = group.title,
             description = "Информация о группе",
-            onItemClick = {}
+            onItemClick = { onItemClick(group.id) }
         )
         if (index != groups.size - 1) {
             Divider(Modifier.padding(start = 70.dp, end = 20.dp))

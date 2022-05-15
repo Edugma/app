@@ -22,14 +22,20 @@ import com.google.accompanist.pager.PagerState
 import io.edugma.domain.schedule.model.group.Group
 import io.edugma.domain.schedule.model.lesson.Lesson
 import io.edugma.domain.schedule.model.lesson.LessonDateTime
+import io.edugma.domain.schedule.model.lesson.LessonDisplaySettings
 import io.edugma.domain.schedule.model.lesson.LessonTime
+import io.edugma.domain.schedule.model.lesson_subject.LessonSubject
 import io.edugma.domain.schedule.model.place.Place
+import io.edugma.domain.schedule.model.place.PlaceType
 import io.edugma.domain.schedule.model.schedule.LessonsByTime
-import io.edugma.domain.schedule.model.schedule.ScheduleDay
 import io.edugma.domain.schedule.model.teacher.Teacher
 import io.edugma.features.base.core.utils.Typed2Listener
+import io.edugma.features.base.elements.SpacerHeight
 import io.edugma.features.base.elements.placeholder
 import io.edugma.features.schedule.R
+import io.edugma.features.schedule.model.ScheduleDayUiModel
+import io.edugma.features.schedule.model.ScheduleItem
+import io.edugma.features.schedule.utils.toUiModel
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -42,7 +48,8 @@ private val relaxAnims = listOf(
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun SchedulePager(
-    scheduleDays: List<ScheduleDay>,
+    scheduleDays: List<ScheduleDayUiModel>,
+    lessonDisplaySettings: LessonDisplaySettings,
     pagerState: PagerState,
     onLessonClick: Typed2Listener<Lesson, LessonDateTime>
 ) {
@@ -55,9 +62,10 @@ fun SchedulePager(
 
         if (scheduleDay.lessons.isNotEmpty()) {
             LessonList(
-                scheduleDay.lessons,
+                lessons = scheduleDay.lessons,
+                lessonDisplaySettings = lessonDisplaySettings,
                 onLessonClick = { lesson, time ->
-                    onLessonClick(lesson, LessonDateTime(scheduleDay.date, time))
+                    onLessonClick(lesson, LessonDateTime(scheduleDay.date, null, time))
                 }
             )
         } else {
@@ -102,26 +110,43 @@ fun DateContent(date: LocalDate) {
 
 @Composable
 fun LessonList(
-    lessons: List<LessonsByTime>,
+    lessons: List<ScheduleItem>,
+    lessonDisplaySettings: LessonDisplaySettings,
     isLoading: Boolean = false,
     onLessonClick: Typed2Listener<Lesson, LessonTime>
 ) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
-        for (lessonsByTime in lessons) {
-            LessonPlace(
-                lessonsByTime = lessonsByTime,
-                isLoading = isLoading,
-                onLessonClick = { lesson, lessonTime ->
-                    onLessonClick(lesson, lessonTime)
+        for (item in lessons) {
+            when (item) {
+                is ScheduleItem.LessonByTime -> {
+                    LessonPlace(
+                        lessonsByTime = item.lesson,
+                        lessonDisplaySettings = lessonDisplaySettings,
+                        isLoading = isLoading,
+                        onLessonClick = { lesson, lessonTime ->
+                            onLessonClick(lesson, lessonTime)
+                        }
+                    )
                 }
-            )
+                is ScheduleItem.Window -> {
+                    item {
+                        LessonWindow(
+                            lessonWindow = item
+                        )
+                    }
+                }
+            }
+        }
+        item {
+            SpacerHeight(24.dp)
         }
     }
 }
 
 
-fun LazyListScope.LessonPlace(
+private fun LazyListScope.LessonPlace(
     lessonsByTime: LessonsByTime,
+    lessonDisplaySettings: LessonDisplaySettings,
     isLoading: Boolean = false,
     onLessonClick: Typed2Listener<Lesson, LessonTime>
 ) {
@@ -131,6 +156,7 @@ fun LazyListScope.LessonPlace(
     items(lessonsByTime.lessons) { lesson ->
         LessonContent(
             lesson = lesson,
+            displaySettings = lessonDisplaySettings,
             isLoading = isLoading,
             onLessonClick = { onLessonClick(it, lessonsByTime.time) }
         )
@@ -138,12 +164,12 @@ fun LazyListScope.LessonPlace(
 }
 
 @Composable
-fun LessonTimeContent(lessonTime: LessonTime, isLoading: Boolean = false) {
+private fun LessonTimeContent(lessonTime: LessonTime, isLoading: Boolean = false) {
     Text(
-        text = "${lessonTime.startTime} - ${lessonTime.endTime}",
+        text = "${lessonTime.start} - ${lessonTime.end}",
         style = MaterialTheme.typography.titleSmall,
         modifier = Modifier
-            .padding(horizontal = 34.dp)
+            .padding(start = 34.dp, end = 34.dp, top = 4.dp, bottom = 2.dp)
             .placeholder(visible = isLoading)
     )
 }
@@ -155,15 +181,20 @@ fun ScheduleDayPlaceHolder() {
             time = LessonTime(LocalTime.now(), LocalTime.now()),
             lessons = listOf(
                 Lesson(
-                    "",
-                    "Qwerty qwerty",
+                    LessonSubject("", ""),
+                    io.edugma.domain.schedule.model.lesson_type.LessonType("", "Qwerty qwerty", false),
                     listOf(Teacher("", "")),
                     listOf(Group("", "")),
-                    listOf(Place("", "", ""))
+                    listOf(Place("", "", PlaceType.Undefined))
                 )
             )
         )
     }
 
-    LessonList(lessons = lessons, isLoading = true) { _, _ -> }
+    LessonList(
+        lessons = lessons.toUiModel()
+            .filterIsInstance<ScheduleItem.LessonByTime>(),
+        lessonDisplaySettings = LessonDisplaySettings.Default,
+        isLoading = true
+    ) { _, _ -> }
 }

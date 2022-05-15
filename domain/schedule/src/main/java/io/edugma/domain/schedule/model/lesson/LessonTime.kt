@@ -7,21 +7,17 @@ import java.time.LocalTime
 @Serializable
 data class LessonTime(
     @Serializable(with = LocalTimeConverter::class)
-    val startTime: LocalTime,
+    val start: LocalTime,
     @Serializable(with = LocalTimeConverter::class)
-    val endTime: LocalTime
+    val end: LocalTime
 ) : Comparable<LessonTime> {
     override fun compareTo(other: LessonTime): Int {
-        val start = this.startTime.compareTo(other.startTime)
-        if (start == 0) {
-            val end = this.endTime.compareTo(other.endTime)
-            return end
-        }
-        return start
+        val start = this.start.compareTo(other.start)
+        return if (start != 0) start else this.end.compareTo(other.end)
     }
 
     operator fun contains(value: LocalTime): Boolean {
-        return value in startTime..endTime
+        return value in start..end
     }
 
 }

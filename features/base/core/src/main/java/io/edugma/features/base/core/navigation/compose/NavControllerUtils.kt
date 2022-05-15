@@ -42,6 +42,12 @@ inline fun <reified TRoute : Screen, reified TStart : Screen> NavGraphBuilder.gr
     navigation(startDestination, getRoute<TRoute>(), arguments, deepLinks, builder)
 }
 
+fun screens(
+    builder: NavGraphBuilder.() -> Unit
+) : NavGraphBuilder.() -> Unit {
+    return builder
+}
+
 private fun String.encodeUrl(): String {
     return URLEncoder.encode(this, Charsets.UTF_8.name())
 }

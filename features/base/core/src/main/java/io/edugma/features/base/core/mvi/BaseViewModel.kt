@@ -1,5 +1,7 @@
 package io.edugma.features.base.core.mvi
 
+import io.edugma.features.base.core.mvi.impl.SimpleMutator
+
 // Without state and actions
 abstract class SimpleViewModel(
 ) : BaseViewModelFull<Unit, SimpleMutator<Unit>, Nothing>(

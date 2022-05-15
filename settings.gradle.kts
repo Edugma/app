@@ -1,5 +1,14 @@
 @file:Suppress("UnstableApiUsage")
 
+include(":features:schedule:appwidget")
+
+
+include(":features:schedule:sources")
+include(":features:schedule:lessons_review")
+include(":features:schedule:calendar")
+include(":features:schedule:schedule_info")
+
+
 pluginManagement {
     repositories {
         gradlePluginPortal()
@@ -7,13 +16,13 @@ pluginManagement {
         mavenCentral()
     }
 
-    val androidGradleVersion = "7.1.2"
+    val androidGradleVersion = "7.2.0"
     val kotlinVersion = "1.6.10"
 
     plugins {
         id("com.android.application") version androidGradleVersion apply false
         id("com.android.library") version androidGradleVersion  apply false
-        kotlin("android") version kotlinVersion apply false
+        kotlin("android") version "1.6.21" apply false
         kotlin("plugin.serialization") version kotlinVersion apply false
         id("org.jetbrains.kotlin.jvm") version "1.6.10"
     }
@@ -55,9 +64,11 @@ include(":features:base:navigation")
 include(":features:base:elements")
 include(":features:schedule")
 include(":features:account")
-include(":features:misc")
 include(":features:home")
 include(":features:nodes")
 
+include(":features:misc")
+include(":features:misc:menu")
+include(":features:misc:settings")
 
 

@@ -5,6 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -29,3 +30,38 @@ fun PagerState.bindTo(position: Int, animated: Boolean = false) {
         }
     }
 }
+
+//@OptIn(ExperimentalPagerApi::class)
+//@Composable
+//fun PagerState.onPageChanged(action: suspend (page: Int) -> Unit) {
+//    LaunchedEffect(this) {
+//        snapshotFlow { calculatePage(currentPage, currentPageOffset) }
+//            .distinctUntilChanged()
+//            .collect { page ->
+//                action(page)
+//            }
+//    }
+//}
+//
+//private fun calculatePage(page: Int, offset: Float): Int {
+//    return when {
+//        offset < -0.5f -> page - 1
+//        offset < 0.5f -> page
+//        else -> page + 1
+//    }
+//}
+//
+//@OptIn(ExperimentalPagerApi::class)
+//@Composable
+//fun PagerState.bindTo(position: Int, animated: Boolean = false) {
+//    LaunchedEffect(position, animated) {
+//        val oldPos = calculatePage(currentPage, currentPageOffset)
+//        if (oldPos != position) {
+//            if (animated) {
+//                animateScrollToPage(position)
+//            } else {
+//                scrollToPage(position)
+//            }
+//        }
+//    }
+//}

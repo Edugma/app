@@ -1,17 +1,17 @@
 object Libs {
     object Plugins {
-        const val Android = "com.android.tools.build:gradle:${Versions.gradle}"
-        const val Kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
+        //const val Android = "com.android.tools.build:gradle:${Versions.gradle}"
+        //const val Kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
         const val KotlinxSerialization =
             "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerialization}"
     }
 
 
     object KotlinX {
-        const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerialization}"
+        const val serializationJson = "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerialization}"
+        const val serializationCbor = "org.jetbrains.kotlinx:kotlinx-serialization-cbor:${Versions.kotlinxSerialization}"
 
         object Coroutines {
-            private const val version = "1.5.2"
             const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinCoroutines}"
             const val jvm = "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:${Versions.kotlinCoroutines}"
             const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.kotlinCoroutines}"
@@ -26,6 +26,12 @@ object Libs {
         const val lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycle}"
 
         const val startup = "androidx.startup:startup-runtime:1.1.0"
+        const val splashScreen = "androidx.core:core-splashscreen:${Versions.splashScreen}"
+
+        object Glance {
+            const val appWidget = "androidx.glance:glance-appwidget:${Versions.glance}"
+            const val wearTiles = "androidx.glance:glance-wear-tiles:${Versions.glance}"
+        }
 
         object Compose {
             const val activity = "androidx.activity:activity-compose:1.3.1"
@@ -36,9 +42,6 @@ object Libs {
             const val material3 = "androidx.compose.material3:material3:${Versions.composeMaterial3}"
             const val material = "androidx.compose.material:material:${Versions.compose}"
             //const val material = "androidx.compose.material:material:$version"
-
-
-
 
 
             const val foundation = "androidx.compose.foundation:foundation:${Versions.compose}"
@@ -119,6 +122,7 @@ object Libs {
             const val release = "org.kodein.db:kodein-db-android:${Versions.kodeinDB}"
             const val kotlinxSerializer = "org.kodein.db:kodein-db-serializer-kotlinx:${Versions.kodeinDB}"
         }
+        const val store = "com.dropbox.mobile.store:store4:${Versions.store}"
     }
 
     object Di {
@@ -133,14 +137,11 @@ object Libs {
 }
 
 object Versions {
-    const val gradle = "7.1.2"
-    const val kotlin = "1.6.10"
-
-    const val kotlinCoroutines = "1.6.0"
+    const val kotlinCoroutines = "1.6.1"
     const val kotlinxSerialization = "1.3.2"
 
     // Di
-    const val koin = "3.1.5"
+    const val koin = "3.1.6"
 
     // Image loading
     const val coil = "1.4.0"
@@ -153,23 +154,26 @@ object Versions {
 
     // Storage
     const val kodeinDB = "0.9.0-beta"
+    const val store = "4.0.4-KT15"
 
     // Compose
     const val compose = "1.1.1"
-    const val composeMaterial3 = "1.0.0-alpha08"
+    const val composeMaterial3 = "1.0.0-alpha09"
     const val composeMaterial = "1.1.1"
     const val accompanist = "0.23.1"
 
     // AndroidX
     const val lifecycle = "2.4.1"
-    const val navigation = "2.4.1"
+    const val navigation = "2.4.2"
     const val coreKtx = "1.7.0"
     const val appcompat = "1.4.1"
 
     // UI
-    const val material = "1.5.0"
+    const val material = "1.6.0-rc01"
     const val constraintLayout = "1.0.0"
-    const val lottie = "5.0.2"
-    const val materialDateTimePicker = "0.6.3"
-    const val fluentIcons = "1.1.157@aar"
+    const val lottie = "5.0.3"
+    const val materialDateTimePicker = "0.7.0"
+    const val fluentIcons = "1.1.166@aar"
+    const val splashScreen = "1.0.0-beta02"
+    const val glance = "1.0.0-alpha03"
 }

@@ -33,11 +33,11 @@ class ScheduleMenuViewModel(
                 val closestLessons = getClosestLessons(lessons)
                     .map {
                         ClosestLessons(
-                            now.until(it.time.startTime, ChronoUnit.MINUTES)
+                            now.until(it.time.start, ChronoUnit.MINUTES)
                                 .toDuration(DurationUnit.MINUTES),
                             it
                         )
-                    }.filter { now <= it.lessons.time.endTime }
+                    }.filter { now <= it.lessons.time.end }
 
                 val (notStarted, current) = closestLessons
                     .groupBy { it.timeToStart.isNegative() }
@@ -58,7 +58,7 @@ class ScheduleMenuViewModel(
     }
 
     fun onScheduleClick() {
-        router.navigateTo(ScheduleScreens.Main)
+        router.navigateTo(ScheduleScreens.Main())
     }
 
     fun onLessonsReviewClick() {

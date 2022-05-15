@@ -6,7 +6,8 @@ plugins {
 dependencies {
     api(Libs.KotlinX.Coroutines.core)
     api(Libs.KotlinX.Coroutines.jvm)
-    api(Libs.KotlinX.serialization)
+    api(Libs.KotlinX.serializationJson)
+    api(Libs.KotlinX.serializationCbor)
     api(Libs.Di.koinCore)
     api(Libs.Other.ktorUtils)
 }

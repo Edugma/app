@@ -45,12 +45,27 @@ android {
         }
     }
 
-    resourcePrefix = if (project.name.length <= 5) {
+    resourcePrefix = getPrefix()
+}
+
+fun getPrefix(): String {
+    val parentName = project.parent?.name ?: ""
+    val parentBlockList = listOf("data", "domain", "features")
+    val parentPrefix = if (parentName in parentBlockList) {
+        ""
+    } else {
+        parentName.split("_")
+            .joinToString(separator = "_", postfix = "_")
+    }
+
+    val prefix = if (project.name.length <= 5) {
         project.name + "_"
     } else {
-        project.name.split("_", "-")
+        project.name.split("_")
             .joinToString(separator = "_", postfix = "_") { it.take(3) }
     }
+
+    return parentPrefix + prefix
 }
 
 dependencies {
