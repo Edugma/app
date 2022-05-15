@@ -1,22 +1,8 @@
 package io.edugma.domain.base.utils
 
 import kotlinx.coroutines.flow.*
-
-///**
-// * Launches a new coroutine and repeats `block` every time the Fragment's viewLifecycleOwner
-// * is in and out of `minActiveState` lifecycle state.
-// */
-//inline fun Fragment.launchInViewLifecycle(
-//    minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
-//    crossinline block: suspend CoroutineScope.() -> Unit
-//) {
-//    viewLifecycleOwner.lifecycleScope.launch {
-//        viewLifecycleOwner.lifecycle.repeatOnLifecycle(minActiveState) {
-//            block()
-//        }
-//    }
-//}
-
+import java.util.logging.Level
+import java.util.logging.Logger
 
 private const val StopTimeoutMillis: Long = 5000
 
@@ -35,7 +21,9 @@ fun<T> Flow<Result<T>>.onSuccess(action: suspend (value: T) -> Unit) =
     onEach { it.onSuccess { action(it) } }
 
 fun<T> Flow<Result<T>>.onFailure(action: suspend (exception: Throwable) -> Unit) =
-    onEach { it.onFailure { action(it) } }
+    onEach { it.onFailure { error ->
+        action(error)
+    } }
 
 fun<T, R> Flow<Result<T>>.mapResult(action: (T) -> R): Flow<Result<R>> =
     map { it.mapCatching(action) }

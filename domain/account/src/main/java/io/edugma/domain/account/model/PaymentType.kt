@@ -8,10 +8,11 @@ enum class PaymentType {
     @SerialName("dormitory")
     Dormitory,
     @SerialName("education")
-    Education
+    Education;
 }
 
-fun PaymentType.print(): String = when (this) {
-    PaymentType.Dormitory -> "Общежитие"
-    PaymentType.Education -> "Образование"
-}
+fun PaymentType.toLabel() =
+    when(this) {
+        PaymentType.Dormitory -> "Общежитие"
+        PaymentType.Education -> "Обучение"
+    }

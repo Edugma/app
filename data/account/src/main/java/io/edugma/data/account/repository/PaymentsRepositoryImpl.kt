@@ -13,11 +13,8 @@ class PaymentsRepositoryImpl(
         api.getPaymentsTypes()
             .flowOn(Dispatchers.IO)
 
-    override fun getPayment(type: PaymentType) =
-        api.getPayment(type.name.lowercase())
+    override fun getPayment(type: PaymentType?) =
+        api.getPayments(type?.name?.lowercase())
             .flowOn(Dispatchers.IO)
 
-    override fun getPayments() =
-        api.getPayments()
-            .flowOn(Dispatchers.IO)
 }

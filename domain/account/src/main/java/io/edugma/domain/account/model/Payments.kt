@@ -5,16 +5,24 @@ import kotlinx.serialization.Serializable
 import java.time.LocalDate
 
 @Serializable
-data class Payments(
-    val id: String?,
-    @Serializable(with = LocalDateConverter::class)
-    val date: LocalDate?,
-    val sum: Float?,
-    val credit: Float?,
-    @Serializable(with = LocalDateConverter::class)
-    val dateCredit: LocalDate?,
-    val unit: String,
-    val paymentQR: String?,
-    val payments: List<Payment>,
-    val type: PaymentType?,
+data class Payments (
+	val id : String,
+	val student : String,
+	val number : String,
+	val name : String,
+	val type : String,
+	val level : String?,
+	val dormNum : String?,
+	val dormRoom : String?,
+	@Serializable(with = LocalDateConverter::class)
+	val startDate : LocalDate,
+	@Serializable(with = LocalDateConverter::class)
+	val endDate : LocalDate,
+	val qr : String,
+	val sum : String,
+	val balance : String,
+	val balanceCurrent : String,
+	@Serializable(with = LocalDateConverter::class)
+	val lastPaymentDate : LocalDate?,
+	val payments : List<Payment>
 )

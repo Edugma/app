@@ -15,8 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import io.edugma.domain.account.model.Mark
-import io.edugma.domain.account.model.print
+import io.edugma.domain.account.model.Performance
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.base.elements.ErrorView
@@ -70,8 +69,8 @@ fun MarksContent(state: MarksState,
                     }
                 }
             } else {
-                items(state.data.map { it.marks }.flatten()) {
-                    Mark(it)
+                items(state.data) {
+                    Performance(it)
                     Spacer(modifier = Modifier.padding(2.dp))
                 }
             }
@@ -80,25 +79,25 @@ fun MarksContent(state: MarksState,
 }
 
 @Composable
-fun Mark(mark: Mark) {
+fun Performance(performance: Performance) {
     Card(shape = MaterialTheme.shapes.medium, elevation = 2.dp, modifier = Modifier.fillMaxWidth()) {
         ConstraintLayout(modifier = Modifier
             .padding(5.dp)
             .heightIn(70.dp)) {
             val (name, type, markText) = createRefs()
-            Text(text = mark.name, modifier = Modifier.constrainAs(name) {
+            Text(text = performance.name, modifier = Modifier.constrainAs(name) {
                 start.linkTo(parent.start)
                 top.linkTo(parent.top)
                 end.linkTo(markText.start)
                 width = Dimension.fillToConstraints
             })
-            Text(text = mark.type.print(), modifier = Modifier.constrainAs(type) {
+            Text(text = performance.examType, modifier = Modifier.constrainAs(type) {
                 linkTo(top = name.bottom, bottom = parent.bottom, bias = 1f)
                 start.linkTo(parent.start)
                 end.linkTo(markText.start)
                 width = Dimension.fillToConstraints
             })
-            Text(text = mark.mark,
+            Text(text = performance.grade,
                 fontSize = 25.sp,
                 modifier = Modifier.constrainAs(markText) {
                 end.linkTo(parent.end)

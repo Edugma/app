@@ -1,5 +1,6 @@
 package io.edugma.features.account.authorization
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import io.edugma.domain.account.repository.AuthorizationRepository
 import io.edugma.domain.account.repository.PersonalRepository

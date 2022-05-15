@@ -1,6 +1,8 @@
 package io.edugma.domain.account.model
 
+import io.edugma.domain.base.utils.converters.LocalDateConverter
 import kotlinx.serialization.Serializable
+import java.time.LocalDate
 
 @Serializable
 data class Personal(
@@ -18,13 +20,13 @@ data class Personal(
     val faculty: String,
     val group: String,
     val specialty: String,
-    val specialization: String,
+    val specialization: String? = null,
     val degreeLength: String,
     val educationForm: String,
     val finance: String,
     val degreeLevel: String,
     val enterYear: String,
-    val orders: List<String>,
+    val orders: List<Order>,
     val subdivisions: List<Subdivision>? = null
 )
 
@@ -37,21 +39,10 @@ data class Subdivision(
     val wage: String? = null,
 )
 
-//data class Personal(
-//    val name: String,
-//    val type: EducationType,
-//    val avatarUrl: String?,
-//    val course: Int,
-//    val group: String,
-//    val direction: String?,
-//    val faculty: String,
-//    val dormitory: String?,
-//    val dormitoryRoom: String?,
-//    val isPaid: Boolean,
-//    val startYear: Int?,
-//    val endYear: Int?,
-//    @Serializable(LocalDateConverter::class)
-//    val startDate: LocalDate?,
-//    @Serializable(LocalDateConverter::class)
-//    val endDate: LocalDate?
-//)
+@Serializable
+data class Order(
+    @Serializable(LocalDateConverter::class)
+    val date: LocalDate? = null,
+    val name: String,
+    val description: String
+)

@@ -29,40 +29,24 @@ interface AccountService {
     @GET("/applications")
     fun getApplications(): Flow<Result<List<Application>>>
 
-    @GET("/performance")
-    fun getMarks(): Flow<Result<List<Marks>>>
-
     @GET("/performance/semesters")
     fun getSemesters(): Flow<Result<List<Int>>>
 
     @GET("/performance/semesters/{semester}")
-    fun getMarksBySemester(
+    fun getMarks(
         @Path("semester") semester: String
-    ): Flow<Result<Marks>>
+    ): Flow<Result<List<Performance>>>
 
     @GET("/performance/courses")
     fun getCourses(): Flow<Result<List<Int>>>
 
-    @GET("/performance/courses/{course}")
-    fun getMarksByCourse(
-        @Path("course") course: String
-    ): Flow<Result<List<Marks>>>
-
-    @GET("/personal2")
+    @GET("/personal")
     fun getPersonalInfo(): Flow<Result<Personal>>
 
-    @GET("/personal/orders")
-    fun getOrders(): Flow<Result<List<Order>>>
+    @GET("/payments/{type}")
+    fun getPayments(@Path("type") type: String?): Flow<Result<Contracts>>
 
-    @GET("/payments")
-    fun getPayments(): Flow<Result<List<Payments>>>
-
-    @GET("/payments/types")
+    @GET("/payments/types/")
     fun getPaymentsTypes(): Flow<Result<List<PaymentType>>>
-
-    @GET("/payment/{type}")
-    fun getPayment(
-        @Path("type") type: String
-    ): Flow<Result<Payments>>
 
 }

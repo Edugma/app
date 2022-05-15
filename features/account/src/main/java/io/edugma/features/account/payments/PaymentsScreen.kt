@@ -22,6 +22,7 @@ import androidx.constraintlayout.compose.Dimension
 import io.edugma.domain.account.model.Payment
 import io.edugma.domain.account.model.Payments
 import io.edugma.domain.account.model.print
+import io.edugma.domain.account.model.toLabel
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.format
 import io.edugma.features.base.elements.ErrorView
@@ -58,7 +59,7 @@ fun PaymentsContent(state: PaymentsState,
                     LazyRow() {
                         items(state.types) {
                             Button({}, modifier = Modifier.padding(2.dp)) {
-                                Text(text = it.print())
+                                Text(text = it.toLabel())
                             }
                         }
                     }
@@ -92,7 +93,7 @@ fun PaymentInfo(payment: Payment) {
                 end.linkTo(sum.start)
                 width = Dimension.fillToConstraints
             })
-            Text(payment.payment.toString(), modifier = Modifier.constrainAs(sum) {
+            Text(payment.value, modifier = Modifier.constrainAs(sum) {
                 top.linkTo(parent.top)
                 end.linkTo(parent.end)
             })
@@ -108,9 +109,9 @@ fun Payment(payment: Payments) {
             .padding(5.dp)
             .heightIn(40.dp)) {
             Text("Номер договора: ${payment.id}")
-            Text("Дата договора: ${payment.date?.format()}")
+            Text("Дата договора: ${payment.startDate.format()}")
             Text("Сумма договора: ${payment.sum}")
-            Text("Задолженность: ${payment.credit}")
+            Text("Задолженность: ${payment.balanceCurrent}")
         }
     }
 }

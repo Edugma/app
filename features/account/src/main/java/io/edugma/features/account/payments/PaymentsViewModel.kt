@@ -1,16 +1,18 @@
 package io.edugma.features.account.payments
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import io.edugma.domain.account.model.PaymentType
 import io.edugma.domain.account.model.Payments
 import io.edugma.domain.account.repository.PaymentsRepository
 import io.edugma.features.base.core.mvi.BaseMutator
 import io.edugma.domain.base.utils.execute
+import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.mvi.BaseViewModelFull
 import kotlinx.coroutines.launch
 
 class PaymentsViewModel(private val repository: PaymentsRepository) :
-    BaseViewModelFull<PaymentsState, PaymentsMutator, Nothing>(PaymentsState(), ::PaymentsMutator) {
+    BaseViewModel<PaymentsState>(PaymentsState()) {
 
         init {
             load()
@@ -18,7 +20,7 @@ class PaymentsViewModel(private val repository: PaymentsRepository) :
 
     fun load() {
         viewModelScope.launch {
-            repository.getPayments().execute(
+            repository.getPayment().execute(
                 onStart = {
                     mutateState {
                         setLoading(true)
@@ -26,7 +28,7 @@ class PaymentsViewModel(private val repository: PaymentsRepository) :
                 },
                 onSuccess = {
                     mutateState {
-                        setData(it)
+                        setData(it.contracts)
                     }
                 },
                 onError = {
@@ -38,6 +40,24 @@ class PaymentsViewModel(private val repository: PaymentsRepository) :
         }
     }
 
+    fun setData(data: Map<PaymentType, Payments>) {
+        mutateState {
+            state = state.copy(data = data.values.toList(), isLoading = false, isError = false, types = data.keys.toList())
+        }
+    }
+
+    fun setLoading(isLoading: Boolean) {
+        mutateState {
+            state = state.copy(isLoading = isLoading, isError = !isLoading && state.isError)
+        }
+    }
+
+    fun setError(isError: Boolean) {
+        mutateState {
+            state = state.copy(isError = isError, isLoading = false)
+        }
+    }
+
 }
 
 data class PaymentsState(
@@ -46,17 +66,3 @@ data class PaymentsState(
     val isLoading: Boolean = false,
     val isError: Boolean = false
 )
-
-class PaymentsMutator : BaseMutator<PaymentsState>() {
-    fun setData(data: List<Payments>) {
-        state = state.copy(data = data, isLoading = false, isError = false, types = data.map { it.type!! })
-    }
-
-    fun setLoading(isLoading: Boolean) {
-        state = state.copy(isLoading = isLoading, isError = !isLoading && state.isError)
-    }
-
-    fun setError(isError: Boolean) {
-        state = state.copy(isError = isError, isLoading = false)
-    }
-}

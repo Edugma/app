@@ -20,7 +20,7 @@ class PersonalViewModel(private val repository: PersonalRepository) :
         load()
     }
 
-    fun load() {
+    private fun load() {
         setLoading(true)
         val job = viewModelScope.launch {
             repository.getLocalPersonalInfo()?.let {
@@ -40,13 +40,13 @@ class PersonalViewModel(private val repository: PersonalRepository) :
         }
     }
 
-    fun setLoading(loading: Boolean) {
+    private fun setLoading(loading: Boolean) {
         mutateState {
             state = state.copy(isLoading = if (!state.isPlaceholders) loading else true)
         }
     }
 
-    fun setData(personal: Personal) {
+    private fun setData(personal: Personal) {
         mutateState { state = state.copy(
             personal = personal,
             isLoading = false,

@@ -16,16 +16,9 @@ class PerformanceRepositoryImpl(
         api.getSemesters()
             .flowOn(Dispatchers.IO)
 
-    override fun getMarksByCourse(course: Int) =
-        api.getMarksByCourse(course.toString())
+    override fun getMarksBySemester(semester: Int?) =
+        api.getMarks(semester.toString())
             .flowOn(Dispatchers.IO)
 
-    override fun getMarksBySemester(semester: Int) =
-        api.getMarksBySemester(semester.toString())
-            .flowOn(Dispatchers.IO)
-
-    override fun getMarks() =
-        api.getMarks()
-            .flowOn(Dispatchers.IO)
 
 }
