@@ -17,7 +17,6 @@ import io.edugma.features.account.main.model.MenuUi
 import io.edugma.features.base.core.utils.MaterialTheme3
 import org.koin.androidx.compose.getViewModel
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AccountMainScreen(viewModel: AccountMainViewModel = getViewModel()) {
     val state by viewModel.state.collectAsState()
@@ -25,7 +24,6 @@ fun AccountMainScreen(viewModel: AccountMainViewModel = getViewModel()) {
     AccountContent(state) { it.action(viewModel) }
 }
 
-@ExperimentalMaterialApi
 @Composable
 fun AccountContent(state: AccountMenuState, onClickListener: (MenuUi) -> Unit) {
     Column(
@@ -53,7 +51,7 @@ fun AccountContent(state: AccountMenuState, onClickListener: (MenuUi) -> Unit) {
             }
             AuthCard(
                 state.personal?.avatar,
-                state.personal?.name
+                state.personal?.getFullName()
             ) {onClickListener.invoke(MenuUi.Auth)}
         }
         Row(

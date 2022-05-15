@@ -28,9 +28,6 @@ abstract class BaseViewModelFull<TState, TMutator : BaseMutator<TState>, TAction
 
     protected val screenResultProvider: ScreenResultProvider by inject()
 
-    private val _state = MutableStateFlow(initialState)
-    val state = _state.asStateFlow()
-
     init {
         viewModelScope.launch(Dispatchers.Default) {
             state.collect {

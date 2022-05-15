@@ -1,24 +1,28 @@
 package io.edugma.features.account.personal
 
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import coil.compose.rememberImagePainter
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 import io.edugma.domain.account.model.Order
 import io.edugma.domain.account.model.Personal
@@ -93,7 +97,7 @@ private fun CollapsingToolbar(
             Icon(painter = painterResource(FluentIcons.ic_fluent_arrow_left_20_filled), contentDescription = null)
         }
         Text(
-            text = personal?.name.orEmpty(),
+            text = personal?.getNameSurname().orEmpty(),
             style = MaterialTheme3.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
             modifier = Modifier
                 .padding(bottom = 5.dp)
@@ -115,16 +119,15 @@ private fun CollapsingToolbar(
                 }
                 .placeholder(placeholders)
         )
-        Image(
-            painter = rememberImagePainter(
-                data = personal?.avatar,
-                builder = {
-                    transformations(CircleCropTransformation())
-                }
-            ),
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(personal?.avatar)
+                .crossfade(true)
+                .build(),
             contentDescription = null,
             modifier = Modifier
                 .size(imageSize)
+                .clip(CircleShape)
                 .constrainAs(image) {
                     end.linkTo(parent.end)
                     top.linkTo(parent.top)

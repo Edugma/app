@@ -16,15 +16,15 @@ import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.MaterialTheme3
+import io.edugma.features.base.elements.TonalCard
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AuthCard(
     avatar: String?,
     name: String?,
     onClick: ClickListener
 ) {
-    Card(
+    TonalCard(
         modifier = Modifier
             .padding(horizontal = 4.dp, vertical = 4.dp)
             .heightIn(180.dp)
@@ -68,7 +68,8 @@ fun AuthCard(
                         Spacer(Modifier.height(5.dp))
                         Text(
                             text = name,
-                            style = MaterialTheme3.typography.bodySmall,
+                            style = MaterialTheme3.typography.labelMedium,
+                            color = MaterialTheme3.colorScheme.tertiary,
                             modifier = Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Center,
                             overflow = TextOverflow.Ellipsis

@@ -12,15 +12,15 @@ import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.ContentAlpha
 import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.base.core.utils.WithContentAlpha
+import io.edugma.features.base.elements.TonalCard
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PersonalCard(
     info: String?,
     specialization: String?,
     onScheduleClick: ClickListener
 ) {
-    Card(
+    TonalCard(
         modifier = Modifier
             .padding(horizontal = 4.dp, vertical = 4.dp)
             .height(100.dp)

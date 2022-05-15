@@ -13,15 +13,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.edugma.features.base.core.utils.ClickListener
+import io.edugma.features.base.elements.TonalCard
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun UsualCard(
     modifier: Modifier = Modifier,
     name: String,
     onClick: ClickListener
 ) {
-    Card(
+    TonalCard(
         modifier = modifier
             .padding(horizontal = 4.dp, vertical = 4.dp)
             .fillMaxHeight()

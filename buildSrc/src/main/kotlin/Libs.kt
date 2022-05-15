@@ -144,7 +144,7 @@ object Versions {
     const val koin = "3.1.6"
 
     // Image loading
-    const val coil = "1.4.0"
+    const val coil = "2.0.0"
 
     // Networking
     const val paging = "3.1.1"

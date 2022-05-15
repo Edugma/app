@@ -12,13 +12,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.edugma.features.base.core.utils.ClickListener
+import io.edugma.features.base.elements.TonalCard
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun StudentsCard(
     onClick: ClickListener
 ) {
-    Card(
+    TonalCard(
         modifier = Modifier
             .padding(horizontal = 4.dp, vertical = 4.dp)
             .height(80.dp)

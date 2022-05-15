@@ -15,12 +15,12 @@ import kotlinx.coroutines.launch
 import kotlin.math.ceil
 import kotlin.math.roundToInt
 
-class MarksViewModel(private val repository: PerformanceRepository) :
-    BaseViewModel<MarksState,>(MarksState()) {
+class PerformanceViewModel(private val repository: PerformanceRepository) :
+    BaseViewModel<MarksState>(MarksState()) {
 
-        init {
-            loadMarks()
-        }
+    init {
+        loadMarks()
+    }
 
     fun loadMarks() {
         viewModelScope.launch {

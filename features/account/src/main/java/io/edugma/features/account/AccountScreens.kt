@@ -5,7 +5,7 @@ import io.edugma.features.account.applications.ApplicationsScreen
 import io.edugma.features.account.authorization.AuthScreen
 import io.edugma.features.account.classmates.ClassmatesScreen
 import io.edugma.features.account.main.AccountMainScreen
-import io.edugma.features.account.marks.MarksScreen
+import io.edugma.features.account.marks.PerformanceScreen
 import io.edugma.features.account.payments.PaymentsScreen
 import io.edugma.features.account.personal.PersonalScreen
 import io.edugma.features.account.students.StudentsScreen
@@ -24,7 +24,7 @@ fun NavGraphBuilder.accountScreens() {
         addScreen<AccountScreens.Teachers> { TeachersScreen() }
         addScreen<AccountScreens.Classmates> { ClassmatesScreen() }
         addScreen<AccountScreens.Students> { StudentsScreen() }
-        addScreen<AccountScreens.Marks> { MarksScreen() }
+        addScreen<AccountScreens.Marks> { PerformanceScreen() }
         addScreen<AccountScreens.Personal> { PersonalScreen() }
     }
 }

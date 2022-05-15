@@ -28,7 +28,10 @@ data class Personal(
     val enterYear: String,
     val orders: List<Order>,
     val subdivisions: List<Subdivision>? = null
-)
+) {
+    fun getFullName() = "$surname $name $patronymic"
+    fun getNameSurname() = "$name $surname"
+}
 
 @Serializable
 data class Subdivision(
