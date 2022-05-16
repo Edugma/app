@@ -47,6 +47,7 @@ fun TextWithIcon(modifier: Modifier = Modifier, text: String?, icon: Painter) {
         Icon(icon, "", modifier = Modifier.padding(end = 8.dp))
         Text(
             text = text.orEmpty(),
+            overflow = TextOverflow.Ellipsis,
             style = MaterialTheme3.typography.bodyMedium,
             modifier = modifier
                 .defaultMinSize(minWidth = 100.dp)

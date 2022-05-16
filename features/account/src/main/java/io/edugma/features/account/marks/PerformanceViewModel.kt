@@ -24,12 +24,7 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
 
     fun loadMarks() {
         viewModelScope.launch {
-            repository.getCourses()
-                .zip(repository.getSemesters()) { courses, semesters ->
-                    runCatching {
-                        courses.getOrThrow() to semesters.getOrThrow()
-                    }
-                }
+            repository.getCoursesWithSemesters()
                 .zip(repository.getMarksBySemester()) { coursesWithSemester, performance ->
                     runCatching {
                         coursesWithSemester.getOrThrow() to performance.getOrThrow()
@@ -37,22 +32,11 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
                 }
                 .onStart { setLoading(true) }
                 .onSuccess {
-                    val coursesWithSemester = it.first
-                    val courses = coursesWithSemester.first
-                    val semesters = coursesWithSemester.second
+                    val semestersWithCourses = it.first.coursesWithSemesters
                     val performance = it.second
-                    val semestersInCourse = ceil(semesters.count().toDouble() / (courses.lastOrNull() ?: 1 ).toDouble()).roundToInt()
-                    val coursesAndSemesters = mutableMapOf<Int, Int>().apply {
-                        courses.forEachIndexed { index, course ->
-                            semesters
-                                .subList(index * semestersInCourse, index * semestersInCourse + semestersInCourse)
-                                .forEach { semester ->
-                                    put(course, semester)
-                                }
-                        }
-                    }
                     setPerformanceData(performance)
-                    setCoursesSemestersData(coursesAndSemesters)
+                    setCoursesSemestersData(semestersWithCourses)
+                    setLoading(false)
                 }
                 .onFailure {
                     Log.e("performance loading error", it.localizedMessage ?: it.message ?: it::class.java.canonicalName)
@@ -71,13 +55,13 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
 
     private fun setPerformanceData(data: List<Performance>) {
         mutateState {
-            state = state.copy(data = data, isLoading = false, isError = false)
+            state = state.copy(data = data)
         }
     }
 
-    fun setCoursesSemestersData(data: Map<Int, Int>) {
+    private fun setCoursesSemestersData(data: Map<Int, Int>) {
         mutateState {
-            state = state.copy(isLoading = false, isError = false, coursesAndSemesters = data)
+            state = state.copy(isLoading = false)
         }
     }
 
@@ -91,7 +75,7 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
 
     private fun setLoading(isLoading: Boolean) {
         mutateState {
-            state = state.copy(isLoading = isLoading, isError = !isLoading && state.isError)
+            state = state.copy(isLoading = isLoading, isError = !isLoading && state.isError, placeholders = if (!isLoading) false else state.placeholders)
         }
     }
 
@@ -108,5 +92,6 @@ data class MarksState(
     val coursesAndSemesters: Map<Int, Int> = emptyMap(),
     val semester: Int? = null,
     val isLoading: Boolean = false,
-    val isError: Boolean = false
+    val isError: Boolean = false,
+    val placeholders: Boolean = true,
 )

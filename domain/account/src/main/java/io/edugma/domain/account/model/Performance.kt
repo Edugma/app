@@ -21,6 +21,7 @@ data class Performance(
     val ticketNum : String? = null,
     val teacher : String,
     val course : Int,
+    val semester: Int,
     val examType : String,
     val chair : String
 )
