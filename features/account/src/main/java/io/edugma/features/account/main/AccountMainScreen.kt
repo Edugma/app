@@ -1,14 +1,12 @@
 package io.edugma.features.account.main
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.edugma.domain.account.model.print
 import io.edugma.features.account.main.cards.AuthCard
 import io.edugma.features.account.main.cards.PersonalCard
 import io.edugma.features.account.main.cards.StudentsCard
@@ -47,7 +45,7 @@ fun AccountContent(state: AccountMenuState, onClickListener: (MenuUi) -> Unit) {
                 PersonalCard(
                     info,
                     state.personal?.specialty) { onClickListener.invoke(MenuUi.Personal) }
-                StudentsCard {onClickListener.invoke(MenuUi.Students)}
+                StudentsCard(state.performance) {onClickListener.invoke(MenuUi.Marks)}
             }
             AuthCard(
                 state.personal?.avatar,
@@ -75,7 +73,7 @@ fun AccountContent(state: AccountMenuState, onClickListener: (MenuUi) -> Unit) {
                 .height(100.dp)
                 .fillMaxWidth()
         ) {
-            UsualCard(name = "Успеваемость") { onClickListener.invoke(MenuUi.Marks) }
+            UsualCard(name = "Студенты") { onClickListener.invoke(MenuUi.Classmates) }
         }
     }
 }

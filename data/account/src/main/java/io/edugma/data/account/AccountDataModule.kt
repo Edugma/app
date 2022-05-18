@@ -13,7 +13,7 @@ val accountDataModule = module {
     single<ApplicationsRepository> { ApplicationsRepositoryImpl(get()) }
     single<PaymentsRepository> { PaymentsRepositoryImpl(get()) }
     single<PeoplesRepository> { PeoplesRepositoryImpl(get()) }
-    single<PerformanceRepository> { PerformanceRepositoryImpl(get()) }
+    single<PerformanceRepository> { PerformanceRepositoryImpl(get(), get()) }
     single<PersonalRepository> { PersonalRepositoryImpl(get(), get()) }
     single<AuthorizationRepository> { AuthorizationRepositoryImpl(get(), get()) }
 }

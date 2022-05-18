@@ -1,6 +1,8 @@
 package io.edugma.features.account.main
 
 import androidx.lifecycle.viewModelScope
+import io.edugma.domain.account.model.Performance
+import io.edugma.domain.account.repository.PerformanceRepository
 import io.edugma.domain.account.repository.PersonalRepository
 import io.edugma.features.account.main.model.MenuUi
 import io.edugma.features.account.main.model.MenuUi.*
@@ -12,8 +14,10 @@ import io.edugma.features.base.navigation.AccountScreens
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class AccountMainViewModel(val personalRepository: PersonalRepository) :
-    BaseViewModel<AccountMenuState>(AccountMenuState()) {
+class AccountMainViewModel(
+    private val personalRepository: PersonalRepository,
+    private val performanceRepository: PerformanceRepository
+) : BaseViewModel<AccountMenuState>(AccountMenuState()) {
 
     init {
         load()
@@ -31,6 +35,12 @@ class AccountMainViewModel(val personalRepository: PersonalRepository) :
             val info = personalRepository.getLocalPersonalInfo()
             mutateState {
                 state = state.copy(personal = info)
+            }
+        }
+        viewModelScope.launch {
+            val performance = performanceRepository.getLocalMarks()
+            mutateState {
+                state = state.copy(performance = performance?.getCurrent())
             }
         }
     }
@@ -66,20 +76,36 @@ class AccountMainViewModel(val personalRepository: PersonalRepository) :
     fun navigateToPersonal() {
         router.navigateTo(AccountScreens.Personal)
     }
+
+    private fun List<Performance>.getCurrent(): CurrentPerformance {
+        val lasts = filter { it.semester == first().semester }.map { it.grade }.let { list ->
+            mutableMapOf<String, Int>().apply {
+                list.forEach { put(it, (this[it] ?: 0) + 1) }
+                keys.forEach { this[it] = (this[it] ?: 0) / list.size * 100 }
+                filterNot { it.value == 0 }
+            }
+        }
+        val all = map { it.grade }.let { list ->
+            mutableMapOf<String, Int>().apply {
+                list.forEach { put(it, (this[it] ?: 0) + 1) }
+                keys.forEach { this[it] = (this[it] ?: 0) / list.size * 100 }
+                filterNot { it.value == 0 }
+            }
+        }
+        return CurrentPerformance(lasts, all)
+    }
 }
 
 data class AccountMenuState(
     val menu: List<MenuUi> = listOf(Auth,
         Personal, Students, Teachers, Classmates, Payments, Applications, Marks),
-    val personal: io.edugma.domain.account.model.Personal? = null
+    val personal: io.edugma.domain.account.model.Personal? = null,
+    val performance: CurrentPerformance? = null
 )
 
-class AccountMenuMutator : BaseMutator<AccountMenuState>() {
-    fun setMenu(menu: List<MenuUi>) {
-        if (state.menu != menu) {
-            state = state.copy(menu = menu)
-        }
-    }
-}
+data class CurrentPerformance(
+    val lastSemester: Map<String, Int>,
+    val allSemesters: Map<String, Int>
+)
 
 object UpdateMenu: ScreenResult

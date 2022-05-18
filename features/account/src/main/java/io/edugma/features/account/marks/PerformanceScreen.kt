@@ -3,11 +3,14 @@ package io.edugma.features.account.marks
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -34,6 +37,8 @@ import org.koin.androidx.compose.getViewModel
 fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
     val state by viewModel.state.collectAsState()
 
+    //todo оптимизировать говнокод
+
     val bottomState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden
     )
@@ -44,26 +49,60 @@ fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
         scrimColor = Color.Black.copy(alpha = 0.5f),
         sheetBackgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.surface,
         sheetContent = {
-            LazyColumn {
-                items(50) {
-                    ListItem(
-                        text = { Text("Item $it") },
-                        icon = {
-                            Icon(
-                                Icons.Default.Favorite,
-                                contentDescription = "Localized description"
-                            )
-                        }
-                    )
+            Column(modifier = Modifier
+                .padding(horizontal = 15.dp)) {
+                SpacerHeight(height = 15.dp)
+                Text(
+                    text = "Фильтры",
+                    style = MaterialTheme3.typography.headlineMedium,
+                    modifier = Modifier.padding(start = 8.dp)
+                )
+                SpacerHeight(height = 20.dp)
+                ChipsRow(
+                    "Курс",
+                    state.availableFilters.courses,
+                    { "$it курс" },
+                    state::isCourseChecked,
+                    { viewModel.changeCurrentFilters(course = it) }
+                )
+                SpacerHeight(height = 20.dp)
+                ChipsRow(
+                    "Семестр",
+                    state.availableFilters.semesters,
+                    { "$it семестр" },
+                    state::isSemesterChecked,
+                    { viewModel.changeCurrentFilters(semester = it) }
+                )
+                SpacerHeight(height = 20.dp)
+                ChipsRow(
+                    "Тип",
+                    state.availableFilters.types,
+                    { it },
+                    state::isTypeChecked,
+                    { viewModel.changeCurrentFilters(type = it) }
+                )
+                SpacerHeight(height = 20.dp)
+                PrimaryButton(
+                    onClick = {scope.launch { bottomState.hide() }},
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Применить")
                 }
+                SpacerHeight(height = 15.dp)
             }
         }
     ) {
         PerformanceContent(
             state,
             showBottomSheet = {scope.launch { bottomState.show() }},
-            retryListener = { viewModel.loadMarks() },
-            backListener = { viewModel.exit() }
+            retryListener = viewModel::loadMarks,
+            courseClickListener = { viewModel.changeCurrentFilters(course = it) },
+            semesterClickListener = { viewModel.changeCurrentFilters(semester = it) },
+            typeClickListener = { viewModel.changeCurrentFilters(type = it) },
+            isCourseCheckedListener = state::isCourseChecked,
+            isSemesterCheckedListener = state::isSemesterChecked,
+            isTypeCheckedListener = state::isTypeChecked,
+            backListener = viewModel::exit
         )
     }
 }
@@ -72,21 +111,53 @@ fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
 fun PerformanceContent(state: MarksState,
                        showBottomSheet: ClickListener,
                        retryListener: ClickListener,
+                       courseClickListener: Typed1Listener<Int>,
+                       semesterClickListener: Typed1Listener<Int>,
+                       typeClickListener: Typed1Listener<String>,
+                       isCourseCheckedListener: (Int) -> Boolean,
+                       isSemesterCheckedListener: (Int) -> Boolean,
+                       isTypeCheckedListener: (String) -> Boolean,
                        backListener: ClickListener) {
     Column {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = { backListener.invoke() }) {
-                Icon(
-                    Icons.Filled.ArrowBack,
-                    contentDescription = "Назад"
+        ConstraintLayout(Modifier.fillMaxWidth()) {
+            val (content, filter) = createRefs()
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.constrainAs(content) {
+                linkTo(parent.start, filter.start)
+                width = Dimension.fillToConstraints
+            }) {
+                IconButton(onClick = backListener) {
+                    Icon(
+                        Icons.Filled.ArrowBack,
+                        contentDescription = "Назад"
+                    )
+                }
+                SpacerWidth(width = 15.dp)
+                Text(
+                    text = "Оценки",
+                    style = MaterialTheme3.typography.titleLarge,
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
-            SpacerWidth(width = 15.dp)
-            Text(
-                text = "Оценки",
-                style = MaterialTheme3.typography.titleLarge
-            )
+            IconButton(onClick = showBottomSheet, modifier = Modifier.constrainAs(filter) {
+                linkTo(parent.top, parent.bottom)
+                end.linkTo(parent.end)
+            }) {
+                Icon(
+                    painterResource(id = FluentIcons.ic_fluent_filter_24_regular),
+                    contentDescription = "Фильтр"
+                )
+            }
         }
+
+        FiltersRow(
+            state,
+            courseClickListener,
+            semesterClickListener,
+            typeClickListener,
+            isCourseCheckedListener,
+            isSemesterCheckedListener,
+            isTypeCheckedListener
+        )
         LazyColumn(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)
         ) {
@@ -107,11 +178,19 @@ fun PerformanceContent(state: MarksState,
                 }
                 else -> {
                     items(
-                        count = state.data.size,
-                        key = { state.data[it].id }
+                        count = state.filteredData.size,
+                        key = { state.filteredData[it].id }
                     ) {
                         SpacerHeight(height = 3.dp)
-                        Performance(state.data[it], showBottomSheet)
+                        Performance(
+                            state.filteredData[it],
+                            courseClickListener,
+                            semesterClickListener,
+                            typeClickListener,
+                            isCourseCheckedListener,
+                            isSemesterCheckedListener,
+                            isTypeCheckedListener
+                        )
                         SpacerHeight(height = 3.dp)
                         Divider()
                     }
@@ -122,8 +201,16 @@ fun PerformanceContent(state: MarksState,
 }
 
 @Composable
-fun Performance(performance: Performance, showBottomSheet: ClickListener) {
-    Column(modifier = Modifier.fillMaxWidth()) {
+fun Performance(performance: Performance,
+                courseClickListener: Typed1Listener<Int>,
+                semesterClickListener: Typed1Listener<Int>,
+                typeClickListener: Typed1Listener<String>,
+                isCourseCheckedListener: (Int) -> Boolean,
+                isSemesterCheckedListener: (Int) -> Boolean,
+                isTypeCheckedListener: (String) -> Boolean
+) {
+    Column(modifier = Modifier
+        .fillMaxWidth()) {
         Text(
             text = performance.name,
             style = MaterialTheme3.typography.titleMedium.copy(fontSize = 19.sp),
@@ -158,21 +245,21 @@ fun Performance(performance: Performance, showBottomSheet: ClickListener) {
             )
         }
         Row {
-            Chip(modifier = Modifier.clickable(onClick = showBottomSheet)) {
+            Chip(modifier = Modifier.clickable(onClick = {if (!isCourseCheckedListener(performance.course)) courseClickListener.invoke(performance.course)})) {
                 Text(
                     text = "${performance.course} курс",
                     style = MaterialTheme3.typography.labelLarge,
                     overflow = TextOverflow.Ellipsis
                 )
             }
-            Chip(modifier = Modifier.clickable(onClick = showBottomSheet)) {
+            Chip(modifier = Modifier.clickable(onClick = {if (!isSemesterCheckedListener(performance.semester)) semesterClickListener.invoke(performance.semester)})) {
                 Text(
                     text = "${performance.semester} семестр",
                     style = MaterialTheme3.typography.labelLarge,
                     overflow = TextOverflow.Ellipsis
                 )
             }
-            Chip(modifier = Modifier.clickable(onClick = showBottomSheet)) {
+            Chip(modifier = Modifier.clickable(onClick = {if (!isTypeCheckedListener(performance.examType)) typeClickListener.invoke(performance.examType)})) {
                 Text(
                     text = performance.examType,
                     style = MaterialTheme3.typography.labelLarge,
@@ -190,7 +277,9 @@ fun PerformancePlaceholder() {
         Text(
             text = "",
             style = MaterialTheme3.typography.titleMedium.copy(fontSize = 19.sp),
-            modifier = Modifier.widthIn(min = 200.dp).placeholder(true)
+            modifier = Modifier
+                .widthIn(min = 200.dp)
+                .placeholder(true)
         )
         SpacerHeight(height = 10.dp)
         ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
@@ -225,33 +314,96 @@ fun PerformancePlaceholder() {
             )
         }
         Row {
-            Chip {
-//                Text(
-//                    text = "",
-//                    style = MaterialTheme3.typography.labelLarge,
-//                    overflow = TextOverflow.Ellipsis,
-//                    maxLines = 1,
-//                    modifier = Modifier.placeholder(true)
-//                )
-            }
-            Chip {
-//                Text(
-//                    text = "",
-//                    style = MaterialTheme3.typography.labelLarge,
-//                    overflow = TextOverflow.Ellipsis,
-//                    maxLines = 1,
-//                    modifier = Modifier.placeholder(true).
-//                )
-            }
-            Chip {
-//                Text(
-//                    text = "",
-//                    style = MaterialTheme3.typography.labelLarge,
-//                    overflow = TextOverflow.Ellipsis,
-//                    maxLines = 1,
-//                    modifier = Modifier.placeholder(true)
-//                )
+            Chip(modifier = Modifier.placeholder(true))
+            Chip(modifier = Modifier.placeholder(true))
+            Chip(modifier = Modifier.placeholder(true))
+        }
+    }
+}
+
+@Composable
+private fun<T> ChipsRow(
+    name: String,
+    items: List<T>,
+    itemMapper: (T) -> String,
+    isCheckedListener: (T) -> Boolean,
+    onClick: Typed1Listener<T>
+) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Text(
+            text = name,
+            style = MaterialTheme3.typography.bodyMedium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis)
+        SpacerWidth(width = 10.dp)
+        LazyRow {
+            items(items) {
+                val isChecked = isCheckedListener.invoke(it)
+                Chip(
+                    icon = if (isChecked) Icons.Rounded.Close else null,
+                    onClick = { onClick.invoke(it) }) {
+                        Text(
+                            text = itemMapper.invoke(it),
+                            style = MaterialTheme3.typography.labelMedium,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                }
             }
         }
     }
 }
+
+@Composable
+fun FiltersRow(
+    state: MarksState,
+    courseClickListener: Typed1Listener<Int>,
+    semesterClickListener: Typed1Listener<Int>,
+    typeClickListener: Typed1Listener<String>,
+    isCourseCheckedListener: (Int) -> Boolean,
+    isSemesterCheckedListener: (Int) -> Boolean,
+    isTypeCheckedListener: (String) -> Boolean
+) {
+    LazyRow {
+        items(state.currentFilters.courses) {
+            val isChecked = isCourseCheckedListener.invoke(it)
+            Chip(
+                icon = if (isChecked) Icons.Rounded.Close else null,
+                onClick = { courseClickListener.invoke(it) }) {
+                Text(
+                    text = "$it курс",
+                    style = MaterialTheme3.typography.labelMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
+        items(state.currentFilters.semesters) {
+            val isChecked = isSemesterCheckedListener.invoke(it)
+            Chip(
+                icon = if (isChecked) Icons.Rounded.Close else null,
+                onClick = { semesterClickListener.invoke(it) }) {
+                Text(
+                    text = "$it семестр",
+                    style = MaterialTheme3.typography.labelMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
+        items(state.currentFilters.types) {
+            val isChecked = isTypeCheckedListener.invoke(it)
+            Chip(
+                icon = if (isChecked) Icons.Rounded.Close else null,
+                onClick = { typeClickListener.invoke(it) }) {
+                Text(
+                    text = it,
+                    style = MaterialTheme3.typography.labelMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
+    }
+}
+
