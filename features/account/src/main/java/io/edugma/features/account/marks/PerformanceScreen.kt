@@ -39,9 +39,6 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
     val state by viewModel.state.collectAsState()
-
-    //todo оптимизировать говнокод
-
     val bottomState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden
     )

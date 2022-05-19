@@ -14,7 +14,7 @@ class PaymentsRepositoryImpl(
             .flowOn(Dispatchers.IO)
 
     override fun getPayment(type: PaymentType?) =
-        api.getPayments(type?.name?.lowercase())
+        api.getPayments(type?.name?.lowercase().orEmpty())
             .flowOn(Dispatchers.IO)
 
 }

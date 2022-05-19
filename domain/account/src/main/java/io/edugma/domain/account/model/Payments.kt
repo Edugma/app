@@ -11,9 +11,9 @@ data class Payments (
 	val number : String,
 	val name : String,
 	val type : String,
-	val level : String?,
-	val dormNum : String?,
-	val dormRoom : String?,
+	val level : String? = null,
+	val dormNum : String? = null,
+	val dormRoom : String? = null,
 	@Serializable(with = LocalDateConverter::class)
 	val startDate : LocalDate,
 	@Serializable(with = LocalDateConverter::class)
@@ -23,6 +23,6 @@ data class Payments (
 	val balance : String,
 	val balanceCurrent : String,
 	@Serializable(with = LocalDateConverter::class)
-	val lastPaymentDate : LocalDate?,
+	val lastPaymentDate : LocalDate? = null,
 	val payments : List<Payment>
 )

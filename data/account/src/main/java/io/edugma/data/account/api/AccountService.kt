@@ -47,7 +47,7 @@ interface AccountService {
     fun getPersonalInfo(): Flow<Result<Personal>>
 
     @GET("/payments/{type}")
-    fun getPayments(@Path("type") type: String?): Flow<Result<Contracts>>
+    fun getPayments(@Path("type") type: String): Flow<Result<Contracts>>
 
     @GET("/payments/types/")
     fun getPaymentsTypes(): Flow<Result<List<PaymentType>>>
