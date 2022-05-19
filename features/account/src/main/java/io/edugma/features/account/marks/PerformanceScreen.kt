@@ -227,7 +227,7 @@ fun Performance(
                     overflow = TextOverflow.Ellipsis
                 )
             }
-            Chip(modifier = Modifier.clickable(onClick = {filterClickListener.invoke(Semester(performance.course))})) {
+            Chip(modifier = Modifier.clickable(onClick = {filterClickListener.invoke(Semester(performance.semester))})) {
                 Text(
                     text = "${performance.semester} семестр",
                     style = MaterialTheme3.typography.labelLarge,
