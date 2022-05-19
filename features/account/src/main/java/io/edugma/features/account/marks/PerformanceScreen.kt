@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -62,19 +64,22 @@ fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
                 ChipsRow(
                     "Курс",
                     state.courses,
-                    viewModel::updateFilter
+                    viewModel::updateFilter,
+                    state.placeholders
                 )
                 SpacerHeight(height = 20.dp)
                 ChipsRow(
                     "Семестр",
                     state.semesters,
-                    viewModel::updateFilter
+                    viewModel::updateFilter,
+                    state.placeholders
                 )
                 SpacerHeight(height = 20.dp)
                 ChipsRow(
                     "Тип",
                     state.types,
-                    viewModel::updateFilter
+                    viewModel::updateFilter,
+                    state.placeholders
                 )
                 SpacerHeight(height = 20.dp)
                 PrimaryButton(
@@ -295,7 +300,8 @@ fun PerformancePlaceholder() {
 private fun<T> ChipsRow(
     name: String,
     items: Set<Filter<T>>,
-    onClick: Typed1Listener<Filter<T>>
+    onClick: Typed1Listener<Filter<T>>,
+    placeholders: Boolean
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
@@ -305,6 +311,11 @@ private fun<T> ChipsRow(
             overflow = TextOverflow.Ellipsis)
         SpacerWidth(width = 10.dp)
         LazyRow {
+            if (placeholders) {
+                items(4) {
+                    Chip(Modifier.placeholder(true)) {}
+                }
+            }
             val listItems = items.toList()
             items(
                 count = listItems.size,

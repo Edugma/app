@@ -11,13 +11,35 @@ import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.mvi.BaseViewModelFull
 import io.edugma.features.base.core.utils.ScreenResult
 import io.edugma.features.base.navigation.AccountScreens
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.isActive
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
+import kotlin.random.Random
 
 class AccountMainViewModel(
     private val personalRepository: PersonalRepository,
     private val performanceRepository: PerformanceRepository
 ) : BaseViewModel<AccountMenuState>(AccountMenuState()) {
+
+    private val performanceTimer = flow {
+        var bool = Random.nextBoolean()
+        emit(bool)
+        while (true) {
+            if (!currentCoroutineContext().isActive)
+                return@flow
+            else {
+                delay(10000)
+                bool = !bool
+                emit(bool)
+            }
+        }
+    }
 
     init {
         load()
@@ -27,6 +49,9 @@ class AccountMainViewModel(
                     UpdateMenu -> load()
                 }
             }
+        }
+        viewModelScope.launch {
+            performanceTimer.collectLatest(::changeCurrentPerformance)
         }
     }
 
@@ -77,22 +102,36 @@ class AccountMainViewModel(
         router.navigateTo(AccountScreens.Personal)
     }
 
-    private fun List<Performance>.getCurrent(): CurrentPerformance {
-        val lasts = filter { it.semester == first().semester }.map { it.grade }.let { list ->
-            mutableMapOf<String, Int>().apply {
-                list.forEach { put(it, (this[it] ?: 0) + 1) }
-                keys.forEach { this[it] = (this[it] ?: 0) / list.size * 100 }
-                filterNot { it.value == 0 }
-            }
+    private fun changeCurrentPerformance(isCurrent: Boolean) {
+        mutateState {
+            state = state.copy(showCurrentPerformance = isCurrent)
         }
-        val all = map { it.grade }.let { list ->
-            mutableMapOf<String, Int>().apply {
-                list.forEach { put(it, (this[it] ?: 0) + 1) }
-                keys.forEach { this[it] = (this[it] ?: 0) / list.size * 100 }
-                filterNot { it.value == 0 }
+    }
+
+    private fun List<Performance>.getCurrent(): CurrentPerformance? {
+        fun getSortedMarks(marks: List<Performance>): Map<String, Int> {
+            val marksList = marks.map { it.grade }.filterNot { it == "Зачтено" || it == "Не зачтено" }.let { list ->
+                mutableMapOf<String, Int>().apply {
+                    list.toSet().forEach { put(it, list.count { mark -> mark == it }) }
+                    keys.forEach { this[it] = ((this[it] ?: 0).toDouble() / list.size * 100).roundToInt() }
+                }
+                    .filterNot { it.value == 0 }
             }
+            val resultMap = mutableMapOf<String, Int>()
+            marksList.values.sorted().reversed().take(3).forEach {
+                marksList.forEach { (mark, percent) -> if (it == percent) resultMap[mark] = percent }
+            }
+            while(resultMap.keys.size > 3) {
+                resultMap.remove(resultMap.keys.last())
+            }
+            return resultMap
         }
-        return CurrentPerformance(lasts, all)
+        if (isEmpty()) return null
+        return CurrentPerformance(
+            first().semester,
+            getSortedMarks(filter { it.semester == first().semester }),
+            getSortedMarks(this)
+        )
     }
 }
 
@@ -100,10 +139,12 @@ data class AccountMenuState(
     val menu: List<MenuUi> = listOf(Auth,
         Personal, Students, Teachers, Classmates, Payments, Applications, Marks),
     val personal: io.edugma.domain.account.model.Personal? = null,
-    val performance: CurrentPerformance? = null
+    val performance: CurrentPerformance? = null,
+    val showCurrentPerformance: Boolean = true
 )
 
 data class CurrentPerformance(
+    val lastSemesterNumber: Int,
     val lastSemester: Map<String, Int>,
     val allSemesters: Map<String, Int>
 )

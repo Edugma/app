@@ -45,7 +45,7 @@ fun AccountContent(state: AccountMenuState, onClickListener: (MenuUi) -> Unit) {
                 PersonalCard(
                     info,
                     state.personal?.specialty) { onClickListener.invoke(MenuUi.Personal) }
-                StudentsCard(state.performance) {onClickListener.invoke(MenuUi.Marks)}
+                StudentsCard(state.performance, state.showCurrentPerformance) {onClickListener.invoke(MenuUi.Marks)}
             }
             AuthCard(
                 state.personal?.avatar,

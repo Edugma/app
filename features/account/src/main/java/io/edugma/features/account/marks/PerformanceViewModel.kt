@@ -10,6 +10,7 @@ import io.edugma.features.account.marks.Filter.*
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.utils.isNotNull
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 
@@ -24,20 +25,14 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
         viewModelScope.launch {
             setLoading(true)
 
-            //todo говнокод
             //todo пофиксить фриз при  загрузке
-//            repository.getMarksLocal().zip(repository.getCoursesWithSemestersLocal()) { performance, coursesSemesters ->
-//                performance?.let {
-//                    setPerformanceData(performance)
-//                    changeAvailableFilters(
-//                        courses = coursesSemesters?.first,
-//                        semesters = coursesSemesters?.second,
-//                        type = performance.getExamTypes()
-//                    )
-//                    filterAndSetData(performance)
-//                    setLoading(false)
+//            repository.getMarksLocal()
+//                .collectLatest {
+//                    it?.let {
+//                        setPerformanceData(it)
+//                        setLoading(false)
+//                    }
 //                }
-//            }.collect()
 
             repository.getCoursesWithSemesters()
                 .zip(repository.getMarksBySemester()) { coursesWithSemester, performance ->
@@ -55,10 +50,11 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
                         types = performance.getExamTypes()
                     )
                     setLoading(false)
+                    setBottomSheetPlaceholders(false)
                 }
                 .onFailure {
                     Log.e("performance loading error", it.localizedMessage ?: it.message ?: it::class.java.canonicalName)
-                    setError(true)
+                    setError()
                 }
                 .collect()
         }
@@ -76,9 +72,15 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
         }
     }
 
-    private fun setError(isError: Boolean) {
+    private fun setError() {
         mutateState {
-            state = state.copy(isError = isError, isLoading = false, placeholders = false)
+            state = state.copy(isError = true, isLoading = false, placeholders = false, bottomSheetPlaceholders = true)
+        }
+    }
+
+    private fun setBottomSheetPlaceholders(placeholders: Boolean) {
+        mutateState {
+            state = state.copy(bottomSheetPlaceholders = placeholders)
         }
     }
 
@@ -133,6 +135,7 @@ data class MarksState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
     val placeholders: Boolean = true,
+    val bottomSheetPlaceholders: Boolean = true,
 ) {
 
     private val filteredCourses = courses.filter { it.isChecked }.toSet()

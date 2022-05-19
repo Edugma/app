@@ -43,7 +43,7 @@ class PerformanceRepositoryImpl(
             .flowOn(Dispatchers.IO)
 
     override fun getMarksBySemester(semester: Int?) =
-        api.getMarks(semester.toString())
+        api.getMarks(semester?.toString().orEmpty())
             .onSuccess {
                 if (semester == null) {
                     setLocalMarks(it)
