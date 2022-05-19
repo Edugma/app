@@ -27,6 +27,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import io.edugma.domain.account.model.Performance
 import io.edugma.features.account.R
+import io.edugma.features.account.marks.Filter.*
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.*
 import kotlinx.coroutines.launch
@@ -60,26 +61,20 @@ fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
                 SpacerHeight(height = 20.dp)
                 ChipsRow(
                     "Курс",
-                    state.availableFilters.courses,
-                    { "$it курс" },
-                    state::isCourseChecked,
-                    { viewModel.changeCurrentFilters(course = it) }
+                    state.courses,
+                    viewModel::updateFilter
                 )
                 SpacerHeight(height = 20.dp)
                 ChipsRow(
                     "Семестр",
-                    state.availableFilters.semesters,
-                    { "$it семестр" },
-                    state::isSemesterChecked,
-                    { viewModel.changeCurrentFilters(semester = it) }
+                    state.semesters,
+                    viewModel::updateFilter
                 )
                 SpacerHeight(height = 20.dp)
                 ChipsRow(
                     "Тип",
-                    state.availableFilters.types,
-                    { it },
-                    state::isTypeChecked,
-                    { viewModel.changeCurrentFilters(type = it) }
+                    state.types,
+                    viewModel::updateFilter
                 )
                 SpacerHeight(height = 20.dp)
                 PrimaryButton(
@@ -96,12 +91,7 @@ fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
             state,
             showBottomSheet = {scope.launch { bottomState.show() }},
             retryListener = viewModel::loadMarks,
-            courseClickListener = { viewModel.changeCurrentFilters(course = it) },
-            semesterClickListener = { viewModel.changeCurrentFilters(semester = it) },
-            typeClickListener = { viewModel.changeCurrentFilters(type = it) },
-            isCourseCheckedListener = state::isCourseChecked,
-            isSemesterCheckedListener = state::isSemesterChecked,
-            isTypeCheckedListener = state::isTypeChecked,
+            filterClickListener = viewModel::updateFilter,
             backListener = viewModel::exit
         )
     }
@@ -111,12 +101,7 @@ fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
 fun PerformanceContent(state: MarksState,
                        showBottomSheet: ClickListener,
                        retryListener: ClickListener,
-                       courseClickListener: Typed1Listener<Int>,
-                       semesterClickListener: Typed1Listener<Int>,
-                       typeClickListener: Typed1Listener<String>,
-                       isCourseCheckedListener: (Int) -> Boolean,
-                       isSemesterCheckedListener: (Int) -> Boolean,
-                       isTypeCheckedListener: (String) -> Boolean,
+                       filterClickListener: Typed1Listener<Filter<*>>,
                        backListener: ClickListener) {
     Column {
         ConstraintLayout(Modifier.fillMaxWidth()) {
@@ -148,15 +133,9 @@ fun PerformanceContent(state: MarksState,
                 )
             }
         }
-
         FiltersRow(
-            state,
-            courseClickListener,
-            semesterClickListener,
-            typeClickListener,
-            isCourseCheckedListener,
-            isSemesterCheckedListener,
-            isTypeCheckedListener
+            state.enabledFilters,
+            filterClickListener
         )
         LazyColumn(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)
@@ -184,12 +163,7 @@ fun PerformanceContent(state: MarksState,
                         SpacerHeight(height = 3.dp)
                         Performance(
                             state.filteredData[it],
-                            courseClickListener,
-                            semesterClickListener,
-                            typeClickListener,
-                            isCourseCheckedListener,
-                            isSemesterCheckedListener,
-                            isTypeCheckedListener
+                            filterClickListener
                         )
                         SpacerHeight(height = 3.dp)
                         Divider()
@@ -201,13 +175,9 @@ fun PerformanceContent(state: MarksState,
 }
 
 @Composable
-fun Performance(performance: Performance,
-                courseClickListener: Typed1Listener<Int>,
-                semesterClickListener: Typed1Listener<Int>,
-                typeClickListener: Typed1Listener<String>,
-                isCourseCheckedListener: (Int) -> Boolean,
-                isSemesterCheckedListener: (Int) -> Boolean,
-                isTypeCheckedListener: (String) -> Boolean
+fun Performance(
+    performance: Performance,
+    filterClickListener: Typed1Listener<Filter<*>>,
 ) {
     Column(modifier = Modifier
         .fillMaxWidth()) {
@@ -245,21 +215,21 @@ fun Performance(performance: Performance,
             )
         }
         Row {
-            Chip(modifier = Modifier.clickable(onClick = {if (!isCourseCheckedListener(performance.course)) courseClickListener.invoke(performance.course)})) {
+            Chip(modifier = Modifier.clickable(onClick = {filterClickListener.invoke(Course(performance.course))})) {
                 Text(
                     text = "${performance.course} курс",
                     style = MaterialTheme3.typography.labelLarge,
                     overflow = TextOverflow.Ellipsis
                 )
             }
-            Chip(modifier = Modifier.clickable(onClick = {if (!isSemesterCheckedListener(performance.semester)) semesterClickListener.invoke(performance.semester)})) {
+            Chip(modifier = Modifier.clickable(onClick = {filterClickListener.invoke(Semester(performance.course))})) {
                 Text(
                     text = "${performance.semester} семестр",
                     style = MaterialTheme3.typography.labelLarge,
                     overflow = TextOverflow.Ellipsis
                 )
             }
-            Chip(modifier = Modifier.clickable(onClick = {if (!isTypeCheckedListener(performance.examType)) typeClickListener.invoke(performance.examType)})) {
+            Chip(modifier = Modifier.clickable(onClick = {filterClickListener.invoke(Type(performance.examType))})) {
                 Text(
                     text = performance.examType,
                     style = MaterialTheme3.typography.labelLarge,
@@ -324,10 +294,8 @@ fun PerformancePlaceholder() {
 @Composable
 private fun<T> ChipsRow(
     name: String,
-    items: List<T>,
-    itemMapper: (T) -> String,
-    isCheckedListener: (T) -> Boolean,
-    onClick: Typed1Listener<T>
+    items: Set<Filter<T>>,
+    onClick: Typed1Listener<Filter<T>>
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
@@ -337,17 +305,20 @@ private fun<T> ChipsRow(
             overflow = TextOverflow.Ellipsis)
         SpacerWidth(width = 10.dp)
         LazyRow {
-            items(items) {
-                val isChecked = isCheckedListener.invoke(it)
+            val listItems = items.toList()
+            items(
+                count = listItems.size,
+                key = { listItems[it].hashCode() }
+            ) {
                 Chip(
-                    icon = if (isChecked) Icons.Rounded.Close else null,
-                    onClick = { onClick.invoke(it) }) {
-                        Text(
-                            text = itemMapper.invoke(it),
-                            style = MaterialTheme3.typography.labelMedium,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
+                    icon = if (listItems[it].isChecked) Icons.Rounded.Close else null,
+                    onClick = { onClick.invoke(listItems[it]) }) {
+                    Text(
+                        text = listItems[it].mappedValue,
+                        style = MaterialTheme3.typography.labelMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
                 }
             }
         }
@@ -356,48 +327,20 @@ private fun<T> ChipsRow(
 
 @Composable
 fun FiltersRow(
-    state: MarksState,
-    courseClickListener: Typed1Listener<Int>,
-    semesterClickListener: Typed1Listener<Int>,
-    typeClickListener: Typed1Listener<String>,
-    isCourseCheckedListener: (Int) -> Boolean,
-    isSemesterCheckedListener: (Int) -> Boolean,
-    isTypeCheckedListener: (String) -> Boolean
+    filters: Set<Filter<*>>,
+    filterClickListener: Typed1Listener<Filter<*>>
 ) {
     LazyRow {
-        items(state.currentFilters.courses) {
-            val isChecked = isCourseCheckedListener.invoke(it)
+        val filtersList = filters.toList()
+        items(
+            count = filtersList.size,
+            key = {filtersList[it].hashCode()}
+        ) {
             Chip(
-                icon = if (isChecked) Icons.Rounded.Close else null,
-                onClick = { courseClickListener.invoke(it) }) {
+                icon = Icons.Rounded.Close,
+                onClick = { filterClickListener.invoke(filtersList[it]) }) {
                 Text(
-                    text = "$it курс",
-                    style = MaterialTheme3.typography.labelMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-        }
-        items(state.currentFilters.semesters) {
-            val isChecked = isSemesterCheckedListener.invoke(it)
-            Chip(
-                icon = if (isChecked) Icons.Rounded.Close else null,
-                onClick = { semesterClickListener.invoke(it) }) {
-                Text(
-                    text = "$it семестр",
-                    style = MaterialTheme3.typography.labelMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-        }
-        items(state.currentFilters.types) {
-            val isChecked = isTypeCheckedListener.invoke(it)
-            Chip(
-                icon = if (isChecked) Icons.Rounded.Close else null,
-                onClick = { typeClickListener.invoke(it) }) {
-                Text(
-                    text = it,
+                    text = filtersList[it].mappedValue,
                     style = MaterialTheme3.typography.labelMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
