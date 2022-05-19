@@ -65,3 +65,7 @@ data class PaymentsState(
 ) {
     val types = data.keys.toList()
 }
+
+fun PaymentsState.getTypeByIndex(index: Int) = types.getOrNull(index)
+
+fun PaymentsState.getPaymentsByIndex(index: Int) = data.values.toList().getOrNull(index)
