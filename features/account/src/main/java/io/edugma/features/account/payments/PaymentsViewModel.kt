@@ -55,6 +55,12 @@ class PaymentsViewModel(private val repository: PaymentsRepository) :
         }
     }
 
+    fun typeChange(newIndex: Int) {
+        mutateState {
+            state = state.copy(selectedIndex = newIndex)
+        }
+    }
+
 }
 
 data class PaymentsState(
@@ -62,8 +68,11 @@ data class PaymentsState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
     val placeholders: Boolean = true,
+    val selectedIndex: Int = 0,
 ) {
     val types = data.keys.toList()
+    val selectedType = types.getOrNull(selectedIndex)
+    val selectedPayment = data.values.toList().getOrNull(selectedIndex)
 }
 
 fun PaymentsState.getTypeByIndex(index: Int) = types.getOrNull(index)

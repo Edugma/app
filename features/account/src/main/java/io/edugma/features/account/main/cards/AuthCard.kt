@@ -69,7 +69,7 @@ fun AuthCard(
                         Text(
                             text = name,
                             style = MaterialTheme3.typography.labelMedium,
-                            color = MaterialTheme3.colorScheme.tertiary,
+                            color = MaterialTheme3.colorScheme.secondary,
                             modifier = Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Center,
                             overflow = TextOverflow.Ellipsis

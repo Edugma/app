@@ -1,5 +1,7 @@
 package io.edugma.features.account.payments
 
+import android.util.DisplayMetrics
+import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -14,6 +16,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -24,10 +28,8 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import io.edugma.domain.account.model.*
-import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.MaterialTheme3
-import io.edugma.features.base.core.utils.Typed1Listener
-import io.edugma.features.base.core.utils.format
+import io.edugma.features.account.R
+import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.*
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
@@ -38,7 +40,8 @@ fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
 
     PaymentsContent(state,
         retryListener = viewModel::load,
-        backListener = viewModel::exit
+        onPaymentChange = viewModel::typeChange,
+        backListener = viewModel::exit,
     )
 }
 
@@ -47,12 +50,16 @@ fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
 fun PaymentsContent(
     state: PaymentsState,
     retryListener: ClickListener,
+    onPaymentChange: Typed1Listener<Int>,
     backListener: ClickListener
 ) {
     Column {
+        val paymentsPagerState = rememberPagerState(state.selectedIndex)
+        paymentsPagerState.bindTo(state.selectedIndex)
+        paymentsPagerState.onPageChanged(onPaymentChange::invoke)
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
+            modifier = Modifier.padding(bottom = 10.dp)
         ) {
             IconButton(onClick = backListener) {
                 Icon(
@@ -62,34 +69,23 @@ fun PaymentsContent(
             }
             SpacerWidth(width = 15.dp)
             Text(
-                text = "Оплата",
-                style = MaterialTheme3.typography.titleLarge,
-                modifier = Modifier.fillMaxWidth()
+                text = state.selectedPayment?.let { "Договор №${it.number}" } ?: "Оплата",
+                style = MaterialTheme3.typography.headlineSmall,
             )
-        }
-        val pagerState = rememberPagerState()
-        val coroutineScope = rememberCoroutineScope()
-        val selectedPage = remember{mutableStateOf<Int>(0)}
-        LaunchedEffect(pagerState) {
-            snapshotFlow { pagerState.currentPage }.collect{
-                selectedPage.value = it
-            }
         }
         if (state.placeholders) {
             TypesRowPlaceholders()
         } else {
             TypesRow(
                 state.types,
-                state.types.getOrNull(selectedPage.value)
+                state.selectedType
             ) {
-                coroutineScope.launch {
-                    pagerState.scrollToPage(state.types.indexOf(it))
-                }
+                onPaymentChange.invoke(state.data.keys.indexOf(it))
             }
         }
         HorizontalPager(
             count = state.data.size,
-            state = pagerState,
+            state = paymentsPagerState,
             key = {state.getTypeByIndex(it) ?: PaymentType.Dormitory}
         ) { page ->
             Column(modifier = Modifier.fillMaxSize()) {
@@ -120,10 +116,31 @@ fun Payments(payments: Payments) {
             .padding(5.dp)
             .heightIn(min = 40.dp)
     ) {
-        Text("Номер договора: ${payments.id}")
-        Text("Дата договора: ${payments.startDate.format()}")
-        Text("Сумма договора: ${payments.sum}")
-        Text("Задолженность: ${payments.balanceCurrent}")
+        payments.level?.let {
+            TextWithIcon(
+                text = "степень образования: ${payments.level}",
+                icon = painterResource(id = R.drawable.acc_ic_teacher_24),
+                modifier = Modifier
+            )
+        }
+        payments.dormRoom?.let {
+            TextWithIcon(
+                text = payments.dormNum?.let { "Общежитие №$it, " }.orEmpty() + "комната $it",
+                icon = painterResource(id = FluentIcons.ic_fluent_building_24_regular),
+                modifier = Modifier
+            )
+        }
+        TextWithIcon(
+            text = "Срок действия: ${payments.startDate.format()} - ${payments.endDate.format()}",
+            icon = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
+            modifier = Modifier
+        )
+        TextWithIcon(
+            text = "Сумма договора: ${payments.sum}" +
+                    if (payments.balance != "0") ", осталось выплатить ${payments.balance}" else "",
+            icon = painterResource(id = FluentIcons.ic_fluent_money_24_regular),
+            modifier = Modifier
+        )
     }
 }
 
@@ -131,6 +148,7 @@ fun Payments(payments: Payments) {
 fun Payment(payment: Payment) {
     ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
         val (date, value) = createRefs()
+
         Text(
             text = payment.value,
             modifier = Modifier.constrainAs(value) {
@@ -179,7 +197,9 @@ fun TypesRowPlaceholders() {
             count = 2
         ) {
             SelectableChip(
-                modifier = Modifier.placeholder(true)
+                modifier = Modifier
+                    .placeholder(true)
+                    .widthIn(80.dp)
             ) {}
         }
     }

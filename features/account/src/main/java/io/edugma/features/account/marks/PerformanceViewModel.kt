@@ -101,9 +101,12 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
     fun updateFilter(filter: Filter<*>) {
         mutateState {
             state = when(filter) {
-                is Course -> state.copy(courses = state.courses.updateFilter(filter) as Set<Course> )
-                is Semester -> state.copy(semesters = state.semesters.updateFilter(filter) as Set<Semester> )
-                is Type -> state.copy(types = state.types.updateFilter(filter) as Set<Type>)
+                is Course -> state.copy(courses = state.courses.updateFilter(filter) as Set<Course>,
+                    currentFilters = state.currentFilters.addOrDeleteFilter(filter))
+                is Semester -> state.copy(semesters = state.semesters.updateFilter(filter) as Set<Semester>,
+                    currentFilters = state.currentFilters.addOrDeleteFilter(filter))
+                is Type -> state.copy(types = state.types.updateFilter(filter) as Set<Type>,
+                    currentFilters = state.currentFilters.addOrDeleteFilter(filter))
             }
         }
     }
@@ -124,6 +127,20 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
         return newSet.toSet()
     }
 
+    private fun<T> Set<Filter<T>>.addOrDeleteFilter(newFilter: Filter<T>): Set<Filter<T>> {
+        val newSet = toMutableList()
+        if (newFilter.isChecked) {
+            newSet.remove(newFilter)
+        } else {
+            val filter = when (newFilter) {
+                is Course -> (newFilter as Course).copy(isChecked = !newFilter.isChecked) as Filter<T>
+                is Semester -> (newFilter as Semester).copy(isChecked = !newFilter.isChecked) as Filter<T>
+                is Type -> (newFilter as Type).copy(isChecked = !newFilter.isChecked) as Filter<T>
+            }
+            newSet.add(filter)
+        }
+        return newSet.toSet()
+    }
 
 }
 
@@ -132,6 +149,7 @@ data class MarksState(
     val courses: Set<Course> = emptySet(),
     val semesters: Set<Semester> = emptySet(),
     val types: Set<Type> = emptySet(),
+    val currentFilters: Set<Filter<*>> = emptySet(),
     val isLoading: Boolean = false,
     val isError: Boolean = false,
     val placeholders: Boolean = true,

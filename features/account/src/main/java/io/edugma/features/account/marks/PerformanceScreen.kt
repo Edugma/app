@@ -136,7 +136,7 @@ fun PerformanceContent(state: MarksState,
             }
         }
         FiltersRow(
-            state.enabledFilters,
+            state.currentFilters,
             filterClickListener
         )
         LazyColumn(
@@ -318,8 +318,8 @@ private fun<T> ChipsRow(
                 count = listItems.size,
                 key = { listItems[it].hashCode() }
             ) {
-                Chip(
-                    icon = if (listItems[it].isChecked) Icons.Rounded.Close else null,
+                SelectableChip(
+                    selectedState = listItems[it].isChecked,
                     onClick = { onClick.invoke(listItems[it]) }) {
                     Text(
                         text = listItems[it].mappedValue,

@@ -25,7 +25,7 @@ fun StudentsCard(
     TonalCard(
         modifier = Modifier
             .padding(horizontal = 4.dp, vertical = 4.dp)
-            .height(80.dp)
+            .height(85.dp)
             .fillMaxWidth(0.6f),
         shape = RoundedCornerShape(16.dp),
         onClick = onClick
@@ -33,6 +33,7 @@ fun StudentsCard(
         Box(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
             Column {
                 Text(text = "Успеваемость")
+                Spacer(Modifier.height(4.dp))
                 performance?.apply {
                     if (showCurrentPerformance) {
                         Text(

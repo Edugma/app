@@ -44,13 +44,13 @@ fun SelectableChip(modifier: Modifier = Modifier, selectedState: Boolean = false
         color = if (selectedState) MaterialTheme3.colorScheme.primary else MaterialTheme3.colorScheme.surface,
         shape = MaterialTheme3.shapes.extraLarge,
     ) { Row(modifier = modifier
-        .widthIn(min = 100.dp)
+        .widthIn(min = 50.dp)
         .let { onClick?.let { listener -> it.clickable(onClick = listener) } ?: it},
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
         content = {
-            SpacerWidth(width = 20.dp)
+            SpacerWidth(width = 15.dp)
             body.invoke()
-            SpacerWidth(width = 20.dp)
+            SpacerWidth(width = 15.dp)
         }) }
 }

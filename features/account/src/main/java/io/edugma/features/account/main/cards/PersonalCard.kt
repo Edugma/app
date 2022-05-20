@@ -23,7 +23,7 @@ fun PersonalCard(
     TonalCard(
         modifier = Modifier
             .padding(horizontal = 4.dp, vertical = 4.dp)
-            .height(100.dp)
+            .height(95.dp)
             .fillMaxWidth(0.6f),
         shape = RoundedCornerShape(16.dp),
         onClick = onScheduleClick
