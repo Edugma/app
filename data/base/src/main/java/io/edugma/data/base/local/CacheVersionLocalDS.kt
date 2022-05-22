@@ -5,6 +5,7 @@ import io.edugma.data.base.model.Cached
 import io.edugma.domain.base.utils.TAG
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.datetime.Clock
 import java.time.ZonedDateTime
 import kotlin.time.Duration
 
@@ -16,7 +17,7 @@ class CacheVersionLocalDS(
 
     inline fun <reified T> save(obj: T, key: String): Result<Unit> {
         return cache.save(obj, key).onSuccess {
-            version.setVersion(ZonedDateTime.now(), prefix + key)
+            version.setVersion(Clock.System.now(), prefix + key)
         }.onFailure {
             Log.e(TAG, it.toString(), it)
         }

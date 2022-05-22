@@ -2,6 +2,7 @@ package io.edugma.data.base.local
 
 import io.edugma.data.base.model.DataVersion
 import io.edugma.data.base.model.isExpired
+import kotlinx.datetime.Instant
 import org.kodein.db.DB
 import org.kodein.db.get
 import org.kodein.db.keyById
@@ -41,14 +42,14 @@ class DataVersionLocalDS(
 //        }
 //    }
 
-    fun setVersion(dateTime: ZonedDateTime, vararg keys: String) {
+    fun setVersion(dateTime: Instant, vararg keys: String) {
         kotlin.runCatching {
             val fullKey = keys.joinToString(separator = "")
             setVersion(fullKey, dateTime)
         }
     }
 
-    fun setVersion(id: String, dateTime: ZonedDateTime) {
+    fun setVersion(id: String, dateTime: Instant) {
         kotlin.runCatching {
             db.put(DataVersion(id, dateTime))
         }

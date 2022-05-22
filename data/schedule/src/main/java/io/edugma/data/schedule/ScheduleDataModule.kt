@@ -20,7 +20,7 @@ object ScheduleDataModule {
         single { buildRetrofitService<ScheduleSourcesService>(get(named(DiConst.Schedule))) }
         single { buildRetrofitService<FreePlacesService>(get(named(DiConst.Schedule))) }
         single { ScheduleLocalDS(get()) }
-        single<ScheduleRepository> { ScheduleRepositoryImpl(get(), get()) }
+        single<ScheduleRepository> { ScheduleRepositoryImpl(get(), get(), get()) }
         single<ScheduleInfoRepository> { ScheduleInfoRepositoryImpl(get(), get()) }
         single<FreePlaceRepository> { FreePlaceRepositoryImpl(get()) }
         single<ScheduleSourcesRepository> { ScheduleSourcesRepositoryImpl(get(), get(), get()) }

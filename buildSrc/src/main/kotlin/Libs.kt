@@ -10,6 +10,7 @@ object Libs {
     object KotlinX {
         const val serializationJson = "org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerialization}"
         const val serializationCbor = "org.jetbrains.kotlinx:kotlinx-serialization-cbor:${Versions.kotlinxSerialization}"
+        const val dateTime = "org.jetbrains.kotlinx:kotlinx-datetime:${Versions.kotlinxDateTime}"
 
         object Coroutines {
             const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinCoroutines}"
@@ -137,6 +138,7 @@ object Libs {
 }
 
 object Versions {
+    const val kotlinxDateTime = "0.3.3"
     const val kotlinCoroutines = "1.6.1"
     const val kotlinxSerialization = "1.3.2"
 

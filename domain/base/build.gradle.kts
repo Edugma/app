@@ -10,4 +10,5 @@ dependencies {
     api(Libs.KotlinX.serializationCbor)
     api(Libs.Di.koinCore)
     api(Libs.Other.ktorUtils)
+    api(Libs.KotlinX.dateTime)
 }

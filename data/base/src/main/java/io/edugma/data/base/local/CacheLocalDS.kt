@@ -15,22 +15,8 @@ import org.kodein.db.keyById
 class CacheLocalDS(
     private val db: DB
 ) {
-    @OptIn(ExperimentalSerializationApi::class)
-    inline fun <reified T> save(obj: T, key: String): Result<Unit> {
-        return kotlin.runCatching {
-            val data = Cbor.encodeToByteArray(obj)
-            save(data, key)
-        }
-    }
-
     fun save(value: ByteArray, key: String) {
         db.put(CacheDao(key, value))
-    }
-
-    @OptIn(ExperimentalSerializationApi::class)
-    inline fun <reified T> get(key: String): Result<T?> {
-        val serializedData = getSerializedData(key)
-        return serializedData.mapCatching { it?.let { Cbor.decodeFromByteArray(it.value) } }
     }
 
     fun getSerializedData(key: String): Result<CacheDao?> {
@@ -39,6 +25,29 @@ class CacheLocalDS(
         }
     }
 
+    fun flowOfDao(key: String): Flow<CacheDao?> {
+        return db.flowOf(db.keyById(key))
+    }
+
+
+    @OptIn(ExperimentalSerializationApi::class)
+    inline fun <reified T> save(obj: T, key: String): Result<Unit> {
+        return kotlin.runCatching {
+            val data = Cbor.encodeToByteArray(obj)
+            save(data, key)
+        }
+    }
+
+
+
+    @OptIn(ExperimentalSerializationApi::class)
+    inline fun <reified T> get(key: String): Result<T?> {
+        val serializedData = getSerializedData(key)
+        return serializedData.mapCatching { it?.let { Cbor.decodeFromByteArray(it.value) } }
+    }
+
+
+
     @OptIn(ExperimentalSerializationApi::class)
     inline fun <reified T> flowOf(key: String): Flow<Result<T?>> {
         return flowOfDao(key).map {
@@ -46,9 +55,5 @@ class CacheLocalDS(
                 it?.let { Cbor.decodeFromByteArray(it.value) }
             }
         }
-    }
-
-    fun flowOfDao(key: String): Flow<CacheDao?> {
-        return db.flowOf(db.keyById(key))
     }
 }

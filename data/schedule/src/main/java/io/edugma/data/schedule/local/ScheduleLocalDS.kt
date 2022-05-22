@@ -10,29 +10,30 @@ import org.kodein.db.*
 class ScheduleLocalDS(
     private val db: DB
 ) {
-//    fun saveSchedule(source: ScheduleSource, schedule: List<ScheduleDay>?) {
-//        db.put(
-//            ScheduleDao.from(source, schedule)
-//        )
-//    }
-//
-//    fun getSchedule(source: ScheduleSource): Result<List<ScheduleDay>> {
-//        return runCatching {
-//            //val key = db.keyFrom(source.id)
-//            db.getById<ScheduleDao>(source.id)?.days ?: emptyList()
-//        }
-//    }
-//
-//    fun setSelectedSource(source: ScheduleSourceFull) {
-//        db.put(
-//            ScheduleSourceFullDao.from(source, "Selected")
-//        )
-//    }
-//
-//    fun getSelectedSource(): Result<ScheduleSourceFull?> {
-//        return runCatching {
-//            val a = db.flowOf(db.keyById<ScheduleSourceFullDao>("Selected"))
-//            db.getById<ScheduleSourceFullDao>("Selected")?.source
-//        }
-//    }
+    fun getLast(source: ScheduleSource) =
+        getLast(source.id)
+
+    fun getLast(id: String): ScheduleDao? {
+        val lastScheduleDao = db.find<ScheduleDao>().byId(id).use {
+            it.asModelSequence().maxByOrNull { it.date }
+        }
+        return lastScheduleDao
+    }
+
+    fun getAll(source: ScheduleSource) =
+        getAll(source.id)
+
+    fun getAll(id: String): List<ScheduleDao> {
+        return db.find<ScheduleDao>().byId(id).use {
+            it.asModelSequence().toList()
+        }
+    }
+
+    fun add(dao: ScheduleDao) {
+        val lastScheduleDao = getLast(dao.id)
+
+        if (lastScheduleDao?.days != dao.days) {
+            db.put(dao)
+        }
+    }
 }

@@ -13,6 +13,7 @@ import io.edugma.domain.schedule.model.place.PlaceFilters
 import io.edugma.domain.schedule.model.place.PlaceInfo
 import io.edugma.domain.schedule.model.review.LessonTimesReview
 import io.edugma.domain.schedule.model.schedule.ScheduleDay
+import io.edugma.domain.schedule.model.source.ScheduleSource
 import io.edugma.domain.schedule.model.source.ScheduleSourceFull
 import io.edugma.domain.schedule.model.source.ScheduleSources
 import io.edugma.domain.schedule.model.teacher.TeacherInfo
@@ -45,3 +46,6 @@ interface ScheduleService {
         @Body loginRequest: LoginRequest
     ): Flow<Result<CompactSchedule>>
 }
+
+fun ScheduleService.getCompactSchedule(source: ScheduleSource) =
+    getCompactSchedule(source.type.name.lowercase(), source.key)

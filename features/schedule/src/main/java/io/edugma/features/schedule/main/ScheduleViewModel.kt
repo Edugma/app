@@ -77,9 +77,11 @@ class ScheduleViewModel(
         viewModelScope.launch {
             useCase.getSchedule().collect {
                 if (!it.isFinalFailure) {
+                    val schedule = it.getOrDefault(emptyList())
+                    if (schedule.isEmpty() && it.isLoading) return@collect
+                    val isLoading = it.isLoading// && !state.isPreloading
+
                     mutateState {
-                        val schedule = it.getOrDefault(emptyList())
-                        val isLoading = it.isLoading// && !state.isPreloading
 
                         state = state.copy(
                             schedule = schedule.toUiModel(),
