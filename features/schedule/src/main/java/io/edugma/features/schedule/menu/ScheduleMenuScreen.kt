@@ -23,18 +23,22 @@ fun ScheduleMenuScreen(viewModel: ScheduleMenuViewModel = getViewModel()) {
         onLessonsReviewClick = viewModel::onLessonsReviewClick,
         onScheduleCalendarClick = viewModel::onScheduleCalendarClick,
         onScheduleSourceClick = viewModel::onScheduleSourceClick,
-        onFreePlaceClick = viewModel::onFreePlaceClick
+        onFreePlaceClick = viewModel::onFreePlaceClick,
+        onAppWidgetClick = viewModel::onAppWidgetClick,
+        onHistoryClick = viewModel::onHistoryClick
     )
 }
 
 @Composable
 fun ScheduleMenuContent(
     state: ScheduleMenuState,
-    onScheduleClick: () -> Unit = { },
-    onLessonsReviewClick: () -> Unit = { },
-    onScheduleCalendarClick: () -> Unit = { },
-    onScheduleSourceClick: () -> Unit = { },
-    onFreePlaceClick: () -> Unit = { },
+    onScheduleClick: ClickListener,
+    onLessonsReviewClick: ClickListener,
+    onScheduleCalendarClick: ClickListener,
+    onScheduleSourceClick: ClickListener,
+    onFreePlaceClick: ClickListener,
+    onAppWidgetClick: ClickListener,
+    onHistoryClick: ClickListener,
 ) {
     Column(
         Modifier
@@ -81,8 +85,8 @@ fun ScheduleMenuContent(
                 .height(100.dp)
                 .fillMaxWidth()
         ) {
-            ChangeHistoryCard({})
-            ScheduleAppWidgetCard({})
+            ChangeHistoryCard(onHistoryClick)
+            ScheduleAppWidgetCard(onAppWidgetClick)
         }
     }
 }

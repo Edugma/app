@@ -39,7 +39,6 @@ class ScheduleRepositoryImpl(
         reader = { key ->
             dataVersionLocalDS.getFlow(key.id, expireAt) {
                 kotlin.runCatching { localDS.getLast(it) }
-                    .onFailure { Log.e(ScheduleRepositoryImpl::class.TAG, "Error", it) }
             }.map { it.map { it?.days } }
         },
         writer = { key, data ->
@@ -49,7 +48,6 @@ class ScheduleRepositoryImpl(
                     key.id
                 ) { dao, _ ->
                     kotlin.runCatching { localDS.add(dao) }
-                        .onFailure { Log.e(ScheduleRepositoryImpl::class.TAG, "Error", it) }
                 })
         },
         expireAt = 1.days
@@ -76,7 +74,8 @@ class ScheduleRepositoryImpl(
 
     override fun getHistory(source: ScheduleSource) =
         flowOf(kotlin.runCatching {
-            localDS.getAll(source).associate { it.date to (it.days?.toModel() ?: emptyList()) }
+            localDS.getAll(source)
+                .associate { it.date to (it.days?.toModel() ?: emptyList()) }
         })
 
     override fun getSchedule(source: ScheduleSource, forceUpdate: Boolean) =

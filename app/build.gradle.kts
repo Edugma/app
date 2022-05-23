@@ -3,27 +3,31 @@ plugins {
 }
 
 dependencies {
-    implementation(project(Modules.Features.Base.Core))
-    implementation(project(Modules.Features.Base.Navigation))
-    implementation(project(Modules.Features.Base.Elements))
+    implementation(projects.features.base.core)
+    implementation(projects.features.base.navigation)
+    implementation(projects.features.base.elements)
 
-    implementation(project(Modules.Features.Nodes))
-    implementation(project(Modules.Features.Home))
-    implementation(project(Modules.Features.Schedule))
-    implementation(project(Modules.Features.Schedule2.ScheduleInfo))
-    implementation(project(Modules.Features.Schedule2.Calendar))
-    implementation(project(Modules.Features.Schedule2.LessonsReview))
-    implementation(project(Modules.Features.Schedule2.Sources))
-    implementation(project(Modules.Features.Schedule2.AppWidget))
-    implementation(project(Modules.Features.Account))
+    implementation(projects.features.nodes)
 
-    implementation(project(Modules.Features.Misc.Menu))
-    implementation(project(Modules.Features.Misc.Settings))
+    implementation(projects.features.home)
+
+    implementation(projects.features.schedule)
+    implementation(projects.features.schedule.scheduleInfo)
+    implementation(projects.features.schedule.calendar)
+    implementation(projects.features.schedule.lessonsReview)
+    implementation(projects.features.schedule.sources)
+    implementation(projects.features.schedule.appwidget)
+    implementation(projects.features.schedule.history)
+
+    implementation(projects.features.account)
+
+    implementation(projects.features.misc.menu)
+    implementation(projects.features.misc.settings)
 
 
-    implementation(project(Modules.Data.Nodes))
-    implementation(project(Modules.Data.Schedule))
-    implementation(project(Modules.Data.Account))
+    implementation(projects.data.nodes)
+    implementation(projects.data.schedule)
+    implementation(projects.data.account)
 
     testImplementation(Libs.Other.junit)
     androidTestImplementation(Libs.AndroidX.Test.Ext.junit)

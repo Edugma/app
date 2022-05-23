@@ -8,6 +8,7 @@ import io.edugma.domain.schedule.utils.getClosestLessons
 import io.edugma.features.base.core.mvi.BaseMutator
 import io.edugma.features.base.core.mvi.BaseViewModelFull
 import io.edugma.features.base.navigation.ScheduleScreens
+import io.edugma.features.base.navigation.schedule.ScheduleHistoryScreens
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
@@ -75,6 +76,14 @@ class ScheduleMenuViewModel(
 
     fun onFreePlaceClick() {
         router.navigateTo(ScheduleScreens.FreePlace)
+    }
+
+    fun onAppWidgetClick() {
+
+    }
+
+    fun onHistoryClick() {
+        router.navigateTo(ScheduleHistoryScreens.Main)
     }
 }
 

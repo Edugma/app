@@ -1,4 +1,8 @@
 @file:Suppress("UnstableApiUsage")
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
+include(":features:schedule:history")
+
 
 include(":features:schedule:appwidget")
 

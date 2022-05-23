@@ -10,6 +10,7 @@ import io.edugma.features.misc.menu.miscMenuScreens
 import io.edugma.features.nodes.nodesScreens
 import io.edugma.features.schedule.ScheduleFeatureModule
 import io.edugma.features.schedule.calendar.ScheduleCalendarFeatureModule
+import io.edugma.features.schedule.history.ScheduleHistoryFeatureModule
 import io.edugma.features.schedule.lessons_review.ScheduleLessonsReviewFeatureModule
 import io.edugma.features.schedule.schedule_info.ScheduleInfoFeatureModule
 import io.edugma.features.schedule.sources.ScheduleSourcesFeatureModule
@@ -23,6 +24,7 @@ val appScreens = screens {
         ScheduleCalendarFeatureModule.screens(this)
         ScheduleLessonsReviewFeatureModule.screens(this)
         ScheduleSourcesFeatureModule.screens(this)
+        ScheduleHistoryFeatureModule.screens(this)
     }
     accountScreens()
     miscMenuScreens()

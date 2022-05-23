@@ -1,6 +1,7 @@
 package io.edugma.domain.schedule
 
 import io.edugma.domain.schedule.usecase.LessonsReviewUseCase
+import io.edugma.domain.schedule.usecase.ScheduleHistoryUseCase
 import io.edugma.domain.schedule.usecase.ScheduleSourcesUseCase
 import io.edugma.domain.schedule.usecase.ScheduleUseCase
 import org.koin.dsl.module
@@ -10,5 +11,6 @@ object ScheduleDomainModule {
         factory { ScheduleUseCase(get(), get()) }
         factory { ScheduleSourcesUseCase(get()) }
         factory { LessonsReviewUseCase(get(), get()) }
+        factory { ScheduleHistoryUseCase(get(), get()) }
     }
 }
