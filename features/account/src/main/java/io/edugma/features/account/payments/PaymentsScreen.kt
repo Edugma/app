@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -111,6 +113,7 @@ fun Payments(payments: Payments, onQrClickListener: ClickListener) {
         modifier = Modifier
             .padding(5.dp)
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
     ) {
         val expanded = rememberSaveable { mutableStateOf(false) }
         payments.level?.let {
@@ -204,7 +207,9 @@ fun PaymentsPlaceholder() {
                 }
             }
             Text(text = "", style = MaterialTheme3.typography.titleMedium,
-                fontWeight = FontWeight.Bold, fontSize = 17.sp, modifier = Modifier.placeholder(true).widthIn(100.dp))
+                fontWeight = FontWeight.Bold, fontSize = 17.sp, modifier = Modifier
+                    .placeholder(true)
+                    .widthIn(100.dp))
         }
     }
 }
