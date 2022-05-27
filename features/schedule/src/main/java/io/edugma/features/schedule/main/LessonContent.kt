@@ -1,5 +1,6 @@
 package io.edugma.features.schedule.main
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -47,7 +48,9 @@ fun LessonContent(
                 LessonHeader(lesson.type, isLoading)
             }
             SpacerHeight(4.dp)
-            LessonTitle(lesson.subject, isLoading)
+            WithContentAlpha(ContentAlpha.high) {
+                LessonTitle(lesson.subject, isLoading)
+            }
             SpacerHeight(4.dp)
             WithContentAlpha(ContentAlpha.medium) {
                 if (displaySettings.showTeachers) {

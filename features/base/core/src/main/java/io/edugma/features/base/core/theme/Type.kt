@@ -66,7 +66,7 @@ val AppTypography = Typography(
     titleLarge = TextStyle(
         fontFamily = ManropeFontFamily,
         fontWeight = FontWeight.Medium,
-        fontSize = 22.sp,
+        fontSize = 20.sp,
         //lineHeight = 28.sp,
         letterSpacing = 0.sp
     ),

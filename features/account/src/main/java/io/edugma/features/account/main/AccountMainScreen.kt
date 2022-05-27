@@ -2,9 +2,9 @@ package io.edugma.features.account.main
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -54,7 +54,7 @@ fun AccountContent(state: AccountMenuState, onClickListener: (MenuUi) -> Unit) {
         }
         PaymentsCard(currentPayments = state.currentPayments) { onClickListener.invoke(MenuUi.Payments) }
         LazyVerticalGrid(
-            cells = GridCells.Fixed(2),
+            columns = GridCells.Fixed(2),
         ) {
             items(state.bottomMenu) {
                 UsualCard(modifier = Modifier,name = it.label) { onClickListener.invoke(it) }

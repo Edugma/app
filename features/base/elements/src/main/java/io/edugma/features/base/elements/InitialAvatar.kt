@@ -3,9 +3,7 @@ package io.edugma.features.base.elements
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,7 +33,9 @@ fun InitialAvatar(url: String, initials: String = "") {
             modifier = Modifier
                 .height(48.dp)
                 .width(48.dp),
-            containerColor = MaterialTheme3.colorScheme.surfaceVariant
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme3.colorScheme.surfaceVariant
+            )
         ) {
             Box(
                 Modifier.fillMaxSize(),

@@ -143,10 +143,10 @@ object Versions {
     const val kotlinxSerialization = "1.3.2"
 
     // Di
-    const val koin = "3.1.6"
+    const val koin = "3.2.0"
 
     // Image loading
-    const val coil = "2.0.0"
+    const val coil = "2.1.0"
 
     // Networking
     const val paging = "3.1.1"
@@ -160,7 +160,7 @@ object Versions {
 
     // Compose
     const val compose = "1.1.1"
-    const val composeMaterial3 = "1.0.0-alpha09"
+    const val composeMaterial3 = "1.0.0-alpha12"
     const val composeMaterial = "1.1.1"
     const val accompanist = "0.23.1"
 
@@ -171,11 +171,11 @@ object Versions {
     const val appcompat = "1.4.1"
 
     // UI
-    const val material = "1.6.0-rc01"
+    const val material = "1.6.0"
     const val constraintLayout = "1.0.0"
     const val lottie = "5.0.3"
-    const val materialDateTimePicker = "0.7.0"
-    const val fluentIcons = "1.1.166@aar"
-    const val splashScreen = "1.0.0-beta02"
+    const val materialDateTimePicker = "0.7.1"
+    const val fluentIcons = "1.1.170@aar"
+    const val splashScreen = "1.0.0-rc01"
     const val glance = "1.0.0-alpha03"
 }

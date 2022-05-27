@@ -129,7 +129,7 @@ object PrimaryTextFieldDefaults {
     @Composable
     fun textFieldColors() = TextFieldDefaults.textFieldColors(
         textColor = LocalContentColor.current,
-        backgroundColor = Color.Transparent,
+        containerColor = Color.Transparent,
         focusedIndicatorColor = Color.Transparent,
         unfocusedIndicatorColor = Color.Transparent,
         disabledIndicatorColor = Color.Transparent
