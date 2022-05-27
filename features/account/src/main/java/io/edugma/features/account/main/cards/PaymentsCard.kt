@@ -65,8 +65,7 @@ fun PaymentsCard(
                             modifier = Modifier.align(Alignment.TopEnd)
                         )
                     }
-                    val progress = 0.3f
-//                    val progress = it.current.toFloat()/it.sum
+                    val progress = it.current.toFloat()/it.sum
                     Box(
                         Modifier
                             .fillMaxWidth()

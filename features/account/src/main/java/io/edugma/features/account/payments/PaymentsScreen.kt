@@ -1,12 +1,16 @@
 package io.edugma.features.account.payments
 
+import android.content.Intent
+import android.net.Uri
 import android.util.DisplayMetrics
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -30,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import coil.compose.AsyncImage
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -40,16 +45,60 @@ import io.edugma.features.base.elements.*
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
     val state by viewModel.state.collectAsState()
 
-    PaymentsContent(state,
-        retryListener = viewModel::load,
-        onPaymentChange = viewModel::typeChange,
-        onQrClickListener = {},
-        backListener = viewModel::exit,
+    val bottomState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden
     )
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+
+    ModalBottomSheetLayout(
+        sheetState = bottomState,
+        sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
+        scrimColor = Color.Black.copy(alpha = 0.5f),
+        sheetBackgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.surface,
+        sheetContent = {
+            Column(modifier = Modifier
+                .padding(horizontal = 15.dp)) {
+                SpacerHeight(height = 15.dp)
+                Text(
+                    text = "QR код",
+                    style = MaterialTheme3.typography.headlineMedium,
+                    modifier = Modifier.padding(start = 8.dp)
+                )
+                SpacerHeight(height = 20.dp)
+                AsyncImage(
+                    model = state.selectedPayment?.qr,
+                    contentDescription = "qr code",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            Intent(Intent.ACTION_VIEW, Uri.parse(state.selectedPayment?.qr)).apply(
+                                context::startActivity
+                            )
+                        }
+                )
+                SpacerHeight(height = 20.dp)
+                TextWithIcon(
+                    text = "Вы можете сделать скриншот экрана или скачать QR-код на устройство, затем открыть его в мобильном приложении вашего банка:\nОплата по QR-коду -> Загрузить изображение",
+                    icon = painterResource(id = FluentIcons.ic_fluent_info_24_regular)
+                )
+                SpacerHeight(height = 20.dp)
+            }
+        }
+    ) {
+        PaymentsContent(
+            state,
+            retryListener = viewModel::load,
+            onPaymentChange = viewModel::typeChange,
+            onQrClickListener = { scope.launch { bottomState.show() } },
+            backListener = viewModel::exit,
+        )
+    }
 }
 
 @OptIn(ExperimentalPagerApi::class)
