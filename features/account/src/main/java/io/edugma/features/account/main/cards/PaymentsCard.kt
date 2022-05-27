@@ -13,7 +13,7 @@ import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.elements.TonalCard
 
 @Composable
-fun UsualCard(
+fun PaymentsCard(
     modifier: Modifier = Modifier,
     name: String,
     onClick: ClickListener
@@ -21,8 +21,8 @@ fun UsualCard(
     TonalCard(
         modifier = modifier
             .padding(horizontal = 4.dp, vertical = 4.dp)
-            .height(100.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth(1f)
+            .height(100.dp),
         shape = RoundedCornerShape(16.dp),
         onClick = onClick
     ) {

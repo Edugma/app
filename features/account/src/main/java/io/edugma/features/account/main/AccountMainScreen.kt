@@ -1,16 +1,17 @@
 package io.edugma.features.account.main
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.edugma.features.account.main.cards.AuthCard
-import io.edugma.features.account.main.cards.PersonalCard
-import io.edugma.features.account.main.cards.StudentsCard
-import io.edugma.features.account.main.cards.UsualCard
+import io.edugma.features.account.main.cards.*
 import io.edugma.features.account.main.model.MenuUi
 import io.edugma.features.base.core.utils.MaterialTheme3
 import org.koin.androidx.compose.getViewModel
@@ -18,10 +19,10 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun AccountMainScreen(viewModel: AccountMainViewModel = getViewModel()) {
     val state by viewModel.state.collectAsState()
-
     AccountContent(state) { it.action(viewModel) }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AccountContent(state: AccountMenuState, onClickListener: (MenuUi) -> Unit) {
     Column(
@@ -45,35 +46,20 @@ fun AccountContent(state: AccountMenuState, onClickListener: (MenuUi) -> Unit) {
                 PersonalCard(
                     info,
                     state.personal?.specialty) { onClickListener.invoke(MenuUi.Personal) }
-                StudentsCard(state.performance, state.showCurrentPerformance) {onClickListener.invoke(MenuUi.Marks)}
+                PerformanceCard(state.performance, state.showCurrentPerformance) {onClickListener.invoke(MenuUi.Marks)}
             }
             AuthCard(
                 state.personal?.avatar,
                 state.personal?.getFullName()
             ) {onClickListener.invoke(MenuUi.Auth)}
         }
-        Row(
-            Modifier
-                .height(100.dp)
-                .fillMaxWidth()
+        PaymentsCard(name = "Оплаты") { onClickListener.invoke(MenuUi.Payments) }
+        LazyVerticalGrid(
+            cells = GridCells.Fixed(2),
         ) {
-            UsualCard(modifier = Modifier.fillMaxWidth(0.5f), name = "Преподаватели") { onClickListener.invoke(MenuUi.Teachers) }
-            UsualCard(modifier = Modifier,name = "Одногруппники") { onClickListener.invoke(MenuUi.Classmates) }
-        }
-        Row(
-            Modifier
-                .height(100.dp)
-                .fillMaxWidth()
-        ) {
-            UsualCard(modifier = Modifier.fillMaxWidth(0.5f),name = "Оплаты") { onClickListener.invoke(MenuUi.Payments) }
-            UsualCard(modifier = Modifier,name = "Справки, заявления") { onClickListener.invoke(MenuUi.Applications) }
-        }
-        Row(
-            Modifier
-                .height(100.dp)
-                .fillMaxWidth()
-        ) {
-            UsualCard(name = "Студенты") { onClickListener.invoke(MenuUi.Classmates) }
+            items(state.bottomMenu) {
+                UsualCard(modifier = Modifier,name = it.label) { onClickListener.invoke(it) }
+            }
         }
     }
 }

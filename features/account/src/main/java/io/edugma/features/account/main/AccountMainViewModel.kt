@@ -136,8 +136,8 @@ class AccountMainViewModel(
 }
 
 data class AccountMenuState(
-    val menu: List<MenuUi> = listOf(Auth,
-        Personal, Students, Teachers, Classmates, Payments, Applications, Marks),
+    val topMenu: List<MenuUi> = listOf(Auth, Personal, Payments, Marks),
+    val bottomMenu: List<MenuUi> = listOf(Students, Teachers, Classmates, Applications),
     val personal: io.edugma.domain.account.model.Personal? = null,
     val performance: CurrentPerformance? = null,
     val showCurrentPerformance: Boolean = true
