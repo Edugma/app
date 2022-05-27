@@ -63,7 +63,7 @@ class AccountMainViewModel(
         viewModelScope.launch {
             val info = personalRepository.getLocalPersonalInfo()
             mutateState {
-                state = state.copy(personal = info)
+                state = state.copy(personal = info?.toPersonalData())
             }
         }
         viewModelScope.launch {
@@ -118,6 +118,15 @@ class AccountMainViewModel(
         }
     }
 
+    private fun io.edugma.domain.account.model.Personal.toPersonalData(): PersonalData {
+        return PersonalData(
+            label = "$degreeLevel $course курса группы $group",
+            specialization = specialty,
+            avatar = avatar,
+            fullName = getFullName()
+        )
+    }
+
     private fun Contracts.getCurrent(): CurrentPayments? {
         return contracts.entries.firstOrNull()?.let {
             val sum = it.value.sum.toIntOrNull() ?: return null
@@ -162,10 +171,17 @@ class AccountMainViewModel(
 data class AccountMenuState(
     val topMenu: List<MenuUi> = listOf(Auth, Personal, Payments, Marks),
     val bottomMenu: List<MenuUi> = listOf(Students, Teachers, Classmates, Applications),
-    val personal: io.edugma.domain.account.model.Personal? = null,
+    val personal: PersonalData? = null,
     val performance: CurrentPerformance? = null,
     val currentPayments: CurrentPayments? = null,
     val showCurrentPerformance: Boolean = true
+)
+
+data class PersonalData(
+    val label: String,
+    val specialization: String?,
+    val avatar: String?,
+    val fullName: String
 )
 
 data class CurrentPerformance(

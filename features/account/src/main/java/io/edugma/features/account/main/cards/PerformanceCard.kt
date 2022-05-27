@@ -54,7 +54,7 @@ fun AnimatedText(performance: CurrentPerformance, isCurrent: Boolean) {
             style = MaterialTheme3.typography.labelSmall,
             color = MaterialTheme3.colorScheme.secondary
         )
-        ShowPerformance(performance.lastSemester)
+        ShowPerformance(if (isCurrent) performance.lastSemester else performance.allSemesters)
 }
 
 @Composable

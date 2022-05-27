@@ -42,15 +42,14 @@ fun AccountContent(state: AccountMenuState, onClickListener: (MenuUi) -> Unit) {
                 .fillMaxWidth()
         ) {
             Column {
-                val info = state.personal?.let { "${it.degreeLevel} ${it.course} курса группы ${it.group}" }
                 PersonalCard(
-                    info,
-                    state.personal?.specialty) { onClickListener.invoke(MenuUi.Personal) }
+                    state.personal?.label,
+                    state.personal?.specialization) { onClickListener.invoke(MenuUi.Personal) }
                 PerformanceCard(state.performance, state.showCurrentPerformance) {onClickListener.invoke(MenuUi.Marks)}
             }
             AuthCard(
                 state.personal?.avatar,
-                state.personal?.getFullName()
+                state.personal?.fullName
             ) {onClickListener.invoke(MenuUi.Auth)}
         }
         PaymentsCard(currentPayments = state.currentPayments) { onClickListener.invoke(MenuUi.Payments) }

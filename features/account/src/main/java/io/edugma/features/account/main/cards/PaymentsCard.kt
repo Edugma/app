@@ -39,27 +39,27 @@ fun PaymentsCard(
         onClick = onClick
     ) {
         Column(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
-            Box {
+            Box(modifier = Modifier.fillMaxWidth()) {
                 Text(text = "Оплаты")
             }
             currentPayments?.let {
-                Column {
+                Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
                         text = it.type.toLabel(),
-                        style = MaterialTheme3.typography.labelSmall,
+                        style = MaterialTheme3.typography.bodySmall,
                         color = MaterialTheme3.colorScheme.secondary
                     )
                     Box(Modifier.fillMaxWidth()) {
                         Text(
                             text = "0",
-                            style = MaterialTheme3.typography.bodySmall,
+                            style = MaterialTheme3.typography.labelSmall,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier.align(Alignment.TopStart)
                         )
                         Text(
                             text = it.sum.toString(),
-                            style = MaterialTheme3.typography.bodySmall,
+                            style = MaterialTheme3.typography.labelSmall,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier.align(Alignment.TopEnd)
@@ -69,7 +69,7 @@ fun PaymentsCard(
                     Box(
                         Modifier
                             .fillMaxWidth()
-                            .padding(5.dp)) {
+                            .padding(horizontal = 5.dp, vertical = 3.dp)) {
                         LinearProgressIndicator(
                             progress = progress,
                             modifier = Modifier
@@ -84,7 +84,11 @@ fun PaymentsCard(
                         Text(text = it.current.toString(), modifier = Modifier
                             .constrainAs(text) {
                                linkTo(parent.start, parent.end, bias = progress)
-                            }, textAlign = TextAlign.End, style = MaterialTheme3.typography.labelSmall)
+                            },
+                            textAlign = TextAlign.End,
+                            style = MaterialTheme3.typography.labelSmall,
+                            color = MaterialTheme3.colorScheme.tertiary
+                        )
                     }
 
                 }
