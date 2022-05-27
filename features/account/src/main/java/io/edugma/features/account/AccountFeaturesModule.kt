@@ -13,7 +13,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val accountFeaturesModule = module {
-    viewModel { AccountMainViewModel(get(), get()) }
+    viewModel { AccountMainViewModel(get(), get(), get()) }
     viewModel { ApplicationsViewModel(get()) }
     viewModel { ClassmatesViewModel(get()) }
     viewModel { PaymentsViewModel(get()) }

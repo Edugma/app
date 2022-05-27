@@ -1,9 +1,6 @@
 package io.edugma.features.account.main.cards
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
@@ -24,7 +21,7 @@ fun UsualCard(
     TonalCard(
         modifier = modifier
             .padding(horizontal = 4.dp, vertical = 4.dp)
-            .fillMaxHeight()
+            .height(100.dp)
             .fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         onClick = onClick
