@@ -1,7 +1,10 @@
 package io.edugma.features.account.main
 
 import androidx.lifecycle.viewModelScope
+import io.edugma.domain.account.model.Contracts
+import io.edugma.domain.account.model.PaymentType
 import io.edugma.domain.account.model.Performance
+import io.edugma.domain.account.repository.PaymentsRepository
 import io.edugma.domain.account.repository.PerformanceRepository
 import io.edugma.domain.account.repository.PersonalRepository
 import io.edugma.features.account.main.model.MenuUi
@@ -24,7 +27,8 @@ import kotlin.random.Random
 
 class AccountMainViewModel(
     private val personalRepository: PersonalRepository,
-    private val performanceRepository: PerformanceRepository
+    private val performanceRepository: PerformanceRepository,
+    private val paymentsRepository: PaymentsRepository
 ) : BaseViewModel<AccountMenuState>(AccountMenuState()) {
 
     private val performanceTimer = flow {
@@ -68,6 +72,12 @@ class AccountMainViewModel(
                 state = state.copy(performance = performance?.getCurrent())
             }
         }
+        viewModelScope.launch {
+            val payments = paymentsRepository.getPaymentsLocal()
+            mutateState {
+                state = state.copy(currentPayments = payments?.getCurrent())
+            }
+        }
     }
 
     fun navigateToAuth() {
@@ -108,6 +118,20 @@ class AccountMainViewModel(
         }
     }
 
+    private fun Contracts.getCurrent(): CurrentPayments? {
+        return contracts.entries.firstOrNull()?.let {
+            val sum = it.value.sum.toIntOrNull() ?: return null
+            val current = sum - (it.value.balance.toIntOrNull() ?: return null)
+            val debt = (it.value.balanceCurrent.toIntOrNull() ?: return null) > 0
+            CurrentPayments(
+                type = it.key,
+                sum = sum,
+                current = current,
+                debt = debt
+            )
+        }
+    }
+
     private fun List<Performance>.getCurrent(): CurrentPerformance? {
         fun getSortedMarks(marks: List<Performance>): Map<String, Int> {
             val marksList = marks.map { it.grade }.filterNot { it == "Зачтено" || it == "Не зачтено" }.let { list ->
@@ -140,6 +164,7 @@ data class AccountMenuState(
     val bottomMenu: List<MenuUi> = listOf(Students, Teachers, Classmates, Applications),
     val personal: io.edugma.domain.account.model.Personal? = null,
     val performance: CurrentPerformance? = null,
+    val currentPayments: CurrentPayments? = null,
     val showCurrentPerformance: Boolean = true
 )
 
@@ -147,6 +172,13 @@ data class CurrentPerformance(
     val lastSemesterNumber: Int,
     val lastSemester: Map<String, Int>,
     val allSemesters: Map<String, Int>
+)
+
+data class CurrentPayments(
+    val type: PaymentType,
+    val sum: Int,
+    val current: Int,
+    val debt: Boolean
 )
 
 object UpdateMenu: ScreenResult

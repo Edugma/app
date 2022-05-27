@@ -53,7 +53,7 @@ fun AccountContent(state: AccountMenuState, onClickListener: (MenuUi) -> Unit) {
                 state.personal?.getFullName()
             ) {onClickListener.invoke(MenuUi.Auth)}
         }
-        PaymentsCard(name = "Оплаты") { onClickListener.invoke(MenuUi.Payments) }
+        PaymentsCard(currentPayments = state.currentPayments) { onClickListener.invoke(MenuUi.Payments) }
         LazyVerticalGrid(
             cells = GridCells.Fixed(2),
         ) {

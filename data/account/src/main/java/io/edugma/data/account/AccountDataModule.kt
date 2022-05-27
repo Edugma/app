@@ -11,7 +11,7 @@ import retrofit2.Retrofit
 val accountDataModule = module {
     single { get<Retrofit>(named(DiConst.Account)).create(AccountService::class.java) }
     single<ApplicationsRepository> { ApplicationsRepositoryImpl(get()) }
-    single<PaymentsRepository> { PaymentsRepositoryImpl(get()) }
+    single<PaymentsRepository> { PaymentsRepositoryImpl(get(), get()) }
     single<PeoplesRepository> { PeoplesRepositoryImpl(get()) }
     single<PerformanceRepository> { PerformanceRepositoryImpl(get(), get()) }
     single<PersonalRepository> { PersonalRepositoryImpl(get(), get()) }
