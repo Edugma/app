@@ -301,10 +301,20 @@ fun PaymentPlaceholder() {
 
 @Composable
 fun Expander(onClickListener: ClickListener) {
-    Box(modifier = Modifier.fillMaxWidth()) {
-        IconButton(onClick = onClickListener, modifier = Modifier.fillMaxWidth()) {
-            Icon(painterResource(id = FluentIcons.ic_fluent_ios_arrow_rtl_24_filled), contentDescription = null, modifier = Modifier.rotate(90f))
-        }
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .heightIn(min = 40.dp)
+        .clickable(onClick = onClickListener),
+        contentAlignment = Alignment.Center
+    ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = "Показать больше",
+                    style = MaterialTheme3.typography.bodyLarge
+                )
+                SpacerWidth(width = 20.dp)
+                Icon(painterResource(id = FluentIcons.ic_fluent_ios_arrow_rtl_24_filled), contentDescription = null, modifier = Modifier.rotate(90f))
+            }
     }
 }
 
