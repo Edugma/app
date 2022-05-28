@@ -162,13 +162,28 @@ fun PerformanceContent(state: MarksState,
                         count = state.filteredData.size,
                         key = { state.filteredData[it].id }
                     ) {
-                        SpacerHeight(height = 3.dp)
+                        var showCourse = true
+                        if (it > 0) {
+                            showCourse = state.filteredData[it].course != state.filteredData[it - 1].course
+                        }
+                        if (!showCourse && it > 0) {
+                            Divider()
+                            SpacerHeight(height = 3.dp)
+                        }
+                        if (showCourse) {
+                            if (it > 0) SpacerHeight(height = 15.dp)
+                            Text(
+                                text = "${state.filteredData[it].course} курс",
+                                style = MaterialTheme3.typography.headlineSmall,
+                                color = MaterialTheme3.colorScheme.primary
+                            )
+                            SpacerHeight(height = 15.dp)
+                        }
                         Performance(
                             state.filteredData[it],
                             filterClickListener
                         )
                         SpacerHeight(height = 3.dp)
-                        Divider()
                     }
                 }
             }
