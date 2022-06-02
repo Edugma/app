@@ -12,6 +12,7 @@ import io.edugma.features.schedule.main.ScheduleViewModel
 import io.edugma.features.schedule.menu.ScheduleMenuScreen
 import io.edugma.features.schedule.menu.ScheduleMenuViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module
 
 object ScheduleFeatureModule {
@@ -19,7 +20,7 @@ object ScheduleFeatureModule {
         viewModel { ScheduleMenuViewModel(get()) }
         viewModel { ScheduleViewModel(get()) }
         viewModel { FreePlaceViewModel(get(), get()) }
-        viewModel { LessonInfoViewModel() }
+        viewModelOf(::LessonInfoViewModel)
     }
 
     val screens = screens {

@@ -1,5 +1,6 @@
 package io.edugma.features.base.core.navigation.compose
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavDeepLink
@@ -59,8 +60,14 @@ private fun String.decodeUrl(): String {
 fun Screen.getRoute() =
     this.key.replace(".", "-")
 
-fun Screen.getUrlArgs() =
-    ScreenInfoSerializer.serialize(this).encodeBase64().encodeUrl()
+fun Screen.getUrlArgs(): String {
+    val serialized = ScreenInfoSerializer.serialize(this)
+    Log.d("getUrlArgs", "serialized: $serialized")
+    return serialized
+        .encodeBase64()
+        .encodeUrl()
+}
+
 
 fun Screen.getFullRoute(): String {
     val args = getUrlArgs()
@@ -68,7 +75,9 @@ fun Screen.getFullRoute(): String {
 }
 
 fun toScreenInfo(text: String): ScreenInfo? {
-    return ScreenInfoSerializer.deserialize(text.decodeBase64String())
+    val decoded = text.decodeBase64String()
+    Log.d("toScreenInfo", "decoded: $decoded")
+    return ScreenInfoSerializer.deserialize(decoded)
 }
 
 

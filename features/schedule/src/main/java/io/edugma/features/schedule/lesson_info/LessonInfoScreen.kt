@@ -17,6 +17,7 @@ import io.edugma.domain.schedule.model.lesson.LessonDateTime
 import io.edugma.domain.schedule.model.lesson.LessonInfo
 import io.edugma.domain.schedule.model.place.Place
 import io.edugma.domain.schedule.model.teacher.Teacher
+import io.edugma.domain.schedule.model.teacher.TeacherInfo
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.InitialAvatar
 import io.edugma.features.base.elements.PrimaryTopAppBar
@@ -82,7 +83,7 @@ private fun LessonInfoContent(
         }
         SpacerHeight(height = 8.dp)
         LessonTeachers(
-            teachers = state.lessonInfo?.lesson?.teachers ?: emptyList(),
+            teachers = state.teachers,
             onItemClick = onTeacherClick
         )
         SpacerHeight(height = 14.dp)
@@ -168,7 +169,7 @@ private fun LessonDateTime(lessonDateTime: LessonDateTime) {
 
 @Composable
 private fun LessonTeachers(
-    teachers: List<Teacher>,
+    teachers: List<TeacherInfo>,
     onItemClick: Typed1Listener<String>
 ) {
     WithContentAlpha(ContentAlpha.medium) {
@@ -196,7 +197,7 @@ private fun LessonTeachers(
                 .split(' ')
                 .joinToString(separator = "") { it.take(1) },
             title = teacher.name,
-            description = "Информация о преподавателе",
+            description = teacher.description,
             onItemClick = { onItemClick(teacher.id) }
         )
         if (index != teachers.size - 1) {

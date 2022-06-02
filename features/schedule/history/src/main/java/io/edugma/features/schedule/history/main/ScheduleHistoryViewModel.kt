@@ -5,6 +5,7 @@ import io.edugma.domain.schedule.model.schedule.ScheduleDay
 import io.edugma.domain.schedule.repository.ScheduleRepository
 import io.edugma.domain.schedule.usecase.ScheduleHistoryUseCase
 import io.edugma.features.base.core.mvi.BaseViewModel
+import io.edugma.features.base.navigation.schedule.ScheduleHistoryScreens
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Instant
@@ -24,6 +25,14 @@ class ScheduleHistoryViewModel(
         }
     }
 
+    fun onScheduleClick(dateTime: Instant) {
+        router.navigateTo(
+            ScheduleHistoryScreens.Changes(
+                first = dateTime,
+                second = dateTime
+            )
+        )
+    }
 }
 
 data class ScheduleHistoryState(

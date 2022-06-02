@@ -1,5 +1,7 @@
 package io.edugma.features.base.core.navigation.core
 
+import android.util.Log
+import io.edugma.domain.base.utils.TAG
 import io.edugma.domain.base.utils.converters.LocalDateConverter
 import io.edugma.domain.base.utils.converters.LocalDateTimeConverter
 import io.edugma.domain.base.utils.converters.LocalTimeConverter
@@ -66,7 +68,14 @@ abstract class Screen(
                 args[key]?.let { Json.decodeFromString(LocalTimeConverter, it) } as T
             ZonedDateTime::class ->
                 args[key]?.let { Json.decodeFromString(ZonedDateTimeConverter, it) } as T
-            else -> args[key]?.let { Json.decodeFromString<T>(it) } as T
+            else -> args[key]?.let {
+                try {
+                    Json.decodeFromString<T>(it)
+                } catch (e: Exception) {
+                    Log.e(Screen::class.TAG, "Source: $it, type: ${T::class.qualifiedName}", e)
+                    throw e
+                }
+            } as T
         }
     }
 

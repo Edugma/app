@@ -40,6 +40,17 @@ class ScheduleUseCase(
         return schedule.firstOrNull { it.date == date }?.lessons ?: emptyList()
     }
 
+    fun getTeacher(id: String) =
+        scheduleSourcesRepository.getSelectedSource()
+            .transformLatest {
+                val source = it.getOrNull()
+                if (source == null) {
+                    emit(null)
+                } else {
+                    emitAll(repository.getTeacher(ScheduleSource(source.type, source.key), id))
+                }
+            }
+
     fun getLessonDisplaySettings(scheduleSourceType: ScheduleSources): LessonDisplaySettings {
         return when (scheduleSourceType) {
             ScheduleSources.Group -> LessonDisplaySettings(

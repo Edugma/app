@@ -18,6 +18,7 @@ import io.edugma.domain.base.utils.map
 import io.edugma.domain.schedule.model.compact.CompactSchedule
 import io.edugma.domain.schedule.model.schedule.ScheduleDay
 import io.edugma.domain.schedule.model.source.ScheduleSource
+import io.edugma.domain.schedule.model.teacher.TeacherInfo
 import io.edugma.domain.schedule.repository.ScheduleRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -77,6 +78,11 @@ class ScheduleRepositoryImpl(
             localDS.getAll(source)
                 .associate { it.date to (it.days?.toModel() ?: emptyList()) }
         })
+
+    override fun getTeacher(source: ScheduleSource, id: String) =
+        scheduleStore0.get(source)
+            .map { it.map { it?.info?.teachersInfo?.firstOrNull { it.id == id } }.getOrNull() }
+            .flowOn(Dispatchers.IO)
 
     override fun getSchedule(source: ScheduleSource, forceUpdate: Boolean) =
         scheduleStore0.get(source, forceUpdate)
