@@ -41,7 +41,7 @@ import java.time.format.DateTimeFormatter
 fun PlaceInfoScreen(viewModel: PlaceInfoViewModel = getViewModel(), id: String) {
     val state by viewModel.state.collectAsState()
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(id) {
         viewModel.setId(id)
     }
 

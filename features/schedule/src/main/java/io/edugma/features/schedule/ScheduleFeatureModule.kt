@@ -5,8 +5,6 @@ import io.edugma.features.base.core.navigation.compose.screens
 import io.edugma.features.base.navigation.ScheduleScreens
 import io.edugma.features.schedule.free_place.FreePlaceScreen
 import io.edugma.features.schedule.free_place.FreePlaceViewModel
-import io.edugma.features.schedule.lesson_info.LessonInfoScreen
-import io.edugma.features.schedule.lesson_info.LessonInfoViewModel
 import io.edugma.features.schedule.main.ScheduleScreen
 import io.edugma.features.schedule.main.ScheduleViewModel
 import io.edugma.features.schedule.menu.ScheduleMenuScreen
@@ -17,10 +15,9 @@ import org.koin.dsl.module
 
 object ScheduleFeatureModule {
     val deps = module {
-        viewModel { ScheduleMenuViewModel(get()) }
-        viewModel { ScheduleViewModel(get()) }
-        viewModel { FreePlaceViewModel(get(), get()) }
-        viewModelOf(::LessonInfoViewModel)
+        viewModelOf(::ScheduleMenuViewModel)
+        viewModelOf(::ScheduleViewModel)
+        viewModelOf(::FreePlaceViewModel)
     }
 
     val screens = screens {
@@ -31,10 +28,5 @@ object ScheduleFeatureModule {
             )
         }
         addScreen<ScheduleScreens.FreePlace> { FreePlaceScreen() }
-        addScreen<ScheduleScreens.LessonInfo> {
-            LessonInfoScreen(
-                lessonInfo = getArg(ScheduleScreens.LessonInfo::lessonInfo.name)
-            )
-        }
     }
 }

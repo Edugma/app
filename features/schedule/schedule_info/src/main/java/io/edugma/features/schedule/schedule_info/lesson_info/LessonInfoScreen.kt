@@ -1,4 +1,4 @@
-package io.edugma.features.schedule.lesson_info
+package io.edugma.features.schedule.schedule_info.lesson_info
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -16,7 +16,6 @@ import io.edugma.domain.schedule.model.group.Group
 import io.edugma.domain.schedule.model.lesson.LessonDateTime
 import io.edugma.domain.schedule.model.lesson.LessonInfo
 import io.edugma.domain.schedule.model.place.Place
-import io.edugma.domain.schedule.model.teacher.Teacher
 import io.edugma.domain.schedule.model.teacher.TeacherInfo
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.InitialAvatar

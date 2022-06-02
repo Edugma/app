@@ -1,14 +1,12 @@
-package io.edugma.features.schedule.lesson_info
+package io.edugma.features.schedule.schedule_info.lesson_info
 
 import androidx.lifecycle.viewModelScope
 import io.edugma.domain.schedule.model.lesson.LessonInfo
 import io.edugma.domain.schedule.model.teacher.TeacherInfo
-import io.edugma.domain.schedule.repository.ScheduleRepository
 import io.edugma.domain.schedule.usecase.ScheduleUseCase
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.mvi.prop
 import io.edugma.features.base.navigation.schedule.ScheduleInfoScreens
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch

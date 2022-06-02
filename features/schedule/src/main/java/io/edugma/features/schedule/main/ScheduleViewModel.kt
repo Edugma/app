@@ -15,6 +15,7 @@ import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.mvi.impl.SimpleMutator
 import io.edugma.features.base.core.mvi.prop
 import io.edugma.features.base.navigation.ScheduleScreens
+import io.edugma.features.base.navigation.schedule.ScheduleInfoScreens
 import io.edugma.features.schedule.model.ScheduleDayUiModel
 import io.edugma.features.schedule.model.WeekUiModel
 import io.edugma.features.schedule.utils.toUiModel
@@ -141,7 +142,7 @@ class ScheduleViewModel(
 
     fun onLessonClick(lesson: Lesson, dateTime: LessonDateTime) {
         router.navigateTo(
-            ScheduleScreens.LessonInfo(
+            ScheduleInfoScreens.LessonInfo(
                 lessonInfo = LessonInfo(
                     lesson = lesson,
                     dateTime = dateTime
