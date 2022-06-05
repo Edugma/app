@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.base.elements.PrimaryTopAppBar
-import io.edugma.features.schedule.schedule_info.place_info.PlaceInfoTabs
 import org.koin.androidx.compose.getViewModel
 
 @Composable

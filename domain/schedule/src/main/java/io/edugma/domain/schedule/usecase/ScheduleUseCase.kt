@@ -2,12 +2,9 @@ package io.edugma.domain.schedule.usecase
 
 import io.edugma.domain.base.utils.Lce
 import io.edugma.domain.schedule.model.lesson.LessonDisplaySettings
-import io.edugma.domain.schedule.model.place.PlaceFilters
-import io.edugma.domain.schedule.model.review.LessonTimesReview
 import io.edugma.domain.schedule.model.schedule.LessonsByTime
 import io.edugma.domain.schedule.model.schedule.ScheduleDay
 import io.edugma.domain.schedule.model.source.ScheduleSource
-import io.edugma.domain.schedule.model.source.ScheduleSourceFull
 import io.edugma.domain.schedule.model.source.ScheduleSources
 import io.edugma.domain.schedule.repository.ScheduleRepository
 import io.edugma.domain.schedule.repository.ScheduleSourcesRepository

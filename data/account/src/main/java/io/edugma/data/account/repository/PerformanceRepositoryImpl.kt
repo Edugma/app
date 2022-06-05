@@ -5,8 +5,6 @@ import io.edugma.data.base.local.PreferencesDS
 import io.edugma.data.base.local.getJsonLazy
 import io.edugma.data.base.local.setJsonLazy
 import io.edugma.domain.account.model.Performance
-import io.edugma.domain.account.model.Personal
-import io.edugma.domain.account.model.SemestersWithCourse
 import io.edugma.domain.account.repository.PerformanceRepository
 import io.edugma.domain.base.utils.onSuccess
 import kotlinx.coroutines.Dispatchers

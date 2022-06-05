@@ -3,7 +3,9 @@ package io.edugma.features.schedule.appwidget
 import androidx.annotation.AttrRes
 import androidx.compose.runtime.Composable
 import androidx.glance.LocalContext
-import io.edugma.features.base.core.utils.*
+import io.edugma.features.base.core.utils.getAttributeColorOrNull
+import io.edugma.features.base.core.utils.getDimensionAttribute
+import io.edugma.features.base.core.utils.getStringAttribute
 
 @Composable
 fun getDimensionAttribute(@AttrRes attr: Int, defaultValue: Float = 0f): Float =

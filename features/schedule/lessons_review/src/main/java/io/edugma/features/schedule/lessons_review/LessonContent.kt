@@ -1,30 +1,23 @@
 package io.edugma.features.schedule.lessons_review
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberImagePainter
 import io.edugma.domain.schedule.model.group.Group
-import io.edugma.domain.schedule.model.lesson.Lesson
-import io.edugma.domain.schedule.model.lesson.LessonDisplaySettings
 import io.edugma.domain.schedule.model.lesson_subject.LessonSubject
-import io.edugma.domain.schedule.model.lesson_type.LessonType
 import io.edugma.domain.schedule.model.place.Place
 import io.edugma.domain.schedule.model.teacher.Teacher
 import io.edugma.domain.schedule.utils.getShortName
-import io.edugma.features.base.core.utils.*
-import io.edugma.features.base.elements.SpacerHeight
+import io.edugma.features.base.core.utils.FluentIcons
 import io.edugma.features.base.elements.placeholder
-import java.time.format.DateTimeFormatter
 
 
 @Composable

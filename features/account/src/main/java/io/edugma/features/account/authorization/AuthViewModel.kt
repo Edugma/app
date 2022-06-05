@@ -1,6 +1,5 @@
 package io.edugma.features.account.authorization
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import io.edugma.domain.account.repository.AuthorizationRepository
 import io.edugma.domain.account.repository.PersonalRepository
@@ -11,7 +10,6 @@ import io.edugma.features.base.core.mvi.BaseActionViewModel
 import io.edugma.features.base.core.utils.isNotNull
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 
 class AuthViewModel(

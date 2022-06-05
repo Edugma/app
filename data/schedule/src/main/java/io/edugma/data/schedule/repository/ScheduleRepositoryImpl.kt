@@ -1,30 +1,26 @@
 package io.edugma.data.schedule.repository
 
-import android.util.Log
-import io.edugma.data.base.consts.CacheConst
-import io.edugma.data.base.local.*
+import io.edugma.data.base.local.DataVersionLocalDS
+import io.edugma.data.base.local.getFlow
+import io.edugma.data.base.local.save
 import io.edugma.data.base.model.map
 import io.edugma.data.base.store.Store
-import io.edugma.data.base.store.StoreImpl
 import io.edugma.data.schedule.api.ScheduleService
 import io.edugma.data.schedule.api.getCompactSchedule
 import io.edugma.data.schedule.local.ScheduleLocalDS
 import io.edugma.data.schedule.model.ScheduleDao
-import io.edugma.data.schedule.model.ScheduleKey
 import io.edugma.data.schedule.model.toModel
 import io.edugma.domain.base.utils.Lce
-import io.edugma.domain.base.utils.TAG
 import io.edugma.domain.base.utils.map
 import io.edugma.domain.schedule.model.compact.CompactSchedule
-import io.edugma.domain.schedule.model.schedule.ScheduleDay
 import io.edugma.domain.schedule.model.source.ScheduleSource
-import io.edugma.domain.schedule.model.teacher.TeacherInfo
 import io.edugma.domain.schedule.repository.ScheduleRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
-import kotlinx.datetime.Instant
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlin.time.Duration.Companion.days
-import kotlin.time.Duration.Companion.seconds
 
 class ScheduleRepositoryImpl(
     private val scheduleService: ScheduleService,

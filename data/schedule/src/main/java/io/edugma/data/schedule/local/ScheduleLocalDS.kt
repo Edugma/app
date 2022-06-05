@@ -1,11 +1,10 @@
 package io.edugma.data.schedule.local
 
 import io.edugma.data.schedule.model.ScheduleDao
-import io.edugma.data.schedule.model.ScheduleSourceFullDao
-import io.edugma.domain.schedule.model.schedule.ScheduleDay
 import io.edugma.domain.schedule.model.source.ScheduleSource
-import io.edugma.domain.schedule.model.source.ScheduleSourceFull
-import org.kodein.db.*
+import org.kodein.db.DB
+import org.kodein.db.asModelSequence
+import org.kodein.db.find
 
 class ScheduleLocalDS(
     private val db: DB

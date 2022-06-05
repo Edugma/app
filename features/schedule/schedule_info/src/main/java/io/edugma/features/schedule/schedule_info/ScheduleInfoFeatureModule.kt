@@ -2,7 +2,6 @@ package io.edugma.features.schedule.schedule_info
 
 import io.edugma.features.base.core.navigation.compose.addScreen
 import io.edugma.features.base.core.navigation.compose.screens
-import io.edugma.features.base.navigation.ScheduleScreens
 import io.edugma.features.base.navigation.schedule.ScheduleInfoScreens
 import io.edugma.features.schedule.schedule_info.group_info.GroupInfoScreen
 import io.edugma.features.schedule.schedule_info.group_info.GroupInfoViewModel
@@ -12,7 +11,6 @@ import io.edugma.features.schedule.schedule_info.place_info.PlaceInfoScreen
 import io.edugma.features.schedule.schedule_info.place_info.PlaceInfoViewModel
 import io.edugma.features.schedule.schedule_info.teacher_info.TeacherInfoScreen
 import io.edugma.features.schedule.schedule_info.teacher_info.TeacherInfoViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module
 

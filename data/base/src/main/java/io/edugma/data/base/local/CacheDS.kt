@@ -1,7 +1,6 @@
 package io.edugma.data.base.local
 
 import kotlinx.coroutines.flow.Flow
-import kotlin.reflect.KClass
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
 

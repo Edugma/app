@@ -27,7 +27,6 @@ import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.FluentIcons
 import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.base.core.utils.Typed1Listener
-import io.edugma.features.base.elements.ErrorView
 import io.edugma.features.base.elements.TextBox
 import io.edugma.features.base.elements.TextWithIcon
 import io.edugma.features.base.elements.placeholder

@@ -7,5 +7,5 @@ dependencies {
     implementation(project(Modules.Features.Base.Navigation))
     implementation(project(Modules.Features.Base.Elements))
 
-    implementation(project(Modules.Features.Misc.Settings))
+    implementation(projects.features.misc.settings)
 }

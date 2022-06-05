@@ -1,16 +1,12 @@
 package io.edugma.features.account.personal
 
 import androidx.lifecycle.viewModelScope
-import io.edugma.domain.account.model.Order
 import io.edugma.domain.account.model.Personal
 import io.edugma.domain.account.repository.PersonalRepository
-import io.edugma.features.base.core.mvi.BaseMutator
-import io.edugma.domain.base.utils.execute
 import io.edugma.domain.base.utils.onFailure
 import io.edugma.domain.base.utils.onSuccess
 import io.edugma.features.base.core.mvi.BaseViewModel
-import io.edugma.features.base.core.mvi.BaseViewModelFull
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class PersonalViewModel(private val repository: PersonalRepository) :

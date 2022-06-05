@@ -4,7 +4,7 @@ import io.edugma.data.schedule.api.FreePlacesService
 import io.edugma.domain.schedule.model.place.PlaceFilters
 import io.edugma.domain.schedule.repository.FreePlaceRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.flowOn
 
 class FreePlaceRepositoryImpl(
     private val freePlacesService: FreePlacesService,

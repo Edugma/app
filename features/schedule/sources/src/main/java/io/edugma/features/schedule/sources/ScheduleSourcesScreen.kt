@@ -7,7 +7,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -15,7 +17,6 @@ import io.edugma.domain.schedule.model.source.ScheduleSourceFull
 import io.edugma.domain.schedule.model.source.ScheduleSources
 import io.edugma.domain.schedule.model.source.ScheduleSourcesTabs
 import io.edugma.features.base.core.utils.*
-import io.edugma.features.base.core.utils.ContentAlpha
 import io.edugma.features.base.elements.*
 import org.koin.androidx.compose.getViewModel
 

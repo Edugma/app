@@ -8,9 +8,7 @@ import io.edugma.domain.base.utils.onFailure
 import io.edugma.domain.base.utils.onSuccess
 import io.edugma.features.account.marks.Filter.*
 import io.edugma.features.base.core.mvi.BaseViewModel
-import io.edugma.features.base.core.utils.isNotNull
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 

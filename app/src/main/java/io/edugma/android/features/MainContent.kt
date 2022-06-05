@@ -17,12 +17,12 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
-import io.edugma.features.base.core.navigation.compose.rememberNavController
-import io.edugma.features.base.navigation.MainScreen
 import io.edugma.android.appScreens
 import io.edugma.features.base.core.navigation.compose.getRoute
+import io.edugma.features.base.core.navigation.compose.rememberNavController
 import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.base.core.utils.withAlpha
+import io.edugma.features.base.navigation.MainScreen
 import io.edugma.features.base.navigation.nodes.NodesScreens
 import org.koin.androidx.compose.getViewModel
 

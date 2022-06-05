@@ -1,8 +1,8 @@
 package io.edugma.domain.schedule.model.schedule
 
 import io.edugma.domain.schedule.model.lesson.Lesson
-import kotlinx.serialization.Serializable
 import io.edugma.domain.schedule.model.lesson.LessonTime
+import kotlinx.serialization.Serializable
 
 @Serializable
 data class LessonsByTime(

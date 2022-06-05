@@ -12,7 +12,6 @@ import io.edugma.domain.schedule.repository.ScheduleSourcesRepository
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.transformLatest
-import kotlinx.datetime.Instant
 import java.time.LocalDate
 import kotlin.math.max
 

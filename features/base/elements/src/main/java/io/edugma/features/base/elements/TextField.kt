@@ -2,7 +2,6 @@ package io.edugma.features.base.elements
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -16,7 +15,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import io.edugma.features.base.core.utils.*
+import io.edugma.features.base.core.utils.ClickListener
+import io.edugma.features.base.core.utils.FluentIcons
+import io.edugma.features.base.core.utils.MaterialTheme3
 
 
 @Composable

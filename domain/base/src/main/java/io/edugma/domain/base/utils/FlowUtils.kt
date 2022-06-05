@@ -1,8 +1,6 @@
 package io.edugma.domain.base.utils
 
 import kotlinx.coroutines.flow.*
-import java.util.logging.Level
-import java.util.logging.Logger
 
 private const val StopTimeoutMillis: Long = 5000
 

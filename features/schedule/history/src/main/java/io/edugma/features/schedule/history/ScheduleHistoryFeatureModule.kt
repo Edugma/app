@@ -7,7 +7,6 @@ import io.edugma.features.schedule.history.changes.ScheduleChangesScreen
 import io.edugma.features.schedule.history.changes.ScheduleChangesViewModel
 import io.edugma.features.schedule.history.main.ScheduleHistoryScreen
 import io.edugma.features.schedule.history.main.ScheduleHistoryViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module
 

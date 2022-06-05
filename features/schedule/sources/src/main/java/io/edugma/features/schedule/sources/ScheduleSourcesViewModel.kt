@@ -1,17 +1,14 @@
 package io.edugma.features.schedule.sources
 
 import androidx.lifecycle.viewModelScope
-import io.edugma.domain.schedule.model.source.ScheduleSourceFull
-import io.edugma.domain.schedule.model.source.ScheduleSources
-import io.edugma.domain.schedule.usecase.ScheduleUseCase
 import io.edugma.domain.base.utils.onFailure
 import io.edugma.domain.base.utils.onSuccess
+import io.edugma.domain.schedule.model.source.ScheduleSourceFull
 import io.edugma.domain.schedule.model.source.ScheduleSourcesTabs
 import io.edugma.domain.schedule.usecase.ScheduleSourcesUseCase
 import io.edugma.features.base.core.mvi.BaseViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.serialization.SerialName
 
 class ScheduleSourcesViewModel(
     private val useCase: ScheduleSourcesUseCase,

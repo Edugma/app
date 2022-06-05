@@ -11,7 +11,6 @@ import io.edugma.data.schedule.repository.*
 import io.edugma.domain.schedule.repository.*
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import retrofit2.Retrofit
 
 object ScheduleDataModule {
     val deps = module {

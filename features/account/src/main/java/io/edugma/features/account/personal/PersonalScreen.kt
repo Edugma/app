@@ -23,7 +23,6 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import coil.transform.CircleCropTransformation
 import io.edugma.domain.account.model.Order
 import io.edugma.domain.account.model.Personal
 import io.edugma.features.account.R

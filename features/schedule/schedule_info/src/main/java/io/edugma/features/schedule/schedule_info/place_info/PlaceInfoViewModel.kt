@@ -7,7 +7,6 @@ import io.edugma.domain.schedule.model.place.PlaceDailyOccupancy
 import io.edugma.domain.schedule.model.place.PlaceInfo
 import io.edugma.domain.schedule.repository.FreePlaceRepository
 import io.edugma.domain.schedule.repository.ScheduleInfoRepository
-import io.edugma.domain.schedule.repository.ScheduleRepository
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.mvi.prop
 import kotlinx.coroutines.flow.collect

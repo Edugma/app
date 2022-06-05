@@ -1,6 +1,5 @@
 package io.edugma.data.base.local
 
-import android.util.Log
 import io.edugma.data.base.model.PreferenceDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

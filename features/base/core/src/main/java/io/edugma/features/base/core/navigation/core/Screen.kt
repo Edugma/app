@@ -7,8 +7,8 @@ import io.edugma.domain.base.utils.converters.LocalDateTimeConverter
 import io.edugma.domain.base.utils.converters.LocalTimeConverter
 import io.edugma.domain.base.utils.converters.ZonedDateTimeConverter
 import io.edugma.features.base.core.NativeText
-import io.edugma.features.base.core.navigation.core.Screen.Companion.serialized
-import kotlinx.serialization.*
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.time.LocalDate
 import java.time.LocalDateTime

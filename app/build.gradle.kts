@@ -11,13 +11,15 @@ dependencies {
 
     implementation(projects.features.home)
 
-    implementation(projects.features.schedule)
+    implementation(projects.features.schedule.menu)
+    implementation(projects.features.schedule.daily)
     implementation(projects.features.schedule.scheduleInfo)
     implementation(projects.features.schedule.calendar)
     implementation(projects.features.schedule.lessonsReview)
     implementation(projects.features.schedule.sources)
     implementation(projects.features.schedule.appwidget)
     implementation(projects.features.schedule.history)
+    implementation(projects.features.schedule.freePlace)
 
     implementation(projects.features.account)
 

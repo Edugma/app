@@ -1,7 +1,6 @@
 package io.edugma.android
 
 import android.app.Application
-import com.google.android.material.color.DynamicColors
 import io.edugma.features.base.core.utils.androidSharedPreferences
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger

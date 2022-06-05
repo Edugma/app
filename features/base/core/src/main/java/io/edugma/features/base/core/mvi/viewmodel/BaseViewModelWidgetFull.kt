@@ -10,7 +10,6 @@ import io.edugma.features.base.core.mvi.impl.SimpleActionProducer
 import io.edugma.features.base.core.mvi.impl.SimpleStateStore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.koin.core.component.KoinComponent
 
 abstract class BaseViewModelWidgetFull<TState, TMutator : BaseMutator<TState>, TAction>(
     initialState: TState,

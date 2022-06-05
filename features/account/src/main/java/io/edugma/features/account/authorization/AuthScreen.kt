@@ -3,11 +3,14 @@ package io.edugma.features.account.authorization
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
-import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -17,7 +20,10 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.airbnb.lottie.compose.*
 import io.edugma.features.account.R
-import io.edugma.features.base.core.utils.*
+import io.edugma.features.base.core.utils.ClickListener
+import io.edugma.features.base.core.utils.FluentIcons
+import io.edugma.features.base.core.utils.MaterialTheme3
+import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.base.elements.*
 import org.koin.androidx.compose.getViewModel
 

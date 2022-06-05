@@ -1,4 +1,12 @@
 @file:Suppress("UnstableApiUsage")
+
+include(":features:schedule:free_place")
+
+
+include(":features:schedule:daily")
+include(":features:schedule:menu")
+include(":features:schedule:elements")
+
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include(":features:schedule:history")

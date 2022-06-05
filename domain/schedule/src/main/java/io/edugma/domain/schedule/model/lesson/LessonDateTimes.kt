@@ -3,7 +3,6 @@ package io.edugma.domain.schedule.model.lesson
 import io.edugma.domain.base.utils.converters.LocalDateConverter
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 @Serializable
 data class LessonDateTimes(

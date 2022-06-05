@@ -5,7 +5,6 @@ import io.edugma.domain.schedule.usecase.ScheduleDayChange
 import io.edugma.domain.schedule.usecase.ScheduleHistoryUseCase
 import io.edugma.features.base.core.mvi.BaseViewModel
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Instant
 
 class ScheduleChangesViewModel(
     private val useCase: ScheduleHistoryUseCase

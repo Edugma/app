@@ -3,10 +3,8 @@ package io.edugma.features.account.students
 import androidx.lifecycle.viewModelScope
 import io.edugma.domain.account.model.Student
 import io.edugma.domain.account.repository.PeoplesRepository
-import io.edugma.features.base.core.mvi.BaseMutator
 import io.edugma.domain.base.utils.execute
 import io.edugma.features.base.core.mvi.BaseViewModel
-import io.edugma.features.base.core.mvi.BaseViewModelFull
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

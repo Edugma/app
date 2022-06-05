@@ -1,6 +1,5 @@
 package io.edugma.domain.schedule.usecase
 
-import io.edugma.domain.schedule.model.source.ScheduleSource
 import io.edugma.domain.schedule.model.source.ScheduleSourceFull
 import io.edugma.domain.schedule.model.source.ScheduleSources
 import io.edugma.domain.schedule.model.source.ScheduleSourcesTabs
@@ -8,7 +7,6 @@ import io.edugma.domain.schedule.repository.ScheduleSourcesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
 
 class ScheduleSourcesUseCase(
     private val scheduleSourcesRepository: ScheduleSourcesRepository
