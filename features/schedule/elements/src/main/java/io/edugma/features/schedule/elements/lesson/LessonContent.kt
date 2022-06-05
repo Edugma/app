@@ -47,23 +47,23 @@ fun LessonContent(
             WithContentAlpha(ContentAlpha.medium) {
                 LessonHeader(lesson.type, isLoading)
             }
-            SpacerHeight(4.dp)
+            SpacerHeight(3.dp)
             WithContentAlpha(ContentAlpha.high) {
                 LessonTitle(lesson.subject, isLoading)
             }
             SpacerHeight(4.dp)
             WithContentAlpha(ContentAlpha.medium) {
-                if (displaySettings.showTeachers) {
+                if (displaySettings.showTeachers && lesson.teachers.isNotEmpty()) {
                     SpacerHeight(2.dp)
                     TeachersContent(lesson.teachers, isLoading)
                     SpacerHeight(2.dp)
                 }
-                if (displaySettings.showGroups) {
+                if (displaySettings.showGroups && lesson.groups.isNotEmpty()) {
                     SpacerHeight(2.dp)
                     GroupsContent(lesson.groups, isLoading)
                     SpacerHeight(2.dp)
                 }
-                if (displaySettings.showPlaces) {
+                if (displaySettings.showPlaces && lesson.places.isNotEmpty()) {
                     SpacerHeight(2.dp)
                     PlacesContent(lesson.places, isLoading)
                     SpacerHeight(2.dp)

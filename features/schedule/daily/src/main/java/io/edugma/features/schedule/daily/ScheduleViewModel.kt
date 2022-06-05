@@ -14,9 +14,9 @@ import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.mvi.impl.SimpleMutator
 import io.edugma.features.base.core.mvi.prop
 import io.edugma.features.base.navigation.schedule.ScheduleInfoScreens
-import io.edugma.features.schedule.daily.model.ScheduleDayUiModel
 import io.edugma.features.schedule.daily.model.WeekUiModel
-import io.edugma.features.schedule.daily.utils.toUiModel
+import io.edugma.features.schedule.elements.utils.toUiModel
+import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first

@@ -3,8 +3,6 @@ package io.edugma.features.schedule.daily
 import androidx.annotation.RawRes
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,12 +29,11 @@ import io.edugma.domain.schedule.model.schedule.LessonsByTime
 import io.edugma.domain.schedule.model.teacher.Teacher
 import io.edugma.features.base.core.utils.Typed2Listener
 import io.edugma.features.base.elements.SpacerHeight
-import io.edugma.features.base.elements.placeholder
-import io.edugma.features.schedule.daily.model.ScheduleDayUiModel
-import io.edugma.features.schedule.daily.utils.toUiModel
-import io.edugma.features.schedule.elements.lesson.LessonContent
+import io.edugma.features.schedule.elements.utils.toUiModel
+import io.edugma.features.schedule.elements.lesson.LessonPlace
 import io.edugma.features.schedule.elements.lesson.LessonWindow
 import io.edugma.features.schedule.elements.lesson.model.ScheduleItem
+import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -142,37 +139,6 @@ fun LessonList(
             SpacerHeight(24.dp)
         }
     }
-}
-
-
-private fun LazyListScope.LessonPlace(
-    lessonsByTime: LessonsByTime,
-    lessonDisplaySettings: LessonDisplaySettings,
-    isLoading: Boolean = false,
-    onLessonClick: Typed2Listener<Lesson, LessonTime>
-) {
-    item {
-        LessonTimeContent(lessonsByTime.time, isLoading)
-    }
-    items(lessonsByTime.lessons) { lesson ->
-        LessonContent(
-            lesson = lesson,
-            displaySettings = lessonDisplaySettings,
-            isLoading = isLoading,
-            onLessonClick = { onLessonClick(it, lessonsByTime.time) }
-        )
-    }
-}
-
-@Composable
-private fun LessonTimeContent(lessonTime: LessonTime, isLoading: Boolean = false) {
-    Text(
-        text = "${lessonTime.start} - ${lessonTime.end}",
-        style = MaterialTheme.typography.titleSmall,
-        modifier = Modifier
-            .padding(start = 34.dp, end = 34.dp, top = 4.dp, bottom = 2.dp)
-            .placeholder(visible = isLoading)
-    )
 }
 
 @Composable

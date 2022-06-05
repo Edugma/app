@@ -4,6 +4,7 @@ import io.edugma.domain.base.utils.WeekIterator
 import io.edugma.domain.base.utils.getCeilSunday
 import io.edugma.domain.base.utils.getFloorMonday
 import io.edugma.features.schedule.elements.lesson.model.ScheduleItem
+import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
 import java.time.LocalDate
 
 data class WeekUiModel(

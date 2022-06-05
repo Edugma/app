@@ -1,4 +1,4 @@
-package io.edugma.features.schedule.daily.model
+package io.edugma.features.schedule.elements.model
 
 import io.edugma.features.schedule.elements.lesson.model.ScheduleItem
 import java.time.LocalDate

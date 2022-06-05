@@ -24,6 +24,21 @@ fun WithContentAlpha(alpha: Float, content: @Composable () -> Unit) {
     )
 }
 
+@Composable
+fun HighAlpha(content: @Composable () -> Unit) {
+    WithContentAlpha(alpha = ContentAlpha.high, content = content)
+}
+
+@Composable
+fun MediumAlpha(content: @Composable () -> Unit) {
+    WithContentAlpha(alpha = ContentAlpha.medium, content = content)
+}
+
+@Composable
+fun DisabledAlpha(content: @Composable () -> Unit) {
+    WithContentAlpha(alpha = ContentAlpha.disabled, content = content)
+}
+
 /**
  * Default alpha levels used by Material components.
  *

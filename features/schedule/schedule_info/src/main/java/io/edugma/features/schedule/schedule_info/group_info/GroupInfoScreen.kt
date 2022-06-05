@@ -15,9 +15,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.edugma.domain.schedule.model.lesson.Lesson
+import io.edugma.domain.schedule.model.lesson.LessonDateTime
+import io.edugma.domain.schedule.model.lesson.LessonTime
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.Typed1Listener
+import io.edugma.features.base.core.utils.Typed2Listener
 import io.edugma.features.base.elements.PrimaryTopAppBar
+import io.edugma.features.schedule.elements.vertical_schedule.VerticalSchedule
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -32,6 +37,7 @@ fun GroupInfoScreen(viewModel: GroupInfoViewModel = getViewModel(), id: String) 
         state = state,
         onBackClick = viewModel::exit,
         onTabSelected = viewModel::onTabSelected,
+        onLessonClick = viewModel::onLessonClick
     )
 
 }
@@ -41,7 +47,8 @@ fun GroupInfoScreen(viewModel: GroupInfoViewModel = getViewModel(), id: String) 
 private fun GroupInfoContent(
     state: GroupInfoState,
     onBackClick: ClickListener,
-    onTabSelected: Typed1Listener<GroupInfoTabs>
+    onTabSelected: Typed1Listener<GroupInfoTabs>,
+    onLessonClick: Typed2Listener<Lesson, LessonDateTime>
 ) {
     Column(Modifier.fillMaxSize()) {
         PrimaryTopAppBar(
@@ -71,6 +78,18 @@ private fun GroupInfoContent(
                     )
                 }
             }
+        }
+        when (state.selectedTab) {
+            GroupInfoTabs.Schedule -> {
+                state.schedule?.let {
+                    VerticalSchedule(
+                        scheduleDays = state.schedule,
+                        lessonDisplaySettings = state.lessonDisplaySettings,
+                        onLessonClick = onLessonClick
+                    )
+                }
+            }
+            GroupInfoTabs.Students -> { }
         }
     }
 }
