@@ -10,6 +10,8 @@ import io.edugma.domain.schedule.model.lesson.Lesson
 import io.edugma.domain.schedule.model.lesson.LessonDateTime
 import io.edugma.domain.schedule.model.lesson.LessonDisplaySettings
 import io.edugma.domain.schedule.model.lesson.LessonInfo
+import io.edugma.domain.schedule.model.source.ScheduleSource
+import io.edugma.domain.schedule.model.source.ScheduleSources
 import io.edugma.domain.schedule.repository.ScheduleInfoRepository
 import io.edugma.domain.schedule.usecase.ScheduleUseCase
 import io.edugma.features.base.core.mvi.BaseViewModel
@@ -23,52 +25,21 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class GroupInfoViewModel(
-    private val repository: ScheduleInfoRepository,
-    private val useCase: ScheduleUseCase
+    private val repository: ScheduleInfoRepository
 ) : BaseViewModel<GroupInfoState>(GroupInfoState()) {
     init {
-        viewModelScope.launch {
-            useCase.getSchedule().collect {
-                if (!it.isFinalFailure) {
-                    val schedule = it.getOrDefault(emptyList())
-                    if (schedule.isEmpty() && it.isLoading) return@collect
-
-                    mutateState {
-
-                        state = state.copy(
-                            schedule = schedule.toUiModel()
-                        )
-                    }
-                }
-            }
-        }
-
-        viewModelScope.launch {
-            useCase.getSelectedSource()
-                .onSuccess {
-                    val lessonDisplaySettings = it?.let {
-                        useCase.getLessonDisplaySettings(it.type)
-                    } ?: LessonDisplaySettings.Default
-                    mutateState {
-                        state = state.copy(
-                            lessonDisplaySettings = lessonDisplaySettings
-                        )
-                    }
-                }.onFailure {
-                    mutateState {
-                        state = state.copy(
-                            lessonDisplaySettings = LessonDisplaySettings.Default
-                        )
-                    }
-                }.collect()
-        }
-
         viewModelScope.launch {
             state.prop { id }.filterNotNull().collect {
                 repository.getGroupInfo(it)
                     .onSuccess {
                         mutateState {
-                            state = state.copy(groupInfo = it)
+                            state = state.copy(
+                                groupInfo = it,
+                                scheduleSource = ScheduleSource(
+                                    type = ScheduleSources.Group,
+                                    key = it.id
+                                )
+                            )
                         }
                     }.onFailure {
 
@@ -88,17 +59,6 @@ class GroupInfoViewModel(
             state = state.copy(selectedTab = tab)
         }
     }
-
-    fun onLessonClick(lesson: Lesson, dateTime: LessonDateTime) {
-        router.navigateTo(
-            ScheduleInfoScreens.LessonInfo(
-                lessonInfo = LessonInfo(
-                    lesson = lesson,
-                    dateTime = dateTime
-                )
-            )
-        )
-    }
 }
 
 data class GroupInfoState(
@@ -106,8 +66,7 @@ data class GroupInfoState(
     val groupInfo: GroupInfo? = null,
     val tabs: List<GroupInfoTabs> = GroupInfoTabs.values().toList(),
     val selectedTab: GroupInfoTabs = GroupInfoTabs.Schedule,
-    val schedule: List<ScheduleDayUiModel>? = null,
-    val lessonDisplaySettings: LessonDisplaySettings = LessonDisplaySettings.Default,
+    val scheduleSource: ScheduleSource? = null
 )
 
 enum class GroupInfoTabs {

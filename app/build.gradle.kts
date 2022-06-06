@@ -11,6 +11,7 @@ dependencies {
 
     implementation(projects.features.home)
 
+    implementation(projects.features.schedule.elements)
     implementation(projects.features.schedule.menu)
     implementation(projects.features.schedule.daily)
     implementation(projects.features.schedule.scheduleInfo)

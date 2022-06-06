@@ -20,3 +20,15 @@ fun Dp.sp() =
     with(LocalDensity.current) {
         this@sp.toSp()
     }
+
+@Composable
+fun Int.pxToDp() =
+    with(LocalDensity.current) {
+        this@pxToDp.toDp()
+    }
+
+@Composable
+fun Float.pxToDp() =
+    with(LocalDensity.current) {
+        this@pxToDp.toDp()
+    }

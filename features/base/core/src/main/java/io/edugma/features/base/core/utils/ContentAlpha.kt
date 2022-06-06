@@ -4,16 +4,23 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.TextStyle
 
+@Composable
 fun TextStyle.withAlpha(alpha: Float): TextStyle {
-    return this.copy(color = this.color.copy(alpha = alpha))
+    return remember(this, alpha) {
+        this.copy(color = this.color.copy(alpha = alpha))
+    }
 }
 
+@Composable
 fun Color.withAlpha(alpha: Float): Color {
-    return this.copy(alpha = alpha)
+    return remember(this, alpha) {
+        this.copy(alpha = alpha)
+    }
 }
 
 @Composable

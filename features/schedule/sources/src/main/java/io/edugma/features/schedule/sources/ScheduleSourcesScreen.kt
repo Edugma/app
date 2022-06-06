@@ -102,7 +102,6 @@ fun ScheduleSourcesContent(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SourceTypeTab(
     tab: ScheduleSourcesTabs,
