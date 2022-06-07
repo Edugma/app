@@ -9,7 +9,9 @@ import io.edugma.domain.base.utils.onFailure
 import io.edugma.domain.base.utils.onSuccess
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.mvi.BaseViewModelFull
+import io.edugma.features.base.core.utils.isNotNull
 import io.edugma.features.base.core.utils.isNull
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
@@ -20,28 +22,48 @@ class ClassmatesViewModel(private val repository: PeoplesRepository) :
         loadClassmates()
     }
 
-    fun loadClassmates() {
+    private fun loadClassmates() {
         viewModelScope.launch {
+            setLoading(true)
+            repository.loadClassmates()?.let {
+                setData(it)
+            }
             repository.getClassmates()
-                .onStart { setLoading(true) }
-                .onSuccess { setData(it) }
+                .onSuccess {
+                    setData(it)
+                    setLoading(false)
+                }
                 .onFailure { setError(true) }
+                .collect()
         }
     }
 
-    fun setData(data: List<Student>) {
+    fun updateClassmates() {
+        viewModelScope.launch {
+            repository.getClassmates()
+                .onStart { setLoading(true) }
+                .onSuccess {
+                    setData(it)
+                    setLoading(false)
+                }
+                .onFailure { setError(true) }
+                .collect()
+        }
+    }
+
+    private fun setData(data: List<Student>) {
         mutateState {
             state = state.copy(data = data)
         }
     }
 
-    fun setLoading(isLoading: Boolean) {
+    private fun setLoading(isLoading: Boolean) {
         mutateState {
             state = state.copy(isLoading = isLoading, isError = !isLoading && state.isError)
         }
     }
 
-    fun setError(isError: Boolean) {
+    private fun setError(isError: Boolean) {
         mutateState {
             state = state.copy(isError = isError, isLoading = false)
         }
@@ -50,8 +72,10 @@ class ClassmatesViewModel(private val repository: PeoplesRepository) :
 }
 
 data class ClassmatesState(
-    val data: List<Student> = emptyList(),
+    val data: List<Student>? = null,
     val isLoading: Boolean = false,
-    val placeholders: Boolean = true,
     val isError: Boolean = false
-)
+) {
+    val placeholders = data.isNull() && isLoading && !isError
+    val isRefreshing = data.isNotNull() && isLoading && !isError
+}

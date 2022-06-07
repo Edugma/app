@@ -2,6 +2,8 @@ package io.edugma.features.account.authorization
 
 import androidx.lifecycle.viewModelScope
 import io.edugma.domain.account.repository.AuthorizationRepository
+import io.edugma.domain.account.repository.PaymentsRepository
+import io.edugma.domain.account.repository.PerformanceRepository
 import io.edugma.domain.account.repository.PersonalRepository
 import io.edugma.domain.base.utils.onFailure
 import io.edugma.domain.base.utils.onSuccess
@@ -14,7 +16,9 @@ import kotlinx.coroutines.launch
 
 class AuthViewModel(
     private val authorizationRepository: AuthorizationRepository,
-    private val personalRepository: PersonalRepository
+    private val personalRepository: PersonalRepository,
+    private val paymentsRepository: PaymentsRepository,
+    private val performanceRepository: PerformanceRepository
     ) : BaseActionViewModel<AuthState, AuthAction>(AuthState()) {
 
     init {
@@ -36,6 +40,7 @@ class AuthViewModel(
                     .onStart { mutateState { state = state.copy(isLoading = true) } }
                     .onSuccess {
                         collectPersonalInfo()
+                        cacheData()
                     }
                     .onFailure {
                         loggedIn(false)
@@ -44,6 +49,14 @@ class AuthViewModel(
                     .collect()
             }
         }
+
+    private fun cacheData() {
+        viewModelScope.launch {
+            performanceRepository.getMarksBySemester().zip(paymentsRepository.getPayment()) { _, _ ->
+                viewModelScope.launch { screenResultProvider.sendEvent(UpdateMenu) }
+            }.collect()
+        }
+    }
 
     private fun collectPersonalInfo() {
         viewModelScope.launch {
@@ -54,9 +67,7 @@ class AuthViewModel(
                     }
                     loggedIn(true)
                 }
-                .onFailure {
-                    exit()
-                }
+                .onFailure { exit() }
                 .collect()
         }
     }
@@ -65,7 +76,6 @@ class AuthViewModel(
         mutateState {
             state = state.copy(isLoading = false, auth = success)
         }
-        viewModelScope.launch { screenResultProvider.sendEvent(UpdateMenu) }
     }
 
     fun setLogin(text: String) {

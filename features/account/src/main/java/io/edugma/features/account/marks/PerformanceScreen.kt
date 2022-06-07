@@ -29,6 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.edugma.domain.account.model.Performance
 import io.edugma.features.account.R
 import io.edugma.features.account.marks.Filter.*
@@ -51,56 +53,10 @@ fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
         scrimColor = Color.Black.copy(alpha = 0.5f),
         sheetBackgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.surface,
         sheetContent = {
-            Column(modifier = Modifier
-                .padding(horizontal = 15.dp)) {
-                SpacerHeight(height = 15.dp)
-                Text(
-                    text = "Фильтры",
-                    style = MaterialTheme3.typography.headlineMedium,
-                    modifier = Modifier.padding(start = 8.dp)
-                )
-                SpacerHeight(height = 20.dp)
-                TextBox(
-                    value = state.name.value,
-                    title = "Название предмета",
-                    onValueChange = {
-                        viewModel.updateFilter(
-                            Name(
-                                value = it,
-                                isChecked = it.isEmpty()
-                            )
-                        )
-                    })
-                SpacerHeight(height = 20.dp)
-                ChipsRow(
-                    "Курс",
-                    state.courses,
-                    viewModel::updateFilter,
-                    state.placeholders
-                )
-                SpacerHeight(height = 20.dp)
-                ChipsRow(
-                    "Семестр",
-                    state.semesters,
-                    viewModel::updateFilter,
-                    state.placeholders
-                )
-                SpacerHeight(height = 20.dp)
-                ChipsRow(
-                    "Тип",
-                    state.types,
-                    viewModel::updateFilter,
-                    state.placeholders
-                )
-                SpacerHeight(height = 20.dp)
-                PrimaryButton(
-                    onClick = {scope.launch { bottomState.hide() }},
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text("Применить")
-                }
-                SpacerHeight(height = 15.dp)
-            }
+            BottomSheetContent(
+                state,
+                viewModel
+            ) { scope.launch { bottomState.hide() } }
         }
     ) {
         PerformanceContent(
@@ -114,93 +70,157 @@ fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
 }
 
 @Composable
+fun BottomSheetContent(
+    state: MarksState,
+    viewModel: PerformanceViewModel,
+    bottomCloseListener: ClickListener
+) {
+    Column(modifier = Modifier
+        .padding(horizontal = 15.dp)) {
+        SpacerHeight(height = 15.dp)
+        Text(
+            text = "Фильтры",
+            style = MaterialTheme3.typography.headlineMedium,
+            modifier = Modifier.padding(start = 8.dp)
+        )
+        SpacerHeight(height = 20.dp)
+        TextBox(
+            modifier = Modifier.placeholder(state.bottomSheetPlaceholders),
+            value = state.name.value,
+            title = "Название предмета",
+            onValueChange = {
+                viewModel.updateFilter(
+                    Name(
+                        value = it,
+                        isChecked = it.isEmpty()
+                    )
+                )
+            })
+        SpacerHeight(height = 20.dp)
+        ChipsRow(
+            "Курс",
+            state.courses,
+            viewModel::updateFilter,
+            state.bottomSheetPlaceholders
+        )
+        SpacerHeight(height = 20.dp)
+        ChipsRow(
+            "Семестр",
+            state.semesters,
+            viewModel::updateFilter,
+            state.bottomSheetPlaceholders
+        )
+        SpacerHeight(height = 20.dp)
+        ChipsRow(
+            "Тип",
+            state.types,
+            viewModel::updateFilter,
+            state.bottomSheetPlaceholders
+        )
+        SpacerHeight(height = 20.dp)
+        PrimaryButton(
+            onClick = bottomCloseListener,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Применить")
+        }
+        SpacerHeight(height = 15.dp)
+    }
+}
+
+@Composable
 fun PerformanceContent(state: MarksState,
                        showBottomSheet: ClickListener,
                        retryListener: ClickListener,
                        filterClickListener: Typed1Listener<Filter<*>>,
                        backListener: ClickListener) {
-    Column {
-        ConstraintLayout(Modifier.fillMaxWidth()) {
-            val (content, filter) = createRefs()
-            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.constrainAs(content) {
-                linkTo(parent.start, filter.start)
-                width = Dimension.fillToConstraints
-            }) {
-                IconButton(onClick = backListener) {
-                    Icon(
-                        Icons.Filled.ArrowBack,
-                        contentDescription = "Назад"
-                    )
-                }
-                SpacerWidth(width = 15.dp)
-                Text(
-                    text = "Оценки",
-                    style = MaterialTheme3.typography.titleLarge,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-            IconButton(onClick = showBottomSheet, modifier = Modifier.constrainAs(filter) {
-                linkTo(parent.top, parent.bottom)
-                end.linkTo(parent.end)
-            }) {
-                Icon(
-                    painterResource(id = FluentIcons.ic_fluent_filter_24_regular),
-                    contentDescription = "Фильтр"
-                )
-            }
-        }
-        FiltersRow(
-            state.currentFilters,
-            filterClickListener
-        )
-        LazyColumn(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)
-        ) {
-            when {
-                state.isError && state.data.isEmpty() -> {
-                    item {
-                        ErrorView {
-                            retryListener.invoke()
-                        }
+    SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = state.isRefreshing), onRefresh = retryListener) {
+        Column {
+            AppBar(showBottomSheet = showBottomSheet, backListener = backListener)
+            FiltersRow(state.currentFilters, filterClickListener)
+            LazyColumn(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 10.dp)
+                    .fillMaxSize()
+            ) {
+                when {
+                    state.isError && state.data.isNull() -> {
+                        item { ErrorView(retryAction = retryListener) }
                     }
-                }
-                state.placeholders -> {
-                    items(3) {
-                        SpacerHeight(height = 3.dp)
-                        PerformancePlaceholder()
-                        Divider()
-                    }
-                }
-                else -> {
-                    items(
-                        count = state.filteredData.size,
-                        key = { state.filteredData[it].id }
-                    ) {
-                        var showCourse = true
-                        if (it > 0) {
-                            showCourse = state.filteredData[it].course != state.filteredData[it - 1].course
-                        }
-                        if (!showCourse && it > 0) {
+                    state.placeholders -> {
+                        items(3) {
+                            SpacerHeight(height = 3.dp)
+                            PerformancePlaceholder()
                             Divider()
+                        }
+                    }
+                    else -> {
+                        items(
+                            count = state.filteredData?.size ?: 0,
+                            key = { state.filteredData!![it].id }
+                        ) {
+                            var showCourse = true
+                            if (it > 0) {
+                                showCourse = state.filteredData!![it].course != state.filteredData[it - 1].course
+                            }
+                            if (!showCourse && it > 0) {
+                                Divider()
+                                SpacerHeight(height = 3.dp)
+                            }
+                            if (showCourse) {
+                                if (it > 0) SpacerHeight(height = 15.dp)
+                                Text(
+                                    text = "${state.filteredData!![it].course} курс",
+                                    style = MaterialTheme3.typography.headlineSmall,
+                                    color = MaterialTheme3.colorScheme.primary
+                                )
+                                SpacerHeight(height = 15.dp)
+                            }
+                            Performance(
+                                state.filteredData!![it],
+                                filterClickListener
+                            )
                             SpacerHeight(height = 3.dp)
                         }
-                        if (showCourse) {
-                            if (it > 0) SpacerHeight(height = 15.dp)
-                            Text(
-                                text = "${state.filteredData[it].course} курс",
-                                style = MaterialTheme3.typography.headlineSmall,
-                                color = MaterialTheme3.colorScheme.primary
-                            )
-                            SpacerHeight(height = 15.dp)
-                        }
-                        Performance(
-                            state.filteredData[it],
-                            filterClickListener
-                        )
-                        SpacerHeight(height = 3.dp)
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun AppBar(
+    showBottomSheet: ClickListener,
+    backListener: ClickListener
+) {
+    ConstraintLayout(Modifier.fillMaxWidth()) {
+        val (content, filter) = createRefs()
+        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.constrainAs(content) {
+            linkTo(parent.start, filter.start)
+            width = Dimension.fillToConstraints
+        }) {
+            IconButton(onClick = backListener) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    contentDescription = "Назад"
+                )
+            }
+            SpacerWidth(width = 15.dp)
+            Text(
+                text = "Оценки",
+                style = MaterialTheme3.typography.titleLarge,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+        IconButton(onClick = showBottomSheet, modifier = Modifier.constrainAs(filter) {
+            linkTo(parent.top, parent.bottom)
+            end.linkTo(parent.end)
+        }) {
+            Icon(
+                painterResource(id = FluentIcons.ic_fluent_filter_24_regular),
+                contentDescription = "Фильтр"
+            )
         }
     }
 }

@@ -8,7 +8,11 @@ import io.edugma.domain.base.utils.onFailure
 import io.edugma.domain.base.utils.onSuccess
 import io.edugma.features.account.marks.Filter.*
 import io.edugma.features.base.core.mvi.BaseViewModel
+import io.edugma.features.base.core.utils.isNotNull
+import io.edugma.features.base.core.utils.isNull
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 
@@ -22,16 +26,15 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
     fun loadMarks() {
         viewModelScope.launch {
             setLoading(true)
-
-            //todo пофиксить фриз при  загрузке
-//            repository.getMarksLocal()
-//                .collectLatest {
-//                    it?.let {
-//                        setPerformanceData(it)
-//                        setLoading(false)
-//                    }
-//                }
-
+            repository.getLocalMarks()?.let {
+                delay(300) //todo говнокод пофиксить
+                setFilters(
+                    courses = repository.getLocalCourses()?.toSet() ?: emptySet(),
+                    semesters = repository.getLocalSemesters()?.toSet() ?: emptySet(),
+                    types = it.getExamTypes()
+                )
+                setPerformanceData(it)
+            }
             repository.getCoursesWithSemesters()
                 .zip(repository.getMarksBySemester()) { coursesWithSemester, performance ->
                     runCatching {
@@ -48,7 +51,6 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
                         types = performance.getExamTypes()
                     )
                     setLoading(false)
-                    setBottomSheetPlaceholders(false)
                 }
                 .onFailure {
                     Log.e("performance loading error", it.localizedMessage ?: it.message ?: it::class.java.canonicalName)
@@ -66,19 +68,13 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
 
     private fun setLoading(isLoading: Boolean) {
         mutateState {
-            state = state.copy(isLoading = isLoading, isError = !isLoading && state.isError, placeholders = if (!isLoading) false else state.placeholders)
+            state = state.copy(isLoading = isLoading, isError = !isLoading && state.isError)
         }
     }
 
     private fun setError() {
         mutateState {
-            state = state.copy(isError = true, isLoading = false, placeholders = false, bottomSheetPlaceholders = true)
-        }
-    }
-
-    private fun setBottomSheetPlaceholders(placeholders: Boolean) {
-        mutateState {
-            state = state.copy(bottomSheetPlaceholders = placeholders)
+            state = state.copy(isError = true, isLoading = false)
         }
     }
 
@@ -151,7 +147,7 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
 }
 
 data class MarksState(
-    val data: List<Performance> = emptyList(),
+    val data: List<Performance>? = null,
     val courses: Set<Course> = emptySet(),
     val semesters: Set<Semester> = emptySet(),
     val types: Set<Type> = emptySet(),
@@ -159,9 +155,10 @@ data class MarksState(
     val currentFilters: Set<Filter<*>> = emptySet(),
     val isLoading: Boolean = false,
     val isError: Boolean = false,
-    val placeholders: Boolean = true,
-    val bottomSheetPlaceholders: Boolean = true,
 ) {
+    val placeholders = data.isNull() && isLoading && !isError
+    val bottomSheetPlaceholders = (data.isNull() && isLoading && !isError) || (isError && data.isNull())
+    val isRefreshing = data.isNotNull() && isLoading && !isError
 
     private val filteredCourses = courses.filter { it.isChecked }.toSet()
     private val filteredSemesters = semesters.filter { it.isChecked }.toSet()
@@ -171,7 +168,7 @@ data class MarksState(
         if (name.isChecked) it.plus(name) else it
     }
 
-    val filteredData = data.filter { performance ->
+    val filteredData = data?.filter { performance ->
         when {
             enabledFilters.isEmpty() -> true
             else -> {

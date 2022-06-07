@@ -1,11 +1,13 @@
 package io.edugma.data.account.repository
 
 import io.edugma.data.account.api.AccountService
+import io.edugma.data.base.consts.CacheConst.PaymentsKey
 import io.edugma.data.base.local.PreferencesDS
 import io.edugma.data.base.local.getJsonLazy
 import io.edugma.data.base.local.setJsonLazy
 import io.edugma.domain.account.model.Contracts
 import io.edugma.domain.account.model.PaymentType
+import io.edugma.domain.account.model.Payments
 import io.edugma.domain.account.repository.PaymentsRepository
 import io.edugma.domain.base.utils.onSuccess
 import kotlinx.coroutines.Dispatchers
@@ -31,9 +33,9 @@ class PaymentsRepositoryImpl(
     }
 
     override suspend fun savePayments(contracts: Contracts) {
-        localStore.setJsonLazy(contracts)
+        localStore.setJsonLazy(contracts, PaymentsKey)
     }
 
-    override suspend fun getPaymentsLocal(): Contracts? = localStore.getJsonLazy<Contracts>()
+    override suspend fun getPaymentsLocal(): Contracts? = localStore.getJsonLazy<Contracts>(PaymentsKey)
 
 }

@@ -56,10 +56,18 @@ fun AccountContent(state: AccountMenuState, onClickListener: (MenuUi) -> Unit) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
         ) {
-            items(state.bottomMenu) {
-                UsualCard(modifier = Modifier,name = it.label) { onClickListener.invoke(it) }
+            items(
+                count = state.bottomMenu.size - (state.bottomMenu.size % 2)
+            ) {
+                val item = state.bottomMenu[it]
+                UsualCard(name = item.label) { onClickListener.invoke(item) }
             }
         }
+        if (state.bottomMenu.size % 2 != 0) {
+            val item = state.bottomMenu.last()
+            UsualCard(modifier = Modifier.fillMaxWidth(),name = item.label) { onClickListener.invoke(item) }
+        }
+
     }
 }
 
@@ -71,7 +79,6 @@ private fun MenuUi.action(viewModel: AccountMainViewModel) {
         MenuUi.Teachers -> viewModel.navigateToTeachers()
         MenuUi.Classmates -> viewModel.navigateToClassmates()
         MenuUi.Payments -> viewModel.navigateToPayments()
-        MenuUi.Applications -> viewModel.navigateToApplications()
         MenuUi.Marks -> viewModel.navigateToMarks()
     }
 }

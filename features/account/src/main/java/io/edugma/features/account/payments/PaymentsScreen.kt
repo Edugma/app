@@ -2,19 +2,20 @@ package io.edugma.features.account.payments
 
 import android.content.Intent
 import android.net.Uri
+import android.util.DisplayMetrics
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -24,20 +25,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import coil.compose.AsyncImage
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
-import io.edugma.domain.account.model.Payment
-import io.edugma.domain.account.model.PaymentType
-import io.edugma.domain.account.model.Payments
-import io.edugma.domain.account.model.toLabel
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import io.edugma.domain.account.model.*
 import io.edugma.features.account.R
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.*
@@ -53,42 +56,13 @@ fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
         initialValue = ModalBottomSheetValue.Hidden
     )
     val scope = rememberCoroutineScope()
-    val context = LocalContext.current
 
     ModalBottomSheetLayout(
         sheetState = bottomState,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         scrimColor = Color.Black.copy(alpha = 0.5f),
         sheetBackgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.surface,
-        sheetContent = {
-            Column(modifier = Modifier
-                .padding(horizontal = 15.dp)) {
-                SpacerHeight(height = 15.dp)
-                Text(
-                    text = "QR код",
-                    style = MaterialTheme3.typography.headlineMedium,
-                    modifier = Modifier.padding(start = 8.dp)
-                )
-                SpacerHeight(height = 20.dp)
-                AsyncImage(
-                    model = state.selectedPayment?.qr,
-                    contentDescription = "qr code",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            Intent(Intent.ACTION_VIEW, Uri.parse(state.selectedPayment?.qr)).apply(
-                                context::startActivity
-                            )
-                        }
-                )
-                SpacerHeight(height = 20.dp)
-                TextWithIcon(
-                    text = "Вы можете сделать скриншот экрана или скачать QR-код на устройство, затем открыть его в мобильном приложении вашего банка:\nОплата по QR-коду -> Загрузить изображение",
-                    icon = painterResource(id = FluentIcons.ic_fluent_info_24_regular)
-                )
-                SpacerHeight(height = 20.dp)
-            }
-        }
+        sheetContent = { BottomSheetLayout(state) }
     ) {
         PaymentsContent(
             state,
@@ -97,6 +71,40 @@ fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
             onQrClickListener = { scope.launch { bottomState.show() } },
             backListener = viewModel::exit,
         )
+    }
+}
+
+@Composable
+fun BottomSheetLayout(
+    state: PaymentsState
+) {
+    val context = LocalContext.current
+    Column(modifier = Modifier
+        .padding(horizontal = 15.dp)) {
+        SpacerHeight(height = 15.dp)
+        Text(
+            text = "QR код",
+            style = MaterialTheme3.typography.headlineMedium,
+            modifier = Modifier.padding(start = 8.dp)
+        )
+        SpacerHeight(height = 20.dp)
+        AsyncImage(
+            model = state.selectedPayment?.qr,
+            contentDescription = "qr code",
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    Intent(Intent.ACTION_VIEW, Uri.parse(state.selectedPayment?.qr)).apply(
+                        context::startActivity
+                    )
+                }
+        )
+        SpacerHeight(height = 20.dp)
+        TextWithIcon(
+            text = "Вы можете сделать скриншот экрана или скачать QR-код на устройство, затем открыть его в мобильном приложении вашего банка:\nОплата по QR-коду -> Загрузить изображение",
+            icon = painterResource(id = FluentIcons.ic_fluent_info_24_regular)
+        )
+        SpacerHeight(height = 20.dp)
     }
 }
 
@@ -109,49 +117,65 @@ fun PaymentsContent(
     onQrClickListener: ClickListener,
     backListener: ClickListener
 ) {
-    Column {
-        val paymentsPagerState = rememberPagerState(state.selectedIndex)
-        paymentsPagerState.bindTo(state.selectedIndex)
-        paymentsPagerState.onPageChanged(onPaymentChange::invoke)
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(bottom = 10.dp)
-        ) {
-            IconButton(onClick = backListener) {
-                Icon(
-                    Icons.Filled.ArrowBack,
-                    contentDescription = "Назад"
-                )
-            }
-            SpacerWidth(width = 15.dp)
-            Text(
-                text = state.selectedPayment?.let { "Договор №${it.number}" } ?: "Оплата",
-                style = MaterialTheme3.typography.headlineSmall,
-            )
-        }
-        if (state.placeholders) {
-            TypesRowPlaceholders()
-        } else {
-            TypesRow(
-                state.types,
-                state.selectedType
-            ) {
-                onPaymentChange.invoke(state.data.keys.indexOf(it))
-            }
-        }
-        if (state.placeholders) {
-            PaymentsPlaceholder()
-        } else {
-            HorizontalPager(
-                count = state.data.size,
-                state = paymentsPagerState,
-                key = {state.getTypeByIndex(it) ?: PaymentType.Dormitory}
-            ) { page ->
-                state.getPaymentsByIndex(page)?.let { payment ->
-                    Payments(payment, onQrClickListener)
+    SwipeRefresh(state = rememberSwipeRefreshState(state.isRefreshing), onRefresh = retryListener) {
+        Column {
+            val paymentsPagerState = rememberPagerState(state.selectedIndex)
+            paymentsPagerState.bindTo(state.selectedIndex)
+            paymentsPagerState.onPageChanged(onPaymentChange::invoke)
+            AppBar(state, backListener)
+            when {
+                state.isError && state.types.isNull() -> {
+                    LazyColumn(modifier = Modifier.fillMaxSize()) {
+                        item { ErrorView(retryAction = retryListener) }
+                    }
+                }
+                state.placeholders -> {
+                    SelectableTypesRowPlaceholders()
+                    PaymentsPlaceholder()
+                }
+                else -> {
+                    SelectableOneTypesRow(
+                        state.types ?: emptyList(),
+                        state.selectedType,
+                        { it.toLabel() }
+                    ) {
+                        state.data?.keys?.indexOf(it)?.let(onPaymentChange::invoke)
+                    }
+                    HorizontalPager(
+                        count = state.data?.size ?: 0,
+                        state = paymentsPagerState,
+                        key = { state.getTypeByIndex(it) ?: PaymentType.Dormitory }
+                    ) { page ->
+                        state.getPaymentsByIndex(page)?.let { payment ->
+                            Payments(payment, onQrClickListener)
+                        }
+                    }
                 }
             }
         }
+    }
+}
+
+@Composable
+fun AppBar(
+    state: PaymentsState,
+    backListener: ClickListener
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(bottom = 10.dp)
+    ) {
+        IconButton(onClick = backListener) {
+            Icon(
+                Icons.Filled.ArrowBack,
+                contentDescription = "Назад"
+            )
+        }
+        SpacerWidth(width = 15.dp)
+        Text(
+            text = state.selectedPayment?.let { "Договор №${it.number}" } ?: "Оплаты",
+            style = MaterialTheme3.typography.headlineSmall,
+        )
     }
 }
 
@@ -314,45 +338,5 @@ fun Expander(onClickListener: ClickListener) {
                 SpacerWidth(width = 20.dp)
                 Icon(painterResource(id = FluentIcons.ic_fluent_ios_arrow_rtl_24_filled), contentDescription = null, modifier = Modifier.rotate(90f))
             }
-    }
-}
-
-@Composable
-fun TypesRow(
-    types: List<PaymentType>,
-    selectedType: PaymentType?,
-    clickListener: Typed1Listener<PaymentType>
-) {
-    LazyRow() {
-        items(
-            count = types.size,
-            key = {types[it]}
-        ) {
-            SelectableChip(
-                selectedState = types[it] == selectedType,
-                onClick = { clickListener.invoke(types[it]) }) {
-                    Text(
-                        text = types[it].toLabel(),
-                        style = MaterialTheme3.typography.labelLarge,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
-        }
-    }
-}
-
-@Composable
-fun TypesRowPlaceholders() {
-    LazyRow() {
-        items(
-            count = 2
-        ) {
-            SelectableChip(
-                modifier = Modifier
-                    .placeholder(true)
-                    .widthIn(80.dp)
-            ) {}
-        }
     }
 }

@@ -34,6 +34,7 @@ class TeachersViewModel(private val repository: PeoplesRepository) :
     fun load(name: String = "") {
         val flow = requestPagingData(name)
             .flow
+            .cachedIn(viewModelScope)
         mutateState {
             state = state.copy(pagingData = flow)
         }

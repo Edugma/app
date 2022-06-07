@@ -1,5 +1,6 @@
 package io.edugma.features.account.students
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -10,13 +11,17 @@ import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -27,6 +32,8 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.edugma.domain.account.model.Student
 import io.edugma.domain.account.model.print
 import io.edugma.features.account.R
@@ -82,7 +89,9 @@ fun StudentsScreen(viewModel: StudentsViewModel = getViewModel()) {
         StudentsContent(
             state,
             backListener = { viewModel.exit() },
-            openBottomSheetListener = {scope.launch { bottomState.show() }}
+            openBottomSheetListener = {scope.launch { bottomState.show() }},
+            refreshListener = { viewModel.load("") },
+            retryListener = { viewModel.setName(state.name) }
         )
     }
 }
@@ -91,7 +100,9 @@ fun StudentsScreen(viewModel: StudentsViewModel = getViewModel()) {
 fun StudentsContent(
     state: StudentsState,
     backListener: ClickListener,
-    openBottomSheetListener: ClickListener
+    openBottomSheetListener: ClickListener,
+    refreshListener: ClickListener,
+    retryListener: ClickListener
 ) {
     val studentListItems = state.pagingData?.collectAsLazyPagingItems()
     Column {
@@ -116,17 +127,41 @@ fun StudentsContent(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-            IconButton(onClick = openBottomSheetListener, modifier = Modifier.constrainAs(filter) {
+            Row(modifier = Modifier.constrainAs(filter) {
                 linkTo(parent.top, parent.bottom)
                 end.linkTo(parent.end)
             }) {
-                Icon(
-                    painterResource(id = FluentIcons.ic_fluent_search_24_regular),
-                    contentDescription = "Фильтр"
-                )
+                val students = studentListItems
+                    ?.itemSnapshotList
+                    ?.items
+                    ?.mapIndexed { index, student -> "${index + 1}. ${student.getFullName()}" }
+                if (students?.isNotEmpty() == true) {
+                    val context = LocalContext.current
+                    IconButton(onClick = {
+                        Intent().apply {
+                            action = Intent.ACTION_SEND
+                            putExtra(Intent.EXTRA_TEXT, students.joinToString("\n"))
+                            type = "text/plain"
+                        }
+                            .let { Intent.createChooser(it, null) }
+                            .also(context::startActivity)
+                    }
+                    ) {
+                        Icon(
+                            Icons.Default.Share,
+                            contentDescription = "Поделиться"
+                        )
+                    }
+                }
+                IconButton(onClick = openBottomSheetListener) {
+                    Icon(
+                        painterResource(id = FluentIcons.ic_fluent_search_24_regular),
+                        contentDescription = "Фильтр"
+                    )
+                }
             }
         }
-        LazyColumn {
+        LazyColumn(Modifier.fillMaxSize()) {
             studentListItems?.let { _ ->
                 items(studentListItems) { item ->
                     item?.let {
@@ -135,23 +170,49 @@ fun StudentsContent(
                 }
                 when {
                     studentListItems.loadState.refresh is LoadState.Loading -> {
-                        item { Text(text = "first loading") }
-                        //You can add modifier to manage load state when first time response page is loading
+                        item { Text(text = "placeholders") }
                     }
                     studentListItems.loadState.refresh is LoadState.Error -> {
-                        item { Text(text = "error") }
-                        //You can use modifier to show error message
+                        item { ErrorView(retryAction = retryListener) }
                     }
                     studentListItems.loadState.append is LoadState.Loading -> {
-                        item { Text(text = "next page loading") }
-                        //You can add modifier to manage load state when next response page is loading
+                        item {
+                            Box(modifier = Modifier
+                                .fillMaxWidth()
+                                .heightIn(min = 70.dp)) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier
+                                        .size(32.dp)
+                                        .align(Alignment.Center)
+                                )
+                            }
+                        }
                     }
                     studentListItems.loadState.append is LoadState.Error -> {
-                        item { Text(text = "error") }
-                        //You can use modifier to show error message
+                        item { Refresher(onClickListener = studentListItems::retry) }
                     }
                 }
             }
+        }
+    }
+
+}
+
+@Composable
+fun Refresher(text: String = "Произошла ошибка", onClickListener: ClickListener) {
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .heightIn(min = 40.dp)
+        .clickable(onClick = onClickListener),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = text,
+                style = MaterialTheme3.typography.bodyLarge
+            )
+            SpacerWidth(width = 20.dp)
+            Icon(Icons.Default.Refresh, contentDescription = null, modifier = Modifier.rotate(90f))
         }
     }
 }
@@ -176,11 +237,13 @@ fun Student(student: Student?, placeholders: Boolean = false) {
                 .padding(start = 10.dp)
                 .placeholder(placeholders)
         )
-        Column(modifier = Modifier.padding(start = 10.dp).constrainAs(type) {
-            linkTo(name.bottom, divider.top, bias = 0f)
-            linkTo(name.start, parent.end)
-            width = Dimension.fillToConstraints
-        }) {
+        Column(modifier = Modifier
+            .padding(start = 10.dp)
+            .constrainAs(type) {
+                linkTo(name.bottom, divider.top, bias = 0f)
+                linkTo(name.start, parent.end)
+                width = Dimension.fillToConstraints
+            }) {
             if (placeholders) {
                 TextWithIcon(
                     text = "",
