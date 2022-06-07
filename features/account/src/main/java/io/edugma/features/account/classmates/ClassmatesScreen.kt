@@ -16,9 +16,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.edugma.features.account.students.Student
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.MaterialTheme3
+import io.edugma.features.base.core.utils.isNull
+import io.edugma.features.base.elements.ErrorView
 import io.edugma.features.base.elements.SpacerWidth
 import org.koin.androidx.compose.getViewModel
 
@@ -28,8 +32,8 @@ fun ClassmatesScreen(viewModel: ClassmatesViewModel = getViewModel()) {
 
     ClassmatesContent(
         state,
-        retryListener = {viewModel.loadClassmates()},
-        backListener = {viewModel.exit()}
+        retryListener = viewModel::updateClassmates,
+        backListener = viewModel::exit
     )
 }
 
@@ -38,61 +42,80 @@ fun ClassmatesContent(state: ClassmatesState,
                       retryListener: ClickListener,
                       backListener: ClickListener,
 ) {
-    Column {
-        ConstraintLayout(Modifier.fillMaxWidth()) {
-            val (content, filter) = createRefs()
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.constrainAs(content) {
-                    linkTo(parent.start, filter.start)
-                    width = Dimension.fillToConstraints
-                }) {
-                IconButton(onClick = backListener) {
-                    Icon(
-                        Icons.Filled.ArrowBack,
-                        contentDescription = "Назад"
-                    )
-                }
-                SpacerWidth(width = 15.dp)
-                Text(
-                    text = "Однокурсники",
-                    style = MaterialTheme3.typography.titleLarge,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-            Row(modifier = Modifier.constrainAs(filter) {
-                linkTo(parent.top, parent.bottom)
-                end.linkTo(parent.end)
-            }) {
-                val students = state.data
-                    .mapIndexed { index, student -> "${index + 1}. ${student.getFullName()}"}
-                if (students.isNotEmpty()) {
-                    val context = LocalContext.current
-                    IconButton(onClick = {
-                        Intent().apply {
-                            action = Intent.ACTION_SEND
-                            putExtra(Intent.EXTRA_TEXT, students.joinToString("\n"))
-                            type = "text/plain"
+    SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = state.isRefreshing), onRefresh = retryListener) {
+        Column {
+            AppBar(state = state, backListener = backListener)
+            LazyColumn(Modifier.fillMaxSize()) {
+                when {
+                    state.isError && state.data.isNull() -> {
+                        item { ErrorView() }
+                    }
+                    state.placeholders -> {
+                        //
+                    }
+                    else -> {
+                        items(
+                            count = state.data?.size ?: 0,
+                            key = { state.data?.get(it)?.id ?: it }
+                        ) {
+                            Student(student = state.data!![it])
                         }
-                            .let { Intent.createChooser(it, null) }
-                            .also(context::startActivity) }
-                    ) {
-                        Icon(
-                            Icons.Default.Share,
-                            contentDescription = "Поделиться"
-                        )
                     }
                 }
             }
         }
-        LazyColumn {
-            items(
-                count = state.data.size,
-                key = { state.data[it].id }
-            ) {
-                Student(student = state.data[it])
+    }
+}
+
+@Composable
+fun AppBar(
+    state: ClassmatesState,
+    backListener: ClickListener,
+) {
+    ConstraintLayout(Modifier.fillMaxWidth()) {
+        val (content, filter) = createRefs()
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.constrainAs(content) {
+                linkTo(parent.start, filter.start)
+                width = Dimension.fillToConstraints
+            }) {
+            IconButton(onClick = backListener) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    contentDescription = "Назад"
+                )
+            }
+            SpacerWidth(width = 15.dp)
+            Text(
+                text = "Однокурсники",
+                style = MaterialTheme3.typography.titleLarge,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+        Row(modifier = Modifier.constrainAs(filter) {
+            linkTo(parent.top, parent.bottom)
+            end.linkTo(parent.end)
+        }) {
+            val students = state.data
+                ?.mapIndexed { index, student -> "${index + 1}. ${student.getFullName()}"}
+            if (students?.isNotEmpty() == true) {
+                val context = LocalContext.current
+                IconButton(onClick = {
+                    Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_TEXT, students.joinToString("\n"))
+                        type = "text/plain"
+                    }
+                        .let { Intent.createChooser(it, null) }
+                        .also(context::startActivity) }
+                ) {
+                    Icon(
+                        Icons.Default.Share,
+                        contentDescription = "Поделиться"
+                    )
+                }
             }
         }
-
     }
 }

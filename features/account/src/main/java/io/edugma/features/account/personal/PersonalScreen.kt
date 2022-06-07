@@ -26,6 +26,9 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.SwipeRefreshState
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.edugma.domain.account.model.Application
 import io.edugma.domain.account.model.Order
 import io.edugma.domain.account.model.Personal
@@ -43,6 +46,7 @@ fun PersonalScreen(viewModel: PersonalViewModel = getViewModel()) {
     PersonalContent(
         state,
         backListener = viewModel::exit,
+        refreshListener = viewModel::update,
         typeListener = viewModel::setColumn
     )
 }
@@ -51,75 +55,88 @@ fun PersonalScreen(viewModel: PersonalViewModel = getViewModel()) {
 fun PersonalContent(
     state: PersonalState,
     backListener: ClickListener,
+    refreshListener: ClickListener,
     typeListener: Typed1Listener<Columns>
 ) {
-    Column {
-        val scrollState = rememberLazyListState()
-        val scrollOffset: Float = min(
-            1f,
-            1 - (scrollState.firstVisibleItemScrollOffset / 600f + scrollState.firstVisibleItemIndex)
-        )
-        CollapsingToolbar(state.personal, state.personalPlaceholders, scrollOffset, backListener)
-        LazyColumn(Modifier.padding(8.dp), state = scrollState) {
-            if (state.personalPlaceholders) {
-                item(key = "header") {
-                    PersonalPlaceholder()
-                }
-                item(key = "selector") {
-                    SelectableTypesRowPlaceholders()
-                }
-                items(3) {
-                    SpacerHeight(height = 3.dp)
-                    OrderPlaceholder()
-                    Divider()
-                }
-            } else {
-                item(key = "header") {
-                    Personal(state.personal!!)
-                }
-                item(key = "selector") {
-                    SelectableOneTypesRow(
-                        types = values().toList(),
-                        selectedType = state.selectedColumn,
-                        nameMapper = { it.label },
-                        clickListener = typeListener
-                    )
-                }
-                when (state.selectedColumn) {
-                    Orders -> {
-                        state.personal?.orders?.let { orders ->
-                            items(
-                                count = orders.size,
-                                key = { orders[it].name },
-                                itemContent = { index ->
-                                    SpacerHeight(height = 3.dp)
-                                    Order(orders[index])
-                                    Divider()
-                                }
+    SwipeRefresh(state = rememberSwipeRefreshState(state.isRefreshing), onRefresh = refreshListener) {
+        Column {
+            val scrollState = rememberLazyListState()
+            val scrollOffset: Float = min(
+                1f,
+                1 - (scrollState.firstVisibleItemScrollOffset / 600f + scrollState.firstVisibleItemIndex)
+            )
+            CollapsingToolbar(
+                state.personal,
+                state.personalPlaceholders,
+                scrollOffset,
+                backListener
+            )
+            LazyColumn(Modifier.padding(8.dp).fillMaxSize(), state = scrollState) {
+                when {
+                    state.isError && state.personal.isNull() -> {
+                        item { ErrorView(retryAction = refreshListener) }
+                    }
+                    state.personalPlaceholders -> {
+                        item(key = "header") {
+                            PersonalPlaceholder()
+                        }
+                        item(key = "selector") {
+                            SelectableTypesRowPlaceholders()
+                        }
+                        items(3) {
+                            SpacerHeight(height = 3.dp)
+                            OrderPlaceholder()
+                            Divider()
+                        }
+                    }
+                    else -> {
+                        item(key = "header") {
+                            Personal(state.personal!!)
+                        }
+                        item(key = "selector") {
+                            SelectableOneTypesRow(
+                                types = values().toList(),
+                                selectedType = state.selectedColumn,
+                                nameMapper = { it.label },
+                                clickListener = typeListener
                             )
                         }
-                    }
-                    Applications -> {
-                        if (state.applicationsPlaceholders) {
-                            items(3) {
-                                ApplicationPlaceholder()
+                        when (state.selectedColumn) {
+                            Orders -> {
+                                state.personal?.orders?.let { orders ->
+                                    items(
+                                        count = orders.size,
+                                        key = { orders[it].name },
+                                        itemContent = { index ->
+                                            SpacerHeight(height = 3.dp)
+                                            Order(orders[index])
+                                            Divider()
+                                        }
+                                    )
+                                }
                             }
-                        } else {
-                            state.applications?.let { applications ->
-                                items(
-                                    count = applications.size,
-                                    key = { it },
-                                    itemContent = { index ->
-                                        SpacerHeight(height = 3.dp)
-                                        Application(application = applications[index])
-                                        Divider()
+                            Applications -> {
+                                if (state.applicationsPlaceholders) {
+                                    items(3) {
+                                        ApplicationPlaceholder()
                                     }
-                                )
+                                } else {
+                                    state.applications?.let { applications ->
+                                        items(
+                                            count = applications.size,
+                                            key = { it },
+                                            itemContent = { index ->
+                                                SpacerHeight(height = 3.dp)
+                                                Application(application = applications[index])
+                                                Divider()
+                                            }
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
                 }
-
             }
         }
     }
@@ -144,29 +161,31 @@ private fun CollapsingToolbar(
         }) {
             Icon(painter = painterResource(FluentIcons.ic_fluent_arrow_left_20_filled), contentDescription = null)
         }
-        Text(
-            text = personal?.getNameSurname().orEmpty(),
-            style = MaterialTheme3.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-            modifier = Modifier
-                .padding(bottom = 5.dp)
-                .constrainAs(name) {
-                    linkTo(start = icon.end, end = image.start, endMargin = 8.dp)
-                    top.linkTo(parent.top)
-                    width = Dimension.fillToConstraints
-                }
-                .placeholder(placeholders)
-        )
-        Text(
-            text = "${personal?.degreeLevel} ${personal?.course} курса группы ${personal?.group}",
-            style = MaterialTheme3.typography.bodySmall,
-            modifier = Modifier
-                .constrainAs(info) {
-                    linkTo(start = icon.end, end = image.start, endMargin = 8.dp)
-                    top.linkTo(name.bottom)
-                    width = Dimension.fillToConstraints
-                }
-                .placeholder(placeholders)
-        )
+        personal?.let {
+            Text(
+                text = personal?.getNameSurname() ?: "О вас",
+                style = MaterialTheme3.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                modifier = Modifier
+                    .padding(bottom = 5.dp)
+                    .constrainAs(name) {
+                        linkTo(start = icon.end, end = image.start, endMargin = 8.dp)
+                        top.linkTo(parent.top)
+                        width = Dimension.fillToConstraints
+                    }
+                    .placeholder(placeholders)
+            )
+            Text(
+                text = "${personal?.degreeLevel} ${personal?.course} курса группы ${personal?.group}",
+                style = MaterialTheme3.typography.bodySmall,
+                modifier = Modifier
+                    .constrainAs(info) {
+                        linkTo(start = icon.end, end = image.start, endMargin = 8.dp)
+                        top.linkTo(name.bottom)
+                        width = Dimension.fillToConstraints
+                    }
+                    .placeholder(placeholders)
+            )
+        }
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(personal?.avatar)

@@ -10,6 +10,7 @@ import io.edugma.features.account.marks.Filter.*
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.utils.isNotNull
 import io.edugma.features.base.core.utils.isNull
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.zip
@@ -25,16 +26,10 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
     fun loadMarks() {
         viewModelScope.launch {
             setLoading(true)
-
-            //todo пофиксить фриз при  загрузке
-//            repository.getMarksLocal()
-//                .collectLatest {
-//                    it?.let {
-//                        setPerformanceData(it)
-//                        setLoading(false)
-//                    }
-//                }
-
+            repository.getLocalMarks()?.let {
+                delay(300) //todo говнокод пофиксить
+                setPerformanceData(it)
+            }
             repository.getCoursesWithSemesters()
                 .zip(repository.getMarksBySemester()) { coursesWithSemester, performance ->
                     runCatching {
@@ -165,6 +160,7 @@ data class MarksState(
     val bottomSheetPlaceholders: Boolean = true,
 ) {
     val placeholders = data.isNull() && isLoading && !isError
+    val isRefreshing = data.isNotNull() && isLoading && !isError
 
     private val filteredCourses = courses.filter { it.isChecked }.toSet()
     private val filteredSemesters = semesters.filter { it.isChecked }.toSet()

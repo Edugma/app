@@ -7,6 +7,7 @@ import io.edugma.domain.account.repository.PaymentsRepository
 import io.edugma.domain.base.utils.onFailure
 import io.edugma.domain.base.utils.onSuccess
 import io.edugma.features.base.core.mvi.BaseViewModel
+import io.edugma.features.base.core.utils.isNotNull
 import io.edugma.features.base.core.utils.isNull
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -21,6 +22,9 @@ class PaymentsViewModel(private val repository: PaymentsRepository) :
     fun load() {
         viewModelScope.launch {
             setLoading(true)
+            repository.getPaymentsLocal()?.let {
+                setData(it.contracts)
+            }
             repository.getPayment()
                 .onSuccess {
                     setData(it.contracts)
@@ -68,6 +72,7 @@ data class PaymentsState(
     val isError: Boolean = false,
     val selectedIndex: Int = 0,
 ) {
+    val isRefreshing = data.isNotNull() && isLoading && !isError
     val placeholders = data.isNull() && isLoading && !isError
     val types = data?.keys?.toList()
     val selectedType = types?.getOrNull(selectedIndex)

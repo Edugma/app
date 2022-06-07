@@ -3,6 +3,8 @@ package io.edugma.features.account.authorization
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -49,13 +51,37 @@ fun AuthContent(
     onLogout: ClickListener
 ) {
     Column {
-        PrimaryTopAppBar(title = "Авторизация", onBackClick = onLoggedClick, actions = {
+        ConstraintLayout(Modifier.fillMaxWidth()) {
+            val (content, filter) = createRefs()
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.constrainAs(content) {
+                linkTo(parent.start, filter.start)
+                width = Dimension.fillToConstraints
+            }) {
+                IconButton(onClick = onLoggedClick) {
+                    Icon(
+                        Icons.Filled.ArrowBack,
+                        contentDescription = "Назад"
+                    )
+                }
+                SpacerWidth(width = 15.dp)
+                Text(
+                    text = "Авторизация",
+                    style = MaterialTheme3.typography.titleLarge,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
             if (state.auth) {
-                IconButton(onClick = onLogout, modifier = Modifier.fillMaxHeight()) {
-                    Icon(painter = painterResource(id = FluentIcons.ic_fluent_sign_out_24_regular), contentDescription = null)
+                IconButton(onClick = onLogout, modifier = Modifier.constrainAs(filter) {
+                    linkTo(parent.top, parent.bottom)
+                    end.linkTo(parent.end)
+                }) {
+                    Icon(
+                        painterResource(id = FluentIcons.ic_fluent_sign_out_24_regular),
+                        contentDescription = "Выход"
+                    )
                 }
             }
-        })
+        }
         if (state.auth) {
             Authorized(state = state) { onLoggedClick.invoke() }
         } else {
@@ -92,18 +118,17 @@ fun NotAuthorized(
             onValueChange = onPasswordChange,
             passwordMode = true
         )
-        SpacerHeight(height = 12.dp)
-//        CheckBox(
-//            title = "Запомнить меня",
-//            value = state.savePassword,
-//            onValueChange = onCheckBoxChanged,
-//            modifier = Modifier.fillMaxWidth()
-//        )
-        SpacerHeight(height = 12.dp)
-        if (state.isLoading) {
-            CircularProgressIndicator()
-        } else {
-            ButtonView(text = "Войти", onClick = onAuthorize)
+        SpacerHeight(height = 25.dp)
+        PrimaryButton(modifier = Modifier.defaultMinSize(minWidth = 250.dp), onClick = onAuthorize) {
+            Text(text = "Войти")
+            if (state.isLoading) {
+                SpacerWidth(width = 10.dp)
+                CircularProgressIndicator(
+                    modifier = Modifier.size(24.dp),
+                    color = MaterialTheme3.colorScheme.onPrimary,
+                    strokeWidth = 3.0.dp
+                )
+            }
         }
     }
 }

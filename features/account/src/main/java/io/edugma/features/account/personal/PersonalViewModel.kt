@@ -12,6 +12,7 @@ import io.edugma.domain.base.utils.onFailure
 import io.edugma.domain.base.utils.onSuccess
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.mvi.BaseViewModelFull
+import io.edugma.features.base.core.utils.isNotNull
 import io.edugma.features.base.core.utils.isNull
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -40,6 +41,24 @@ class PersonalViewModel(
             repository.getPersonalInfo()
                 .onSuccess {
                     job.cancel()
+                    setData(it)
+                    setLoading(false)
+                }
+                .onFailure { setError(true) }
+                .collect()
+        }
+    }
+
+    fun update() {
+        viewModelScope.launch {
+            applicationsRepository.getApplications()
+                .onSuccess { setApplications(it, false) }
+                .collect()
+        }
+        viewModelScope.launch {
+            repository.getPersonalInfo()
+                .onStart { setLoading(true) }
+                .onSuccess {
                     setData(it)
                     setLoading(false)
                 }
@@ -108,6 +127,7 @@ data class PersonalState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
 ) {
+    val isRefreshing = personal.isNotNull() && isLoading && !isError
     val personalPlaceholders =  personal.isNull() && isLoading && !isError
     val applicationsPlaceholders =  applications.isNull() && isLoading && !isError
 }

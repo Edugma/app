@@ -38,6 +38,8 @@ import coil.compose.AsyncImage
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.edugma.domain.account.model.*
 import io.edugma.features.account.R
 import io.edugma.features.base.core.utils.*
@@ -54,42 +56,13 @@ fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
         initialValue = ModalBottomSheetValue.Hidden
     )
     val scope = rememberCoroutineScope()
-    val context = LocalContext.current
 
     ModalBottomSheetLayout(
         sheetState = bottomState,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         scrimColor = Color.Black.copy(alpha = 0.5f),
         sheetBackgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.surface,
-        sheetContent = {
-            Column(modifier = Modifier
-                .padding(horizontal = 15.dp)) {
-                SpacerHeight(height = 15.dp)
-                Text(
-                    text = "QR код",
-                    style = MaterialTheme3.typography.headlineMedium,
-                    modifier = Modifier.padding(start = 8.dp)
-                )
-                SpacerHeight(height = 20.dp)
-                AsyncImage(
-                    model = state.selectedPayment?.qr,
-                    contentDescription = "qr code",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            Intent(Intent.ACTION_VIEW, Uri.parse(state.selectedPayment?.qr)).apply(
-                                context::startActivity
-                            )
-                        }
-                )
-                SpacerHeight(height = 20.dp)
-                TextWithIcon(
-                    text = "Вы можете сделать скриншот экрана или скачать QR-код на устройство, затем открыть его в мобильном приложении вашего банка:\nОплата по QR-коду -> Загрузить изображение",
-                    icon = painterResource(id = FluentIcons.ic_fluent_info_24_regular)
-                )
-                SpacerHeight(height = 20.dp)
-            }
-        }
+        sheetContent = { BottomSheetLayout(state) }
     ) {
         PaymentsContent(
             state,
@@ -98,6 +71,40 @@ fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
             onQrClickListener = { scope.launch { bottomState.show() } },
             backListener = viewModel::exit,
         )
+    }
+}
+
+@Composable
+fun BottomSheetLayout(
+    state: PaymentsState
+) {
+    val context = LocalContext.current
+    Column(modifier = Modifier
+        .padding(horizontal = 15.dp)) {
+        SpacerHeight(height = 15.dp)
+        Text(
+            text = "QR код",
+            style = MaterialTheme3.typography.headlineMedium,
+            modifier = Modifier.padding(start = 8.dp)
+        )
+        SpacerHeight(height = 20.dp)
+        AsyncImage(
+            model = state.selectedPayment?.qr,
+            contentDescription = "qr code",
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    Intent(Intent.ACTION_VIEW, Uri.parse(state.selectedPayment?.qr)).apply(
+                        context::startActivity
+                    )
+                }
+        )
+        SpacerHeight(height = 20.dp)
+        TextWithIcon(
+            text = "Вы можете сделать скриншот экрана или скачать QR-код на устройство, затем открыть его в мобильном приложении вашего банка:\nОплата по QR-коду -> Загрузить изображение",
+            icon = painterResource(id = FluentIcons.ic_fluent_info_24_regular)
+        )
+        SpacerHeight(height = 20.dp)
     }
 }
 
@@ -110,53 +117,65 @@ fun PaymentsContent(
     onQrClickListener: ClickListener,
     backListener: ClickListener
 ) {
-    Column {
-        val paymentsPagerState = rememberPagerState(state.selectedIndex)
-        paymentsPagerState.bindTo(state.selectedIndex)
-        paymentsPagerState.onPageChanged(onPaymentChange::invoke)
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(bottom = 10.dp)
-        ) {
-            IconButton(onClick = backListener) {
-                Icon(
-                    Icons.Filled.ArrowBack,
-                    contentDescription = "Назад"
-                )
-            }
-            SpacerWidth(width = 15.dp)
-            Text(
-                text = state.selectedPayment?.let { "Договор №${it.number}" } ?: "Оплата",
-                style = MaterialTheme3.typography.headlineSmall,
-            )
-        }
-        when {
-            state.placeholders -> {
-                SelectableTypesRowPlaceholders()
-                PaymentsPlaceholder()
-            }
-            state.isError -> {
-                ErrorView()
-            }
-            else -> {
-                SelectableOneTypesRow(
-                    state.types ?: emptyList(),
-                    state.selectedType,
-                    { it.toLabel() }
-                ) {
-                    state.data?.keys?.indexOf(it)?.let(onPaymentChange::invoke)
+    SwipeRefresh(state = rememberSwipeRefreshState(state.isRefreshing), onRefresh = retryListener) {
+        Column {
+            val paymentsPagerState = rememberPagerState(state.selectedIndex)
+            paymentsPagerState.bindTo(state.selectedIndex)
+            paymentsPagerState.onPageChanged(onPaymentChange::invoke)
+            AppBar(state, backListener)
+            when {
+                state.isError && state.types.isNull() -> {
+                    LazyColumn(modifier = Modifier.fillMaxSize()) {
+                        item { ErrorView(retryAction = retryListener) }
+                    }
                 }
-                HorizontalPager(
-                    count = state.data?.size ?: 0,
-                    state = paymentsPagerState,
-                    key = {state.getTypeByIndex(it) ?: PaymentType.Dormitory}
-                ) { page ->
-                    state.getPaymentsByIndex(page)?.let { payment ->
-                        Payments(payment, onQrClickListener)
+                state.placeholders -> {
+                    SelectableTypesRowPlaceholders()
+                    PaymentsPlaceholder()
+                }
+                else -> {
+                    SelectableOneTypesRow(
+                        state.types ?: emptyList(),
+                        state.selectedType,
+                        { it.toLabel() }
+                    ) {
+                        state.data?.keys?.indexOf(it)?.let(onPaymentChange::invoke)
+                    }
+                    HorizontalPager(
+                        count = state.data?.size ?: 0,
+                        state = paymentsPagerState,
+                        key = { state.getTypeByIndex(it) ?: PaymentType.Dormitory }
+                    ) { page ->
+                        state.getPaymentsByIndex(page)?.let { payment ->
+                            Payments(payment, onQrClickListener)
+                        }
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+fun AppBar(
+    state: PaymentsState,
+    backListener: ClickListener
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.padding(bottom = 10.dp)
+    ) {
+        IconButton(onClick = backListener) {
+            Icon(
+                Icons.Filled.ArrowBack,
+                contentDescription = "Назад"
+            )
+        }
+        SpacerWidth(width = 15.dp)
+        Text(
+            text = state.selectedPayment?.let { "Договор №${it.number}" } ?: "Оплаты",
+            style = MaterialTheme3.typography.headlineSmall,
+        )
     }
 }
 
