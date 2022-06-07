@@ -30,7 +30,6 @@ import io.edugma.domain.account.model.description
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.FluentIcons
 import io.edugma.features.base.core.utils.MaterialTheme3
-import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.base.elements.*
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
@@ -53,7 +52,7 @@ fun TeachersScreen(viewModel: TeachersViewModel = getViewModel()) {
                 .padding(horizontal = 15.dp)) {
                 SpacerHeight(height = 15.dp)
                 Text(
-                    text = "Фильтры",
+                    text = "Поиск",
                     style = MaterialTheme3.typography.headlineMedium,
                     modifier = Modifier.padding(start = 8.dp)
                 )
@@ -62,7 +61,7 @@ fun TeachersScreen(viewModel: TeachersViewModel = getViewModel()) {
                     value = state.name,
                     title = "ФИО преподавателя",
                     onValueChange = viewModel::setName)
-                SpacerHeight(height = 50.dp)
+                SpacerHeight(height = 40.dp)
                 PrimaryButton(
                     onClick = {
                         viewModel.load(state.name)
@@ -118,7 +117,7 @@ fun TeachersContent(
                 end.linkTo(parent.end)
             }) {
                 Icon(
-                    painterResource(id = FluentIcons.ic_fluent_filter_24_regular),
+                    painterResource(id = FluentIcons.ic_fluent_search_24_regular),
                     contentDescription = "Фильтр"
                 )
             }

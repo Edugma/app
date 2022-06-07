@@ -14,7 +14,7 @@ interface AccountService {
     fun getClassmates(): Flow<Result<List<Student>>>
 
     @GET("/peoples/students/{pageSize}/{page}/{name}")
-    fun getStudents(
+    suspend fun getStudents(
         @Path("name") name: String?,
         @Path("page") page: Int,
         @Path("pageSize") pageSize: Int

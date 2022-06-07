@@ -23,8 +23,6 @@ class TeachersViewModel(private val repository: PeoplesRepository) :
         private const val PAGE_SIZE = 30
     }
 
-    private var pagingJob: Job? = null
-
     init {
         load()
     }

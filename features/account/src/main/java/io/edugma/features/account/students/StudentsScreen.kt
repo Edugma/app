@@ -4,20 +4,27 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Divider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.paging.LoadState
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import io.edugma.domain.account.model.Student
@@ -26,50 +33,125 @@ import io.edugma.features.account.R
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.FluentIcons
 import io.edugma.features.base.core.utils.MaterialTheme3
-import io.edugma.features.base.core.utils.Typed1Listener
-import io.edugma.features.base.elements.ErrorView
-import io.edugma.features.base.elements.TextBox
-import io.edugma.features.base.elements.TextWithIcon
-import io.edugma.features.base.elements.placeholder
+import io.edugma.features.base.elements.*
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun StudentsScreen(viewModel: StudentsViewModel = getViewModel()) {
     val state by viewModel.state.collectAsState()
 
-    StudentsContent(state,
-        retryListener = {viewModel.loadStudents()},
-        backListener = {viewModel.exit()},
-        inputListener = {viewModel.inputName(it)})
+    val bottomState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden
+    )
+    val scope = rememberCoroutineScope()
+    ModalBottomSheetLayout(
+        sheetState = bottomState,
+        sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
+        scrimColor = Color.Black.copy(alpha = 0.5f),
+        sheetBackgroundColor = MaterialTheme.colorScheme.surface,
+        sheetContent = {
+            Column(modifier = Modifier
+                .padding(horizontal = 15.dp)) {
+                SpacerHeight(height = 15.dp)
+                Text(
+                    text = "Поиск",
+                    style = MaterialTheme3.typography.headlineMedium,
+                    modifier = Modifier.padding(start = 8.dp)
+                )
+                SpacerHeight(height = 20.dp)
+                TextBox(
+                    value = state.name,
+                    title = "Фамилия или группа студента",
+                    onValueChange = viewModel::setName)
+                SpacerHeight(height = 40.dp)
+                PrimaryButton(
+                    onClick = {
+                        viewModel.load(state.name)
+                        scope.launch { bottomState.hide() }
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Применить")
+                }
+                SpacerHeight(height = 15.dp)
+            }
+        }
+    ) {
+        StudentsContent(
+            state,
+            backListener = { viewModel.exit() },
+            openBottomSheetListener = {scope.launch { bottomState.show() }}
+        )
+    }
 }
 
 @Composable
-fun StudentsContent(state: StudentsState,
-                      retryListener: ClickListener,
-                      backListener: ClickListener,
-                      inputListener: Typed1Listener<String>
+fun StudentsContent(
+    state: StudentsState,
+    backListener: ClickListener,
+    openBottomSheetListener: ClickListener
 ) {
-    Column(verticalArrangement = Arrangement.Center) {
-        Row(modifier = Modifier.padding(end = 16.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = backListener) {
-                Icon(painter = painterResource(FluentIcons.ic_fluent_arrow_left_20_filled), contentDescription = null)
+    val studentListItems = state.pagingData?.collectAsLazyPagingItems()
+    Column {
+        ConstraintLayout(Modifier.fillMaxWidth()) {
+            val (content, filter) = createRefs()
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.constrainAs(content) {
+                    linkTo(parent.start, filter.start)
+                    width = Dimension.fillToConstraints
+                }) {
+                IconButton(onClick = backListener) {
+                    Icon(
+                        Icons.Filled.ArrowBack,
+                        contentDescription = "Назад"
+                    )
+                }
+                SpacerWidth(width = 15.dp)
+                Text(
+                    text = "Студенты",
+                    style = MaterialTheme3.typography.titleLarge,
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
-            TextBox(
-                modifier = Modifier.fillMaxWidth(),
-                value = state.query,
-                title = "ФИО или группа студента",
-                onValueChange = inputListener)
+            IconButton(onClick = openBottomSheetListener, modifier = Modifier.constrainAs(filter) {
+                linkTo(parent.top, parent.bottom)
+                end.linkTo(parent.end)
+            }) {
+                Icon(
+                    painterResource(id = FluentIcons.ic_fluent_search_24_regular),
+                    contentDescription = "Фильтр"
+                )
+            }
         }
-        LazyColumn(modifier = Modifier.padding(8.dp)) {
-                if (state.isPlaceholders) {
-                    items(5) {
-                        Student(null, placeholders = true)
-                    }
-                } else {
-                    items(state.data) {
+        LazyColumn {
+            studentListItems?.let { _ ->
+                items(studentListItems) { item ->
+                    item?.let {
                         Student(it)
                     }
                 }
+                when {
+                    studentListItems.loadState.refresh is LoadState.Loading -> {
+                        item { Text(text = "first loading") }
+                        //You can add modifier to manage load state when first time response page is loading
+                    }
+                    studentListItems.loadState.refresh is LoadState.Error -> {
+                        item { Text(text = "error") }
+                        //You can use modifier to show error message
+                    }
+                    studentListItems.loadState.append is LoadState.Loading -> {
+                        item { Text(text = "next page loading") }
+                        //You can add modifier to manage load state when next response page is loading
+                    }
+                    studentListItems.loadState.append is LoadState.Error -> {
+                        item { Text(text = "error") }
+                        //You can use modifier to show error message
+                    }
+                }
+            }
         }
     }
 }
