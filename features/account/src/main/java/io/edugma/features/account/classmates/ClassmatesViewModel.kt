@@ -24,11 +24,11 @@ class ClassmatesViewModel(private val repository: PeoplesRepository) :
 
     private fun loadClassmates() {
         viewModelScope.launch {
+            setLoading(true)
             repository.loadClassmates()?.let {
                 setData(it)
             }
             repository.getClassmates()
-                .onStart { setLoading(true) }
                 .onSuccess {
                     setData(it)
                     setLoading(false)

@@ -144,7 +144,7 @@ fun PerformanceContent(state: MarksState,
                     .fillMaxSize()
             ) {
                 when {
-                    state.isError -> {
+                    state.isError && state.data.isNull() -> {
                         item { ErrorView(retryAction = retryListener) }
                     }
                     state.placeholders -> {

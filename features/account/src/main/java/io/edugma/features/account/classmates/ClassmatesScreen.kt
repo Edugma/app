@@ -48,7 +48,7 @@ fun ClassmatesContent(state: ClassmatesState,
             LazyColumn(Modifier.fillMaxSize()) {
                 when {
                     state.isError && state.data.isNull() -> {
-                        item { ErrorView() }
+                        item { ErrorView(retryAction = retryListener) }
                     }
                     state.placeholders -> {
                         //
