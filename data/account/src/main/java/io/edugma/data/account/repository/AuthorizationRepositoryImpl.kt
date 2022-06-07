@@ -1,6 +1,13 @@
 package io.edugma.data.account.repository
 
 import io.edugma.data.account.api.AccountService
+import io.edugma.data.base.consts.CacheConst.ApplicationsKey
+import io.edugma.data.base.consts.CacheConst.ClassmatesKey
+import io.edugma.data.base.consts.CacheConst.CourseKey
+import io.edugma.data.base.consts.CacheConst.PaymentsKey
+import io.edugma.data.base.consts.CacheConst.PerformanceKey
+import io.edugma.data.base.consts.CacheConst.PersonalKey
+import io.edugma.data.base.consts.CacheConst.SemesterKey
 import io.edugma.data.base.local.PreferencesDS
 import io.edugma.data.base.local.deleteJsonLazy
 import io.edugma.data.base.local.getSourceValue
@@ -22,12 +29,18 @@ class AuthorizationRepositoryImpl(
     override fun authorization(login: String, password: String): Flow<Result<String>> {
         return api.login(Login(login, password))
             .mapResult { it.getBearer() }
-            .onSuccess { saveToken(it) }
+            .onSuccess(::saveToken)
             .flowOn(Dispatchers.IO)
     }
 
     override suspend fun logout() {
-        localStore.deleteJsonLazy<Personal>()
+        localStore.delete(PersonalKey)
+        localStore.delete(ApplicationsKey)
+        localStore.delete(PerformanceKey)
+        localStore.delete(CourseKey)
+        localStore.delete(SemesterKey)
+        localStore.delete(PaymentsKey)
+        localStore.delete(ClassmatesKey)
         localStore.delete(TokenKey)
     }
 

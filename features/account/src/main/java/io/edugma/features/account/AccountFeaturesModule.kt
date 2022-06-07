@@ -19,7 +19,7 @@ val accountFeaturesModule = module {
     viewModel { PaymentsViewModel(get()) }
     viewModel { StudentsViewModel(get()) }
     viewModel { PerformanceViewModel(get()) }
-    viewModel { PersonalViewModel(get()) }
+    viewModel { PersonalViewModel(get(), get()) }
     viewModel { TeachersViewModel(get()) }
-    viewModel { AuthViewModel(get(), get()) }
+    viewModel { AuthViewModel(get(), get(), get(), get()) }
 }

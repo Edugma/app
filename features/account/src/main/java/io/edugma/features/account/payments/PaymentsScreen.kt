@@ -131,11 +131,12 @@ fun PaymentsContent(
             )
         }
         if (state.placeholders) {
-            TypesRowPlaceholders()
+            SelectableTypesRowPlaceholders()
         } else {
-            TypesRow(
+            SelectableOneTypesRow(
                 state.types,
-                state.selectedType
+                state.selectedType,
+                { it.toLabel() }
             ) {
                 onPaymentChange.invoke(state.data.keys.indexOf(it))
             }
@@ -315,45 +316,5 @@ fun Expander(onClickListener: ClickListener) {
                 SpacerWidth(width = 20.dp)
                 Icon(painterResource(id = FluentIcons.ic_fluent_ios_arrow_rtl_24_filled), contentDescription = null, modifier = Modifier.rotate(90f))
             }
-    }
-}
-
-@Composable
-fun TypesRow(
-    types: List<PaymentType>,
-    selectedType: PaymentType?,
-    clickListener: Typed1Listener<PaymentType>
-) {
-    LazyRow() {
-        items(
-            count = types.size,
-            key = {types[it]}
-        ) {
-            SelectableChip(
-                selectedState = types[it] == selectedType,
-                onClick = { clickListener.invoke(types[it]) }) {
-                    Text(
-                        text = types[it].toLabel(),
-                        style = MaterialTheme3.typography.labelLarge,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
-        }
-    }
-}
-
-@Composable
-fun TypesRowPlaceholders() {
-    LazyRow() {
-        items(
-            count = 2
-        ) {
-            SelectableChip(
-                modifier = Modifier
-                    .placeholder(true)
-                    .widthIn(80.dp)
-            ) {}
-        }
     }
 }

@@ -93,12 +93,12 @@ fun NotAuthorized(
             passwordMode = true
         )
         SpacerHeight(height = 12.dp)
-        CheckBox(
-            title = "Запомнить меня",
-            value = state.savePassword,
-            onValueChange = onCheckBoxChanged,
-            modifier = Modifier.fillMaxWidth()
-        )
+//        CheckBox(
+//            title = "Запомнить меня",
+//            value = state.savePassword,
+//            onValueChange = onCheckBoxChanged,
+//            modifier = Modifier.fillMaxWidth()
+//        )
         SpacerHeight(height = 12.dp)
         if (state.isLoading) {
             CircularProgressIndicator()

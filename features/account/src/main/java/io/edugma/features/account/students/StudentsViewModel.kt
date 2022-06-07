@@ -1,8 +1,10 @@
 package io.edugma.features.account.students
 
+import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import io.edugma.domain.account.model.Student
 import io.edugma.domain.account.model.Teacher
 import io.edugma.domain.account.repository.PeoplesRepository
@@ -28,6 +30,7 @@ class StudentsViewModel(private val repository: PeoplesRepository) :
     fun load(name: String = "") {
         val flow = requestPagingData(name)
             .flow
+            .cachedIn(viewModelScope)
         mutateState {
             state = state.copy(pagingData = flow)
         }

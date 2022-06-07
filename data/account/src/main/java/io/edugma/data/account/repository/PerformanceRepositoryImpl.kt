@@ -1,12 +1,13 @@
 package io.edugma.data.account.repository
 
 import io.edugma.data.account.api.AccountService
+import io.edugma.data.base.consts.CacheConst.CourseKey
+import io.edugma.data.base.consts.CacheConst.PerformanceKey
+import io.edugma.data.base.consts.CacheConst.SemesterKey
 import io.edugma.data.base.local.PreferencesDS
 import io.edugma.data.base.local.getJsonLazy
 import io.edugma.data.base.local.setJsonLazy
 import io.edugma.domain.account.model.Performance
-import io.edugma.domain.account.model.Personal
-import io.edugma.domain.account.model.SemestersWithCourse
 import io.edugma.domain.account.repository.PerformanceRepository
 import io.edugma.domain.base.utils.onSuccess
 import kotlinx.coroutines.Dispatchers
@@ -19,11 +20,6 @@ class PerformanceRepositoryImpl(
     private val localStore: PreferencesDS
 ): PerformanceRepository {
 
-    companion object {
-        private const val PerformanceKey = "Performance"
-        private const val CourseKey = "Courses"
-        private const val SemesterKey = "Semesters"
-    }
     override fun getCourses() =
         api.getCourses()
             .onSuccess(::setLocalCourses)
