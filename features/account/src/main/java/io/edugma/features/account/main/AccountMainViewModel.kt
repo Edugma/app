@@ -170,7 +170,7 @@ class AccountMainViewModel(
 
 data class AccountMenuState(
     val topMenu: List<MenuUi> = listOf(Auth, Personal, Payments, Marks),
-    val bottomMenu: List<MenuUi> = listOf(Students, Teachers, Classmates, Applications),
+    val bottomMenu: List<MenuUi> = listOf(Students, Teachers, Classmates),
     val personal: PersonalData? = null,
     val performance: CurrentPerformance? = null,
     val currentPayments: CurrentPayments? = null,

@@ -9,6 +9,7 @@ import io.edugma.domain.base.utils.onSuccess
 import io.edugma.features.account.marks.Filter.*
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.utils.isNotNull
+import io.edugma.features.base.core.utils.isNull
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.zip
@@ -68,13 +69,13 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
 
     private fun setLoading(isLoading: Boolean) {
         mutateState {
-            state = state.copy(isLoading = isLoading, isError = !isLoading && state.isError, placeholders = if (!isLoading) false else state.placeholders)
+            state = state.copy(isLoading = isLoading, isError = !isLoading && state.isError)
         }
     }
 
     private fun setError() {
         mutateState {
-            state = state.copy(isError = true, isLoading = false, placeholders = false, bottomSheetPlaceholders = true)
+            state = state.copy(isError = true, isLoading = false, bottomSheetPlaceholders = true)
         }
     }
 
@@ -153,7 +154,7 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
 }
 
 data class MarksState(
-    val data: List<Performance> = emptyList(),
+    val data: List<Performance>? = null,
     val courses: Set<Course> = emptySet(),
     val semesters: Set<Semester> = emptySet(),
     val types: Set<Type> = emptySet(),
@@ -161,9 +162,9 @@ data class MarksState(
     val currentFilters: Set<Filter<*>> = emptySet(),
     val isLoading: Boolean = false,
     val isError: Boolean = false,
-    val placeholders: Boolean = true,
     val bottomSheetPlaceholders: Boolean = true,
 ) {
+    val placeholders = data.isNull() && isLoading && !isError
 
     private val filteredCourses = courses.filter { it.isChecked }.toSet()
     private val filteredSemesters = semesters.filter { it.isChecked }.toSet()
@@ -173,7 +174,7 @@ data class MarksState(
         if (name.isChecked) it.plus(name) else it
     }
 
-    val filteredData = data.filter { performance ->
+    val filteredData = data?.filter { performance ->
         when {
             enabledFilters.isEmpty() -> true
             else -> {

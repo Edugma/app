@@ -34,7 +34,7 @@ class PersonalViewModel(
             }
         }
         viewModelScope.launch {
-            applicationsRepository.loadApplications()?.let(::setApplications)
+            applicationsRepository.loadApplications()?.let { setApplications(it, true) }
         }
         viewModelScope.launch {
             repository.getPersonalInfo()
@@ -51,7 +51,9 @@ class PersonalViewModel(
     fun setColumn(column: Columns) {
         mutateState {
             state = state.copy(selectedColumn = column)
-            if (column == Columns.Applications && state.applications.isNull()) loadApplications()
+            if (column == Columns.Applications &&
+                (state.applications.isNull() || state.applicationsFromCache == true))
+                loadApplications()
         }
     }
 
@@ -62,7 +64,7 @@ class PersonalViewModel(
                     setLoading(true)
                 }
                 .onSuccess {
-                    setApplications(it)
+                    setApplications(it, false)
                     setLoading(false)
                 }
                 .onFailure { setError(true) }
@@ -91,9 +93,9 @@ class PersonalViewModel(
         }
     }
 
-    private fun setApplications(applications: List<Application>) {
+    private fun setApplications(applications: List<Application>, fromCache: Boolean) {
         mutateState {
-            state = state.copy(applications = applications)
+            state = state.copy(applications = applications, applicationsFromCache = fromCache)
         }
     }
 }
@@ -101,6 +103,7 @@ class PersonalViewModel(
 data class PersonalState(
     val personal: Personal? = null,
     val applications: List<Application>? = null,
+    val applicationsFromCache: Boolean? = null,
     val selectedColumn: Columns = Columns.Orders,
     val isLoading: Boolean = false,
     val isError: Boolean = false,

@@ -7,6 +7,7 @@ import io.edugma.domain.account.repository.PaymentsRepository
 import io.edugma.domain.base.utils.onFailure
 import io.edugma.domain.base.utils.onSuccess
 import io.edugma.features.base.core.mvi.BaseViewModel
+import io.edugma.features.base.core.utils.isNull
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -26,7 +27,6 @@ class PaymentsViewModel(private val repository: PaymentsRepository) :
                     setLoading(false)
                 }
                 .onFailure {
-                    it
                     setError(true)
                 }
                 .collect()
@@ -43,8 +43,7 @@ class PaymentsViewModel(private val repository: PaymentsRepository) :
         mutateState {
             state = state.copy(
                 isLoading = isLoading,
-                isError = !isLoading && state.isError,
-                placeholders = if (!isLoading) false else state.placeholders
+                isError = !isLoading && state.isError
             )
         }
     }
@@ -64,17 +63,17 @@ class PaymentsViewModel(private val repository: PaymentsRepository) :
 }
 
 data class PaymentsState(
-    val data: Map<PaymentType, Payments> = emptyMap(),
+    val data: Map<PaymentType, Payments>? = null,
     val isLoading: Boolean = false,
     val isError: Boolean = false,
-    val placeholders: Boolean = true,
     val selectedIndex: Int = 0,
 ) {
-    val types = data.keys.toList()
-    val selectedType = types.getOrNull(selectedIndex)
-    val selectedPayment = data.values.toList().getOrNull(selectedIndex)
+    val placeholders = data.isNull() && isLoading && !isError
+    val types = data?.keys?.toList()
+    val selectedType = types?.getOrNull(selectedIndex)
+    val selectedPayment = data?.values?.toList()?.getOrNull(selectedIndex)
 }
 
-fun PaymentsState.getTypeByIndex(index: Int) = types.getOrNull(index)
+fun PaymentsState.getTypeByIndex(index: Int) = types?.getOrNull(index)
 
-fun PaymentsState.getPaymentsByIndex(index: Int) = data.values.toList().getOrNull(index)
+fun PaymentsState.getPaymentsByIndex(index: Int) = data?.values?.toList()?.getOrNull(index)

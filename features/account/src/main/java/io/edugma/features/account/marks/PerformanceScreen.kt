@@ -4,20 +4,22 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -155,7 +157,7 @@ fun PerformanceContent(state: MarksState,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)
         ) {
             when {
-                state.isError && state.data.isEmpty() -> {
+                state.isError -> {
                     item {
                         ErrorView {
                             retryListener.invoke()
@@ -171,12 +173,12 @@ fun PerformanceContent(state: MarksState,
                 }
                 else -> {
                     items(
-                        count = state.filteredData.size,
-                        key = { state.filteredData[it].id }
+                        count = state.filteredData?.size ?: 0,
+                        key = { state.filteredData!![it].id }
                     ) {
                         var showCourse = true
                         if (it > 0) {
-                            showCourse = state.filteredData[it].course != state.filteredData[it - 1].course
+                            showCourse = state.filteredData!![it].course != state.filteredData[it - 1].course
                         }
                         if (!showCourse && it > 0) {
                             Divider()
@@ -185,14 +187,14 @@ fun PerformanceContent(state: MarksState,
                         if (showCourse) {
                             if (it > 0) SpacerHeight(height = 15.dp)
                             Text(
-                                text = "${state.filteredData[it].course} курс",
+                                text = "${state.filteredData!![it].course} курс",
                                 style = MaterialTheme3.typography.headlineSmall,
                                 color = MaterialTheme3.colorScheme.primary
                             )
                             SpacerHeight(height = 15.dp)
                         }
                         Performance(
-                            state.filteredData[it],
+                            state.filteredData!![it],
                             filterClickListener
                         )
                         SpacerHeight(height = 3.dp)

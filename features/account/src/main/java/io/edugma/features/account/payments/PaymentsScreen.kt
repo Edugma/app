@@ -130,27 +130,30 @@ fun PaymentsContent(
                 style = MaterialTheme3.typography.headlineSmall,
             )
         }
-        if (state.placeholders) {
-            SelectableTypesRowPlaceholders()
-        } else {
-            SelectableOneTypesRow(
-                state.types,
-                state.selectedType,
-                { it.toLabel() }
-            ) {
-                onPaymentChange.invoke(state.data.keys.indexOf(it))
+        when {
+            state.placeholders -> {
+                SelectableTypesRowPlaceholders()
+                PaymentsPlaceholder()
             }
-        }
-        if (state.placeholders) {
-            PaymentsPlaceholder()
-        } else {
-            HorizontalPager(
-                count = state.data.size,
-                state = paymentsPagerState,
-                key = {state.getTypeByIndex(it) ?: PaymentType.Dormitory}
-            ) { page ->
-                state.getPaymentsByIndex(page)?.let { payment ->
-                    Payments(payment, onQrClickListener)
+            state.isError -> {
+                ErrorView()
+            }
+            else -> {
+                SelectableOneTypesRow(
+                    state.types ?: emptyList(),
+                    state.selectedType,
+                    { it.toLabel() }
+                ) {
+                    state.data?.keys?.indexOf(it)?.let(onPaymentChange::invoke)
+                }
+                HorizontalPager(
+                    count = state.data?.size ?: 0,
+                    state = paymentsPagerState,
+                    key = {state.getTypeByIndex(it) ?: PaymentType.Dormitory}
+                ) { page ->
+                    state.getPaymentsByIndex(page)?.let { payment ->
+                        Payments(payment, onQrClickListener)
+                    }
                 }
             }
         }

@@ -1,7 +1,6 @@
 package io.edugma.features.account
 
 import androidx.navigation.NavGraphBuilder
-import io.edugma.features.account.applications.ApplicationsScreen
 import io.edugma.features.account.authorization.AuthScreen
 import io.edugma.features.account.classmates.ClassmatesScreen
 import io.edugma.features.account.main.AccountMainScreen
@@ -18,7 +17,6 @@ import io.edugma.features.base.navigation.MainScreen
 fun NavGraphBuilder.accountScreens() {
     groupScreen<MainScreen.Account, AccountScreens.Menu> {
         addScreen<AccountScreens.Menu> { AccountMainScreen() }
-        addScreen<AccountScreens.Applications> { ApplicationsScreen() }
         addScreen<AccountScreens.Authorization> { AuthScreen() }
         addScreen<AccountScreens.Payments> { PaymentsScreen() }
         addScreen<AccountScreens.Teachers> { TeachersScreen() }
