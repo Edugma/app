@@ -85,6 +85,7 @@ fun BottomSheetContent(
         )
         SpacerHeight(height = 20.dp)
         TextBox(
+            modifier = Modifier.placeholder(state.bottomSheetPlaceholders),
             value = state.name.value,
             title = "Название предмета",
             onValueChange = {
@@ -100,21 +101,21 @@ fun BottomSheetContent(
             "Курс",
             state.courses,
             viewModel::updateFilter,
-            state.placeholders
+            state.bottomSheetPlaceholders
         )
         SpacerHeight(height = 20.dp)
         ChipsRow(
             "Семестр",
             state.semesters,
             viewModel::updateFilter,
-            state.placeholders
+            state.bottomSheetPlaceholders
         )
         SpacerHeight(height = 20.dp)
         ChipsRow(
             "Тип",
             state.types,
             viewModel::updateFilter,
-            state.placeholders
+            state.bottomSheetPlaceholders
         )
         SpacerHeight(height = 20.dp)
         PrimaryButton(

@@ -28,6 +28,11 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
             setLoading(true)
             repository.getLocalMarks()?.let {
                 delay(300) //todo говнокод пофиксить
+                setFilters(
+                    courses = repository.getLocalCourses()?.toSet() ?: emptySet(),
+                    semesters = repository.getLocalSemesters()?.toSet() ?: emptySet(),
+                    types = it.getExamTypes()
+                )
                 setPerformanceData(it)
             }
             repository.getCoursesWithSemesters()
@@ -46,7 +51,6 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
                         types = performance.getExamTypes()
                     )
                     setLoading(false)
-                    setBottomSheetPlaceholders(false)
                 }
                 .onFailure {
                     Log.e("performance loading error", it.localizedMessage ?: it.message ?: it::class.java.canonicalName)
@@ -70,13 +74,7 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
 
     private fun setError() {
         mutateState {
-            state = state.copy(isError = true, isLoading = false, bottomSheetPlaceholders = true)
-        }
-    }
-
-    private fun setBottomSheetPlaceholders(placeholders: Boolean) {
-        mutateState {
-            state = state.copy(bottomSheetPlaceholders = placeholders)
+            state = state.copy(isError = true, isLoading = false)
         }
     }
 
@@ -157,9 +155,9 @@ data class MarksState(
     val currentFilters: Set<Filter<*>> = emptySet(),
     val isLoading: Boolean = false,
     val isError: Boolean = false,
-    val bottomSheetPlaceholders: Boolean = true,
 ) {
     val placeholders = data.isNull() && isLoading && !isError
+    val bottomSheetPlaceholders = (data.isNull() && isLoading && !isError) || (isError && data.isNull())
     val isRefreshing = data.isNotNull() && isLoading && !isError
 
     private val filteredCourses = courses.filter { it.isChecked }.toSet()
