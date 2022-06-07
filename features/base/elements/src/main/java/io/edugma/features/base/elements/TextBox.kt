@@ -19,6 +19,7 @@ fun TextBox(
     value: String,
     title: String? = null,
     passwordMode: Boolean = false,
+    maxLines: Int = 1,
     onValueChange: Typed1Listener<String>
 ) {
     OutlinedTextField(
@@ -37,6 +38,7 @@ fun TextBox(
                     )
                 }
             }
-        }
+        },
+        maxLines = maxLines
     )
 }

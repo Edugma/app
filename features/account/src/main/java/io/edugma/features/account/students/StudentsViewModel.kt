@@ -1,87 +1,47 @@
 package io.edugma.features.account.students
 
-import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import io.edugma.domain.account.model.Student
+import io.edugma.domain.account.model.Teacher
 import io.edugma.domain.account.repository.PeoplesRepository
-import io.edugma.domain.base.utils.execute
+import io.edugma.features.account.teachers.TeachersPagingSource
 import io.edugma.features.base.core.mvi.BaseViewModel
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.Flow
 
 class StudentsViewModel(private val repository: PeoplesRepository) :
     BaseViewModel<StudentsState>(StudentsState()) {
 
-    var job: Job? = null
+    companion object {
+        private const val PAGE_SIZE = 30
+    }
 
     init {
-        viewModelScope.launch {
-            repository.getStudents("").execute(
-                onStart = {
-                    setLoading(true)
-                },
-                onSuccess = {
-                    setData(it.data)
-                },
-                onError = {
-                    setError(true)
-                }
-            )
-        }
+        load()
     }
 
-    fun loadStudents(query: String = "") {
-        job?.cancel()
-        job = viewModelScope.launch {
-            delay(1000)
-            repository.getStudents(query).execute(
-                onStart = {
-                    setLoading(true)
-                },
-                onSuccess = {
-                    setData(it.data)
-                },
-                onError = {
-                    setError(true)
-                }
-            )
-        }
+    private fun requestPagingData(name: String) = Pager(PagingConfig(pageSize = PAGE_SIZE)) {
+        StudentsPagingSource(repository, name, PAGE_SIZE)
     }
 
-    fun inputName(name: String) {
+    fun load(name: String = "") {
+        val flow = requestPagingData(name)
+            .flow
         mutateState {
-            state = state.copy(query = name)
-        }
-        loadStudents(query = name)
-    }
-
-    fun setData(data: List<Student>) {
-        mutateState {
-            state = state.copy(data = data, isLoading = false, isError = false, isPlaceholders = false)
+            state = state.copy(pagingData = flow)
         }
     }
 
-    fun setLoading(isLoading: Boolean) {
+    fun setName(name: String) {
         mutateState {
-            state = state.copy(
-                isLoading = if (state.isPlaceholders) false else isLoading,
-                isError = !isLoading && !state.isPlaceholders && state.isError,
-                isPlaceholders = if(!isLoading) false else state.isPlaceholders )
-        }
-    }
-
-    fun setError(isError: Boolean) {
-        mutateState {
-            state = state.copy(isError = isError, isLoading = false, isPlaceholders = false)
+            state = state.copy(name = name)
         }
     }
 
 }
 
 data class StudentsState(
-    val query: String = "",
-    val data: List<Student> = emptyList(),
-    val isLoading: Boolean = false,
-    val isError: Boolean = false,
-    val isPlaceholders: Boolean = true
+    val pagingData: Flow<PagingData<Student>>? = null,
+    val name: String = "",
 )

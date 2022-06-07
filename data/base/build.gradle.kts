@@ -9,6 +9,8 @@ dependencies {
     api(Libs.Networking.retrofit)
     api(Libs.Networking.okHttp)
     api(Libs.Networking.okHttpLogging)
+    api(Libs.Networking.paging)
+    api(Libs.Networking.pagingCompose)
 
     debugApi(Libs.Storage.KodeinDB.debug)
     releaseApi(Libs.Storage.KodeinDB.release)

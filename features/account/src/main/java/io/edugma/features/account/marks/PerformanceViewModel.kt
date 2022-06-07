@@ -105,6 +105,8 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
                     currentFilters = state.currentFilters.addOrDeleteFilter(filter))
                 is Type -> state.copy(types = state.types.updateFilter(filter) as Set<Type>,
                     currentFilters = state.currentFilters.addOrDeleteFilter(filter))
+                is Name -> state.copy(name = filter.copy(isChecked = !filter.isChecked),
+                    currentFilters = state.currentFilters.addOrDeleteFilter(filter))
             }
         }
     }
@@ -116,10 +118,11 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
         newSet.forEachIndexed { index, filter ->
             if (filter == newFilter) {
                 newSet[index] = when (newFilter) {
-                    is Course -> (newFilter as Course).copy(isChecked = !newFilter.isChecked) as Filter<T>
-                    is Semester -> (newFilter as Semester).copy(isChecked = !newFilter.isChecked) as Filter<T>
-                    is Type -> (newFilter as Type).copy(isChecked = !newFilter.isChecked) as Filter<T>
-                }
+                    is Course -> (newFilter as Course).copy(isChecked = !newFilter.isChecked)
+                    is Semester -> (newFilter as Semester).copy(isChecked = !newFilter.isChecked)
+                    is Type -> (newFilter as Type).copy(isChecked = !newFilter.isChecked)
+                    is Name -> (newFilter as Name).copy(isChecked = !newFilter.isChecked)
+                } as Filter<T>
             }
         }
         return newSet.toSet()
@@ -128,14 +131,19 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
     private fun<T> Set<Filter<T>>.addOrDeleteFilter(newFilter: Filter<T>): Set<Filter<T>> {
         val newSet = toMutableList()
         if (newFilter.isChecked) {
+            if (newFilter is Name) newSet.removeIf { it is Name }
             newSet.remove(newFilter)
         } else {
             val filter = when (newFilter) {
-                is Course -> (newFilter as Course).copy(isChecked = !newFilter.isChecked) as Filter<T>
-                is Semester -> (newFilter as Semester).copy(isChecked = !newFilter.isChecked) as Filter<T>
-                is Type -> (newFilter as Type).copy(isChecked = !newFilter.isChecked) as Filter<T>
+                is Course -> (newFilter as Course).copy(isChecked = !newFilter.isChecked)
+                is Semester -> (newFilter as Semester).copy(isChecked = !newFilter.isChecked)
+                is Type -> (newFilter as Type).copy(isChecked = !newFilter.isChecked)
+                is Name -> {
+                    newSet.removeIf { it is Name }
+                    (newFilter as Name).copy(isChecked = !newFilter.isChecked)
+                }
             }
-            newSet.add(filter)
+            newSet.add(filter as Filter<T>)
         }
         return newSet.toSet()
     }
@@ -147,6 +155,7 @@ data class MarksState(
     val courses: Set<Course> = emptySet(),
     val semesters: Set<Semester> = emptySet(),
     val types: Set<Type> = emptySet(),
+    val name: Name = Name(""),
     val currentFilters: Set<Filter<*>> = emptySet(),
     val isLoading: Boolean = false,
     val isError: Boolean = false,
@@ -158,7 +167,9 @@ data class MarksState(
     private val filteredSemesters = semesters.filter { it.isChecked }.toSet()
     private val filteredTypes = types.filter { it.isChecked }.toSet()
 
-    val enabledFilters = (filteredCourses + filteredSemesters + filteredTypes)
+    private val enabledFilters = (filteredCourses + filteredSemesters + filteredTypes).let {
+        if (name.isChecked) it.plus(name) else it
+    }
 
     val filteredData = data.filter { performance ->
         when {
@@ -173,6 +184,8 @@ data class MarksState(
                     if (!filteredSemesters.contains(semester)) return@filter false
                 if (filteredTypes.isNotEmpty())
                     if (!filteredTypes.contains(type)) return@filter false
+                if (name.isChecked && !performance.name.contains(name.value, ignoreCase = true))
+                    return@filter false
                 true
             }
         }
@@ -196,6 +209,12 @@ sealed class Filter<out T>(open val value: T, open val isChecked: Boolean) {
     ) : Filter<Int>(value, isChecked)
 
     data class Type(
+        override val value: String,
+        override val isChecked: Boolean = false,
+        override val mappedValue: String = value
+    ) : Filter<String>(value, isChecked)
+
+    data class Name(
         override val value: String,
         override val isChecked: Boolean = false,
         override val mappedValue: String = value

@@ -8,19 +8,17 @@ import kotlinx.coroutines.flow.flowOn
 class PeoplesRepositoryImpl(
     private val api: AccountService
 ): PeoplesRepository {
-    override fun getTeachers(
+    override suspend fun getTeachers(
         name: String,
         page: Int,
         pageSize: Int
     ) = api.getTeachers(name, page, pageSize)
-            .flowOn(Dispatchers.IO)
 
-    override fun getStudents(
+    override suspend fun getStudents(
         name: String,
         page: Int,
         pageSize: Int
     ) = api.getStudents(name, page, pageSize)
-            .flowOn(Dispatchers.IO)
 
     override fun getClassmates() =
         api.getClassmates()

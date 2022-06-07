@@ -10,21 +10,22 @@ interface AccountService {
     @POST("/login")
     fun login(@Body login: Login): Flow<Result<Token>>
 
-    @GET("/peoples/classmates")
+    @GET("/peoples/classmates/")
     fun getClassmates(): Flow<Result<List<Student>>>
 
-    @GET("/peoples/students/{name}")
-    fun getStudents(
-        @Path("name") name: String?, @Query("page") page: Int,
-        @Query("pageSize") pageSize: Int
-    ): Flow<Result<PagingDTO<Student>>>
-
-    @GET("/peoples/teachers/{name}")
-    fun getTeachers(
+    @GET("/peoples/students/{pageSize}/{page}/{name}")
+    suspend fun getStudents(
         @Path("name") name: String?,
-        @Query("page") page: Int,
-        @Query("pageSize") pageSize: Int
-    ): Flow<Result<PagingDTO<Teacher>>>
+        @Path("page") page: Int,
+        @Path("pageSize") pageSize: Int
+    ): PagingDTO<Student>
+
+    @GET("/peoples/teachers/{pageSize}/{page}/{name}")
+    suspend fun getTeachers(
+        @Path("name") name: String?,
+        @Path("page") page: Int,
+        @Path("pageSize") pageSize: Int
+    ): PagingDTO<Teacher>
 
     @GET("/applications")
     fun getApplications(): Flow<Result<List<Application>>>

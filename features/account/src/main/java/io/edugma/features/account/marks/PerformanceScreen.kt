@@ -60,6 +60,18 @@ fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
                     modifier = Modifier.padding(start = 8.dp)
                 )
                 SpacerHeight(height = 20.dp)
+                TextBox(
+                    value = state.name.value,
+                    title = "Название предмета",
+                    onValueChange = {
+                        viewModel.updateFilter(
+                            Name(
+                                value = it,
+                                isChecked = it.isEmpty()
+                            )
+                        )
+                    })
+                SpacerHeight(height = 20.dp)
                 ChipsRow(
                     "Курс",
                     state.courses,
