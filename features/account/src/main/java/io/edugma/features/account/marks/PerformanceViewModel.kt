@@ -107,6 +107,7 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
                     currentFilters = state.currentFilters.addOrDeleteFilter(filter))
                 is Type -> state.copy(types = state.types.updateFilter(filter) as Set<Type>,
                     currentFilters = state.currentFilters.addOrDeleteFilter(filter))
+                is Name -> state.copy(currentFilters = state.currentFilters.addOrDeleteFilter(filter))
             }
         }
     }
@@ -121,6 +122,7 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
                     is Course -> (newFilter as Course).copy(isChecked = !newFilter.isChecked) as Filter<T>
                     is Semester -> (newFilter as Semester).copy(isChecked = !newFilter.isChecked) as Filter<T>
                     is Type -> (newFilter as Type).copy(isChecked = !newFilter.isChecked) as Filter<T>
+                    is Name -> (newFilter as Name).copy(isChecked = !newFilter.isChecked) as Filter<T>
                 }
             }
         }
@@ -136,6 +138,7 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
                 is Course -> (newFilter as Course).copy(isChecked = !newFilter.isChecked) as Filter<T>
                 is Semester -> (newFilter as Semester).copy(isChecked = !newFilter.isChecked) as Filter<T>
                 is Type -> (newFilter as Type).copy(isChecked = !newFilter.isChecked) as Filter<T>
+                is Name -> (newFilter as Name).copy(isChecked = !newFilter.isChecked) as Filter<T>
             }
             newSet.add(filter)
         }
@@ -198,6 +201,12 @@ sealed class Filter<out T>(open val value: T, open val isChecked: Boolean) {
     ) : Filter<Int>(value, isChecked)
 
     data class Type(
+        override val value: String,
+        override val isChecked: Boolean = false,
+        override val mappedValue: String = value
+    ) : Filter<String>(value, isChecked)
+
+    data class Name(
         override val value: String,
         override val isChecked: Boolean = false,
         override val mappedValue: String = value

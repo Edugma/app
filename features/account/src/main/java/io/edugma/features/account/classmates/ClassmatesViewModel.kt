@@ -58,14 +58,14 @@ data class ClassmatesState(
 class ClassmatesMutator : BaseMutator<ClassmatesState>() {
     fun setName(name: String) {
         state = state.copy(name = name, filteredData = state.data.filter {
-            val predicate = it?.name?.contains(name, true)
+            val predicate = it?.getFullName()?.contains(name, true)
             predicate == true || predicate.isNull()
         })
     }
 
     fun setData(data: List<Student>) {
         state = state.copy(data = data, isLoading = false, isError = false, filteredData = data.filter {
-            it.name.contains(state.name, true)
+            it.getFullName().contains(state.name, true)
         })
     }
 

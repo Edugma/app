@@ -1,11 +1,10 @@
 package io.edugma.features.account.teachers
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -13,56 +12,141 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.paging.LoadState
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import io.edugma.domain.account.model.Teacher
+import io.edugma.domain.account.model.description
 import io.edugma.features.base.core.utils.ClickListener
+import io.edugma.features.base.core.utils.FluentIcons
+import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.base.core.utils.Typed1Listener
-import io.edugma.features.base.elements.ErrorView
+import io.edugma.features.base.elements.*
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TeachersScreen(viewModel: TeachersViewModel = getViewModel()) {
     val state by viewModel.state.collectAsState()
-
-    TeachersContent(state,
-        retryListener = {viewModel.load()},
-        backListener = {viewModel.exit()},
-        inputListener = {})
+    val bottomState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden
+    )
+    val scope = rememberCoroutineScope()
+    ModalBottomSheetLayout(
+        sheetState = bottomState,
+        sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
+        scrimColor = Color.Black.copy(alpha = 0.5f),
+        sheetBackgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.surface,
+        sheetContent = {
+            Column(modifier = Modifier
+                .padding(horizontal = 15.dp)) {
+                SpacerHeight(height = 15.dp)
+                Text(
+                    text = "Фильтры",
+                    style = MaterialTheme3.typography.headlineMedium,
+                    modifier = Modifier.padding(start = 8.dp)
+                )
+                SpacerHeight(height = 20.dp)
+                TextBox(
+                    value = state.name,
+                    title = "ФИО преподавателя",
+                    onValueChange = viewModel::setName)
+                SpacerHeight(height = 50.dp)
+                PrimaryButton(
+                    onClick = {
+                        viewModel.load(state.name)
+                        scope.launch { bottomState.hide() }
+                              },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Применить")
+                }
+                SpacerHeight(height = 15.dp)
+            }
+        }
+    ) {
+        TeachersContent(state,
+            retryListener = { viewModel.load() },
+            backListener = { viewModel.exit() },
+            openBottomListener = { scope.launch {bottomState.show() } })
+    }
 }
 
 @Composable
-fun TeachersContent(state: TeachersState,
-                    retryListener: ClickListener,
-                    backListener: ClickListener,
-                    inputListener: Typed1Listener<String>) {
-    var name by rememberSaveable { mutableStateOf("") }
-    Scaffold(topBar = {
-        TopAppBar(title = { TextField(value = name,
-            onValueChange = {
-                inputListener.invoke(it)
-                name = it }, label = { Text("ФИО")})
-        },
-            navigationIcon = { IconButton(onClick = { backListener.invoke() }) { Icon(Icons.Filled.ArrowBack, contentDescription = "Назад") } })
-    }) {
-        LazyColumn(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)
-        ) {
-            if (state.isError && state.data.isEmpty()) {
-                item {
-                    ErrorView {
-                        retryListener.invoke()
+fun TeachersContent(
+    state: TeachersState,
+    openBottomListener: ClickListener,
+    retryListener: ClickListener,
+    backListener: ClickListener
+) {
+    val teacherListItems = state.pagingData?.collectAsLazyPagingItems()
+    Column {
+        ConstraintLayout(Modifier.fillMaxWidth()) {
+            val (content, filter) = createRefs()
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.constrainAs(content) {
+                    linkTo(parent.start, filter.start)
+                    width = Dimension.fillToConstraints
+                }) {
+                IconButton(onClick = backListener) {
+                    Icon(
+                        Icons.Filled.ArrowBack,
+                        contentDescription = "Назад"
+                    )
+                }
+                SpacerWidth(width = 15.dp)
+                Text(
+                    text = "Преподаватели",
+                    style = MaterialTheme3.typography.titleLarge,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            IconButton(onClick = openBottomListener, modifier = Modifier.constrainAs(filter) {
+                linkTo(parent.top, parent.bottom)
+                end.linkTo(parent.end)
+            }) {
+                Icon(
+                    painterResource(id = FluentIcons.ic_fluent_filter_24_regular),
+                    contentDescription = "Фильтр"
+                )
+            }
+        }
+        LazyColumn {
+            teacherListItems?.let { _ ->
+                items(teacherListItems) { item ->
+                    item?.let {
+                        Teacher(teacher = it)
                     }
                 }
-            } else {
-                items(state.data) {
-                    Teacher(it)
+                when {
+                    teacherListItems.loadState.refresh is LoadState.Loading -> {
+                        item { Text(text = "first loading") }
+                        //You can add modifier to manage load state when first time response page is loading
+                    }
+                    teacherListItems.loadState.refresh is LoadState.Error -> {
+                        item { Text(text = "error") }
+                        //You can use modifier to show error message
+                    }
+                    teacherListItems.loadState.append is LoadState.Loading -> {
+                        item { Text(text = "next page loading") }
+                        //You can add modifier to manage load state when next response page is loading
+                    }
+                    teacherListItems.loadState.append is LoadState.Error -> {
+                        item { Text(text = "error") }
+                        //You can use modifier to show error message
+                    }
                 }
             }
         }
@@ -71,39 +155,42 @@ fun TeachersContent(state: TeachersState,
 
 @Composable
 fun Teacher(teacher: Teacher) {
-    Card(shape = MaterialTheme.shapes.medium, elevation = 2.dp, modifier = Modifier.fillMaxWidth().padding(2.dp)) {
+    Card(shape = MaterialTheme.shapes.medium, elevation = 2.dp, modifier = Modifier
+        .fillMaxWidth()
+        .padding(2.dp)) {
         ConstraintLayout(modifier = Modifier.padding(5.dp)) {
             val (name, image, type, group) = createRefs()
             Text(text = teacher.name,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.constrainAs(name) {
-                    start.linkTo(image.end)
-                    end.linkTo(parent.end)
-                    width = Dimension.fillToConstraints
-                }
-                    .padding(start = 10.dp))
-            teacher.position?.let {
-                Text(text = it,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.constrainAs(type) {
+                modifier = Modifier
+                    .constrainAs(name) {
                         start.linkTo(image.end)
                         end.linkTo(parent.end)
-                        top.linkTo(name.bottom)
                         width = Dimension.fillToConstraints
                     }
-                        .padding(start = 10.dp))
-            }
-            teacher.department?.let {
+                    .padding(start = 10.dp))
+            teacher.stuffType?.let {
                 Text(text = it,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.constrainAs(group) {
+                    modifier = Modifier
+                        .constrainAs(type) {
+                            start.linkTo(image.end)
+                            end.linkTo(parent.end)
+                            top.linkTo(name.bottom)
+                            width = Dimension.fillToConstraints
+                        }
+                        .padding(start = 10.dp))
+            }
+            Text(text = teacher.description,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .constrainAs(group) {
                         start.linkTo(image.end)
                         end.linkTo(parent.end)
                         top.linkTo(type.bottom)
                         width = Dimension.fillToConstraints
                     }
-                        .padding(start = 10.dp))
-            }
+                    .padding(start = 10.dp))
 
             teacher.avatar?.let {
                 Image(

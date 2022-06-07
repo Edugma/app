@@ -18,17 +18,17 @@ class StudentsViewModel(private val repository: PeoplesRepository) :
 
     init {
         viewModelScope.launch {
-            repository.getStudents("").execute(
-                onStart = {
-                    setLoading(true)
-                },
-                onSuccess = {
-                    setData(it.data)
-                },
-                onError = {
-                    setError(true)
-                }
-            )
+//            repository.getStudents("").execute(
+//                onStart = {
+//                    setLoading(true)
+//                },
+//                onSuccess = {
+//                    setData(it.data)
+//                },
+//                onError = {
+//                    setError(true)
+//                }
+//            )
         }
     }
 
@@ -36,17 +36,17 @@ class StudentsViewModel(private val repository: PeoplesRepository) :
         job?.cancel()
         job = viewModelScope.launch {
             delay(1000)
-            repository.getStudents(query).execute(
-                onStart = {
-                    setLoading(true)
-                },
-                onSuccess = {
-                    setData(it.data)
-                },
-                onError = {
-                    setError(true)
-                }
-            )
+//            repository.getStudents(query).execute(
+//                onStart = {
+//                    setLoading(true)
+//                },
+//                onSuccess = {
+//                    setData(it.data)
+//                },
+//                onError = {
+//                    setError(true)
+//                }
+//            )
         }
     }
 

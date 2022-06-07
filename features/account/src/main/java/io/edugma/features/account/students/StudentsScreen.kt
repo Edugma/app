@@ -83,7 +83,7 @@ fun Student(student: Student?, placeholders: Boolean = false) {
         .clickable { isExpanded = !isExpanded }
     ) {
         val (name, image, type, divider) = createRefs()
-        Text(text = student?.name.orEmpty(),
+        Text(text = student?.getFullName().orEmpty(),
             style = MaterialTheme3.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
             modifier = Modifier
                 .constrainAs(name) {

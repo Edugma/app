@@ -73,7 +73,7 @@ fun Student(student: Student?) {
     Card(shape = MaterialTheme.shapes.medium, elevation = 2.dp, modifier = Modifier.fillMaxWidth()) {
         ConstraintLayout(modifier = Modifier.padding(5.dp)) {
             val (name, image) = createRefs()
-            Text(text = student?.name.orEmpty(),
+            Text(text = student?.getFullName().orEmpty(),
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.constrainAs(name) {
                     start.linkTo(image.end)
