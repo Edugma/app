@@ -154,6 +154,9 @@ fun PerformanceContent(state: MarksState,
                             Divider()
                         }
                     }
+                    state.filteredData?.isEmpty() == true -> {
+                        item { EmptyView() }
+                    }
                     else -> {
                         items(
                             count = state.filteredData?.size ?: 0,
