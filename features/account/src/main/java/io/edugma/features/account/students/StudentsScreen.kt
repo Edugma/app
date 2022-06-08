@@ -90,8 +90,6 @@ fun StudentsScreen(viewModel: StudentsViewModel = getViewModel()) {
             state,
             backListener = { viewModel.exit() },
             openBottomSheetListener = {scope.launch { bottomState.show() }},
-            refreshListener = { viewModel.load("") },
-            retryListener = { viewModel.setName(state.name) }
         )
     }
 }
@@ -101,8 +99,6 @@ fun StudentsContent(
     state: StudentsState,
     backListener: ClickListener,
     openBottomSheetListener: ClickListener,
-    refreshListener: ClickListener,
-    retryListener: ClickListener
 ) {
     val studentListItems = state.pagingData?.collectAsLazyPagingItems()
     Column {
@@ -173,7 +169,7 @@ fun StudentsContent(
                         item { Text(text = "placeholders") }
                     }
                     studentListItems.loadState.refresh is LoadState.Error -> {
-                        item { ErrorView(retryAction = retryListener) }
+                        item { ErrorView(retryAction = studentListItems::refresh) }
                     }
                     studentListItems.loadState.append is LoadState.Loading -> {
                         item {
@@ -190,6 +186,9 @@ fun StudentsContent(
                     }
                     studentListItems.loadState.append is LoadState.Error -> {
                         item { Refresher(onClickListener = studentListItems::retry) }
+                    }
+                    studentListItems.itemCount == 0 -> {
+                        item { EmptyView() }
                     }
                 }
             }

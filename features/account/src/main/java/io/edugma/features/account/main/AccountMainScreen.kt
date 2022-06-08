@@ -44,15 +44,24 @@ fun AccountContent(state: AccountMenuState, onClickListener: (MenuUi) -> Unit) {
             Column {
                 PersonalCard(
                     state.personal?.label,
-                    state.personal?.specialization) { onClickListener.invoke(MenuUi.Personal) }
-                PerformanceCard(state.performance, state.showCurrentPerformance) {onClickListener.invoke(MenuUi.Marks)}
+                    state.personal?.specialization,
+                    state.isAuthorized
+                ) { onClickListener.invoke(MenuUi.Personal) }
+                PerformanceCard(
+                    state.performance,
+                    state.showCurrentPerformance,
+                    state.isAuthorized
+                ) {onClickListener.invoke(MenuUi.Marks)}
             }
             AuthCard(
                 state.personal?.avatar,
-                state.personal?.fullName
+                state.personal?.fullName,
             ) {onClickListener.invoke(MenuUi.Auth)}
         }
-        PaymentsCard(currentPayments = state.currentPayments) { onClickListener.invoke(MenuUi.Payments) }
+        PaymentsCard(
+            currentPayments = state.currentPayments,
+            enabled = state.isAuthorized
+        ) { onClickListener.invoke(MenuUi.Payments) }
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
         ) {
@@ -60,12 +69,19 @@ fun AccountContent(state: AccountMenuState, onClickListener: (MenuUi) -> Unit) {
                 count = state.bottomMenu.size - (state.bottomMenu.size % 2)
             ) {
                 val item = state.bottomMenu[it]
-                UsualCard(name = item.label) { onClickListener.invoke(item) }
+                UsualCard(
+                    name = item.label,
+                    enabled = state.isAuthorized
+                ) { onClickListener.invoke(item) }
             }
         }
         if (state.bottomMenu.size % 2 != 0) {
             val item = state.bottomMenu.last()
-            UsualCard(modifier = Modifier.fillMaxWidth(),name = item.label) { onClickListener.invoke(item) }
+            UsualCard(
+                modifier = Modifier.fillMaxWidth(),
+                name = item.label,
+                enabled = state.isAuthorized
+            ) { onClickListener.invoke(item) }
         }
 
     }

@@ -21,7 +21,7 @@ import io.edugma.features.elements.R
 
 @Composable
 @Preview
-fun EmptyView(message: String = "К сожалению, ничего не найдено.", secondMessage: String = "Может, стоит изменить параметры поиска?") {
+fun EmptyView(message: String = "К сожалению, ничего не найдено.") {
     val anim = remember { R.raw.emptylist }
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(anim))
     val progress by animateLottieCompositionAsState(
@@ -33,12 +33,6 @@ fun EmptyView(message: String = "К сожалению, ничего не най
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         SpacerHeight(height = 50.dp)
-        Text(
-            text = message,
-            style = MaterialTheme3.typography.headlineSmall,
-            textAlign = TextAlign.Center
-        )
-        SpacerHeight(height = 30.dp)
         LottieAnimation(
             composition,
             progress,
@@ -47,7 +41,7 @@ fun EmptyView(message: String = "К сожалению, ничего не най
         )
         SpacerHeight(height = 30.dp)
         Text(
-            text = secondMessage,
+            text = message,
             style = MaterialTheme3.typography.headlineSmall,
             textAlign = TextAlign.Center
         )

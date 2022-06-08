@@ -76,7 +76,6 @@ fun TeachersScreen(viewModel: TeachersViewModel = getViewModel()) {
         }
     ) {
         TeachersContent(state,
-            retryListener = { viewModel.load() },
             backListener = { viewModel.exit() },
             openBottomListener = { scope.launch {bottomState.show() } })
     }
@@ -86,7 +85,6 @@ fun TeachersScreen(viewModel: TeachersViewModel = getViewModel()) {
 fun TeachersContent(
     state: TeachersState,
     openBottomListener: ClickListener,
-    retryListener: ClickListener,
     backListener: ClickListener
 ) {
     val teacherListItems = state.pagingData?.collectAsLazyPagingItems()
@@ -131,20 +129,29 @@ fun TeachersContent(
                 }
                 when {
                     teacherListItems.loadState.refresh is LoadState.Loading -> {
-                        item { Text(text = "first loading") }
-                        //You can add modifier to manage load state when first time response page is loading
+                        item { Text(text = "placeholders") }
                     }
                     teacherListItems.loadState.refresh is LoadState.Error -> {
-                        item { Text(text = "error") }
-                        //You can use modifier to show error message
+                        item { ErrorView(retryAction = teacherListItems::refresh) }
                     }
                     teacherListItems.loadState.append is LoadState.Loading -> {
-                        item { Text(text = "next page loading") }
-                        //You can add modifier to manage load state when next response page is loading
+                        item {
+                            Box(modifier = Modifier
+                                .fillMaxWidth()
+                                .heightIn(min = 70.dp)) {
+                                androidx.compose.material3.CircularProgressIndicator(
+                                    modifier = Modifier
+                                        .size(32.dp)
+                                        .align(Alignment.Center)
+                                )
+                            }
+                        }
                     }
                     teacherListItems.loadState.append is LoadState.Error -> {
-                        item { Text(text = "error") }
-                        //You can use modifier to show error message
+                        item { Refresher(onClickListener = teacherListItems::retry) }
+                    }
+                    teacherListItems.itemCount == 0 -> {
+                        item { EmptyView() }
                     }
                 }
             }

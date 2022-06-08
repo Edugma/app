@@ -311,65 +311,38 @@ fun Order(order: Order) {
             modifier = Modifier.fillMaxWidth()
         )
     }
-//    ConstraintLayout(
-//        Modifier
-//            .padding(10.dp)
-//            .fillMaxWidth()
-//            .defaultMinSize(minHeight = 55.dp)
-//    ) {
-//        val (number, date, info) = createRefs()
-//        Text(
-//            text = order.name,
-//            style = MaterialTheme3.typography.titleSmall,
-//            modifier = Modifier
-//                .constrainAs(number) {
-//                    linkTo(parent.start, date.start, endMargin = 8.dp)
-//                    top.linkTo(parent.top)
-//                    width = Dimension.fillToConstraints
-//                }
-//                .defaultMinSize(minWidth = 100.dp)
-//        )
-//        Text(
-//            text = order.date?.format().orEmpty(),
-//            style = MaterialTheme3.typography.labelMedium,
-//            modifier = Modifier
-//                .constrainAs(date) {
-//                    top.linkTo(parent.top)
-//                    end.linkTo(parent.end)
-//                }
-//                .defaultMinSize(minWidth = 50.dp)
-//        )
-//        Text(
-//            text = order.description,
-//            style = MaterialTheme3.typography.bodySmall,
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .constrainAs(info) {
-//                    linkTo(number.bottom, parent.bottom, bias = 1f, topMargin = 5.dp)
-//                }
-//        )
-//    }
 }
 
 @Composable
 fun OrderPlaceholder() {
-    ConstraintLayout(
+    Column(
         Modifier
             .padding(10.dp)
             .fillMaxWidth()
             .defaultMinSize(minHeight = 55.dp)
     ) {
-        val (number, date, info) = createRefs()
-
+        Box {
+            Text(
+                text = "",
+                style = MaterialTheme3.typography.titleMedium,
+                modifier = Modifier
+                    .defaultMinSize(minWidth = 100.dp)
+                    .placeholder(true)
+            )
+            Text(
+                text = "",
+                style = MaterialTheme3.typography.labelMedium,
+                modifier = Modifier
+                    .defaultMinSize(minWidth = 50.dp)
+                    .align(Alignment.CenterEnd)
+                    .placeholder(true)
+            )
+        }
+        SpacerHeight(height = 15.dp)
         Text(
             text = "",
             style = MaterialTheme3.typography.bodySmall,
-            modifier = Modifier
-                .fillMaxWidth()
-                .constrainAs(info) {
-                    linkTo(number.bottom, parent.bottom, bias = 1f, topMargin = 5.dp)
-                }
-                .placeholder(true)
+            modifier = Modifier.fillMaxWidth().placeholder(true)
         )
     }
 }
@@ -403,8 +376,6 @@ fun Application(application: Application) {
             color = MaterialTheme3.colorScheme.secondary
         )
         SpacerHeight(height = 10.dp)
-//        TextWithIcon(text = application.department, icon = painterResource(id = FluentIcons.ic_fluent_building_24_regular))
-//        SpacerHeight(height = 5.dp)
         application.additionalInfo?.let {
             Text(text = it, style = MaterialTheme3.typography.bodySmall)
         }
@@ -412,23 +383,47 @@ fun Application(application: Application) {
 }
 @Composable
 fun ApplicationPlaceholder() {
-    Column {
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 10.dp, vertical = 5.dp)
+            .padding(bottom = 5.dp)
+            .fillMaxWidth()
+            .defaultMinSize(minHeight = 55.dp)
+    ) {
+        Box(Modifier.fillMaxWidth()) {
+            Text(
+                text = "",
+                style = MaterialTheme3.typography.titleMedium,
+                modifier = Modifier.align(Alignment.CenterEnd)
+                    .defaultMinSize(minWidth = 100.dp)
+                    .placeholder(true)
+            )
+            Text(
+                text = "",
+                style = MaterialTheme3.typography.labelMedium,
+                color = MaterialTheme3.colorScheme.tertiary,
+                textAlign = TextAlign.End,
+                modifier = Modifier.align(Alignment.CenterEnd)
+                    .defaultMinSize(minWidth = 50.dp)
+                    .placeholder(true)
+            )
+        }
+
         Text(
-            text = "application.question",
-            style = MaterialTheme3.typography.titleMedium,
-            modifier = Modifier.placeholder(true)
-        )
-        Text(
-            text = "application.question",
+            text = "",
             style = MaterialTheme3.typography.labelSmall,
             color = MaterialTheme3.colorScheme.secondary,
-            modifier = Modifier.placeholder(true)
+            modifier = Modifier
+                .defaultMinSize(minWidth = 50.dp)
+                .placeholder(true)
         )
-        SpacerHeight(height = 15.dp)
-        TextWithIcon(
-            text = "application.department",
-            icon = painterResource(id = FluentIcons.ic_fluent_building_24_regular),
-            modifier = Modifier.placeholder(true))
-        SpacerHeight(height = 5.dp)
+        SpacerHeight(height = 10.dp)
+        Text(
+            text = "it",
+            style = MaterialTheme3.typography.bodySmall,
+            modifier = Modifier
+                .defaultMinSize(minWidth = 100.dp)
+                .placeholder(true)
+        )
     }
 }

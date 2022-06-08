@@ -22,6 +22,7 @@ import io.edugma.features.base.elements.TonalCard
 fun PaymentsCard(
     modifier: Modifier = Modifier,
     currentPayments: CurrentPayments?,
+    enabled: Boolean,
     onClick: ClickListener
 ) {
     TonalCard(
@@ -30,6 +31,7 @@ fun PaymentsCard(
             .fillMaxWidth(1f)
             .height(100.dp),
         shape = RoundedCornerShape(16.dp),
+        enabled = enabled,
         onClick = onClick
     ) {
         Column(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
