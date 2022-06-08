@@ -16,7 +16,7 @@ class StudentsViewModel(private val repository: PeoplesRepository) :
     BaseViewModel<StudentsState>(StudentsState()) {
 
     companion object {
-        private const val PAGE_SIZE = 30
+        private const val PAGE_SIZE = 10
     }
 
     init {

@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import io.edugma.domain.account.model.Contracts
 import io.edugma.domain.account.model.PaymentType
 import io.edugma.domain.account.model.Performance
+import io.edugma.domain.account.repository.AuthorizationRepository
 import io.edugma.domain.account.repository.PaymentsRepository
 import io.edugma.domain.account.repository.PerformanceRepository
 import io.edugma.domain.account.repository.PersonalRepository
@@ -13,6 +14,7 @@ import io.edugma.features.base.core.mvi.BaseMutator
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.mvi.BaseViewModelFull
 import io.edugma.features.base.core.utils.ScreenResult
+import io.edugma.features.base.core.utils.isNotNull
 import io.edugma.features.base.navigation.AccountScreens
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
@@ -28,7 +30,8 @@ import kotlin.random.Random
 class AccountMainViewModel(
     private val personalRepository: PersonalRepository,
     private val performanceRepository: PerformanceRepository,
-    private val paymentsRepository: PaymentsRepository
+    private val paymentsRepository: PaymentsRepository,
+    private val authorizationRepository: AuthorizationRepository,
 ) : BaseViewModel<AccountMenuState>(AccountMenuState()) {
 
     private val performanceTimer = flow {
@@ -60,6 +63,13 @@ class AccountMainViewModel(
     }
 
     private fun load() {
+        viewModelScope.launch {
+            val isAuthorized = authorizationRepository.getSavedToken().isNotNull()
+            mutateState {
+                state = state.copy(isAuthorized = isAuthorized)
+            }
+
+        }
         viewModelScope.launch {
             val info = personalRepository.getLocalPersonalInfo()
             mutateState {
@@ -174,7 +184,8 @@ data class AccountMenuState(
     val personal: PersonalData? = null,
     val performance: CurrentPerformance? = null,
     val currentPayments: CurrentPayments? = null,
-    val showCurrentPerformance: Boolean = true
+    val showCurrentPerformance: Boolean = true,
+    val isAuthorized: Boolean = true
 )
 
 data class PersonalData(

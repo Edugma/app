@@ -24,6 +24,7 @@ import io.edugma.features.base.elements.TonalCard
 fun PerformanceCard(
     performance: CurrentPerformance?,
     showCurrentPerformance: Boolean,
+    enabled: Boolean,
     onClick: ClickListener
 ) {
     TonalCard(
@@ -32,6 +33,7 @@ fun PerformanceCard(
             .height(85.dp)
             .fillMaxWidth(0.6f),
         shape = RoundedCornerShape(16.dp),
+        enabled = enabled,
         onClick = onClick
     ) {
         Box(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {

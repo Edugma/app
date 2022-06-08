@@ -16,6 +16,7 @@ import io.edugma.features.base.elements.TonalCard
 fun UsualCard(
     modifier: Modifier = Modifier,
     name: String,
+    enabled: Boolean,
     onClick: ClickListener
 ) {
     TonalCard(
@@ -24,6 +25,7 @@ fun UsualCard(
             .height(100.dp)
             .fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
+        enabled = enabled,
         onClick = onClick
     ) {
         Box(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {

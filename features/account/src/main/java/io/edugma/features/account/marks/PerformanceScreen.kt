@@ -97,21 +97,21 @@ fun BottomSheetContent(
                 )
             })
         SpacerHeight(height = 20.dp)
-        ChipsRow(
+        SelectableChipsRow(
             "Курс",
             state.courses,
             viewModel::updateFilter,
             state.bottomSheetPlaceholders
         )
         SpacerHeight(height = 20.dp)
-        ChipsRow(
+        SelectableChipsRow(
             "Семестр",
             state.semesters,
             viewModel::updateFilter,
             state.bottomSheetPlaceholders
         )
         SpacerHeight(height = 20.dp)
-        ChipsRow(
+        SelectableChipsRow(
             "Тип",
             state.types,
             viewModel::updateFilter,
@@ -120,7 +120,7 @@ fun BottomSheetContent(
         SpacerHeight(height = 20.dp)
         PrimaryButton(
             onClick = bottomCloseListener,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().placeholder(state.bottomSheetPlaceholders)
         ) {
             Text("Применить")
         }
@@ -346,7 +346,7 @@ fun PerformancePlaceholder() {
 }
 
 @Composable
-private fun<T> ChipsRow(
+private fun<T> SelectableChipsRow(
     name: String,
     items: Set<Filter<T>>,
     onClick: Typed1Listener<Filter<T>>,
@@ -364,21 +364,22 @@ private fun<T> ChipsRow(
                 items(4) {
                     Chip(Modifier.placeholder(true)) {}
                 }
-            }
-            val listItems = items.toList()
-            items(
-                count = listItems.size,
-                key = { listItems[it].hashCode() }
-            ) {
-                SelectableChip(
-                    selectedState = listItems[it].isChecked,
-                    onClick = { onClick.invoke(listItems[it]) }) {
-                    Text(
-                        text = listItems[it].mappedValue,
-                        style = MaterialTheme3.typography.labelMedium,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
+            } else {
+                val listItems = items.toList()
+                items(
+                    count = listItems.size,
+                    key = { listItems[it].hashCode() }
+                ) {
+                    SelectableChip(
+                        selectedState = listItems[it].isChecked,
+                        onClick = { onClick.invoke(listItems[it]) }) {
+                        Text(
+                            text = listItems[it].mappedValue,
+                            style = MaterialTheme3.typography.labelMedium,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
                 }
             }
         }

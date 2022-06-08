@@ -94,15 +94,25 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
 
     fun updateFilter(filter: Filter<*>) {
         mutateState {
-            state = when(filter) {
-                is Course -> state.copy(courses = state.courses.updateFilter(filter) as Set<Course>,
-                    currentFilters = state.currentFilters.addOrDeleteFilter(filter))
-                is Semester -> state.copy(semesters = state.semesters.updateFilter(filter) as Set<Semester>,
-                    currentFilters = state.currentFilters.addOrDeleteFilter(filter))
-                is Type -> state.copy(types = state.types.updateFilter(filter) as Set<Type>,
-                    currentFilters = state.currentFilters.addOrDeleteFilter(filter))
-                is Name -> state.copy(name = filter.copy(isChecked = !filter.isChecked),
-                    currentFilters = state.currentFilters.addOrDeleteFilter(filter))
+            if (!state.isLoading) {
+                state = when (filter) {
+                    is Course -> state.copy(
+                        courses = state.courses.updateFilter(filter) as Set<Course>,
+                        currentFilters = state.currentFilters.addOrDeleteFilter(filter)
+                    )
+                    is Semester -> state.copy(
+                        semesters = state.semesters.updateFilter(filter) as Set<Semester>,
+                        currentFilters = state.currentFilters.addOrDeleteFilter(filter)
+                    )
+                    is Type -> state.copy(
+                        types = state.types.updateFilter(filter) as Set<Type>,
+                        currentFilters = state.currentFilters.addOrDeleteFilter(filter)
+                    )
+                    is Name -> state.copy(
+                        name = filter.copy(isChecked = !filter.isChecked),
+                        currentFilters = state.currentFilters.addOrDeleteFilter(filter)
+                    )
+                }
             }
         }
     }
@@ -157,7 +167,7 @@ data class MarksState(
     val isError: Boolean = false,
 ) {
     val placeholders = data.isNull() && isLoading && !isError
-    val bottomSheetPlaceholders = (data.isNull() && isLoading && !isError) || (isError && data.isNull())
+    val bottomSheetPlaceholders = (isLoading && !isError) || (isError && data.isNull())
     val isRefreshing = data.isNotNull() && isLoading && !isError
 
     private val filteredCourses = courses.filter { it.isChecked }.toSet()

@@ -18,6 +18,7 @@ import io.edugma.features.base.elements.TonalCard
 fun PersonalCard(
     info: String?,
     specialization: String?,
+    enabled: Boolean,
     onScheduleClick: ClickListener
 ) {
     TonalCard(
@@ -26,6 +27,7 @@ fun PersonalCard(
             .height(95.dp)
             .fillMaxWidth(0.6f),
         shape = RoundedCornerShape(16.dp),
+        enabled = enabled,
         onClick = onScheduleClick
     ) {
         Column(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
