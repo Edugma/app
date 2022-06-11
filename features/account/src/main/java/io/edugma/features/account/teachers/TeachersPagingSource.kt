@@ -20,10 +20,15 @@ class TeachersPagingSource(
         val page = params.key ?: 1
         return try {
             teachersRepository.getTeachers(name, page, pageSize).let {
+                val nextPage = when {
+                    it.data.isEmpty() -> null
+                    it.data.size < pageSize -> null
+                    else -> it.nextPage
+                }
                 LoadResult.Page(
                     data = it.data,
                     prevKey = it.previousPage,
-                    nextKey = it.nextPage
+                    nextKey = nextPage
                 )
             }
         } catch (e: Throwable) {

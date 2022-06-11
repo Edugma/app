@@ -1,7 +1,7 @@
 package io.edugma.features.account.classmates
 
 import androidx.lifecycle.viewModelScope
-import io.edugma.domain.account.model.Student
+import io.edugma.domain.account.model.student.Student
 import io.edugma.domain.account.repository.PeoplesRepository
 import io.edugma.features.base.core.mvi.BaseMutator
 import io.edugma.domain.base.utils.execute

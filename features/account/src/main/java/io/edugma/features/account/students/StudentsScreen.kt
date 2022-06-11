@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
@@ -19,27 +20,29 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import coil.compose.AsyncImage
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import io.edugma.domain.account.model.Student
+import io.edugma.domain.account.model.student.Student
 import io.edugma.domain.account.model.print
 import io.edugma.features.account.R
-import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.FluentIcons
-import io.edugma.features.base.core.utils.MaterialTheme3
+import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.*
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
@@ -59,38 +62,69 @@ fun StudentsScreen(viewModel: StudentsViewModel = getViewModel()) {
         scrimColor = Color.Black.copy(alpha = 0.5f),
         sheetBackgroundColor = MaterialTheme.colorScheme.surface,
         sheetContent = {
-            Column(modifier = Modifier
-                .padding(horizontal = 15.dp)) {
-                SpacerHeight(height = 15.dp)
-                Text(
-                    text = "Поиск",
-                    style = MaterialTheme3.typography.headlineMedium,
-                    modifier = Modifier.padding(start = 8.dp)
-                )
-                SpacerHeight(height = 20.dp)
-                TextBox(
-                    value = state.name,
-                    title = "Фамилия или группа студента",
-                    onValueChange = viewModel::setName)
-                SpacerHeight(height = 40.dp)
-                PrimaryButton(
-                    onClick = {
+            when (state.bottomType) {
+                BottomSheetType.Filter -> {
+                    FilterSheetContent(state = state, textChangeListener = viewModel::setName) {
                         viewModel.load(state.name)
                         scope.launch { bottomState.hide() }
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text("Применить")
+                    }
                 }
-                SpacerHeight(height = 15.dp)
+                BottomSheetType.Student -> {
+                    state.selectedStudent?.let { StudentSheetContent(it) }
+                }
             }
+            
         }
     ) {
         StudentsContent(
             state,
-            backListener = { viewModel.exit() },
-            openBottomSheetListener = {scope.launch { bottomState.show() }},
+            backListener = viewModel::exit,
+            openBottomSheetListener = {
+                viewModel.selectFilter()
+                scope.launch { bottomState.show() }
+            },
+            studentClick = {
+                viewModel.selectStudent(it)
+                scope.launch { bottomState.show() }
+            }
         )
+    }
+}
+
+@Composable
+fun StudentSheetContent(
+    student: Student
+) {
+    Text(text = student.toString())
+}
+
+@Composable
+fun FilterSheetContent(
+    state: StudentsState,
+    textChangeListener: Typed1Listener<String>,
+    onAcceptClick: ClickListener
+) {
+    Column(modifier = Modifier
+        .padding(horizontal = 15.dp)) {
+        SpacerHeight(height = 15.dp)
+        Text(
+            text = "Поиск",
+            style = MaterialTheme3.typography.headlineMedium,
+            modifier = Modifier.padding(start = 8.dp)
+        )
+        SpacerHeight(height = 20.dp)
+        TextBox(
+            value = state.name,
+            title = "Фамилия или группа студента",
+            onValueChange = textChangeListener)
+        SpacerHeight(height = 40.dp)
+        PrimaryButton(
+            onClick = onAcceptClick,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Применить")
+        }
+        SpacerHeight(height = 15.dp)
     }
 }
 
@@ -99,6 +133,7 @@ fun StudentsContent(
     state: StudentsState,
     backListener: ClickListener,
     openBottomSheetListener: ClickListener,
+    studentClick: Typed1Listener<Student>
 ) {
     val studentListItems = state.pagingData?.collectAsLazyPagingItems()
     Column {
@@ -161,7 +196,7 @@ fun StudentsContent(
             studentListItems?.let { _ ->
                 items(studentListItems) { item ->
                     item?.let {
-                        Student(it)
+                        Student(it) { studentClick.invoke(it) }
                     }
                 }
                 when {
@@ -197,80 +232,53 @@ fun StudentsContent(
 }
 
 @Composable
-fun Student(student: Student?, placeholders: Boolean = false) {
-    var isExpanded by rememberSaveable { mutableStateOf(false) }
-    ConstraintLayout(modifier = Modifier
-        .padding(5.dp)
-        .fillMaxWidth()
-        .clickable { isExpanded = !isExpanded }
+fun Student(student: Student, onClick: ClickListener) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+            .clickable(onClick = onClick)
     ) {
-        val (name, image, type, divider) = createRefs()
-        Text(text = student?.getFullName().orEmpty(),
-            style = MaterialTheme3.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-            modifier = Modifier
-                .constrainAs(name) {
-                    start.linkTo(image.end)
-                    end.linkTo(parent.end)
-                    width = Dimension.fillToConstraints
-                }
-                .padding(start = 10.dp)
-                .placeholder(placeholders)
-        )
-        Column(modifier = Modifier
-            .padding(start = 10.dp)
-            .constrainAs(type) {
-                linkTo(name.bottom, divider.top, bias = 0f)
-                linkTo(name.start, parent.end)
-                width = Dimension.fillToConstraints
-            }) {
-            if (placeholders) {
-                TextWithIcon(
-                    text = "",
-                    icon = painterResource(id = R.drawable.acc_ic_teacher_24),
-                    modifier = Modifier.placeholder(true)
+        Row {
+            AsyncImage(
+                model = student.avatar,
+                contentDescription = "avatar",
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .size(60.dp)
+            )
+            SpacerWidth(width = 10.dp)
+            Column {
+                Text(
+                    text = student.getFullName(),
+                    style = MaterialTheme3.typography.titleMedium,
+                    fontSize = 18.sp,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
                 )
-            } else {
-                student?.educationType?.print()?.let {
-                    TextWithIcon(
-                        text = it,
-                        icon = painterResource(id = R.drawable.acc_ic_teacher_24)
-                    )
-                }
-                if (isExpanded) {
-                    student?.specialization?.let {
-                        TextWithIcon(text = it, icon = painterResource(id = FluentIcons.ic_fluent_book_24_regular))
-                    }
-                    student?.direction?.let {
-                        TextWithIcon(text = it, icon = painterResource(id = FluentIcons.ic_fluent_book_open_24_regular))
-                    }
-                    student?.group?.let {
-                        TextWithIcon(text = it, icon = painterResource(id = FluentIcons.ic_fluent_people_24_regular))
+                SpacerHeight(height = 3.dp)
+                WithContentAlpha(alpha = ContentAlpha.medium) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            painter = painterResource(id = FluentIcons.ic_fluent_info_16_regular),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(17.dp)
+                        )
+                        Spacer(Modifier.width(5.dp))
+                        Text(
+                            text = student.getInfo(),
+                            style = MaterialTheme.typography.bodyMedium,
+                            maxLines = 1,
+//                            color = MaterialTheme3.colorScheme.secondary,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                        )
                     }
                 }
             }
         }
-        Image(
-            painter = rememberImagePainter(
-                data = student?.avatar,
-                builder = {
-                    transformations(CircleCropTransformation())
-                }
-            ),
-            contentDescription = null,
-            modifier = Modifier
-                .size(100.dp)
-                .constrainAs(image) {
-                    start.linkTo(parent.start)
-                    bottom.linkTo(divider.top)
-                    linkTo(parent.top, divider.top, bias = 0f)
-                }
-                .placeholder(placeholders)
-        )
-        Divider(modifier = Modifier.constrainAs(divider) {
-            start.linkTo(image.end)
-            end.linkTo(parent.end)
-            bottom.linkTo(parent.bottom)
-            width = Dimension.fillToConstraints
-        })
+        Divider(modifier = Modifier.padding(start = 65.dp, top = 2.dp))
     }
 }

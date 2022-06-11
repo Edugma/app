@@ -5,7 +5,7 @@ import io.edugma.data.base.consts.CacheConst.ClassmatesKey
 import io.edugma.data.base.local.PreferencesDS
 import io.edugma.data.base.local.getJsonLazy
 import io.edugma.data.base.local.setJsonLazy
-import io.edugma.domain.account.model.Student
+import io.edugma.domain.account.model.student.Student
 import io.edugma.domain.account.repository.PeoplesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn

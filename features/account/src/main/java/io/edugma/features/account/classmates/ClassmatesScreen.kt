@@ -58,7 +58,7 @@ fun ClassmatesContent(state: ClassmatesState,
                             count = state.data?.size ?: 0,
                             key = { state.data?.get(it)?.id ?: it }
                         ) {
-                            Student(student = state.data!![it])
+                            Student(student = state.data!![it]) {}
                         }
                     }
                 }
