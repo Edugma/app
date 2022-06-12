@@ -36,3 +36,15 @@ val Teacher.description: String
                 ?: departmentParent?.title?.let { append(prefix + it) }
         }
     }
+
+val Teacher.departments: String
+get() {
+    return buildString {
+        departmentParent?.title?.let { append(it) }
+        var prefix = ""
+        if (isNotEmpty()) {
+            prefix = ", "
+        }
+        department?.title?.let { append(prefix + it) }
+    }
+}

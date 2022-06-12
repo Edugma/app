@@ -1,26 +1,29 @@
 package io.edugma.features.account.teachers
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,12 +33,11 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.AsyncImage
-import coil.compose.rememberImagePainter
-import coil.transform.CircleCropTransformation
 import io.edugma.domain.account.model.Teacher
+import io.edugma.domain.account.model.departments
 import io.edugma.domain.account.model.description
+import io.edugma.features.account.R
 import io.edugma.features.base.core.utils.*
-import io.edugma.features.base.core.utils.ContentAlpha
 import io.edugma.features.base.elements.*
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
@@ -71,8 +73,11 @@ fun TeachersScreen(viewModel: TeachersViewModel = getViewModel()) {
     ) {
         TeachersContent(
             state,
-            backListener = { viewModel.exit() },
-            openBottomListener = { scope.launch {bottomState.show() } },
+            backListener = viewModel::exit,
+            openBottomListener = {
+                viewModel.openSearch()
+                scope.launch {bottomState.show() }
+             },
             openTeacher = {
                 viewModel.openTeacher(it)
                 scope.launch { bottomState.show() }
@@ -83,7 +88,67 @@ fun TeachersScreen(viewModel: TeachersViewModel = getViewModel()) {
 
 @Composable
 fun TeacherInfoBottom(teacher: Teacher) {
-    Text(text = teacher.toString())
+    Column(modifier = Modifier
+        .padding(horizontal = 15.dp)
+    ) {
+        SpacerHeight(height = 15.dp)
+        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = teacher.name,
+                style = MaterialTheme3.typography.headlineSmall,
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
+                    .fillMaxWidth(0.8f),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+            AsyncImage(
+                model = teacher.avatar,
+                contentDescription = "avatar",
+                modifier = Modifier.fillMaxWidth().clip(CircleShape)
+            )
+        }
+        SpacerHeight(height = 3.dp)
+        Text(
+            text = teacher.departments,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme3.colorScheme.secondary,
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+        )
+        SpacerHeight(height = 10.dp)
+        teacher.sex?.let {
+            TextWithIcon(
+                text = it,
+                icon = painterResource(id = FluentIcons.ic_fluent_people_24_regular)
+            )
+        }
+        teacher.grade?.let {
+            TextWithIcon(
+                text = it,
+                icon = painterResource(id = FluentIcons.ic_fluent_book_24_regular)
+            )
+        }
+        teacher.stuffType?.let {
+            TextWithIcon(
+                text = it,
+                icon = painterResource(id = R.drawable.acc_ic_teacher_24)
+            )
+        }
+        teacher.birthday?.let {
+            TextWithIcon(
+                text = it.format(),
+                icon = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular)
+            )
+        }
+        if (!teacher.email.isNullOrEmpty()){
+            TextWithIcon(
+                text = teacher.email,
+                icon = painterResource(id = FluentIcons.ic_fluent_mail_24_regular)
+            )
+        }
+        SpacerHeight(height = 10.dp)
+    }
 }
 
 @Composable
@@ -167,7 +232,9 @@ fun TeachersContent(
                 }
                 when {
                     teacherListItems.loadState.refresh is LoadState.Loading -> {
-                        item { Text(text = "placeholders") }
+                        items(3) {
+                            TeacherPlaceholder()
+                        }
                     }
                     teacherListItems.loadState.refresh is LoadState.Error -> {
                         item { ErrorView(retryAction = teacherListItems::refresh) }
@@ -188,7 +255,7 @@ fun TeachersContent(
                     teacherListItems.loadState.append is LoadState.Error -> {
                         item { Refresher(onClickListener = teacherListItems::retry) }
                     }
-                    teacherListItems.itemCount == 0 -> {
+                    teacherListItems.itemCount == 0 && (teacherListItems.loadState.append.endOfPaginationReached) -> {
                         item { EmptyView() }
                     }
                 }
@@ -239,7 +306,6 @@ fun Teacher(
                             text = teacher.description,
                             style = MaterialTheme.typography.bodyMedium,
                             maxLines = 2,
-//                            color = MaterialTheme3.colorScheme.secondary,
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier
                                 .fillMaxWidth(),
@@ -250,61 +316,57 @@ fun Teacher(
         }
         androidx.compose.material3.Divider(modifier = Modifier.padding(start = 75.dp, top = 2.dp))
     }
-//    Card(shape = MaterialTheme.shapes.medium, elevation = 2.dp, modifier = Modifier
-//        .fillMaxWidth()
-//        .padding(2.dp)) {
-//        ConstraintLayout(modifier = Modifier.padding(5.dp)) {
-//            val (name, image, type, group) = createRefs()
-//            Text(text = teacher.name,
-//                fontWeight = FontWeight.Bold,
-//                modifier = Modifier
-//                    .constrainAs(name) {
-//                        start.linkTo(image.end)
-//                        end.linkTo(parent.end)
-//                        width = Dimension.fillToConstraints
-//                    }
-//                    .padding(start = 10.dp))
-//            teacher.stuffType?.let {
-//                Text(text = it,
-//                    fontWeight = FontWeight.Bold,
-//                    modifier = Modifier
-//                        .constrainAs(type) {
-//                            start.linkTo(image.end)
-//                            end.linkTo(parent.end)
-//                            top.linkTo(name.bottom)
-//                            width = Dimension.fillToConstraints
-//                        }
-//                        .padding(start = 10.dp))
-//            }
-//            Text(text = teacher.description,
-//                fontWeight = FontWeight.Bold,
-//                modifier = Modifier
-//                    .constrainAs(group) {
-//                        start.linkTo(image.end)
-//                        end.linkTo(parent.end)
-//                        top.linkTo(type.bottom)
-//                        width = Dimension.fillToConstraints
-//                    }
-//                    .padding(start = 10.dp))
-//
-//            teacher.avatar?.let {
-//                Image(
-//                    painter = rememberImagePainter(
-//                        data = it,
-//                        builder = {
-//                            transformations(CircleCropTransformation())
-//                        }
-//                    ),
-//                    contentDescription = null,
-//                    modifier = Modifier
-//                        .size(100.dp)
-//                        .constrainAs(image) {
-//                            start.linkTo(parent.start)
-//                            top.linkTo(parent.top)
-//                        }
-//                )
-//            }
-//
-//        }
-//    }
+}
+
+@Composable
+fun TeacherPlaceholder() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 10.dp, vertical = 5.dp)
+    ) {
+        Row {
+            AsyncImage(
+                model = null,
+                contentDescription = "avatar",
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .size(70.dp)
+                    .placeholder(true)
+            )
+            SpacerWidth(width = 10.dp)
+            Column {
+                Text(
+                    text = "",
+                    style = MaterialTheme3.typography.titleMedium,
+                    fontSize = 18.sp,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.placeholder(true).widthIn(min=100.dp)
+                )
+                SpacerHeight(height = 3.dp)
+                WithContentAlpha(alpha = ContentAlpha.medium) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            painter = painterResource(id = FluentIcons.ic_fluent_info_16_regular),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(17.dp)
+                        )
+                        Spacer(Modifier.width(5.dp))
+                        Text(
+                            text = "",
+                            style = MaterialTheme.typography.bodyMedium,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .placeholder(true),
+                        )
+                    }
+                }
+            }
+        }
+        androidx.compose.material3.Divider(modifier = Modifier.padding(start = 75.dp, top = 2.dp))
+    }
 }
