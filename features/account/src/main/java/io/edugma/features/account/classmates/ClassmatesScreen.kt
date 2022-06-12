@@ -19,6 +19,7 @@ import androidx.constraintlayout.compose.Dimension
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.edugma.features.account.students.Student
+import io.edugma.features.account.teachers.TeacherPlaceholder
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.base.core.utils.isNull
@@ -29,7 +30,6 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun ClassmatesScreen(viewModel: ClassmatesViewModel = getViewModel()) {
     val state by viewModel.state.collectAsState()
-
     ClassmatesContent(
         state,
         retryListener = viewModel::updateClassmates,
@@ -51,7 +51,9 @@ fun ClassmatesContent(state: ClassmatesState,
                         item { ErrorView(retryAction = retryListener) }
                     }
                     state.placeholders -> {
-                        //
+                        items(3) {
+                            TeacherPlaceholder()
+                        }
                     }
                     else -> {
                         items(

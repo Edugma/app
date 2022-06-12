@@ -30,4 +30,6 @@ data class Student(
 
     fun getInfo() = "Студент $course курса" + group?.let { " ${it.title} группы" }.orEmpty()+
             ", ${educationForm.lowercase()} форма обучения"
+
+    fun getFaculty() = group?.let { "${it.faculty.titleShort}, (${it.faculty.title})" }
 }

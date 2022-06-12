@@ -39,9 +39,11 @@ import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import io.edugma.domain.account.model.departments
 import io.edugma.domain.account.model.student.Student
 import io.edugma.domain.account.model.print
 import io.edugma.features.account.R
+import io.edugma.features.account.teachers.TeacherPlaceholder
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.*
 import kotlinx.coroutines.launch
@@ -95,7 +97,100 @@ fun StudentsScreen(viewModel: StudentsViewModel = getViewModel()) {
 fun StudentSheetContent(
     student: Student
 ) {
-    Text(text = student.toString())
+    Column(modifier = Modifier
+        .padding(horizontal = 15.dp)
+    ) {
+        SpacerHeight(height = 15.dp)
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Text(
+                text = student.getFullName(),
+                style = MaterialTheme3.typography.headlineSmall,
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
+                    .fillMaxWidth(0.8f),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+            AsyncImage(
+                model = student.avatar,
+                contentDescription = "avatar",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(CircleShape)
+            )
+        }
+        SpacerHeight(height = 3.dp)
+        Text(
+            text = student.getInfo(),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme3.colorScheme.secondary,
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+        )
+        SpacerHeight(height = 10.dp)
+        student.sex?.let {
+            TextWithIcon(
+                text = it,
+                icon = painterResource(id = FluentIcons.ic_fluent_people_24_regular)
+            )
+        }
+        TextWithIcon(
+            text = student.branch.title,
+            icon = painterResource(id = FluentIcons.ic_fluent_building_24_regular)
+        )
+        TextWithIcon(
+            text = student.educationType,
+            icon = painterResource(id = R.drawable.acc_ic_teacher_24)
+        )
+        TextWithIcon(
+            text = student.payment,
+            icon = painterResource(id = FluentIcons.ic_fluent_money_24_regular)
+        )
+        student.getFaculty()?.let {
+            TextWithIcon(
+                text = it,
+                icon = painterResource(id = FluentIcons.ic_fluent_book_24_regular)
+            )
+        }
+        student.group?.direction?.let {
+            TextWithIcon(
+                text = it.title,
+                icon = painterResource(id = FluentIcons.ic_fluent_contact_card_group_24_regular)
+            )
+        }
+        student.specialization?.let {
+            if (it.title != student.group?.direction?.title) {
+                TextWithIcon(
+                    text = it.title,
+                    icon = painterResource(id = FluentIcons.ic_fluent_data_treemap_24_regular)
+                )
+            }
+        }
+        TextWithIcon(
+            text = "Года обучения: ${student.years}",
+            icon = painterResource(id = FluentIcons.ic_fluent_timer_24_regular)
+        )
+        student.dormitory?.let {
+            TextWithIcon(
+                text = "Общежитие №$it",
+                icon = painterResource(id = FluentIcons.ic_fluent_building_home_24_regular)
+            )
+        }
+        student.dormitoryRoom?.let {
+            TextWithIcon(
+                text = "Комната №$it",
+                icon = painterResource(id = FluentIcons.ic_fluent_conference_room_24_regular)
+            )
+        }
+        student.birthday?.let {
+            TextWithIcon(
+                text = "Дата рождения: ${it.format()}",
+                icon = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular)
+            )
+        }
+//        Text(text = student.toString())
+        SpacerHeight(height = 10.dp)
+    }
 }
 
 @Composable
@@ -201,7 +296,9 @@ fun StudentsContent(
                 }
                 when {
                     studentListItems.loadState.refresh is LoadState.Loading -> {
-                        item { Text(text = "placeholders") }
+                        items(3) {
+                            TeacherPlaceholder()
+                        }
                     }
                     studentListItems.loadState.refresh is LoadState.Error -> {
                         item { ErrorView(retryAction = studentListItems::refresh) }
@@ -222,7 +319,7 @@ fun StudentsContent(
                     studentListItems.loadState.append is LoadState.Error -> {
                         item { Refresher(onClickListener = studentListItems::retry) }
                     }
-                    studentListItems.itemCount == 0 -> {
+                    studentListItems.itemCount == 0 && studentListItems.loadState.append.endOfPaginationReached -> {
                         item { EmptyView() }
                     }
                 }
@@ -236,7 +333,7 @@ fun Student(student: Student, onClick: ClickListener) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp)
+            .padding(horizontal = 10.dp, vertical = 5.dp)
             .clickable(onClick = onClick)
     ) {
         Row {
@@ -244,8 +341,9 @@ fun Student(student: Student, onClick: ClickListener) {
                 model = student.avatar,
                 contentDescription = "avatar",
                 modifier = Modifier
+                    .padding(vertical = 5.dp)
                     .clip(CircleShape)
-                    .size(60.dp)
+                    .size(70.dp)
             )
             SpacerWidth(width = 10.dp)
             Column {
@@ -269,8 +367,7 @@ fun Student(student: Student, onClick: ClickListener) {
                         Text(
                             text = student.getInfo(),
                             style = MaterialTheme.typography.bodyMedium,
-                            maxLines = 1,
-//                            color = MaterialTheme3.colorScheme.secondary,
+                            maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier
                                 .fillMaxWidth(),
@@ -279,6 +376,6 @@ fun Student(student: Student, onClick: ClickListener) {
                 }
             }
         }
-        Divider(modifier = Modifier.padding(start = 65.dp, top = 2.dp))
+        Divider(modifier = Modifier.padding(start = 75.dp, top = 2.dp))
     }
 }
