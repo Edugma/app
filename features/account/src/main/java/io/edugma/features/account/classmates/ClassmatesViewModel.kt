@@ -69,12 +69,19 @@ class ClassmatesViewModel(private val repository: PeoplesRepository) :
         }
     }
 
+    fun openStudent(student: Student) {
+        mutateState {
+            state = state.copy(selectedStudent = student)
+        }
+    }
+
 }
 
 data class ClassmatesState(
     val data: List<Student>? = null,
     val isLoading: Boolean = false,
-    val isError: Boolean = false
+    val isError: Boolean = false,
+    val selectedStudent: Student? = null,
 ) {
     val placeholders = data.isNull() && isLoading && !isError
     val isRefreshing = data.isNotNull() && isLoading && !isError
