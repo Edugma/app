@@ -1,6 +1,6 @@
 package io.edugma.domain.account.repository
 
-import io.edugma.domain.account.model.Student
+import io.edugma.domain.account.model.student.Student
 import io.edugma.domain.account.model.Teacher
 import io.edugma.domain.base.model.PagingDTO
 import kotlinx.coroutines.flow.Flow

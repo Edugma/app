@@ -1,6 +1,7 @@
 package io.edugma.data.account.api
 
 import io.edugma.domain.account.model.*
+import io.edugma.domain.account.model.student.Student
 import io.edugma.domain.base.model.PagingDTO
 import kotlinx.coroutines.flow.Flow
 import retrofit2.http.*

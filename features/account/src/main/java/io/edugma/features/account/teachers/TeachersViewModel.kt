@@ -46,9 +46,27 @@ class TeachersViewModel(private val repository: PeoplesRepository) :
         }
     }
 
+    fun openSearch() {
+        mutateState {
+            state = state.copy(bottomType = BottomType.Search, selectedEntity = null)
+        }
+    }
+
+    fun openTeacher(teacher: Teacher) {
+        mutateState {
+            state = state.copy(bottomType = BottomType.Teacher, selectedEntity = teacher)
+        }
+    }
+
 }
 
 data class TeachersState(
     val pagingData: Flow<PagingData<Teacher>>? = null,
     val name: String = "",
+    val bottomType: BottomType = BottomType.Search,
+    val selectedEntity: Teacher? = null
 )
+
+enum class BottomType{
+    Teacher, Search
+}

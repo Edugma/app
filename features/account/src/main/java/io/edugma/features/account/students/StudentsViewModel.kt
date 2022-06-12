@@ -5,7 +5,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import io.edugma.domain.account.model.Student
+import io.edugma.domain.account.model.student.Student
 import io.edugma.domain.account.model.Teacher
 import io.edugma.domain.account.repository.PeoplesRepository
 import io.edugma.features.account.teachers.TeachersPagingSource
@@ -42,9 +42,27 @@ class StudentsViewModel(private val repository: PeoplesRepository) :
         }
     }
 
+    fun selectFilter() {
+        mutateState {
+            state = state.copy(bottomType = BottomSheetType.Filter)
+        }
+    }
+
+    fun selectStudent(student: Student) {
+        mutateState {
+            state = state.copy(selectedStudent = student, bottomType = BottomSheetType.Student)
+        }
+    }
+
 }
 
 data class StudentsState(
     val pagingData: Flow<PagingData<Student>>? = null,
     val name: String = "",
+    val bottomType: BottomSheetType = BottomSheetType.Filter,
+    val selectedStudent: Student? = null,
 )
+
+enum class BottomSheetType {
+    Filter, Student
+}
