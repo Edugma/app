@@ -159,7 +159,7 @@ object Versions {
     const val store = "4.0.4-KT15"
 
     // Compose
-    const val compose = "1.1.1"
+    const val compose = "1.2.0-beta03"
     const val composeMaterial3 = "1.0.0-alpha13"
     const val composeMaterial = "1.1.1"
     const val accompanist = "0.23.1"

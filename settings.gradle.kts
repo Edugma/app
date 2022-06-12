@@ -29,7 +29,7 @@ pluginManagement {
     }
 
     val androidGradleVersion = "7.2.1"
-    val kotlinVersion = "1.6.10"
+    val kotlinVersion = "1.6.21"
 
     plugins {
         id("com.android.application") version androidGradleVersion apply false

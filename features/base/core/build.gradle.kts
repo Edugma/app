@@ -17,7 +17,6 @@ dependencies {
 
     api(Libs.Accompanist.systemUiController)
     api(Libs.Accompanist.flowLayout)
-    api(Libs.Accompanist.insets)
     api(Libs.Accompanist.pager)
     api(Libs.Accompanist.pagerIndicators)
     api(Libs.Accompanist.placeholder)
