@@ -27,7 +27,7 @@ class ScheduleSourcesViewModel(
                 val filteredSources = state.sources
                     .filter {
                         state.query.isEmpty() ||
-                                it.title.contains(state.query, ignoreCase = true)
+                                it.source.title.contains(state.query, ignoreCase = true)
                     }
 
                 state = state.copy(filteredSources = filteredSources)
@@ -44,9 +44,21 @@ class ScheduleSourcesViewModel(
         viewModelScope.launch {
             state.map { it.selectedTab }
                 .filterNotNull()
+                .filter { it != ScheduleSourcesTabs.Complex }
                 .distinctUntilChanged()
                 .collectLatest {
                     useCase.getScheduleSources(it)
+                        .combine(useCase.getFavoriteSources()) { sources, favoriteSources ->
+                            sources.map {
+                                val favoriteSources = favoriteSources.getOrNull() ?: emptyList()
+                                it.map {
+                                    ScheduleSourceUiModel(
+                                        source = it,
+                                        isFavorite = it in favoriteSources
+                                    )
+                                }
+                            }
+                    }
                         .onSuccess { mutateState { state = state.copy(sources = it) } }
                         .onFailure { mutateState { state = state.copy(sources = emptyList()) } }
                         .collect()
@@ -90,6 +102,16 @@ data class ScheduleSourceState(
     val tabs: List<ScheduleSourcesTabs> = ScheduleSourcesTabs.values().toList(),
     val selectedTab: ScheduleSourcesTabs? = ScheduleSourcesTabs.Favorite,
     val query: String = "",
-    val sources: List<ScheduleSourceFull> = emptyList(),
-    val filteredSources: List<ScheduleSourceFull> = emptyList()
+    val sources: List<ScheduleSourceUiModel> = emptyList(),
+    val filteredSources: List<ScheduleSourceUiModel> = emptyList()
+)
+
+data class ScheduleSourceUiModel(
+    val isFavorite: Boolean,
+    val source: ScheduleSourceFull
+)
+
+data class ScheduleFilterState(
+    val filters: List<Pair<String, Boolean>> = emptyList(),
+    val query: String = ""
 )

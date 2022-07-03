@@ -18,7 +18,7 @@ class ScheduleSourcesUseCase(
         return when (sourcesType) {
             ScheduleSourcesTabs.Favorite ->
                 scheduleSourcesRepository.getFavoriteSources()
-            ScheduleSourcesTabs.Complex -> TODO()
+            ScheduleSourcesTabs.Complex -> error("Complex source type is not allowed")
             else -> {
                 sourcesType.toSourceType()?.let {
                     scheduleSourcesRepository.getSources(it)

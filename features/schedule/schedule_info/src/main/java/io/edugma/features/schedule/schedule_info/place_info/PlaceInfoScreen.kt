@@ -184,8 +184,7 @@ private fun PlaceBuilding(place: PlaceInfo.Building) {
         }
         if (place.description != null) {
             SpacerHeight(8.dp)
-            val description = place.description!!.asSequence()
-                .joinToString(separator = "\n") { it.key + ": " + it.value }
+            val description = place.description!!
             TextIcon(
                 text = stringResource(R.string.schedule_sch_inf_description),
                 painter = painterResource(FluentIcons.ic_fluent_text_description_20_regular)
@@ -221,8 +220,7 @@ private fun PlaceOnline(place: PlaceInfo.Online) {
         }
         if (place.description != null) {
             SpacerHeight(8.dp)
-            val description = place.description!!.asSequence()
-                .joinToString(separator = "\n") { it.key + ": " + it.value }
+            val description = place.description!!
             TextIcon(
                 text = stringResource(R.string.schedule_sch_inf_description),
                 painter = painterResource(FluentIcons.ic_fluent_text_description_20_regular)
@@ -241,8 +239,7 @@ private fun PlaceOther(place: PlaceInfo.Other) {
         Text(text = place.title)
         if (place.description != null) {
             SpacerHeight(8.dp)
-            val description = place.description!!.asSequence()
-                .joinToString(separator = "\n") { it.key + ": " + it.value }
+            val description = place.description!!
             TextIcon(
                 text = stringResource(R.string.schedule_sch_inf_description),
                 painter = painterResource(FluentIcons.ic_fluent_text_description_20_regular)
@@ -261,8 +258,7 @@ private fun PlaceUnclassified(place: PlaceInfo.Unclassified) {
         Text(text = place.title)
         if (place.description != null) {
             SpacerHeight(8.dp)
-            val description = place.description!!.asSequence()
-                .joinToString(separator = "\n") { it.key + ": " + it.value }
+            val description = place.description!!
             TextIcon(
                 text = stringResource(R.string.schedule_sch_inf_description),
                 painter = painterResource(FluentIcons.ic_fluent_text_description_20_regular)

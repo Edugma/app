@@ -13,6 +13,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import io.edugma.domain.schedule.model.group.description
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.BackIconButton
 import io.edugma.features.base.elements.TextIcon
@@ -35,7 +36,6 @@ fun GroupInfoScreen(viewModel: GroupInfoViewModel = getViewModel(), id: String) 
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun GroupInfoContent(
     state: GroupInfoState,
@@ -56,7 +56,7 @@ private fun GroupInfoContent(
                     painter = painterResource(FluentIcons.ic_fluent_timer_20_regular)
                 )
                 TextIcon(
-                    text = if (groupInfo.isEvening) "Вечерняя" else "Дневная",
+                    text = groupInfo.toString(),
                     painter = painterResource(FluentIcons.ic_fluent_weather_moon_20_regular)
                 )
             }

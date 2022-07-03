@@ -8,5 +8,5 @@ data class ScheduleSourceFull(
     val key: String,
     val title: String,
     val description: String,
-    val avatarUrl: String
+    val avatarUrl: String? = null
 )

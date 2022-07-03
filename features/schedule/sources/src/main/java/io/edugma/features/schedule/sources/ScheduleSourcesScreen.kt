@@ -6,12 +6,20 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.edugma.domain.schedule.model.source.ScheduleSourceFull
 import io.edugma.domain.schedule.model.source.ScheduleSources
@@ -35,7 +43,7 @@ fun ScheduleSourcesScreen(viewModel: ScheduleSourcesViewModel = getViewModel()) 
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ScheduleSourcesContent(
     state: ScheduleSourceState,
@@ -47,63 +55,280 @@ fun ScheduleSourcesContent(
     onDeleteFavorite: Typed1Listener<ScheduleSourceFull>
 ) {
 
+    val q = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+
     Column {
         PrimaryTopAppBar(
-            title = "Выбор расписания",
+            title = stringResource(R.string.schedule_sou_schedule_selection),
             onBackClick = onBackClick
         )
+        SourceTypeTabs(
+            tabs = state.tabs,
+            selectedTab = state.selectedTab,
+            onTabSelected = onTabSelected
+        )
+        if (state.selectedTab == ScheduleSourcesTabs.Complex) {
+            ComplexSearch(
+                typesId = TODO(),
+                subjectsId = TODO(),
+                teachersId = TODO(),
+                groupsId = TODO(),
+                placesId = TODO(),
+                onSelectTypes = TODO(),
+                onSelectSubjects = TODO(),
+                onSelectTeachers = TODO(),
+                onSelectGroups = TODO(),
+                onSelectPlaces = TODO()
+            )
+        } else {
+            Search(
+                query = state.query,
+                filteredSources = state.filteredSources,
+                selectedTab = state.selectedTab,
+                onQueryChange = onQueryChange,
+                onSourceSelected = onSourceSelected,
+                onAddFavorite = onAddFavorite,
+                onDeleteFavorite = onDeleteFavorite
+            )
+        }
+    }
 
+//    ModalBottomSheetLayout(
+//        sheetContent = {
+////            FiltersSelector(
+////                filters = TODO(),
+////                query = TODO(),
+////                onFilterSelected = TODO(),
+////                onQueryChange = TODO()
+////            )
+//        },
+//        sheetState = q,
+//        sheetBackgroundColor = MaterialTheme3.colorScheme.background
+//    ) {
+//        Column {
+//            PrimaryTopAppBar(
+//                title = stringResource(R.string.schedule_sou_schedule_selection),
+//                onBackClick = onBackClick
+//            )
+//            SourceTypeTabs(
+//                tabs = state.tabs,
+//                selectedTab = state.selectedTab,
+//                onTabSelected = onTabSelected
+//            )
+//            if (state.selectedTab == ScheduleSourcesTabs.Complex) {
+//                ComplexSearch(
+//                    typesId = TODO(),
+//                    subjectsId = TODO(),
+//                    teachersId = TODO(),
+//                    groupsId = TODO(),
+//                    placesId = TODO(),
+//                    onSelectTypes = TODO(),
+//                    onSelectSubjects = TODO(),
+//                    onSelectTeachers = TODO(),
+//                    onSelectGroups = TODO(),
+//                    onSelectPlaces = TODO()
+//                )
+//            } else {
+//                Search(
+//                    query = state.query,
+//                    filteredSources = state.filteredSources,
+//                    selectedTab = state.selectedTab,
+//                    onQueryChange = onQueryChange,
+//                    onSourceSelected = onSourceSelected,
+//                    onAddFavorite = onAddFavorite,
+//                    onDeleteFavorite = onDeleteFavorite
+//                )
+//            }
+//        }
+//    }
+}
+
+@Composable
+private fun FiltersSelector(
+    filters: List<Pair<String, Boolean>>,
+    query: String,
+    onFilterSelected: Typed1Listener<String>,
+    onQueryChange: Typed1Listener<String>,
+) {
+    Column(Modifier.fillMaxSize()) {
         PrimarySearchField(
-            value = state.query,
+            value = query,
             onValueChange = onQueryChange,
             modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding(start = 16.dp, end = 16.dp)
                 .fillMaxWidth(),
             placeholder = {
-                WithContentAlpha(alpha = ContentAlpha.medium) {
+                MediumAlpha {
                     Text(
-                        text = "Поиск"
+                        text = stringResource(R.string.schedule_sou_search)
                     )
                 }
             }
         )
-
-        LazyRow(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            item {
-                SpacerWidth(10.dp)
-            }
-            items(state.tabs) { tab ->
-                SourceTypeTab(
-                    tab,
-                    tab == state.selectedTab,
-                    onTabSelected = onTabSelected
-                )
-            }
-            item {
-                SpacerWidth(10.dp)
-            }
-        }
-        LazyColumn(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            items(state.filteredSources, key = { state.selectedTab to it.key }) { source ->
-                SourceItem(
-                    source = source,
-                    isFavorite = state.selectedTab == ScheduleSourcesTabs.Favorite,
-                    onItemClick = onSourceSelected,
-                    onAddFavorite = onAddFavorite,
-                    onDeleteFavorite = onDeleteFavorite,
-                    modifier = Modifier.animateItemPlacement(),
-                )
+        LazyColumn(Modifier.fillMaxWidth()) {
+            items(filters) {
+                val tonalElevation = remember(it.second) {
+                    if (it.second) 4.dp else 0.dp
+                }
+                TonalCard(
+                    onClick = { onFilterSelected(it.first) },
+                    modifier = Modifier.fillMaxWidth(),
+                    tonalElevation = tonalElevation
+                ) {
+                    Text(text = it.first)
+                }
             }
         }
     }
 }
 
 @Composable
-fun SourceTypeTab(
+private fun SourceTypeTabs(
+    tabs: List<ScheduleSourcesTabs>,
+    selectedTab: ScheduleSourcesTabs?,
+    onTabSelected: Typed1Listener<ScheduleSourcesTabs>
+) {
+    LazyRow(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        item {
+            SpacerWidth(10.dp)
+        }
+        items(tabs) { tab ->
+            SourceTypeTab(
+                tab,
+                tab == selectedTab,
+                onTabSelected = onTabSelected
+            )
+        }
+        item {
+            SpacerWidth(10.dp)
+        }
+    }
+}
+
+
+@Composable
+private fun ComplexSearch(
+    typesId: List<String>,
+    subjectsId: List<String>,
+    teachersId: List<String>,
+    groupsId: List<String>,
+    placesId: List<String>,
+    onSelectTypes: ClickListener,
+    onSelectSubjects: ClickListener,
+    onSelectTeachers: ClickListener,
+    onSelectGroups: ClickListener,
+    onSelectPlaces: ClickListener,
+) {
+    Column(
+        Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+    ) {
+        Filter(
+            title = "Типы занятий",
+            filters = typesId,
+            onSelect = onSelectTypes
+        )
+        Filter(
+            title = "Предметы",
+            filters = subjectsId,
+            onSelect = onSelectSubjects
+        )
+        Filter(
+            title = "Преподаватели",
+            filters = teachersId,
+            onSelect = onSelectTeachers
+        )
+        Filter(
+            title = "Группы",
+            filters = groupsId,
+            onSelect = onSelectGroups
+        )
+        Filter(
+            title = "Места",
+            filters = placesId,
+            onSelect = onSelectPlaces
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun Filter(
+    title: String,
+    filters: List<String>,
+    onSelect: ClickListener
+) {
+    Column(Modifier.fillMaxWidth()) {
+        Row(
+            Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(text = title)
+            TextRightIcon(
+                text = "Посмотреть все",
+                painter = painterResource(FluentIcons.ic_fluent_ios_arrow_rtl_24_regular),
+                modifier = Modifier.clickable(onClick = onSelect)
+            )
+        }
+        LazyRow {
+            items(filters) {
+                InputChip(
+                    onClick = { },
+                    label = {
+                        Text(text = it)
+                    }
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun Search(
+    query: String,
+    filteredSources: List<ScheduleSourceUiModel>,
+    selectedTab: ScheduleSourcesTabs?,
+    onQueryChange: Typed1Listener<String>,
+    onSourceSelected: Typed1Listener<ScheduleSourceFull>,
+    onAddFavorite: Typed1Listener<ScheduleSourceFull>,
+    onDeleteFavorite: Typed1Listener<ScheduleSourceFull>
+) {
+    PrimarySearchField(
+        value = query,
+        onValueChange = onQueryChange,
+        modifier = Modifier
+            .padding(start = 16.dp, end = 16.dp)
+            .fillMaxWidth(),
+        placeholder = {
+            WithContentAlpha(alpha = ContentAlpha.medium) {
+                Text(
+                    text = stringResource(R.string.schedule_sou_search)
+                )
+            }
+        }
+    )
+    SpacerHeight(8.dp)
+    LazyColumn(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        items(filteredSources, key = { selectedTab to it.hashCode() }) { source ->
+            SourceItem(
+                source = source,
+                onItemClick = onSourceSelected,
+                onAddFavorite = onAddFavorite,
+                onDeleteFavorite = onDeleteFavorite,
+                modifier = Modifier.animateItemPlacement(),
+            )
+        }
+    }
+}
+
+@Composable
+private fun SourceTypeTab(
     tab: ScheduleSourcesTabs,
     isSelected: Boolean,
     onTabSelected: Typed1Listener<ScheduleSourcesTabs>
@@ -138,8 +363,7 @@ fun SourceTypeTab(
 
 @Composable
 fun SourceItem(
-    source: ScheduleSourceFull,
-    isFavorite: Boolean,
+    source: ScheduleSourceUiModel,
     onItemClick: Typed1Listener<ScheduleSourceFull>,
     onAddFavorite: Typed1Listener<ScheduleSourceFull>,
     onDeleteFavorite: Typed1Listener<ScheduleSourceFull>,
@@ -147,53 +371,53 @@ fun SourceItem(
 ) {
     Column(
         modifier
-            .clickable(onClick = { onItemClick(source) })
+            .clickable(onClick = { onItemClick(source.source) })
             .fillMaxWidth()
     ) {
         Row(Modifier.padding(vertical = 5.dp)) {
             SpacerWidth(16.dp)
-            val initials = when (source.type) {
-                ScheduleSources.Group -> source.title.split('-')
+            val initials = when (source.source.type) {
+                ScheduleSources.Group -> source.source.title.split('-')
                     .joinToString(separator = "") { it.take(1) }
-                ScheduleSources.Teacher -> source.title.split(' ')
+                ScheduleSources.Teacher -> source.source.title.split(' ')
                     .joinToString(separator = "") { it.take(1) }
-                ScheduleSources.Student -> source.title.split(' ')
+                ScheduleSources.Student -> source.source.title.split(' ')
                     .joinToString(separator = "") { it.take(1) }
-                ScheduleSources.Place -> source.title
-                ScheduleSources.Subject -> source.title.split(' ')
+                ScheduleSources.Place -> source.source.title
+                ScheduleSources.Subject -> source.source.title.split(' ')
                     .joinToString(separator = "") { it.take(1) }
-                ScheduleSources.Complex -> source.title.split(' ')
+                ScheduleSources.Complex -> source.source.title.split(' ')
                     .joinToString(separator = "") { it.take(1) }
             }
-            InitialAvatar(url = source.avatarUrl, initials)
+            InitialAvatar(url = source.source.avatarUrl ?: "", initials)
             SpacerWidth(8.dp)
             Column(Modifier.weight(1f)) {
                 Text(
-                    text = source.title,
+                    text = source.source.title,
                     style = MaterialTheme3.typography.titleSmall
                 )
                 WithContentAlpha(alpha = ContentAlpha.medium) {
                     Text(
-                        text = source.description,
+                        text = source.source.description,
                         style = MaterialTheme3.typography.bodySmall
                     )
                 }
             }
             IconButton(
                 onClick = {
-                    if (isFavorite) {
-                        onDeleteFavorite(source)
+                    if (source.isFavorite) {
+                        onDeleteFavorite(source.source)
                     } else {
-                        onAddFavorite(source)
+                        onAddFavorite(source.source)
                     }
                 }
             ) {
-                val tintColor = if (isFavorite) {
+                val tintColor = if (source.isFavorite) {
                     MaterialTheme3.colorScheme.primary
                 } else {
                     LocalContentColor.current
                 }
-                val painter = if (isFavorite) {
+                val painter = if (source.isFavorite) {
                     painterResource(FluentIcons.ic_fluent_star_24_filled)
                 } else {
                     painterResource(FluentIcons.ic_fluent_star_24_regular)
@@ -208,58 +432,3 @@ fun SourceItem(
         }
     }
 }
-
-
-//@Composable
-//fun AutoSizeText(
-//    text: String,
-//    modifier: Modifier = Modifier,
-//    color: Color = Color.Unspecified,
-//    fontSize: TextUnit = TextUnit.Unspecified,
-//    fontStyle: FontStyle? = null,
-//    fontWeight: FontWeight? = null,
-//    fontFamily: FontFamily? = null,
-//    letterSpacing: TextUnit = TextUnit.Unspecified,
-//    textDecoration: TextDecoration? = null,
-//    textAlign: TextAlign? = null,
-//    lineHeight: TextUnit = TextUnit.Unspecified,
-//    overflow: TextOverflow = TextOverflow.Clip,
-//    softWrap: Boolean = true,
-//    maxLines: Int = Int.MAX_VALUE,
-//    onTextLayout: (TextLayoutResult) -> Unit = {},
-//    style: TextStyle = LocalTextStyle.current
-//) {
-//    var scaledTextStyle by remember { mutableStateOf(style) }
-//    var readyToDraw by remember { mutableStateOf(false) }
-//
-//    Text(
-//        text,
-//        modifier = modifier.drawWithContent {
-//            if (readyToDraw) {
-//                drawContent()
-//            }
-//        },
-//        color = color,
-//        fontSize = fontSize,
-//        fontStyle = fontStyle,
-//        fontWeight = fontWeight,
-//        fontFamily = fontFamily,
-//        letterSpacing = letterSpacing,
-//        textDecoration = textDecoration,
-//        textAlign = textAlign,
-//        lineHeight = lineHeight,
-//        overflow = overflow,
-//        //softWrap = softWrap,
-//        softWrap = false,
-//        maxLines = maxLines,
-//        style = scaledTextStyle,
-//        onTextLayout = { textLayoutResult ->
-//            if (textLayoutResult.didOverflowWidth) {
-//                scaledTextStyle =
-//                    scaledTextStyle.copy(fontSize = scaledTextStyle.fontSize * (textLayoutResult.size.width / textLayoutResult.multiParagraph.width))
-//            } else {
-//                readyToDraw = true
-//            }
-//        }
-//    )
-//}

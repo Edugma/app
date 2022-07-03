@@ -32,7 +32,7 @@ class ScheduleHistoryUseCase(
 
     suspend fun getChanges2(): List<ScheduleDayChange> {
         val new = getHistory().first().getOrNull()
-        val old = repository.getHistory(ScheduleSource(ScheduleSources.Group, "191-721")).first().getOrNull()
+        val old = repository.getHistory(ScheduleSource(ScheduleSources.Group, "a17b0ee7-f595-11ea-80d1-bfb80b42a394")).first().getOrNull()
 
         return getChanges(old!!.toList().first().second, new!!.toList().first().second)
 

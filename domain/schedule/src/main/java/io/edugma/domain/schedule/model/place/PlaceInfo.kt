@@ -42,7 +42,7 @@ sealed class PlaceInfo : Comparable<PlaceInfo> {
         val floor: String? = null,
         val auditorium: String? = null,
         val location: Location? = null,
-        val description: Map<String, String>? = null
+        val description: String? = null
     ) : PlaceInfo()
 
     @Serializable
@@ -53,7 +53,7 @@ sealed class PlaceInfo : Comparable<PlaceInfo> {
         @Transient
         override val type: PlaceType = PlaceType.Online,
         val url: String? = null,
-        val description: Map<String, String>? = null
+        val description: String? = null
     ) : PlaceInfo()
 
     @Serializable
@@ -63,7 +63,7 @@ sealed class PlaceInfo : Comparable<PlaceInfo> {
         override val title: String,
         @Transient
         override val type: PlaceType = PlaceType.Other,
-        val description: Map<String, String>? = null
+        val description: String? = null
     ) : PlaceInfo()
 
     @Serializable
@@ -73,6 +73,42 @@ sealed class PlaceInfo : Comparable<PlaceInfo> {
         override val title: String,
         @Transient
         override val type: PlaceType = PlaceType.Undefined,
-        val description: Map<String, String>? = null
+        val description: String? = null
     ) : PlaceInfo()
 }
+
+val PlaceInfo.description: String
+    get() {
+        return when (this@description) {
+            is PlaceInfo.Building -> buildString {
+                street?.let {
+                    append(street)
+                }
+
+                building?.let {
+                    if (isNotEmpty()) append(", ")
+                    append("$building-й корус")
+                }
+
+                floor?.let {
+                    if (isNotEmpty()) append(", ")
+                    append("$floor-й этаж")
+                }
+            }
+            is PlaceInfo.Online -> buildString {
+                url?.let {
+                    append(url)
+                }
+            }
+            is PlaceInfo.Other -> buildString {
+                description?.let {
+                    append(description)
+                }
+            }
+            is PlaceInfo.Unclassified -> buildString {
+                description?.let {
+                    append(description)
+                }
+            }
+        }
+    }

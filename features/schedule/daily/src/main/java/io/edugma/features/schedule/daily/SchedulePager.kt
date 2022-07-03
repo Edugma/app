@@ -17,6 +17,8 @@ import com.airbnb.lottie.compose.*
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.edugma.domain.schedule.model.group.Group
 import io.edugma.domain.schedule.model.lesson.Lesson
 import io.edugma.domain.schedule.model.lesson.LessonDateTime
@@ -27,6 +29,8 @@ import io.edugma.domain.schedule.model.place.Place
 import io.edugma.domain.schedule.model.place.PlaceType
 import io.edugma.domain.schedule.model.schedule.LessonsByTime
 import io.edugma.domain.schedule.model.teacher.Teacher
+import io.edugma.features.base.core.utils.ClickListener
+import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.base.core.utils.Typed2Listener
 import io.edugma.features.base.elements.SpacerHeight
 import io.edugma.features.schedule.elements.utils.toUiModel
@@ -48,27 +52,34 @@ private val relaxAnims = listOf(
 fun SchedulePager(
     scheduleDays: List<ScheduleDayUiModel>,
     lessonDisplaySettings: LessonDisplaySettings,
+    isRefreshing: Boolean,
     pagerState: PagerState,
-    onLessonClick: Typed2Listener<Lesson, LessonDateTime>
+    onLessonClick: Typed2Listener<Lesson, LessonDateTime>,
+    onRefreshing: ClickListener
 ) {
-    HorizontalPager(
-        count = scheduleDays.size,
-        state = pagerState,
-        modifier = Modifier.fillMaxSize()
+    SwipeRefresh(
+        state = rememberSwipeRefreshState(isRefreshing),
+        onRefresh = onRefreshing
     ) {
-        val scheduleDay by remember(scheduleDays, it) { mutableStateOf(scheduleDays[it]) }
+        HorizontalPager(
+            count = scheduleDays.size,
+            state = pagerState,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            val scheduleDay by remember(scheduleDays, it) { mutableStateOf(scheduleDays[it]) }
 
-        if (scheduleDay.lessons.isNotEmpty()) {
-            LessonList(
-                lessons = scheduleDay.lessons,
-                lessonDisplaySettings = lessonDisplaySettings,
-                onLessonClick = { lesson, time ->
-                    onLessonClick(lesson, LessonDateTime(scheduleDay.date, null, time))
-                }
-            )
-        } else {
-            val randomAnim = remember { relaxAnims[it % relaxAnims.size] }
-            NoLessonsDay(randomAnim)
+            if (scheduleDay.lessons.isNotEmpty()) {
+                LessonList(
+                    lessons = scheduleDay.lessons,
+                    lessonDisplaySettings = lessonDisplaySettings,
+                    onLessonClick = { lesson, time ->
+                        onLessonClick(lesson, LessonDateTime(scheduleDay.date, null, time))
+                    }
+                )
+            } else {
+                val randomAnim = remember { relaxAnims[it % relaxAnims.size] }
+                NoLessonsDay(randomAnim)
+            }
         }
     }
 }
@@ -150,9 +161,9 @@ fun ScheduleDayPlaceHolder() {
                 Lesson(
                     LessonSubject("", ""),
                     io.edugma.domain.schedule.model.lesson_type.LessonType("", "Qwerty qwerty", false),
-                    listOf(Teacher("", "")),
-                    listOf(Group("", "")),
-                    listOf(Place("", "", PlaceType.Undefined))
+                    listOf(Teacher("", "", "")),
+                    listOf(Group("", "", "")),
+                    listOf(Place("", "", PlaceType.Undefined, ""))
                 )
             )
         )

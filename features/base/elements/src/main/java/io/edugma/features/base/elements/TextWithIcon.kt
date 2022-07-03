@@ -106,3 +106,55 @@ fun TextIcon(
         )
     }
 }
+
+@Composable
+fun TextRightIcon(
+    text: String,
+    painter: Painter,
+    modifier: Modifier = Modifier,
+    contentDescription: String? = null,
+    iconTint: Color = LocalContentColor.current,
+    space: Dp = 5.dp,
+    color: Color = Color.Unspecified,
+    fontSize: TextUnit = TextUnit.Unspecified,
+    fontStyle: FontStyle? = null,
+    fontWeight: FontWeight? = null,
+    fontFamily: FontFamily? = null,
+    letterSpacing: TextUnit = TextUnit.Unspecified,
+    textDecoration: TextDecoration? = null,
+    textAlign: TextAlign? = null,
+    lineHeight: TextUnit = TextUnit.Unspecified,
+    overflow: TextOverflow = TextOverflow.Clip,
+    softWrap: Boolean = true,
+    maxLines: Int = Int.MAX_VALUE,
+    onTextLayout: (TextLayoutResult) -> Unit = {},
+    style: TextStyle = LocalTextStyle.current
+) {
+    Row(modifier) {
+        Text(
+            text,
+            modifier,
+            color,
+            fontSize,
+            fontStyle,
+            fontWeight,
+            fontFamily,
+            letterSpacing,
+            textDecoration,
+            textAlign,
+            lineHeight,
+            overflow,
+            softWrap,
+            maxLines,
+            onTextLayout,
+            style
+        )
+        SpacerWidth(width = space)
+        Icon(
+            painter = painter,
+            contentDescription = contentDescription,
+            tint = iconTint,
+            modifier = Modifier.align(Alignment.CenterVertically)
+        )
+    }
+}

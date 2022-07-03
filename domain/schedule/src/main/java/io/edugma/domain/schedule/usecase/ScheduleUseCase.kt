@@ -22,16 +22,27 @@ class ScheduleUseCase(
     fun getSelectedSource() =
         scheduleSourcesRepository.getSelectedSource()
 
-    fun getSchedule() =
+    fun getSchedule(forceUpdate: Boolean = false) =
         scheduleSourcesRepository.getSelectedSource()
             .transformLatest {
                 val source = it.getOrNull()
                 if (source == null) {
                     emit(Lce.failure<List<ScheduleDay>>(Exception()))
                 } else {
-                    emitAll(repository.getSchedule(ScheduleSource(source.type, source.key)))
+                    emitAll(
+                        repository.getSchedule(
+                            ScheduleSource(source.type, source.key),
+                            forceUpdate = forceUpdate
+                        )
+                    )
                 }
             }
+
+    fun getSchedule(scheduleSource: ScheduleSource, forceUpdate: Boolean = false) =
+        repository.getSchedule(
+            ScheduleSource(scheduleSource.type, scheduleSource.key),
+            forceUpdate = forceUpdate
+        )
 
     fun getScheduleDay(schedule: List<ScheduleDay>, date: LocalDate): List<LessonsByTime> {
         return schedule.firstOrNull { it.date == date }?.lessons ?: emptyList()

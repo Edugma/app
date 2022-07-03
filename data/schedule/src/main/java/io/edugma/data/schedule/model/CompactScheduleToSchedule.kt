@@ -4,6 +4,7 @@ import io.edugma.domain.schedule.model.compact.CompactLessonFeatures
 import io.edugma.domain.schedule.model.compact.CompactSchedule
 import io.edugma.domain.schedule.model.compact.ScheduleInfo
 import io.edugma.domain.schedule.model.group.Group
+import io.edugma.domain.schedule.model.group.description
 import io.edugma.domain.schedule.model.lesson.Lesson
 import io.edugma.domain.schedule.model.lesson.LessonDateTime
 import io.edugma.domain.schedule.model.lesson.LessonDateTimes
@@ -11,9 +12,11 @@ import io.edugma.domain.schedule.model.lesson.LessonTime
 import io.edugma.domain.schedule.model.lesson_subject.LessonSubject
 import io.edugma.domain.schedule.model.lesson_type.LessonType
 import io.edugma.domain.schedule.model.place.Place
+import io.edugma.domain.schedule.model.place.description
 import io.edugma.domain.schedule.model.schedule.LessonsByTime
 import io.edugma.domain.schedule.model.schedule.ScheduleDay
 import io.edugma.domain.schedule.model.teacher.Teacher
+import io.edugma.domain.schedule.model.teacher.description
 import java.time.LocalDate
 import java.util.*
 
@@ -163,14 +166,16 @@ fun CompactLessonFeatures.toModel(info: ScheduleInfo): Lesson {
             val temp = info.teachersInfo.first { it.id == id }
             Teacher(
                 id = temp.id,
-                name = temp.name
+                name = temp.name,
+                description = temp.description
             )
         },
         groups = groupsId.map { id ->
             val temp = info.groupsInfo.first { it.id == id }
             Group(
                 id = temp.id,
-                title = temp.title
+                title = temp.title,
+                description = temp.description
             )
         },
         places = placesId.map { id ->
@@ -178,7 +183,8 @@ fun CompactLessonFeatures.toModel(info: ScheduleInfo): Lesson {
             Place(
                 id = temp.id,
                 title = temp.title,
-                type = temp.type
+                type = temp.type,
+                description = temp.description
             )
         },
     )

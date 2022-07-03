@@ -36,7 +36,7 @@ class LessonsReviewRepositoryImpl(
 
         val resMap1 = mutableMapOf<String,
                 MutableMap<String,
-                        MutableMap<LessonDates, MutableList<LessonTime>>
+                        MutableMap<LessonDates, MutableCollection<LessonTime>>
                         >
                 >()
 
@@ -47,7 +47,7 @@ class LessonsReviewRepositoryImpl(
                 resMap1
                     .getOrPut(lessonDateTimes.lesson.subjectId) { mutableMapOf() }
                     .getOrPut(lessonDateTimes.lesson.typeId) { mutableMapOf() }
-                    .getOrPut(lessonDates) { mutableListOf() }
+                    .getOrPut(lessonDates) { LinkedHashSet() }
                     .add(lessonDateTime.time)
             }
         }
@@ -83,7 +83,7 @@ class LessonsReviewRepositoryImpl(
                             datesAndTimes.map { (times, dates) ->
                                 LessonReviewUnit(
                                     dayOfWeek = dayOfWeek,
-                                    time = times.apply { sort() },
+                                    time = times.toList(),
                                     dates = getLessonDates(dates)
                                 )
                             }

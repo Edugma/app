@@ -42,7 +42,7 @@ class FreePlaceViewModel(
             useCase.getSources(ScheduleSources.Place)
                 .onSuccess {
                     mutateState {
-                        setPlaces(it.map { Place(it.key, it.title, PlaceType.Undefined) })
+                        setPlaces(it.map { Place(it.key, it.title, PlaceType.Undefined, "") })
                     }
                 }
                 .onFailure { mutateState { setPlaces(emptyList()) } }

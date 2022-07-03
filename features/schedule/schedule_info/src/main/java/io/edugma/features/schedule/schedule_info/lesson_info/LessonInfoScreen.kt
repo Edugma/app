@@ -20,6 +20,7 @@ import io.edugma.domain.schedule.model.lesson.LessonDateTime
 import io.edugma.domain.schedule.model.lesson.LessonInfo
 import io.edugma.domain.schedule.model.place.Place
 import io.edugma.domain.schedule.model.teacher.TeacherInfo
+import io.edugma.domain.schedule.model.teacher.description
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.InitialAvatar
 import io.edugma.features.base.elements.PrimaryTopAppBar
@@ -238,7 +239,7 @@ private fun LessonPlaces(
                 .split(' ')
                 .joinToString(separator = "") { it.take(1) },
             title = place.title,
-            description = "",
+            description = place.description,
             onItemClick = { onItemClick(place.id) }
         )
         if (index != places.size - 1) {
@@ -277,7 +278,7 @@ private fun LessonGroups(
                 .split(' ')
                 .joinToString(separator = "") { it.take(1) },
             title = group.title,
-            description = "Информация о группе",
+            description = group.description,
             onItemClick = { onItemClick(group.id) }
         )
         if (index != groups.size - 1) {

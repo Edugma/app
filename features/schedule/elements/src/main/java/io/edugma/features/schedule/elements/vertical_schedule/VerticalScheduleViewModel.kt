@@ -19,6 +19,7 @@ import io.edugma.features.schedule.elements.lesson.model.ScheduleItem
 import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
 import io.edugma.features.schedule.elements.utils.toUiModel
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -30,28 +31,16 @@ class VerticalScheduleViewModel(
         setupMutator {
             forProp { schedule }.onChanged {
                 state.schedule?.let {
-                    val index = calculateTodayIndex(state.schedule!!)
-                    state = state.copy(
-                        currentDayIndex = index
-                    )
-                }
-            }
-        }
-
-        viewModelScope.launch {
-            useCase.getSchedule().collect {
-                if (!it.isFinalFailure) {
-                    val schedule = it.getOrDefault(emptyList())
-                    if (schedule.isEmpty() && it.isLoading) return@collect
-
-                    mutateState {
+                    if (it.isNotEmpty()) {
+                        val index = calculateTodayIndex(it)
                         state = state.copy(
-                            schedule = schedule.toUiModel()
+                            currentDayIndex = index
                         )
                     }
                 }
             }
         }
+
 
         viewModelScope.launch {
             state.prop { scheduleSource }.collect {
@@ -62,6 +51,23 @@ class VerticalScheduleViewModel(
                     state = state.copy(
                         lessonDisplaySettings = lessonDisplaySettings
                     )
+                }
+            }
+        }
+
+        viewModelScope.launch {
+            state.prop { scheduleSource }.filterNotNull().collectLatest {
+                useCase.getSchedule(it).collect {
+                    if (!it.isFinalFailure) {
+                        val schedule = it.getOrDefault(emptyList())
+                        if (schedule.isEmpty() && it.isLoading) return@collect
+
+                        mutateState {
+                            state = state.copy(
+                                schedule = schedule.toUiModel()
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -79,7 +85,7 @@ class VerticalScheduleViewModel(
                         }
                     }.let { if (it == 0) 1 else it }
             }
-            .first {
+            .firstOrNull {
                 if (it.first == now) {
                     true
                 } else {

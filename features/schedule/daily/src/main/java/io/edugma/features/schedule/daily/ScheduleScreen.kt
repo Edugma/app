@@ -44,7 +44,8 @@ fun ScheduleScreen(
             viewModel::onSchedulePosChanged,
             viewModel::onWeeksPosChanged,
             onDayClick = viewModel::onDayClick,
-            onLessonClick = viewModel::onLessonClick
+            onLessonClick = viewModel::onLessonClick,
+            onRefreshing = viewModel::onRefreshing
         )
     }
 }
@@ -59,7 +60,8 @@ fun ScheduleContent(
     onSchedulePosChanged: Typed1Listener<Int>,
     onWeeksPosChanged: Typed1Listener<Int>,
     onDayClick: Typed1Listener<LocalDate>,
-    onLessonClick: Typed2Listener<Lesson, LessonDateTime>
+    onLessonClick: Typed2Listener<Lesson, LessonDateTime>,
+    onRefreshing: ClickListener
 ) {
     Box {
         Column(Modifier.fillMaxSize()) {
@@ -91,8 +93,10 @@ fun ScheduleContent(
                 SchedulePager(
                     scheduleDays = state.schedule ?: emptyList(),
                     lessonDisplaySettings = state.lessonDisplaySettings,
+                    isRefreshing = state.isRefreshing,
                     pagerState = schedulePagerState,
-                    onLessonClick = onLessonClick
+                    onLessonClick = onLessonClick,
+                    onRefreshing = onRefreshing
                 )
             }
         }

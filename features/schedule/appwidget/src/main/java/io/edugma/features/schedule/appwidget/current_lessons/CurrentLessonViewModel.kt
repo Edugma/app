@@ -121,14 +121,17 @@ val teachers = listOf(
     Teacher(
         id = UUID.randomUUID().toString(),
         name = "Рудяк Юрий Владимирович",
+        description = ""
     ),
     Teacher(
         id = UUID.randomUUID().toString(),
         name = "Винокур Алексей Иосифович",
+        description = ""
     ),
     Teacher(
         id = UUID.randomUUID().toString(),
         name = "Меньшикова Наталия Павловна",
+        description = ""
     )
 )
 
@@ -136,14 +139,17 @@ val groups = listOf(
     Group(
         id = UUID.randomUUID().toString(),
         title = "181-721",
+        description = ""
     ),
     Group(
         id = UUID.randomUUID().toString(),
         title = "181-722",
+        description = ""
     ),
     Group(
         id = UUID.randomUUID().toString(),
         title = "181-723",
+        description = ""
     ),
 )
 
@@ -151,16 +157,19 @@ val places = listOf(
     Place(
         id = UUID.randomUUID().toString(),
         title = "Пр2303",
-        type = PlaceType.Building
+        type = PlaceType.Building,
+        description = ""
     ),
     Place(
         id = UUID.randomUUID().toString(),
         title = "Пр Вц 3 (2553)",
-        type = PlaceType.Building
+        type = PlaceType.Building,
+        description = ""
     ),
     Place(
         id = UUID.randomUUID().toString(),
         title = "Webinar",
-        type = PlaceType.Online
+        type = PlaceType.Online,
+        description = ""
     ),
 )

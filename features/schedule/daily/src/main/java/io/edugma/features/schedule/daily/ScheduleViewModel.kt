@@ -18,6 +18,7 @@ import io.edugma.features.schedule.daily.model.WeekUiModel
 import io.edugma.features.schedule.elements.utils.toUiModel
 import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -84,8 +85,30 @@ class ScheduleViewModel(
 
                         state = state.copy(
                             schedule = schedule.toUiModel(),
-                            isLoading = isLoading
+                            isLoading = isLoading && !state.isRefreshing,
+                            isRefreshing = isLoading && state.isRefreshing
                         )
+                    }
+                }
+            }
+        }
+
+        viewModelScope.launch {
+            state.prop { isRefreshing }.filter { it }.collect {
+                useCase.getSchedule(forceUpdate = true).collect {
+                    if (!it.isFinalFailure) {
+                        val schedule = it.getOrDefault(emptyList())
+                        if (schedule.isEmpty() && it.isLoading) return@collect
+                        val isLoading = it.isLoading
+
+                        mutateState {
+
+                            state = state.copy(
+                                schedule = schedule.toUiModel(),
+                                isLoading = isLoading && !state.isRefreshing,
+                                isRefreshing = isLoading && state.isRefreshing
+                            )
+                        }
                     }
                 }
             }
@@ -135,6 +158,13 @@ class ScheduleViewModel(
     fun onDayClick(date: LocalDate) {
         mutateState {
             state = state.copy(selectedDate = date)
+        }
+    }
+
+    fun onRefreshing() {
+        mutateState {
+            state =
+                state.copy(isRefreshing = !state.isLoading && !state.isPreloading)
         }
     }
 
@@ -213,6 +243,7 @@ data class ScheduleState(
     val isPreloading: Boolean = true,
     val isLoading: Boolean = false,
     val isError: Boolean = false,
+    val isRefreshing: Boolean = false,
     val schedule: List<ScheduleDayUiModel>? = null,
     val weeks: List<WeekUiModel> = emptyList(),
     val lessonDisplaySettings: LessonDisplaySettings = LessonDisplaySettings.Default,
