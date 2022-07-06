@@ -11,7 +11,9 @@ import io.edugma.data.base.store.StoreImpl
 import io.edugma.data.nodes.api.NodesService
 import io.edugma.data.nodes.model.NodeContractDao
 import io.edugma.domain.base.utils.Lce
+import io.edugma.domain.nodes.model.Node
 import io.edugma.domain.nodes.model.NodeContract
+import io.edugma.domain.nodes.model.NodeEndpoints
 import io.edugma.domain.nodes.repository.NodesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -38,10 +40,17 @@ class NodesRepositoryImpl(
         emit(preferencesDS.set(url, PrefConst.SelectedNode))
     }.flowOn(Dispatchers.IO)
 
+    override fun selectNode(node: Node) = flow {
+        emit(preferencesDS.set(node.contract, PrefConst.SelectedNode))
+    }.flowOn(Dispatchers.IO)
+
     override fun getSelectNode() = flow {
         emit(preferencesDS.get<String>(PrefConst.SelectedNode))
     }.flowOn(Dispatchers.IO)
 
-    override fun getSNodeContract(url: String): Flow<Lce<NodeContract?>> =
+    override fun getNodeContract(url: String): Flow<Lce<NodeContract?>> =
         nodeStore.get(url)
+
+    override fun getNodeList(): Flow<Result<List<Node>>> =
+        service.getNodeList()
 }
