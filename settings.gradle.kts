@@ -28,15 +28,15 @@ pluginManagement {
         mavenCentral()
     }
 
-    val androidGradleVersion = "7.2.1"
-    val kotlinVersion = "1.6.21"
+    val androidGradleVersion = "7.2.2"
+    val kotlinVersion = "1.7.10"
 
     plugins {
         id("com.android.application") version androidGradleVersion apply false
         id("com.android.library") version androidGradleVersion  apply false
-        kotlin("android") version "1.6.21" apply false
+        kotlin("android") version kotlinVersion apply false
         kotlin("plugin.serialization") version kotlinVersion apply false
-        id("org.jetbrains.kotlin.jvm") version "1.6.10"
+        id("org.jetbrains.kotlin.jvm") version kotlinVersion
     }
 }
 

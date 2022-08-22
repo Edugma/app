@@ -7,12 +7,12 @@ dependencies {
     api(project(Modules.Data.Base))
 
     api(Libs.AndroidX.Compose.ui)
+    api(Libs.AndroidX.Compose.activity)
     api(Libs.AndroidX.Compose.material)
     api(Libs.AndroidX.Compose.material3)
     debugApi(Libs.AndroidX.Compose.uiTooling)
     api(Libs.AndroidX.Compose.uiToolingPreview)
     api(Libs.AndroidX.lifecycleRuntime)
-    api(Libs.AndroidX.Compose.activity)
     api(Libs.AndroidX.splashScreen)
 
     api(Libs.Accompanist.systemUiController)

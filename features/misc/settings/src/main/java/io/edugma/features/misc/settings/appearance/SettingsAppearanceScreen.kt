@@ -29,6 +29,7 @@ fun SettingsAppearanceScreen(viewModel: SettingsAppearanceViewModel = getViewMod
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SettingsAppearanceContent(
     state: SettingsAppearanceState,

@@ -64,7 +64,7 @@ class GroupInfoViewModel(
 data class GroupInfoState(
     val id: String? = null,
     val groupInfo: GroupInfo? = null,
-    val tabs: List<GroupInfoTabs> = GroupInfoTabs.values().toList(),
+    val tabs: List<GroupInfoTabs> = listOf(GroupInfoTabs.Schedule),
     val selectedTab: GroupInfoTabs = GroupInfoTabs.Schedule,
     val scheduleSource: ScheduleSource? = null
 )

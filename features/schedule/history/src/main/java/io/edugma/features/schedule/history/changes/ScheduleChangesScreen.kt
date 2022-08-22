@@ -45,7 +45,7 @@ fun ScheduleChangesScreen(
 
 private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM, yyyy")
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun ScheduleChangesContent(
     state: ScheduleChangesState,

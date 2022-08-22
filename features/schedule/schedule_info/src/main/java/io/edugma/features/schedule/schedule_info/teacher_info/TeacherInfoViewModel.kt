@@ -3,6 +3,8 @@ package io.edugma.features.schedule.schedule_info.teacher_info
 import androidx.lifecycle.viewModelScope
 import io.edugma.domain.base.utils.onFailure
 import io.edugma.domain.base.utils.onSuccess
+import io.edugma.domain.schedule.model.source.ScheduleSource
+import io.edugma.domain.schedule.model.source.ScheduleSources
 import io.edugma.domain.schedule.model.teacher.TeacherInfo
 import io.edugma.domain.schedule.repository.ScheduleInfoRepository
 import io.edugma.features.base.core.mvi.BaseViewModel
@@ -20,7 +22,13 @@ class TeacherInfoViewModel(
                 repository.getTeacherInfo(it)
                     .onSuccess {
                         mutateState {
-                            state = state.copy(teacherInfo = it)
+                            state = state.copy(
+                                teacherInfo = it,
+                                scheduleSource = ScheduleSource(
+                                    type = ScheduleSources.Teacher,
+                                    key = it.id
+                                )
+                            )
                         }
                     }.onFailure {
 
@@ -45,8 +53,9 @@ class TeacherInfoViewModel(
 data class TeacherInfoState(
     val id: String? = null,
     val teacherInfo: TeacherInfo? = null,
-    val tabs: List<TeacherInfoTabs> = TeacherInfoTabs.values().toList(),
+    val tabs: List<TeacherInfoTabs> = listOf(TeacherInfoTabs.Schedule),
     val selectedTab: TeacherInfoTabs = TeacherInfoTabs.Schedule,
+    val scheduleSource: ScheduleSource? = null
 )
 
 enum class TeacherInfoTabs {

@@ -27,9 +27,9 @@ val baseDataModule = module {
     single { OkHttpClient.Builder() }
     single {
         get<OkHttpClient.Builder>()
-            .connectTimeout(10, TimeUnit.SECONDS)
-            .readTimeout(10, TimeUnit.SECONDS)
-            .writeTimeout(10, TimeUnit.SECONDS)
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
             .addInterceptor(get<TokenInterceptor>())
             .addInterceptor(get<ApiVersionInterceptor>())
             .addInterceptor(get<HttpLoggingInterceptor>())

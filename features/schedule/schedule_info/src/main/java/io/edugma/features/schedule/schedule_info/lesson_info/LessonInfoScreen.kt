@@ -49,6 +49,7 @@ fun LessonInfoScreen(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun LessonInfoContent(
     state: LessonInfoState,
@@ -76,9 +77,11 @@ private fun LessonInfoContent(
                 LessonType(
                     type = state.lessonInfo?.lesson?.type?.title ?: ""
                 )
-                LessonTitle(
-                    title = state.lessonInfo?.lesson?.subject?.title ?: ""
-                )
+                HighAlpha {
+                    LessonTitle(
+                        title = state.lessonInfo?.lesson?.subject?.title ?: ""
+                    )
+                }
                 SpacerHeight(height = 4.dp)
                 state.lessonInfo?.dateTime?.let { LessonDateTime(lessonDateTime = it) }
                 SpacerHeight(height = 16.dp)
@@ -135,7 +138,7 @@ private fun LessonDateTime(lessonDateTime: LessonDateTime) {
         WithContentAlpha(ContentAlpha.medium) {
             val timeStart = lessonDateTime.time.start.format(lessonTimeFormat)
             val timeEnd = lessonDateTime.time.end.format(lessonTimeFormat)
-            val startDate = lessonDateTime.startDate.format(lessonDateFormat) + "!!"
+            val startDate = lessonDateTime.startDate.format(lessonDateFormat) //+ "!!"
             Row(
                 Modifier.padding(start = 16.dp, end = 8.dp),
                 verticalAlignment = Alignment.CenterVertically

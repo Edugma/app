@@ -9,6 +9,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import io.edugma.features.base.core.utils.*
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PrimaryTopAppBar(
     title: String,

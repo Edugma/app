@@ -5,6 +5,8 @@ import io.edugma.domain.base.utils.onFailure
 import io.edugma.domain.base.utils.onSuccess
 import io.edugma.domain.schedule.model.place.PlaceDailyOccupancy
 import io.edugma.domain.schedule.model.place.PlaceInfo
+import io.edugma.domain.schedule.model.source.ScheduleSource
+import io.edugma.domain.schedule.model.source.ScheduleSources
 import io.edugma.domain.schedule.repository.FreePlaceRepository
 import io.edugma.domain.schedule.repository.ScheduleInfoRepository
 import io.edugma.features.base.core.mvi.BaseViewModel
@@ -23,7 +25,13 @@ class PlaceInfoViewModel(
                 repository.getPlaceInfo(it)
                     .onSuccess {
                         mutateState {
-                            state = state.copy(placeInfo = it)
+                            state = state.copy(
+                                placeInfo = it,
+                                scheduleSource = ScheduleSource(
+                                    type = ScheduleSources.Place,
+                                    key = it.id
+                                )
+                            )
                         }
                     }.onFailure {
 
@@ -63,9 +71,10 @@ class PlaceInfoViewModel(
 data class PlaceInfoState(
     val id: String? = null,
     val placeInfo: PlaceInfo? = null,
-    val tabs: List<PlaceInfoTabs> = PlaceInfoTabs.values().toList(),
-    val selectedTab: PlaceInfoTabs = PlaceInfoTabs.Occupancy,
+    val tabs: List<PlaceInfoTabs> = listOf(PlaceInfoTabs.Schedule),
+    val selectedTab: PlaceInfoTabs = PlaceInfoTabs.Schedule,
     val placeOccupancy: List<PlaceDailyOccupancy> = emptyList(),
+    val scheduleSource: ScheduleSource? = null
 )
 
 enum class PlaceInfoTabs {

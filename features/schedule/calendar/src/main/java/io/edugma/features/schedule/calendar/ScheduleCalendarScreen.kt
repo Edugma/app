@@ -38,6 +38,7 @@ fun ScheduleCalendarScreen(viewModel: ScheduleCalendarViewModel = getViewModel()
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ScheduleCalendarContent(
     state: ScheduleCalendarState,

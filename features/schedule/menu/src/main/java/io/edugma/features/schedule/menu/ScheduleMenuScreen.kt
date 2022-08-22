@@ -86,7 +86,7 @@ fun ScheduleMenuContent(
                 .fillMaxWidth()
         ) {
             ChangeHistoryCard(onHistoryClick)
-            ScheduleAppWidgetCard(onAppWidgetClick)
+            //ScheduleAppWidgetCard(onAppWidgetClick)
         }
     }
 }

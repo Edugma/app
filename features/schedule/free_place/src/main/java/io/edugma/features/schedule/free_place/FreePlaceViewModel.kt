@@ -42,7 +42,7 @@ class FreePlaceViewModel(
             useCase.getSources(ScheduleSources.Place)
                 .onSuccess {
                     mutateState {
-                        setPlaces(it.map { Place(it.key, it.title, PlaceType.Undefined, "") })
+                        setPlaces(it.map { Place(it.key, it.title, PlaceType.Undefined, it.description) }.sortedBy { it.title })
                     }
                 }
                 .onFailure { mutateState { setPlaces(emptyList()) } }
@@ -87,6 +87,14 @@ class FreePlaceViewModel(
                 .collect()
         }
     }
+
+    fun onShowFilters() {
+        mutateState {
+            state = state.copy(
+                showFilters = !state.showFilters
+            )
+        }
+    }
 }
 
 data class FreePlaceState(
@@ -102,7 +110,8 @@ data class FreePlaceState(
     val filterQuery: String = "",
     val places: List<Place> = emptyList(),
     val filteredPlaces: List<Place> = emptyList(),
-    val freePlaces: Map<PlaceInfo, Int> = emptyMap()
+    val freePlaces: Map<PlaceInfo, Int> = emptyMap(),
+    val showFilters: Boolean = true
 ) {
     companion object {
         val minPerDay = LocalTime.MAX.toSecondOfDay() / 60

@@ -19,14 +19,9 @@ import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.datetime.time.timepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
-import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.ContentAlpha
-import io.edugma.features.base.core.utils.MaterialTheme3
-import io.edugma.features.base.core.utils.WithContentAlpha
-import io.edugma.features.base.elements.PrimaryButton
-import io.edugma.features.base.elements.PrimaryTopAppBar
-import io.edugma.features.base.elements.SpacerFill
-import io.edugma.features.base.elements.SpacerHeight
+import io.edugma.domain.schedule.model.place.description
+import io.edugma.features.base.core.utils.*
+import io.edugma.features.base.elements.*
 import org.koin.androidx.compose.getViewModel
 import java.time.LocalDate
 import java.time.LocalTime
@@ -43,7 +38,8 @@ fun FreePlaceScreen(viewModel: FreePlaceViewModel = getViewModel()) {
         viewModel::onTimeFromSelect,
         viewModel::onTimeToSelect,
         viewModel::onEnterFilterQuery,
-        viewModel::onFindFreePlaces
+        viewModel::onFindFreePlaces,
+        onShowFilters = viewModel::onShowFilters
     )
 }
 
@@ -59,7 +55,8 @@ fun FreePlaceContent(
     onTimeFromSelect: (LocalTime) -> Unit,
     onTimeToSelect: (LocalTime) -> Unit,
     onEnterFilterQuery: (String) -> Unit,
-    onFindFreePlaces: () -> Unit,
+    onFindFreePlaces: ClickListener,
+    onShowFilters: ClickListener
 ) {
     Box(
         Modifier
@@ -69,93 +66,116 @@ fun FreePlaceContent(
         val dialogTimePickerFromState = rememberMaterialDialogState()
         val dialogTimePickerToState = rememberMaterialDialogState()
 
-        Column(Modifier.verticalScroll(rememberScrollState())) {
+        Column(Modifier.fillMaxSize()) {
             PrimaryTopAppBar(
                 title = stringResource(R.string.schedule_fre_pla_find_free_place),
                 onBackClick = onBackClick
             )
-            Column(Modifier.padding(start = 16.dp, end = 16.dp)) {
-                Row(
-                    Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "Дата",
-                        style = MaterialTheme3.typography.titleMedium
-                    )
-                    SpacerFill()
-                    PrimaryButton(onClick = { dialogDatePickerState.show() }) {
-                        Text(text = state.date.format(dateFormat))
-                    }
-                }
-                SpacerHeight(4.dp)
-                Row(
-                    Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "Начальное время",
-                        style = MaterialTheme3.typography.titleMedium
-                    )
-                    SpacerFill()
-                    PrimaryButton(onClick = { dialogTimePickerFromState.show() }) {
-                        Text(text = state.timeFrom.format(timeFormat))
-                    }
-                }
-                SpacerHeight(4.dp)
-                Row(
-                    Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "Конечное время",
-                        style = MaterialTheme3.typography.titleMedium
-                    )
-                    SpacerFill()
-                    PrimaryButton(onClick = { dialogTimePickerToState.show() }) {
-                        Text(text = state.timeTo.format(timeFormat))
-                    }
-                }
-                SpacerHeight(4.dp)
-                OutlinedTextField(
-                    value = state.filterQuery,
-                    onValueChange = onEnterFilterQuery
-                )
-                LazyColumn(
-                    Modifier
-                        .fillMaxWidth()
-                        .height(100.dp)) {
-                    items(state.filteredPlaces) { item ->
-                        var checked by remember { mutableStateOf(false) }
-                        Row(
-                            Modifier
-                                .fillMaxWidth()
-                                .clickable { checked = !checked }) {
-                            Text(
-                                text = item.title,
-                                modifier = Modifier
-                                    .weight(weight = 1f, fill = true)
-                                    .padding(horizontal = 10.dp, vertical = 10.dp)
-
+            Column(Modifier.padding(start = 8.dp, end = 8.dp)) {
+                TonalCard(Modifier.fillMaxWidth()) {
+                    Column(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                start = 16.dp, end = 16.dp, top = 16.dp, bottom = 16.dp
                             )
-
-                            Checkbox(
-                                checked = checked,
-                                onCheckedChange = { checked = it }
+                    ) {
+                        Text(
+                            text = "Фильтры",
+                            modifier = Modifier.clickable { onShowFilters() },
+                            style = MaterialTheme3.typography.titleLarge,
+                        )
+                        SpacerHeight(height = 12.dp)
+                        if (state.showFilters) {
+                            Row(
+                                Modifier.fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = "Дата",
+                                    style = MaterialTheme3.typography.titleMedium
+                                )
+                                SpacerFill()
+                                PrimaryButton(onClick = { dialogDatePickerState.show() }) {
+                                    Text(text = state.date.format(dateFormat))
+                                }
+                            }
+                            SpacerHeight(4.dp)
+                            Row(
+                                Modifier.fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = "Начальное время",
+                                    style = MaterialTheme3.typography.titleMedium
+                                )
+                                SpacerFill()
+                                PrimaryButton(onClick = { dialogTimePickerFromState.show() }) {
+                                    Text(text = state.timeFrom.format(timeFormat))
+                                }
+                            }
+                            SpacerHeight(4.dp)
+                            Row(
+                                Modifier.fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = "Конечное время",
+                                    style = MaterialTheme3.typography.titleMedium
+                                )
+                                SpacerFill()
+                                PrimaryButton(onClick = { dialogTimePickerToState.show() }) {
+                                    Text(text = state.timeTo.format(timeFormat))
+                                }
+                            }
+                            SpacerHeight(8.dp)
+                            OutlinedTextField(
+                                value = state.filterQuery,
+                                onValueChange = onEnterFilterQuery,
+                                modifier = Modifier.fillMaxWidth(),
+                                placeholder = {
+                                    Text(text = "Введите фильтр")
+                                }
                             )
+                            LazyColumn(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .height(100.dp)
+                            ) {
+                                items(state.filteredPlaces) { item ->
+                                    var checked by remember { mutableStateOf(false) }
+                                    Row(
+                                        Modifier
+                                            .fillMaxWidth()
+                                            .clickable { checked = !checked }) {
+                                        Text(
+                                            text = item.title,
+                                            modifier = Modifier
+                                                .weight(weight = 1f, fill = true)
+                                                .padding(horizontal = 10.dp, vertical = 10.dp)
+
+                                        )
+
+                                        Checkbox(
+                                            checked = checked,
+                                            onCheckedChange = { checked = it }
+                                        )
+                                    }
+                                }
+                            }
+                            PrimaryButton(onClick = onFindFreePlaces) {
+                                Text(text = "Найти свободные аудитории")
+                            }
                         }
                     }
                 }
-                PrimaryButton(onClick = onFindFreePlaces) {
-                    Text(text = "Найти свободные аудитории")
-                }
+                SpacerHeight(height = 10.dp)
                 val freePlaces = remember(state.freePlaces) {
-                    state.freePlaces.toList()
+                    state.freePlaces.toList().sortedBy { it.first.title }
                 }
                 LazyColumn(
-                    Modifier
-                        .fillMaxWidth()
-                        .height(300.dp)) {
+                    Modifier.fillMaxSize()
+                ) {
                     items(freePlaces) { item ->
                         var checked by remember { mutableStateOf(false) }
                         Column(
@@ -166,6 +186,12 @@ fun FreePlaceContent(
                                 text = item.first.title,
                                 style = MaterialTheme3.typography.titleSmall
                             )
+                            MediumAlpha {
+                                Text(
+                                    text = item.first.description,
+                                    style = MaterialTheme3.typography.titleSmall
+                                )
+                            }
                             WithContentAlpha(alpha = ContentAlpha.medium) {
                                 Text(
                                     text = "Занятий в это время: " + item.second.toString(),

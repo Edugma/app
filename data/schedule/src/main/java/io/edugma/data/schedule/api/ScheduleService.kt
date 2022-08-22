@@ -2,6 +2,7 @@ package io.edugma.data.schedule.api
 
 import io.edugma.data.schedule.model.LoginRequest
 import io.edugma.data.schedule.model.ScheduleComplexRequest
+import io.edugma.domain.schedule.model.ScheduleComplexFilter
 import io.edugma.domain.schedule.model.compact.CompactSchedule
 import io.edugma.domain.schedule.model.source.ScheduleSource
 import kotlinx.coroutines.flow.Flow
@@ -16,6 +17,11 @@ interface ScheduleService {
     fun getCompactSchedule(
         @Path("type") type: String,
         @Path("key") key: String
+    ): Flow<Result<CompactSchedule>>
+
+    @POST("/schedules/compact/complex")
+    fun getComplexSchedule(
+        @Body filter: ScheduleComplexFilter
     ): Flow<Result<CompactSchedule>>
 
     @POST("/schedules/compact/complex")

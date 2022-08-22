@@ -20,6 +20,7 @@ import io.edugma.features.base.core.utils.FluentIcons
 import io.edugma.features.base.core.utils.MaterialTheme3
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PrimaryTextField(
     value: String,
@@ -71,6 +72,8 @@ fun PrimaryTextField(
     }
 }
 
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PrimarySearchField(
     value: String,
@@ -127,6 +130,7 @@ fun PrimarySearchField(
 }
 
 object PrimaryTextFieldDefaults {
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun textFieldColors() = TextFieldDefaults.textFieldColors(
         textColor = LocalContentColor.current,

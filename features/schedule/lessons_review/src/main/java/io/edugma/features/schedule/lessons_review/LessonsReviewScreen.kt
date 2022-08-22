@@ -41,6 +41,7 @@ fun LessonsReviewScreen(
     LessonsReviewContent(state.lessons, viewModel::exit)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LessonsReviewContent(
     lessons: List<LessonTimesReview>,

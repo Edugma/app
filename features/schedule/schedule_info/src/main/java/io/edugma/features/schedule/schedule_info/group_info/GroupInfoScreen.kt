@@ -51,14 +51,14 @@ private fun GroupInfoContent(
                     text = groupInfo.description,
                     painter = painterResource(FluentIcons.ic_fluent_text_description_20_regular)
                 )
-                TextIcon(
-                    text = "${groupInfo.course}-й курс",
-                    painter = painterResource(FluentIcons.ic_fluent_timer_20_regular)
-                )
-                TextIcon(
-                    text = groupInfo.toString(),
-                    painter = painterResource(FluentIcons.ic_fluent_weather_moon_20_regular)
-                )
+//                TextIcon(
+//                    text = "${groupInfo.course}-й курс",
+//                    painter = painterResource(FluentIcons.ic_fluent_timer_20_regular)
+//                )
+//                TextIcon(
+//                    text = groupInfo.toString(),
+//                    painter = painterResource(FluentIcons.ic_fluent_weather_moon_20_regular)
+//                )
             }
         },
         tabs = {
@@ -107,7 +107,7 @@ fun InfoScaffold(
     content: @Composable () -> Unit = { }
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
-        rememberTopAppBarScrollState()
+        rememberTopAppBarState()
     )
 
     Scaffold(
@@ -139,8 +139,8 @@ fun InfoScaffold(
                 var height by remember {
                     mutableStateOf(0)
                 }
-                val rate = remember(scrollBehavior.state.offset, scrollBehavior.state.offsetLimit) {
-                    scrollBehavior.state.offset / scrollBehavior.state.offsetLimit
+                val rate = remember(scrollBehavior.state.heightOffset, scrollBehavior.state.heightOffsetLimit) {
+                    scrollBehavior.state.heightOffset / scrollBehavior.state.heightOffsetLimit
                 }
 
                 val rateInverse = remember(rate) {

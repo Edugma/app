@@ -34,6 +34,7 @@ class ScheduleViewModel(
                 val schedule = state.schedule ?: return@onChanged
 
                 val weeks = WeekUiModel.fromSchedule(schedule)
+                val fixedSelectedDate = schedule.fixSelectedDate(state.selectedDate)
                 val schedulePos = schedule.getSchedulePos(state.selectedDate)
                 val weekPos = state.getWeeksPos(state.selectedDate)
                 val dayOfWeekPos = state.getDayOfWeekPos(state.selectedDate)
@@ -43,7 +44,8 @@ class ScheduleViewModel(
                     weeks = weeks,
                     schedulePos = schedulePos,
                     weeksPos = weekPos,
-                    dayOfWeekPos = dayOfWeekPos
+                    dayOfWeekPos = dayOfWeekPos,
+                    selectedDate = fixedSelectedDate
                 )
             }
 
@@ -229,10 +231,21 @@ private fun ScheduleState.getDayOfWeekPos(date: LocalDate): Int {
     return date.dayOfWeek.value - 1
 }
 
+private fun List<ScheduleDayUiModel>.fixSelectedDate(date: LocalDate): LocalDate {
+    val schedulePos = getSchedulePos(date)
+    return this[schedulePos].date
+}
+
 private fun List<ScheduleDayUiModel>.getSchedulePos(date: LocalDate): Int {
-    return coerceSchedulePos(
-        this.indexOfFirst { it.date == date }.coerceAtLeast(0)
-    )
+    var index = this.indexOfFirst { it.date == date }
+    if (index == -1) {
+        index = if (this.all { it.date < date }) {
+            this.lastIndex
+        } else {
+            0
+        }
+    }
+    return coerceSchedulePos(index)
 }
 
 private fun List<ScheduleDayUiModel>.coerceSchedulePos(schedulePos: Int): Int {

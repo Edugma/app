@@ -36,19 +36,19 @@ fun PrimaryButton(
     content: @Composable RowScope.() -> Unit
 ) {
     Button(
-        onClick,
-        modifier.defaultMinSize(
+        onClick = onClick,
+        modifier = modifier.defaultMinSize(
             minWidth = ButtonDefaults.MinWidth,
             minHeight = 48.dp
         ),
-        enabled,
-        interactionSource,
-        elevation,
-        shape,
-        border,
-        colors,
-        contentPadding,
-        content
+        enabled = enabled,
+        shape = shape,
+        colors = colors,
+        elevation = elevation,
+        border = border,
+        contentPadding = contentPadding,
+        interactionSource = interactionSource,
+        content = content
     )
 }
 
@@ -74,14 +74,14 @@ fun SecondaryButton(
             minWidth = ButtonDefaults.MinWidth,
             minHeight = 48.dp
         ),
-        enabled,
-        interactionSource,
-        elevation,
-        shape,
-        border,
-        colors,
-        contentPadding,
-        content
+        enabled = enabled,
+        shape = shape,
+        colors = colors,
+        elevation = elevation,
+        border = border,
+        contentPadding = contentPadding,
+        interactionSource = interactionSource,
+        content = content
     )
 }
 
@@ -104,13 +104,13 @@ fun PrimarySmallButton(
             minWidth = 50.dp,
             minHeight = 24.dp
         ),
-        enabled,
-        interactionSource,
-        elevation,
-        shape,
-        border,
-        colors,
-        contentPadding,
-        content
+        enabled = enabled,
+        shape = shape,
+        colors = colors,
+        elevation = elevation,
+        border = border,
+        contentPadding = contentPadding,
+        interactionSource = interactionSource,
+        content = content
     )
 }

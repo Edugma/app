@@ -12,8 +12,8 @@ android {
         applicationId = "io.edugma.android"
         minSdk = Config.minSdk
         targetSdk = Config.targetSdkVersion
-        versionCode = 11
-        versionName = "0.5.0-alpha"
+        versionCode = Config.versionCode
+        versionName = Config.versionName
 
         testInstrumentationRunner = Config.androidTestInstrumentation
         vectorDrawables {
@@ -40,7 +40,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = Versions.compose
+        kotlinCompilerExtensionVersion = Versions.composeCompiler
     }
     packagingOptions {
         resources {

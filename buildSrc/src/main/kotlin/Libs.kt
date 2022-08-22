@@ -35,7 +35,8 @@ object Libs {
         }
 
         object Compose {
-            const val activity = "androidx.activity:activity-compose:1.3.1"
+            const val compiler = "androidx.compose.compiler:compiler:${Versions.composeCompiler}"
+            const val activity = "androidx.activity:activity-compose:${Versions.composeActivity}"
             const val ui = "androidx.compose.ui:ui:${Versions.compose}"
 
             const val uiToolingPreview = "androidx.compose.ui:ui-tooling-preview:${Versions.compose}"
@@ -44,9 +45,6 @@ object Libs {
             const val material = "androidx.compose.material:material:${Versions.compose}"
             //const val material = "androidx.compose.material:material:$version"
 
-
-            const val foundation = "androidx.compose.foundation:foundation:${Versions.compose}"
-            const val layout = "androidx.compose.foundation:foundation-layout:${Versions.compose}"
 
             const val runtime = "androidx.compose.runtime:runtime:${Versions.compose}"
             const val test = "androidx.compose.ui:ui-test:${Versions.compose}"
@@ -58,8 +56,6 @@ object Libs {
         object Lifecycle {
             private const val version = "2.4.0"
             const val extensions = "androidx.lifecycle:lifecycle-extensions:$version"
-            const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
-            const val viewModelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:$version"
         }
 
         object Test {
@@ -82,7 +78,6 @@ object Libs {
     object Accompanist {
         const val flowLayout = "com.google.accompanist:accompanist-flowlayout:${Versions.accompanist}"
         const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:${Versions.accompanist}"
-        const val insets = "com.google.accompanist:accompanist-insets:${Versions.accompanist}"
         const val pager = "com.google.accompanist:accompanist-pager:${Versions.accompanist}"
         const val pagerIndicators = "com.google.accompanist:accompanist-pager-indicators:${Versions.accompanist}"
         const val placeholder = "com.google.accompanist:accompanist-placeholder:${Versions.accompanist}"
@@ -104,9 +99,9 @@ object Libs {
     }
 
     object Other {
-        const val jdkDesugar = "com.android.tools:desugar_jdk_libs:1.1.5"
+        const val jdkDesugar = "com.android.tools:desugar_jdk_libs:1.1.6"
         const val junit = "junit:junit:4.13"
-        const val ktorUtils = "io.ktor:ktor-utils:2.0.0-beta-1"
+        const val ktorUtils = "io.ktor:ktor-utils:2.1.0"
     }
 
     object Networking {
@@ -123,7 +118,6 @@ object Libs {
             const val release = "org.kodein.db:kodein-db-android:${Versions.kodeinDB}"
             const val kotlinxSerializer = "org.kodein.db:kodein-db-serializer-kotlinx:${Versions.kodeinDB}"
         }
-        const val store = "com.dropbox.mobile.store:store4:${Versions.store}"
     }
 
     object Di {
@@ -138,44 +132,44 @@ object Libs {
 }
 
 object Versions {
-    const val kotlinxDateTime = "0.3.3"
-    const val kotlinCoroutines = "1.6.1"
-    const val kotlinxSerialization = "1.3.2"
+    const val kotlinxDateTime = "0.4.0"
+    const val kotlinCoroutines = "1.6.4"
+    const val kotlinxSerialization = "1.4.0"
 
     // Di
     const val koin = "3.2.0"
 
     // Image loading
-    const val coil = "2.1.0"
+    const val coil = "2.2.0"
 
     // Networking
     const val paging = "3.1.1"
-    const val pagingCompose = "1.0.0-alpha14"
+    const val pagingCompose = "1.0.0-alpha16"
     const val retrofit = "2.9.0"
-    const val okHttp = "4.9.3"
+    const val okHttp = "4.10.0"
 
     // Storage
     const val kodeinDB = "0.9.0-beta"
-    const val store = "4.0.4-KT15"
 
     // Compose
-    const val compose = "1.2.0-beta03"
-    const val composeMaterial3 = "1.0.0-alpha13"
-    const val composeMaterial = "1.1.1"
-    const val accompanist = "0.23.1"
+    const val compose = "1.2.1"
+    const val composeCompiler = "1.3.0"
+    const val composeActivity = "1.5.1"
+    const val composeMaterial3 = "1.0.0-alpha16"
+    const val accompanist = "0.25.1"
 
     // AndroidX
-    const val lifecycle = "2.4.1"
-    const val navigation = "2.4.2"
-    const val coreKtx = "1.7.0"
-    const val appcompat = "1.4.1"
+    const val lifecycle = "2.5.1"
+    const val navigation = "2.5.1"
+    const val coreKtx = "1.8.0"
+    const val appcompat = "1.5.0"
 
     // UI
-    const val material = "1.6.0"
-    const val constraintLayout = "1.0.0"
-    const val lottie = "5.0.3"
-    const val materialDateTimePicker = "0.7.1"
-    const val fluentIcons = "1.1.170@aar"
-    const val splashScreen = "1.0.0-rc01"
-    const val glance = "1.0.0-alpha03"
+    const val material = "1.6.1"
+    const val constraintLayout = "1.0.1"
+    const val lottie = "5.2.0"
+    const val materialDateTimePicker = "0.8.1-rc"
+    const val fluentIcons = "1.1.179@aar"
+    const val splashScreen = "1.0.0"
+    const val glance = "1.0.0-alpha04"
 }

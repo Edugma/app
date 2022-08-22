@@ -14,11 +14,20 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import io.edugma.domain.schedule.model.place.description
 import io.edugma.domain.schedule.model.teacher.description
 import io.edugma.features.base.core.utils.ClickListener
+import io.edugma.features.base.core.utils.FluentIcons
+import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.base.elements.PrimaryTopAppBar
+import io.edugma.features.base.elements.TextIcon
+import io.edugma.features.base.elements.TonalCard
+import io.edugma.features.schedule.elements.vertical_schedule.VerticalScheduleComponent
+import io.edugma.features.schedule.schedule_info.group_info.InfoScaffold
+import io.edugma.features.schedule.schedule_info.place_info.PlaceInfoTabs
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -44,31 +53,56 @@ private fun TeacherInfoContent(
     onBackClick: ClickListener,
     onTabSelected: Typed1Listener<TeacherInfoTabs>
 ) {
-    Column(Modifier.fillMaxSize()) {
-        PrimaryTopAppBar(
-            title = state.teacherInfo?.name ?: "",
-            onBackClick = onBackClick
-        )
-        state.teacherInfo?.let { teacherInfo ->
-            Text(text = teacherInfo.name)
-            Text(text = teacherInfo.description)
-        }
-        LazyRow(Modifier.fillMaxWidth()) {
-            items(state.tabs) {
-                Card(
-                    onClick = { onTabSelected(it) },
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
-                ) {
-                    val text = when (it) {
-                        TeacherInfoTabs.Schedule -> "Расписание"
-                    }
+    InfoScaffold(
+        title = state.teacherInfo?.name ?: "",
+        onBackClick = onBackClick,
+        fields = {
+            state.teacherInfo?.let { groupInfo ->
+                TextIcon(
+                    text = groupInfo.description,
+                    painter = painterResource(FluentIcons.ic_fluent_text_description_20_regular)
+                )
+//                TextIcon(
+//                    text = "${groupInfo.course}-й курс",
+//                    painter = painterResource(FluentIcons.ic_fluent_timer_20_regular)
+//                )
+//                TextIcon(
+//                    text = groupInfo.toString(),
+//                    painter = painterResource(FluentIcons.ic_fluent_weather_moon_20_regular)
+//                )
+            }
+        },
+        tabs = {
+            LazyRow(Modifier.fillMaxWidth()) {
+                items(state.tabs) {
+                    TonalCard(
+                        onClick = { onTabSelected(it) },
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 5.dp),
+                        shape = MaterialTheme3.shapes.small
+                    ) {
+                        val text = when (it) {
+                            TeacherInfoTabs.Schedule -> "Расписание"
+                        }
 
-                    Text(
-                        text = text,
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
-                    )
+                        Text(
+                            text = text,
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
+                        )
+                    }
                 }
             }
+        },
+        content = {
+            when (state.selectedTab) {
+                TeacherInfoTabs.Schedule -> {
+                    state.scheduleSource?.let {
+                        VerticalScheduleComponent(
+                            scheduleSource = state.scheduleSource
+                        )
+                    }
+                }
+                else  -> { }
+            }
         }
-    }
+    )
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import io.edugma.domain.base.utils.onFailure
 import io.edugma.domain.base.utils.onSuccess
 import io.edugma.domain.schedule.model.source.ScheduleSourceFull
+import io.edugma.domain.schedule.model.source.ScheduleSources
 import io.edugma.domain.schedule.model.source.ScheduleSourcesTabs
 import io.edugma.domain.schedule.usecase.ScheduleSourcesUseCase
 import io.edugma.features.base.core.mvi.BaseViewModel
@@ -94,6 +95,21 @@ class ScheduleSourcesViewModel(
     fun onQueryChange(query: String) {
         mutateState {
             state = state.copy(query = query)
+        }
+    }
+
+    fun onApplyComplexSearch() {
+        viewModelScope.launch {
+            useCase.setSelectedSource(
+                ScheduleSourceFull(
+                    type = ScheduleSources.Complex,
+                    key = "{}",
+                    title = "Расширенный поиск",
+                    description = "",
+                    avatarUrl = null
+                )
+            )
+            router.exit()
         }
     }
 }

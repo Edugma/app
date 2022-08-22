@@ -25,7 +25,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
+import io.edugma.domain.schedule.model.group.description
 import io.edugma.domain.schedule.model.place.PlaceInfo
+import io.edugma.domain.schedule.model.place.description
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.FluentIcons
 import io.edugma.features.base.core.utils.MaterialTheme3
@@ -33,7 +35,11 @@ import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.base.elements.PrimaryTopAppBar
 import io.edugma.features.base.elements.SpacerHeight
 import io.edugma.features.base.elements.TextIcon
+import io.edugma.features.base.elements.TonalCard
+import io.edugma.features.schedule.elements.vertical_schedule.VerticalScheduleComponent
 import io.edugma.features.schedule.schedule_info.R
+import io.edugma.features.schedule.schedule_info.group_info.GroupInfoTabs
+import io.edugma.features.schedule.schedule_info.group_info.InfoScaffold
 import org.koin.androidx.compose.getViewModel
 import java.time.format.DateTimeFormatter
 
@@ -62,55 +68,61 @@ private fun PlaceInfoContent(
     onBackClick: ClickListener,
     onTabSelected: Typed1Listener<PlaceInfoTabs>
 ) {
-    Column(Modifier.fillMaxSize()) {
-        PrimaryTopAppBar(
-            title = state.placeInfo?.title ?: "",
-            onBackClick = onBackClick
-        )
+    InfoScaffold(
+        title = state.placeInfo?.title ?: "",
+        onBackClick = onBackClick,
+        fields = {
+            state.placeInfo?.let { groupInfo ->
+                TextIcon(
+                    text = groupInfo.description,
+                    painter = painterResource(FluentIcons.ic_fluent_text_description_20_regular)
+                )
+//                TextIcon(
+//                    text = "${groupInfo.course}-й курс",
+//                    painter = painterResource(FluentIcons.ic_fluent_timer_20_regular)
+//                )
+//                TextIcon(
+//                    text = groupInfo.toString(),
+//                    painter = painterResource(FluentIcons.ic_fluent_weather_moon_20_regular)
+//                )
+            }
+        },
+        tabs = {
+            LazyRow(Modifier.fillMaxWidth()) {
+                items(state.tabs) {
+                    TonalCard(
+                        onClick = { onTabSelected(it) },
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 5.dp),
+                        shape = MaterialTheme3.shapes.small
+                    ) {
+                        val text = when (it) {
+                            PlaceInfoTabs.Occupancy -> "Занятость"
+                            PlaceInfoTabs.Map -> "Карта"
+                            PlaceInfoTabs.Schedule -> "Расписание"
+                        }
 
-        when (state.placeInfo) {
-            is PlaceInfo.Building -> PlaceBuilding(
-                place = state.placeInfo
-            )
-            is PlaceInfo.Online -> PlaceOnline(
-                place = state.placeInfo
-            )
-            is PlaceInfo.Other -> PlaceOther(
-                place = state.placeInfo
-            )
-            is PlaceInfo.Unclassified -> PlaceUnclassified(
-                place = state.placeInfo
-            )
-            null -> {  }
-        }
-
-        LazyRow(Modifier.fillMaxWidth()) {
-            items(state.tabs) {
-                Card(
-                    onClick = { onTabSelected(it) },
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
-                ) {
-                    val text = when (it) {
-                        PlaceInfoTabs.Occupancy -> "Занятость"
-                        PlaceInfoTabs.Map -> "Карта"
-                        PlaceInfoTabs.Schedule -> "Расписание"
+                        Text(
+                            text = text,
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
+                        )
                     }
-
-                    Text(
-                        text = text,
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
-                    )
                 }
             }
+        },
+        content = {
+            when (state.selectedTab) {
+                PlaceInfoTabs.Schedule -> {
+                    state.scheduleSource?.let {
+                        VerticalScheduleComponent(
+                            scheduleSource = state.scheduleSource
+                        )
+                    }
+                }
+                else  -> { }
+//                GroupInfoTabs.Students -> { }
+            }
         }
-
-        SpacerHeight(8.dp)
-        when (state.selectedTab) {
-            PlaceInfoTabs.Occupancy -> OccupancyTab(state)
-            PlaceInfoTabs.Map -> { }
-            PlaceInfoTabs.Schedule -> { }
-        }
-    }
+    )
 }
 
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)

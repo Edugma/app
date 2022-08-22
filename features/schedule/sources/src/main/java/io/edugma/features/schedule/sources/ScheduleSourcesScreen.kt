@@ -39,11 +39,12 @@ fun ScheduleSourcesScreen(viewModel: ScheduleSourcesViewModel = getViewModel()) 
         onTabSelected = viewModel::onSelectTab,
         onSourceSelected = viewModel::onSelectSource,
         onAddFavorite = viewModel::onAddFavorite,
-        onDeleteFavorite = viewModel::onDeleteFavorite
+        onDeleteFavorite = viewModel::onDeleteFavorite,
+        onApplyComplexSearch = viewModel::onApplyComplexSearch
     )
 }
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun ScheduleSourcesContent(
     state: ScheduleSourceState,
@@ -52,7 +53,8 @@ fun ScheduleSourcesContent(
     onTabSelected: Typed1Listener<ScheduleSourcesTabs>,
     onSourceSelected: Typed1Listener<ScheduleSourceFull>,
     onAddFavorite: Typed1Listener<ScheduleSourceFull>,
-    onDeleteFavorite: Typed1Listener<ScheduleSourceFull>
+    onDeleteFavorite: Typed1Listener<ScheduleSourceFull>,
+    onApplyComplexSearch: ClickListener
 ) {
 
     val q = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
@@ -69,16 +71,17 @@ fun ScheduleSourcesContent(
         )
         if (state.selectedTab == ScheduleSourcesTabs.Complex) {
             ComplexSearch(
-                typesId = TODO(),
-                subjectsId = TODO(),
-                teachersId = TODO(),
-                groupsId = TODO(),
-                placesId = TODO(),
-                onSelectTypes = TODO(),
-                onSelectSubjects = TODO(),
-                onSelectTeachers = TODO(),
-                onSelectGroups = TODO(),
-                onSelectPlaces = TODO()
+                typesId = emptyList(),
+                subjectsId = emptyList(),
+                teachersId = emptyList(),
+                groupsId = emptyList(),
+                placesId = emptyList(),
+                onSelectTypes = { },
+                onSelectSubjects = { },
+                onSelectTeachers = { },
+                onSelectGroups = { },
+                onSelectPlaces = { },
+                onApply = onApplyComplexSearch
             )
         } else {
             Search(
@@ -143,6 +146,7 @@ fun ScheduleSourcesContent(
 //    }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun FiltersSelector(
     filters: List<Pair<String, Boolean>>,
@@ -220,10 +224,12 @@ private fun ComplexSearch(
     onSelectTeachers: ClickListener,
     onSelectGroups: ClickListener,
     onSelectPlaces: ClickListener,
+    onApply: ClickListener
 ) {
     Column(
         Modifier
             .fillMaxSize()
+            .padding(horizontal = 8.dp)
             .verticalScroll(rememberScrollState())
     ) {
         Filter(
@@ -231,26 +237,37 @@ private fun ComplexSearch(
             filters = typesId,
             onSelect = onSelectTypes
         )
+        SpacerHeight(height = 16.dp)
         Filter(
             title = "Предметы",
             filters = subjectsId,
             onSelect = onSelectSubjects
         )
+        SpacerHeight(height = 16.dp)
         Filter(
             title = "Преподаватели",
             filters = teachersId,
             onSelect = onSelectTeachers
         )
+        SpacerHeight(height = 16.dp)
         Filter(
             title = "Группы",
             filters = groupsId,
             onSelect = onSelectGroups
         )
+        SpacerHeight(height = 16.dp)
         Filter(
             title = "Места",
             filters = placesId,
             onSelect = onSelectPlaces
         )
+        SpacerHeight(height = 16.dp)
+        PrimaryButton(
+            onClick = onApply,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = "Применить")
+        }
     }
 }
 
@@ -279,14 +296,15 @@ private fun Filter(
                     onClick = { },
                     label = {
                         Text(text = it)
-                    }
+                    },
+                    selected = false
                 )
             }
         }
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun Search(
     query: String,
