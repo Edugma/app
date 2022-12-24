@@ -8,3 +8,6 @@ dependencies {
     implementation(project(Modules.Features.Base.Elements))
     api(projects.domain.schedule)
 }
+android {
+    namespace = "io.edugma.features.schedule.calendar"
+}

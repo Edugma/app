@@ -37,3 +37,6 @@ dependencies {
     androidTestImplementation(Libs.AndroidX.Test.espressoCore)
     androidTestImplementation(Libs.AndroidX.Compose.uiTest)
 }
+android {
+    namespace = "io.edugma.android"
+}

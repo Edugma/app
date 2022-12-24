@@ -9,3 +9,6 @@ dependencies {
 
     api(project(Modules.Domain.Nodes))
 }
+android {
+    namespace = "io.edugma.features.nodes"
+}

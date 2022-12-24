@@ -9,3 +9,6 @@ dependencies {
 
     implementation(projects.features.misc.settings)
 }
+android {
+    namespace = "io.edugma.features.misc.menu"
+}

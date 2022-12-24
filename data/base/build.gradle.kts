@@ -16,3 +16,6 @@ dependencies {
     releaseApi(Libs.Storage.KodeinDB.release)
     api(Libs.Storage.KodeinDB.kotlinxSerializer)
 }
+android {
+    namespace = "io.edugma.data.base"
+}

@@ -7,3 +7,6 @@ dependencies {
     api(project(Modules.Data.Base))
     api(project(Modules.Domain.Account))
 }
+android {
+    namespace = "io.edugma.data.account"
+}

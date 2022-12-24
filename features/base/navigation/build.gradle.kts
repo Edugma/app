@@ -7,3 +7,6 @@ dependencies {
 
     implementation(projects.domain.schedule)
 }
+android {
+    namespace = "io.edugma.features.navigation"
+}

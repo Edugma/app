@@ -9,3 +9,6 @@ dependencies {
     api(projects.domain.schedule)
     implementation(projects.features.schedule.elements)
 }
+android {
+    namespace = "io.edugma.features.schedule.schedule_info"
+}

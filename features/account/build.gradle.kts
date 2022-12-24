@@ -8,3 +8,6 @@ dependencies {
     implementation(project(Modules.Features.Base.Elements))
     implementation(project(Modules.Domain.Account))
 }
+android {
+    namespace = "io.edugma.features.account"
+}

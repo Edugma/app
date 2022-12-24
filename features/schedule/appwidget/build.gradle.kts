@@ -10,3 +10,6 @@ dependencies {
 
     implementation(Libs.AndroidX.Glance.appWidget)
 }
+android {
+    namespace = "io.edugma.features.schedule.appwidget"
+}

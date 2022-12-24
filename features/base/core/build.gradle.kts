@@ -41,3 +41,6 @@ dependencies {
 
     api(Libs.AndroidX.startup)
 }
+android {
+    namespace = "io.edugma.features.base.core"
+}
