@@ -37,7 +37,7 @@ val baseDataModule = module {
     }
 
     single(named(DiConst.Schedule)) {
-        buildRetrofitBuilder(get(), "http://devspare.mospolytech.ru:8002/")
+        buildRetrofitBuilder(get(), "http://devspare.mospolytech.ru:8003/")
     }
     single<Retrofit>(named(DiConst.Schedule)) { get<Retrofit.Builder>(named(DiConst.Schedule)).build() }
 

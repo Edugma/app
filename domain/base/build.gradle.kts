@@ -12,6 +12,3 @@ dependencies {
     api(Libs.Other.ktorUtils)
     api(Libs.KotlinX.dateTime)
 }
-android {
-    namespace = "io.edugma.domain.base"
-}

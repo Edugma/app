@@ -6,6 +6,3 @@ plugins {
 dependencies {
     api(project(Modules.Domain.Base))
 }
-android {
-    namespace = "io.edugma.domain.schedule"
-}
