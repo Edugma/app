@@ -1,34 +1,12 @@
 @file:Suppress("UnstableApiUsage")
-
-include(":features:schedule:free_place")
-
-
-include(":features:schedule:daily")
-include(":features:schedule:menu")
-include(":features:schedule:elements")
-
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-
-include(":features:schedule:history")
-
-
-include(":features:schedule:appwidget")
-
-
-include(":features:schedule:sources")
-include(":features:schedule:lessons_review")
-include(":features:schedule:calendar")
-include(":features:schedule:schedule_info")
-
-
 pluginManagement {
     repositories {
-        gradlePluginPortal()
         google()
         mavenCentral()
+        gradlePluginPortal()
     }
 
-    val androidGradleVersion = "7.3.0"
+    val androidGradleVersion = "7.4.0"
     val kotlinVersion = "1.7.10"
 
     plugins {
@@ -48,39 +26,34 @@ dependencyResolutionManagement {
     }
 }
 
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 rootProject.name = "edugma"
 
 include(":app")
 
+includeSubmodules(
+    "data",
+    "domain",
+    "features",
 
-include(":data")
-include(":data:base")
-include(":data:schedule")
-include(":data:account")
-include(":data:nodes")
+    deep = 4,
+)
 
-
-
-include(":domain")
-include(":domain:base")
-include(":domain:schedule")
-include(":domain:account")
-include(":domain:nodes")
-
-
-
-include(":features")
-include(":features:base")
-include(":features:base:core")
-include(":features:base:navigation")
-include(":features:base:elements")
-include(":features:schedule")
-include(":features:account")
-include(":features:home")
-include(":features:nodes")
-
-include(":features:misc")
-include(":features:misc:menu")
-include(":features:misc:settings")
+fun includeSubmodules(vararg projectPaths: String, deep: Int = 1) {
+    require(deep >= 1)
+    projectPaths.forEach { path ->
+        val childFiles = File(path).listFiles() ?: return@forEach
+        childFiles.forEach { subproject ->
+            if (subproject.isDirectory && File(subproject, "build.gradle.kts").exists()) {
+                val projectName = subproject.path.replace('\\', ':')
+                include(projectName)
+            }
+            if (deep != 1) {
+                includeSubmodules(subproject.path, deep = deep - 1)
+            }
+        }
+    }
+}
 
 
