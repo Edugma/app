@@ -4,8 +4,8 @@ plugins {
 }
 
 dependencies {
-    api(project(Modules.Data.Base))
-    api(project(Modules.Domain.Nodes))
+    api(projects.data.base)
+    api(projects.domain.nodes)
 }
 android {
     namespace = "io.edugma.data.nodes"

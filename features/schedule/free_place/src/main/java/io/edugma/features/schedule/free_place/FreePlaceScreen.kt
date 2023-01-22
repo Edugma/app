@@ -4,8 +4,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
@@ -15,10 +13,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.vanpra.composematerialdialogs.MaterialDialog
-import com.vanpra.composematerialdialogs.datetime.date.datepicker
-import com.vanpra.composematerialdialogs.datetime.time.timepicker
-import com.vanpra.composematerialdialogs.rememberMaterialDialogState
+import io.edugma.features.base.elements.dialogs.core.MaterialDialog
+import io.edugma.features.base.elements.dialogs.date.datepicker
+import io.edugma.features.base.elements.dialogs.time.timepicker
+import io.edugma.features.base.elements.dialogs.core.rememberMaterialDialogState
 import io.edugma.domain.schedule.model.place.description
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.*

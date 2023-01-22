@@ -10,7 +10,6 @@ android {
 
     defaultConfig {
         minSdk = Config.minSdk
-        targetSdk = Config.targetSdkVersion
 
         testInstrumentationRunner = Config.androidTestInstrumentation
         vectorDrawables {
@@ -37,7 +36,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = Versions.composeCompiler
+        kotlinCompilerExtensionVersion = "1.4.0"
     }
     packagingOptions {
         resources {
@@ -69,5 +68,5 @@ fun getPrefix(): String {
 }
 
 dependencies {
-    coreLibraryDesugaring(Libs.Other.jdkDesugar)
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.0")
 }

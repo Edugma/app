@@ -22,7 +22,7 @@ fun PrimaryTopAppBar(
     scrollBehavior: TopAppBarScrollBehavior? = null
 ) {
 
-    SmallTopAppBar(
+    TopAppBar(
         title = {
             Row(
                 Modifier
@@ -62,13 +62,13 @@ fun PrimaryTopAppBar(
                 }
             }
         },
-        modifier.height(50.dp),
+        modifier = modifier.height(50.dp),
         navigationIcon = {
             BackIconButton(onBackClick)
         },
-        actions,
-        colors,
-        scrollBehavior
+        actions = actions,
+        colors = colors,
+        scrollBehavior = scrollBehavior
     )
 }
 

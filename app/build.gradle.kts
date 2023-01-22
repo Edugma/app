@@ -32,10 +32,11 @@ dependencies {
     implementation(projects.data.schedule)
     implementation(projects.data.account)
 
-    testImplementation(Libs.Other.junit)
-    androidTestImplementation(Libs.AndroidX.Test.Ext.junit)
-    androidTestImplementation(Libs.AndroidX.Test.espressoCore)
-    androidTestImplementation(Libs.AndroidX.Compose.uiTest)
+    testImplementation(libs.test.junit)
+    androidTestImplementation(libs.test.junit.ext)
+    androidTestImplementation(libs.test.espressoCore)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.compose.uiTest)
 }
 android {
     namespace = "io.edugma.android"

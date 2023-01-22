@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    api(project(Modules.Data.Base))
+    api(projects.data.base)
     api(projects.domain.schedule)
 }
 android {

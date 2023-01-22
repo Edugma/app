@@ -3,11 +3,11 @@ plugins {
 }
 
 dependencies {
-    implementation(project(Modules.Features.Base.Core))
-    implementation(project(Modules.Features.Base.Navigation))
-    implementation(project(Modules.Features.Base.Elements))
+    implementation(projects.features.base.core)
+    implementation(projects.features.base.navigation)
+    implementation(projects.features.base.elements)
 
-    api(project(Modules.Domain.Nodes))
+    api(projects.domain.nodes)
 }
 android {
     namespace = "io.edugma.features.nodes"

@@ -4,11 +4,11 @@ plugins {
 }
 
 dependencies {
-    api(Libs.KotlinX.Coroutines.core)
-    api(Libs.KotlinX.Coroutines.jvm)
-    api(Libs.KotlinX.serializationJson)
-    api(Libs.KotlinX.serializationCbor)
-    api(Libs.Di.koinCore)
-    api(Libs.Other.ktorUtils)
-    api(Libs.KotlinX.dateTime)
+    api(libs.kotlinx.coroutines.core)
+    api(libs.kotlinx.coroutines.jvm)
+    api(libs.kotlinx.serializationJson)
+    api(libs.kotlinx.serializationCbor)
+    api(libs.koin.core)
+    api(libs.ktorUtils)
+    api(libs.kotlinx.dateTime)
 }

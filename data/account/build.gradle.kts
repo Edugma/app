@@ -4,8 +4,8 @@ plugins {
 }
 
 dependencies {
-    api(project(Modules.Data.Base))
-    api(project(Modules.Domain.Account))
+    api(projects.data.base)
+    api(projects.domain.account)
 }
 android {
     namespace = "io.edugma.data.account"

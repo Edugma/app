@@ -48,5 +48,5 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring(Libs.Other.jdkDesugar)
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.0")
 }

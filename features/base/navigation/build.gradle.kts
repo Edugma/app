@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api(project(Modules.Features.Base.Core))
+    api(projects.features.base.core)
 
     implementation(projects.domain.schedule)
 }

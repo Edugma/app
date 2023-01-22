@@ -4,17 +4,17 @@ plugins {
 }
 
 dependencies {
-    api(project(Modules.Domain.Base))
+    api(projects.domain.base)
 
-    api(Libs.Networking.retrofit)
-    api(Libs.Networking.okHttp)
-    api(Libs.Networking.okHttpLogging)
-    api(Libs.Networking.paging)
-    api(Libs.Networking.pagingCompose)
+    api(libs.retrofit)
+    api(libs.okHttp)
+    api(libs.okHttp.logging)
+    api(libs.paging)
+    api(libs.paging.compose)
 
-    debugApi(Libs.Storage.KodeinDB.debug)
-    releaseApi(Libs.Storage.KodeinDB.release)
-    api(Libs.Storage.KodeinDB.kotlinxSerializer)
+    debugApi(libs.kodeindb.debug)
+    releaseApi(libs.kodeindb.release)
+    api(libs.kodeindb.kotlinx.serializer)
 }
 android {
     namespace = "io.edugma.data.base"

@@ -3,10 +3,10 @@ plugins {
 }
 
 dependencies {
-    implementation(project(Modules.Features.Base.Core))
-    implementation(project(Modules.Features.Base.Navigation))
-    implementation(project(Modules.Features.Base.Elements))
-    implementation(project(Modules.Domain.Account))
+    implementation(projects.features.base.core)
+    implementation(projects.features.base.navigation)
+    implementation(projects.features.base.elements)
+    implementation(projects.domain.account)
 }
 android {
     namespace = "io.edugma.features.account"
