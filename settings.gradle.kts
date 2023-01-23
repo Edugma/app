@@ -36,6 +36,7 @@ includeSubmodules(
     "data",
     "domain",
     "features",
+    "core",
 
     deep = 4,
 )

@@ -19,8 +19,8 @@ internal object ShapeTokens {
     val CornerSmall = RoundedCornerShape(16.0.dp)
     // cards and small FABs
     val CornerMedium = RoundedCornerShape(24.0.dp)
-    // extended FABs, FABs, and navigation drawers
-    val CornerExtraLarge = RoundedCornerShape(28.0.dp)
     // large FABs
     val CornerLarge = RoundedCornerShape(16.0.dp)
+    // extended FABs, FABs, and navigation drawers
+    val CornerExtraLarge = RoundedCornerShape(28.0.dp)
 }
