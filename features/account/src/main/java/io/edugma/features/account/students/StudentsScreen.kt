@@ -32,6 +32,7 @@ import androidx.paging.compose.items
 import coil.compose.AsyncImage
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.molecules.button.EdButton
+import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
 import io.edugma.domain.account.model.student.Student
 import io.edugma.features.account.R
 import io.edugma.features.account.teachers.TeacherPlaceholder
@@ -319,7 +320,7 @@ fun StudentsContent(
                         item { Refresher(onClickListener = studentListItems::retry) }
                     }
                     studentListItems.itemCount == 0 && studentListItems.loadState.append.endOfPaginationReached -> {
-                        item { EmptyView() }
+                        item { EdNothingFound() }
                     }
                 }
             }

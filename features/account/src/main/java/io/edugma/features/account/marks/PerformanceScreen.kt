@@ -33,6 +33,7 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.molecules.button.EdButton
+import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
 import io.edugma.domain.account.model.Performance
 import io.edugma.features.account.R
 import io.edugma.features.account.marks.Filter.*
@@ -161,7 +162,7 @@ fun PerformanceContent(
                         }
                     }
                     state.filteredData?.isEmpty() == true -> {
-                        item { EmptyView() }
+                        item { EdNothingFound() }
                     }
                     else -> {
                         items(

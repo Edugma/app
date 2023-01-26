@@ -1,6 +1,8 @@
-package io.edugma.features.base.elements
+package io.edugma.core.designSystem.organism.nothingFound
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -10,13 +12,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.airbnb.lottie.compose.*
-import io.edugma.features.base.core.utils.MaterialTheme3
-import io.edugma.features.elements.R
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
+import io.edugma.core.designSystem.R
+import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
+import io.edugma.core.designSystem.theme.EdTheme
 
 @Composable
-@Preview
-fun EmptyView(message: String = "К сожалению, ничего не найдено.") {
+fun EdNothingFound(message: String = "К сожалению, ничего не найдено.") {
     val anim = remember { R.raw.emptylist }
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(anim))
     val progress by animateLottieCompositionAsState(
@@ -29,16 +35,24 @@ fun EmptyView(message: String = "К сожалению, ничего не най
     ) {
         SpacerHeight(height = 50.dp)
         LottieAnimation(
-            composition,
-            progress,
+            composition = composition,
+            progress = { progress },
             modifier = Modifier
                 .fillMaxWidth(),
         )
         SpacerHeight(height = 30.dp)
         Text(
             text = message,
-            style = MaterialTheme3.typography.headlineSmall,
+            style = EdTheme.typography.headlineSmall,
             textAlign = TextAlign.Center,
         )
+    }
+}
+
+@Preview
+@Composable
+internal fun EdNothingFoundPreview() {
+    EdTheme {
+        EdNothingFound()
     }
 }
