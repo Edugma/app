@@ -24,10 +24,7 @@ class MainActivity : ComponentActivity() {
             ) {
                 Surface(color = MaterialTheme.colorScheme.background) {
                     Box(
-                        Modifier
-                            .statusBarsPadding()
-                            .navigationBarsPadding()
-                            .imePadding(),
+                        Modifier,
                     ) {
                         MainContent()
                     }

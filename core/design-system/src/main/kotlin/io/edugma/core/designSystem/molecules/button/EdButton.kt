@@ -39,8 +39,7 @@ fun EdButton(
             .sizeIn(
                 minWidth = size.minSize.width,
                 minHeight = size.minSize.height,
-            )
-            .height(size.height),
+            ),
         enabled = enabled,
         interactionSource = interactionSource,
         shape = size.shape,

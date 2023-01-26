@@ -15,6 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.domain.schedule.model.group.Group
 import io.edugma.domain.schedule.model.lesson.Lesson
 import io.edugma.domain.schedule.model.lesson.LessonDisplaySettings
@@ -42,6 +43,7 @@ fun LessonContent(
             .padding(horizontal = 8.dp, vertical = 6.dp)
             .fillMaxWidth(),
         onClick = { onLessonClick(lesson) },
+        shape = EdTheme.shapes.large,
     ) {
         Column(Modifier.padding(start = 24.dp, end = 24.dp, top = 13.dp, bottom = 16.dp)) {
             WithContentAlpha(ContentAlpha.medium) {

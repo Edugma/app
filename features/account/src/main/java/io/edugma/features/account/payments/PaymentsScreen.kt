@@ -9,10 +9,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -32,7 +30,9 @@ import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.edugma.core.designSystem.atoms.label.EdLabel
+import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.molecules.button.EdButton
+import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.domain.account.model.*
 import io.edugma.features.account.R
 import io.edugma.features.base.core.utils.*
@@ -103,7 +103,7 @@ fun BottomSheetLayout(
     }
 }
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun PaymentsContent(
     state: PaymentsState,
@@ -117,7 +117,10 @@ fun PaymentsContent(
             val paymentsPagerState = rememberPagerState(state.selectedIndex)
             paymentsPagerState.bindTo(state.selectedIndex)
             paymentsPagerState.onPageChanged(onPaymentChange::invoke)
-            AppBar(state, backListener)
+            EdTopAppBar(
+                title = state.selectedPayment?.let { "Договор №${it.number}" } ?: "Оплаты",
+                onNavigationClick = backListener,
+            )
             when {
                 state.isError && state.types.isNull() -> {
                     LazyColumn(modifier = Modifier.fillMaxSize()) {
@@ -148,29 +151,6 @@ fun PaymentsContent(
                 }
             }
         }
-    }
-}
-
-@Composable
-fun AppBar(
-    state: PaymentsState,
-    backListener: ClickListener,
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(bottom = 10.dp),
-    ) {
-        IconButton(onClick = backListener) {
-            Icon(
-                Icons.Filled.ArrowBack,
-                contentDescription = "Назад",
-            )
-        }
-        SpacerWidth(width = 15.dp)
-        Text(
-            text = state.selectedPayment?.let { "Договор №${it.number}" } ?: "Оплаты",
-            style = MaterialTheme3.typography.headlineSmall,
-        )
     }
 }
 
@@ -243,7 +223,7 @@ fun Payments(payments: Payments, onQrClickListener: ClickListener) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 10.dp, vertical = 15.dp),
-            text = "Оплатить через QR код".uppercase(),
+            text = "Оплатить через QR код",
         )
     }
 }

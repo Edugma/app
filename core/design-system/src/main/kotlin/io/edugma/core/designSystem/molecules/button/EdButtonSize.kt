@@ -15,7 +15,6 @@ import io.edugma.core.designSystem.theme.EdTheme
 @Immutable
 data class EdButtonSize(
     val shape: Shape,
-    val height: Dp,
     val minSize: DpSize,
     val contentPadding: PaddingValues,
     val textStyle: TextStyle,
@@ -29,16 +28,15 @@ data class EdButtonSize(
             @ReadOnlyComposable
             get() = EdButtonSize(
                 shape = EdTheme.shapes.extraSmall,
-                height = 24.dp,
                 minSize = DpSize(
-                    width = 38.dp,
-                    height = 20.dp,
+                    width = 10.dp,
+                    height = 32.dp,
                 ),
                 contentPadding = PaddingValues(
                     horizontal = 8.dp,
                     vertical = 0.dp,
                 ),
-                textStyle = EdTheme.typography.labelSmall,
+                textStyle = EdTheme.typography.labelMedium,
                 textPadding = PaddingValues(bottom = 1.dp),
                 loaderSize = EdLoaderSize.extraSmall,
                 spacer = 6.dp,
@@ -49,16 +47,15 @@ data class EdButtonSize(
             @ReadOnlyComposable
             get() = EdButtonSize(
                 shape = EdTheme.shapes.small,
-                height = 32.dp,
                 minSize = DpSize(
-                    width = 48.dp,
-                    height = 32.dp,
+                    width = 10.dp,
+                    height = 44.dp,
                 ),
                 contentPadding = PaddingValues(
                     horizontal = 12.dp,
                     vertical = 0.dp,
                 ),
-                textStyle = EdTheme.typography.labelMedium,
+                textStyle = EdTheme.typography.labelLarge,
                 textPadding = PaddingValues(bottom = 3.dp),
                 loaderSize = EdLoaderSize.small,
                 spacer = 12.dp,
@@ -69,10 +66,9 @@ data class EdButtonSize(
             @ReadOnlyComposable
             get() = EdButtonSize(
                 shape = EdTheme.shapes.small,
-                height = 48.dp,
                 minSize = DpSize(
-                    width = 58.dp,
-                    height = 40.dp,
+                    width = 10.dp,
+                    height = 56.dp,
                 ),
                 contentPadding = PaddingValues(
                     horizontal = 16.dp,
