@@ -1,6 +1,5 @@
 package io.edugma.features.schedule.daily
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
@@ -23,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.TonalCard
 import io.edugma.features.schedule.daily.model.DayUiModel
@@ -92,7 +92,7 @@ fun WeekContent(
 
 private val weekFormat = DateTimeFormatter.ofPattern("EEE")
 
-@OptIn(ExperimentalAnimationApi::class, androidx.compose.material3.ExperimentalMaterial3Api::class)
+@OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
 @Composable
 fun RowScope.DayContent(
     day: DayUiModel,
@@ -132,7 +132,7 @@ fun RowScope.DayContent(
             modifier = Modifier
                 .padding(start = 3.dp, end = 3.dp, top = 1.dp, bottom = 1.dp)
                 .size(39.dp),
-            shape = MaterialTheme3.shapes.small,
+            shape = EdTheme.shapes.medium,
             border = border,
             color = backgroundColor,
         ) {

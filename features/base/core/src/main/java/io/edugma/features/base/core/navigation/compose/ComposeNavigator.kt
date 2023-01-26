@@ -1,17 +1,23 @@
 package io.edugma.features.base.core.navigation.compose
 
+import android.util.Log
 import androidx.navigation.NavHostController
 import io.edugma.features.base.core.navigation.core.Command
 import io.edugma.features.base.core.navigation.core.Router
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class ComposeNavigator(
     val navController: NavHostController,
     private val router: Router,
 ) {
+    companion object {
+        private const val TAG = "ComposeNavigator"
+    }
+
     private val scope = CoroutineScope(Job() + Dispatchers.Main)
 
     init {
@@ -20,8 +26,14 @@ class ComposeNavigator(
                 try {
                     processCommand(it)
                 } catch (e: Exception) {
-                    e.printStackTrace()
+                    Log.e(TAG, "", e)
                 }
+            }
+        }
+
+        scope.launch {
+            navController.currentBackStackEntryFlow.collect {
+                Log.d(TAG, "CurrentBackStackEntry: ${it.destination.route}")
             }
         }
     }
@@ -33,6 +45,7 @@ class ComposeNavigator(
     }
 
     private fun applyCommand(command: Command) {
+        Log.d(TAG, "applyCommand: $command")
         when (command) {
             is Command.Forward -> forward(command)
             is Command.Replace -> replace(command)

@@ -1,12 +1,17 @@
 package io.edugma.core.designSystem.organism.topAppBar
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.label.EdLabel
@@ -26,11 +31,10 @@ fun EdTopAppBar(
     navigationIcon: Painter? = painterResource(EdIcons.ic_fluent_arrow_left_24_filled),
     onNavigationClick: (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
-    windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
+    windowInsets: WindowInsets = WindowInsets(0.dp), // TopAppBarDefaults.windowInsets,
     colors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(),
     scrollBehavior: TopAppBarScrollBehavior? = null,
 ) {
-    onNavigationClick?.let { onNavigationClick() }
     CenterAlignedTopAppBar(
         title = {
             if (subtitle == null) {
@@ -44,10 +48,13 @@ fun EdTopAppBar(
                         text = title,
                         iconPainter = titleIcon,
                     )
-                    EdLabel(
-                        text = subtitle,
-                        iconPainter = subtitleIcon,
-                    )
+                    CompositionLocalProvider(LocalContentColor provides EdTheme.colorScheme.onSurfaceVariant) {
+                        EdLabel(
+                            text = subtitle,
+                            iconPainter = subtitleIcon,
+                            style = EdTheme.typography.bodySmall,
+                        )
+                    }
                 }
             }
         },
@@ -59,10 +66,18 @@ fun EdTopAppBar(
                     contentDescription = null,
                     modifier = Modifier
                         .size(48.dp)
-                        .padding(10.dp)
                         .ifNotNull(onNavigationClick) { onNavigationClick ->
-                            clickable { onNavigationClick() }
-                        },
+                            clickable(
+                                onClick = { onNavigationClick() },
+                                enabled = true,
+                                role = Role.Button,
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = rememberRipple(
+                                    bounded = false,
+                                    radius = 24.dp,
+                                ),
+                            )
+                        }.padding(12.dp),
                 )
             }
         },
