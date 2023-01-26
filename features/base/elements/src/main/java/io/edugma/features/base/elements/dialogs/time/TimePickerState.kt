@@ -8,7 +8,8 @@ import java.time.LocalTime
 
 internal enum class ClockScreen {
     Hour,
-    Minute;
+    Minute,
+    ;
 
     fun isHour() = this == Hour
     fun isMinute() = this == Minute
@@ -20,7 +21,7 @@ internal class TimePickerState(
     currentScreen: ClockScreen = ClockScreen.Hour,
     clockInput: Boolean = true,
     timeRange: ClosedRange<LocalTime>,
-    is24Hour: Boolean
+    is24Hour: Boolean,
 ) {
     var selectedTime by mutableStateOf(selectedTime)
     var timeRange by mutableStateOf(timeRange)

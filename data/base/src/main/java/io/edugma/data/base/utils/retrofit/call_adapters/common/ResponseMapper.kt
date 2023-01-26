@@ -10,7 +10,7 @@ import java.io.IOException
 
 class ResponseMapper<T : Any>(
     private val errorConverter: Converter<ResponseBody, T>,
-    private val onResponse: (code: Int, body: Any?) -> Unit
+    private val onResponse: (code: Int, body: Any?) -> Unit,
 ) {
     fun mapResponse(response: Response<T>): Result<T> {
         return processSuccess(response)

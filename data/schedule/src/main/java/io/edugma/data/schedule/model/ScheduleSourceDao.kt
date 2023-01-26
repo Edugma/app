@@ -7,13 +7,13 @@ import org.kodein.db.model.orm.Metadata
 @Serializable
 data class ScheduleSourceDao(
     override val id: String,
-    val source: ScheduleSource
+    val source: ScheduleSource,
 ) : Metadata {
     companion object {
         fun from(source: ScheduleSource) =
             ScheduleSourceDao(
                 source.id,
-                source
+                source,
             )
     }
 

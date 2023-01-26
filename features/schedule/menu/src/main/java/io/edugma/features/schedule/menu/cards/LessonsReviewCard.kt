@@ -14,11 +14,10 @@ import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.elements.TonalCard
 import io.edugma.features.schedule.menu.R
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LessonsReviewCard(
-    onLessonsReviewClick: ClickListener
+    onLessonsReviewClick: ClickListener,
 ) {
     TonalCard(
         modifier = Modifier

@@ -25,25 +25,25 @@ object ScheduleInfoFeatureModule {
     val screens = screens {
         addScreen<ScheduleInfoScreens.LessonInfo> {
             LessonInfoScreen(
-                lessonInfo = getArg(ScheduleInfoScreens.LessonInfo::lessonInfo.name)
+                lessonInfo = getArg(ScheduleInfoScreens.LessonInfo::lessonInfo.name),
             )
         }
 
         addScreen<ScheduleInfoScreens.TeacherInfo> {
             TeacherInfoScreen(
-                id = getArg(ScheduleInfoScreens.TeacherInfo::id.name)
+                id = getArg(ScheduleInfoScreens.TeacherInfo::id.name),
             )
         }
 
         addScreen<ScheduleInfoScreens.GroupInfo> {
             GroupInfoScreen(
-                id = getArg(ScheduleInfoScreens.GroupInfo::id.name)
+                id = getArg(ScheduleInfoScreens.GroupInfo::id.name),
             )
         }
 
         addScreen<ScheduleInfoScreens.PlaceInfo> {
             PlaceInfoScreen(
-                id = getArg(ScheduleInfoScreens.PlaceInfo::id.name)
+                id = getArg(ScheduleInfoScreens.PlaceInfo::id.name),
             )
         }
     }

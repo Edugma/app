@@ -9,6 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.features.base.core.theme.AppTheme
 
 class MainActivity : ComponentActivity() {
@@ -16,21 +17,24 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         installSplashScreen().apply {
-
         }
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             AppTheme(
-                isDynamicColor = true
+                isDynamicColor = true,
             ) {
-                Surface(color = MaterialTheme.colorScheme.background) {
-                    Box(
-                        Modifier
-                            .statusBarsPadding()
-                            .navigationBarsPadding()
-                            .imePadding()
-                    ) {
-                        MainContent()
+                EdTheme(
+                    useDynamicColors = true,
+                ) {
+                    Surface(color = MaterialTheme.colorScheme.background) {
+                        Box(
+                            Modifier
+                                .statusBarsPadding()
+                                .navigationBarsPadding()
+                                .imePadding(),
+                        ) {
+                            MainContent()
+                        }
                     }
                 }
             }

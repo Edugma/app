@@ -46,14 +46,14 @@ fun <T> MaterialDialogScope.listItems(
     closeOnClick: Boolean = true,
     onClick: (index: Int, item: T) -> Unit = { _, _ -> },
     isEnabled: (index: Int) -> Boolean = { _ -> true },
-    item: @Composable (index: Int, T) -> Unit
+    item: @Composable (index: Int, T) -> Unit,
 ) {
     BoxWithConstraints {
         LazyColumn(
             Modifier
                 .then(modifier)
                 .testTag("dialog_list"),
-            state = state
+            state = state,
         ) {
             itemsIndexed(list) { index, it ->
                 Box(
@@ -67,8 +67,8 @@ fun <T> MaterialDialogScope.listItems(
                                 }
                                 onClick(index, it)
                             },
-                            enabled = isEnabled(index)
-                        )
+                            enabled = isEnabled(index),
+                        ),
                 ) {
                     item(index, it)
                 }
@@ -88,14 +88,14 @@ fun MaterialDialogScope.listItems(
     list: List<String>,
     state: LazyListState = rememberLazyListState(),
     closeOnClick: Boolean = true,
-    onClick: (index: Int, item: String) -> Unit = { _, _ -> }
+    onClick: (index: Int, item: String) -> Unit = { _, _ -> },
 ) {
     listItems(
         modifier = Modifier.padding(bottom = 8.dp),
         state = state,
         list = list,
         closeOnClick = closeOnClick,
-        onClick = onClick
+        onClick = onClick,
     ) { _, item ->
         Text(
             item,
@@ -104,7 +104,7 @@ fun MaterialDialogScope.listItems(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 12.dp, horizontal = 24.dp)
-                .wrapContentWidth(Alignment.Start)
+                .wrapContentWidth(Alignment.Start),
         )
     }
 }
@@ -126,7 +126,7 @@ fun MaterialDialogScope.listItemsMultiChoice(
     disabledIndices: Set<Int> = setOf(),
     initialSelection: Set<Int> = setOf(),
     waitForPositiveButton: Boolean = true,
-    onCheckedChange: (indices: Set<Int>) -> Unit = {}
+    onCheckedChange: (indices: Set<Int>) -> Unit = {},
 ) {
     var selectedItems by remember { mutableStateOf(initialSelection.toMutableSet()) }
 
@@ -158,7 +158,7 @@ fun MaterialDialogScope.listItemsMultiChoice(
         state = state,
         onClick = { index, _ -> onChecked(index) },
         isEnabled = isEnabled,
-        closeOnClick = false
+        closeOnClick = false,
     ) { index, item ->
         val enabled = remember(disabledIndices) { index !in disabledIndices }
         val selected = remember(selectedItems) { index in selectedItems }
@@ -168,7 +168,7 @@ fun MaterialDialogScope.listItemsMultiChoice(
             index = index,
             selected = selected,
             enabled = enabled,
-            onChecked = onChecked
+            onChecked = onChecked,
         )
     }
 }
@@ -190,7 +190,7 @@ fun MaterialDialogScope.listItemsSingleChoice(
     disabledIndices: Set<Int> = setOf(),
     initialSelection: Int? = null,
     waitForPositiveButton: Boolean = true,
-    onChoiceChange: (selected: Int) -> Unit = {}
+    onChoiceChange: (selected: Int) -> Unit = {},
 ) {
     var selectedItem by remember { mutableStateOf(initialSelection) }
     PositiveButtonEnabled(valid = selectedItem != null) {}
@@ -215,7 +215,7 @@ fun MaterialDialogScope.listItemsSingleChoice(
         state = state,
         closeOnClick = false,
         onClick = { index, _ -> onSelect(index) },
-        isEnabled = isEnabled
+        isEnabled = isEnabled,
     ) { index, item ->
         val enabled = remember(disabledIndices) { index !in disabledIndices }
         val selected = remember(selectedItem) { index == selectedItem }
@@ -225,7 +225,7 @@ fun MaterialDialogScope.listItemsSingleChoice(
             index = index,
             selected = selected,
             enabled = enabled,
-            onSelect = onSelect
+            onSelect = onSelect,
         )
     }
 }
@@ -236,20 +236,20 @@ private fun MultiChoiceItem(
     index: Int,
     selected: Boolean,
     enabled: Boolean,
-    onChecked: (index: Int) -> Unit
+    onChecked: (index: Int) -> Unit,
 ) {
     Row(
         Modifier
             .fillMaxWidth()
             .height(48.dp)
             .padding(start = 12.dp, end = 24.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Checkbox(checked = selected, onCheckedChange = { onChecked(index) }, enabled = enabled)
         Spacer(
             modifier = Modifier
                 .fillMaxHeight()
-                .width(32.dp)
+                .width(32.dp),
         )
         Text(
             item,
@@ -258,7 +258,7 @@ private fun MultiChoiceItem(
             } else {
                 MaterialTheme.colors.onSurface.copy(ContentAlpha.disabled)
             },
-            style = MaterialTheme.typography.body1
+            style = MaterialTheme.typography.body1,
         )
     }
 }
@@ -269,14 +269,14 @@ private fun SingleChoiceItem(
     index: Int,
     selected: Boolean,
     enabled: Boolean,
-    onSelect: (index: Int) -> Unit
+    onSelect: (index: Int) -> Unit,
 ) {
     Row(
         Modifier
             .fillMaxWidth()
             .height(48.dp)
             .padding(start = 12.dp, end = 24.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         RadioButton(
             selected = selected,
@@ -285,12 +285,12 @@ private fun SingleChoiceItem(
                     onSelect(index)
                 }
             },
-            enabled = enabled
+            enabled = enabled,
         )
         Spacer(
             modifier = Modifier
                 .fillMaxHeight()
-                .width(32.dp)
+                .width(32.dp),
         )
         Text(
             item,
@@ -300,7 +300,7 @@ private fun SingleChoiceItem(
             } else {
                 MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.disabled)
             },
-            style = MaterialTheme.typography.body1
+            style = MaterialTheme.typography.body1,
         )
     }
 }

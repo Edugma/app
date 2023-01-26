@@ -21,7 +21,7 @@ internal fun DialogTitle(text: String, modifier: Modifier = Modifier) {
             .wrapContentWidth(Alignment.CenterHorizontally),
         color = MaterialTheme.colors.onBackground,
         fontSize = 20.sp,
-        style = TextStyle(fontWeight = FontWeight.W600)
+        style = TextStyle(fontWeight = FontWeight.W600),
     )
 }
 

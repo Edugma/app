@@ -28,7 +28,7 @@ fun TonalCard(
     shadowElevation: Dp = 0.dp,
     border: BorderStroke? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Surface(
         onClick,
@@ -41,7 +41,7 @@ fun TonalCard(
         shadowElevation,
         border,
         interactionSource,
-        content
+        content,
     )
 }
 
@@ -54,7 +54,7 @@ fun TonalCard(
     tonalElevation: Dp = 4.dp,
     shadowElevation: Dp = 0.dp,
     border: BorderStroke? = null,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Surface(
         modifier,
@@ -64,6 +64,6 @@ fun TonalCard(
         tonalElevation,
         shadowElevation,
         border,
-        content
+        content,
     )
 }

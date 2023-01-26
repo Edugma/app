@@ -14,7 +14,7 @@ object ScheduleDailyFeatureModule {
     val screens = screens {
         addScreen<ScheduleScreens.Main> {
             ScheduleScreen(
-                date = getArg(ScheduleScreens.Main::date.name)
+                date = getArg(ScheduleScreens.Main::date.name),
             )
         }
     }

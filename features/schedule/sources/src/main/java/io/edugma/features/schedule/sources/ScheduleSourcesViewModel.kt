@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 class ScheduleSourcesViewModel(
     private val useCase: ScheduleSourcesUseCase,
-): BaseViewModel<ScheduleSourceState>(ScheduleSourceState()) {
+) : BaseViewModel<ScheduleSourceState>(ScheduleSourceState()) {
     init {
         setupMutator {
             forProp { tabs }.onChanged {
@@ -28,7 +28,7 @@ class ScheduleSourcesViewModel(
                 val filteredSources = state.sources
                     .filter {
                         state.query.isEmpty() ||
-                                it.source.title.contains(state.query, ignoreCase = true)
+                            it.source.title.contains(state.query, ignoreCase = true)
                     }
 
                 state = state.copy(filteredSources = filteredSources)
@@ -55,15 +55,15 @@ class ScheduleSourcesViewModel(
                                 it.map {
                                     ScheduleSourceUiModel(
                                         source = it,
-                                        isFavorite = it in favoriteSources
+                                        isFavorite = it in favoriteSources,
                                     )
                                 }
                             }
-                    }
+                        }
                         .onSuccess { mutateState { state = state.copy(sources = it) } }
                         .onFailure { mutateState { state = state.copy(sources = emptyList()) } }
                         .collect()
-            }
+                }
         }
     }
 
@@ -106,8 +106,8 @@ class ScheduleSourcesViewModel(
                     key = "{}",
                     title = "Расширенный поиск",
                     description = "",
-                    avatarUrl = null
-                )
+                    avatarUrl = null,
+                ),
             )
             router.exit()
         }
@@ -119,15 +119,15 @@ data class ScheduleSourceState(
     val selectedTab: ScheduleSourcesTabs? = ScheduleSourcesTabs.Favorite,
     val query: String = "",
     val sources: List<ScheduleSourceUiModel> = emptyList(),
-    val filteredSources: List<ScheduleSourceUiModel> = emptyList()
+    val filteredSources: List<ScheduleSourceUiModel> = emptyList(),
 )
 
 data class ScheduleSourceUiModel(
     val isFavorite: Boolean,
-    val source: ScheduleSourceFull
+    val source: ScheduleSourceFull,
 )
 
 data class ScheduleFilterState(
     val filters: List<Pair<String, Boolean>> = emptyList(),
-    val query: String = ""
+    val query: String = "",
 )

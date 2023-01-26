@@ -7,5 +7,5 @@ data class PagingDTO<T>(
     val count: Int,
     val previousPage: Int? = null,
     val nextPage: Int? = null,
-    val data: List<T>
+    val data: List<T>,
 )

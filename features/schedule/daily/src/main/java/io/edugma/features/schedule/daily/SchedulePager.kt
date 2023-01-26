@@ -30,21 +30,20 @@ import io.edugma.domain.schedule.model.place.PlaceType
 import io.edugma.domain.schedule.model.schedule.LessonsByTime
 import io.edugma.domain.schedule.model.teacher.Teacher
 import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.base.core.utils.Typed2Listener
 import io.edugma.features.base.elements.SpacerHeight
-import io.edugma.features.schedule.elements.utils.toUiModel
 import io.edugma.features.schedule.elements.lesson.LessonPlace
 import io.edugma.features.schedule.elements.lesson.LessonWindow
 import io.edugma.features.schedule.elements.lesson.model.ScheduleItem
 import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
+import io.edugma.features.schedule.elements.utils.toUiModel
 import java.time.LocalDate
 import java.time.LocalTime
 
 private val relaxAnims = listOf(
     R.raw.sch_relax_0,
     R.raw.sch_relax_1,
-    R.raw.sch_relax_2
+    R.raw.sch_relax_2,
 )
 
 @OptIn(ExperimentalPagerApi::class)
@@ -55,16 +54,16 @@ fun SchedulePager(
     isRefreshing: Boolean,
     pagerState: PagerState,
     onLessonClick: Typed2Listener<Lesson, LessonDateTime>,
-    onRefreshing: ClickListener
+    onRefreshing: ClickListener,
 ) {
     SwipeRefresh(
         state = rememberSwipeRefreshState(isRefreshing),
-        onRefresh = onRefreshing
+        onRefresh = onRefreshing,
     ) {
         HorizontalPager(
             count = scheduleDays.size,
             state = pagerState,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             val scheduleDay by remember(scheduleDays, it) { mutableStateOf(scheduleDays[it]) }
 
@@ -74,7 +73,7 @@ fun SchedulePager(
                     lessonDisplaySettings = lessonDisplaySettings,
                     onLessonClick = { lesson, time ->
                         onLessonClick(lesson, LessonDateTime(scheduleDay.date, null, time))
-                    }
+                    },
                 )
             } else {
                 val randomAnim = remember { relaxAnims[it % relaxAnims.size] }
@@ -89,7 +88,7 @@ fun NoLessonsDay(@RawRes animation: Int) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(animation))
     val progress by animateLottieCompositionAsState(
         composition,
-        iterations = LottieConstants.IterateForever
+        iterations = LottieConstants.IterateForever,
     )
     Column {
         Spacer(modifier = Modifier.weight(1f))
@@ -97,7 +96,7 @@ fun NoLessonsDay(@RawRes animation: Int) {
             composition,
             progress,
             modifier = Modifier
-                .weight(5f)
+                .weight(5f),
         )
         Text(
             text = stringResource(R.string.sch_no_lessons_today),
@@ -107,7 +106,7 @@ fun NoLessonsDay(@RawRes animation: Int) {
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp, vertical = 10.dp),
             softWrap = true,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
     }
 }
@@ -122,7 +121,7 @@ fun LessonList(
     lessons: List<ScheduleItem>,
     lessonDisplaySettings: LessonDisplaySettings,
     isLoading: Boolean = false,
-    onLessonClick: Typed2Listener<Lesson, LessonTime>
+    onLessonClick: Typed2Listener<Lesson, LessonTime>,
 ) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         for (item in lessons) {
@@ -134,13 +133,13 @@ fun LessonList(
                         isLoading = isLoading,
                         onLessonClick = { lesson, lessonTime ->
                             onLessonClick(lesson, lessonTime)
-                        }
+                        },
                     )
                 }
                 is ScheduleItem.Window -> {
                     item {
                         LessonWindow(
-                            lessonWindow = item
+                            lessonWindow = item,
                         )
                     }
                 }
@@ -163,9 +162,9 @@ fun ScheduleDayPlaceHolder() {
                     io.edugma.domain.schedule.model.lesson_type.LessonType("", "Qwerty qwerty", false),
                     listOf(Teacher("", "", "")),
                     listOf(Group("", "", "")),
-                    listOf(Place("", "", PlaceType.Undefined, ""))
-                )
-            )
+                    listOf(Place("", "", PlaceType.Undefined, "")),
+                ),
+            ),
         )
     }
 
@@ -173,6 +172,6 @@ fun ScheduleDayPlaceHolder() {
         lessons = lessons.toUiModel()
             .filterIsInstance<ScheduleItem.LessonByTime>(),
         lessonDisplaySettings = LessonDisplaySettings.Default,
-        isLoading = true
+        isLoading = true,
     ) { _, _ -> }
 }

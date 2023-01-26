@@ -18,7 +18,7 @@ import java.time.temporal.ChronoUnit
 import java.util.*
 
 class CurrentLessonViewModel(
-    private val useCase: ScheduleUseCase
+    private val useCase: ScheduleUseCase,
 ) : BaseViewModel<CurrentLessonState>(CurrentLessonState()) {
 
     suspend fun getCurrentLessons(): List<Lesson> {
@@ -28,9 +28,9 @@ class CurrentLessonViewModel(
         val currentLessons = todayLessons
             ?.firstOrNull { nowTime in it.time }
             ?: todayLessons?.map {
-            nowTime.until(it.time.start, ChronoUnit.SECONDS) to it
-        }?.filter { it.first >= 0 }
-            ?.minByOrNull { it.first }?.second
+                nowTime.until(it.time.start, ChronoUnit.SECONDS) to it
+            }?.filter { it.first >= 0 }
+                ?.minByOrNull { it.first }?.second
 
         throw NotImplementedError()
     }
@@ -42,7 +42,7 @@ class CurrentLessonViewModel(
                 subject = subjects.random(),
                 teachers = (0..(0..3).random()).map { teachers.random() },
                 groups = (0..(0..5).random()).map { groups.random() },
-                places = (0..(0..3).random()).map { places.random() }
+                places = (0..(0..3).random()).map { places.random() },
             )
         }
 
@@ -60,9 +60,9 @@ class CurrentLessonViewModel(
                 currentLesson = lessons.getOrNull(index),
                 time = LessonTime(
                     LocalTime.of(10, 40),
-                    LocalTime.of(12, 10)
+                    LocalTime.of(12, 10),
                 ),
-                lastUpdateDateTime = ZonedDateTime.now()
+                lastUpdateDateTime = ZonedDateTime.now(),
             )
         }
     }
@@ -81,24 +81,24 @@ data class CurrentLessonState(
     val time: LessonTime? = null,
     val currentLesson: Lesson? = null,
     val currentLessons: List<Lesson> = emptyList(),
-    val currentLessonIndex: Int = 0
+    val currentLessonIndex: Int = 0,
 )
 
 val types = listOf(
     LessonType(
         id = UUID.randomUUID().toString(),
         title = "Лекция",
-        isImportant = false
+        isImportant = false,
     ),
     LessonType(
         id = UUID.randomUUID().toString(),
         title = "Лабораторная работа",
-        isImportant = false
+        isImportant = false,
     ),
     LessonType(
         id = UUID.randomUUID().toString(),
         title = "Экзамен",
-        isImportant = true
+        isImportant = true,
     ),
 )
 
@@ -121,35 +121,35 @@ val teachers = listOf(
     Teacher(
         id = UUID.randomUUID().toString(),
         name = "Рудяк Юрий Владимирович",
-        description = ""
+        description = "",
     ),
     Teacher(
         id = UUID.randomUUID().toString(),
         name = "Винокур Алексей Иосифович",
-        description = ""
+        description = "",
     ),
     Teacher(
         id = UUID.randomUUID().toString(),
         name = "Меньшикова Наталия Павловна",
-        description = ""
-    )
+        description = "",
+    ),
 )
 
 val groups = listOf(
     Group(
         id = UUID.randomUUID().toString(),
         title = "181-721",
-        description = ""
+        description = "",
     ),
     Group(
         id = UUID.randomUUID().toString(),
         title = "181-722",
-        description = ""
+        description = "",
     ),
     Group(
         id = UUID.randomUUID().toString(),
         title = "181-723",
-        description = ""
+        description = "",
     ),
 )
 
@@ -158,18 +158,18 @@ val places = listOf(
         id = UUID.randomUUID().toString(),
         title = "Пр2303",
         type = PlaceType.Building,
-        description = ""
+        description = "",
     ),
     Place(
         id = UUID.randomUUID().toString(),
         title = "Пр Вц 3 (2553)",
         type = PlaceType.Building,
-        description = ""
+        description = "",
     ),
     Place(
         id = UUID.randomUUID().toString(),
         title = "Webinar",
         type = PlaceType.Online,
-        description = ""
+        description = "",
     ),
 )

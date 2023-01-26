@@ -11,14 +11,14 @@ import org.kodein.db.model.orm.Metadata
 data class ScheduleDao(
     override val id: String,
     val date: Instant,
-    val days: CompactSchedule?
-): Metadata {
+    val days: CompactSchedule?,
+) : Metadata {
     companion object {
         fun from(scheduleSource: ScheduleSource, schedule: CompactSchedule?, date: Instant? = null) =
             ScheduleDao(
                 id = scheduleSource.id,
                 date = date ?: Clock.System.now(),
-                days = schedule
+                days = schedule,
             )
     }
 

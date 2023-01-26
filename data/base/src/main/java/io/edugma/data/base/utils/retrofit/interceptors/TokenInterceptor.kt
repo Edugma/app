@@ -8,7 +8,7 @@ import okhttp3.Interceptor
 import okhttp3.Response
 
 class TokenInterceptor(
-    private val preferences: PreferencesDS
+    private val preferences: PreferencesDS,
 ) : Interceptor {
 
     companion object {

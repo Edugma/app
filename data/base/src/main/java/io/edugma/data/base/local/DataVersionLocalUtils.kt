@@ -12,7 +12,7 @@ inline fun <reified T> DataVersionLocalDS.getFlow(
     key: String,
     expire: Duration,
     prefix: String = T::class.qualifiedName ?: "",
-    crossinline onGet: (key: String) -> Result<T>
+    crossinline onGet: (key: String) -> Result<T>,
 ): Flow<Cached<T?>> {
     return flow { emit(get(key, expire, prefix, onGet)) }
 }
@@ -21,7 +21,7 @@ inline fun <reified T> DataVersionLocalDS.get(
     key: String,
     expire: Duration,
     prefix: String = T::class.qualifiedName ?: "",
-    onGet: (key: String) -> Result<T>
+    onGet: (key: String) -> Result<T>,
 ): Cached<T?> {
     val obj = onGet(key)
     val isExpired = isExpired(expire, prefix + key)
@@ -32,7 +32,7 @@ inline fun <reified T> DataVersionLocalDS.save(
     obj: T,
     key: String,
     prefix: String = T::class.qualifiedName ?: "",
-    onSave: (obj: T, key: String) -> Result<Unit>
+    onSave: (obj: T, key: String) -> Result<Unit>,
 ): Result<Unit> {
     return onSave(obj, key).onSuccess {
         setVersion(Clock.System.now(), prefix + key)

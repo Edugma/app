@@ -15,7 +15,7 @@ class UpdateLessonIndexActionCallback : ActionCallback {
     override suspend fun onAction(
         context: Context,
         glanceId: GlanceId,
-        parameters: ActionParameters
+        parameters: ActionParameters,
     ) {
         val lessonIndex = requireNotNull(parameters[lessonIndexParamKey]) {
             "Add $lessonIndexParamKey parameter in the ActionParameters of this action."
@@ -24,7 +24,7 @@ class UpdateLessonIndexActionCallback : ActionCallback {
         updateAppWidgetState(
             context = context,
             definition = PreferencesGlanceStateDefinition,
-            glanceId = glanceId
+            glanceId = glanceId,
         ) { preferences ->
             preferences.toMutablePreferences()
                 .apply {

@@ -7,10 +7,11 @@ enum class ScheduleSourcesTabs {
     Student,
     Place,
     Subject,
-    Complex;
+    Complex,
+    ;
 
     fun toSourceType(): ScheduleSources? {
-        return when(this) {
+        return when (this) {
             Favorite -> null
             Group -> ScheduleSources.Group
             Teacher -> ScheduleSources.Teacher

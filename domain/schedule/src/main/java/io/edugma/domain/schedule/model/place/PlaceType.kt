@@ -4,5 +4,5 @@ enum class PlaceType {
     Building,
     Online,
     Other,
-    Undefined
+    Undefined,
 }

@@ -16,19 +16,18 @@ interface ScheduleService {
     @GET("/schedules/compact/{type}/{key}")
     fun getCompactSchedule(
         @Path("type") type: String,
-        @Path("key") key: String
+        @Path("key") key: String,
     ): Flow<Result<CompactSchedule>>
 
     @POST("/schedules/compact/complex")
     fun getComplexSchedule(
-        @Body filter: ScheduleComplexFilter
+        @Body filter: ScheduleComplexFilter,
     ): Flow<Result<CompactSchedule>>
 
     @POST("/schedules/compact/complex")
     fun getFilteredCompactSchedule(
-        @Body filters: ScheduleComplexRequest
+        @Body filters: ScheduleComplexRequest,
     ): Flow<Result<CompactSchedule>>
-
 
     // My
     @GET("/schedules/my")
@@ -36,7 +35,7 @@ interface ScheduleService {
 
     @POST("/login")
     fun login(
-        @Body loginRequest: LoginRequest
+        @Body loginRequest: LoginRequest,
     ): Flow<Result<CompactSchedule>>
 }
 

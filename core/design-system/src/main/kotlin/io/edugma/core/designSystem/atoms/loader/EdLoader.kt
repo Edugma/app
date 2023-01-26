@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
 
-
 @Composable
 fun EdLoader(
     modifier: Modifier = Modifier,
@@ -29,7 +28,7 @@ fun EdLoader(
 
 @Preview
 @Composable
-fun EdLoader() {
+internal fun EdLoader() {
     EdTheme {
         Column(Modifier.padding(10.dp)) {
             val sizes = listOf(

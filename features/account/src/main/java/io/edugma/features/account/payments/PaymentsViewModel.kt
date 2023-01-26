@@ -15,9 +15,9 @@ import kotlinx.coroutines.launch
 class PaymentsViewModel(private val repository: PaymentsRepository) :
     BaseViewModel<PaymentsState>(PaymentsState()) {
 
-        init {
-            load()
-        }
+    init {
+        load()
+    }
 
     fun load() {
         viewModelScope.launch {
@@ -47,7 +47,7 @@ class PaymentsViewModel(private val repository: PaymentsRepository) :
         mutateState {
             state = state.copy(
                 isLoading = isLoading,
-                isError = !isLoading && state.isError
+                isError = !isLoading && state.isError,
             )
         }
     }
@@ -63,7 +63,6 @@ class PaymentsViewModel(private val repository: PaymentsRepository) :
             state = state.copy(selectedIndex = newIndex)
         }
     }
-
 }
 
 data class PaymentsState(

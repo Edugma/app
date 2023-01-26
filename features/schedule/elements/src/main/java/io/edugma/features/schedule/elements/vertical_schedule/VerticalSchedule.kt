@@ -35,7 +35,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun VerticalScheduleComponent(
     viewModel: VerticalScheduleViewModel = getViewModel(),
-    scheduleSource: ScheduleSource
+    scheduleSource: ScheduleSource,
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -48,11 +48,10 @@ fun VerticalScheduleComponent(
             scheduleDays = state.schedule!!,
             lessonDisplaySettings = state.lessonDisplaySettings,
             currentDayIndex = state.currentDayIndex,
-            onLessonClick = viewModel::onLessonClick
+            onLessonClick = viewModel::onLessonClick,
         )
     }
 }
-
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -60,7 +59,7 @@ fun VerticalSchedule(
     scheduleDays: List<ScheduleDayUiModel>,
     lessonDisplaySettings: LessonDisplaySettings,
     currentDayIndex: Int,
-    onLessonClick: Typed2Listener<Lesson, LessonDateTime>
+    onLessonClick: Typed2Listener<Lesson, LessonDateTime>,
 ) {
     val scrollState = rememberLazyListState()
 
@@ -70,7 +69,7 @@ fun VerticalSchedule(
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        state = scrollState
+        state = scrollState,
     ) {
         scheduleDays.forEach { day ->
             stickyHeader {
@@ -89,13 +88,13 @@ fun VerticalSchedule(
                                 lessonDisplaySettings = lessonDisplaySettings,
                                 onLessonClick = { lesson, lessonTime ->
                                     onLessonClick(lesson, LessonDateTime(startDate = day.date, endDate = null, time = lessonTime))
-                                }
+                                },
                             )
                         }
                         is ScheduleItem.Window -> {
                             item {
                                 LessonWindow(
-                                    lessonWindow = item
+                                    lessonWindow = item,
                                 )
                             }
                         }
@@ -119,7 +118,7 @@ private fun EmptyDay() {
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp, vertical = 10.dp),
             softWrap = true,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
     }
 }
@@ -140,18 +139,18 @@ private fun DayDate(date: LocalDate) {
 
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         Surface(
             shape = MaterialTheme3.shapes.small,
             modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
             color = MaterialTheme3.colorScheme.background
-                .withAlpha(0.8f)
+                .withAlpha(0.8f),
         ) {
             Text(
                 date.format(dateFormatter).capitalized(),
                 modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
-                style = MaterialTheme3.typography.bodyMedium
+                style = MaterialTheme3.typography.bodyMedium,
             )
         }
     }

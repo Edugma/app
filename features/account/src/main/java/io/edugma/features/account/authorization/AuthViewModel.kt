@@ -19,8 +19,8 @@ class AuthViewModel(
     private val authorizationRepository: AuthorizationRepository,
     private val personalRepository: PersonalRepository,
     private val paymentsRepository: PaymentsRepository,
-    private val performanceRepository: PerformanceRepository
-    ) : BaseActionViewModel<AuthState, AuthAction>(AuthState()) {
+    private val performanceRepository: PerformanceRepository,
+) : BaseActionViewModel<AuthState, AuthAction>(AuthState()) {
 
     init {
         viewModelScope.launch {
@@ -37,19 +37,19 @@ class AuthViewModel(
 
     fun authorize() {
         viewModelScope.launch {
-                authorizationRepository.authorization(state.value.login, state.value.password)
-                    .onStart { mutateState { state = state.copy(isLoading = true) } }
-                    .onSuccess {
-                        collectPersonalInfo()
-                        cacheData()
-                    }
-                    .onFailure {
-                        loggedIn(false)
-                        sendAction(AuthAction.ShowErrorMessage(it))
-                    }
-                    .collect()
-            }
+            authorizationRepository.authorization(state.value.login, state.value.password)
+                .onStart { mutateState { state = state.copy(isLoading = true) } }
+                .onSuccess {
+                    collectPersonalInfo()
+                    cacheData()
+                }
+                .onFailure {
+                    loggedIn(false)
+                    sendAction(AuthAction.ShowErrorMessage(it))
+                }
+                .collect()
         }
+    }
 
     private fun cacheData() {
         viewModelScope.launch {
@@ -104,7 +104,6 @@ class AuthViewModel(
             exit()
         }
     }
-
 }
 
 data class AuthState(
@@ -114,7 +113,7 @@ data class AuthState(
     val auth: Boolean = false,
     val isLoading: Boolean = false,
     val name: String? = null,
-    val avatar: String? = null
+    val avatar: String? = null,
 )
 
 sealed class AuthAction {

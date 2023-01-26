@@ -8,13 +8,13 @@ import retrofit2.Retrofit
 import java.lang.reflect.Type
 
 class FlowResultCallAdapterFactory(
-    private val onResponse: (code: Int, body: Any?) -> Unit
+    private val onResponse: (code: Int, body: Any?) -> Unit,
 ) : BaseCallAdapterFactory() {
 
     override fun get(
         returnType: Type,
         annotations: Array<Annotation>,
-        retrofit: Retrofit
+        retrofit: Retrofit,
     ): CallAdapter<*, *>? {
 
         val insideFlowType = checkFlow(returnType) ?: return null
@@ -25,7 +25,7 @@ class FlowResultCallAdapterFactory(
 
         return FlowCallAdapter<Any>(
             insideResultType,
-            ResponseMapper(errorBodyConverter, onResponse)
+            ResponseMapper(errorBodyConverter, onResponse),
         )
     }
 }

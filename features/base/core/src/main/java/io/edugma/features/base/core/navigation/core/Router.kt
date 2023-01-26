@@ -79,10 +79,11 @@ class Router {
      */
     fun newRootChain(vararg screens: Screen) {
         val commands = screens.mapIndexed { index, screen ->
-            if (index == 0)
+            if (index == 0) {
                 Command.Replace(screen)
-            else
+            } else {
                 Command.Forward(screen)
+            }
         }
         executeCommands(Command.BackTo(null), *commands.toTypedArray())
     }

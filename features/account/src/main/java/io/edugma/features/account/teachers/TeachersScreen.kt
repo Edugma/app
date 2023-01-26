@@ -47,7 +47,7 @@ import org.koin.androidx.compose.getViewModel
 fun TeachersScreen(viewModel: TeachersViewModel = getViewModel()) {
     val state by viewModel.state.collectAsState()
     val bottomState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden
+        initialValue = ModalBottomSheetValue.Hidden,
     )
     val scope = rememberCoroutineScope()
     ModalBottomSheetLayout(
@@ -56,7 +56,7 @@ fun TeachersScreen(viewModel: TeachersViewModel = getViewModel()) {
         scrimColor = Color.Black.copy(alpha = 0.5f),
         sheetBackgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.surface,
         sheetContent = {
-            when(state.bottomType) {
+            when (state.bottomType) {
                 BottomType.Teacher -> {
                     state.selectedEntity?.let {
                         TeacherInfoBottom(teacher = it)
@@ -69,27 +69,28 @@ fun TeachersScreen(viewModel: TeachersViewModel = getViewModel()) {
                     }
                 }
             }
-        }
+        },
     ) {
         TeachersContent(
             state,
             backListener = viewModel::exit,
             openBottomListener = {
                 viewModel.openSearch()
-                scope.launch {bottomState.show() }
-             },
+                scope.launch { bottomState.show() }
+            },
             openTeacher = {
                 viewModel.openTeacher(it)
                 scope.launch { bottomState.show() }
-            }
+            },
         )
     }
 }
 
 @Composable
 fun TeacherInfoBottom(teacher: Teacher) {
-    Column(modifier = Modifier
-        .padding(horizontal = 15.dp)
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 15.dp),
     ) {
         SpacerHeight(height = 15.dp)
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
@@ -105,7 +106,7 @@ fun TeacherInfoBottom(teacher: Teacher) {
             AsyncImage(
                 model = teacher.avatar,
                 contentDescription = "avatar",
-                modifier = Modifier.fillMaxWidth().clip(CircleShape)
+                modifier = Modifier.fillMaxWidth().clip(CircleShape),
             )
         }
         SpacerHeight(height = 3.dp)
@@ -114,37 +115,37 @@ fun TeacherInfoBottom(teacher: Teacher) {
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme3.colorScheme.secondary,
             modifier = Modifier
-                .padding(horizontal = 8.dp)
+                .padding(horizontal = 8.dp),
         )
         SpacerHeight(height = 10.dp)
         teacher.sex?.let {
             TextWithIcon(
                 text = it,
-                icon = painterResource(id = FluentIcons.ic_fluent_people_24_regular)
+                icon = painterResource(id = FluentIcons.ic_fluent_people_24_regular),
             )
         }
         teacher.grade?.let {
             TextWithIcon(
                 text = it,
-                icon = painterResource(id = FluentIcons.ic_fluent_book_24_regular)
+                icon = painterResource(id = FluentIcons.ic_fluent_book_24_regular),
             )
         }
         teacher.stuffType?.let {
             TextWithIcon(
                 text = it,
-                icon = painterResource(id = R.drawable.acc_ic_teacher_24)
+                icon = painterResource(id = R.drawable.acc_ic_teacher_24),
             )
         }
         teacher.birthday?.let {
             TextWithIcon(
                 text = it.format(),
-                icon = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular)
+                icon = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
             )
         }
-        if (!teacher.email.isNullOrEmpty()){
+        if (!teacher.email.isNullOrEmpty()) {
             TextWithIcon(
                 text = teacher.email,
-                icon = painterResource(id = FluentIcons.ic_fluent_mail_24_regular)
+                icon = painterResource(id = FluentIcons.ic_fluent_mail_24_regular),
             )
         }
         SpacerHeight(height = 10.dp)
@@ -155,25 +156,28 @@ fun TeacherInfoBottom(teacher: Teacher) {
 fun TeacherSearchBottom(
     state: TeachersState,
     nameListener: Typed1Listener<String>,
-    searchListener: ClickListener
+    searchListener: ClickListener,
 ) {
-    Column(modifier = Modifier
-        .padding(horizontal = 15.dp)) {
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 15.dp),
+    ) {
         SpacerHeight(height = 15.dp)
         Text(
             text = "Поиск",
             style = MaterialTheme3.typography.headlineMedium,
-            modifier = Modifier.padding(start = 8.dp)
+            modifier = Modifier.padding(start = 8.dp),
         )
         SpacerHeight(height = 20.dp)
         TextBox(
             value = state.name,
             title = "ФИО преподавателя",
-            onValueChange = nameListener)
+            onValueChange = nameListener,
+        )
         SpacerHeight(height = 40.dp)
         PrimaryButton(
             onClick = searchListener,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Text("Применить")
         }
@@ -186,7 +190,7 @@ fun TeachersContent(
     state: TeachersState,
     openBottomListener: ClickListener,
     backListener: ClickListener,
-    openTeacher: Typed1Listener<Teacher>
+    openTeacher: Typed1Listener<Teacher>,
 ) {
     val teacherListItems = state.pagingData?.collectAsLazyPagingItems()
     Column {
@@ -197,27 +201,31 @@ fun TeachersContent(
                 modifier = Modifier.constrainAs(content) {
                     linkTo(parent.start, filter.start)
                     width = Dimension.fillToConstraints
-                }) {
+                },
+            ) {
                 IconButton(onClick = backListener) {
                     Icon(
                         Icons.Filled.ArrowBack,
-                        contentDescription = "Назад"
+                        contentDescription = "Назад",
                     )
                 }
                 SpacerWidth(width = 15.dp)
                 Text(
                     text = "Преподаватели",
                     style = MaterialTheme3.typography.titleLarge,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
-            IconButton(onClick = openBottomListener, modifier = Modifier.constrainAs(filter) {
-                linkTo(parent.top, parent.bottom)
-                end.linkTo(parent.end)
-            }) {
+            IconButton(
+                onClick = openBottomListener,
+                modifier = Modifier.constrainAs(filter) {
+                    linkTo(parent.top, parent.bottom)
+                    end.linkTo(parent.end)
+                },
+            ) {
                 Icon(
                     painterResource(id = FluentIcons.ic_fluent_search_24_regular),
-                    contentDescription = "Фильтр"
+                    contentDescription = "Фильтр",
                 )
             }
         }
@@ -241,13 +249,15 @@ fun TeachersContent(
                     }
                     teacherListItems.loadState.append is LoadState.Loading -> {
                         item {
-                            Box(modifier = Modifier
-                                .fillMaxWidth()
-                                .heightIn(min = 70.dp)) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .heightIn(min = 70.dp),
+                            ) {
                                 androidx.compose.material3.CircularProgressIndicator(
                                     modifier = Modifier
                                         .size(32.dp)
-                                        .align(Alignment.Center)
+                                        .align(Alignment.Center),
                                 )
                             }
                         }
@@ -267,13 +277,13 @@ fun TeachersContent(
 @Composable
 fun Teacher(
     teacher: Teacher,
-    onClick: ClickListener
+    onClick: ClickListener,
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 10.dp, vertical = 5.dp)
-            .clickable(onClick = onClick)
+            .clickable(onClick = onClick),
     ) {
         Row {
             AsyncImage(
@@ -281,7 +291,7 @@ fun Teacher(
                 contentDescription = "avatar",
                 modifier = Modifier
                     .clip(CircleShape)
-                    .size(70.dp)
+                    .size(70.dp),
             )
             SpacerWidth(width = 10.dp)
             Column {
@@ -290,7 +300,7 @@ fun Teacher(
                     style = MaterialTheme3.typography.titleMedium,
                     fontSize = 18.sp,
                     maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
                 SpacerHeight(height = 3.dp)
                 WithContentAlpha(alpha = ContentAlpha.medium) {
@@ -299,7 +309,7 @@ fun Teacher(
                             painter = painterResource(id = FluentIcons.ic_fluent_info_16_regular),
                             contentDescription = null,
                             modifier = Modifier
-                                .size(17.dp)
+                                .size(17.dp),
                         )
                         Spacer(Modifier.width(5.dp))
                         Text(
@@ -323,7 +333,7 @@ fun TeacherPlaceholder() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 10.dp, vertical = 5.dp)
+            .padding(horizontal = 10.dp, vertical = 5.dp),
     ) {
         Row {
             AsyncImage(
@@ -332,7 +342,7 @@ fun TeacherPlaceholder() {
                 modifier = Modifier
                     .clip(CircleShape)
                     .size(70.dp)
-                    .placeholder(true)
+                    .placeholder(true),
             )
             SpacerWidth(width = 10.dp)
             Column {
@@ -342,7 +352,7 @@ fun TeacherPlaceholder() {
                     fontSize = 18.sp,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.placeholder(true).widthIn(min=100.dp)
+                    modifier = Modifier.placeholder(true).widthIn(min = 100.dp),
                 )
                 SpacerHeight(height = 3.dp)
                 WithContentAlpha(alpha = ContentAlpha.medium) {
@@ -351,7 +361,7 @@ fun TeacherPlaceholder() {
                             painter = painterResource(id = FluentIcons.ic_fluent_info_16_regular),
                             contentDescription = null,
                             modifier = Modifier
-                                .size(17.dp)
+                                .size(17.dp),
                         )
                         Spacer(Modifier.width(5.dp))
                         Text(

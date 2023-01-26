@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.*
@@ -21,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.domain.schedule.model.source.ScheduleSourceFull
 import io.edugma.domain.schedule.model.source.ScheduleSources
 import io.edugma.domain.schedule.model.source.ScheduleSourcesTabs
@@ -40,7 +40,7 @@ fun ScheduleSourcesScreen(viewModel: ScheduleSourcesViewModel = getViewModel()) 
         onSourceSelected = viewModel::onSelectSource,
         onAddFavorite = viewModel::onAddFavorite,
         onDeleteFavorite = viewModel::onDeleteFavorite,
-        onApplyComplexSearch = viewModel::onApplyComplexSearch
+        onApplyComplexSearch = viewModel::onApplyComplexSearch,
     )
 }
 
@@ -54,20 +54,20 @@ fun ScheduleSourcesContent(
     onSourceSelected: Typed1Listener<ScheduleSourceFull>,
     onAddFavorite: Typed1Listener<ScheduleSourceFull>,
     onDeleteFavorite: Typed1Listener<ScheduleSourceFull>,
-    onApplyComplexSearch: ClickListener
+    onApplyComplexSearch: ClickListener,
 ) {
 
     val q = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
 
     Column {
-        PrimaryTopAppBar(
+        EdTopAppBar(
             title = stringResource(R.string.schedule_sou_schedule_selection),
-            onBackClick = onBackClick
+            onNavigationClick = onBackClick,
         )
         SourceTypeTabs(
             tabs = state.tabs,
             selectedTab = state.selectedTab,
-            onTabSelected = onTabSelected
+            onTabSelected = onTabSelected,
         )
         if (state.selectedTab == ScheduleSourcesTabs.Complex) {
             ComplexSearch(
@@ -81,7 +81,7 @@ fun ScheduleSourcesContent(
                 onSelectTeachers = { },
                 onSelectGroups = { },
                 onSelectPlaces = { },
-                onApply = onApplyComplexSearch
+                onApply = onApplyComplexSearch,
             )
         } else {
             Search(
@@ -91,19 +91,19 @@ fun ScheduleSourcesContent(
                 onQueryChange = onQueryChange,
                 onSourceSelected = onSourceSelected,
                 onAddFavorite = onAddFavorite,
-                onDeleteFavorite = onDeleteFavorite
+                onDeleteFavorite = onDeleteFavorite,
             )
         }
     }
 
 //    ModalBottomSheetLayout(
 //        sheetContent = {
-////            FiltersSelector(
-////                filters = TODO(),
-////                query = TODO(),
-////                onFilterSelected = TODO(),
-////                onQueryChange = TODO()
-////            )
+// //            FiltersSelector(
+// //                filters = TODO(),
+// //                query = TODO(),
+// //                onFilterSelected = TODO(),
+// //                onQueryChange = TODO()
+// //            )
 //        },
 //        sheetState = q,
 //        sheetBackgroundColor = MaterialTheme3.colorScheme.background
@@ -164,10 +164,10 @@ private fun FiltersSelector(
             placeholder = {
                 MediumAlpha {
                     Text(
-                        text = stringResource(R.string.schedule_sou_search)
+                        text = stringResource(R.string.schedule_sou_search),
                     )
                 }
-            }
+            },
         )
         LazyColumn(Modifier.fillMaxWidth()) {
             items(filters) {
@@ -177,7 +177,7 @@ private fun FiltersSelector(
                 TonalCard(
                     onClick = { onFilterSelected(it.first) },
                     modifier = Modifier.fillMaxWidth(),
-                    tonalElevation = tonalElevation
+                    tonalElevation = tonalElevation,
                 ) {
                     Text(text = it.first)
                 }
@@ -190,10 +190,10 @@ private fun FiltersSelector(
 private fun SourceTypeTabs(
     tabs: List<ScheduleSourcesTabs>,
     selectedTab: ScheduleSourcesTabs?,
-    onTabSelected: Typed1Listener<ScheduleSourcesTabs>
+    onTabSelected: Typed1Listener<ScheduleSourcesTabs>,
 ) {
     LazyRow(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         item {
             SpacerWidth(10.dp)
@@ -202,7 +202,7 @@ private fun SourceTypeTabs(
             SourceTypeTab(
                 tab,
                 tab == selectedTab,
-                onTabSelected = onTabSelected
+                onTabSelected = onTabSelected,
             )
         }
         item {
@@ -210,7 +210,6 @@ private fun SourceTypeTabs(
         }
     }
 }
-
 
 @Composable
 private fun ComplexSearch(
@@ -224,47 +223,47 @@ private fun ComplexSearch(
     onSelectTeachers: ClickListener,
     onSelectGroups: ClickListener,
     onSelectPlaces: ClickListener,
-    onApply: ClickListener
+    onApply: ClickListener,
 ) {
     Column(
         Modifier
             .fillMaxSize()
             .padding(horizontal = 8.dp)
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(rememberScrollState()),
     ) {
         Filter(
             title = "Типы занятий",
             filters = typesId,
-            onSelect = onSelectTypes
+            onSelect = onSelectTypes,
         )
         SpacerHeight(height = 16.dp)
         Filter(
             title = "Предметы",
             filters = subjectsId,
-            onSelect = onSelectSubjects
+            onSelect = onSelectSubjects,
         )
         SpacerHeight(height = 16.dp)
         Filter(
             title = "Преподаватели",
             filters = teachersId,
-            onSelect = onSelectTeachers
+            onSelect = onSelectTeachers,
         )
         SpacerHeight(height = 16.dp)
         Filter(
             title = "Группы",
             filters = groupsId,
-            onSelect = onSelectGroups
+            onSelect = onSelectGroups,
         )
         SpacerHeight(height = 16.dp)
         Filter(
             title = "Места",
             filters = placesId,
-            onSelect = onSelectPlaces
+            onSelect = onSelectPlaces,
         )
         SpacerHeight(height = 16.dp)
         PrimaryButton(
             onClick = onApply,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Text(text = "Применить")
         }
@@ -276,18 +275,18 @@ private fun ComplexSearch(
 private fun Filter(
     title: String,
     filters: List<String>,
-    onSelect: ClickListener
+    onSelect: ClickListener,
 ) {
     Column(Modifier.fillMaxWidth()) {
         Row(
             Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(text = title)
             TextRightIcon(
                 text = "Посмотреть все",
                 painter = painterResource(FluentIcons.ic_fluent_ios_arrow_rtl_24_regular),
-                modifier = Modifier.clickable(onClick = onSelect)
+                modifier = Modifier.clickable(onClick = onSelect),
             )
         }
         LazyRow {
@@ -297,7 +296,7 @@ private fun Filter(
                     label = {
                         Text(text = it)
                     },
-                    selected = false
+                    selected = false,
                 )
             }
         }
@@ -313,7 +312,7 @@ private fun Search(
     onQueryChange: Typed1Listener<String>,
     onSourceSelected: Typed1Listener<ScheduleSourceFull>,
     onAddFavorite: Typed1Listener<ScheduleSourceFull>,
-    onDeleteFavorite: Typed1Listener<ScheduleSourceFull>
+    onDeleteFavorite: Typed1Listener<ScheduleSourceFull>,
 ) {
     PrimarySearchField(
         value = query,
@@ -324,14 +323,14 @@ private fun Search(
         placeholder = {
             WithContentAlpha(alpha = ContentAlpha.medium) {
                 Text(
-                    text = stringResource(R.string.schedule_sou_search)
+                    text = stringResource(R.string.schedule_sou_search),
                 )
             }
-        }
+        },
     )
     SpacerHeight(8.dp)
     LazyColumn(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         items(filteredSources, key = { selectedTab to it.hashCode() }) { source ->
             SourceItem(
@@ -349,12 +348,13 @@ private fun Search(
 private fun SourceTypeTab(
     tab: ScheduleSourcesTabs,
     isSelected: Boolean,
-    onTabSelected: Typed1Listener<ScheduleSourcesTabs>
+    onTabSelected: Typed1Listener<ScheduleSourcesTabs>,
 ) {
-    val color = if (isSelected)
+    val color = if (isSelected) {
         MaterialTheme3.colorScheme.secondaryContainer
-    else
+    } else {
         MaterialTheme3.colorScheme.surface
+    }
 
     val title = when (tab) {
         ScheduleSourcesTabs.Favorite -> "Избранное"
@@ -370,11 +370,11 @@ private fun SourceTypeTab(
         onClick = { onTabSelected(tab) },
         modifier = Modifier.padding(horizontal = 6.dp, vertical = 5.dp),
         color = color,
-        shape = MaterialTheme3.shapes.small
+        shape = MaterialTheme3.shapes.small,
     ) {
         Text(
             text = title,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
         )
     }
 }
@@ -385,12 +385,12 @@ fun SourceItem(
     onItemClick: Typed1Listener<ScheduleSourceFull>,
     onAddFavorite: Typed1Listener<ScheduleSourceFull>,
     onDeleteFavorite: Typed1Listener<ScheduleSourceFull>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier
             .clickable(onClick = { onItemClick(source.source) })
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         Row(Modifier.padding(vertical = 5.dp)) {
             SpacerWidth(16.dp)
@@ -412,12 +412,12 @@ fun SourceItem(
             Column(Modifier.weight(1f)) {
                 Text(
                     text = source.source.title,
-                    style = MaterialTheme3.typography.titleSmall
+                    style = MaterialTheme3.typography.titleSmall,
                 )
                 WithContentAlpha(alpha = ContentAlpha.medium) {
                     Text(
                         text = source.source.description,
-                        style = MaterialTheme3.typography.bodySmall
+                        style = MaterialTheme3.typography.bodySmall,
                     )
                 }
             }
@@ -428,7 +428,7 @@ fun SourceItem(
                     } else {
                         onAddFavorite(source.source)
                     }
-                }
+                },
             ) {
                 val tintColor = if (source.isFavorite) {
                     MaterialTheme3.colorScheme.primary
@@ -443,7 +443,7 @@ fun SourceItem(
                 Icon(
                     painter = painter,
                     contentDescription = null,
-                    tint = tintColor
+                    tint = tintColor,
                 )
             }
             SpacerWidth(16.dp)

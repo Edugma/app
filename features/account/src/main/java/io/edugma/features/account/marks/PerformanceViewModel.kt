@@ -12,7 +12,6 @@ import io.edugma.features.base.core.utils.isNotNull
 import io.edugma.features.base.core.utils.isNull
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 
@@ -27,11 +26,11 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
         viewModelScope.launch {
             setLoading(true)
             repository.getLocalMarks()?.let {
-                delay(300) //todo говнокод пофиксить
+                delay(300) // todo говнокод пофиксить
                 setFilters(
                     courses = repository.getLocalCourses()?.toSet() ?: emptySet(),
                     semesters = repository.getLocalSemesters()?.toSet() ?: emptySet(),
-                    types = it.getExamTypes()
+                    types = it.getExamTypes(),
                 )
                 setPerformanceData(it)
             }
@@ -48,7 +47,7 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
                     setFilters(
                         courses = semestersWithCourses.values.toSet(),
                         semesters = semestersWithCourses.keys,
-                        types = performance.getExamTypes()
+                        types = performance.getExamTypes(),
                     )
                     setLoading(false)
                 }
@@ -81,7 +80,7 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
     private fun setFilters(
         courses: Set<Int>? = null,
         semesters: Set<Int>? = null,
-        types: Set<String>? = null
+        types: Set<String>? = null,
     ) {
         mutateState {
             state = state.copy(
@@ -98,19 +97,19 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
                 state = when (filter) {
                     is Course -> state.copy(
                         courses = state.courses.updateFilter(filter) as Set<Course>,
-                        currentFilters = state.currentFilters.addOrDeleteFilter(filter)
+                        currentFilters = state.currentFilters.addOrDeleteFilter(filter),
                     )
                     is Semester -> state.copy(
                         semesters = state.semesters.updateFilter(filter) as Set<Semester>,
-                        currentFilters = state.currentFilters.addOrDeleteFilter(filter)
+                        currentFilters = state.currentFilters.addOrDeleteFilter(filter),
                     )
                     is Type -> state.copy(
                         types = state.types.updateFilter(filter) as Set<Type>,
-                        currentFilters = state.currentFilters.addOrDeleteFilter(filter)
+                        currentFilters = state.currentFilters.addOrDeleteFilter(filter),
                     )
                     is Name -> state.copy(
                         name = filter.copy(isChecked = !filter.isChecked),
-                        currentFilters = state.currentFilters.addOrDeleteFilter(filter)
+                        currentFilters = state.currentFilters.addOrDeleteFilter(filter),
                     )
                 }
             }
@@ -153,7 +152,6 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
         }
         return newSet.toSet()
     }
-
 }
 
 data class MarksState(
@@ -185,14 +183,18 @@ data class MarksState(
                 val course = Course(performance.course, true)
                 val semester = Semester(performance.semester, true)
                 val type = Type(performance.examType, true)
-                if (filteredCourses.isNotEmpty())
+                if (filteredCourses.isNotEmpty()) {
                     if (!filteredCourses.contains(course)) return@filter false
-                if (filteredSemesters.isNotEmpty())
+                }
+                if (filteredSemesters.isNotEmpty()) {
                     if (!filteredSemesters.contains(semester)) return@filter false
-                if (filteredTypes.isNotEmpty())
+                }
+                if (filteredTypes.isNotEmpty()) {
                     if (!filteredTypes.contains(type)) return@filter false
-                if (name.isChecked && !performance.name.contains(name.value, ignoreCase = true))
+                }
+                if (name.isChecked && !performance.name.contains(name.value, ignoreCase = true)) {
                     return@filter false
+                }
                 true
             }
         }
@@ -206,25 +208,24 @@ sealed class Filter<out T>(open val value: T, open val isChecked: Boolean) {
     data class Course(
         override val value: Int,
         override val isChecked: Boolean = false,
-        override val mappedValue: String = "$value курс"
+        override val mappedValue: String = "$value курс",
     ) : Filter<Int>(value, isChecked)
 
     data class Semester(
         override val value: Int,
         override val isChecked: Boolean = false,
-        override val mappedValue: String = "$value семестр"
+        override val mappedValue: String = "$value семестр",
     ) : Filter<Int>(value, isChecked)
 
     data class Type(
         override val value: String,
         override val isChecked: Boolean = false,
-        override val mappedValue: String = value
+        override val mappedValue: String = value,
     ) : Filter<String>(value, isChecked)
 
     data class Name(
         override val value: String,
         override val isChecked: Boolean = false,
-        override val mappedValue: String = value
+        override val mappedValue: String = value,
     ) : Filter<String>(value, isChecked)
-
 }

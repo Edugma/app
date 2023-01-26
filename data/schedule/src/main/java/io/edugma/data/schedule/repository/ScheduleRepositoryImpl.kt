@@ -29,7 +29,7 @@ import kotlin.time.Duration.Companion.days
 class ScheduleRepositoryImpl(
     private val scheduleService: ScheduleService,
     private val localDS: ScheduleLocalDS,
-    private val dataVersionLocalDS: DataVersionLocalDS
+    private val dataVersionLocalDS: DataVersionLocalDS,
 ) : ScheduleRepository {
     override fun getRawSchedule(source: ScheduleSource): Flow<Lce<CompactSchedule?>> {
         return scheduleStore0.get(source, false)
@@ -46,12 +46,13 @@ class ScheduleRepositoryImpl(
             flowOf(
                 dataVersionLocalDS.save(
                     ScheduleDao.from(key, data),
-                    key.id
+                    key.id,
                 ) { dao, _ ->
                     kotlin.runCatching { localDS.add(dao) }
-                })
+                },
+            )
         },
-        expireAt = 1.days
+        expireAt = 1.days,
     )
 
 //    private val scheduleStore2 = Store<ScheduleKey, CompactSchedule>(
@@ -74,10 +75,12 @@ class ScheduleRepositoryImpl(
 //    )
 
     override fun getHistory(source: ScheduleSource) =
-        flowOf(kotlin.runCatching {
-            localDS.getAll(source)
-                .associate { it.date to (it.days?.toModel() ?: emptyList()) }
-        })
+        flowOf(
+            kotlin.runCatching {
+                localDS.getAll(source)
+                    .associate { it.date to (it.days?.toModel() ?: emptyList()) }
+            },
+        )
 
     override fun getTeacher(source: ScheduleSource, id: String) =
         scheduleStore0.get(source)
@@ -85,14 +88,15 @@ class ScheduleRepositoryImpl(
             .flowOn(Dispatchers.IO)
 
     override fun getSchedule(source: ScheduleSource, forceUpdate: Boolean):
-            Flow<Lce<List<ScheduleDay>>> =
-        if (source.type == ScheduleSources.Complex)
+        Flow<Lce<List<ScheduleDay>>> =
+        if (source.type == ScheduleSources.Complex) {
             scheduleService.getComplexSchedule(
-                ScheduleComplexFilter()
+                ScheduleComplexFilter(),
             ).map { it.loading(false).map { it.toModel() } }
                 .flowOn(Dispatchers.IO)
-        else
+        } else {
             scheduleStore0.get(source, forceUpdate)
-            .map { it.map { it?.toModel() ?: emptyList() } }
-            .flowOn(Dispatchers.IO)
+                .map { it.map { it?.toModel() ?: emptyList() } }
+                .flowOn(Dispatchers.IO)
+        }
 }

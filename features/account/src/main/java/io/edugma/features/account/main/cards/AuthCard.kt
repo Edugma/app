@@ -20,7 +20,7 @@ import io.edugma.features.base.elements.TonalCard
 fun AuthCard(
     avatar: String?,
     name: String?,
-    onClick: ClickListener
+    onClick: ClickListener,
 ) {
     TonalCard(
         modifier = Modifier
@@ -28,26 +28,26 @@ fun AuthCard(
             .heightIn(180.dp)
             .fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        onClick = onClick
+        onClick = onClick,
     ) {
         Column(
             Modifier
                 .padding(horizontal = 15.dp, vertical = 10.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             Text(
                 text = "Авторизация",
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.CenterHorizontally),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
             Box(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
             ) {
                 Column(
                     modifier = Modifier.align(Alignment.Center),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     avatar?.let {
                         Image(
@@ -55,11 +55,11 @@ fun AuthCard(
                                 data = avatar,
                                 builder = {
                                     transformations(CircleCropTransformation())
-                                }
+                                },
                             ),
                             contentDescription = null,
                             modifier = Modifier
-                                .size(50.dp)
+                                .size(50.dp),
                         )
                     }
                     name?.let {
@@ -70,10 +70,9 @@ fun AuthCard(
                             color = MaterialTheme3.colorScheme.secondary,
                             modifier = Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Center,
-                            overflow = TextOverflow.Ellipsis
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
-
                 }
             }
         }

@@ -1,6 +1,5 @@
 package io.edugma.domain.nodes.model
 
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -15,5 +14,5 @@ data class Node(
     @SerialName("image")
     val image: String,
     @SerialName("contract")
-    val contract: String
+    val contract: String,
 )

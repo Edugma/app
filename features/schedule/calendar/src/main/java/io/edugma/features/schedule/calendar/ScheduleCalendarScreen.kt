@@ -16,10 +16,10 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.domain.base.utils.capitalized
 import io.edugma.domain.schedule.model.schedule.ScheduleDay
 import io.edugma.features.base.core.utils.*
-import io.edugma.features.base.elements.PrimaryTopAppBar
 import io.edugma.features.base.elements.SpacerHeight
 import io.edugma.features.base.elements.TonalCard
 import io.edugma.features.schedule.calendar.model.ScheduleCalendarWeek
@@ -34,7 +34,7 @@ fun ScheduleCalendarScreen(viewModel: ScheduleCalendarViewModel = getViewModel()
     ScheduleCalendarContent(
         state = state,
         onBackClick = viewModel::exit,
-        onItemClick = viewModel::onDayClick
+        onItemClick = viewModel::onDayClick,
     )
 }
 
@@ -43,7 +43,7 @@ fun ScheduleCalendarScreen(viewModel: ScheduleCalendarViewModel = getViewModel()
 private fun ScheduleCalendarContent(
     state: ScheduleCalendarState,
     onBackClick: ClickListener,
-    onItemClick: Typed1Listener<LocalDate>
+    onItemClick: Typed1Listener<LocalDate>,
 ) {
     var cellCount by remember { mutableStateOf(3) }
 //    val q = rememberTransformableState { zoomChange, _, _ ->
@@ -51,16 +51,14 @@ private fun ScheduleCalendarContent(
 //        cellCount = (cellCount + ((1f - zoomChange) / 0.05f).toInt()).coerceIn(1..6)
 //    }
 
-
-    Column(
-    ) {
-        PrimaryTopAppBar(
+    Column() {
+        EdTopAppBar(
             title = stringResource(R.string.schedule_cal_calendar),
-            onBackClick = onBackClick
+            onNavigationClick = onBackClick,
         )
         CalendarThree(
             schedule = state.schedule,
-            onItemClick = onItemClick
+            onItemClick = onItemClick,
         )
     }
 }
@@ -71,7 +69,7 @@ private val dateFormat = DateTimeFormatter.ofPattern("EEE, d MMM")
 @Composable
 private fun CalendarThree(
     schedule: List<ScheduleCalendarWeek>,
-    onItemClick: Typed1Listener<LocalDate>
+    onItemClick: Typed1Listener<LocalDate>,
 ) {
     LazyColumn(Modifier.fillMaxSize()) {
         items(schedule) { week ->
@@ -81,60 +79,64 @@ private fun CalendarThree(
                     Row(
                         Modifier
                             .fillMaxWidth()
-                            .height(IntrinsicSize.Max)) {
+                            .height(IntrinsicSize.Max),
+                    ) {
                         WeekNumber(
                             weekNumber = week.weekNumber,
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.weight(1f),
                         )
                         CalendarItem(
                             day = week.schedule[0],
                             modifier = Modifier.weight(1f),
-                            onItemClick = { onItemClick(week.schedule[0].date) }
+                            onItemClick = { onItemClick(week.schedule[0].date) },
                         )
                     }
                     Row(
                         Modifier
                             .fillMaxWidth()
-                            .height(IntrinsicSize.Max)) {
+                            .height(IntrinsicSize.Max),
+                    ) {
                         CalendarItem(
                             day = week.schedule[1],
                             modifier = Modifier.weight(1f),
-                            onItemClick = { onItemClick(week.schedule[1].date) }
+                            onItemClick = { onItemClick(week.schedule[1].date) },
                         )
                         CalendarItem(
                             day = week.schedule[2],
                             modifier = Modifier.weight(1f),
-                            onItemClick = { onItemClick(week.schedule[2].date) }
+                            onItemClick = { onItemClick(week.schedule[2].date) },
                         )
                     }
                     Row(
                         Modifier
                             .fillMaxWidth()
-                            .height(IntrinsicSize.Max)) {
+                            .height(IntrinsicSize.Max),
+                    ) {
                         CalendarItem(
                             day = week.schedule[3],
                             modifier = Modifier.weight(1f),
-                            onItemClick = { onItemClick(week.schedule[3].date) }
+                            onItemClick = { onItemClick(week.schedule[3].date) },
                         )
                         CalendarItem(
                             day = week.schedule[4],
                             modifier = Modifier.weight(1f),
-                            onItemClick = { onItemClick(week.schedule[4].date) }
+                            onItemClick = { onItemClick(week.schedule[4].date) },
                         )
                     }
                     Row(
                         Modifier
                             .fillMaxWidth()
-                            .height(IntrinsicSize.Max)) {
+                            .height(IntrinsicSize.Max),
+                    ) {
                         CalendarItem(
                             day = week.schedule[5],
                             modifier = Modifier.weight(1f),
-                            onItemClick = { onItemClick(week.schedule[5].date) }
+                            onItemClick = { onItemClick(week.schedule[5].date) },
                         )
                         CalendarItem(
                             day = week.schedule[6],
                             modifier = Modifier.weight(1f),
-                            onItemClick = { onItemClick(week.schedule[6].date) }
+                            onItemClick = { onItemClick(week.schedule[6].date) },
                         )
                     }
                 }
@@ -146,7 +148,7 @@ private fun CalendarThree(
 @Composable
 private fun WeekNumber(
     weekNumber: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
 //    Column(modifier) {
 //        Text(
@@ -161,7 +163,7 @@ private fun WeekNumber(
 
     Box(
         modifier = modifier.fillMaxHeight().padding(bottom = 12.dp, top = 10.dp),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Column {
             Text(
@@ -169,7 +171,7 @@ private fun WeekNumber(
                 style = MaterialTheme3.typography.labelMedium,
                 color = MaterialTheme3.colorScheme.tertiary,
                 modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
             Text(
                 text = (weekNumber + 1).toString(),
@@ -179,7 +181,7 @@ private fun WeekNumber(
                     .fillMaxWidth()
                     .offset(y = -MaterialTheme3.typography.displayMedium.fontSize.dp() * 0.1f)
                     .height(MaterialTheme3.typography.displayMedium.fontSize.dp() * 1.1f),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
         }
     }
@@ -190,25 +192,25 @@ private fun WeekNumber(
 private fun CalendarItem(
     day: ScheduleDay,
     onItemClick: ClickListener,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     TonalCard(
         onClick = onItemClick,
         modifier = modifier
             .fillMaxHeight()
-            .padding(start = 7.dp, end = 7.dp, top = 7.dp, bottom = 7.dp)
+            .padding(start = 7.dp, end = 7.dp, top = 7.dp, bottom = 7.dp),
     ) {
         Column(
             Modifier
                 .fillMaxWidth()
-                .padding(top = 4.dp, bottom = 14.dp, start = 12.dp, end = 12.dp)
+                .padding(top = 4.dp, bottom = 14.dp, start = 12.dp, end = 12.dp),
         ) {
             Text(
                 text = dateFormat.format(day.date).capitalized(),
                 style = MaterialTheme.typography.titleSmall,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally),
-                color = MaterialTheme3.colorScheme.secondary
+                color = MaterialTheme3.colorScheme.secondary,
             )
 
             if (day.lessons.isNotEmpty()) {
@@ -220,7 +222,7 @@ private fun CalendarItem(
                 }
                 Text(
                     text = "•" + lessonsByTime.time.start.toString() + " - " + lessonsByTime.time.end.toString(),
-                    style = MaterialTheme.typography.labelMedium
+                    style = MaterialTheme.typography.labelMedium,
                 )
                 WithContentAlpha(ContentAlpha.medium) {
                     val text = buildAnnotatedString {
@@ -242,16 +244,13 @@ private fun CalendarItem(
                     }
                     Text(
                         text = text,
-                        style = MaterialTheme.typography.bodySmall
+                        style = MaterialTheme.typography.bodySmall,
                     )
                 }
             }
         }
     }
 }
-
-
-
 
 private const val minCriticalTitleLength = 10
 private const val minCriticalWordLength = 5

@@ -13,8 +13,8 @@ import kotlinx.coroutines.flow.flowOn
 
 class PersonalRepositoryImpl(
     private val api: AccountService,
-    private val localStore: PreferencesDS
-): PersonalRepository {
+    private val localStore: PreferencesDS,
+) : PersonalRepository {
     override fun getPersonalInfo() =
         api.getPersonalInfo()
             .onSuccess { setLocalPersonalInfo(it) }

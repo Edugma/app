@@ -1,6 +1,5 @@
 package io.edugma.features.schedule.schedule_info.group_info
 
-import androidx.compose.animation.rememberSplineBasedDecay
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -15,7 +14,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import io.edugma.domain.schedule.model.group.description
 import io.edugma.features.base.core.utils.*
-import io.edugma.features.base.elements.BackIconButton
 import io.edugma.features.base.elements.TextIcon
 import io.edugma.features.base.elements.TonalCard
 import io.edugma.features.schedule.elements.vertical_schedule.VerticalScheduleComponent
@@ -32,7 +30,7 @@ fun GroupInfoScreen(viewModel: GroupInfoViewModel = getViewModel(), id: String) 
     GroupInfoContent(
         state = state,
         onBackClick = viewModel::exit,
-        onTabSelected = viewModel::onTabSelected
+        onTabSelected = viewModel::onTabSelected,
     )
 }
 
@@ -40,7 +38,7 @@ fun GroupInfoScreen(viewModel: GroupInfoViewModel = getViewModel(), id: String) 
 private fun GroupInfoContent(
     state: GroupInfoState,
     onBackClick: ClickListener,
-    onTabSelected: Typed1Listener<GroupInfoTabs>
+    onTabSelected: Typed1Listener<GroupInfoTabs>,
 ) {
     InfoScaffold(
         title = "Группа " + (state.groupInfo?.title ?: ""),
@@ -49,7 +47,7 @@ private fun GroupInfoContent(
             state.groupInfo?.let { groupInfo ->
                 TextIcon(
                     text = groupInfo.description,
-                    painter = painterResource(FluentIcons.ic_fluent_text_description_20_regular)
+                    painter = painterResource(FluentIcons.ic_fluent_text_description_20_regular),
                 )
 //                TextIcon(
 //                    text = "${groupInfo.course}-й курс",
@@ -67,7 +65,7 @@ private fun GroupInfoContent(
                     TonalCard(
                         onClick = { onTabSelected(it) },
                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 5.dp),
-                        shape = MaterialTheme3.shapes.small
+                        shape = MaterialTheme3.shapes.small,
                     ) {
                         val text = when (it) {
                             GroupInfoTabs.Schedule -> "Расписание"
@@ -76,7 +74,7 @@ private fun GroupInfoContent(
 
                         Text(
                             text = text,
-                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
                         )
                     }
                 }
@@ -87,13 +85,13 @@ private fun GroupInfoContent(
                 GroupInfoTabs.Schedule -> {
                     state.scheduleSource?.let {
                         VerticalScheduleComponent(
-                            scheduleSource = state.scheduleSource
+                            scheduleSource = state.scheduleSource,
                         )
                     }
                 }
                 GroupInfoTabs.Students -> { }
             }
-        }
+        },
     )
 }
 
@@ -104,10 +102,10 @@ fun InfoScaffold(
     onBackClick: ClickListener,
     fields: @Composable ColumnScope.() -> Unit = { },
     tabs: @Composable () -> Unit = { },
-    content: @Composable () -> Unit = { }
+    content: @Composable () -> Unit = { },
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(
-        rememberTopAppBarState()
+        rememberTopAppBarState(),
     )
 
     Scaffold(
@@ -117,7 +115,7 @@ fun InfoScaffold(
                 title = {
                     Text(
                         text = title,
-                        style = MaterialTheme3.typography.titleLarge
+                        style = MaterialTheme3.typography.titleLarge,
                     )
                 },
                 scrollBehavior = scrollBehavior,
@@ -126,15 +124,15 @@ fun InfoScaffold(
                     scrolledContainerColor = MaterialTheme3.colorScheme.background,
                 ),
                 navigationIcon = {
-                    BackIconButton(onBackClick)
-                }
+                    //BackIconButton(onBackClick)
+                },
             )
         },
         content = {
             Box(
                 Modifier
                     .fillMaxSize()
-                    .padding(it)
+                    .padding(it),
             ) {
                 var height by remember {
                     mutableStateOf(0)
@@ -148,16 +146,17 @@ fun InfoScaffold(
                 }
 
                 val offset = remember(rate, height) {
-                    - height * rate
+                    -height * rate
                 }
 
                 val offsetInverse = remember(offset, height) {
                     height + offset
                 }
 
-                Column(modifier = Modifier
-                    .fillMaxSize()
-                    .graphicsLayer { translationY = offsetInverse }
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .graphicsLayer { translationY = offsetInverse },
                 ) {
                     tabs()
                     content()
@@ -169,12 +168,11 @@ fun InfoScaffold(
                         .alpha(rateInverse)
                         .onGloballyPositioned {
                             height = it.size.height
-                        }
+                        },
                 ) {
                     fields()
                 }
-
             }
-        }
+        },
     )
 }

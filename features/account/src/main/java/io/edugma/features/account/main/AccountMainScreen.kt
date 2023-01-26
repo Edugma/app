@@ -28,50 +28,50 @@ fun AccountContent(state: AccountMenuState, onClickListener: (MenuUi) -> Unit) {
     Column(
         Modifier
             .padding(top = 20.dp, start = 4.dp, end = 4.dp)
-            .fillMaxSize()
+            .fillMaxSize(),
     ) {
         Text(
             text = "Сервисы",
             style = MaterialTheme3.typography.headlineMedium,
-            modifier = Modifier.padding(start = 16.dp)
+            modifier = Modifier.padding(start = 16.dp),
         )
         Spacer(Modifier.height(20.dp))
         Row(
             Modifier
                 .height(190.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             Column {
                 PersonalCard(
                     state.personal?.label,
                     state.personal?.specialization,
-                    state.isAuthorized
+                    state.isAuthorized,
                 ) { onClickListener.invoke(MenuUi.Personal) }
                 PerformanceCard(
                     state.performance,
                     state.showCurrentPerformance,
-                    state.isAuthorized
-                ) {onClickListener.invoke(MenuUi.Marks)}
+                    state.isAuthorized,
+                ) { onClickListener.invoke(MenuUi.Marks) }
             }
             AuthCard(
                 state.personal?.avatar,
                 state.personal?.fullName,
-            ) {onClickListener.invoke(MenuUi.Auth)}
+            ) { onClickListener.invoke(MenuUi.Auth) }
         }
         PaymentsCard(
             currentPayments = state.currentPayments,
-            enabled = state.isAuthorized
+            enabled = state.isAuthorized,
         ) { onClickListener.invoke(MenuUi.Payments) }
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
         ) {
             items(
-                count = state.bottomMenu.size - (state.bottomMenu.size % 2)
+                count = state.bottomMenu.size - (state.bottomMenu.size % 2),
             ) {
                 val item = state.bottomMenu[it]
                 UsualCard(
                     name = item.label,
-                    enabled = state.isAuthorized
+                    enabled = state.isAuthorized,
                 ) { onClickListener.invoke(item) }
             }
         }
@@ -80,10 +80,9 @@ fun AccountContent(state: AccountMenuState, onClickListener: (MenuUi) -> Unit) {
             UsualCard(
                 modifier = Modifier.fillMaxWidth(),
                 name = item.label,
-                enabled = state.isAuthorized
+                enabled = state.isAuthorized,
             ) { onClickListener.invoke(item) }
         }
-
     }
 }
 

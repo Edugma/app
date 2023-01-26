@@ -33,13 +33,13 @@ fun PrimaryButton(
     border: BorderStroke? = null,
     colors: ButtonColors = ButtonDefaults.buttonColors(),
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
-    content: @Composable RowScope.() -> Unit
+    content: @Composable RowScope.() -> Unit,
 ) {
     Button(
         onClick = onClick,
         modifier = modifier.defaultMinSize(
             minWidth = ButtonDefaults.MinWidth,
-            minHeight = 48.dp
+            minHeight = 48.dp,
         ),
         enabled = enabled,
         shape = shape,
@@ -48,7 +48,7 @@ fun PrimaryButton(
         border = border,
         contentPadding = contentPadding,
         interactionSource = interactionSource,
-        content = content
+        content = content,
     )
 }
 
@@ -63,16 +63,16 @@ fun SecondaryButton(
     border: BorderStroke? = null,
     colors: ButtonColors = ButtonDefaults.buttonColors(
         containerColor = MaterialTheme3.colorScheme.secondaryContainer,
-        contentColor = contentColorFor(MaterialTheme3.colorScheme.secondaryContainer)
+        contentColor = contentColorFor(MaterialTheme3.colorScheme.secondaryContainer),
     ),
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
-    content: @Composable RowScope.() -> Unit
+    content: @Composable RowScope.() -> Unit,
 ) {
     Button(
         onClick,
         modifier.defaultMinSize(
             minWidth = ButtonDefaults.MinWidth,
-            minHeight = 48.dp
+            minHeight = 48.dp,
         ),
         enabled = enabled,
         shape = shape,
@@ -81,7 +81,7 @@ fun SecondaryButton(
         border = border,
         contentPadding = contentPadding,
         interactionSource = interactionSource,
-        content = content
+        content = content,
     )
 }
 
@@ -96,13 +96,13 @@ fun PrimarySmallButton(
     border: BorderStroke? = null,
     colors: ButtonColors = ButtonDefaults.buttonColors(),
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
-    content: @Composable RowScope.() -> Unit
+    content: @Composable RowScope.() -> Unit,
 ) {
     Button(
         onClick,
         modifier.defaultMinSize(
             minWidth = 50.dp,
-            minHeight = 24.dp
+            minHeight = 24.dp,
         ),
         enabled = enabled,
         shape = shape,
@@ -111,6 +111,6 @@ fun PrimarySmallButton(
         border = border,
         contentPadding = contentPadding,
         interactionSource = interactionSource,
-        content = content
+        content = content,
     )
 }

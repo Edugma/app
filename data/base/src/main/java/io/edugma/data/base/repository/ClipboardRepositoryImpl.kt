@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
 class ClipboardRepositoryImpl(
-    private val manager: ClipboardManager
+    private val manager: ClipboardManager,
 ) : ClipboardRepository {
     private val scope = CoroutineScope(Dispatchers.IO + Job())
 

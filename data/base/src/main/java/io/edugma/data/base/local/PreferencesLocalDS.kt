@@ -7,7 +7,7 @@ import kotlinx.coroutines.withContext
 import org.kodein.db.*
 
 class PreferencesLocalDS(
-    private val db: DB
+    private val db: DB,
 ) : PreferencesDS {
 
     override suspend fun setString(str: String, key: String): Unit =
@@ -28,5 +28,4 @@ class PreferencesLocalDS(
         withContext(Dispatchers.IO) {
             db.deleteById<PreferenceDao>(key)
         }
-
 }

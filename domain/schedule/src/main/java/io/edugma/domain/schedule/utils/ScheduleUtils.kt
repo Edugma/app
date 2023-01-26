@@ -10,7 +10,7 @@ import kotlin.time.toJavaDuration
 
 fun getClosestLessons(
     lessons: List<LessonsByTime>,
-    timeToCombine: Duration = 15.toDuration(DurationUnit.MINUTES)
+    timeToCombine: Duration = 15.toDuration(DurationUnit.MINUTES),
 ): List<LessonsByTime> {
     val now = ZonedDateTime.now().withZoneSameInstant(ZoneIds.main).toLocalTime()
     val latestTimeToCombine = now.plus(timeToCombine.toJavaDuration())
@@ -21,10 +21,10 @@ fun getClosestLessons(
     lessons.forEachIndexed { lessonToAddIndex, lessonToAdd ->
         if (now in lessonToAdd.time) {
             closestLessons.add(lessonToAddIndex)
-
         } else if (now < lessonToAdd.time.start) {
             if (firstCeilingLessonIndex == -1 ||
-                lessonToAdd.time.start < lessons[firstCeilingLessonIndex].time.start) {
+                lessonToAdd.time.start < lessons[firstCeilingLessonIndex].time.start
+            ) {
                 firstCeilingLessonIndex = lessonToAddIndex
             }
 
@@ -37,7 +37,6 @@ fun getClosestLessons(
     if (firstCeilingLessonIndex != -1 && firstCeilingLessonIndex !in closestLessons) {
         closestLessons.add(firstCeilingLessonIndex)
     }
-
 
     return closestLessons.map { lessons[it] }.sortedBy { it.time }
 }

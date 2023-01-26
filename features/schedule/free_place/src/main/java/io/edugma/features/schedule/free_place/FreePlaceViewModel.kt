@@ -20,10 +20,10 @@ import java.time.LocalTime
 
 class FreePlaceViewModel(
     private val repository: FreePlaceRepository,
-    private val useCase: ScheduleUseCase
+    private val useCase: ScheduleUseCase,
 ) : BaseViewModelFull<FreePlaceState, FreePlaceMutator, Nothing>(
     FreePlaceState(),
-    ::FreePlaceMutator
+    ::FreePlaceMutator,
 ) {
 //    fun onDateRangeChange(dateRange: ClosedFloatingPointRange<Float>) {
 //        mutateState {
@@ -80,8 +80,8 @@ class FreePlaceViewModel(
                 PlaceFilters(
                     ids = state.value.places.map { it.id },
                     dateTimeFrom = LocalDateTime.of(state.value.date, state.value.timeFrom),
-                    dateTimeTo = LocalDateTime.of(state.value.date, state.value.timeTo)
-                )
+                    dateTimeTo = LocalDateTime.of(state.value.date, state.value.timeTo),
+                ),
             ).onSuccess { mutateState { setFreePlaces(it) } }
                 .onFailure { mutateState { setFreePlaces(emptyMap()) } }
                 .collect()
@@ -91,7 +91,7 @@ class FreePlaceViewModel(
     fun onShowFilters() {
         mutateState {
             state = state.copy(
-                showFilters = !state.showFilters
+                showFilters = !state.showFilters,
             )
         }
     }
@@ -111,7 +111,7 @@ data class FreePlaceState(
     val places: List<Place> = emptyList(),
     val filteredPlaces: List<Place> = emptyList(),
     val freePlaces: Map<PlaceInfo, Int> = emptyMap(),
-    val showFilters: Boolean = true
+    val showFilters: Boolean = true,
 ) {
     companion object {
         val minPerDay = LocalTime.MAX.toSecondOfDay() / 60
@@ -119,10 +119,10 @@ data class FreePlaceState(
     }
 }
 
-//private fun initState() : FreePlaceState {
+// private fun initState() : FreePlaceState {
 //    val dateTo = LocalDate.now().plusDays(FreePlaceState.totalDays)
 //    return FreePlaceState(dateTo = dateTo)
-//}
+// }
 
 class FreePlaceMutator : BaseMutator<FreePlaceState>() {
     fun setDate(date: LocalDate) =

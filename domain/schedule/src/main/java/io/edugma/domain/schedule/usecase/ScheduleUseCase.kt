@@ -14,7 +14,7 @@ import java.time.LocalDate
 
 class ScheduleUseCase(
     private val repository: ScheduleRepository,
-    private val scheduleSourcesRepository: ScheduleSourcesRepository
+    private val scheduleSourcesRepository: ScheduleSourcesRepository,
 ) {
     fun getSources(type: ScheduleSources) =
         scheduleSourcesRepository.getSources(type)
@@ -32,8 +32,8 @@ class ScheduleUseCase(
                     emitAll(
                         repository.getSchedule(
                             ScheduleSource(source.type, source.key),
-                            forceUpdate = forceUpdate
-                        )
+                            forceUpdate = forceUpdate,
+                        ),
                     )
                 }
             }
@@ -41,7 +41,7 @@ class ScheduleUseCase(
     fun getSchedule(scheduleSource: ScheduleSource, forceUpdate: Boolean = false) =
         repository.getSchedule(
             ScheduleSource(scheduleSource.type, scheduleSource.key),
-            forceUpdate = forceUpdate
+            forceUpdate = forceUpdate,
         )
 
     fun getScheduleDay(schedule: List<ScheduleDay>, date: LocalDate): List<LessonsByTime> {
@@ -64,32 +64,32 @@ class ScheduleUseCase(
             ScheduleSources.Group -> LessonDisplaySettings(
                 showTeachers = true,
                 showGroups = false,
-                showPlaces = true
+                showPlaces = true,
             )
             ScheduleSources.Teacher -> LessonDisplaySettings(
                 showTeachers = false,
                 showGroups = true,
-                showPlaces = true
+                showPlaces = true,
             )
             ScheduleSources.Student -> LessonDisplaySettings(
                 showTeachers = true,
                 showGroups = false,
-                showPlaces = true
+                showPlaces = true,
             )
             ScheduleSources.Place -> LessonDisplaySettings(
                 showTeachers = true,
                 showGroups = true,
-                showPlaces = false
+                showPlaces = false,
             )
             ScheduleSources.Subject -> LessonDisplaySettings(
                 showTeachers = true,
                 showGroups = true,
-                showPlaces = true
+                showPlaces = true,
             )
             ScheduleSources.Complex -> LessonDisplaySettings(
                 showTeachers = true,
                 showGroups = true,
-                showPlaces = true
+                showPlaces = true,
             )
         }
     }

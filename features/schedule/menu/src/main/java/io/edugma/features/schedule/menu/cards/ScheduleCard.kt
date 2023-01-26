@@ -1,21 +1,17 @@
 package io.edugma.features.schedule.menu.cards
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.*
 import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.ContentAlpha
 import io.edugma.features.base.core.utils.MaterialTheme3
-import io.edugma.features.base.core.utils.WithContentAlpha
 import io.edugma.features.base.elements.TonalCard
 import io.edugma.features.schedule.menu.R
 import io.edugma.features.schedule.menu.ScheduleMenuState
@@ -24,7 +20,7 @@ import io.edugma.features.schedule.menu.ScheduleMenuState
 @Composable
 fun ScheduleCard(
     state: ScheduleMenuState.MainState,
-    onScheduleClick: ClickListener
+    onScheduleClick: ClickListener,
 ) {
     TonalCard(
         modifier = Modifier
@@ -44,14 +40,14 @@ fun ScheduleCard(
             Text(
                 text = "Сегодня нет занятий".uppercase(),
                 style = MaterialTheme3.typography.labelSmall,
-                color = MaterialTheme3.colorScheme.secondary
+                color = MaterialTheme3.colorScheme.secondary,
             )
             val composition by rememberLottieComposition(
-                LottieCompositionSpec.RawRes(R.raw.sch_relax_2)
+                LottieCompositionSpec.RawRes(R.raw.sch_relax_2),
             )
             val progress by animateLottieCompositionAsState(
                 composition,
-                iterations = LottieConstants.IterateForever
+                iterations = LottieConstants.IterateForever,
             )
             LottieAnimation(
                 composition,
@@ -59,7 +55,7 @@ fun ScheduleCard(
                 modifier = Modifier
                     .fillMaxHeight()
                     .width(100.dp),
-                contentScale = ContentScale.FillWidth
+                contentScale = ContentScale.FillWidth,
             )
 //            WithContentAlpha(alpha = ContentAlpha.medium) {
 //                Text(

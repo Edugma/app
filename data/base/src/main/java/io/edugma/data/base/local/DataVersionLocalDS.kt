@@ -9,7 +9,7 @@ import org.kodein.db.keyById
 import kotlin.time.Duration
 
 class DataVersionLocalDS(
-    private val db: DB
+    private val db: DB,
 ) {
 //    inline fun <reified T> getVersion(vararg keys: String): DataVersion? {
 //        return kotlin.runCatching {

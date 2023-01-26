@@ -8,12 +8,12 @@ import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
 import java.time.LocalDate
 
 data class WeekUiModel(
-    val days: List<DayUiModel>
+    val days: List<DayUiModel>,
 ) {
     companion object {
         fun fromSchedule(
             schedule: List<ScheduleDayUiModel>,
-            today: LocalDate = LocalDate.now()
+            today: LocalDate = LocalDate.now(),
         ): List<WeekUiModel> {
             val dateFrom = schedule.firstOrNull()?.date?.getFloorMonday()
             val dateTo = schedule.lastOrNull()?.date?.getCeilSunday()
@@ -27,9 +27,9 @@ data class WeekUiModel(
                             date == today,
                             schedule.firstOrNull { it.date == date }?.lessons
                                 ?.filterIsInstance<ScheduleItem.LessonByTime>()
-                                ?.size ?: 0
+                                ?.size ?: 0,
                         )
-                    }
+                    },
                 )
             }
         }

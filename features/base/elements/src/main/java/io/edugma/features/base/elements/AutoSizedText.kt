@@ -10,7 +10,7 @@ import androidx.compose.ui.text.TextStyle
 fun AutoSizedText(
     text: String,
     textStyle: TextStyle,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var scaledTextStyle by remember { mutableStateOf(textStyle) }
     var readyToDraw by remember { mutableStateOf(false) }
@@ -31,6 +31,6 @@ fun AutoSizedText(
             } else {
                 readyToDraw = true
             }
-        }
+        },
     )
 }

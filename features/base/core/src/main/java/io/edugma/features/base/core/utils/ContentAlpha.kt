@@ -27,7 +27,7 @@ fun Color.withAlpha(alpha: Float): Color {
 fun WithContentAlpha(alpha: Float, content: @Composable () -> Unit) {
     CompositionLocalProvider(
         LocalContentColor provides LocalContentColor.current.withAlpha(alpha),
-        content = content
+        content = content,
     )
 }
 
@@ -60,7 +60,7 @@ object ContentAlpha {
         @Composable
         get() = contentAlpha(
             highContrastAlpha = HighContrastContentAlpha.high,
-            lowContrastAlpha = LowContrastContentAlpha.high
+            lowContrastAlpha = LowContrastContentAlpha.high,
         )
 
     /**
@@ -71,7 +71,7 @@ object ContentAlpha {
         @Composable
         get() = contentAlpha(
             highContrastAlpha = HighContrastContentAlpha.medium,
-            lowContrastAlpha = LowContrastContentAlpha.medium
+            lowContrastAlpha = LowContrastContentAlpha.medium,
         )
 
     /**
@@ -82,7 +82,7 @@ object ContentAlpha {
         @Composable
         get() = contentAlpha(
             highContrastAlpha = HighContrastContentAlpha.disabled,
-            lowContrastAlpha = LowContrastContentAlpha.disabled
+            lowContrastAlpha = LowContrastContentAlpha.disabled,
         )
 
     /**
@@ -98,7 +98,7 @@ object ContentAlpha {
         /*@FloatRange(from = 0.0, to = 1.0)*/
         highContrastAlpha: Float,
         /*@FloatRange(from = 0.0, to = 1.0)*/
-        lowContrastAlpha: Float
+        lowContrastAlpha: Float,
     ): Float {
         val contentColor = LocalContentColor.current
         val lightTheme = androidx.compose.material.MaterialTheme.colors.isLight

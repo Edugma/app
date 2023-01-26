@@ -7,7 +7,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 abstract class CallDelegate<TIn, TOut>(
-    protected val proxy: Call<TIn>
+    protected val proxy: Call<TIn>,
 ) : Call<TOut> {
     override fun execute(): Response<TOut> = throw NotImplementedError()
     final override fun enqueue(callback: Callback<TOut>) = enqueueImpl(callback)

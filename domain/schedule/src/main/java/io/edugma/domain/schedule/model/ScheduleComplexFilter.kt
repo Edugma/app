@@ -8,5 +8,5 @@ data class ScheduleComplexFilter(
     val subjectsId: List<String> = emptyList(),
     val teachersId: List<String> = emptyList(),
     val groupsId: List<String> = emptyList(),
-    val placesId: List<String> = emptyList()
+    val placesId: List<String> = emptyList(),
 )

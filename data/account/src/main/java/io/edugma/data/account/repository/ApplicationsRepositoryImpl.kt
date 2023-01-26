@@ -13,8 +13,8 @@ import kotlinx.coroutines.flow.flowOn
 
 class ApplicationsRepositoryImpl(
     private val api: AccountService,
-    private val localStore: PreferencesDS
-): ApplicationsRepository {
+    private val localStore: PreferencesDS,
+) : ApplicationsRepository {
 
     override fun getApplications() =
         api.getApplications()

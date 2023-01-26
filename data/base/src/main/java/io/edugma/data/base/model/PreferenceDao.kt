@@ -6,5 +6,5 @@ import org.kodein.db.model.orm.Metadata
 @Serializable
 data class PreferenceDao(
     override val id: String,
-    val value: String
+    val value: String,
 ) : Metadata

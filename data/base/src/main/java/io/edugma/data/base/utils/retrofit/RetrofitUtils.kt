@@ -1,7 +1,6 @@
 package io.edugma.data.base.utils.retrofit
 
 import io.edugma.data.base.utils.retrofit.call_adapters.flow_result.FlowResultCallAdapterFactory
-
 import kotlinx.serialization.json.Json
 import retrofit2.Call
 import retrofit2.Callback
@@ -20,8 +19,8 @@ fun buildRetrofitBuilder(client: okhttp3.OkHttpClient, baseUrl: String = ""): Re
                 Json {
                     ignoreUnknownKeys = true
                     allowStructuredMapKeys = true
-                }
-            )
+                },
+            ),
         )
         .addCallAdapterFactory(FlowResultCallAdapterFactory { code: Int, body: Any? -> })
         .client(client)
@@ -29,7 +28,7 @@ fun buildRetrofitBuilder(client: okhttp3.OkHttpClient, baseUrl: String = ""): Re
 
 fun <T> Call<T>.registerCallback(
     onSuccess: (response: Response<T>) -> Unit,
-    onFailure: (t: Throwable) -> Unit
+    onFailure: (t: Throwable) -> Unit,
 ) {
     enqueue(object : Callback<T> {
         override fun onResponse(call: Call<T>, response: Response<T>) {
@@ -39,5 +38,6 @@ fun <T> Call<T>.registerCallback(
         override fun onFailure(call: Call<T>, t: Throwable) {
             onFailure(t)
         }
-    })
+    },
+    )
 }

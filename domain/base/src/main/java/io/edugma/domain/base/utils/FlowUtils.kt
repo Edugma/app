@@ -19,9 +19,11 @@ fun<T> Flow<Result<T>>.onSuccess(action: suspend (value: T) -> Unit) =
     onEach { it.onSuccess { action(it) } }
 
 fun<T> Flow<Result<T>>.onFailure(action: suspend (exception: Throwable) -> Unit) =
-    onEach { it.onFailure { error ->
-        action(error)
-    } }
+    onEach {
+        it.onFailure { error ->
+            action(error)
+        }
+    }
 
 fun<T, R> Flow<Result<T>>.mapResult(action: (T) -> R): Flow<Result<R>> =
     map { it.mapCatching(action) }
@@ -29,13 +31,15 @@ fun<T, R> Flow<Result<T>>.mapResult(action: (T) -> R): Flow<Result<R>> =
 suspend fun<T> Flow<Result<T>>.execute(
     onStart: (() -> Unit)? = null,
     onSuccess: ((T) -> Unit)? = null,
-    onError: ((Throwable) -> Unit)? = null) {
+    onError: ((Throwable) -> Unit)? = null,
+) {
     onStart { onStart?.invoke() }
     collect {
-        if (it.isSuccess)
+        if (it.isSuccess) {
             it.getOrNull()?.let { value -> onSuccess?.invoke(value) }
-        else
-            it.exceptionOrNull()?.let{ exception -> onError?.invoke(exception) }
+        } else {
+            it.exceptionOrNull()?.let { exception -> onError?.invoke(exception) }
+        }
     }
 }
 
@@ -45,4 +49,3 @@ suspend fun<T> Flow<Result<T>>.executeResult(onStart: (() -> Unit)? = null, onEx
         onExecute?.invoke(it)
     }
 }
-

@@ -21,12 +21,11 @@ private val dayOfWeekFormat = DateTimeFormatter.ofPattern("EEEE")
 private val dayOfMonthFormat = DateTimeFormatter.ofPattern("dd")
 private val monthFormat = DateTimeFormatter.ofPattern("MMMM")
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CalendarCard(
     date: LocalDate,
-    onScheduleCalendarClick: ClickListener
+    onScheduleCalendarClick: ClickListener,
 ) {
     TonalCard(
         modifier = Modifier
@@ -38,18 +37,18 @@ fun CalendarCard(
         Column(
             Modifier
                 .padding(horizontal = 15.dp, vertical = 10.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             Text(
                 text = stringResource(R.string.sch_calendar),
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.CenterHorizontally),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
             Box(
                 modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 Column {
                     Spacer(Modifier.height(10.dp))
@@ -58,7 +57,7 @@ fun CalendarCard(
                         style = MaterialTheme3.typography.labelMedium,
                         color = MaterialTheme3.colorScheme.tertiary,
                         modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
                     )
                     Text(
                         text = date.format(dayOfMonthFormat),
@@ -68,15 +67,15 @@ fun CalendarCard(
                             .fillMaxWidth()
                             .offset(y = -MaterialTheme3.typography.displayMedium.fontSize.dp() * 0.2f)
                             .height(MaterialTheme3.typography.displayMedium.fontSize.dp() * 1.2f),
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
                     )
                     Text(
                         text = date.format(monthFormat).lowercase(),
                         style = MaterialTheme3.typography.bodySmall,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .offset(y = -MaterialTheme3.typography.displayMedium.fontSize.dp() * 0.2f) ,
-                        textAlign = TextAlign.Center
+                            .offset(y = -MaterialTheme3.typography.displayMedium.fontSize.dp() * 0.2f),
+                        textAlign = TextAlign.Center,
                     )
                 }
             }

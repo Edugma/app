@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.transformLatest
 
 class LessonsReviewUseCase(
     private val repository: LessonsReviewRepository,
-    private val scheduleSourcesRepository: ScheduleSourcesRepository
+    private val scheduleSourcesRepository: ScheduleSourcesRepository,
 ) {
     fun getLessonsReview() =
         scheduleSourcesRepository.getSelectedSource()

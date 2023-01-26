@@ -10,8 +10,8 @@ class StoreImpl<Key, Data>(
     private val fetcher: Store<Key, Data>.(key: Key) -> Flow<Result<Data>>,
     private val reader: Store<Key, Data>.(key: Key) -> Flow<Cached<Data?>>,
     private val writer: Store<Key, Data>.(key: Key, data: Data) -> Flow<Result<Unit>>,
-    override val expireAt: Duration
-): Store<Key, Data> {
+    override val expireAt: Duration,
+) : Store<Key, Data> {
     override fun get(key: Key, forceUpdate: Boolean): Flow<Lce<Data?>> =
         reader(key).transform { (data, isExpired) ->
             val needUpdate = isExpired || forceUpdate
@@ -23,7 +23,7 @@ class StoreImpl<Key, Data>(
                             writer(key, newData).collect()
                         }.onFailure {
                             Log.e(this@StoreImpl.TAG, "Fail to fetch data", it)
-                        }.map { it.loading(false) }
+                        }.map { it.loading(false) },
                 )
             }
         }

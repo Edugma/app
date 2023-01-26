@@ -9,7 +9,7 @@ data class LessonTime(
     @Serializable(with = LocalTimeConverter::class)
     val start: LocalTime,
     @Serializable(with = LocalTimeConverter::class)
-    val end: LocalTime
+    val end: LocalTime,
 ) : Comparable<LessonTime> {
     override fun compareTo(other: LessonTime): Int {
         val start = this.start.compareTo(other.start)
@@ -19,5 +19,4 @@ data class LessonTime(
     operator fun contains(value: LocalTime): Boolean {
         return value in start..end
     }
-
 }

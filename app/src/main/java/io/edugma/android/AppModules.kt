@@ -40,12 +40,10 @@ val appModules = listOf(
     ScheduleDataModule.deps,
     accountDataModule,
 
-
     // Domain modules
     baseDomainModule,
     ScheduleDomainModule.deps,
     accountDomainModule,
-
 
     // Features modules
     baseFeaturesModule,
@@ -66,18 +64,18 @@ val appModules = listOf(
     miscMenuFeaturesModule,
     settingsFeaturesModule,
 
-
-
-
     // TODO: Temp
     module {
         single {
-            buildDB(get(), KotlinxSerializer {
-                +ScheduleDao.serializer()
-                +ScheduleSourceDao.serializer()
-                +DataVersion.serializer()
-                +ScheduleSourceFullDao.serializer()
-            })
+            buildDB(
+                get(),
+                KotlinxSerializer {
+                    +ScheduleDao.serializer()
+                    +ScheduleSourceDao.serializer()
+                    +DataVersion.serializer()
+                    +ScheduleSourceFullDao.serializer()
+                },
+            )
         }
-    }
+    },
 )

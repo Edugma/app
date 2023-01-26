@@ -10,7 +10,7 @@ package io.edugma.domain.base.utils
  *
  */
 fun <T : R, R : Any> List<T>.insertSeparators(
-    generator: (T?, T?) -> R?
+    generator: (T?, T?) -> R?,
 ): List<R> {
     return asSequence()
         .run {
@@ -24,7 +24,7 @@ fun <T : R, R : Any> List<T>.insertSeparators(
         .flatMap {
             listOf(
                 it.first,
-                generator(it.first, it.second)
+                generator(it.first, it.second),
             )
         }.filterNotNull()
         .toList()

@@ -12,7 +12,6 @@ class ScreenResultProvider {
     suspend fun sendEvent(result: ScreenResult) {
         events.emit(result)
     }
-
 }
 
 interface ScreenResult

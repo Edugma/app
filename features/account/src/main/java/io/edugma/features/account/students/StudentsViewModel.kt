@@ -6,9 +6,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import io.edugma.domain.account.model.student.Student
-import io.edugma.domain.account.model.Teacher
 import io.edugma.domain.account.repository.PeoplesRepository
-import io.edugma.features.account.teachers.TeachersPagingSource
 import io.edugma.features.base.core.mvi.BaseViewModel
 import kotlinx.coroutines.flow.Flow
 
@@ -53,7 +51,6 @@ class StudentsViewModel(private val repository: PeoplesRepository) :
             state = state.copy(selectedStudent = student, bottomType = BottomSheetType.Student)
         }
     }
-
 }
 
 data class StudentsState(

@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun <T> Spinner(name: String = "",stateList: Array<T>, initialState: T, nameMapper: (T) -> String, onChanged: (T) -> Unit) {
+fun <T> Spinner(name: String = "", stateList: Array<T>, initialState: T, nameMapper: (T) -> String, onChanged: (T) -> Unit) {
     var expanded by remember { mutableStateOf(false) }
     Row(Modifier.fillMaxWidth(0.8f), verticalAlignment = Alignment.CenterVertically) {
         Text(text = name, modifier = Modifier.padding(end = 10.dp))
@@ -27,17 +27,17 @@ fun <T> Spinner(name: String = "",stateList: Array<T>, initialState: T, nameMapp
                         expanded = !expanded
                     },
                 horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     text = nameMapper.invoke(initialState),
                     fontSize = 18.sp,
-                    modifier = Modifier.padding(end = 8.dp)
+                    modifier = Modifier.padding(end = 8.dp),
                 )
                 Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = "")
                 DropdownMenu(expanded = expanded, onDismissRequest = {
                     expanded = false
-                }) {
+                },) {
                     stateList.forEach { item ->
                         DropdownMenuItem(
                             onClick = {
@@ -46,7 +46,7 @@ fun <T> Spinner(name: String = "",stateList: Array<T>, initialState: T, nameMapp
                             },
                             text = {
                                 Text(text = nameMapper.invoke(item))
-                            }
+                            },
                         )
                     }
                 }

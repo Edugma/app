@@ -15,8 +15,8 @@ import io.edugma.features.base.core.mvi.impl.SimpleMutator
 import io.edugma.features.base.core.mvi.prop
 import io.edugma.features.base.navigation.schedule.ScheduleInfoScreens
 import io.edugma.features.schedule.daily.model.WeekUiModel
-import io.edugma.features.schedule.elements.utils.toUiModel
 import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
+import io.edugma.features.schedule.elements.utils.toUiModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class ScheduleViewModel(
-    private val useCase: ScheduleUseCase
+    private val useCase: ScheduleUseCase,
 ) : BaseViewModel<ScheduleState>(initState()) {
 
     init {
@@ -45,7 +45,7 @@ class ScheduleViewModel(
                     schedulePos = schedulePos,
                     weeksPos = weekPos,
                     dayOfWeekPos = dayOfWeekPos,
-                    selectedDate = fixedSelectedDate
+                    selectedDate = fixedSelectedDate,
                 )
             }
 
@@ -60,7 +60,7 @@ class ScheduleViewModel(
                     schedulePos = schedulePos,
                     weeksPos = weekPos,
                     dayOfWeekPos = dayOfWeekPos,
-                    showBackToTodayFab = !dateIsToday
+                    showBackToTodayFab = !dateIsToday,
                 )
             }
 
@@ -75,20 +75,19 @@ class ScheduleViewModel(
             }
         }
 
-
         viewModelScope.launch {
             useCase.getSchedule().collect {
                 if (!it.isFinalFailure) {
                     val schedule = it.getOrDefault(emptyList())
                     if (schedule.isEmpty() && it.isLoading) return@collect
-                    val isLoading = it.isLoading// && !state.isPreloading
+                    val isLoading = it.isLoading // && !state.isPreloading
 
                     mutateState {
 
                         state = state.copy(
                             schedule = schedule.toUiModel(),
                             isLoading = isLoading && !state.isRefreshing,
-                            isRefreshing = isLoading && state.isRefreshing
+                            isRefreshing = isLoading && state.isRefreshing,
                         )
                     }
                 }
@@ -108,7 +107,7 @@ class ScheduleViewModel(
                             state = state.copy(
                                 schedule = schedule.toUiModel(),
                                 isLoading = isLoading && !state.isRefreshing,
-                                isRefreshing = isLoading && state.isRefreshing
+                                isRefreshing = isLoading && state.isRefreshing,
                             )
                         }
                     }
@@ -124,13 +123,13 @@ class ScheduleViewModel(
                     } ?: LessonDisplaySettings.Default
                     mutateState {
                         state = state.copy(
-                            lessonDisplaySettings = lessonDisplaySettings
+                            lessonDisplaySettings = lessonDisplaySettings,
                         )
                     }
                 }.onFailure {
                     mutateState {
                         state = state.copy(
-                            lessonDisplaySettings = LessonDisplaySettings.Default
+                            lessonDisplaySettings = LessonDisplaySettings.Default,
                         )
                     }
                 }.collect()
@@ -175,9 +174,9 @@ class ScheduleViewModel(
             ScheduleInfoScreens.LessonInfo(
                 lessonInfo = LessonInfo(
                     lesson = lesson,
-                    dateTime = dateTime
-                )
-            )
+                    dateTime = dateTime,
+                ),
+            ),
         )
     }
 
@@ -266,5 +265,5 @@ data class ScheduleState(
     val weeksPos: Int = 0,
     val dayOfWeekPos: Int = 0,
 
-    val showBackToTodayFab: Boolean = false
+    val showBackToTodayFab: Boolean = false,
 )

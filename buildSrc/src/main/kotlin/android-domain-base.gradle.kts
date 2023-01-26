@@ -3,8 +3,8 @@
 plugins {
     id("java-library")
     kotlin("jvm")
+    id("org.jmailen.kotlinter")
 }
-
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11

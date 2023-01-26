@@ -2,12 +2,9 @@ package io.edugma.features.account.payments
 
 import android.content.Intent
 import android.net.Uri
-import android.util.DisplayMetrics
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,7 +12,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -25,15 +21,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import coil.compose.AsyncImage
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -53,7 +45,7 @@ fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
     val state by viewModel.state.collectAsState()
 
     val bottomState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden
+        initialValue = ModalBottomSheetValue.Hidden,
     )
     val scope = rememberCoroutineScope()
 
@@ -62,7 +54,7 @@ fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         scrimColor = Color.Black.copy(alpha = 0.5f),
         sheetBackgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.surface,
-        sheetContent = { BottomSheetLayout(state) }
+        sheetContent = { BottomSheetLayout(state) },
     ) {
         PaymentsContent(
             state,
@@ -76,16 +68,18 @@ fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
 
 @Composable
 fun BottomSheetLayout(
-    state: PaymentsState
+    state: PaymentsState,
 ) {
     val context = LocalContext.current
-    Column(modifier = Modifier
-        .padding(horizontal = 15.dp)) {
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 15.dp),
+    ) {
         SpacerHeight(height = 15.dp)
         Text(
             text = "QR код",
             style = MaterialTheme3.typography.headlineMedium,
-            modifier = Modifier.padding(start = 8.dp)
+            modifier = Modifier.padding(start = 8.dp),
         )
         SpacerHeight(height = 20.dp)
         AsyncImage(
@@ -95,14 +89,14 @@ fun BottomSheetLayout(
                 .fillMaxWidth()
                 .clickable {
                     Intent(Intent.ACTION_VIEW, Uri.parse(state.selectedPayment?.qr)).apply(
-                        context::startActivity
+                        context::startActivity,
                     )
-                }
+                },
         )
         SpacerHeight(height = 20.dp)
         TextWithIcon(
             text = "Вы можете сделать скриншот экрана или скачать QR-код на устройство, затем открыть его в мобильном приложении вашего банка:\nОплата по QR-коду -> Загрузить изображение",
-            icon = painterResource(id = FluentIcons.ic_fluent_info_24_regular)
+            icon = painterResource(id = FluentIcons.ic_fluent_info_24_regular),
         )
         SpacerHeight(height = 20.dp)
     }
@@ -115,7 +109,7 @@ fun PaymentsContent(
     retryListener: ClickListener,
     onPaymentChange: Typed1Listener<Int>,
     onQrClickListener: ClickListener,
-    backListener: ClickListener
+    backListener: ClickListener,
 ) {
     SwipeRefresh(state = rememberSwipeRefreshState(state.isRefreshing), onRefresh = retryListener) {
         Column {
@@ -137,14 +131,14 @@ fun PaymentsContent(
                     SelectableOneTypesRow(
                         state.types ?: emptyList(),
                         state.selectedType,
-                        { it.toLabel() }
+                        { it.toLabel() },
                     ) {
                         state.data?.keys?.indexOf(it)?.let(onPaymentChange::invoke)
                     }
                     HorizontalPager(
                         count = state.data?.size ?: 0,
                         state = paymentsPagerState,
-                        key = { state.getTypeByIndex(it) ?: PaymentType.Dormitory }
+                        key = { state.getTypeByIndex(it) ?: PaymentType.Dormitory },
                     ) { page ->
                         state.getPaymentsByIndex(page)?.let { payment ->
                             Payments(payment, onQrClickListener)
@@ -159,16 +153,16 @@ fun PaymentsContent(
 @Composable
 fun AppBar(
     state: PaymentsState,
-    backListener: ClickListener
+    backListener: ClickListener,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.padding(bottom = 10.dp)
+        modifier = Modifier.padding(bottom = 10.dp),
     ) {
         IconButton(onClick = backListener) {
             Icon(
                 Icons.Filled.ArrowBack,
-                contentDescription = "Назад"
+                contentDescription = "Назад",
             )
         }
         SpacerWidth(width = 15.dp)
@@ -185,14 +179,14 @@ fun Payments(payments: Payments, onQrClickListener: ClickListener) {
         modifier = Modifier
             .padding(5.dp)
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(rememberScrollState()),
     ) {
         val expanded = rememberSaveable { mutableStateOf(false) }
         payments.level?.let {
             TextWithIcon(
                 text = "Степень образования: ${payments.level}",
                 icon = painterResource(id = R.drawable.acc_ic_teacher_24),
-                modifier = Modifier
+                modifier = Modifier,
             )
         }
         payments.dormRoom?.let {
@@ -204,7 +198,7 @@ fun Payments(payments: Payments, onQrClickListener: ClickListener) {
         TextWithIcon(
             text = "Срок действия: ${payments.startDate.format()} - ${payments.endDate.format()}",
             icon = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
-            modifier = Modifier
+            modifier = Modifier,
         )
         if (payments.balance != "0") {
             TextWithIcon(
@@ -222,7 +216,7 @@ fun Payments(payments: Payments, onQrClickListener: ClickListener) {
                     Payment(it)
                     SpacerHeight(height = 5.dp)
                 }
-                if (!expanded.value && payments.payments.size>3) Expander { expanded.value = !expanded.value }
+                if (!expanded.value && payments.payments.size > 3) Expander { expanded.value = !expanded.value }
             }
             val balanceCurrentText: String
             val balanceCurrentColor: Color
@@ -243,9 +237,12 @@ fun Payments(payments: Payments, onQrClickListener: ClickListener) {
             SpacerHeight(height = 5.dp)
             Text(text = balanceCurrentText, style = MaterialTheme3.typography.titleMedium, fontWeight = FontWeight.Bold, color = balanceCurrentColor, fontSize = 17.sp)
         }
-        PrimaryButton(onClick = onQrClickListener, modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 10.dp, vertical = 15.dp)) {
+        PrimaryButton(
+            onClick = onQrClickListener,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp, vertical = 15.dp),
+        ) {
             Text(text = "Оплатить через QR код".uppercase())
         }
     }
@@ -256,17 +253,17 @@ fun PaymentsPlaceholder() {
     Column(
         modifier = Modifier
             .padding(5.dp)
-            .heightIn(min = 40.dp)
+            .heightIn(min = 40.dp),
     ) {
         TextWithIcon(
             text = "",
             icon = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
-            modifier = Modifier.placeholder(true)
+            modifier = Modifier.placeholder(true),
         )
         TextWithIcon(
             text = "",
             icon = painterResource(id = FluentIcons.ic_fluent_money_24_regular),
-            modifier = Modifier.placeholder(true)
+            modifier = Modifier.placeholder(true),
         )
         Column(modifier = Modifier.padding(horizontal = 10.dp)) {
             SpacerHeight(height = 10.dp)
@@ -278,10 +275,15 @@ fun PaymentsPlaceholder() {
                     SpacerHeight(height = 5.dp)
                 }
             }
-            Text(text = "", style = MaterialTheme3.typography.titleMedium,
-                fontWeight = FontWeight.Bold, fontSize = 17.sp, modifier = Modifier
+            Text(
+                text = "",
+                style = MaterialTheme3.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                fontSize = 17.sp,
+                modifier = Modifier
                     .placeholder(true)
-                    .widthIn(100.dp))
+                    .widthIn(100.dp),
+            )
         }
     }
 }
@@ -289,22 +291,36 @@ fun PaymentsPlaceholder() {
 @Composable
 fun HorizontalText(modifier: Modifier = Modifier, label: String, text: String) {
     Box(modifier = Modifier.fillMaxWidth()) {
-        Text(text = label, modifier = modifier
-            .align(Alignment.CenterStart)
-            .widthIn(min = 50.dp), style = MaterialTheme3.typography.bodyLarge, fontWeight = FontWeight.Bold, color = MaterialTheme3.colorScheme.primary)
-        Text(text = text, modifier = modifier
-            .align(Alignment.CenterEnd)
-            .widthIn(min = 20.dp), style = MaterialTheme3.typography.bodyLarge, fontWeight = FontWeight.Bold, color = MaterialTheme3.colorScheme.primary)
+        Text(
+            text = label,
+            modifier = modifier
+                .align(Alignment.CenterStart)
+                .widthIn(min = 50.dp),
+            style = MaterialTheme3.typography.bodyLarge,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme3.colorScheme.primary,
+        )
+        Text(
+            text = text,
+            modifier = modifier
+                .align(Alignment.CenterEnd)
+                .widthIn(min = 20.dp),
+            style = MaterialTheme3.typography.bodyLarge,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme3.colorScheme.primary,
+        )
     }
 }
 
 @Composable
 fun Payment(payment: Payment) {
     TonalCard(shape = MaterialTheme3.shapes.extraSmall) {
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 10.dp)
-            .heightIn(min = 50.dp)) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp)
+                .heightIn(min = 50.dp),
+        ) {
             Text(text = payment.date.format(), modifier = Modifier.align(Alignment.CenterStart))
             Text(text = payment.value, modifier = Modifier.align(Alignment.CenterEnd))
         }
@@ -314,29 +330,32 @@ fun Payment(payment: Payment) {
 @Composable
 fun PaymentPlaceholder() {
     TonalCard(shape = MaterialTheme3.shapes.extraSmall) {
-        Box(modifier = Modifier
-            .placeholder(true)
-            .fillMaxWidth()
-            .padding(horizontal = 10.dp)
-            .heightIn(min = 50.dp)) {}
+        Box(
+            modifier = Modifier
+                .placeholder(true)
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp)
+                .heightIn(min = 50.dp),
+        ) {}
     }
 }
 
 @Composable
 fun Expander(onClickListener: ClickListener) {
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .heightIn(min = 40.dp)
-        .clickable(onClick = onClickListener),
-        contentAlignment = Alignment.Center
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 40.dp)
+            .clickable(onClick = onClickListener),
+        contentAlignment = Alignment.Center,
     ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = "Показать больше",
-                    style = MaterialTheme3.typography.bodyLarge
-                )
-                SpacerWidth(width = 20.dp)
-                Icon(painterResource(id = FluentIcons.ic_fluent_ios_arrow_rtl_24_filled), contentDescription = null, modifier = Modifier.rotate(90f))
-            }
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = "Показать больше",
+                style = MaterialTheme3.typography.bodyLarge,
+            )
+            SpacerWidth(width = 20.dp)
+            Icon(painterResource(id = FluentIcons.ic_fluent_ios_arrow_rtl_24_filled), contentDescription = null, modifier = Modifier.rotate(90f))
+        }
     }
 }

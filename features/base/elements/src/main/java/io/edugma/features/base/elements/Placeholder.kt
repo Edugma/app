@@ -8,14 +8,15 @@ import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.fade
 import com.google.accompanist.placeholder.placeholder
 
-
-fun Modifier.placeholder(visible: Boolean,
-                         color: Color = Color.Gray,
-                         fadeColor: Color = Color.DarkGray,
-                         shape: RoundedCornerShape = RoundedCornerShape(4.dp)) =
+fun Modifier.placeholder(
+    visible: Boolean,
+    color: Color = Color.Gray,
+    fadeColor: Color = Color.DarkGray,
+    shape: RoundedCornerShape = RoundedCornerShape(4.dp),
+) =
     placeholder(
         visible = visible,
         color = color,
         shape = shape,
-        highlight = PlaceholderHighlight.fade(highlightColor = fadeColor)
+        highlight = PlaceholderHighlight.fade(highlightColor = fadeColor),
     )

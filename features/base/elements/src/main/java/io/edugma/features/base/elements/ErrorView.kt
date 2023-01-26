@@ -25,28 +25,28 @@ fun ErrorView(message: String = "Упс... Что-то пошло не так", 
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(anim))
     val progress by animateLottieCompositionAsState(
         composition,
-        iterations = LottieConstants.IterateForever
+        iterations = LottieConstants.IterateForever,
     )
     Column(
         modifier = Modifier.padding(10.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         SpacerHeight(height = 50.dp)
         Text(
             text = message,
-            style = MaterialTheme3.typography.headlineSmall
+            style = MaterialTheme3.typography.headlineSmall,
         )
         SpacerHeight(height = 30.dp)
         LottieAnimation(
             composition,
             progress,
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
         )
         SpacerHeight(height = 30.dp)
         PrimaryButton(
             onClick = retryAction,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Icon(Icons.Default.Refresh, "refresh")
             SpacerWidth(width = 5.dp)
@@ -54,7 +54,7 @@ fun ErrorView(message: String = "Упс... Что-то пошло не так", 
                 text = "Повторить".uppercase(),
                 style = MaterialTheme3.typography.bodyMedium,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
         }
     }

@@ -21,13 +21,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.edugma.domain.account.model.Application
 import io.edugma.domain.account.model.Order
@@ -47,7 +45,7 @@ fun PersonalScreen(viewModel: PersonalViewModel = getViewModel()) {
         state,
         backListener = viewModel::exit,
         refreshListener = viewModel::update,
-        typeListener = viewModel::setColumn
+        typeListener = viewModel::setColumn,
     )
 }
 
@@ -56,20 +54,20 @@ fun PersonalContent(
     state: PersonalState,
     backListener: ClickListener,
     refreshListener: ClickListener,
-    typeListener: Typed1Listener<Columns>
+    typeListener: Typed1Listener<Columns>,
 ) {
     SwipeRefresh(state = rememberSwipeRefreshState(state.isRefreshing), onRefresh = refreshListener) {
         Column {
             val scrollState = rememberLazyListState()
             val scrollOffset: Float = min(
                 1f,
-                1 - (scrollState.firstVisibleItemScrollOffset / 600f + scrollState.firstVisibleItemIndex)
+                1 - (scrollState.firstVisibleItemScrollOffset / 600f + scrollState.firstVisibleItemIndex),
             )
             CollapsingToolbar(
                 state.personal,
                 state.personalPlaceholders,
                 scrollOffset,
-                backListener
+                backListener,
             )
             LazyColumn(Modifier.padding(8.dp).fillMaxSize(), state = scrollState) {
                 when {
@@ -98,7 +96,7 @@ fun PersonalContent(
                                 types = values().toList(),
                                 selectedType = state.selectedColumn,
                                 nameMapper = { it.label },
-                                clickListener = typeListener
+                                clickListener = typeListener,
                             )
                         }
                         when (state.selectedColumn) {
@@ -111,7 +109,7 @@ fun PersonalContent(
                                             SpacerHeight(height = 3.dp)
                                             Order(orders[index])
                                             Divider()
-                                        }
+                                        },
                                     )
                                 }
                             }
@@ -129,7 +127,7 @@ fun PersonalContent(
                                                 SpacerHeight(height = 3.dp)
                                                 Application(application = applications[index])
                                                 Divider()
-                                            }
+                                            },
                                         )
                                     }
                                 }
@@ -147,18 +145,22 @@ private fun CollapsingToolbar(
     personal: Personal?,
     placeholders: Boolean,
     scrollOffset: Float,
-    onBack: ClickListener
+    onBack: ClickListener,
 ) {
     ConstraintLayout(
         Modifier
             .fillMaxWidth()
-            .padding(top = 16.dp, start = 16.dp, end = 16.dp)) {
+            .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+    ) {
         val imageSize by animateDpAsState(targetValue = max(55.dp, 80.dp * scrollOffset))
         val (image, name, info, icon) = createRefs()
-        IconButton(onClick = onBack, modifier = Modifier.constrainAs(icon) {
-            start.linkTo(parent.start)
-            linkTo(parent.top, info.bottom)
-        }) {
+        IconButton(
+            onClick = onBack,
+            modifier = Modifier.constrainAs(icon) {
+                start.linkTo(parent.start)
+                linkTo(parent.top, info.bottom)
+            },
+        ) {
             Icon(painter = painterResource(FluentIcons.ic_fluent_arrow_left_20_filled), contentDescription = null)
         }
         personal?.let {
@@ -172,7 +174,7 @@ private fun CollapsingToolbar(
                         top.linkTo(parent.top)
                         width = Dimension.fillToConstraints
                     }
-                    .placeholder(placeholders)
+                    .placeholder(placeholders),
             )
             Text(
                 text = "${personal?.degreeLevel} ${personal?.course} курса группы ${personal?.group}",
@@ -183,7 +185,7 @@ private fun CollapsingToolbar(
                         top.linkTo(name.bottom)
                         width = Dimension.fillToConstraints
                     }
-                    .placeholder(placeholders)
+                    .placeholder(placeholders),
             )
         }
         AsyncImage(
@@ -199,7 +201,7 @@ private fun CollapsingToolbar(
                     end.linkTo(parent.end)
                     top.linkTo(parent.top)
                 }
-                .placeholder(placeholders)
+                .placeholder(placeholders),
         )
     }
 }
@@ -209,33 +211,33 @@ fun Personal(personal: Personal) {
     Column(Modifier.padding(8.dp)) {
         TextWithIcon(
             text = personal.faculty,
-            icon = painterResource(id = FluentIcons.ic_fluent_building_24_regular)
+            icon = painterResource(id = FluentIcons.ic_fluent_building_24_regular),
         )
         TextWithIcon(
             text = personal.specialty,
-            icon = painterResource(id = R.drawable.acc_ic_teacher_24)
+            icon = painterResource(id = R.drawable.acc_ic_teacher_24),
         )
         personal.specialization?.let {
             TextWithIcon(
                 text = it,
-                icon = painterResource(id = FluentIcons.ic_fluent_book_24_regular)
+                icon = painterResource(id = FluentIcons.ic_fluent_book_24_regular),
             )
         }
         TextWithIcon(
             text = "Номер зачетной книжки: ${personal.code}",
-            icon = painterResource(id = FluentIcons.ic_fluent_album_24_regular)
+            icon = painterResource(id = FluentIcons.ic_fluent_album_24_regular),
         )
         TextWithIcon(
             text = "${personal.finance} ${personal.educationForm.lowercase()} основа обучения",
-            icon = painterResource(id = FluentIcons.ic_fluent_money_24_regular)
+            icon = painterResource(id = FluentIcons.ic_fluent_money_24_regular),
         )
         TextWithIcon(
             text = "Год поступления ${personal.enterYear}",
-            icon = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular)
+            icon = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
         )
         TextWithIcon(
             text = "Лет обучения ${personal.degreeLength}",
-            icon = painterResource(id = FluentIcons.ic_fluent_timer_24_regular)
+            icon = painterResource(id = FluentIcons.ic_fluent_timer_24_regular),
         )
     }
 }
@@ -246,37 +248,37 @@ fun PersonalPlaceholder() {
         TextWithIcon(
             text = "",
             icon = painterResource(id = FluentIcons.ic_fluent_building_24_regular),
-            modifier = Modifier.placeholder(true)
+            modifier = Modifier.placeholder(true),
         )
         TextWithIcon(
             text = "",
             icon = painterResource(id = R.drawable.acc_ic_teacher_24),
-            modifier = Modifier.placeholder(true)
+            modifier = Modifier.placeholder(true),
         )
         TextWithIcon(
             text = "",
             icon = painterResource(id = FluentIcons.ic_fluent_book_24_regular),
-            modifier = Modifier.placeholder(true)
+            modifier = Modifier.placeholder(true),
         )
         TextWithIcon(
             text = "",
             icon = painterResource(id = FluentIcons.ic_fluent_album_24_regular),
-            modifier = Modifier.placeholder(true)
+            modifier = Modifier.placeholder(true),
         )
         TextWithIcon(
             text = "",
             icon = painterResource(id = FluentIcons.ic_fluent_money_24_regular),
-            modifier = Modifier.placeholder(true)
+            modifier = Modifier.placeholder(true),
         )
         TextWithIcon(
             text = "",
             icon = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
-            modifier = Modifier.placeholder(true)
+            modifier = Modifier.placeholder(true),
         )
         TextWithIcon(
             text = "",
             icon = painterResource(id = FluentIcons.ic_fluent_timer_24_regular),
-            modifier = Modifier.placeholder(true)
+            modifier = Modifier.placeholder(true),
         )
     }
 }
@@ -287,28 +289,28 @@ fun Order(order: Order) {
         Modifier
             .padding(10.dp)
             .fillMaxWidth()
-            .defaultMinSize(minHeight = 55.dp)
+            .defaultMinSize(minHeight = 55.dp),
     ) {
         Box {
             Text(
                 text = order.name,
                 style = MaterialTheme3.typography.titleMedium,
                 modifier = Modifier
-                    .defaultMinSize(minWidth = 100.dp)
+                    .defaultMinSize(minWidth = 100.dp),
             )
             Text(
                 text = order.date?.format().orEmpty(),
                 style = MaterialTheme3.typography.labelMedium,
                 modifier = Modifier
                     .defaultMinSize(minWidth = 50.dp)
-                    .align(Alignment.CenterEnd)
+                    .align(Alignment.CenterEnd),
             )
         }
         SpacerHeight(height = 15.dp)
         Text(
             text = order.description,
             style = MaterialTheme3.typography.bodySmall,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }
@@ -319,7 +321,7 @@ fun OrderPlaceholder() {
         Modifier
             .padding(10.dp)
             .fillMaxWidth()
-            .defaultMinSize(minHeight = 55.dp)
+            .defaultMinSize(minHeight = 55.dp),
     ) {
         Box {
             Text(
@@ -327,7 +329,7 @@ fun OrderPlaceholder() {
                 style = MaterialTheme3.typography.titleMedium,
                 modifier = Modifier
                     .defaultMinSize(minWidth = 100.dp)
-                    .placeholder(true)
+                    .placeholder(true),
             )
             Text(
                 text = "",
@@ -335,14 +337,14 @@ fun OrderPlaceholder() {
                 modifier = Modifier
                     .defaultMinSize(minWidth = 50.dp)
                     .align(Alignment.CenterEnd)
-                    .placeholder(true)
+                    .placeholder(true),
             )
         }
         SpacerHeight(height = 15.dp)
         Text(
             text = "",
             style = MaterialTheme3.typography.bodySmall,
-            modifier = Modifier.fillMaxWidth().placeholder(true)
+            modifier = Modifier.fillMaxWidth().placeholder(true),
         )
     }
 }
@@ -354,26 +356,26 @@ fun Application(application: Application) {
             .padding(horizontal = 10.dp, vertical = 5.dp)
             .padding(bottom = 5.dp)
             .fillMaxWidth()
-            .defaultMinSize(minHeight = 55.dp)
+            .defaultMinSize(minHeight = 55.dp),
     ) {
         Box(Modifier.fillMaxWidth()) {
             Text(
                 text = application.question,
-                style = MaterialTheme3.typography.titleMedium
+                style = MaterialTheme3.typography.titleMedium,
             )
             Text(
                 text = application.status.orEmpty(),
                 style = MaterialTheme3.typography.labelMedium,
                 color = MaterialTheme3.colorScheme.tertiary,
                 textAlign = TextAlign.End,
-                modifier = Modifier.align(Alignment.CenterEnd)
+                modifier = Modifier.align(Alignment.CenterEnd),
             )
         }
 
         Text(
             text = application.number,
             style = MaterialTheme3.typography.labelSmall,
-            color = MaterialTheme3.colorScheme.secondary
+            color = MaterialTheme3.colorScheme.secondary,
         )
         SpacerHeight(height = 10.dp)
         application.additionalInfo?.let {
@@ -381,6 +383,7 @@ fun Application(application: Application) {
         }
     }
 }
+
 @Composable
 fun ApplicationPlaceholder() {
     Column(
@@ -388,7 +391,7 @@ fun ApplicationPlaceholder() {
             .padding(horizontal = 10.dp, vertical = 5.dp)
             .padding(bottom = 5.dp)
             .fillMaxWidth()
-            .defaultMinSize(minHeight = 55.dp)
+            .defaultMinSize(minHeight = 55.dp),
     ) {
         Box(Modifier.fillMaxWidth()) {
             Text(
@@ -396,7 +399,7 @@ fun ApplicationPlaceholder() {
                 style = MaterialTheme3.typography.titleMedium,
                 modifier = Modifier.align(Alignment.CenterEnd)
                     .defaultMinSize(minWidth = 100.dp)
-                    .placeholder(true)
+                    .placeholder(true),
             )
             Text(
                 text = "",
@@ -405,7 +408,7 @@ fun ApplicationPlaceholder() {
                 textAlign = TextAlign.End,
                 modifier = Modifier.align(Alignment.CenterEnd)
                     .defaultMinSize(minWidth = 50.dp)
-                    .placeholder(true)
+                    .placeholder(true),
             )
         }
 
@@ -415,7 +418,7 @@ fun ApplicationPlaceholder() {
             color = MaterialTheme3.colorScheme.secondary,
             modifier = Modifier
                 .defaultMinSize(minWidth = 50.dp)
-                .placeholder(true)
+                .placeholder(true),
         )
         SpacerHeight(height = 10.dp)
         Text(
@@ -423,7 +426,7 @@ fun ApplicationPlaceholder() {
             style = MaterialTheme3.typography.bodySmall,
             modifier = Modifier
                 .defaultMinSize(minWidth = 100.dp)
-                .placeholder(true)
+                .placeholder(true),
         )
     }
 }

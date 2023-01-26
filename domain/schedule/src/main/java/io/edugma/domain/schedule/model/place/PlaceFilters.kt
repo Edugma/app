@@ -10,5 +10,5 @@ data class PlaceFilters(
     @Serializable(with = LocalDateTimeConverter::class)
     val dateTimeFrom: LocalDateTime,
     @Serializable(with = LocalDateTimeConverter::class)
-    val dateTimeTo: LocalDateTime
+    val dateTimeTo: LocalDateTime,
 )

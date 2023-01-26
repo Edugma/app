@@ -1,7 +1,6 @@
 package io.edugma.features.account.students
 
 import android.content.Intent
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,20 +11,16 @@ import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,13 +30,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.AsyncImage
-import coil.compose.rememberImagePainter
-import coil.transform.CircleCropTransformation
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import io.edugma.domain.account.model.departments
 import io.edugma.domain.account.model.student.Student
-import io.edugma.domain.account.model.print
 import io.edugma.features.account.R
 import io.edugma.features.account.teachers.TeacherPlaceholder
 import io.edugma.features.base.core.utils.*
@@ -55,7 +44,7 @@ fun StudentsScreen(viewModel: StudentsViewModel = getViewModel()) {
     val state by viewModel.state.collectAsState()
 
     val bottomState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden
+        initialValue = ModalBottomSheetValue.Hidden,
     )
     val scope = rememberCoroutineScope()
     ModalBottomSheetLayout(
@@ -75,8 +64,7 @@ fun StudentsScreen(viewModel: StudentsViewModel = getViewModel()) {
                     state.selectedStudent?.let { StudentSheetContent(it) }
                 }
             }
-            
-        }
+        },
     ) {
         StudentsContent(
             state,
@@ -88,17 +76,18 @@ fun StudentsScreen(viewModel: StudentsViewModel = getViewModel()) {
             studentClick = {
                 viewModel.selectStudent(it)
                 scope.launch { bottomState.show() }
-            }
+            },
         )
     }
 }
 
 @Composable
 fun StudentSheetContent(
-    student: Student
+    student: Student,
 ) {
-    Column(modifier = Modifier
-        .padding(horizontal = 15.dp)
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 15.dp),
     ) {
         SpacerHeight(height = 15.dp)
         Row(modifier = Modifier.fillMaxWidth()) {
@@ -116,7 +105,7 @@ fun StudentSheetContent(
                 contentDescription = "avatar",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(CircleShape)
+                    .clip(CircleShape),
             )
         }
         SpacerHeight(height = 3.dp)
@@ -125,67 +114,67 @@ fun StudentSheetContent(
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme3.colorScheme.secondary,
             modifier = Modifier
-                .padding(horizontal = 8.dp)
+                .padding(horizontal = 8.dp),
         )
         SpacerHeight(height = 10.dp)
         student.sex?.let {
             TextWithIcon(
                 text = it,
-                icon = painterResource(id = FluentIcons.ic_fluent_people_24_regular)
+                icon = painterResource(id = FluentIcons.ic_fluent_people_24_regular),
             )
         }
         TextWithIcon(
             text = student.branch.title,
-            icon = painterResource(id = FluentIcons.ic_fluent_building_24_regular)
+            icon = painterResource(id = FluentIcons.ic_fluent_building_24_regular),
         )
         TextWithIcon(
             text = student.educationType,
-            icon = painterResource(id = R.drawable.acc_ic_teacher_24)
+            icon = painterResource(id = R.drawable.acc_ic_teacher_24),
         )
         TextWithIcon(
             text = student.payment,
-            icon = painterResource(id = FluentIcons.ic_fluent_money_24_regular)
+            icon = painterResource(id = FluentIcons.ic_fluent_money_24_regular),
         )
         student.getFaculty()?.let {
             TextWithIcon(
                 text = it,
-                icon = painterResource(id = FluentIcons.ic_fluent_book_24_regular)
+                icon = painterResource(id = FluentIcons.ic_fluent_book_24_regular),
             )
         }
         student.group?.direction?.let {
             TextWithIcon(
                 text = it.title,
-                icon = painterResource(id = FluentIcons.ic_fluent_contact_card_group_24_regular)
+                icon = painterResource(id = FluentIcons.ic_fluent_contact_card_group_24_regular),
             )
         }
         student.specialization?.let {
             if (it.title != student.group?.direction?.title) {
                 TextWithIcon(
                     text = it.title,
-                    icon = painterResource(id = FluentIcons.ic_fluent_data_treemap_24_regular)
+                    icon = painterResource(id = FluentIcons.ic_fluent_data_treemap_24_regular),
                 )
             }
         }
         TextWithIcon(
             text = "Года обучения: ${student.years}",
-            icon = painterResource(id = FluentIcons.ic_fluent_timer_24_regular)
+            icon = painterResource(id = FluentIcons.ic_fluent_timer_24_regular),
         )
         student.dormitory?.let {
             TextWithIcon(
                 text = "Общежитие №$it",
-                icon = painterResource(id = FluentIcons.ic_fluent_building_home_24_regular)
+                icon = painterResource(id = FluentIcons.ic_fluent_building_home_24_regular),
             )
         }
         student.dormitoryRoom?.let {
             TextWithIcon(
                 text = "Комната №$it",
-                icon = painterResource(id = FluentIcons.ic_fluent_conference_room_24_regular)
+                icon = painterResource(id = FluentIcons.ic_fluent_conference_room_24_regular),
             )
         }
         student.birthday?.let {
             TextWithIcon(
                 text = "Дата рождения: ${it.format()}",
-                icon = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular)
+                icon = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
             )
         }
 //        Text(text = student.toString())
@@ -197,25 +186,28 @@ fun StudentSheetContent(
 fun FilterSheetContent(
     state: StudentsState,
     textChangeListener: Typed1Listener<String>,
-    onAcceptClick: ClickListener
+    onAcceptClick: ClickListener,
 ) {
-    Column(modifier = Modifier
-        .padding(horizontal = 15.dp)) {
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 15.dp),
+    ) {
         SpacerHeight(height = 15.dp)
         Text(
             text = "Поиск",
             style = MaterialTheme3.typography.headlineMedium,
-            modifier = Modifier.padding(start = 8.dp)
+            modifier = Modifier.padding(start = 8.dp),
         )
         SpacerHeight(height = 20.dp)
         TextBox(
             value = state.name,
             title = "Фамилия или группа студента",
-            onValueChange = textChangeListener)
+            onValueChange = textChangeListener,
+        )
         SpacerHeight(height = 40.dp)
         PrimaryButton(
             onClick = onAcceptClick,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Text("Применить")
         }
@@ -228,7 +220,7 @@ fun StudentsContent(
     state: StudentsState,
     backListener: ClickListener,
     openBottomSheetListener: ClickListener,
-    studentClick: Typed1Listener<Student>
+    studentClick: Typed1Listener<Student>,
 ) {
     val studentListItems = state.pagingData?.collectAsLazyPagingItems()
     Column {
@@ -239,50 +231,54 @@ fun StudentsContent(
                 modifier = Modifier.constrainAs(content) {
                     linkTo(parent.start, filter.start)
                     width = Dimension.fillToConstraints
-                }) {
+                },
+            ) {
                 IconButton(onClick = backListener) {
                     Icon(
                         Icons.Filled.ArrowBack,
-                        contentDescription = "Назад"
+                        contentDescription = "Назад",
                     )
                 }
                 SpacerWidth(width = 15.dp)
                 Text(
                     text = "Студенты",
                     style = MaterialTheme3.typography.titleLarge,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
-            Row(modifier = Modifier.constrainAs(filter) {
-                linkTo(parent.top, parent.bottom)
-                end.linkTo(parent.end)
-            }) {
+            Row(
+                modifier = Modifier.constrainAs(filter) {
+                    linkTo(parent.top, parent.bottom)
+                    end.linkTo(parent.end)
+                },
+            ) {
                 val students = studentListItems
                     ?.itemSnapshotList
                     ?.items
                     ?.mapIndexed { index, student -> "${index + 1}. ${student.getFullName()}" }
                 if (students?.isNotEmpty() == true) {
                     val context = LocalContext.current
-                    IconButton(onClick = {
-                        Intent().apply {
-                            action = Intent.ACTION_SEND
-                            putExtra(Intent.EXTRA_TEXT, students.joinToString("\n"))
-                            type = "text/plain"
-                        }
-                            .let { Intent.createChooser(it, null) }
-                            .also(context::startActivity)
-                    }
+                    IconButton(
+                        onClick = {
+                            Intent().apply {
+                                action = Intent.ACTION_SEND
+                                putExtra(Intent.EXTRA_TEXT, students.joinToString("\n"))
+                                type = "text/plain"
+                            }
+                                .let { Intent.createChooser(it, null) }
+                                .also(context::startActivity)
+                        },
                     ) {
                         Icon(
                             Icons.Default.Share,
-                            contentDescription = "Поделиться"
+                            contentDescription = "Поделиться",
                         )
                     }
                 }
                 IconButton(onClick = openBottomSheetListener) {
                     Icon(
                         painterResource(id = FluentIcons.ic_fluent_search_24_regular),
-                        contentDescription = "Фильтр"
+                        contentDescription = "Фильтр",
                     )
                 }
             }
@@ -305,13 +301,15 @@ fun StudentsContent(
                     }
                     studentListItems.loadState.append is LoadState.Loading -> {
                         item {
-                            Box(modifier = Modifier
-                                .fillMaxWidth()
-                                .heightIn(min = 70.dp)) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .heightIn(min = 70.dp),
+                            ) {
                                 CircularProgressIndicator(
                                     modifier = Modifier
                                         .size(32.dp)
-                                        .align(Alignment.Center)
+                                        .align(Alignment.Center),
                                 )
                             }
                         }
@@ -334,7 +332,7 @@ fun Student(student: Student, onClick: ClickListener) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 10.dp, vertical = 5.dp)
-            .clickable(onClick = onClick)
+            .clickable(onClick = onClick),
     ) {
         Row {
             AsyncImage(
@@ -343,7 +341,7 @@ fun Student(student: Student, onClick: ClickListener) {
                 modifier = Modifier
                     .padding(vertical = 5.dp)
                     .clip(CircleShape)
-                    .size(70.dp)
+                    .size(70.dp),
             )
             SpacerWidth(width = 10.dp)
             Column {
@@ -352,7 +350,7 @@ fun Student(student: Student, onClick: ClickListener) {
                     style = MaterialTheme3.typography.titleMedium,
                     fontSize = 18.sp,
                     maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
                 SpacerHeight(height = 3.dp)
                 WithContentAlpha(alpha = ContentAlpha.medium) {
@@ -361,7 +359,7 @@ fun Student(student: Student, onClick: ClickListener) {
                             painter = painterResource(id = FluentIcons.ic_fluent_info_16_regular),
                             contentDescription = null,
                             modifier = Modifier
-                                .size(17.dp)
+                                .size(17.dp),
                         )
                         Spacer(Modifier.width(5.dp))
                         Text(

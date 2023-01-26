@@ -9,10 +9,8 @@ import io.edugma.data.base.consts.CacheConst.PerformanceKey
 import io.edugma.data.base.consts.CacheConst.PersonalKey
 import io.edugma.data.base.consts.CacheConst.SemesterKey
 import io.edugma.data.base.local.PreferencesDS
-import io.edugma.data.base.local.deleteJsonLazy
 import io.edugma.data.base.local.getSourceValue
 import io.edugma.domain.account.model.Login
-import io.edugma.domain.account.model.Personal
 import io.edugma.domain.account.repository.AuthorizationRepository
 import io.edugma.domain.base.PrefKeys.TokenKey
 import io.edugma.domain.base.utils.mapResult
@@ -23,8 +21,8 @@ import kotlinx.coroutines.flow.flowOn
 
 class AuthorizationRepositoryImpl(
     private val api: AccountService,
-    private val localStore: PreferencesDS
-): AuthorizationRepository {
+    private val localStore: PreferencesDS,
+) : AuthorizationRepository {
 
     override fun authorization(login: String, password: String): Flow<Result<String>> {
         return api.login(Login(login, password))

@@ -6,7 +6,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.getValue
@@ -25,7 +24,7 @@ import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun AuthScreen(viewModel: AuthViewModel = getViewModel()) {
-    with (viewModel) {
+    with(viewModel) {
         val state by state.collectAsState()
 
         AuthContent(
@@ -35,7 +34,7 @@ fun AuthScreen(viewModel: AuthViewModel = getViewModel()) {
             onLoginChange = ::setLogin,
             onPasswordChange = ::setPassword,
             onCheckBoxChanged = ::setCheckBox,
-            onLogout = ::logout
+            onLogout = ::logout,
         )
     }
 }
@@ -48,36 +47,42 @@ fun AuthContent(
     onPasswordChange: Typed1Listener<String>,
     onLoginChange: Typed1Listener<String>,
     onCheckBoxChanged: Typed1Listener<Boolean>,
-    onLogout: ClickListener
+    onLogout: ClickListener,
 ) {
     Column {
         ConstraintLayout(Modifier.fillMaxWidth()) {
             val (content, filter) = createRefs()
-            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.constrainAs(content) {
-                linkTo(parent.start, filter.start)
-                width = Dimension.fillToConstraints
-            }) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.constrainAs(content) {
+                    linkTo(parent.start, filter.start)
+                    width = Dimension.fillToConstraints
+                },
+            ) {
                 IconButton(onClick = onLoggedClick) {
                     Icon(
                         Icons.Filled.ArrowBack,
-                        contentDescription = "Назад"
+                        contentDescription = "Назад",
                     )
                 }
                 SpacerWidth(width = 15.dp)
                 Text(
                     text = "Авторизация",
                     style = MaterialTheme3.typography.titleLarge,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
             if (state.auth) {
-                IconButton(onClick = onLogout, modifier = Modifier.constrainAs(filter) {
-                    linkTo(parent.top, parent.bottom)
-                    end.linkTo(parent.end)
-                }) {
+                IconButton(
+                    onClick = onLogout,
+                    modifier = Modifier.constrainAs(filter) {
+                        linkTo(parent.top, parent.bottom)
+                        end.linkTo(parent.end)
+                    },
+                ) {
                     Icon(
                         painterResource(id = FluentIcons.ic_fluent_sign_out_24_regular),
-                        contentDescription = "Выход"
+                        contentDescription = "Выход",
                     )
                 }
             }
@@ -96,7 +101,7 @@ fun NotAuthorized(
     onAuthorize: ClickListener,
     onPasswordChange: Typed1Listener<String>,
     onLoginChange: Typed1Listener<String>,
-    onCheckBoxChanged: Typed1Listener<Boolean>
+    onCheckBoxChanged: Typed1Listener<Boolean>,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -105,18 +110,19 @@ fun NotAuthorized(
             .padding(horizontal = 32.dp)
             .fillMaxWidth()
             .fillMaxHeight(0.7f)
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(rememberScrollState()),
     ) {
         TextBox(
             value = state.login,
             title = "Логин",
-            onValueChange = onLoginChange)
+            onValueChange = onLoginChange,
+        )
         SpacerHeight(height = 12.dp)
         TextBox(
             value = state.password,
             title = "Пароль",
             onValueChange = onPasswordChange,
-            passwordMode = true
+            passwordMode = true,
         )
         SpacerHeight(height = 25.dp)
         PrimaryButton(modifier = Modifier.defaultMinSize(minWidth = 250.dp), onClick = onAuthorize) {
@@ -126,37 +132,40 @@ fun NotAuthorized(
                 CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
                     color = MaterialTheme3.colorScheme.onPrimary,
-                    strokeWidth = 3.0.dp
+                    strokeWidth = 3.0.dp,
                 )
             }
         }
     }
 }
+
 @Composable
 fun Authorized(state: AuthState, listener: ClickListener) {
     ConstraintLayout(
         modifier = Modifier
             .padding(horizontal = 16.dp, vertical = 10.dp)
-            .fillMaxSize()
+            .fillMaxSize(),
     ) {
         val (anim, button) = createRefs()
         val randomAnim = remember { R.raw.sch_relax_1 }
         val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(randomAnim))
         val progress by animateLottieCompositionAsState(
             composition,
-            iterations = LottieConstants.IterateForever
+            iterations = LottieConstants.IterateForever,
         )
-        Column(modifier = Modifier
-            .fillMaxHeight(0.6f)
-            .constrainAs(anim) {
-                top.linkTo(parent.top)
-            }) {
+        Column(
+            modifier = Modifier
+                .fillMaxHeight(0.6f)
+                .constrainAs(anim) {
+                    top.linkTo(parent.top)
+                },
+        ) {
             LottieAnimation(
                 composition,
                 progress,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(0.8f)
+                    .fillMaxHeight(0.8f),
 
             )
             Text(
@@ -164,7 +173,7 @@ fun Authorized(state: AuthState, listener: ClickListener) {
                 style = MaterialTheme3.typography.titleLarge,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
             )
         }
         ButtonView(
@@ -175,7 +184,7 @@ fun Authorized(state: AuthState, listener: ClickListener) {
                     bottom.linkTo(parent.bottom)
                     linkTo(parent.start, parent.end)
                     width = Dimension.fillToConstraints
-                }
+                },
         )
     }
 }

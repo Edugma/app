@@ -28,7 +28,7 @@ object DatePickerDefaults {
         dateActiveBackgroundColor: Color = MaterialTheme.colors.primary,
         dateInactiveBackgroundColor: Color = Color.Transparent,
         dateActiveTextColor: Color = MaterialTheme.colors.onPrimary,
-        dateInactiveTextColor: Color = MaterialTheme.colors.onBackground
+        dateInactiveTextColor: Color = MaterialTheme.colors.onBackground,
     ): DatePickerColors {
         return DefaultDatePickerColors(
             headerBackgroundColor = headerBackgroundColor,
@@ -37,7 +37,7 @@ object DatePickerDefaults {
             dateActiveBackgroundColor = dateActiveBackgroundColor,
             dateInactiveBackgroundColor = dateInactiveBackgroundColor,
             dateActiveTextColor = dateActiveTextColor,
-            dateInactiveTextColor = dateInactiveTextColor
+            dateInactiveTextColor = dateInactiveTextColor,
         )
     }
 }

@@ -17,7 +17,7 @@ fun UsualCard(
     modifier: Modifier = Modifier,
     name: String,
     enabled: Boolean,
-    onClick: ClickListener
+    onClick: ClickListener,
 ) {
     TonalCard(
         modifier = modifier
@@ -26,7 +26,7 @@ fun UsualCard(
             .fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         enabled = enabled,
-        onClick = onClick
+        onClick = onClick,
     ) {
         Box(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
             Text(text = name)

@@ -15,29 +15,29 @@ import org.koin.androidx.compose.getViewModel
 fun MiscMenuScreen(viewModel: MiscMenuViewModel = getViewModel()) {
 
     MiscMenuContent(
-        onSettingsClick = viewModel::onSettingsClick
+        onSettingsClick = viewModel::onSettingsClick,
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MiscMenuContent(
-    onSettingsClick: ClickListener
+    onSettingsClick: ClickListener,
 ) {
     Column(
         Modifier
             .padding(top = 20.dp, start = 4.dp, end = 4.dp)
-            .fillMaxSize()
+            .fillMaxSize(),
     ) {
         Text(
             text = "Прочее",
             style = MaterialTheme3.typography.headlineMedium,
-            modifier = Modifier.padding(start = 16.dp)
+            modifier = Modifier.padding(start = 16.dp),
         )
         Spacer(Modifier.height(20.dp))
         Card(
             onClick = onSettingsClick,
-            modifier = Modifier.height(150.dp).width(300.dp)
+            modifier = Modifier.height(150.dp).width(300.dp),
         ) {
             Text(text = "Настройки")
         }

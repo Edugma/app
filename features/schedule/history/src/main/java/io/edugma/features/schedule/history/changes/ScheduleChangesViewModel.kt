@@ -7,9 +7,8 @@ import io.edugma.features.base.core.mvi.BaseViewModel
 import kotlinx.coroutines.launch
 
 class ScheduleChangesViewModel(
-    private val useCase: ScheduleHistoryUseCase
+    private val useCase: ScheduleHistoryUseCase,
 ) : BaseViewModel<ScheduleChangesState>(ScheduleChangesState()) {
-
 
     init {
         viewModelScope.launch {
@@ -22,5 +21,5 @@ class ScheduleChangesViewModel(
 }
 
 data class ScheduleChangesState(
-    val changes: List<ScheduleDayChange> = emptyList()
+    val changes: List<ScheduleDayChange> = emptyList(),
 )

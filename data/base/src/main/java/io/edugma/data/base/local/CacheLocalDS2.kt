@@ -13,9 +13,8 @@ import org.kodein.db.keyById
 import kotlin.reflect.KType
 
 class CacheLocalDS2(
-    private val db: DB
+    private val db: DB,
 ) : CacheDS<CacheDao> {
-
 
     override fun save(kClass: KType, obj: CacheDao, key: String): Result<Unit> {
         TODO("Not yet implemented")
@@ -40,7 +39,6 @@ class CacheLocalDS2(
     fun flowOfDao(key: String): Flow<CacheDao?> {
         return db.flowOf(db.keyById(key))
     }
-
 
     //    fun save(value: ByteArray, key: String) {
 //        db.put(CacheDao(key, value))

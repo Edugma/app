@@ -30,18 +30,18 @@ val showNavBar = listOf(
     MainScreen.Home,
     MainScreen.Schedule,
     MainScreen.Account,
-    MainScreen.Misc
+    MainScreen.Misc,
 ).map { it.route }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainContent(
-    viewModel: MainViewModel = getViewModel()
+    viewModel: MainViewModel = getViewModel(),
 ) {
     val navController = rememberNavController(viewModel.router)
 
     Scaffold(
-        bottomBar = { BottomNav(navController) }
+        bottomBar = { BottomNav(navController) },
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding).fillMaxSize()) {
             NavHost(
@@ -55,12 +55,12 @@ fun MainContent(
                     brush = Brush.verticalGradient(
                         colors = listOf(
                             MaterialTheme3.colorScheme.background.withAlpha(0f),
-                            MaterialTheme3.colorScheme.background
-                        )
-                    )
+                            MaterialTheme3.colorScheme.background,
+                        ),
+                    ),
                 ).fillMaxWidth()
                     .height(10.dp)
-                    .align(Alignment.BottomCenter)
+                    .align(Alignment.BottomCenter),
             )
         }
     }
@@ -72,14 +72,14 @@ fun BottomNav(navController: NavHostController) {
         MainScreen.Home,
         MainScreen.Schedule,
         MainScreen.Account,
-        MainScreen.Misc
+        MainScreen.Misc,
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
     if (true || currentDestination?.route in showNavBar) {
         NavigationBar(
-            tonalElevation = 0.dp
+            tonalElevation = 0.dp,
         ) {
             items.forEach { screen ->
                 val selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
@@ -99,7 +99,7 @@ fun BottomNav(navController: NavHostController) {
                             restoreState = true
                         }
                     },
-                    modifier = Modifier.clip(MaterialTheme3.shapes.medium)
+                    modifier = Modifier.clip(MaterialTheme3.shapes.medium),
                 )
             }
         }

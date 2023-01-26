@@ -27,7 +27,7 @@ data class Personal(
     val degreeLevel: String,
     val enterYear: String,
     val orders: List<Order>,
-    val subdivisions: List<Subdivision>? = null
+    val subdivisions: List<Subdivision>? = null,
 ) {
     fun getFullName() = "$surname $name $patronymic"
     fun getNameSurname() = "$name $surname"
@@ -47,5 +47,5 @@ data class Order(
     @Serializable(LocalDateConverter::class)
     val date: LocalDate? = null,
     val name: String,
-    val description: String
+    val description: String,
 )

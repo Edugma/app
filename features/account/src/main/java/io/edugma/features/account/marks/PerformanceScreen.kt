@@ -44,7 +44,7 @@ import org.koin.androidx.compose.getViewModel
 fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
     val state by viewModel.state.collectAsState()
     val bottomState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden
+        initialValue = ModalBottomSheetValue.Hidden,
     )
     val scope = rememberCoroutineScope()
     ModalBottomSheetLayout(
@@ -55,16 +55,16 @@ fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
         sheetContent = {
             BottomSheetContent(
                 state,
-                viewModel
+                viewModel,
             ) { scope.launch { bottomState.hide() } }
-        }
+        },
     ) {
         PerformanceContent(
             state,
-            showBottomSheet = {scope.launch { bottomState.show() }},
+            showBottomSheet = { scope.launch { bottomState.show() } },
             retryListener = viewModel::loadMarks,
             filterClickListener = viewModel::updateFilter,
-            backListener = viewModel::exit
+            backListener = viewModel::exit,
         )
     }
 }
@@ -73,15 +73,17 @@ fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
 fun BottomSheetContent(
     state: MarksState,
     viewModel: PerformanceViewModel,
-    bottomCloseListener: ClickListener
+    bottomCloseListener: ClickListener,
 ) {
-    Column(modifier = Modifier
-        .padding(horizontal = 15.dp)) {
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 15.dp),
+    ) {
         SpacerHeight(height = 15.dp)
         Text(
             text = "Фильтры",
             style = MaterialTheme3.typography.headlineMedium,
-            modifier = Modifier.padding(start = 8.dp)
+            modifier = Modifier.padding(start = 8.dp),
         )
         SpacerHeight(height = 20.dp)
         TextBox(
@@ -92,35 +94,36 @@ fun BottomSheetContent(
                 viewModel.updateFilter(
                     Name(
                         value = it,
-                        isChecked = it.isEmpty()
-                    )
+                        isChecked = it.isEmpty(),
+                    ),
                 )
-            })
+            },
+        )
         SpacerHeight(height = 20.dp)
         SelectableChipsRow(
             "Курс",
             state.courses,
             viewModel::updateFilter,
-            state.bottomSheetPlaceholders
+            state.bottomSheetPlaceholders,
         )
         SpacerHeight(height = 20.dp)
         SelectableChipsRow(
             "Семестр",
             state.semesters,
             viewModel::updateFilter,
-            state.bottomSheetPlaceholders
+            state.bottomSheetPlaceholders,
         )
         SpacerHeight(height = 20.dp)
         SelectableChipsRow(
             "Тип",
             state.types,
             viewModel::updateFilter,
-            state.bottomSheetPlaceholders
+            state.bottomSheetPlaceholders,
         )
         SpacerHeight(height = 20.dp)
         PrimaryButton(
             onClick = bottomCloseListener,
-            modifier = Modifier.fillMaxWidth().placeholder(state.bottomSheetPlaceholders)
+            modifier = Modifier.fillMaxWidth().placeholder(state.bottomSheetPlaceholders),
         ) {
             Text("Применить")
         }
@@ -129,11 +132,13 @@ fun BottomSheetContent(
 }
 
 @Composable
-fun PerformanceContent(state: MarksState,
-                       showBottomSheet: ClickListener,
-                       retryListener: ClickListener,
-                       filterClickListener: Typed1Listener<Filter<*>>,
-                       backListener: ClickListener) {
+fun PerformanceContent(
+    state: MarksState,
+    showBottomSheet: ClickListener,
+    retryListener: ClickListener,
+    filterClickListener: Typed1Listener<Filter<*>>,
+    backListener: ClickListener,
+) {
     SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = state.isRefreshing), onRefresh = retryListener) {
         Column {
             AppBar(showBottomSheet = showBottomSheet, backListener = backListener)
@@ -141,7 +146,7 @@ fun PerformanceContent(state: MarksState,
             LazyColumn(
                 modifier = Modifier
                     .padding(horizontal = 16.dp, vertical = 10.dp)
-                    .fillMaxSize()
+                    .fillMaxSize(),
             ) {
                 when {
                     state.isError && state.data.isNull() -> {
@@ -160,7 +165,7 @@ fun PerformanceContent(state: MarksState,
                     else -> {
                         items(
                             count = state.filteredData?.size ?: 0,
-                            key = { state.filteredData!![it].id }
+                            key = { state.filteredData!![it].id },
                         ) {
                             var showCourse = true
                             if (it > 0) {
@@ -175,13 +180,13 @@ fun PerformanceContent(state: MarksState,
                                 Text(
                                     text = "${state.filteredData!![it].course} курс",
                                     style = MaterialTheme3.typography.headlineSmall,
-                                    color = MaterialTheme3.colorScheme.primary
+                                    color = MaterialTheme3.colorScheme.primary,
                                 )
                                 SpacerHeight(height = 15.dp)
                             }
                             Performance(
                                 state.filteredData!![it],
-                                filterClickListener
+                                filterClickListener,
                             )
                             SpacerHeight(height = 3.dp)
                         }
@@ -195,34 +200,40 @@ fun PerformanceContent(state: MarksState,
 @Composable
 fun AppBar(
     showBottomSheet: ClickListener,
-    backListener: ClickListener
+    backListener: ClickListener,
 ) {
     ConstraintLayout(Modifier.fillMaxWidth()) {
         val (content, filter) = createRefs()
-        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.constrainAs(content) {
-            linkTo(parent.start, filter.start)
-            width = Dimension.fillToConstraints
-        }) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.constrainAs(content) {
+                linkTo(parent.start, filter.start)
+                width = Dimension.fillToConstraints
+            },
+        ) {
             IconButton(onClick = backListener) {
                 Icon(
                     Icons.Filled.ArrowBack,
-                    contentDescription = "Назад"
+                    contentDescription = "Назад",
                 )
             }
             SpacerWidth(width = 15.dp)
             Text(
                 text = "Оценки",
                 style = MaterialTheme3.typography.titleLarge,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         }
-        IconButton(onClick = showBottomSheet, modifier = Modifier.constrainAs(filter) {
-            linkTo(parent.top, parent.bottom)
-            end.linkTo(parent.end)
-        }) {
+        IconButton(
+            onClick = showBottomSheet,
+            modifier = Modifier.constrainAs(filter) {
+                linkTo(parent.top, parent.bottom)
+                end.linkTo(parent.end)
+            },
+        ) {
             Icon(
                 painterResource(id = FluentIcons.ic_fluent_filter_24_regular),
-                contentDescription = "Фильтр"
+                contentDescription = "Фильтр",
             )
         }
     }
@@ -233,29 +244,33 @@ fun Performance(
     performance: Performance,
     filterClickListener: Typed1Listener<Filter<*>>,
 ) {
-    Column(modifier = Modifier
-        .fillMaxWidth()) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(),
+    ) {
         Text(
             text = performance.name,
             style = MaterialTheme3.typography.titleMedium.copy(fontSize = 19.sp),
-            modifier = Modifier.heightIn(30.dp)
+            modifier = Modifier.heightIn(30.dp),
         )
         ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
             val (data, mark) = createRefs()
-            Column(modifier = Modifier.constrainAs(data) {
-                linkTo(parent.top, parent.bottom)
-                start.linkTo(parent.start)
-                end.linkTo(mark.start)
-                width = Dimension.fillToConstraints
-            }) {
+            Column(
+                modifier = Modifier.constrainAs(data) {
+                    linkTo(parent.top, parent.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(mark.start)
+                    width = Dimension.fillToConstraints
+                },
+            ) {
                 TextWithIcon(
                     text = performance.teacher,
-                    icon = painterResource(id = R.drawable.acc_ic_teacher_24)
+                    icon = painterResource(id = R.drawable.acc_ic_teacher_24),
                 )
                 performance.date?.let {
                     TextWithIcon(
                         text = "${performance.date?.format()} ${performance.time?.format().orEmpty()}",
-                        icon = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular)
+                        icon = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
                     )
                 }
             }
@@ -265,30 +280,30 @@ fun Performance(
                 modifier = Modifier.constrainAs(mark) {
                     linkTo(parent.top, parent.bottom)
                     end.linkTo(parent.end)
-                }
+                },
             )
         }
         Row {
-            Chip(modifier = Modifier.clickable(onClick = {filterClickListener.invoke(Course(performance.course))})) {
+            Chip(modifier = Modifier.clickable(onClick = { filterClickListener.invoke(Course(performance.course)) })) {
                 Text(
                     text = "${performance.course} курс",
                     style = MaterialTheme3.typography.labelLarge,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
-            Chip(modifier = Modifier.clickable(onClick = {filterClickListener.invoke(Semester(performance.semester))})) {
+            Chip(modifier = Modifier.clickable(onClick = { filterClickListener.invoke(Semester(performance.semester)) })) {
                 Text(
                     text = "${performance.semester} семестр",
                     style = MaterialTheme3.typography.labelLarge,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
-            Chip(modifier = Modifier.clickable(onClick = {filterClickListener.invoke(Type(performance.examType))})) {
+            Chip(modifier = Modifier.clickable(onClick = { filterClickListener.invoke(Type(performance.examType)) })) {
                 Text(
                     text = performance.examType,
                     style = MaterialTheme3.typography.labelLarge,
                     overflow = TextOverflow.Ellipsis,
-                    maxLines = 1
+                    maxLines = 1,
                 )
             }
         }
@@ -303,26 +318,28 @@ fun PerformancePlaceholder() {
             style = MaterialTheme3.typography.titleMedium.copy(fontSize = 19.sp),
             modifier = Modifier
                 .widthIn(min = 200.dp)
-                .placeholder(true)
+                .placeholder(true),
         )
         SpacerHeight(height = 10.dp)
         ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
             val (data, mark) = createRefs()
-            Column(modifier = Modifier.constrainAs(data) {
-                linkTo(parent.top, parent.bottom)
-                start.linkTo(parent.start)
-                end.linkTo(mark.start)
-                width = Dimension.fillToConstraints
-            }) {
+            Column(
+                modifier = Modifier.constrainAs(data) {
+                    linkTo(parent.top, parent.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(mark.start)
+                    width = Dimension.fillToConstraints
+                },
+            ) {
                 TextWithIcon(
                     text = "",
                     icon = painterResource(id = R.drawable.acc_ic_teacher_24),
-                    modifier = Modifier.placeholder(true)
+                    modifier = Modifier.placeholder(true),
                 )
                 TextWithIcon(
                     text = "",
                     icon = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
-                    modifier = Modifier.placeholder(true)
+                    modifier = Modifier.placeholder(true),
                 )
             }
             Text(
@@ -334,7 +351,7 @@ fun PerformancePlaceholder() {
                     .constrainAs(mark) {
                         linkTo(parent.top, parent.bottom)
                         end.linkTo(parent.end)
-                    }
+                    },
             )
         }
         Row {
@@ -350,14 +367,15 @@ private fun<T> SelectableChipsRow(
     name: String,
     items: Set<Filter<T>>,
     onClick: Typed1Listener<Filter<T>>,
-    placeholders: Boolean
+    placeholders: Boolean,
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
             text = name,
             style = MaterialTheme3.typography.bodyMedium,
             maxLines = 1,
-            overflow = TextOverflow.Ellipsis)
+            overflow = TextOverflow.Ellipsis,
+        )
         SpacerWidth(width = 10.dp)
         LazyRow {
             if (placeholders) {
@@ -368,16 +386,17 @@ private fun<T> SelectableChipsRow(
                 val listItems = items.toList()
                 items(
                     count = listItems.size,
-                    key = { listItems[it].hashCode() }
+                    key = { listItems[it].hashCode() },
                 ) {
                     SelectableChip(
                         selectedState = listItems[it].isChecked,
-                        onClick = { onClick.invoke(listItems[it]) }) {
+                        onClick = { onClick.invoke(listItems[it]) },
+                    ) {
                         Text(
                             text = listItems[it].mappedValue,
                             style = MaterialTheme3.typography.labelMedium,
                             maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 }
@@ -389,25 +408,25 @@ private fun<T> SelectableChipsRow(
 @Composable
 fun FiltersRow(
     filters: Set<Filter<*>>,
-    filterClickListener: Typed1Listener<Filter<*>>
+    filterClickListener: Typed1Listener<Filter<*>>,
 ) {
     LazyRow {
         val filtersList = filters.toList()
         items(
             count = filtersList.size,
-            key = {filtersList[it].hashCode()}
+            key = { filtersList[it].hashCode() },
         ) {
             Chip(
                 icon = Icons.Rounded.Close,
-                onClick = { filterClickListener.invoke(filtersList[it]) }) {
+                onClick = { filterClickListener.invoke(filtersList[it]) },
+            ) {
                 Text(
                     text = filtersList[it].mappedValue,
                     style = MaterialTheme3.typography.labelMedium,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
         }
     }
 }
-

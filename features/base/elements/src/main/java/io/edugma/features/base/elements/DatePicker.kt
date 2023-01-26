@@ -20,7 +20,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 
-@RequiresApi(Build.VERSION_CODES.O) //todo переписать
+@RequiresApi(Build.VERSION_CODES.O) // todo переписать
 @Composable
 fun DatePicker(title: String, date: LocalDate, onDateChange: (LocalDate) -> Unit) {
     val context = LocalContext.current
@@ -38,15 +38,18 @@ fun DatePicker(title: String, date: LocalDate, onDateChange: (LocalDate) -> Unit
             val cal = Calendar.getInstance()
             cal.set(year, month, dayOfMonth)
             onDateChange.invoke(LocalDateTime.ofInstant(cal.toInstant(), cal.timeZone.toZoneId()).toLocalDate())
-        }, mYear, mMonth, mDay
+        },
+        mYear,
+        mMonth,
+        mDay,
     )
     Row(
         Modifier.fillMaxWidth(0.8f),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Button(onClick = {
             datePickerDialog.show()
-        }, shape = RoundedCornerShape(4.dp)) {
+        }, shape = RoundedCornerShape(4.dp),) {
             Text(text = "Выбор даты")
         }
         Spacer(modifier = Modifier.size(5.dp))

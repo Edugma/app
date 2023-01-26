@@ -7,7 +7,7 @@ import java.time.temporal.ChronoUnit
 
 data class ScheduleCalendarWeek(
     val weekNumber: Int,
-    val schedule: List<ScheduleDay>
+    val schedule: List<ScheduleDay>,
 )
 
 internal fun List<ScheduleDay>.toCalendarUiModel(): List<ScheduleCalendarWeek> {
@@ -26,8 +26,8 @@ internal fun List<ScheduleDay>.toCalendarUiModel(): List<ScheduleCalendarWeek> {
                 yield(
                     ScheduleDay(
                         date = date,
-                        lessons = emptyList()
-                    )
+                        lessons = emptyList(),
+                    ),
                 )
             }
         } + res
@@ -44,8 +44,8 @@ internal fun List<ScheduleDay>.toCalendarUiModel(): List<ScheduleCalendarWeek> {
                 yield(
                     ScheduleDay(
                         date = date,
-                        lessons = emptyList()
-                    )
+                        lessons = emptyList(),
+                    ),
                 )
             }
         }
@@ -55,7 +55,7 @@ internal fun List<ScheduleDay>.toCalendarUiModel(): List<ScheduleCalendarWeek> {
         .mapIndexed { index, list ->
             ScheduleCalendarWeek(
                 weekNumber = index,
-                schedule = list
+                schedule = list,
             )
         }.toList()
 }

@@ -14,8 +14,8 @@ fun KoinApplication.androidSharedPreferences(androidContext: Context, preference
         listOf(
             module {
                 single { androidContext.getSharedPreferences(preferencesName, Context.MODE_PRIVATE) }
-            }
-        )
+            },
+        ),
     )
 
     return this

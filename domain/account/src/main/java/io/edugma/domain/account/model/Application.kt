@@ -13,5 +13,5 @@ data class Application(
     @Serializable(with = LocalDateTimeConverter::class)
     val statusDateTime: LocalDateTime?,
     val department: String?,
-    val additionalInfo: String?
+    val additionalInfo: String?,
 )

@@ -57,7 +57,7 @@ internal class DefaultTimePickerColors(
     private val selectorColor: Color,
     private val selectorTextColor: Color,
     private val headerTextColor: Color,
-    borderColor: Color
+    borderColor: Color,
 ) : TimePickerColors {
     override val border = BorderStroke(1.dp, borderColor)
 

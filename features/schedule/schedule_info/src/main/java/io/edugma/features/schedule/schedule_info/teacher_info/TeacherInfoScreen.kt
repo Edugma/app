@@ -1,12 +1,9 @@
 package io.edugma.features.schedule.schedule_info.teacher_info
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,12 +19,10 @@ import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.FluentIcons
 import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.base.core.utils.Typed1Listener
-import io.edugma.features.base.elements.PrimaryTopAppBar
 import io.edugma.features.base.elements.TextIcon
 import io.edugma.features.base.elements.TonalCard
 import io.edugma.features.schedule.elements.vertical_schedule.VerticalScheduleComponent
 import io.edugma.features.schedule.schedule_info.group_info.InfoScaffold
-import io.edugma.features.schedule.schedule_info.place_info.PlaceInfoTabs
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -43,7 +38,6 @@ fun TeacherInfoScreen(viewModel: TeacherInfoViewModel = getViewModel(), id: Stri
         onBackClick = viewModel::exit,
         onTabSelected = viewModel::onTabSelected,
     )
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,7 +45,7 @@ fun TeacherInfoScreen(viewModel: TeacherInfoViewModel = getViewModel(), id: Stri
 private fun TeacherInfoContent(
     state: TeacherInfoState,
     onBackClick: ClickListener,
-    onTabSelected: Typed1Listener<TeacherInfoTabs>
+    onTabSelected: Typed1Listener<TeacherInfoTabs>,
 ) {
     InfoScaffold(
         title = state.teacherInfo?.name ?: "",
@@ -60,7 +54,7 @@ private fun TeacherInfoContent(
             state.teacherInfo?.let { groupInfo ->
                 TextIcon(
                     text = groupInfo.description,
-                    painter = painterResource(FluentIcons.ic_fluent_text_description_20_regular)
+                    painter = painterResource(FluentIcons.ic_fluent_text_description_20_regular),
                 )
 //                TextIcon(
 //                    text = "${groupInfo.course}-й курс",
@@ -78,7 +72,7 @@ private fun TeacherInfoContent(
                     TonalCard(
                         onClick = { onTabSelected(it) },
                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 5.dp),
-                        shape = MaterialTheme3.shapes.small
+                        shape = MaterialTheme3.shapes.small,
                     ) {
                         val text = when (it) {
                             TeacherInfoTabs.Schedule -> "Расписание"
@@ -86,7 +80,7 @@ private fun TeacherInfoContent(
 
                         Text(
                             text = text,
-                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
                         )
                     }
                 }
@@ -97,12 +91,12 @@ private fun TeacherInfoContent(
                 TeacherInfoTabs.Schedule -> {
                     state.scheduleSource?.let {
                         VerticalScheduleComponent(
-                            scheduleSource = state.scheduleSource
+                            scheduleSource = state.scheduleSource,
                         )
                     }
                 }
-                else  -> { }
+                else -> { }
             }
-        }
+        },
     )
 }

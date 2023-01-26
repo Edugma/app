@@ -18,7 +18,7 @@ import kotlin.text.Typography
 fun EdTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
     useDynamicColors: Boolean = false,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val colors = if (useDynamicColors && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         if (useDarkTheme) {
@@ -34,12 +34,11 @@ fun EdTheme(
         }
     }
 
-
     MaterialTheme(
         colorScheme = colors,
         shapes = EdShapes,
         typography = EdTypography,
-        content = content
+        content = content,
     )
 }
 
@@ -72,5 +71,4 @@ object EdTheme {
         @Composable
         @ReadOnlyComposable
         get() = MaterialTheme.shapes
-
 }

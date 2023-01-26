@@ -13,7 +13,7 @@ fun List<ScheduleDay>.toUiModel(): List<ScheduleDayUiModel> {
     return map {
         ScheduleDayUiModel(
             date = it.date,
-            lessons = it.lessons.toUiModel()
+            lessons = it.lessons.toUiModel(),
         )
     }
 }
@@ -37,7 +37,7 @@ private fun getWindowOrNull(before: LessonTime, next: LessonTime): ScheduleItem.
         ScheduleItem.Window(
             timeFrom = before.end,
             timeTo = next.start,
-            totalMinutes = totalMinutes
+            totalMinutes = totalMinutes,
         )
     }
 }

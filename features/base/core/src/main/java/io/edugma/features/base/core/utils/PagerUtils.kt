@@ -30,9 +30,9 @@ fun PagerState.bindTo(position: Int, animated: Boolean = false) {
     }
 }
 
-//@OptIn(ExperimentalPagerApi::class)
-//@Composable
-//fun PagerState.onPageChanged(action: suspend (page: Int) -> Unit) {
+// @OptIn(ExperimentalPagerApi::class)
+// @Composable
+// fun PagerState.onPageChanged(action: suspend (page: Int) -> Unit) {
 //    LaunchedEffect(this) {
 //        snapshotFlow { calculatePage(currentPage, currentPageOffset) }
 //            .distinctUntilChanged()
@@ -40,19 +40,19 @@ fun PagerState.bindTo(position: Int, animated: Boolean = false) {
 //                action(page)
 //            }
 //    }
-//}
+// }
 //
-//private fun calculatePage(page: Int, offset: Float): Int {
+// private fun calculatePage(page: Int, offset: Float): Int {
 //    return when {
 //        offset < -0.5f -> page - 1
 //        offset < 0.5f -> page
 //        else -> page + 1
 //    }
-//}
+// }
 //
-//@OptIn(ExperimentalPagerApi::class)
-//@Composable
-//fun PagerState.bindTo(position: Int, animated: Boolean = false) {
+// @OptIn(ExperimentalPagerApi::class)
+// @Composable
+// fun PagerState.bindTo(position: Int, animated: Boolean = false) {
 //    LaunchedEffect(position, animated) {
 //        val oldPos = calculatePage(currentPage, currentPageOffset)
 //        if (oldPos != position) {
@@ -63,4 +63,4 @@ fun PagerState.bindTo(position: Int, animated: Boolean = false) {
 //            }
 //        }
 //    }
-//}
+// }

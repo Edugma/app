@@ -11,7 +11,7 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 @Serializer(forClass = ZonedDateTime::class)
-object ZonedDateTimeConverter: KSerializer<ZonedDateTime> {
+object ZonedDateTimeConverter : KSerializer<ZonedDateTime> {
     private val dateFormatter = DateTimeFormatter.ISO_ZONED_DATE_TIME
 
     override val descriptor: SerialDescriptor =

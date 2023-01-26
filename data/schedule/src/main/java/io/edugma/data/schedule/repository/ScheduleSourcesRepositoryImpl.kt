@@ -9,7 +9,6 @@ import io.edugma.data.base.local.flowOf
 import io.edugma.data.base.local.set
 import io.edugma.data.schedule.api.ScheduleSourcesService
 import io.edugma.domain.base.utils.onFailure
-import io.edugma.domain.base.utils.onSuccess
 import io.edugma.domain.schedule.model.source.ScheduleSourceFull
 import io.edugma.domain.schedule.model.source.ScheduleSources
 import io.edugma.domain.schedule.repository.ScheduleSourcesRepository
@@ -21,7 +20,7 @@ import kotlinx.coroutines.flow.map
 class ScheduleSourcesRepositoryImpl(
     private val scheduleSourcesService: ScheduleSourcesService,
     private val preferencesDS: PreferencesDS,
-    private val cachedDS: CacheLocalDS
+    private val cachedDS: CacheLocalDS,
 ) : ScheduleSourcesRepository {
     private val TAG = "ScheduleSourcesReposito"
 
@@ -36,7 +35,7 @@ class ScheduleSourcesRepositoryImpl(
 
     override fun getFavoriteSources(): Flow<Result<List<ScheduleSourceFull>>> =
         cachedDS.flowOf<List<ScheduleSourceFull>>(CacheConst.FavoriteScheduleSources)
-            .map { it.map { it ?: emptyList() }  }
+            .map { it.map { it ?: emptyList() } }
             .flowOn(Dispatchers.IO)
 
     override suspend fun setFavoriteSources(sources: List<ScheduleSourceFull>) {

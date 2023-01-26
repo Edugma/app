@@ -27,7 +27,7 @@ fun CheckBox(modifier: Modifier = Modifier, title: String, value: Boolean, onVal
             text = title,
             style = MaterialTheme3.typography.titleMedium,
             modifier = Modifier
-                .clickable(interactionSource = interactionSource, indication = null) { onValueChange.invoke(!value) }
+                .clickable(interactionSource = interactionSource, indication = null) { onValueChange.invoke(!value) },
         )
     }
 }

@@ -7,12 +7,15 @@ import kotlinx.serialization.Serializable
 enum class PaymentType {
     @SerialName("dormitory")
     Dormitory,
+
     @SerialName("education")
-    Education;
+    Education,
+
+    ;
 }
 
 fun PaymentType.toLabel() =
-    when(this) {
+    when (this) {
         PaymentType.Dormitory -> "Общежитие"
         PaymentType.Education -> "Обучение"
     }

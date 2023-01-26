@@ -34,9 +34,9 @@ class AccountMainViewModel(
         var bool = Random.nextBoolean()
         emit(bool)
         while (true) {
-            if (!currentCoroutineContext().isActive)
+            if (!currentCoroutineContext().isActive) {
                 return@flow
-            else {
+            } else {
                 delay(10000)
                 bool = !bool
                 emit(bool)
@@ -64,7 +64,6 @@ class AccountMainViewModel(
             mutateState {
                 state = state.copy(isAuthorized = isAuthorized)
             }
-
         }
         viewModelScope.launch {
             val info = personalRepository.getLocalPersonalInfo()
@@ -129,7 +128,7 @@ class AccountMainViewModel(
             label = "$degreeLevel $course курса группы $group",
             specialization = specialty,
             avatar = avatar,
-            fullName = getFullName()
+            fullName = getFullName(),
         )
     }
 
@@ -142,7 +141,7 @@ class AccountMainViewModel(
                 type = it.key,
                 sum = sum,
                 current = current,
-                debt = debt
+                debt = debt,
             )
         }
     }
@@ -160,7 +159,7 @@ class AccountMainViewModel(
             marksList.values.sorted().reversed().take(3).forEach {
                 marksList.forEach { (mark, percent) -> if (it == percent) resultMap[mark] = percent }
             }
-            while(resultMap.keys.size > 3) {
+            while (resultMap.keys.size > 3) {
                 resultMap.remove(resultMap.keys.last())
             }
             return resultMap
@@ -169,7 +168,7 @@ class AccountMainViewModel(
         return CurrentPerformance(
             first().semester,
             getSortedMarks(filter { it.semester == first().semester }),
-            getSortedMarks(this)
+            getSortedMarks(this),
         )
     }
 }
@@ -181,27 +180,27 @@ data class AccountMenuState(
     val performance: CurrentPerformance? = null,
     val currentPayments: CurrentPayments? = null,
     val showCurrentPerformance: Boolean = true,
-    val isAuthorized: Boolean = true
+    val isAuthorized: Boolean = true,
 )
 
 data class PersonalData(
     val label: String,
     val specialization: String?,
     val avatar: String?,
-    val fullName: String
+    val fullName: String,
 )
 
 data class CurrentPerformance(
     val lastSemesterNumber: Int,
     val lastSemester: Map<String, Int>,
-    val allSemesters: Map<String, Int>
+    val allSemesters: Map<String, Int>,
 )
 
 data class CurrentPayments(
     val type: PaymentType,
     val sum: Int,
     val current: Int,
-    val debt: Boolean
+    val debt: Boolean,
 )
 
-object UpdateMenu: ScreenResult
+object UpdateMenu : ScreenResult

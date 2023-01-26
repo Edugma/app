@@ -4,13 +4,12 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import io.edugma.domain.account.model.Teacher
 import io.edugma.domain.account.repository.PeoplesRepository
-import kotlinx.coroutines.flow.collect
 
 class TeachersPagingSource(
     private val teachersRepository: PeoplesRepository,
     private val name: String,
-    private val pageSize: Int
-    ) : PagingSource<Int, Teacher>() {
+    private val pageSize: Int,
+) : PagingSource<Int, Teacher>() {
 
     override fun getRefreshKey(state: PagingState<Int, Teacher>): Int? {
         return state.anchorPosition
@@ -28,12 +27,11 @@ class TeachersPagingSource(
                 LoadResult.Page(
                     data = it.data,
                     prevKey = it.previousPage,
-                    nextKey = nextPage
+                    nextKey = nextPage,
                 )
             }
         } catch (e: Throwable) {
             LoadResult.Error(e)
         }
     }
-
 }

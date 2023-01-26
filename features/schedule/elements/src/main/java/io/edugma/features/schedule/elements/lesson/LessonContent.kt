@@ -35,13 +35,13 @@ fun LessonContent(
     lesson: Lesson,
     displaySettings: LessonDisplaySettings,
     isLoading: Boolean = false,
-    onLessonClick: Typed1Listener<Lesson>
+    onLessonClick: Typed1Listener<Lesson>,
 ) {
     TonalCard(
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 6.dp)
             .fillMaxWidth(),
-        onClick = { onLessonClick(lesson) }
+        onClick = { onLessonClick(lesson) },
     ) {
         Column(Modifier.padding(start = 24.dp, end = 24.dp, top = 13.dp, bottom = 16.dp)) {
             WithContentAlpha(ContentAlpha.medium) {
@@ -91,7 +91,7 @@ fun LessonType(type: LessonType, isLoading: Boolean = false) {
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         modifier = Modifier.placeholder(visible = isLoading),
-        color = color
+        color = color,
     )
 }
 
@@ -102,28 +102,29 @@ fun LessonTitle(subject: LessonSubject, isLoading: Boolean = false) {
         style = MaterialTheme.typography.titleMedium,
         modifier = Modifier
             .fillMaxWidth()
-            .placeholder(visible = isLoading)
+            .placeholder(visible = isLoading),
     )
 }
 
 @Composable
 fun TeachersContent(teachers: List<Teacher>, isLoading: Boolean = false) {
     Row(
-        modifier = Modifier.placeholder(visible = isLoading)
+        modifier = Modifier.placeholder(visible = isLoading),
     ) {
         Icon(
             painter = painterResource(id = FluentIcons.ic_fluent_hat_graduation_16_regular),
             contentDescription = null,
             modifier = Modifier
                 .size(17.dp)
-                .align(Alignment.CenterVertically)
+                .align(Alignment.CenterVertically),
         )
         Spacer(Modifier.width(5.dp))
         val teachersText = remember(teachers) {
-            if (teachers.size == 1)
+            if (teachers.size == 1) {
                 teachers.first().name
-            else
+            } else {
                 teachers.joinToString { it.getShortName() }
+            }
         }
         Text(
             text = teachersText,
@@ -140,14 +141,14 @@ fun TeachersContent(teachers: List<Teacher>, isLoading: Boolean = false) {
 @Composable
 fun GroupsContent(groups: List<Group>, isLoading: Boolean = false) {
     Row(
-        modifier = Modifier.placeholder(visible = isLoading)
+        modifier = Modifier.placeholder(visible = isLoading),
     ) {
         Icon(
             painter = painterResource(id = FluentIcons.ic_fluent_people_16_regular),
             contentDescription = null,
             modifier = Modifier
                 .size(17.dp)
-                .align(Alignment.CenterVertically)
+                .align(Alignment.CenterVertically),
         )
         Spacer(Modifier.width(5.dp))
         val groupsText = remember(groups) { groups.joinToString { it.title } }
@@ -166,14 +167,14 @@ fun GroupsContent(groups: List<Group>, isLoading: Boolean = false) {
 @Composable
 fun PlacesContent(places: List<Place>, isLoading: Boolean = false) {
     Row(
-        modifier = Modifier.placeholder(visible = isLoading)
+        modifier = Modifier.placeholder(visible = isLoading),
     ) {
         Icon(
             painter = painterResource(id = FluentIcons.ic_fluent_location_16_regular),
             contentDescription = null,
             modifier = Modifier
                 .size(17.dp)
-                .align(Alignment.CenterVertically)
+                .align(Alignment.CenterVertically),
         )
         Spacer(Modifier.width(5.dp))
         val placesText = remember(places) { places.joinToString { it.title } }
@@ -204,13 +205,13 @@ fun LessonWindow(lessonWindow: ScheduleItem.Window) {
         Modifier
             .padding(horizontal = 10.dp, vertical = 6.dp)
             .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         val urls = listOf(
             "https://img.icons8.com/fluency/200/cup.png",
             "https://img.icons8.com/fluency/192/kfc-chicken.png",
             "https://img.icons8.com/fluency/200/controller.png",
-            "https://img.icons8.com/fluency/200/sunbathe.png"
+            "https://img.icons8.com/fluency/200/sunbathe.png",
         )
         val url = remember { urls.random() }
 
@@ -221,20 +222,20 @@ fun LessonWindow(lessonWindow: ScheduleItem.Window) {
                 .padding(start = 16.dp)
                 .size(60.dp),
             contentScale = ContentScale.Inside,
-            alignment = Alignment.Center
+            alignment = Alignment.Center,
         )
         Column(
             modifier = Modifier
-                .padding(start = 14.dp, end = 12.dp, top = 11.dp, bottom = 14.dp)
+                .padding(start = 14.dp, end = 12.dp, top = 11.dp, bottom = 14.dp),
         ) {
             Text(
                 text = "Окно на $timeText",
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
             )
             WithContentAlpha(alpha = ContentAlpha.medium) {
                 Text(
                     text = "$timeFrom - $timeTo",
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
                 )
             }
         }

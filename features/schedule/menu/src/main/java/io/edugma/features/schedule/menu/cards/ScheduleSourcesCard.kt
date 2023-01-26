@@ -5,10 +5,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.base.core.utils.MediumAlpha
@@ -21,7 +18,7 @@ import io.edugma.features.schedule.menu.ScheduleMenuState
 @Composable
 fun ScheduleSourcesCard(
     state: ScheduleMenuState.SourceState,
-    onScheduleSourceClick: ClickListener
+    onScheduleSourceClick: ClickListener,
 ) {
     TonalCard(
         modifier = Modifier
@@ -33,7 +30,8 @@ fun ScheduleSourcesCard(
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 15.dp, vertical = 10.dp)) {
+                .padding(horizontal = 15.dp, vertical = 10.dp),
+        ) {
             state.selectedSource?.avatarUrl?.let {
                 InitialAvatar(url = state.selectedSource.avatarUrl, state.selectedSource.title)
                 SpacerWidth(width = 16.dp)
@@ -44,7 +42,7 @@ fun ScheduleSourcesCard(
                     MediumAlpha {
                         Text(
                             text = it,
-                            style = MaterialTheme3.typography.bodySmall
+                            style = MaterialTheme3.typography.bodySmall,
                         )
                     }
                 }

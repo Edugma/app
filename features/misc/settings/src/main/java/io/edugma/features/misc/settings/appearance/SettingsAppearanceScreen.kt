@@ -11,9 +11,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.Typed1Listener
-import io.edugma.features.base.elements.PrimaryTopAppBar
 import io.edugma.features.base.elements.SpacerHeight
 import io.edugma.features.misc.settings.R
 import org.koin.androidx.compose.getViewModel
@@ -25,7 +25,7 @@ fun SettingsAppearanceScreen(viewModel: SettingsAppearanceViewModel = getViewMod
     SettingsAppearanceContent(
         state = state,
         onBackClick = viewModel::exit,
-        onNightModeCheckedChange = viewModel::onNightModeCheckedChange
+        onNightModeCheckedChange = viewModel::onNightModeCheckedChange,
     )
 }
 
@@ -34,17 +34,17 @@ fun SettingsAppearanceScreen(viewModel: SettingsAppearanceViewModel = getViewMod
 private fun SettingsAppearanceContent(
     state: SettingsAppearanceState,
     onBackClick: ClickListener,
-    onNightModeCheckedChange: Typed1Listener<NightMode>
+    onNightModeCheckedChange: Typed1Listener<NightMode>,
 ) {
     Column(Modifier.fillMaxSize()) {
-        PrimaryTopAppBar(
+        EdTopAppBar(
             title = stringResource(R.string.misc_set_appearance),
-            onBackClick = onBackClick
+            onNavigationClick = onBackClick,
         )
         SpacerHeight(50.dp)
         CheckboxItem(
             checked = state.nightMode == NightMode.Light,
-            onCheckedChange = { if (it) onNightModeCheckedChange(NightMode.Light) }
+            onCheckedChange = { if (it) onNightModeCheckedChange(NightMode.Light) },
         )
     }
 }
@@ -53,12 +53,12 @@ private fun SettingsAppearanceContent(
 @Composable
 private fun CheckboxItem(
     checked: Boolean,
-    onCheckedChange: Typed1Listener<Boolean>
+    onCheckedChange: Typed1Listener<Boolean>,
 ) {
     Row {
         Checkbox(
             checked = checked,
-            onCheckedChange = onCheckedChange
+            onCheckedChange = onCheckedChange,
         )
     }
 }

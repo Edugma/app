@@ -21,7 +21,7 @@ object ScheduleHistoryFeatureModule {
         addScreen<ScheduleHistoryScreens.Changes> {
             ScheduleChangesScreen(
                 first = getArg(ScheduleHistoryScreens.Changes::first.name),
-                second = getArg(ScheduleHistoryScreens.Changes::second.name)
+                second = getArg(ScheduleHistoryScreens.Changes::second.name),
             )
         }
     }

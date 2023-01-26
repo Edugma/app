@@ -18,6 +18,6 @@ fun buildDB(pathProvider: PathProvider, serializer: KotlinxSerializer): DB {
     return DB.open(
         path.pathString,
         serializer,
-        OpenPolicy.OpenOrCreate
+        OpenPolicy.OpenOrCreate,
     )
 }

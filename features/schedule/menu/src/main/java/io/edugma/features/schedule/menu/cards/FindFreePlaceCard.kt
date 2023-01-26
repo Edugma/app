@@ -17,7 +17,7 @@ import io.edugma.features.schedule.menu.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FindFreePlaceCard(
-    onFreePlaceClick: ClickListener
+    onFreePlaceClick: ClickListener,
 ) {
     TonalCard(
         modifier = Modifier

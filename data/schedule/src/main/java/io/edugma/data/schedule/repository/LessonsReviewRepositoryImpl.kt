@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.last
 import java.time.LocalDate
 
 class LessonsReviewRepositoryImpl(
-    private val scheduleRepository: ScheduleRepository
+    private val scheduleRepository: ScheduleRepository,
 ) : LessonsReviewRepository {
 
     override fun getLessonsReview(source: ScheduleSource) =
@@ -25,20 +25,17 @@ class LessonsReviewRepositoryImpl(
             emit(kotlin.runCatching { getLessonsReview2(source) })
         }.flowOn(Dispatchers.IO)
 
-
     private suspend fun getLessonsReview2(source: ScheduleSource): List<LessonTimesReview> {
         val schedule = scheduleRepository.getRawSchedule(source).last().getOrNull()
 
         val lessons = schedule?.lessons ?: emptyList()
         val info = schedule?.info
 
-
-
         val resMap1 = mutableMapOf<String,
-                MutableMap<String,
-                        MutableMap<LessonDates, MutableCollection<LessonTime>>
-                        >
-                >()
+            MutableMap<String,
+                MutableMap<LessonDates, MutableCollection<LessonTime>>,
+                >,
+            >()
 
         lessons.forEach { lessonDateTimes ->
             lessonDateTimes.times.forEach { lessonDateTime ->
@@ -52,8 +49,6 @@ class LessonsReviewRepositoryImpl(
             }
         }
 
-
-
         val resMap = resMap1.mapValues {
             it.value.mapValues {
                 it.value.toList()
@@ -62,10 +57,8 @@ class LessonsReviewRepositoryImpl(
                         it.value.groupBy { it.second }
                             .mapValues { it.value.map { it.first } }
                     }
-
             }
         }
-
 
         val resList = resMap.map { (subjectId, typeToDays) ->
             val subject = info?.subjectsInfo?.firstOrNull { it.id == subjectId }
@@ -84,12 +77,12 @@ class LessonsReviewRepositoryImpl(
                                 LessonReviewUnit(
                                     dayOfWeek = dayOfWeek,
                                     time = times.toList(),
-                                    dates = getLessonDates(dates)
+                                    dates = getLessonDates(dates),
                                 )
                             }
-                        }.sorted()
+                        }.sorted(),
                     )
-                }.sorted()
+                }.sorted(),
             )
         }.sortedBy { it.subject }
 
@@ -106,7 +99,8 @@ class LessonsReviewRepositoryImpl(
         sortedDates.forEach { date ->
             val lastDate = resList.lastOrNull()
             if (lastDate == null ||
-                lastDate.end != null && lastDate.end!!.plusDays(7L) != date) {
+                lastDate.end != null && lastDate.end!!.plusDays(7L) != date
+            ) {
                 resList.add(LessonDates(date, null))
             } else {
                 val newLessonDates = lastDate.copy(end = date)
@@ -134,5 +128,5 @@ class LessonsReviewRepositoryImpl(
 
 private data class DatesAndTimes(
     val dates: MutableList<LocalDate> = mutableListOf(),
-    val times: MutableList<LessonTime> = mutableListOf()
+    val times: MutableList<LessonTime> = mutableListOf(),
 )

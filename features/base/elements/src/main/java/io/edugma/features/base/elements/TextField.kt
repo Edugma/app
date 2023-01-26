@@ -19,7 +19,6 @@ import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.FluentIcons
 import io.edugma.features.base.core.utils.MaterialTheme3
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PrimaryTextField(
@@ -42,11 +41,11 @@ fun PrimaryTextField(
     maxLines: Int = Int.MAX_VALUE,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = MaterialTheme3.shapes.small,
-    colors: TextFieldColors = PrimaryTextFieldDefaults.textFieldColors()
+    colors: TextFieldColors = PrimaryTextFieldDefaults.textFieldColors(),
 ) {
     TonalCard(
         shape = shape,
-        modifier = modifier
+        modifier = modifier,
     ) {
         TextField(
             value = value,
@@ -67,11 +66,10 @@ fun PrimaryTextField(
             maxLines = maxLines,
             interactionSource = interactionSource,
             shape = shape,
-            colors = colors
+            colors = colors,
         )
     }
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -93,7 +91,7 @@ fun PrimarySearchField(
     maxLines: Int = Int.MAX_VALUE,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = MaterialTheme3.shapes.small,
-    colors: TextFieldColors = PrimaryTextFieldDefaults.textFieldColors()
+    colors: TextFieldColors = PrimaryTextFieldDefaults.textFieldColors(),
 ) {
     PrimaryTextField(
         value,
@@ -125,7 +123,7 @@ fun PrimarySearchField(
         maxLines,
         interactionSource,
         shape,
-        colors
+        colors,
     )
 }
 
@@ -137,7 +135,7 @@ object PrimaryTextFieldDefaults {
         containerColor = Color.Transparent,
         focusedIndicatorColor = Color.Transparent,
         unfocusedIndicatorColor = Color.Transparent,
-        disabledIndicatorColor = Color.Transparent
+        disabledIndicatorColor = Color.Transparent,
     )
 }
 
@@ -145,16 +143,16 @@ object PrimaryTextFieldDefaults {
 fun SearchIcon24() {
     Icon(
         painter = painterResource(FluentIcons.ic_fluent_search_24_regular),
-        contentDescription = null
+        contentDescription = null,
     )
 }
 
 @Composable
 fun DismissIcon20(onClick: ClickListener) {
-   IconButton(onClick = onClick) {
-       Icon(
-           painter = painterResource(FluentIcons.ic_fluent_dismiss_20_filled),
-           contentDescription = null
-       )
-   }
+    IconButton(onClick = onClick) {
+        Icon(
+            painter = painterResource(FluentIcons.ic_fluent_dismiss_20_filled),
+            contentDescription = null,
+        )
+    }
 }

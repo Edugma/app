@@ -7,7 +7,7 @@ import org.kodein.db.asModelSequence
 import org.kodein.db.find
 
 class ScheduleLocalDS(
-    private val db: DB
+    private val db: DB,
 ) {
     fun getLast(source: ScheduleSource) =
         getLast(source.id)

@@ -1,6 +1,5 @@
 package io.edugma.features.base.elements
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
@@ -16,9 +15,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
-import coil.transform.CircleCropTransformation
 import io.edugma.features.base.core.utils.MaterialTheme3
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,12 +38,12 @@ fun InitialAvatar(url: String?, initials: String = "") {
                 .height(48.dp)
                 .width(48.dp),
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme3.colorScheme.surfaceVariant
-            )
+                containerColor = MaterialTheme3.colorScheme.surfaceVariant,
+            ),
         ) {
             Box(
                 Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 Text(
                     text = fixedInitials,
@@ -55,7 +52,7 @@ fun InitialAvatar(url: String?, initials: String = "") {
                         .padding(5.dp),
                     textAlign = TextAlign.Center,
                     maxLines = 1,
-                    fontSize = textSize
+                    fontSize = textSize,
                 )
             }
         }
@@ -68,7 +65,7 @@ fun InitialAvatar(url: String?, initials: String = "") {
             contentDescription = null,
             modifier = Modifier
                 .size(48.dp)
-                .clip(CircleShape)
+                .clip(CircleShape),
         )
     }
 }

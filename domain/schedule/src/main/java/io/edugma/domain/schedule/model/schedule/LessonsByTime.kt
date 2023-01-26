@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class LessonsByTime(
     val time: LessonTime,
-    val lessons: List<Lesson>
+    val lessons: List<Lesson>,
 )

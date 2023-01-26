@@ -9,7 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
-//private val AppDarkColorScheme = darkColorScheme(
+// private val AppDarkColorScheme = darkColorScheme(
 //    primary = Blue80,
 //    onPrimary = Blue20,
 //    primaryContainer = Blue30,
@@ -36,9 +36,9 @@ import androidx.compose.ui.platform.LocalContext
 //    surfaceVariant = BlueGrey30,
 //    onSurfaceVariant = BlueGrey80,
 //    outline = BlueGrey60
-//)
+// )
 //
-//private val AppLightColorScheme = lightColorScheme(
+// private val AppLightColorScheme = lightColorScheme(
 //    primary = Blue40,
 //    onPrimary = Color.White,
 //    primaryContainer = Blue90,
@@ -65,8 +65,7 @@ import androidx.compose.ui.platform.LocalContext
 //    surfaceVariant = BlueGrey90,
 //    onSurfaceVariant = BlueGrey30,
 //    outline = BlueGrey50
-//)
-
+// )
 
 private val AppLightColorScheme = lightColorScheme(
 
@@ -126,7 +125,6 @@ private val AppDarkColorScheme = darkColorScheme(
     inversePrimary = md_theme_dark_inversePrimary,
 )
 
-
 private val AppDarkColorScheme2 = darkColors(
     primary = AppDarkColorScheme.primary,
     onPrimary = AppDarkColorScheme.onPrimary,
@@ -163,14 +161,14 @@ private val lightCustomColorScheme = CustomColorScheme(
     success = md_theme_light_success,
     successContainer = md_theme_light_successContainer,
     onSuccess = md_theme_light_onSuccess,
-    onSuccessContainer = md_theme_light_onSuccessContainer
+    onSuccessContainer = md_theme_light_onSuccessContainer,
 )
 
 private val darkCustomColorScheme = CustomColorScheme(
     success = md_theme_dark_success,
     successContainer = md_theme_dark_successContainer,
     onSuccess = md_theme_dark_onSuccess,
-    onSuccessContainer = md_theme_dark_onSuccessContainer
+    onSuccessContainer = md_theme_dark_onSuccessContainer,
 )
 
 data class CustomColorScheme(
@@ -182,14 +180,13 @@ data class CustomColorScheme(
 
 val LocalAppColorScheme = staticCompositionLocalOf { lightCustomColorScheme }
 
-
 @Composable
 fun AppTheme(
     isDarkTheme: Boolean = isSystemInDarkTheme(),
     isDynamicColor: Boolean = false,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
-    //val dynamicColor = isDynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+    // val dynamicColor = isDynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
     val myColorScheme = when {
         isDynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && isDarkTheme -> {
             dynamicDarkColorScheme(LocalContext.current)
@@ -211,7 +208,6 @@ fun AppTheme(
         else -> lightCustomColorScheme
     }
 
-
     val rememberedCustomColorScheme = remember {
         customColorScheme
     }
@@ -221,19 +217,18 @@ fun AppTheme(
     ) {
         androidx.compose.material.MaterialTheme(
             colors = myColorScheme2,
-            typography = AppTypography2
+            typography = AppTypography2,
         ) {
             MaterialTheme(
                 colorScheme = myColorScheme,
                 typography = AppTypography,
-                shapes = AppShapes
+                shapes = AppShapes,
             ) {
                 content()
             }
         }
     }
 }
-
 
 object AppTheme {
     /**

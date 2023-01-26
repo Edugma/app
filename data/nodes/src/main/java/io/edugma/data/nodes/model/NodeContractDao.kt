@@ -7,8 +7,8 @@ import org.kodein.db.model.orm.Metadata
 @Serializable
 data class NodeContractDao(
     override val id: String,
-    val data: NodeContract?
-): Metadata {
+    val data: NodeContract?,
+) : Metadata {
     companion object {
         fun from(url: String, nodeContract: NodeContract?) =
             NodeContractDao(url, nodeContract)

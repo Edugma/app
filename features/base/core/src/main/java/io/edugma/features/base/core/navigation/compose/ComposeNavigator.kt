@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 
 class ComposeNavigator(
     val navController: NavHostController,
-    private val router: Router
+    private val router: Router,
 ) {
     private val scope = CoroutineScope(Job() + Dispatchers.Main)
 

@@ -11,7 +11,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.loader.EdLoader
-import io.edugma.core.designSystem.atoms.loader.EdLoaderSize
 import io.edugma.core.designSystem.atoms.loader.EdLoaderStyle
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
@@ -22,6 +21,7 @@ fun EdButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    style: EdButtonStyle = EdButtonStyle.primary,
     size: EdButtonSize = EdButtonSize.medium,
     isLoading: Boolean = false,
     enabled: Boolean = true,
@@ -39,6 +39,10 @@ fun EdButton(
         interactionSource = interactionSource,
         shape = size.shape,
         contentPadding = size.contentPadding,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = style.containerColor,
+            contentColor = style.contentColor,
+        ),
     ) {
         Row(
             modifier = Modifier,
@@ -65,7 +69,7 @@ fun EdButton(
 
 @Preview
 @Composable
-fun EdButtonPreview() {
+internal fun EdButtonPrimaryPreview() {
     EdTheme {
         Column(Modifier.padding(10.dp)) {
             val sizes = listOf(
@@ -81,6 +85,7 @@ fun EdButtonPreview() {
                     text = "Press to win",
                     onClick = { },
                     isLoading = true,
+                    style = EdButtonStyle.primary,
                     size = size,
                 )
                 Text(text = "Button without loader")
@@ -88,7 +93,80 @@ fun EdButtonPreview() {
                     text = "Press to win",
                     onClick = { },
                     isLoading = false,
+                    style = EdButtonStyle.primary,
                     size = size,
+                )
+                SpacerHeight(height = 8.dp)
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+internal fun EdButtonSecondaryPreview() {
+    EdTheme {
+        Column(Modifier.padding(10.dp)) {
+            val sizes = listOf(
+                EdButtonSize.small to "small",
+                EdButtonSize.medium to "medium",
+                EdButtonSize.large to "large",
+            )
+
+            sizes.forEach { (size, sizeLabel) ->
+                Text(text = sizeLabel, style = EdTheme.typography.headlineSmall)
+                Text(text = "Button with loader")
+                EdButton(
+                    text = "Press to win",
+                    onClick = { },
+                    isLoading = true,
+                    style = EdButtonStyle.secondary,
+                    size = size,
+                )
+                Text(text = "Button without loader")
+                EdButton(
+                    text = "Press to win",
+                    onClick = { },
+                    isLoading = false,
+                    style = EdButtonStyle.secondary,
+                    size = size,
+                )
+                SpacerHeight(height = 8.dp)
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+internal fun EdButtonDisabledPreview() {
+    EdTheme {
+        Column(Modifier.padding(10.dp)) {
+            val sizes = listOf(
+                EdButtonSize.small to "small",
+                EdButtonSize.medium to "medium",
+                EdButtonSize.large to "large",
+            )
+
+            sizes.forEach { (size, sizeLabel) ->
+                Text(text = sizeLabel, style = EdTheme.typography.headlineSmall)
+                Text(text = "Button with loader")
+                EdButton(
+                    text = "Press to win",
+                    onClick = { },
+                    isLoading = true,
+                    style = EdButtonStyle.primary,
+                    size = size,
+                    enabled = false,
+                )
+                Text(text = "Button without loader")
+                EdButton(
+                    text = "Press to win",
+                    onClick = { },
+                    isLoading = false,
+                    style = EdButtonStyle.primary,
+                    size = size,
+                    enabled = false,
                 )
                 SpacerHeight(height = 8.dp)
             }

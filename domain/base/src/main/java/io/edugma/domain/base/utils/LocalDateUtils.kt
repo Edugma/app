@@ -18,8 +18,8 @@ fun LocalDate.getCeilSunday(): LocalDate {
 
 class DayIterator(
     private val dateFrom: LocalDate,
-    private val dateTo: LocalDate
-): Iterable<LocalDate> {
+    private val dateTo: LocalDate,
+) : Iterable<LocalDate> {
     override fun iterator() = Iterator()
     inner class Iterator : kotlin.collections.Iterator<LocalDate> {
         var currentDate: LocalDate? = null
@@ -39,8 +39,8 @@ class DayIterator(
 
 class WeekIterator(
     private val firstMonday: LocalDate,
-    private val lastSunday: LocalDate
-): Iterable<DayIterator> {
+    private val lastSunday: LocalDate,
+) : Iterable<DayIterator> {
     private val totalWeeks = (firstMonday.until(lastSunday, ChronoUnit.DAYS) + 1) / 7
 
     override fun iterator() = Iterator()
@@ -59,9 +59,8 @@ class WeekIterator(
             val sunday = monday.plusDays(6L)
             return DayIterator(
                 monday,
-                sunday
+                sunday,
             )
         }
-
     }
 }

@@ -15,11 +15,11 @@ import org.koin.core.component.inject
 abstract class BaseViewModelFull<TState, TMutator : BaseMutator<TState>, TAction>(
     initialState: TState,
     private val mutatorFactory: () -> TMutator,
-    private val stateStore: SimpleStateStore<TState, TMutator>
-    = SimpleStateStore(initialState,  mutatorFactory),
-    private val actionProducer: SimpleActionProducer<TAction>
-    = SimpleActionProducer()
-): ViewModel(),
+    private val stateStore: SimpleStateStore<TState, TMutator> =
+        SimpleStateStore(initialState, mutatorFactory),
+    private val actionProducer: SimpleActionProducer<TAction> =
+        SimpleActionProducer(),
+) : ViewModel(),
     StateStore<TState, TMutator> by stateStore,
     ActionProducer<TAction> by actionProducer,
     KoinComponent {

@@ -8,5 +8,5 @@ import java.time.LocalDate
 data class ScheduleDay(
     @Serializable(with = LocalDateConverter::class)
     val date: LocalDate,
-    val lessons: List<LessonsByTime>
+    val lessons: List<LessonsByTime>,
 )

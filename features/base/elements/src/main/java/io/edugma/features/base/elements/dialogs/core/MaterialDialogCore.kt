@@ -31,7 +31,7 @@ fun MaterialDialogScope.title(
     @StringRes res: Int? = null,
     color: Color = MaterialTheme.colors.onSurface,
     style: TextStyle = MaterialTheme.typography.h6,
-    center: Boolean = false
+    center: Boolean = false,
 ) {
     val titleText = getString(res, text)
     var modifier = Modifier
@@ -46,15 +46,15 @@ fun MaterialDialogScope.title(
                 Alignment.CenterHorizontally
             } else {
                 Alignment.Start
-            }
-        )
+            },
+        ),
     )
 
     Text(
         text = titleText,
         color = color,
         style = style,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -70,21 +70,21 @@ fun MaterialDialogScope.iconTitle(
     @StringRes textRes: Int? = null,
     color: Color = MaterialTheme.colors.onSurface,
     style: TextStyle = MaterialTheme.typography.h6,
-    icon: @Composable () -> Unit = {}
+    icon: @Composable () -> Unit = {},
 ) {
     val titleText = getString(textRes, text)
     Row(
         modifier = Modifier
             .padding(start = 24.dp, end = 24.dp)
             .height(64.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         icon()
         Spacer(Modifier.width(14.dp))
         Text(
             text = titleText,
             color = color,
-            style = style
+            style = style,
         )
     }
 }
@@ -99,7 +99,7 @@ fun MaterialDialogScope.message(
     text: String? = null,
     color: Color = MaterialTheme.colors.onSurface,
     style: TextStyle = MaterialTheme.typography.body1,
-    @StringRes res: Int? = null
+    @StringRes res: Int? = null,
 ) {
     val messageText = getString(res, text)
 
@@ -108,7 +108,7 @@ fun MaterialDialogScope.message(
         color = color,
         style = style,
         modifier = Modifier
-            .padding(bottom = 28.dp, start = 24.dp, end = 24.dp)
+            .padding(bottom = 28.dp, start = 24.dp, end = 24.dp),
     )
 }
 

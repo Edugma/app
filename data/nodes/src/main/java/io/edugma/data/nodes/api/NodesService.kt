@@ -2,7 +2,6 @@ package io.edugma.data.nodes.api
 
 import io.edugma.domain.nodes.model.Node
 import io.edugma.domain.nodes.model.NodeContract
-import io.edugma.domain.nodes.model.NodeEndpoints
 import kotlinx.coroutines.flow.Flow
 import retrofit2.http.GET
 import retrofit2.http.Url
@@ -15,11 +14,11 @@ interface NodesService {
 
     @GET
     fun getNodeContract(
-        @Url url: String
+        @Url url: String,
     ): Flow<Result<NodeContract>>
 
     @GET
     fun getNodeList(
-        @Url url: String = nodeListUrl
+        @Url url: String = nodeListUrl,
     ): Flow<Result<List<Node>>>
 }

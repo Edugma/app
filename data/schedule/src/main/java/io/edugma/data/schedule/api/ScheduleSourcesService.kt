@@ -9,7 +9,7 @@ import retrofit2.http.Path
 interface ScheduleSourcesService {
     @GET("/schedule/sources/{type}")
     fun getSources(
-        @Path("type") type: String
+        @Path("type") type: String,
     ): Flow<Result<List<ScheduleSourceFull>>>
 
     @GET("/schedule/sources")

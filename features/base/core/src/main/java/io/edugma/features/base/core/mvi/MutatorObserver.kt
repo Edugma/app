@@ -6,7 +6,7 @@ class MutatorObserver<TState, TMutator : BaseMutator<TState>> {
     fun notify(mutator: TMutator) {
         singlePropertySet.forEach { (propSelector, onChanged) ->
             val newValue = propSelector.selector(mutator.state)
-            val prevValue = prevState?.let { prevState -> propSelector.selector(prevState)  }
+            val prevValue = prevState?.let { prevState -> propSelector.selector(prevState) }
             if (prevValue != newValue) {
                 mutator.mutationScope {
                     onChanged(mutator)
@@ -16,7 +16,7 @@ class MutatorObserver<TState, TMutator : BaseMutator<TState>> {
 
         multiplePropertiesSet.forEach { (propSelector, onChanged) ->
             val newValue = propSelector.selector(mutator.state)
-            val prevValue = prevState?.let { prevState -> propSelector.selector(prevState)  }
+            val prevValue = prevState?.let { prevState -> propSelector.selector(prevState) }
             if (prevValue != newValue) {
                 mutator.mutationScope {
                     onChanged(mutator)
@@ -48,19 +48,19 @@ class MutatorObserver<TState, TMutator : BaseMutator<TState>> {
 
     private data class SingleObserverBundle<TState, TMutator : BaseMutator<TState>>(
         val propSelector: SinglePropertySelector<TState>,
-        val onChanged: TMutator.() -> Unit
+        val onChanged: TMutator.() -> Unit,
     )
 
     private data class MultipleObserverBundle<TState, TMutator : BaseMutator<TState>>(
         val propsSelector: MultiplePropertiesSelector<TState>,
-        val onChanged: TMutator.() -> Unit
+        val onChanged: TMutator.() -> Unit,
     )
 
     class SinglePropertySelector<TState>(
-        val selector: TState.() -> Any?
+        val selector: TState.() -> Any?,
     )
 
     class MultiplePropertiesSelector<TState>(
-        val selector: TState.() -> List<Any?>
+        val selector: TState.() -> List<Any?>,
     )
 }

@@ -1,6 +1,5 @@
 package io.edugma.domain.base.utils.converters
 
-
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializer
 import kotlinx.serialization.descriptors.PrimitiveKind
@@ -12,7 +11,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Serializer(forClass = LocalDate::class)
-object LocalDateConverter: KSerializer<LocalDate> {
+object LocalDateConverter : KSerializer<LocalDate> {
     private val dateFormatter = DateTimeFormatter.ISO_LOCAL_DATE
 
     override val descriptor: SerialDescriptor =

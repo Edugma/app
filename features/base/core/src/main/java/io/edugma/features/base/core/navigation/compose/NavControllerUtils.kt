@@ -18,7 +18,7 @@ import kotlin.reflect.KClass
 
 inline fun <reified T : Screen> NavGraphBuilder.addScreen(
     deepLinks: List<NavDeepLink> = emptyList(),
-    crossinline content: @Composable Screen.() -> Unit
+    crossinline content: @Composable Screen.() -> Unit,
 ) {
     val route = getRoute<T>()
     val fullRoute = "$route?screen={screen}"
@@ -36,7 +36,7 @@ inline fun <reified T : Screen> NavGraphBuilder.addScreen(
 inline fun <reified TRoute : Screen, reified TStart : Screen> NavGraphBuilder.groupScreen(
     arguments: List<NamedNavArgument> = emptyList(),
     deepLinks: List<NavDeepLink> = emptyList(),
-    noinline builder: NavGraphBuilder.() -> Unit
+    noinline builder: NavGraphBuilder.() -> Unit,
 ) {
     val startDestination = "${getRoute<TStart>()}?screen={screen}"
 
@@ -44,8 +44,8 @@ inline fun <reified TRoute : Screen, reified TStart : Screen> NavGraphBuilder.gr
 }
 
 fun screens(
-    builder: NavGraphBuilder.() -> Unit
-) : NavGraphBuilder.() -> Unit {
+    builder: NavGraphBuilder.() -> Unit,
+): NavGraphBuilder.() -> Unit {
     return builder
 }
 
@@ -68,10 +68,9 @@ fun Screen.getUrlArgs(): String {
         .encodeUrl()
 }
 
-
 fun Screen.getFullRoute(): String {
     val args = getUrlArgs()
-    return "${getRoute()}?screen=${args}"
+    return "${getRoute()}?screen=$args"
 }
 
 fun toScreenInfo(text: String): ScreenInfo? {
@@ -79,8 +78,6 @@ fun toScreenInfo(text: String): ScreenInfo? {
     Log.d("toScreenInfo", "decoded: $decoded")
     return ScreenInfoSerializer.deserialize(decoded)
 }
-
-
 
 inline fun <reified T : Screen> getRoute() =
     T::class.qualifiedName?.replace(".", "-") ?: ""

@@ -1,12 +1,11 @@
 package io.edugma.domain.base.utils
 
-
 class Lce<out T>(
     internal val result: Result<T>,
     /**
      * Returns `true` if this instance represents a loading outcome.
      */
-    val isLoading: Boolean
+    val isLoading: Boolean,
 ) {
     /**
      * Returns `true` if this instance represents a successful outcome.
@@ -19,7 +18,6 @@ class Lce<out T>(
      * In this case [isSuccess] returns `false`.
      */
     val isFailure: Boolean get() = result.isFailure
-    
 
     // value & exception retrieval
 
@@ -42,7 +40,6 @@ class Lce<out T>(
     fun exceptionOrNull(): Throwable? =
         result.exceptionOrNull()
 
-
     /**
      * Returns a string `Success(v)` if this instance represents [success][Result.isSuccess]
      * where `v` is a string representation of the value or a string `Failure(x)` if
@@ -61,9 +58,7 @@ class Lce<out T>(
         /**
          * Returns an instance that encapsulates the given [value] as successful value.
          */
-        fun <T> success(value: T, isLoading: Boolean = false): Lce<T> = 
-            Lce(Result.success(value), isLoading)
-            
+        fun <T> success(value: T, isLoading: Boolean = false): Lce<T> = Lce(Result.success(value), isLoading)
 
         /**
          * Returns an instance that encapsulates the given [Throwable] [exception] as failure.
@@ -82,11 +77,8 @@ class Lce<out T>(
 // | 1 | 1 |    isSuccess && isLoading      |   isLoadingSuccess
 // ---------
 
-
-
 val <T> Lce<T>.isNotLoading
     get() = !isLoading
-
 
 val <T> Lce<T>.isFinalFailure
     get() = isFailure && isLoading
@@ -99,7 +91,6 @@ val <T> Lce<T>.isFinalSuccess
 
 val <T> Lce<T>.isLoadingSuccess
     get() = isSuccess && !isLoading
-
 
 /**
  * Returns the encapsulated value if this instance represents [success][Result.isSuccess] or throws the encapsulated [Throwable] exception
@@ -138,7 +129,7 @@ fun <R, T : R> Lce<T>.getOrDefault(defaultValue: R): R =
  */
 fun <R, T> Lce<T>.fold(
     onSuccess: (value: T) -> R,
-    onFailure: (exception: Throwable) -> R
+    onFailure: (exception: Throwable) -> R,
 ): R =
     this.result.fold(onSuccess, onFailure)
 
@@ -197,7 +188,6 @@ fun <T> Lce<T>.onFailure(action: (exception: Throwable) -> Unit): Lce<T> {
     this.result.onFailure(action)
     return this
 }
-    
 
 /**
  * Performs the given [action] on the encapsulated value if this instance represents [success][Result.isSuccess].
@@ -207,7 +197,6 @@ fun <T> Lce<T>.onSuccess(action: (value: T) -> Unit): Lce<T> {
     this.result.onSuccess(action)
     return this
 }
-    
 
 /**
  * Performs the given [action] on the encapsulated value if this instance represents [success][Result.isSuccess].
@@ -217,7 +206,6 @@ fun <T> Lce<T>.onLoading(action: () -> Unit): Lce<T> {
     if (isLoading) action()
     return this
 }
-
 
 fun <T> Result<T>.loading(isLoading: Boolean): Lce<T> {
     return Lce(this, isLoading)

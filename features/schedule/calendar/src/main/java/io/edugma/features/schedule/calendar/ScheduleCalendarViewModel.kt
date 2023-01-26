@@ -12,8 +12,8 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class ScheduleCalendarViewModel(
-    private val useCase: ScheduleUseCase
-) : BaseViewModel<ScheduleCalendarState>(ScheduleCalendarState()){
+    private val useCase: ScheduleUseCase,
+) : BaseViewModel<ScheduleCalendarState>(ScheduleCalendarState()) {
     init {
         viewModelScope.launch {
             useCase.getSchedule().collect {
@@ -33,11 +33,11 @@ class ScheduleCalendarViewModel(
 
     fun onDayClick(date: LocalDate) {
         router.replaceScreen(
-            ScheduleScreens.Main(date = date)
+            ScheduleScreens.Main(date = date),
         )
     }
 }
 
 data class ScheduleCalendarState(
-    val schedule: List<ScheduleCalendarWeek> = emptyList()
+    val schedule: List<ScheduleCalendarWeek> = emptyList(),
 )

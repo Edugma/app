@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.domain.schedule.model.group.Group
 import io.edugma.domain.schedule.model.lesson.LessonDateTime
 import io.edugma.domain.schedule.model.lesson.LessonInfo
@@ -23,7 +24,6 @@ import io.edugma.domain.schedule.model.teacher.TeacherInfo
 import io.edugma.domain.schedule.model.teacher.description
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.InitialAvatar
-import io.edugma.features.base.elements.PrimaryTopAppBar
 import io.edugma.features.base.elements.SpacerHeight
 import io.edugma.features.base.elements.SpacerWidth
 import org.koin.androidx.compose.getViewModel
@@ -32,7 +32,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun LessonInfoScreen(
     viewModel: LessonInfoViewModel = getViewModel(),
-    lessonInfo: LessonInfo?
+    lessonInfo: LessonInfo?,
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -61,25 +61,25 @@ private fun LessonInfoContent(
     Column(
         Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(rememberScrollState()),
     ) {
         Surface(
             color = MaterialTheme3.colorScheme.surfaceVariant,
-            shape = RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp)
+            shape = RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp),
         ) {
             Column(Modifier.fillMaxWidth()) {
-                PrimaryTopAppBar(
+                EdTopAppBar(
                     title = "",
-                    onBackClick = onBackClick,
-                    colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent)
+                    onNavigationClick = onBackClick,
+                    colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent),
                 )
                 SpacerHeight(height = 32.dp)
                 LessonType(
-                    type = state.lessonInfo?.lesson?.type?.title ?: ""
+                    type = state.lessonInfo?.lesson?.type?.title ?: "",
                 )
                 HighAlpha {
                     LessonTitle(
-                        title = state.lessonInfo?.lesson?.subject?.title ?: ""
+                        title = state.lessonInfo?.lesson?.subject?.title ?: "",
                     )
                 }
                 SpacerHeight(height = 4.dp)
@@ -90,17 +90,17 @@ private fun LessonInfoContent(
         SpacerHeight(height = 8.dp)
         LessonTeachers(
             teachers = state.teachers,
-            onItemClick = onTeacherClick
+            onItemClick = onTeacherClick,
         )
         SpacerHeight(height = 14.dp)
         LessonPlaces(
             places = state.lessonInfo?.lesson?.places ?: emptyList(),
-            onItemClick = onPlaceClick
+            onItemClick = onPlaceClick,
         )
         SpacerHeight(height = 14.dp)
         LessonGroups(
             groups = state.lessonInfo?.lesson?.groups ?: emptyList(),
-            onItemClick = onGroupClick
+            onItemClick = onGroupClick,
         )
         SpacerHeight(height = 14.dp)
     }
@@ -112,7 +112,7 @@ private fun LessonType(type: String) {
         Text(
             text = type,
             style = MaterialTheme3.typography.titleSmall,
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp),
         )
     }
 }
@@ -122,7 +122,7 @@ private fun LessonTitle(title: String) {
     Text(
         text = title,
         style = MaterialTheme3.typography.titleLarge,
-        modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+        modifier = Modifier.padding(start = 16.dp, end = 16.dp),
     )
 }
 
@@ -133,40 +133,40 @@ private val lessonTimeFormat = DateTimeFormatter.ofPattern("HH:mm")
 private fun LessonDateTime(lessonDateTime: LessonDateTime) {
     Row(
         Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         WithContentAlpha(ContentAlpha.medium) {
             val timeStart = lessonDateTime.time.start.format(lessonTimeFormat)
             val timeEnd = lessonDateTime.time.end.format(lessonTimeFormat)
-            val startDate = lessonDateTime.startDate.format(lessonDateFormat) //+ "!!"
+            val startDate = lessonDateTime.startDate.format(lessonDateFormat) // + "!!"
             Row(
                 Modifier.padding(start = 16.dp, end = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
                     painter = painterResource(FluentIcons.ic_fluent_clock_16_regular),
-                    contentDescription = null
+                    contentDescription = null,
                 )
                 SpacerWidth(3.dp)
                 Text(
                     text = "$timeStart - $timeEnd",
                     style = MaterialTheme3.typography.bodySmall,
-                    modifier = Modifier.padding(bottom = 1.dp)
+                    modifier = Modifier.padding(bottom = 1.dp),
                 )
             }
             Row(
                 Modifier.padding(start = 8.dp, end = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
                     painter = painterResource(FluentIcons.ic_fluent_calendar_ltr_16_regular),
-                    contentDescription = null
+                    contentDescription = null,
                 )
                 SpacerWidth(3.dp)
                 Text(
                     text = startDate,
                     style = MaterialTheme3.typography.bodySmall,
-                    modifier = Modifier.padding(bottom = 1.dp)
+                    modifier = Modifier.padding(bottom = 1.dp),
                 )
             }
         }
@@ -176,22 +176,22 @@ private fun LessonDateTime(lessonDateTime: LessonDateTime) {
 @Composable
 private fun LessonTeachers(
     teachers: List<TeacherInfo>,
-    onItemClick: Typed1Listener<String>
+    onItemClick: Typed1Listener<String>,
 ) {
     WithContentAlpha(ContentAlpha.medium) {
         Row(
             Modifier.padding(start = 16.dp, end = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
                 painter = painterResource(FluentIcons.ic_fluent_hat_graduation_20_regular),
-                contentDescription = null
+                contentDescription = null,
             )
             SpacerWidth(4.dp)
             Text(
                 text = "Преподаватели",
                 style = MaterialTheme3.typography.titleSmall,
-                modifier = Modifier.padding(bottom = 2.dp)
+                modifier = Modifier.padding(bottom = 2.dp),
             )
         }
     }
@@ -204,7 +204,7 @@ private fun LessonTeachers(
                 .joinToString(separator = "") { it.take(1) },
             title = teacher.name,
             description = teacher.description,
-            onItemClick = { onItemClick(teacher.id) }
+            onItemClick = { onItemClick(teacher.id) },
         )
         if (index != teachers.size - 1) {
             Divider(Modifier.padding(start = 70.dp, end = 20.dp))
@@ -215,22 +215,22 @@ private fun LessonTeachers(
 @Composable
 private fun LessonPlaces(
     places: List<Place>,
-    onItemClick: Typed1Listener<String>
+    onItemClick: Typed1Listener<String>,
 ) {
     WithContentAlpha(ContentAlpha.medium) {
         Row(
             Modifier.padding(start = 16.dp, end = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
                 painter = painterResource(FluentIcons.ic_fluent_location_20_regular),
-                contentDescription = null
+                contentDescription = null,
             )
             SpacerWidth(4.dp)
             Text(
                 text = "Места",
                 style = MaterialTheme3.typography.titleSmall,
-                modifier = Modifier.padding(bottom = 2.dp)
+                modifier = Modifier.padding(bottom = 2.dp),
             )
         }
     }
@@ -243,7 +243,7 @@ private fun LessonPlaces(
                 .joinToString(separator = "") { it.take(1) },
             title = place.title,
             description = place.description,
-            onItemClick = { onItemClick(place.id) }
+            onItemClick = { onItemClick(place.id) },
         )
         if (index != places.size - 1) {
             Divider(Modifier.padding(start = 70.dp, end = 20.dp))
@@ -254,22 +254,22 @@ private fun LessonPlaces(
 @Composable
 private fun LessonGroups(
     groups: List<Group>,
-    onItemClick: Typed1Listener<String>
+    onItemClick: Typed1Listener<String>,
 ) {
     WithContentAlpha(ContentAlpha.medium) {
         Row(
             Modifier.padding(start = 16.dp, end = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
                 painter = painterResource(FluentIcons.ic_fluent_people_20_regular),
-                contentDescription = null
+                contentDescription = null,
             )
             SpacerWidth(4.dp)
             Text(
                 text = "Группы",
                 style = MaterialTheme3.typography.titleSmall,
-                modifier = Modifier.padding(bottom = 2.dp)
+                modifier = Modifier.padding(bottom = 2.dp),
             )
         }
     }
@@ -282,7 +282,7 @@ private fun LessonGroups(
                 .joinToString(separator = "") { it.take(1) },
             title = group.title,
             description = group.description,
-            onItemClick = { onItemClick(group.id) }
+            onItemClick = { onItemClick(group.id) },
         )
         if (index != groups.size - 1) {
             Divider(Modifier.padding(start = 70.dp, end = 20.dp))
@@ -297,24 +297,24 @@ private fun LessonItem(
     imageInitials: String = "",
     title: String,
     description: String,
-    onItemClick: ClickListener
+    onItemClick: ClickListener,
 ) {
     Surface(
         modifier = Modifier
             .padding(start = 10.dp, end = 10.dp)
             .fillMaxWidth(),
         onClick = onItemClick,
-        shape = RoundedCornerShape(10.dp)
+        shape = RoundedCornerShape(10.dp),
     ) {
         Row(
             Modifier
                 .fillMaxWidth()
                 .padding(start = 6.dp, end = 6.dp, top = 6.dp, bottom = 6.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             InitialAvatar(
                 url = imageUrl,
-                initials = imageInitials
+                initials = imageInitials,
             )
             SpacerWidth(8.dp)
             Column(Modifier.padding(bottom = 4.dp)) {
@@ -322,14 +322,14 @@ private fun LessonItem(
                     text = title,
                     style = MaterialTheme3.typography.titleSmall,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
                 WithContentAlpha(alpha = ContentAlpha.medium) {
                     Text(
                         text = description,
                         style = MaterialTheme3.typography.bodySmall,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
             }

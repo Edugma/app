@@ -4,5 +4,5 @@ package io.edugma.domain.account.model.student
 data class StudentFaculty(
     val id: String,
     val title: String,
-    val titleShort: String? = null
+    val titleShort: String? = null,
 )

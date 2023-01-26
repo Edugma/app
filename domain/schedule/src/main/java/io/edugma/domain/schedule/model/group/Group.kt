@@ -6,10 +6,9 @@ import kotlinx.serialization.Serializable
 data class Group(
     val id: String,
     val title: String,
-    val description: String
+    val description: String,
 ) : Comparable<Group> {
     override fun compareTo(other: Group): Int {
         return title.compareTo(other.title)
     }
-
 }

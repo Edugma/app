@@ -16,15 +16,15 @@ import java.time.LocalTime
 import java.time.ZonedDateTime
 
 abstract class Screen(
-    val args: Map<String, String> = emptyMap()
+    val args: Map<String, String> = emptyMap(),
 ) {
     constructor(
-        vararg args: Pair<String, Any?>
+        vararg args: Pair<String, Any?>,
     ) : this(args.filter { it.second != null }.associate { it.first to it.second.toArgString() })
 
     companion object {
         private fun <T> T.toArgString(): String {
-            return when(this) {
+            return when (this) {
                 is String -> this
                 is Int -> this.toString()
                 is Long -> this.toString()
@@ -53,7 +53,7 @@ abstract class Screen(
     }
 
     inline fun <reified T> getArg(key: String): T {
-        return when(T::class) {
+        return when (T::class) {
             String::class -> args[key] as T
             Int::class -> args[key]?.toInt() as T
             Long::class -> args[key]?.toLong() as T

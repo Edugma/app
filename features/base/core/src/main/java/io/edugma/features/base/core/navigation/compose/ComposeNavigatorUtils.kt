@@ -10,7 +10,7 @@ import io.edugma.features.base.core.navigation.core.Router
 @Composable
 fun rememberNavController(
     router: Router,
-    vararg navigators: Navigator<out NavDestination>
+    vararg navigators: Navigator<out NavDestination>,
 ): NavHostController {
     val navController = androidx.navigation.compose.rememberNavController(*navigators)
     val navigator = remember(navController, router) {

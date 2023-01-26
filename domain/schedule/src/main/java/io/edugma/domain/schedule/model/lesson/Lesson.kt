@@ -14,7 +14,7 @@ data class Lesson(
     val teachers: List<Teacher>,
     val groups: List<Group>,
     val places: List<Place>,
-): Comparable<Lesson> {
+) : Comparable<Lesson> {
     override fun compareTo(other: Lesson): Int {
         val comparing = subject.compareTo(other.subject)
         return if (comparing != 0) {
@@ -23,5 +23,4 @@ data class Lesson(
             type.title.compareTo(other.type.title)
         }
     }
-
 }

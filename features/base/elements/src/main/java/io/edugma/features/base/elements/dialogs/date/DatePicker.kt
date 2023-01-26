@@ -84,7 +84,7 @@ fun MaterialDialogScope.datepicker(
     waitForPositiveButton: Boolean = true,
     allowedDateValidator: (LocalDate) -> Boolean = { true },
     locale: Locale = Locale.getDefault(),
-    onDateChange: (LocalDate) -> Unit = {}
+    onDateChange: (LocalDate) -> Unit = {},
 ) {
     val datePickerState = remember {
         DatePickerState(initialDate, colors, yearRange, dialogState.dialogBackgroundColor!!)
@@ -108,10 +108,10 @@ internal fun DatePickerImpl(
     title: String,
     state: DatePickerState,
     allowedDateValidator: (LocalDate) -> Boolean,
-    locale: Locale
+    locale: Locale,
 ) {
     val pagerState = rememberPagerState(
-        initialPage = (state.selected.year - state.yearRange.first) * 12 + state.selected.monthValue - 1
+        initialPage = (state.selected.year - state.yearRange.first) * 12 + state.selected.monthValue - 1,
     )
 
     Column(Modifier.fillMaxWidth()) {
@@ -120,13 +120,13 @@ internal fun DatePickerImpl(
             count = (state.yearRange.last - state.yearRange.first + 1) * 12,
             state = pagerState,
             verticalAlignment = Alignment.Top,
-            modifier = Modifier.height(336.dp)
+            modifier = Modifier.height(336.dp),
         ) { page ->
             val viewDate = remember {
                 LocalDate.of(
                     state.yearRange.first + page / 12,
                     page % 12 + 1,
-                    1
+                    1,
                 )
             }
 
@@ -139,7 +139,7 @@ internal fun DatePickerImpl(
                             .zIndex(0.7f)
                             .clipToBounds(),
                         enter = slideInVertically(initialOffsetY = { -it }),
-                        exit = slideOutVertically(targetOffsetY = { -it })
+                        exit = slideOutVertically(targetOffsetY = { -it }),
                     ) {
                         YearPicker(viewDate, state, pagerState)
                     }
@@ -156,7 +156,7 @@ internal fun DatePickerImpl(
 private fun YearPicker(
     viewDate: LocalDate,
     state: DatePickerState,
-    pagerState: PagerState
+    pagerState: PagerState,
 ) {
     val gridState = rememberLazyGridState(viewDate.year - state.yearRange.first)
     val coroutineScope = rememberCoroutineScope()
@@ -164,7 +164,7 @@ private fun YearPicker(
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
         state = gridState,
-        modifier = Modifier.background(state.dialogBackground)
+        modifier = Modifier.background(state.dialogBackground),
     ) {
         itemsIndexed(state.yearRange.toList()) { _, item ->
             val selected = remember { item == viewDate.year }
@@ -172,7 +172,7 @@ private fun YearPicker(
                 if (!selected) {
                     coroutineScope.launch {
                         pagerState.scrollToPage(
-                            pagerState.currentPage + (item - viewDate.year) * 12
+                            pagerState.currentPage + (item - viewDate.year) * 12,
                         )
                     }
                 }
@@ -187,7 +187,7 @@ private fun YearPickerItem(
     year: Int,
     selected: Boolean,
     colors: DatePickerColors,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Box(Modifier.size(88.dp, 52.dp), contentAlignment = Alignment.Center) {
         Box(
@@ -198,16 +198,16 @@ private fun YearPickerItem(
                 .clickable(
                     onClick = onClick,
                     interactionSource = MutableInteractionSource(),
-                    indication = null
+                    indication = null,
                 ),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             Text(
                 year.toString(),
                 style = TextStyle(
                     color = colors.dateTextColor(selected).value,
-                    fontSize = 18.sp
-                )
+                    fontSize = 18.sp,
+                ),
             )
         }
     }
@@ -219,7 +219,7 @@ private fun CalendarViewHeader(
     viewDate: LocalDate,
     state: DatePickerState,
     pagerState: PagerState,
-    locale: Locale
+    locale: Locale,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val month = remember { viewDate.month.getFullLocalName(locale) }
@@ -230,13 +230,13 @@ private fun CalendarViewHeader(
         Modifier
             .padding(top = 16.dp, bottom = 16.dp, start = 24.dp, end = 24.dp)
             .height(24.dp)
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         Row(
             Modifier
                 .fillMaxHeight()
                 .align(Alignment.CenterStart)
-                .clickable(onClick = { state.yearPickerShowing = !state.yearPickerShowing })
+                .clickable(onClick = { state.yearPickerShowing = !state.yearPickerShowing }),
         ) {
             Text(
                 "$month ${viewDate.year}",
@@ -244,7 +244,7 @@ private fun CalendarViewHeader(
                     .paddingFromBaseline(top = 16.dp)
                     .wrapContentSize(Alignment.Center),
                 style = TextStyle(fontSize = 14.sp, fontWeight = W600),
-                color = state.colors.calendarHeaderTextColor
+                color = state.colors.calendarHeaderTextColor,
             )
 
             Spacer(Modifier.width(4.dp))
@@ -252,7 +252,7 @@ private fun CalendarViewHeader(
                 Icon(
                     if (state.yearPickerShowing) arrowDropUp else arrowDropDown,
                     contentDescription = "Year Selector",
-                    tint = state.colors.calendarHeaderTextColor
+                    tint = state.colors.calendarHeaderTextColor,
                 )
             }
         }
@@ -260,7 +260,7 @@ private fun CalendarViewHeader(
         Row(
             Modifier
                 .fillMaxHeight()
-                .align(Alignment.CenterEnd)
+                .align(Alignment.CenterEnd),
         ) {
             Icon(
                 Icons.Default.KeyboardArrowLeft,
@@ -272,12 +272,12 @@ private fun CalendarViewHeader(
                         coroutineScope.launch {
                             if (pagerState.currentPage - 1 >= 0) {
                                 pagerState.animateScrollToPage(
-                                    pagerState.currentPage - 1
+                                    pagerState.currentPage - 1,
                                 )
                             }
                         }
-                    }),
-                tint = state.colors.calendarHeaderTextColor
+                    },),
+                tint = state.colors.calendarHeaderTextColor,
             )
 
             Spacer(modifier = Modifier.width(24.dp))
@@ -292,12 +292,12 @@ private fun CalendarViewHeader(
                         coroutineScope.launch {
                             if (pagerState.currentPage + 1 < pagerState.pageCount) {
                                 pagerState.animateScrollToPage(
-                                    pagerState.currentPage + 1
+                                    pagerState.currentPage + 1,
                                 )
                             }
                         }
-                    }),
-                tint = state.colors.calendarHeaderTextColor
+                    },),
+                tint = state.colors.calendarHeaderTextColor,
             )
         }
     }
@@ -309,12 +309,12 @@ private fun CalendarView(
     viewDate: LocalDate,
     state: DatePickerState,
     locale: Locale,
-    allowedDateValidator: (LocalDate) -> Boolean
+    allowedDateValidator: (LocalDate) -> Boolean,
 ) {
     Column(
         Modifier
             .padding(start = 12.dp, end = 12.dp)
-            .testTag("dialog_date_calendar")
+            .testTag("dialog_date_calendar"),
     ) {
         DayOfWeekHeader(state, locale)
         val calendarDatesData = remember { getDates(viewDate, locale) }
@@ -348,7 +348,7 @@ private fun DateSelectionBox(
     selected: Boolean,
     colors: DatePickerColors,
     enabled: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Box(
         Modifier
@@ -357,9 +357,9 @@ private fun DateSelectionBox(
             .clickable(
                 interactionSource = MutableInteractionSource(),
                 onClick = { if (enabled) onClick() },
-                indication = null
+                indication = null,
             ),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             date.toString(),
@@ -371,8 +371,8 @@ private fun DateSelectionBox(
                 .alpha(if (enabled) ContentAlpha.high else ContentAlpha.disabled),
             style = TextStyle(
                 color = colors.dateTextColor(selected).value,
-                fontSize = 12.sp
-            )
+                fontSize = 12.sp,
+            ),
         )
     }
 }
@@ -391,7 +391,7 @@ private fun DayOfWeekHeader(state: DatePickerState, locale: Locale) {
             .height(40.dp)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceEvenly
+        horizontalArrangement = Arrangement.SpaceEvenly,
     ) {
         LazyVerticalGrid(columns = GridCells.Fixed(7)) {
             dayHeaders.forEach { it ->
@@ -404,7 +404,7 @@ private fun DayOfWeekHeader(state: DatePickerState, locale: Locale) {
                                 .fillMaxSize()
                                 .wrapContentSize(Alignment.Center),
                             style = TextStyle(fontSize = 14.sp, fontWeight = W600),
-                            color = state.colors.calendarHeaderTextColor
+                            color = state.colors.calendarHeaderTextColor,
                         )
                     }
                 }
@@ -421,26 +421,26 @@ private fun CalendarHeader(title: String, state: DatePickerState, locale: Locale
     Box(
         Modifier
             .background(state.colors.headerBackgroundColor)
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         Column(Modifier.padding(start = 24.dp, end = 24.dp)) {
             Text(
                 text = title,
                 modifier = Modifier.paddingFromBaseline(top = if (isSmallDevice()) 24.dp else 32.dp),
                 color = state.colors.headerTextColor,
-                style = TextStyle(fontSize = 12.sp)
+                style = TextStyle(fontSize = 12.sp),
             )
 
             Box(
                 Modifier
                     .fillMaxWidth()
-                    .paddingFromBaseline(top = if (isSmallDevice()) 0.dp else 64.dp)
+                    .paddingFromBaseline(top = if (isSmallDevice()) 0.dp else 64.dp),
             ) {
                 Text(
                     text = "$day, $month ${state.selected.dayOfMonth}",
                     modifier = Modifier.align(Alignment.CenterStart),
                     color = state.colors.headerTextColor,
-                    style = TextStyle(fontSize = 30.sp, fontWeight = W400)
+                    style = TextStyle(fontSize = 30.sp, fontWeight = W400),
                 )
             }
 

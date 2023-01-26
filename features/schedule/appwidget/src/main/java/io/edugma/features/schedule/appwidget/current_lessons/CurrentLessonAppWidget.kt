@@ -31,7 +31,6 @@ import org.koin.core.component.inject
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
-
 class CurrentLessonAppWidget : GlanceAppWidget(), KoinComponent {
 
     companion object {
@@ -40,9 +39,8 @@ class CurrentLessonAppWidget : GlanceAppWidget(), KoinComponent {
     }
 
     override val sizeMode = SizeMode.Responsive(
-        setOf(Small, Big)
+        setOf(Small, Big),
     )
-
 
     override val stateDefinition: GlanceStateDefinition<*> = PreferencesGlanceStateDefinition
 
@@ -67,7 +65,6 @@ private fun CurrentLessonContent(state: CurrentLessonState) {
         GlanceModifier
             .cornerRadius(20.dp)
             .background(com.google.android.material.R.color.m3_sys_color_dynamic_dark_surface_variant)
-
     } else {
         GlanceModifier
             .background(ImageProvider(R.drawable.schedule_app_shape_background))
@@ -78,7 +75,7 @@ private fun CurrentLessonContent(state: CurrentLessonState) {
             .height(130.dp)
             .appWidgetBackground()
             .padding(10.dp)
-            .then(mod)
+            .then(mod),
     ) {
 //        Column(
 //            modifier = GlanceModifier
@@ -87,14 +84,14 @@ private fun CurrentLessonContent(state: CurrentLessonState) {
 //                .background(Color.Red)
 //        ) {
         Box(
-            modifier = GlanceModifier.defaultWeight()
+            modifier = GlanceModifier.defaultWeight(),
         ) {
             if (state.currentLesson == null || state.time == null) {
                 NoLessons()
             } else {
                 LessonContent(
                     time = state.time,
-                    lesson = state.currentLesson
+                    lesson = state.currentLesson,
                 )
             }
         }
@@ -103,13 +100,13 @@ private fun CurrentLessonContent(state: CurrentLessonState) {
                 LessonSelector(
                     currentIndex = state.currentLessonIndex,
                     lessonsCount = state.currentLessons.size,
-                    modifier = GlanceModifier.defaultWeight()
+                    modifier = GlanceModifier.defaultWeight(),
                 )
             }
             if (state.lastUpdateDateTime != null) {
                 Timestamp(
                     updateDateTime = state.lastUpdateDateTime,
-                    modifier = GlanceModifier.defaultWeight()
+                    modifier = GlanceModifier.defaultWeight(),
                 )
             }
         }
@@ -120,10 +117,10 @@ private fun CurrentLessonContent(state: CurrentLessonState) {
 private fun NoLessons() {
     Box(
         GlanceModifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Text(
-            text = "Сегодня нет занятий"
+            text = "Сегодня нет занятий",
         )
     }
 }
@@ -141,37 +138,37 @@ private fun LessonContent(time: LessonTime, lesson: Lesson) {
                 style = TextStyle(
                     fontSize = 10.sp,
                 ),
-                maxLines = 1
+                maxLines = 1,
             )
             Spacer(GlanceModifier.width(8.dp).height(1.dp))
             Text(
                 text = lesson.type.title,
                 style = TextStyle(
                     fontSize = 10.sp,
-                    color = ColorProvider(R.color.appwidget_onSecondaryContainer)
+                    color = ColorProvider(R.color.appwidget_onSecondaryContainer),
                 ),
                 maxLines = 1,
                 modifier = GlanceModifier
                     .background(R.color.appwidget_secondaryContainer)
-                    .padding(horizontal = 3.dp)
+                    .padding(horizontal = 3.dp),
             )
         }
         Text(
             text = lesson.subject.title,
             style = TextStyle(
                 fontSize = 11.5.sp,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
             ),
-            maxLines = 2
+            maxLines = 2,
         )
         Spacer(GlanceModifier.width(1.dp).height(1.dp))
         Row {
             Image(
                 provider = ImageProvider(
-                    R.drawable.schedule_app_ic_fluent_hat_graduation_12_regular
+                    R.drawable.schedule_app_ic_fluent_hat_graduation_12_regular,
                 ),
                 contentDescription = null,
-                modifier = GlanceModifier.size(12.dp)
+                modifier = GlanceModifier.size(12.dp),
             )
             Spacer(GlanceModifier.width(3.dp).height(1.dp))
             Text(
@@ -179,17 +176,17 @@ private fun LessonContent(time: LessonTime, lesson: Lesson) {
                 style = TextStyle(
                     fontSize = 10.5.sp,
                 ),
-                maxLines = 1
+                maxLines = 1,
             )
         }
         Spacer(GlanceModifier.width(1.dp).height(1.dp))
         Row {
             Image(
                 provider = ImageProvider(
-                    R.drawable.schedule_app_ic_fluent_people_16_regular
+                    R.drawable.schedule_app_ic_fluent_people_16_regular,
                 ),
                 contentDescription = null,
-                modifier = GlanceModifier.size(12.dp)
+                modifier = GlanceModifier.size(12.dp),
             )
             Spacer(GlanceModifier.width(3.dp).height(1.dp))
             Text(
@@ -197,17 +194,17 @@ private fun LessonContent(time: LessonTime, lesson: Lesson) {
                 style = TextStyle(
                     fontSize = 10.5.sp,
                 ),
-                maxLines = 1
+                maxLines = 1,
             )
         }
         Spacer(GlanceModifier.width(1.dp).height(1.dp))
         Row {
             Image(
                 provider = ImageProvider(
-                    R.drawable.schedule_app_ic_fluent_location_12_regular
+                    R.drawable.schedule_app_ic_fluent_location_12_regular,
                 ),
                 contentDescription = null,
-                modifier = GlanceModifier.size(12.dp)
+                modifier = GlanceModifier.size(12.dp),
             )
             Spacer(GlanceModifier.width(3.dp).height(1.dp))
             Text(
@@ -215,7 +212,7 @@ private fun LessonContent(time: LessonTime, lesson: Lesson) {
                 style = TextStyle(
                     fontSize = 10.5.sp,
                 ),
-                maxLines = 1
+                maxLines = 1,
             )
         }
     }
@@ -225,12 +222,12 @@ private fun LessonContent(time: LessonTime, lesson: Lesson) {
 private fun LessonSelector(
     currentIndex: Int,
     lessonsCount: Int,
-    modifier: GlanceModifier = GlanceModifier
+    modifier: GlanceModifier = GlanceModifier,
 ) {
     Row(modifier) {
         Image(
             provider = ImageProvider(
-                R.drawable.schedule_app_ic_fluent_arrow_circle_left_16_regular
+                R.drawable.schedule_app_ic_fluent_arrow_circle_left_16_regular,
             ),
             contentDescription = null,
             modifier = GlanceModifier
@@ -238,22 +235,22 @@ private fun LessonSelector(
                 .clickable(
                     actionRunCallback<UpdateLessonIndexActionCallback>(
                         parameters = actionParametersOf(
-                            lessonIndexParamKey to -1
-                        )
-                    )
-                )
+                            lessonIndexParamKey to -1,
+                        ),
+                    ),
+                ),
         )
         Text(
             text = "${currentIndex + 1}/$lessonsCount",
             maxLines = 1,
             style = TextStyle(
-                fontSize = 10.sp
+                fontSize = 10.sp,
             ),
-            modifier = GlanceModifier.padding(horizontal = 3.dp)
+            modifier = GlanceModifier.padding(horizontal = 3.dp),
         )
         Image(
             provider = ImageProvider(
-                R.drawable.schedule_app_ic_fluent_arrow_circle_right_16_regular
+                R.drawable.schedule_app_ic_fluent_arrow_circle_right_16_regular,
             ),
             contentDescription = null,
             modifier = GlanceModifier
@@ -261,10 +258,10 @@ private fun LessonSelector(
                 .clickable(
                     actionRunCallback<UpdateLessonIndexActionCallback>(
                         parameters = actionParametersOf(
-                            lessonIndexParamKey to 1
-                        )
-                    )
-                )
+                            lessonIndexParamKey to 1,
+                        ),
+                    ),
+                ),
         )
     }
 }
@@ -274,28 +271,28 @@ private val dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM, HH:mm")
 @Composable
 private fun Timestamp(
     updateDateTime: ZonedDateTime,
-    modifier: GlanceModifier = GlanceModifier
+    modifier: GlanceModifier = GlanceModifier,
 ) {
     Row(
         modifier = modifier,
-        horizontalAlignment = Alignment.End
+        horizontalAlignment = Alignment.End,
     ) {
         Text(
             text = updateDateTime.format(dateTimeFormatter),
             maxLines = 1,
             style = TextStyle(
-                fontSize = 10.sp
-            )
+                fontSize = 10.sp,
+            ),
         )
         Spacer(GlanceModifier.width(3.dp).height(1.dp))
         Image(
             provider = ImageProvider(
-                R.drawable.schedule_app_ic_fluent_arrow_clockwise_16_regular
+                R.drawable.schedule_app_ic_fluent_arrow_clockwise_16_regular,
             ),
             contentDescription = null,
             modifier = GlanceModifier
                 .size(16.dp)
-                .clickable(actionRunCallback<UpdateActionCallback>())
+                .clickable(actionRunCallback<UpdateActionCallback>()),
         )
     }
 }

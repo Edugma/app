@@ -14,10 +14,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
+import io.edugma.core.designSystem.atoms.loader.EdLoader
+import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.domain.schedule.model.lesson.Lesson
 import io.edugma.domain.schedule.model.lesson.LessonDateTime
 import io.edugma.features.base.core.utils.*
-import io.edugma.features.base.elements.PrimaryTopAppBar
 import org.koin.androidx.compose.getViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -25,7 +26,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun ScheduleScreen(
     viewModel: ScheduleViewModel = getViewModel(),
-    date: LocalDate? = null
+    date: LocalDate? = null,
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -42,7 +43,7 @@ fun ScheduleScreen(
             viewModel::onWeeksPosChanged,
             onDayClick = viewModel::onDayClick,
             onLessonClick = viewModel::onLessonClick,
-            onRefreshing = viewModel::onRefreshing
+            onRefreshing = viewModel::onRefreshing,
         )
     }
 }
@@ -58,7 +59,7 @@ fun ScheduleContent(
     onWeeksPosChanged: Typed1Listener<Int>,
     onDayClick: Typed1Listener<LocalDate>,
     onLessonClick: Typed2Listener<Lesson, LessonDateTime>,
-    onRefreshing: ClickListener
+    onRefreshing: ClickListener,
 ) {
     Box {
         Column(Modifier.fillMaxSize()) {
@@ -66,18 +67,22 @@ fun ScheduleContent(
             weekPagerState.bindTo(state.weeksPos)
             weekPagerState.onPageChanged { onWeeksPosChanged(it) }
 
-            PrimaryTopAppBar(
+            EdTopAppBar(
                 title = stringResource(R.string.sch_schedule),
                 subtitle = state.selectedDate.format(dateTimeFormat),
-                showLoading = state.isLoading,
-                onBackClick = onBackClick
+                onNavigationClick = onBackClick,
+                actions = {
+                    if (state.isLoading) {
+                        EdLoader()
+                    }
+                },
             )
 
             DaysPager(
                 weeks = state.weeks,
                 dayOfWeekPos = state.dayOfWeekPos,
                 pagerState = weekPagerState,
-                onDayClick = onDayClick
+                onDayClick = onDayClick,
             )
 
             if (state.isPreloading) {
@@ -93,7 +98,7 @@ fun ScheduleContent(
                     isRefreshing = state.isRefreshing,
                     pagerState = schedulePagerState,
                     onLessonClick = onLessonClick,
-                    onRefreshing = onRefreshing
+                    onRefreshing = onRefreshing,
                 )
             }
         }
@@ -122,9 +127,9 @@ fun BoxScope.Fab(isVisible: Boolean, onClick: () -> Unit) {
                 Icon(
                     painter = painterResource(FluentIcons.ic_fluent_calendar_today_24_regular),
                     contentDescription = null,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(24.dp),
                 )
-            }
+            },
         )
     }
 }

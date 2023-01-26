@@ -19,7 +19,7 @@ fun PerformanceCard(
     performance: CurrentPerformance?,
     showCurrentPerformance: Boolean,
     enabled: Boolean,
-    onClick: ClickListener
+    onClick: ClickListener,
 ) {
     TonalCard(
         modifier = Modifier
@@ -28,7 +28,7 @@ fun PerformanceCard(
             .fillMaxWidth(0.6f),
         shape = RoundedCornerShape(16.dp),
         enabled = enabled,
-        onClick = onClick
+        onClick = onClick,
     ) {
         Box(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
             Column {
@@ -44,13 +44,13 @@ fun PerformanceCard(
 
 @Composable
 fun AnimatedText(performance: CurrentPerformance, isCurrent: Boolean) {
-        val text = if (isCurrent) "За ${performance.lastSemesterNumber} семестр:" else "За все время:"
-        Text(
-            text = text,
-            style = MaterialTheme3.typography.labelSmall,
-            color = MaterialTheme3.colorScheme.secondary
-        )
-        ShowPerformance(if (isCurrent) performance.lastSemester else performance.allSemesters)
+    val text = if (isCurrent) "За ${performance.lastSemesterNumber} семестр:" else "За все время:"
+    Text(
+        text = text,
+        style = MaterialTheme3.typography.labelSmall,
+        color = MaterialTheme3.colorScheme.secondary,
+    )
+    ShowPerformance(if (isCurrent) performance.lastSemester else performance.allSemesters)
 }
 
 @Composable
@@ -64,7 +64,7 @@ fun ShowPerformance(marks: Map<String, Int>) {
             text = performanceString.replaceAfterLast('%', ""),
             style = MaterialTheme3.typography.bodySmall,
             maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
         )
     }
 }

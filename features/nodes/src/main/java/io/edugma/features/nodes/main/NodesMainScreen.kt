@@ -35,7 +35,7 @@ fun NodesMainScreen(viewModel: NodesMainViewModel = getViewModel()) {
         onTabClick = viewModel::onTabClick,
         onNodeUrl = viewModel::onNodeUrl,
         onEnterNodeUrl = viewModel::onEnterNodeUrl,
-        onNodeItemClick = viewModel::onNodeItemClick
+        onNodeItemClick = viewModel::onNodeItemClick,
     )
 }
 
@@ -49,12 +49,12 @@ private fun NodesMainContent(
     onNodeItemClick: Typed1Listener<Node>,
 ) {
     Column(
-        Modifier.fillMaxSize()
+        Modifier.fillMaxSize(),
     ) {
         NodeTabsContent(
             tabs = state.tabs,
             selectedTab = state.selectedTab,
-            onTabSelected = onTabClick
+            onTabSelected = onTabClick,
         )
 
         when (state.selectedTab) {
@@ -63,7 +63,7 @@ private fun NodesMainContent(
                     items(state.nodes) {
                         NodeContent(
                             node = it,
-                            onClick = onNodeItemClick
+                            onClick = onNodeItemClick,
                         )
                     }
                 }
@@ -73,19 +73,19 @@ private fun NodesMainContent(
                     Modifier
                         .fillMaxSize()
                         .padding(start = 16.dp, end = 16.dp),
-                    verticalArrangement = Arrangement.Center
+                    verticalArrangement = Arrangement.Center,
                 ) {
                     Text(text = "Введите ссылку узла")
                     SpacerHeight(height = 16.dp)
                     OutlinedTextField(
                         value = state.nodeUrl,
                         onValueChange = onNodeUrl,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     )
                     SpacerHeight(height = 16.dp)
                     PrimaryButton(
                         onClick = onEnterNodeUrl,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         Text("Применить")
                     }
@@ -100,10 +100,10 @@ private fun NodesMainContent(
 private fun NodeTabsContent(
     tabs: List<NodeTabs>,
     selectedTab: NodeTabs,
-    onTabSelected: Typed1Listener<NodeTabs>
+    onTabSelected: Typed1Listener<NodeTabs>,
 ) {
     LazyRow(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         item {
             SpacerWidth(10.dp)
@@ -112,7 +112,7 @@ private fun NodeTabsContent(
             NodeTab(
                 tab,
                 tab == selectedTab,
-                onTabSelected = onTabSelected
+                onTabSelected = onTabSelected,
             )
         }
         item {
@@ -125,12 +125,13 @@ private fun NodeTabsContent(
 private fun NodeTab(
     tab: NodeTabs,
     isSelected: Boolean,
-    onTabSelected: Typed1Listener<NodeTabs>
+    onTabSelected: Typed1Listener<NodeTabs>,
 ) {
-    val color = if (isSelected)
+    val color = if (isSelected) {
         MaterialTheme3.colorScheme.secondaryContainer
-    else
+    } else {
         MaterialTheme3.colorScheme.surface
+    }
 
     val title = when (tab) {
         NodeTabs.ByList -> "Список"
@@ -141,11 +142,11 @@ private fun NodeTab(
         onClick = { onTabSelected(tab) },
         modifier = Modifier.padding(horizontal = 6.dp, vertical = 5.dp),
         color = color,
-        shape = MaterialTheme3.shapes.small
+        shape = MaterialTheme3.shapes.small,
     ) {
         Text(
             text = title,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
         )
     }
 }
@@ -153,19 +154,19 @@ private fun NodeTab(
 @Composable
 private fun NodeContent(
     node: Node,
-    onClick: Typed1Listener<Node>
+    onClick: Typed1Listener<Node>,
 ) {
     TonalCard(
         onClick = { onClick(node) },
         modifier = Modifier
             .padding(horizontal = 16.dp, vertical = 6.dp)
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         Row(
             Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 10.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
@@ -174,11 +175,11 @@ private fun NodeContent(
                     .build(),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(48.dp)
+                    .size(48.dp),
             )
             SpacerWidth(width = 16.dp)
             Text(
-                text = node.name
+                text = node.name,
             )
         }
     }

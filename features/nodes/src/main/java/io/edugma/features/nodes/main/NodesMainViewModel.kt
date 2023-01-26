@@ -10,14 +10,14 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class NodesMainViewModel(
-    private val nodesRepository: NodesRepository
+    private val nodesRepository: NodesRepository,
 ) : BaseViewModel<NodesMainState>(NodesMainState()) {
     init {
         viewModelScope.launch {
             nodesRepository.getNodeList().onSuccess {
                 mutateState {
                     state = state.copy(
-                        nodes = it
+                        nodes = it,
                     )
                 }
             }.collect()
@@ -27,7 +27,7 @@ class NodesMainViewModel(
     fun onNodeUrl(nodeUrl: String) {
         mutateState {
             state = state.copy(
-                nodeUrl = nodeUrl
+                nodeUrl = nodeUrl,
             )
         }
     }
@@ -44,7 +44,7 @@ class NodesMainViewModel(
     fun onTabClick(tab: NodeTabs) {
         mutateState {
             state = state.copy(
-                selectedTab = tab
+                selectedTab = tab,
             )
         }
     }
@@ -63,10 +63,10 @@ data class NodesMainState(
     val nodeUrl: String = "",
     val nodes: List<Node> = emptyList(),
     val selectedTab: NodeTabs = NodeTabs.ByList,
-    val tabs: List<NodeTabs> = NodeTabs.values().toList()
+    val tabs: List<NodeTabs> = NodeTabs.values().toList(),
 )
 
 enum class NodeTabs {
     ByList,
-    ByUrl
+    ByUrl,
 }

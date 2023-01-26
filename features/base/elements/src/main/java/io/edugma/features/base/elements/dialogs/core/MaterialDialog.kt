@@ -81,7 +81,7 @@ interface MaterialDialogScope {
 
 internal class MaterialDialogScopeImpl(
     override val dialogState: MaterialDialogState,
-    override val autoDismiss: Boolean = true
+    override val autoDismiss: Boolean = true,
 ) : MaterialDialogScope {
     override val dialogButtons = MaterialDialogButtons(this)
 
@@ -185,7 +185,7 @@ class MaterialDialogState(initialValue: Boolean = false) {
          */
         fun Saver(): Saver<MaterialDialogState, *> = Saver(
             save = { it.showing },
-            restore = { MaterialDialogState(it) }
+            restore = { MaterialDialogState(it) },
         )
     }
 }
@@ -226,7 +226,7 @@ fun MaterialDialog(
     autoDismiss: Boolean = true,
     onCloseRequest: (MaterialDialogState) -> Unit = { it.hide() },
     buttons: @Composable MaterialDialogButtons.() -> Unit = {},
-    content: @Composable MaterialDialogScope.() -> Unit
+    content: @Composable MaterialDialogScope.() -> Unit,
 ) {
     val dialogScope = remember { MaterialDialogScopeImpl(dialogState, autoDismiss) }
     DisposableEffect(dialogState.showing) {
@@ -248,12 +248,12 @@ fun MaterialDialog(
         if (dialogState.showing) {
             dialogState.dialogBackgroundColor = LocalElevationOverlay.current?.apply(
                 color = backgroundColor,
-                elevation = elevation
+                elevation = elevation,
             ) ?: MaterialTheme.colors.surface
 
             Dialog(
                 properties = properties,
-                onDismissRequest = { onCloseRequest(dialogState) }
+                onDismissRequest = { onCloseRequest(dialogState) },
             ) {
                 Surface(
                     modifier = Modifier
@@ -266,28 +266,28 @@ fun MaterialDialog(
                     shape = shape,
                     color = backgroundColor,
                     border = border,
-                    elevation = elevation
+                    elevation = elevation,
                 ) {
                     Layout(
                         content = {
                             dialogScope.DialogButtonsLayout(
                                 modifier = Modifier.layoutId("buttons"),
-                                content = buttons
+                                content = buttons,
                             )
                             Column(Modifier.layoutId("content")) { content(dialogScope) }
-                        }
+                        },
                     ) { measurables, constraints ->
                         val buttonsHeight =
                             measurables[0].minIntrinsicHeight(constraints.maxWidth)
                         val buttonsPlaceable = measurables[0].measure(
-                            constraints.copy(maxHeight = buttonsHeight, minHeight = 0)
+                            constraints.copy(maxHeight = buttonsHeight, minHeight = 0),
                         )
 
                         val contentPlaceable = measurables[1].measure(
                             constraints.copy(
                                 maxHeight = maxHeightPx - buttonsPlaceable.height,
-                                minHeight = 0
-                            )
+                                minHeight = 0,
+                            ),
                         )
 
                         val height =

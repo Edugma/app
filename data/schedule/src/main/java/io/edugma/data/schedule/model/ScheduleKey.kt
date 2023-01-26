@@ -5,5 +5,5 @@ import kotlinx.datetime.Instant
 
 data class ScheduleKey(
     val source: ScheduleSource,
-    val date: Instant
+    val date: Instant,
 )

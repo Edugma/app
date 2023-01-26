@@ -18,10 +18,10 @@ import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
 class ScheduleMenuViewModel(
-    private val useCase: ScheduleUseCase
+    private val useCase: ScheduleUseCase,
 ) : BaseViewModelFull<ScheduleMenuState, ScheduleMenuMutator, Nothing>(
     ScheduleMenuState(),
-    ::ScheduleMenuMutator
+    ::ScheduleMenuMutator,
 ) {
     init {
         viewModelScope.launch {
@@ -36,7 +36,7 @@ class ScheduleMenuViewModel(
                         ClosestLessons(
                             now.until(it.time.start, ChronoUnit.MINUTES)
                                 .toDuration(DurationUnit.MINUTES),
-                            it
+                            it,
                         )
                     }.filter { now <= it.lessons.time.end }
 
@@ -44,10 +44,8 @@ class ScheduleMenuViewModel(
                     .groupBy { it.timeToStart.isNegative() }
                     .run {
                         getOrDefault(false, emptyList()) to
-                                getOrDefault(true, emptyList())
+                            getOrDefault(true, emptyList())
                     }
-
-
             }
         }
 
@@ -79,7 +77,6 @@ class ScheduleMenuViewModel(
     }
 
     fun onAppWidgetClick() {
-
     }
 
     fun onHistoryClick() {
@@ -90,15 +87,15 @@ class ScheduleMenuViewModel(
 data class ScheduleMenuState(
     val main: MainState = MainState(),
     val source: SourceState = SourceState(),
-    val date: LocalDate = LocalDate.now()
+    val date: LocalDate = LocalDate.now(),
 ) {
     data class MainState(
         val currentLessons: List<ClosestLessons> = emptyList(),
-        val notStartedLessons: List<ClosestLessons> = emptyList()
+        val notStartedLessons: List<ClosestLessons> = emptyList(),
     )
 
     data class SourceState(
-        val selectedSource: ScheduleSourceFull? = null
+        val selectedSource: ScheduleSourceFull? = null,
     )
 }
 
@@ -111,5 +108,5 @@ class ScheduleMenuMutator : BaseMutator<ScheduleMenuState>() {
 
 class ClosestLessons(
     val timeToStart: Duration,
-    val lessons: LessonsByTime
+    val lessons: LessonsByTime,
 )

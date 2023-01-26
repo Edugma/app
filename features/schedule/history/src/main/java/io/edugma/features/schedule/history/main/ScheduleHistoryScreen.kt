@@ -14,10 +14,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.base.core.utils.format
-import io.edugma.features.base.elements.PrimaryTopAppBar
 import io.edugma.features.base.elements.TonalCard
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
@@ -33,7 +33,7 @@ fun ScheduleHistoryScreen(viewModel: ScheduleHistoryViewModel = getViewModel()) 
     ScheduleHistoryContent(
         state = state,
         onBackClick = viewModel::exit,
-        onScheduleClick = viewModel::onScheduleClick
+        onScheduleClick = viewModel::onScheduleClick,
     )
 }
 
@@ -50,23 +50,23 @@ private fun ScheduleHistoryContent(
     Column(
         Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(rememberScrollState()),
     ) {
-        PrimaryTopAppBar(
+        EdTopAppBar(
             title = "История изменений",
-            onBackClick = onBackClick
+            onNavigationClick = onBackClick,
         )
         state.history.forEach { (key, value) ->
             TonalCard(
                 onClick = { onScheduleClick(key) },
                 modifier = Modifier
                     .padding(vertical = 10.dp, horizontal = 16.dp)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
             ) {
                 Column(
                     Modifier
                         .padding(vertical = 10.dp, horizontal = 16.dp)
-                        .fillMaxSize()
+                        .fillMaxSize(),
                 ) {
                     val date = remember(key) {
                         key.toLocalDateTime(TimeZone.currentSystemDefault()).toJavaLocalDateTime()

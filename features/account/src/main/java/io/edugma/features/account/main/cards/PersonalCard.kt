@@ -17,7 +17,7 @@ fun PersonalCard(
     info: String?,
     specialization: String?,
     enabled: Boolean,
-    onScheduleClick: ClickListener
+    onScheduleClick: ClickListener,
 ) {
     TonalCard(
         modifier = Modifier
@@ -26,7 +26,7 @@ fun PersonalCard(
             .fillMaxWidth(0.6f),
         shape = RoundedCornerShape(16.dp),
         enabled = enabled,
-        onClick = onScheduleClick
+        onClick = onScheduleClick,
     ) {
         Column(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
             Text(text = "О вас")
@@ -35,14 +35,14 @@ fun PersonalCard(
                 Text(
                     text = info,
                     style = MaterialTheme3.typography.labelSmall,
-                    color = MaterialTheme3.colorScheme.secondary
+                    color = MaterialTheme3.colorScheme.secondary,
                 )
             }
             specialization?.let {
                 WithContentAlpha(alpha = ContentAlpha.medium) {
                     Text(
                         text = specialization,
-                        style = MaterialTheme3.typography.bodySmall
+                        style = MaterialTheme3.typography.bodySmall,
                     )
                 }
             }

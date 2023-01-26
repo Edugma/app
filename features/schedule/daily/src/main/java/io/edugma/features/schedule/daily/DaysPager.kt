@@ -36,7 +36,7 @@ fun DaysPager(
     weeks: List<WeekUiModel>,
     dayOfWeekPos: Int,
     pagerState: PagerState,
-    onDayClick: Typed1Listener<LocalDate>
+    onDayClick: Typed1Listener<LocalDate>,
 ) {
     HorizontalPager(
         count = weeks.size,
@@ -49,13 +49,13 @@ fun DaysPager(
             override suspend fun ScrollScope.performFling(initialVelocity: Float): Float {
                 return initialVelocity
             }
-        }
+        },
     ) {
         val week by remember(weeks, it) { mutableStateOf(weeks[it]) }
         WeekContent(
             week,
             dayOfWeekPos,
-            onDayClick = onDayClick
+            onDayClick = onDayClick,
         )
     }
 }
@@ -64,7 +64,7 @@ fun DaysPager(
 fun WeekContent(
     week: WeekUiModel,
     dayOfWeekPos: Int,
-    onDayClick: Typed1Listener<LocalDate>
+    onDayClick: Typed1Listener<LocalDate>,
 ) {
     val lazyRowState = rememberLazyListState(dayOfWeekPos)
 
@@ -78,13 +78,13 @@ fun WeekContent(
         modifier = Modifier
             .padding(horizontal = 8.dp)
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceAround
+        horizontalArrangement = Arrangement.SpaceAround,
     ) {
         week.days.forEachIndexed { index, day ->
             DayContent(
                 day,
                 dayOfWeekPos == index,
-                onDayClick = onDayClick
+                onDayClick = onDayClick,
             )
         }
     }
@@ -97,24 +97,25 @@ private val weekFormat = DateTimeFormatter.ofPattern("EEE")
 fun RowScope.DayContent(
     day: DayUiModel,
     isSelected: Boolean,
-    onDayClick: Typed1Listener<LocalDate>
+    onDayClick: Typed1Listener<LocalDate>,
 ) {
     val colorFrom = MaterialTheme3.colorScheme.secondary
 
-    val backgroundColor = if (day.isToday)
+    val backgroundColor = if (day.isToday) {
         MaterialTheme3.colorScheme.secondaryContainer
-    else
+    } else {
         MaterialTheme3.colorScheme.surface
+    }
 
     val borderColor by animateColorAsState(
         if (isSelected) colorFrom else Color.Transparent,
-        tween(250)
+        tween(250),
     )
 
     val border = BorderStroke(1.dp, borderColor)
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.weight(1f)
+        modifier = Modifier.weight(1f),
     ) {
         WithContentAlpha(ContentAlpha.medium) {
             Text(
@@ -122,7 +123,7 @@ fun RowScope.DayContent(
                 style = MaterialTheme.typography.labelSmall,
                 maxLines = 1,
                 overflow = TextOverflow.Clip,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
         }
         Spacer(Modifier.height(3.5.dp))
@@ -133,7 +134,7 @@ fun RowScope.DayContent(
                 .size(39.dp),
             shape = MaterialTheme3.shapes.small,
             border = border,
-            color = backgroundColor
+            color = backgroundColor,
         ) {
             Box(Modifier.padding(start = 3.dp, end = 3.dp).fillMaxSize()) {
                 Text(
@@ -143,7 +144,7 @@ fun RowScope.DayContent(
                     overflow = TextOverflow.Clip,
                     modifier = Modifier
                         .align(Alignment.Center)
-                        .padding(bottom = 1.dp)
+                        .padding(bottom = 1.dp),
                 )
             }
         }
@@ -153,14 +154,14 @@ fun RowScope.DayContent(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .height(14.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 (0 until day.lessonCount).forEach {
                     Box(
                         modifier = Modifier
                             .padding(horizontal = 1.5.dp)
                             .size(4.5.dp)
-                            .background(MaterialTheme.colorScheme.primary, CircleShape)
+                            .background(MaterialTheme.colorScheme.primary, CircleShape),
                     )
                 }
             }
@@ -168,15 +169,15 @@ fun RowScope.DayContent(
             Surface(
                 modifier = Modifier.height(14.dp),
                 color = MaterialTheme.colorScheme.primary,
-                shape = CircleShape
+                shape = CircleShape,
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     Text(
-                        modifier =  Modifier.padding(bottom = 1.dp, start = 5.dp, end = 5.dp),
+                        modifier = Modifier.padding(bottom = 1.dp, start = 5.dp, end = 5.dp),
                         text = day.lessonCount.toString(),
-                        style =  MaterialTheme3.typography.titleSmall,
+                        style = MaterialTheme3.typography.titleSmall,
                         fontSize = 9.0.dp.sp(),
-                        color = MaterialTheme.colorScheme.onPrimary
+                        color = MaterialTheme.colorScheme.onPrimary,
                     )
                 }
             }

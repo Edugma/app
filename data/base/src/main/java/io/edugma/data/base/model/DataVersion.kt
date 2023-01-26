@@ -9,7 +9,7 @@ import kotlin.time.Duration
 @Serializable
 data class DataVersion(
     override val id: String,
-    val dateTime: Instant
+    val dateTime: Instant,
 ) : Metadata
 
 fun DataVersion.isExpired(duration: Duration): Boolean {

@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class LessonSubject(
     val id: String,
-    val title: String
+    val title: String,
 ) : Comparable<LessonSubject> {
     override fun compareTo(other: LessonSubject): Int {
         return title.compareTo(other.title)
@@ -15,7 +15,7 @@ data class LessonSubject(
         fun from(info: LessonSubjectInfo) =
             LessonSubject(
                 id = info.id,
-                title = info.title
+                title = info.title,
             )
     }
 }

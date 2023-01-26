@@ -25,7 +25,7 @@ fun ScheduleMenuScreen(viewModel: ScheduleMenuViewModel = getViewModel()) {
         onScheduleSourceClick = viewModel::onScheduleSourceClick,
         onFreePlaceClick = viewModel::onFreePlaceClick,
         onAppWidgetClick = viewModel::onAppWidgetClick,
-        onHistoryClick = viewModel::onHistoryClick
+        onHistoryClick = viewModel::onHistoryClick,
     )
 }
 
@@ -43,39 +43,39 @@ fun ScheduleMenuContent(
     Column(
         Modifier
             .padding(top = 20.dp, start = 4.dp, end = 4.dp)
-            .fillMaxSize()
+            .fillMaxSize(),
     ) {
         Text(
             text = stringResource(R.string.sch_schedule),
             style = MaterialTheme3.typography.headlineMedium,
-            modifier = Modifier.padding(start = 16.dp)
+            modifier = Modifier.padding(start = 16.dp),
         )
         Spacer(Modifier.height(20.dp))
         Row(
             Modifier
                 .height(90.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             ScheduleSourcesCard(state.source, onScheduleSourceClick)
         }
         Row(
             Modifier
                 .height(150.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             ScheduleCard(
                 state.main,
-                onScheduleClick
+                onScheduleClick,
             )
             CalendarCard(
                 state.date,
-                onScheduleCalendarClick
+                onScheduleCalendarClick,
             )
         }
         Row(
             Modifier
                 .height(100.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             LessonsReviewCard(onLessonsReviewClick)
             FindFreePlaceCard(onFreePlaceClick)
@@ -83,10 +83,10 @@ fun ScheduleMenuContent(
         Row(
             Modifier
                 .height(100.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             ChangeHistoryCard(onHistoryClick)
-            //ScheduleAppWidgetCard(onAppWidgetClick)
+            // ScheduleAppWidgetCard(onAppWidgetClick)
         }
     }
 }

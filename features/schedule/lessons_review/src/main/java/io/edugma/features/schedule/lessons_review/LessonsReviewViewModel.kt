@@ -7,7 +7,7 @@ import io.edugma.features.base.core.mvi.BaseViewModel
 import kotlinx.coroutines.launch
 
 class LessonsReviewViewModel(
-    private val useCase: LessonsReviewUseCase
+    private val useCase: LessonsReviewUseCase,
 ) : BaseViewModel<LessonsReviewState>(LessonsReviewState()) {
 
     init {
@@ -15,7 +15,7 @@ class LessonsReviewViewModel(
             useCase.getLessonsReview().collect {
                 mutateState {
                     state = state.copy(
-                        lessons = it.getOrDefault(emptyList())
+                        lessons = it.getOrDefault(emptyList()),
                     )
                 }
             }
@@ -24,5 +24,5 @@ class LessonsReviewViewModel(
 }
 
 data class LessonsReviewState(
-    val lessons: List<LessonTimesReview> = emptyList()
+    val lessons: List<LessonTimesReview> = emptyList(),
 )

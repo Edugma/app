@@ -4,32 +4,32 @@ import io.edugma.features.base.core.navigation.core.Screen
 
 object ScheduleInfoScreens {
     class LessonInfo(
-        val lessonInfo: io.edugma.domain.schedule.model.lesson.LessonInfo
+        val lessonInfo: io.edugma.domain.schedule.model.lesson.LessonInfo,
     ) : Screen(
-        LessonInfo::lessonInfo.name to lessonInfo.serialized()
+        LessonInfo::lessonInfo.name to lessonInfo.serialized(),
     )
 
     class SubjectInfo(
-        val id: String
+        val id: String,
     ) : Screen(
-        SubjectInfo::id.name to id
+        SubjectInfo::id.name to id,
     )
 
     class TeacherInfo(
-        val id: String
+        val id: String,
     ) : Screen(
-        TeacherInfo::id.name to id
+        TeacherInfo::id.name to id,
     )
 
     class GroupInfo(
-        val id: String
+        val id: String,
     ) : Screen(
-        GroupInfo::id.name to id
+        GroupInfo::id.name to id,
     )
 
     class PlaceInfo(
-        val id: String
+        val id: String,
     ) : Screen(
-        PlaceInfo::id.name to id
+        PlaceInfo::id.name to id,
     )
 }

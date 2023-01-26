@@ -7,14 +7,19 @@ import kotlinx.serialization.Serializable
 enum class ScheduleSources {
     @SerialName("group")
     Group,
+
     @SerialName("teacher")
     Teacher,
+
     @SerialName("student")
     Student,
+
     @SerialName("place")
     Place,
+
     @SerialName("subject")
     Subject,
+
     @SerialName("complex")
-    Complex
+    Complex,
 }

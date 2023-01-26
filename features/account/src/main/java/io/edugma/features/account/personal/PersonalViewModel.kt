@@ -2,16 +2,12 @@ package io.edugma.features.account.personal
 
 import androidx.lifecycle.viewModelScope
 import io.edugma.domain.account.model.Application
-import io.edugma.domain.account.model.Order
 import io.edugma.domain.account.model.Personal
 import io.edugma.domain.account.repository.ApplicationsRepository
 import io.edugma.domain.account.repository.PersonalRepository
-import io.edugma.features.base.core.mvi.BaseMutator
-import io.edugma.domain.base.utils.execute
 import io.edugma.domain.base.utils.onFailure
 import io.edugma.domain.base.utils.onSuccess
 import io.edugma.features.base.core.mvi.BaseViewModel
-import io.edugma.features.base.core.mvi.BaseViewModelFull
 import io.edugma.features.base.core.utils.isNotNull
 import io.edugma.features.base.core.utils.isNull
 import kotlinx.coroutines.flow.*
@@ -19,7 +15,7 @@ import kotlinx.coroutines.launch
 
 class PersonalViewModel(
     private val repository: PersonalRepository,
-    private val applicationsRepository: ApplicationsRepository
+    private val applicationsRepository: ApplicationsRepository,
 ) : BaseViewModel<PersonalState>(PersonalState()) {
 
     init {
@@ -71,8 +67,10 @@ class PersonalViewModel(
         mutateState {
             state = state.copy(selectedColumn = column)
             if (column == Columns.Applications &&
-                (state.applications.isNull() || state.applicationsFromCache == true))
+                (state.applications.isNull() || state.applicationsFromCache == true)
+            ) {
                 loadApplications()
+            }
         }
     }
 
@@ -95,7 +93,7 @@ class PersonalViewModel(
         mutateState {
             state = state.copy(
                 isLoading = loading,
-                isError = false
+                isError = false,
             )
         }
     }
@@ -128,8 +126,8 @@ data class PersonalState(
     val isError: Boolean = false,
 ) {
     val isRefreshing = personal.isNotNull() && isLoading && !isError
-    val personalPlaceholders =  personal.isNull() && isLoading && !isError
-    val applicationsPlaceholders =  applications.isNull() && isLoading && !isError
+    val personalPlaceholders = personal.isNull() && isLoading && !isError
+    val applicationsPlaceholders = applications.isNull() && isLoading && !isError
 }
 
 enum class Columns(val label: String) {

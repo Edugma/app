@@ -19,7 +19,7 @@ fun LazyListScope.LessonPlace(
     lessonsByTime: LessonsByTime,
     lessonDisplaySettings: LessonDisplaySettings,
     isLoading: Boolean = false,
-    onLessonClick: Typed2Listener<Lesson, LessonTime>
+    onLessonClick: Typed2Listener<Lesson, LessonTime>,
 ) {
     item {
         LessonTimeContent(lessonsByTime.time, isLoading)
@@ -29,7 +29,7 @@ fun LazyListScope.LessonPlace(
             lesson = lesson,
             displaySettings = lessonDisplaySettings,
             isLoading = isLoading,
-            onLessonClick = { onLessonClick(it, lessonsByTime.time) }
+            onLessonClick = { onLessonClick(it, lessonsByTime.time) },
         )
     }
 }
@@ -41,6 +41,6 @@ private fun LessonTimeContent(lessonTime: LessonTime, isLoading: Boolean = false
         style = MaterialTheme.typography.titleSmall,
         modifier = Modifier
             .padding(start = 34.dp, end = 34.dp, top = 4.dp, bottom = 2.dp)
-            .placeholder(visible = isLoading)
+            .placeholder(visible = isLoading),
     )
 }

@@ -8,5 +8,5 @@ import java.time.LocalDate
 data class PlaceDailyOccupancy(
     @Serializable(with = LocalDateConverter::class)
     val date: LocalDate,
-    val values: List<PlaceOccupancyTimeRange>
+    val values: List<PlaceOccupancyTimeRange>,
 )

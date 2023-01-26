@@ -13,13 +13,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import io.edugma.features.base.elements.dialogs.core.MaterialDialog
-import io.edugma.features.base.elements.dialogs.date.datepicker
-import io.edugma.features.base.elements.dialogs.time.timepicker
-import io.edugma.features.base.elements.dialogs.core.rememberMaterialDialogState
+import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.domain.schedule.model.place.description
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.*
+import io.edugma.features.base.elements.dialogs.core.MaterialDialog
+import io.edugma.features.base.elements.dialogs.core.rememberMaterialDialogState
+import io.edugma.features.base.elements.dialogs.date.datepicker
+import io.edugma.features.base.elements.dialogs.time.timepicker
 import org.koin.androidx.compose.getViewModel
 import java.time.LocalDate
 import java.time.LocalTime
@@ -37,7 +38,7 @@ fun FreePlaceScreen(viewModel: FreePlaceViewModel = getViewModel()) {
         viewModel::onTimeToSelect,
         viewModel::onEnterFilterQuery,
         viewModel::onFindFreePlaces,
-        onShowFilters = viewModel::onShowFilters
+        onShowFilters = viewModel::onShowFilters,
     )
 }
 
@@ -54,20 +55,20 @@ fun FreePlaceContent(
     onTimeToSelect: (LocalTime) -> Unit,
     onEnterFilterQuery: (String) -> Unit,
     onFindFreePlaces: ClickListener,
-    onShowFilters: ClickListener
+    onShowFilters: ClickListener,
 ) {
     Box(
         Modifier
-            .fillMaxSize()
+            .fillMaxSize(),
     ) {
         val dialogDatePickerState = rememberMaterialDialogState()
         val dialogTimePickerFromState = rememberMaterialDialogState()
         val dialogTimePickerToState = rememberMaterialDialogState()
 
         Column(Modifier.fillMaxSize()) {
-            PrimaryTopAppBar(
+            EdTopAppBar(
                 title = stringResource(R.string.schedule_fre_pla_find_free_place),
-                onBackClick = onBackClick
+                onNavigationClick = onBackClick,
             )
             Column(Modifier.padding(start = 8.dp, end = 8.dp)) {
                 TonalCard(Modifier.fillMaxWidth()) {
@@ -75,8 +76,11 @@ fun FreePlaceContent(
                         Modifier
                             .fillMaxWidth()
                             .padding(
-                                start = 16.dp, end = 16.dp, top = 16.dp, bottom = 16.dp
-                            )
+                                start = 16.dp,
+                                end = 16.dp,
+                                top = 16.dp,
+                                bottom = 16.dp,
+                            ),
                     ) {
                         Text(
                             text = "Фильтры",
@@ -87,11 +91,11 @@ fun FreePlaceContent(
                         if (state.showFilters) {
                             Row(
                                 Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically
+                                verticalAlignment = Alignment.CenterVertically,
                             ) {
                                 Text(
                                     text = "Дата",
-                                    style = MaterialTheme3.typography.titleMedium
+                                    style = MaterialTheme3.typography.titleMedium,
                                 )
                                 SpacerFill()
                                 PrimaryButton(onClick = { dialogDatePickerState.show() }) {
@@ -101,11 +105,11 @@ fun FreePlaceContent(
                             SpacerHeight(4.dp)
                             Row(
                                 Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically
+                                verticalAlignment = Alignment.CenterVertically,
                             ) {
                                 Text(
                                     text = "Начальное время",
-                                    style = MaterialTheme3.typography.titleMedium
+                                    style = MaterialTheme3.typography.titleMedium,
                                 )
                                 SpacerFill()
                                 PrimaryButton(onClick = { dialogTimePickerFromState.show() }) {
@@ -115,11 +119,11 @@ fun FreePlaceContent(
                             SpacerHeight(4.dp)
                             Row(
                                 Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically
+                                verticalAlignment = Alignment.CenterVertically,
                             ) {
                                 Text(
                                     text = "Конечное время",
-                                    style = MaterialTheme3.typography.titleMedium
+                                    style = MaterialTheme3.typography.titleMedium,
                                 )
                                 SpacerFill()
                                 PrimaryButton(onClick = { dialogTimePickerToState.show() }) {
@@ -133,30 +137,31 @@ fun FreePlaceContent(
                                 modifier = Modifier.fillMaxWidth(),
                                 placeholder = {
                                     Text(text = "Введите фильтр")
-                                }
+                                },
                             )
                             LazyColumn(
                                 Modifier
                                     .fillMaxWidth()
-                                    .height(100.dp)
+                                    .height(100.dp),
                             ) {
                                 items(state.filteredPlaces) { item ->
                                     var checked by remember { mutableStateOf(false) }
                                     Row(
                                         Modifier
                                             .fillMaxWidth()
-                                            .clickable { checked = !checked }) {
+                                            .clickable { checked = !checked },
+                                    ) {
                                         Text(
                                             text = item.title,
                                             modifier = Modifier
                                                 .weight(weight = 1f, fill = true)
-                                                .padding(horizontal = 10.dp, vertical = 10.dp)
+                                                .padding(horizontal = 10.dp, vertical = 10.dp),
 
                                         )
 
                                         Checkbox(
                                             checked = checked,
-                                            onCheckedChange = { checked = it }
+                                            onCheckedChange = { checked = it },
                                         )
                                     }
                                 }
@@ -172,28 +177,29 @@ fun FreePlaceContent(
                     state.freePlaces.toList().sortedBy { it.first.title }
                 }
                 LazyColumn(
-                    Modifier.fillMaxSize()
+                    Modifier.fillMaxSize(),
                 ) {
                     items(freePlaces) { item ->
                         var checked by remember { mutableStateOf(false) }
                         Column(
                             Modifier
                                 .fillMaxWidth()
-                                .clickable { checked = !checked }) {
+                                .clickable { checked = !checked },
+                        ) {
                             Text(
                                 text = item.first.title,
-                                style = MaterialTheme3.typography.titleSmall
+                                style = MaterialTheme3.typography.titleSmall,
                             )
                             MediumAlpha {
                                 Text(
                                     text = item.first.description,
-                                    style = MaterialTheme3.typography.titleSmall
+                                    style = MaterialTheme3.typography.titleSmall,
                                 )
                             }
                             WithContentAlpha(alpha = ContentAlpha.medium) {
                                 Text(
                                     text = "Занятий в это время: " + item.second.toString(),
-                                    style = MaterialTheme3.typography.bodySmall
+                                    style = MaterialTheme3.typography.bodySmall,
                                 )
                             }
                             Spacer(Modifier.height(10.dp))
@@ -203,14 +209,12 @@ fun FreePlaceContent(
             }
         }
 
-
-
         MaterialDialog(
             dialogState = dialogDatePickerState,
             buttons = {
                 positiveButton("Ок")
                 negativeButton("Отмена")
-            }
+            },
         ) {
             datepicker(title = "Выберите день") { date ->
                 onDateSelect(date)
@@ -222,7 +226,7 @@ fun FreePlaceContent(
             buttons = {
                 positiveButton("Ок")
                 negativeButton("Отмена")
-            }
+            },
         ) {
             timepicker(title = "Выберите начальное время", is24HourClock = true) { time ->
                 onTimeFromSelect(time)
@@ -234,7 +238,7 @@ fun FreePlaceContent(
             buttons = {
                 positiveButton("Ок")
                 negativeButton("Отмена")
-            }
+            },
         ) {
             timepicker(title = "Выбрать конечное время", is24HourClock = true) { time ->
                 onTimeToSelect(time)

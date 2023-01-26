@@ -12,7 +12,7 @@ import retrofit2.http.Path
 interface FreePlacesService {
     @POST("/schedule/places/free")
     fun findFreePlaces(
-        @Body filters: PlaceFilters
+        @Body filters: PlaceFilters,
     ): Flow<Result<Map<PlaceInfo, Int>>>
 
     @GET("/schedule/places/occupancy/{placeId}")

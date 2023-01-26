@@ -13,7 +13,6 @@ import io.edugma.data.nodes.model.NodeContractDao
 import io.edugma.domain.base.utils.Lce
 import io.edugma.domain.nodes.model.Node
 import io.edugma.domain.nodes.model.NodeContract
-import io.edugma.domain.nodes.model.NodeEndpoints
 import io.edugma.domain.nodes.repository.NodesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -22,7 +21,7 @@ import kotlin.time.Duration.Companion.days
 class NodesRepositoryImpl(
     private val service: NodesService,
     private val cachedDS: CacheVersionLocalDS,
-    private val preferencesDS: PreferencesDS
+    private val preferencesDS: PreferencesDS,
 ) : NodesRepository {
     private val nodeStore = StoreImpl<String, NodeContract>(
         fetcher = { key -> service.getNodeContract(key) },
@@ -33,7 +32,7 @@ class NodesRepositoryImpl(
         writer = { key, data ->
             flowOf(cachedDS.save(NodeContractDao.from(key, data), CacheConst.Schedule))
         },
-        expireAt = 1.days
+        expireAt = 1.days,
     )
 
     override fun selectNode(url: String) = flow {

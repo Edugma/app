@@ -3,12 +3,9 @@ package io.edugma.features.account.classmates
 import androidx.lifecycle.viewModelScope
 import io.edugma.domain.account.model.student.Student
 import io.edugma.domain.account.repository.PeoplesRepository
-import io.edugma.features.base.core.mvi.BaseMutator
-import io.edugma.domain.base.utils.execute
 import io.edugma.domain.base.utils.onFailure
 import io.edugma.domain.base.utils.onSuccess
 import io.edugma.features.base.core.mvi.BaseViewModel
-import io.edugma.features.base.core.mvi.BaseViewModelFull
 import io.edugma.features.base.core.utils.isNotNull
 import io.edugma.features.base.core.utils.isNull
 import kotlinx.coroutines.flow.collect
@@ -74,7 +71,6 @@ class ClassmatesViewModel(private val repository: PeoplesRepository) :
             state = state.copy(selectedStudent = student)
         }
     }
-
 }
 
 data class ClassmatesState(

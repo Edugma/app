@@ -33,14 +33,15 @@ fun ClassmatesScreen(viewModel: ClassmatesViewModel = getViewModel()) {
     ClassmatesContent(
         state,
         retryListener = viewModel::updateClassmates,
-        backListener = viewModel::exit
+        backListener = viewModel::exit,
     )
 }
 
 @Composable
-fun ClassmatesContent(state: ClassmatesState,
-                      retryListener: ClickListener,
-                      backListener: ClickListener,
+fun ClassmatesContent(
+    state: ClassmatesState,
+    retryListener: ClickListener,
+    backListener: ClickListener,
 ) {
     SwipeRefresh(state = rememberSwipeRefreshState(isRefreshing = state.isRefreshing), onRefresh = retryListener) {
         Column {
@@ -58,7 +59,7 @@ fun ClassmatesContent(state: ClassmatesState,
                     else -> {
                         items(
                             count = state.data?.size ?: 0,
-                            key = { state.data?.get(it)?.id ?: it }
+                            key = { state.data?.get(it)?.id ?: it },
                         ) {
                             Student(student = state.data!![it]) {}
                         }
@@ -81,40 +82,45 @@ fun AppBar(
             modifier = Modifier.constrainAs(content) {
                 linkTo(parent.start, filter.start)
                 width = Dimension.fillToConstraints
-            }) {
+            },
+        ) {
             IconButton(onClick = backListener) {
                 Icon(
                     Icons.Filled.ArrowBack,
-                    contentDescription = "Назад"
+                    contentDescription = "Назад",
                 )
             }
             SpacerWidth(width = 15.dp)
             Text(
                 text = "Однокурсники",
                 style = MaterialTheme3.typography.titleLarge,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         }
-        Row(modifier = Modifier.constrainAs(filter) {
-            linkTo(parent.top, parent.bottom)
-            end.linkTo(parent.end)
-        }) {
+        Row(
+            modifier = Modifier.constrainAs(filter) {
+                linkTo(parent.top, parent.bottom)
+                end.linkTo(parent.end)
+            },
+        ) {
             val students = state.data
-                ?.mapIndexed { index, student -> "${index + 1}. ${student.getFullName()}"}
+                ?.mapIndexed { index, student -> "${index + 1}. ${student.getFullName()}" }
             if (students?.isNotEmpty() == true) {
                 val context = LocalContext.current
-                IconButton(onClick = {
-                    Intent().apply {
-                        action = Intent.ACTION_SEND
-                        putExtra(Intent.EXTRA_TEXT, students.joinToString("\n"))
-                        type = "text/plain"
-                    }
-                        .let { Intent.createChooser(it, null) }
-                        .also(context::startActivity) }
+                IconButton(
+                    onClick = {
+                        Intent().apply {
+                            action = Intent.ACTION_SEND
+                            putExtra(Intent.EXTRA_TEXT, students.joinToString("\n"))
+                            type = "text/plain"
+                        }
+                            .let { Intent.createChooser(it, null) }
+                            .also(context::startActivity)
+                    },
                 ) {
                     Icon(
                         Icons.Default.Share,
-                        contentDescription = "Поделиться"
+                        contentDescription = "Поделиться",
                     )
                 }
             }

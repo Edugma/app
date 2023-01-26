@@ -18,14 +18,14 @@ interface AccountService {
     suspend fun getStudents(
         @Path("name") name: String?,
         @Path("page") page: Int,
-        @Path("pageSize") pageSize: Int
+        @Path("pageSize") pageSize: Int,
     ): PagingDTO<Student>
 
     @GET("/peoples/teachers/{pageSize}/{page}/{name}")
     suspend fun getTeachers(
         @Path("name") name: String?,
         @Path("page") page: Int,
-        @Path("pageSize") pageSize: Int
+        @Path("pageSize") pageSize: Int,
     ): PagingDTO<Teacher>
 
     @GET("/applications")
@@ -39,7 +39,7 @@ interface AccountService {
 
     @GET("/performance/semesters/{semester}")
     fun getMarks(
-        @Path("semester") semester: String
+        @Path("semester") semester: String,
     ): Flow<Result<List<Performance>>>
 
     @GET("/performance/courses")
@@ -53,5 +53,4 @@ interface AccountService {
 
     @GET("/payments/types/")
     fun getPaymentsTypes(): Flow<Result<List<PaymentType>>>
-
 }

@@ -12,18 +12,18 @@ import kotlinx.coroutines.flow.flowOn
 
 class PeoplesRepositoryImpl(
     private val api: AccountService,
-    private val localStore: PreferencesDS
-): PeoplesRepository {
+    private val localStore: PreferencesDS,
+) : PeoplesRepository {
     override suspend fun getTeachers(
         name: String,
         page: Int,
-        pageSize: Int
+        pageSize: Int,
     ) = api.getTeachers(name, page, pageSize)
 
     override suspend fun getStudents(
         name: String,
         page: Int,
-        pageSize: Int
+        pageSize: Int,
     ) = api.getStudents(name, page, pageSize)
 
     override fun getClassmates() =
@@ -37,5 +37,4 @@ class PeoplesRepositoryImpl(
     override suspend fun loadClassmates(): List<Student>? {
         return localStore.getJsonLazy(ClassmatesKey)
     }
-
 }

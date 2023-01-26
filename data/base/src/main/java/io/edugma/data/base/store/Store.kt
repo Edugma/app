@@ -14,13 +14,13 @@ interface Store<Key, Data> {
             fetcher: Store<Key, Data>.(key: Key) -> Flow<Result<Data>>,
             reader: Store<Key, Data>.(key: Key) -> Flow<Cached<Data?>>,
             writer: Store<Key, Data>.(key: Key, data: Data) -> Flow<Result<Unit>>,
-            expireAt: Duration
+            expireAt: Duration,
         ): Store<Key, Data> {
             return StoreImpl(
                 fetcher = fetcher,
                 reader = reader,
                 writer = writer,
-                expireAt = expireAt
+                expireAt = expireAt,
             )
         }
     }

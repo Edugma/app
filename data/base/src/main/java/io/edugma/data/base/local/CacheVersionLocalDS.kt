@@ -10,7 +10,7 @@ import kotlin.time.Duration
 
 class CacheVersionLocalDS(
     val cache: CacheLocalDS,
-    val version: DataVersionLocalDS
+    val version: DataVersionLocalDS,
 ) {
     val prefix = "__cache__"
 

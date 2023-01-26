@@ -9,28 +9,28 @@ import io.edugma.core.designSystem.theme.EdTheme
 
 @Immutable
 data class EdLoaderStyle(
-    val color: Color
+    val color: Color,
 ) {
     companion object {
         val primary
             @Composable
             @ReadOnlyComposable
             get() = EdLoaderStyle(
-                color = EdTheme.colorScheme.primary
+                color = EdTheme.colorScheme.primary,
             )
 
         val secondary
             @Composable
             @ReadOnlyComposable
             get() = EdLoaderStyle(
-                color = EdTheme.colorScheme.secondary
+                color = EdTheme.colorScheme.secondary,
             )
 
         val content
             @Composable
             @ReadOnlyComposable
             get() = EdLoaderStyle(
-                color = LocalContentColor.current
+                color = LocalContentColor.current,
             )
     }
 }

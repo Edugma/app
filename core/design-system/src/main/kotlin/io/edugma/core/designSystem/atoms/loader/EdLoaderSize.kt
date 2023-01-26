@@ -3,10 +3,8 @@ package io.edugma.core.designSystem.atoms.loader
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.ReadOnlyComposable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.edugma.core.designSystem.theme.EdTheme
 
 @Immutable
 data class EdLoaderSize(

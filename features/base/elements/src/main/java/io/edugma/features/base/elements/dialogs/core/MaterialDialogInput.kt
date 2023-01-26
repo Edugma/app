@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.sp
 
 enum class TextFieldStyle {
     Filled,
-    Outlined
+    Outlined,
 }
 
 /**
@@ -77,7 +77,7 @@ fun MaterialDialogScope.input(
     focusRequester: FocusRequester = FocusRequester.Default,
     focusOnShow: Boolean = false,
     isTextValid: (String) -> Boolean = { true },
-    onInput: (String) -> Unit = {}
+    onInput: (String) -> Unit = {},
 
 ) {
     var text by remember { mutableStateOf(prefill) }
@@ -117,7 +117,7 @@ fun MaterialDialogScope.input(
             maxLines = maxLines,
             interactionSource = interactionSource,
             colors = colors,
-            style = textFieldStyle
+            style = textFieldStyle,
         )
 
         if (!valid) {
@@ -127,7 +127,7 @@ fun MaterialDialogScope.input(
                 color = MaterialTheme.colors.error,
                 modifier = Modifier
                     .align(Alignment.End)
-                    .testTag("dialog_input_error")
+                    .testTag("dialog_input_error"),
             )
         }
     }
@@ -160,7 +160,7 @@ private fun TextFieldWithStyle(
     maxLines: Int = Int.MAX_VALUE,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     colors: TextFieldColors = TextFieldDefaults.textFieldColors(),
-    style: TextFieldStyle = TextFieldStyle.Filled
+    style: TextFieldStyle = TextFieldStyle.Filled,
 ) {
     when (style) {
         TextFieldStyle.Filled -> {
@@ -182,7 +182,7 @@ private fun TextFieldWithStyle(
                 singleLine = singleLine,
                 maxLines = maxLines,
                 interactionSource = interactionSource,
-                colors = colors
+                colors = colors,
             )
         }
 
@@ -205,7 +205,7 @@ private fun TextFieldWithStyle(
                 singleLine = singleLine,
                 maxLines = maxLines,
                 interactionSource = interactionSource,
-                colors = colors
+                colors = colors,
             )
         }
     }

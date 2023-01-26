@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
 class TeacherInfoViewModel(
-    private val repository: ScheduleInfoRepository
+    private val repository: ScheduleInfoRepository,
 ) : BaseViewModel<TeacherInfoState>(TeacherInfoState()) {
     init {
         viewModelScope.launch {
@@ -26,12 +26,11 @@ class TeacherInfoViewModel(
                                 teacherInfo = it,
                                 scheduleSource = ScheduleSource(
                                     type = ScheduleSources.Teacher,
-                                    key = it.id
-                                )
+                                    key = it.id,
+                                ),
                             )
                         }
                     }.onFailure {
-
                     }.collect()
             }
         }
@@ -55,9 +54,9 @@ data class TeacherInfoState(
     val teacherInfo: TeacherInfo? = null,
     val tabs: List<TeacherInfoTabs> = listOf(TeacherInfoTabs.Schedule),
     val selectedTab: TeacherInfoTabs = TeacherInfoTabs.Schedule,
-    val scheduleSource: ScheduleSource? = null
+    val scheduleSource: ScheduleSource? = null,
 )
 
 enum class TeacherInfoTabs {
-    Schedule
+    Schedule,
 }

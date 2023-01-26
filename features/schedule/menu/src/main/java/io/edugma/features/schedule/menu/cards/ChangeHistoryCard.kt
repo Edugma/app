@@ -12,11 +12,10 @@ import androidx.compose.ui.unit.dp
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.elements.TonalCard
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChangeHistoryCard(
-    onLessonsReviewClick: ClickListener
+    onLessonsReviewClick: ClickListener,
 ) {
     TonalCard(
         modifier = Modifier

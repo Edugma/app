@@ -32,13 +32,11 @@ import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.FluentIcons
 import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.base.core.utils.Typed1Listener
-import io.edugma.features.base.elements.PrimaryTopAppBar
 import io.edugma.features.base.elements.SpacerHeight
 import io.edugma.features.base.elements.TextIcon
 import io.edugma.features.base.elements.TonalCard
 import io.edugma.features.schedule.elements.vertical_schedule.VerticalScheduleComponent
 import io.edugma.features.schedule.schedule_info.R
-import io.edugma.features.schedule.schedule_info.group_info.GroupInfoTabs
 import io.edugma.features.schedule.schedule_info.group_info.InfoScaffold
 import org.koin.androidx.compose.getViewModel
 import java.time.format.DateTimeFormatter
@@ -66,7 +64,7 @@ private val dateFormat = DateTimeFormatter.ofPattern("d MMMM yyyy")
 private fun PlaceInfoContent(
     state: PlaceInfoState,
     onBackClick: ClickListener,
-    onTabSelected: Typed1Listener<PlaceInfoTabs>
+    onTabSelected: Typed1Listener<PlaceInfoTabs>,
 ) {
     InfoScaffold(
         title = state.placeInfo?.title ?: "",
@@ -75,7 +73,7 @@ private fun PlaceInfoContent(
             state.placeInfo?.let { groupInfo ->
                 TextIcon(
                     text = groupInfo.description,
-                    painter = painterResource(FluentIcons.ic_fluent_text_description_20_regular)
+                    painter = painterResource(FluentIcons.ic_fluent_text_description_20_regular),
                 )
 //                TextIcon(
 //                    text = "${groupInfo.course}-й курс",
@@ -93,7 +91,7 @@ private fun PlaceInfoContent(
                     TonalCard(
                         onClick = { onTabSelected(it) },
                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 5.dp),
-                        shape = MaterialTheme3.shapes.small
+                        shape = MaterialTheme3.shapes.small,
                     ) {
                         val text = when (it) {
                             PlaceInfoTabs.Occupancy -> "Занятость"
@@ -103,7 +101,7 @@ private fun PlaceInfoContent(
 
                         Text(
                             text = text,
-                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
                         )
                     }
                 }
@@ -114,25 +112,25 @@ private fun PlaceInfoContent(
                 PlaceInfoTabs.Schedule -> {
                     state.scheduleSource?.let {
                         VerticalScheduleComponent(
-                            scheduleSource = state.scheduleSource
+                            scheduleSource = state.scheduleSource,
                         )
                     }
                 }
-                else  -> { }
+                else -> { }
 //                GroupInfoTabs.Students -> { }
             }
-        }
+        },
     )
 }
 
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun OccupancyTab(
-    state: PlaceInfoState
+    state: PlaceInfoState,
 ) {
     HorizontalPager(
         count = state.placeOccupancy.size,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         val currentDay = state.placeOccupancy[it]
         Column(Modifier.fillMaxSize()) {
@@ -141,13 +139,13 @@ private fun OccupancyTab(
             LazyColumn(Modifier.fillMaxWidth()) {
                 items(currentDay.values) {
                     Card(
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                     ) {
                         val time = it.timeFrom.format(timeFormat) +
-                                "-" + it.timeTo.format(timeFormat)
+                            "-" + it.timeTo.format(timeFormat)
                         Text(
                             text = time,
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                         )
                     }
                 }
@@ -161,14 +159,14 @@ private fun PlaceBuilding(place: PlaceInfo.Building) {
     Column(
         Modifier
             .padding(start = 16.dp, end = 16.dp)
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         Text(text = place.title)
         if (place.street != null) {
             SpacerHeight(8.dp)
             TextIcon(
                 text = place.street!!,
-                painter = painterResource(FluentIcons.ic_fluent_location_20_regular)
+                painter = painterResource(FluentIcons.ic_fluent_location_20_regular),
             )
         }
         var resStr = ""
@@ -191,7 +189,7 @@ private fun PlaceBuilding(place: PlaceInfo.Building) {
             SpacerHeight(8.dp)
             TextIcon(
                 text = resStr,
-                painter = painterResource(FluentIcons.ic_fluent_building_20_regular)
+                painter = painterResource(FluentIcons.ic_fluent_building_20_regular),
             )
         }
         if (place.description != null) {
@@ -199,11 +197,11 @@ private fun PlaceBuilding(place: PlaceInfo.Building) {
             val description = place.description!!
             TextIcon(
                 text = stringResource(R.string.schedule_sch_inf_description),
-                painter = painterResource(FluentIcons.ic_fluent_text_description_20_regular)
+                painter = painterResource(FluentIcons.ic_fluent_text_description_20_regular),
             )
             SpacerHeight(4.dp)
             Text(
-                text = description
+                text = description,
             )
         }
     }
@@ -227,7 +225,7 @@ private fun PlaceOnline(place: PlaceInfo.Online) {
                 text = annotatedString,
                 onClick = {
                     uriHandler.openUri(place.url!!)
-                }
+                },
             )
         }
         if (place.description != null) {
@@ -235,11 +233,11 @@ private fun PlaceOnline(place: PlaceInfo.Online) {
             val description = place.description!!
             TextIcon(
                 text = stringResource(R.string.schedule_sch_inf_description),
-                painter = painterResource(FluentIcons.ic_fluent_text_description_20_regular)
+                painter = painterResource(FluentIcons.ic_fluent_text_description_20_regular),
             )
             SpacerHeight(4.dp)
             Text(
-                text = description
+                text = description,
             )
         }
     }
@@ -254,11 +252,11 @@ private fun PlaceOther(place: PlaceInfo.Other) {
             val description = place.description!!
             TextIcon(
                 text = stringResource(R.string.schedule_sch_inf_description),
-                painter = painterResource(FluentIcons.ic_fluent_text_description_20_regular)
+                painter = painterResource(FluentIcons.ic_fluent_text_description_20_regular),
             )
             SpacerHeight(4.dp)
             Text(
-                text = description
+                text = description,
             )
         }
     }
@@ -273,11 +271,11 @@ private fun PlaceUnclassified(place: PlaceInfo.Unclassified) {
             val description = place.description!!
             TextIcon(
                 text = stringResource(R.string.schedule_sch_inf_description),
-                painter = painterResource(FluentIcons.ic_fluent_text_description_20_regular)
+                painter = painterResource(FluentIcons.ic_fluent_text_description_20_regular),
             )
             SpacerHeight(4.dp)
             Text(
-                text = description
+                text = description,
             )
         }
     }

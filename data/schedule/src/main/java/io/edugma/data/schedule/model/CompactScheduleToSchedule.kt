@@ -24,7 +24,7 @@ fun CompactSchedule.toModel(): List<ScheduleDay> {
     val lessons: List<LessonDateTimes> = this.lessons.map {
         LessonDateTimes(
             lesson = it.lesson.toModel(info),
-            time = it.times
+            time = it.times,
         )
     }
     val (dateFrom, dateTo) = getLessonDateRange(lessons)
@@ -32,14 +32,14 @@ fun CompactSchedule.toModel(): List<ScheduleDay> {
     return buildSchedule(
         lessons = lessons,
         dateFrom = dateFrom,
-        dateTo = dateTo
+        dateTo = dateTo,
     )
 }
 
 private fun buildSchedule(
     lessons: List<LessonDateTimes>,
     dateFrom: LocalDate,
-    dateTo: LocalDate
+    dateTo: LocalDate,
 ): List<ScheduleDay> {
     val resMap: MutableMap<LocalDate, MutableMap<LessonTime, MutableList<Lesson>>> = TreeMap()
 
@@ -61,19 +61,18 @@ private fun buildSchedule(
         val l1 = value.map { (key2, value2) ->
             LessonsByTime(
                 time = key2,
-                value2
+                value2,
             )
         }
 
         ScheduleDay(
             date = key,
-            lessons = l1
+            lessons = l1,
         )
     }
 
     return lessons
 }
-
 
 private fun getLessonDateRange(lessons: List<LessonDateTimes>): Pair<LocalDate, LocalDate> {
     var minDate = LocalDate.MAX
@@ -152,14 +151,14 @@ fun CompactLessonFeatures.toModel(info: ScheduleInfo): Lesson {
         subject = info.subjectsInfo.first { it.id == subjectId }.let {
             LessonSubject(
                 id = it.id,
-                title = it.title
+                title = it.title,
             )
         },
         type = info.typesInfo.first { it.id == typeId }.let {
             LessonType(
                 id = it.id,
                 title = it.title,
-                isImportant = it.isImportant
+                isImportant = it.isImportant,
             )
         },
         teachers = teachersId.map { id ->
@@ -167,7 +166,7 @@ fun CompactLessonFeatures.toModel(info: ScheduleInfo): Lesson {
             Teacher(
                 id = temp.id,
                 name = temp.name,
-                description = temp.description
+                description = temp.description,
             )
         },
         groups = groupsId.map { id ->
@@ -175,7 +174,7 @@ fun CompactLessonFeatures.toModel(info: ScheduleInfo): Lesson {
             Group(
                 id = temp.id,
                 title = temp.title,
-                description = temp.description
+                description = temp.description,
             )
         },
         places = placesId.map { id ->
@@ -184,7 +183,7 @@ fun CompactLessonFeatures.toModel(info: ScheduleInfo): Lesson {
                 id = temp.id,
                 title = temp.title,
                 type = temp.type,
-                description = temp.description
+                description = temp.description,
             )
         },
     )
@@ -192,5 +191,5 @@ fun CompactLessonFeatures.toModel(info: ScheduleInfo): Lesson {
 
 data class LocalLessonDateTime(
     val date: LocalDate,
-    val time: LessonTime
+    val time: LessonTime,
 )

@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.Instant
 
 class ScheduleHistoryViewModel(
-    private val useCase: ScheduleHistoryUseCase
+    private val useCase: ScheduleHistoryUseCase,
 ) : BaseViewModel<ScheduleHistoryState>(ScheduleHistoryState()) {
     init {
         viewModelScope.launch {
@@ -27,12 +27,12 @@ class ScheduleHistoryViewModel(
         router.navigateTo(
             ScheduleHistoryScreens.Changes(
                 first = dateTime,
-                second = dateTime
-            )
+                second = dateTime,
+            ),
         )
     }
 }
 
 data class ScheduleHistoryState(
-    val history: Map<Instant, List<ScheduleDay>> = emptyMap()
+    val history: Map<Instant, List<ScheduleDay>> = emptyMap(),
 )

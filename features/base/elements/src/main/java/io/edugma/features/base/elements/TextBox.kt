@@ -20,7 +20,7 @@ fun TextBox(
     title: String? = null,
     passwordMode: Boolean = false,
     maxLines: Int = 1,
-    onValueChange: Typed1Listener<String>
+    onValueChange: Typed1Listener<String>,
 ) {
     OutlinedTextField(
         value = value,
@@ -34,11 +34,11 @@ fun TextBox(
             title?.let {
                 WithContentAlpha(alpha = ContentAlpha.medium) {
                     Text(
-                        text = title
+                        text = title,
                     )
                 }
             }
         },
-        maxLines = maxLines
+        maxLines = maxLines,
     )
 }

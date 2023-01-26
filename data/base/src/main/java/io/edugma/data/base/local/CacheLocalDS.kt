@@ -13,7 +13,7 @@ import org.kodein.db.getById
 import org.kodein.db.keyById
 
 class CacheLocalDS(
-    private val db: DB
+    private val db: DB,
 ) {
     fun save(value: ByteArray, key: String) {
         db.put(CacheDao(key, value))
@@ -29,7 +29,6 @@ class CacheLocalDS(
         return db.flowOf(db.keyById(key))
     }
 
-
     @OptIn(ExperimentalSerializationApi::class)
     inline fun <reified T> save(obj: T, key: String): Result<Unit> {
         return kotlin.runCatching {
@@ -38,15 +37,11 @@ class CacheLocalDS(
         }
     }
 
-
-
     @OptIn(ExperimentalSerializationApi::class)
     inline fun <reified T> get(key: String): Result<T?> {
         val serializedData = getSerializedData(key)
         return serializedData.mapCatching { it?.let { Cbor.decodeFromByteArray(it.value) } }
     }
-
-
 
     @OptIn(ExperimentalSerializationApi::class)
     inline fun <reified T> flowOf(key: String): Flow<Result<T?>> {

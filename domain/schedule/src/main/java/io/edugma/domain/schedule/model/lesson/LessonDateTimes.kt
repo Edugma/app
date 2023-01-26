@@ -7,8 +7,8 @@ import java.time.LocalDate
 @Serializable
 data class LessonDateTimes(
     val lesson: Lesson,
-    val time: List<LessonDateTime>
-): Comparable<LessonDateTimes> {
+    val time: List<LessonDateTime>,
+) : Comparable<LessonDateTimes> {
     override fun compareTo(other: LessonDateTimes): Int {
         return lesson.compareTo(other.lesson)
     }
@@ -20,5 +20,5 @@ data class LessonDateTime(
     val startDate: LocalDate,
     @Serializable(with = LocalDateConverter::class)
     val endDate: LocalDate? = null,
-    val time: LessonTime
+    val time: LessonTime,
 )

@@ -11,7 +11,7 @@ import kotlin.coroutines.resume
 
 class FlowCallAdapter<T : Any>(
     private val successType: Type,
-    private val mapper: ResponseMapper<T>
+    private val mapper: ResponseMapper<T>,
 ) : CallAdapter<T, Flow<Result<T>>> {
     override fun responseType() = successType
     override fun adapt(call: Call<T>): Flow<Result<T>> = flow {
@@ -26,7 +26,7 @@ class FlowCallAdapter<T : Any>(
                 },
                 onFailure = {
                     continuation.resume(mapper.mapFailure(it))
-                }
+                },
             )
 
             continuation.invokeOnCancellation {

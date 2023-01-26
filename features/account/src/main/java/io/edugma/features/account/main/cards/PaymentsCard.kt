@@ -23,7 +23,7 @@ fun PaymentsCard(
     modifier: Modifier = Modifier,
     currentPayments: CurrentPayments?,
     enabled: Boolean,
-    onClick: ClickListener
+    onClick: ClickListener,
 ) {
     TonalCard(
         modifier = modifier
@@ -32,7 +32,7 @@ fun PaymentsCard(
             .height(100.dp),
         shape = RoundedCornerShape(16.dp),
         enabled = enabled,
-        onClick = onClick
+        onClick = onClick,
     ) {
         Column(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
             Box(modifier = Modifier.fillMaxWidth()) {
@@ -43,7 +43,7 @@ fun PaymentsCard(
                     Text(
                         text = it.type.toLabel(),
                         style = MaterialTheme3.typography.bodySmall,
-                        color = MaterialTheme3.colorScheme.secondary
+                        color = MaterialTheme3.colorScheme.secondary,
                     )
                     Box(Modifier.fillMaxWidth()) {
                         Text(
@@ -51,46 +51,46 @@ fun PaymentsCard(
                             style = MaterialTheme3.typography.labelSmall,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier.align(Alignment.TopStart)
+                            modifier = Modifier.align(Alignment.TopStart),
                         )
                         Text(
                             text = it.sum.toString(),
                             style = MaterialTheme3.typography.labelSmall,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier.align(Alignment.TopEnd)
+                            modifier = Modifier.align(Alignment.TopEnd),
                         )
                     }
-                    val progress = it.current.toFloat()/it.sum
+                    val progress = it.current.toFloat() / it.sum
                     Box(
                         Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 5.dp, vertical = 3.dp)) {
+                            .padding(horizontal = 5.dp, vertical = 3.dp),
+                    ) {
                         LinearProgressIndicator(
                             progress = progress,
                             modifier = Modifier
                                 .clip(RoundedCornerShape(10.dp))
                                 .fillMaxWidth(),
                             trackColor = MaterialTheme3.colorScheme.onPrimary,
-                            color = MaterialTheme3.colorScheme.primary
+                            color = MaterialTheme3.colorScheme.primary,
                         )
                     }
                     ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
                         val text = createRef()
-                        Text(text = it.current.toString(), modifier = Modifier
-                            .constrainAs(text) {
-                               linkTo(parent.start, parent.end, bias = progress)
-                            },
+                        Text(
+                            text = it.current.toString(),
+                            modifier = Modifier
+                                .constrainAs(text) {
+                                    linkTo(parent.start, parent.end, bias = progress)
+                                },
                             textAlign = TextAlign.End,
                             style = MaterialTheme3.typography.labelSmall,
-                            color = MaterialTheme3.colorScheme.tertiary
+                            color = MaterialTheme3.colorScheme.tertiary,
                         )
                     }
-
                 }
-
             }
         }
-
     }
 }

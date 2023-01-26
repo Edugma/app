@@ -15,7 +15,7 @@ object ScreenInfoSerializer {
             val pair: Pair<String, Map<String, String>> = Json.decodeFromString(text)
             ScreenInfo(
                 pair.first,
-                pair.second
+                pair.second,
             )
         } catch (e: Exception) {
             null

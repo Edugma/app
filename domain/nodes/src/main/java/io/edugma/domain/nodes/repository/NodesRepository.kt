@@ -3,7 +3,6 @@ package io.edugma.domain.nodes.repository
 import io.edugma.domain.base.utils.Lce
 import io.edugma.domain.nodes.model.Node
 import io.edugma.domain.nodes.model.NodeContract
-import io.edugma.domain.nodes.model.NodeEndpoints
 import kotlinx.coroutines.flow.Flow
 
 interface NodesRepository {

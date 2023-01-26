@@ -7,14 +7,8 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import io.edugma.domain.account.model.Teacher
 import io.edugma.domain.account.repository.PeoplesRepository
-import io.edugma.features.base.core.mvi.BaseMutator
-import io.edugma.domain.base.utils.execute
 import io.edugma.features.base.core.mvi.BaseViewModel
-import io.edugma.features.base.core.mvi.BaseViewModelFull
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 
 class TeachersViewModel(private val repository: PeoplesRepository) :
     BaseViewModel<TeachersState>(TeachersState()) {
@@ -57,16 +51,15 @@ class TeachersViewModel(private val repository: PeoplesRepository) :
             state = state.copy(bottomType = BottomType.Teacher, selectedEntity = teacher)
         }
     }
-
 }
 
 data class TeachersState(
     val pagingData: Flow<PagingData<Teacher>>? = null,
     val name: String = "",
     val bottomType: BottomType = BottomType.Search,
-    val selectedEntity: Teacher? = null
+    val selectedEntity: Teacher? = null,
 )
 
-enum class BottomType{
+enum class BottomType {
     Teacher, Search
 }

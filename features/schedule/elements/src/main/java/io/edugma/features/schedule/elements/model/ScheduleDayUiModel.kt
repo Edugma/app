@@ -5,5 +5,5 @@ import java.time.LocalDate
 
 data class ScheduleDayUiModel(
     val date: LocalDate,
-    val lessons: List<ScheduleItem>
+    val lessons: List<ScheduleItem>,
 )

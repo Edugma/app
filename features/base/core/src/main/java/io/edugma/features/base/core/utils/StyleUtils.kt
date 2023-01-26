@@ -29,7 +29,6 @@ fun Resources.Theme.getStringAttribute(@AttrRes attr: Int): String? =
 fun Resources.Theme.getColorAttribute(@AttrRes attr: Int, defaultValue: Int = 0): Int =
     getAttribute(attr) { it.getColor(0, defaultValue) }
 
-
 @Composable
 fun getDimensionAttribute(@AttrRes attr: Int, defaultValue: Float = 0f): Float =
     LocalContext.current.theme.getDimensionAttribute(attr, defaultValue)

@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 
 class PlaceInfoViewModel(
     private val repository: ScheduleInfoRepository,
-    private val freePlaceRepository: FreePlaceRepository
+    private val freePlaceRepository: FreePlaceRepository,
 ) : BaseViewModel<PlaceInfoState>(PlaceInfoState()) {
     init {
         viewModelScope.launch {
@@ -29,12 +29,11 @@ class PlaceInfoViewModel(
                                 placeInfo = it,
                                 scheduleSource = ScheduleSource(
                                     type = ScheduleSources.Place,
-                                    key = it.id
-                                )
+                                    key = it.id,
+                                ),
                             )
                         }
                     }.onFailure {
-
                     }.collect()
             }
         }
@@ -47,7 +46,6 @@ class PlaceInfoViewModel(
                             state = state.copy(placeOccupancy = it)
                         }
                     }.onFailure {
-
                     }.collect()
             }
         }
@@ -62,7 +60,7 @@ class PlaceInfoViewModel(
     fun setId(id: String) {
         mutateState {
             state = state.copy(
-                id = id
+                id = id,
             )
         }
     }
@@ -74,11 +72,11 @@ data class PlaceInfoState(
     val tabs: List<PlaceInfoTabs> = listOf(PlaceInfoTabs.Schedule),
     val selectedTab: PlaceInfoTabs = PlaceInfoTabs.Schedule,
     val placeOccupancy: List<PlaceDailyOccupancy> = emptyList(),
-    val scheduleSource: ScheduleSource? = null
+    val scheduleSource: ScheduleSource? = null,
 )
 
 enum class PlaceInfoTabs {
     Occupancy,
     Map,
-    Schedule
+    Schedule,
 }

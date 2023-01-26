@@ -4,8 +4,9 @@ import io.edugma.domain.schedule.model.teacher.Teacher
 
 fun Teacher.getShortName(): String {
     val names = getNames(name)
-    if (names.isEmpty())
+    if (names.isEmpty()) {
         return ""
+    }
 
     return if (!canBeShortened(names)) {
         names.joinToString("\u00A0")

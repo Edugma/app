@@ -9,7 +9,7 @@ class ApiVersionInterceptor : Interceptor {
         return chain
             .request()
             .newBuilder()
-            .addHeader("v",  "1")
+            .addHeader("v", "1")
             .build()
             .let { chain.proceed(it) }
     }

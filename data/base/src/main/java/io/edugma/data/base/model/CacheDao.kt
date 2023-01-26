@@ -6,5 +6,5 @@ import org.kodein.db.model.orm.Metadata
 @Serializable
 data class CacheDao(
     override val id: String,
-    val value: ByteArray
+    val value: ByteArray,
 ) : Metadata

@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 
 class ScheduleSourcesUseCase(
-    private val scheduleSourcesRepository: ScheduleSourcesRepository
+    private val scheduleSourcesRepository: ScheduleSourcesRepository,
 ) {
     fun getScheduleSources() =
         flowOf(ScheduleSources.values().toList())
@@ -50,10 +50,9 @@ class ScheduleSourcesUseCase(
             }
     }
 
-
     fun getSourceTypes() =
         flowOf(Result.success(ScheduleSourcesTabs.values().toList()))
-        //scheduleSourcesRepository.getSourceTypes()
+    // scheduleSourcesRepository.getSourceTypes()
 
     fun getSources(type: ScheduleSources) =
         scheduleSourcesRepository.getSources(type)
@@ -63,5 +62,4 @@ class ScheduleSourcesUseCase(
 
     fun getSelectedSource() =
         scheduleSourcesRepository.getSelectedSource()
-
 }

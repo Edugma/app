@@ -7,8 +7,9 @@ abstract class BaseMutator<TState> {
     var state: TState
         get() = _state!!
         set(value) {
-            if (!isMutating && _state != null)
+            if (!isMutating && _state != null) {
                 throw IllegalStateException("Mutate state only inside mutation scope")
+            }
             val needChange = _state != value
             if (needChange) {
                 _state = value
@@ -33,7 +34,6 @@ abstract class BaseMutator<TState> {
     }
 
     val onStateChanged: MutableList<Typed1Listener<TState>> = mutableListOf()
-
 
     fun mutationScope(mutate: () -> Unit) {
         val oldState = state

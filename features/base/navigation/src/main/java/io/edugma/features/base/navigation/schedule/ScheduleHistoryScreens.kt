@@ -7,9 +7,9 @@ object ScheduleHistoryScreens {
     object Main : Screen()
     class Changes(
         val first: Instant,
-        val second: Instant
+        val second: Instant,
     ) : Screen(
         Changes::first.name to first.serialized(),
-        Changes::second.name to second.serialized()
+        Changes::second.name to second.serialized(),
     )
 }

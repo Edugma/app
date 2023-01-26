@@ -19,16 +19,17 @@ import io.edugma.features.base.core.utils.MaterialTheme3
 
 @Composable
 fun Refresher(text: String = "Произошла ошибка", onClickListener: ClickListener) {
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .heightIn(min = 40.dp)
-        .clickable(onClick = onClickListener),
-        contentAlignment = Alignment.Center
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 40.dp)
+            .clickable(onClick = onClickListener),
+        contentAlignment = Alignment.Center,
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = text,
-                style = MaterialTheme3.typography.bodyLarge
+                style = MaterialTheme3.typography.bodyLarge,
             )
             SpacerWidth(width = 20.dp)
             Icon(Icons.Default.Refresh, contentDescription = null, modifier = Modifier.rotate(90f))

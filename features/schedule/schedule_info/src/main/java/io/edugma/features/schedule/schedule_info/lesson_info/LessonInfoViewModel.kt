@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class LessonInfoViewModel(
-    private val scheduleUseCase: ScheduleUseCase
+    private val scheduleUseCase: ScheduleUseCase,
 ) : BaseViewModel<LessonInfoState>(LessonInfoState()) {
 
     init {
@@ -25,7 +25,7 @@ class LessonInfoViewModel(
 
                     mutateState {
                         state = state.copy(
-                            teachers = teachers
+                            teachers = teachers,
                         )
                     }
                 }
@@ -53,5 +53,5 @@ class LessonInfoViewModel(
 
 data class LessonInfoState(
     val lessonInfo: LessonInfo? = null,
-    val teachers: List<TeacherInfo> = emptyList()
+    val teachers: List<TeacherInfo> = emptyList(),
 )

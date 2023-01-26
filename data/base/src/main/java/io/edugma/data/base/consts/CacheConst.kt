@@ -5,7 +5,7 @@ object CacheConst {
     const val SelectNode = "SelectNode"
     const val FavoriteScheduleSources = "ScheduleSources"
 
-    //account
+    // account
     const val ApplicationsKey = "applications"
     const val PerformanceKey = "Performance"
     const val CourseKey = "Courses"

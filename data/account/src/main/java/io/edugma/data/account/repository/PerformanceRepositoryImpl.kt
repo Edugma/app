@@ -17,8 +17,8 @@ import kotlinx.coroutines.flow.flowOn
 
 class PerformanceRepositoryImpl(
     private val api: AccountService,
-    private val localStore: PreferencesDS
-): PerformanceRepository {
+    private val localStore: PreferencesDS,
+) : PerformanceRepository {
 
     override fun getCourses() =
         api.getCourses()
@@ -32,7 +32,7 @@ class PerformanceRepositoryImpl(
 
     override fun getCoursesWithSemesters() =
         api.getCoursesWithSemesters()
-            .onSuccess{
+            .onSuccess {
                 setLocalSemesters(it.coursesWithSemesters.keys.toList())
                 setLocalCourses(it.coursesWithSemesters.values.toSet().toList())
             }
@@ -69,7 +69,7 @@ class PerformanceRepositoryImpl(
         flow {
             getLocalCourses()?.let { courses ->
                 getLocalSemesters()?.let { semester ->
-                    emit(courses to semester )
+                    emit(courses to semester)
                 }
             } ?: emit(null)
         }
@@ -77,7 +77,5 @@ class PerformanceRepositoryImpl(
     override fun getMarksLocal(): Flow<List<Performance>?> =
         flow {
             emit(getLocalMarks())
-    }
-
-
+        }
 }

@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.domain.base.utils.capitalized
 import io.edugma.domain.schedule.model.lesson.LessonTime
 import io.edugma.domain.schedule.model.lesson_type.LessonType
@@ -25,7 +26,6 @@ import io.edugma.domain.schedule.model.review.LessonTimesReview
 import io.edugma.domain.schedule.model.review.LessonTimesReviewByType
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.MaterialTheme3
-import io.edugma.features.base.elements.PrimaryTopAppBar
 import io.edugma.features.base.elements.SpacerHeight
 import io.edugma.features.base.elements.TonalCard
 import org.koin.androidx.compose.getViewModel
@@ -34,7 +34,7 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun LessonsReviewScreen(
-    viewModel: LessonsReviewViewModel = getViewModel()
+    viewModel: LessonsReviewViewModel = getViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -45,12 +45,12 @@ fun LessonsReviewScreen(
 @Composable
 fun LessonsReviewContent(
     lessons: List<LessonTimesReview>,
-    onBackClick: ClickListener
+    onBackClick: ClickListener,
 ) {
     Column(Modifier.fillMaxSize()) {
-        PrimaryTopAppBar(
+        EdTopAppBar(
             title = stringResource(R.string.schedule_les_rev_lessons_review),
-            onBackClick = onBackClick
+            onNavigationClick = onBackClick,
         )
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(lessons) { lessonTimesReview ->
@@ -70,29 +70,29 @@ fun LessonTimesReviewContent(lessonTimesReview: LessonTimesReview) {
     Column(
         Modifier
             .padding(horizontal = 8.dp, vertical = 4.dp)
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         Text(
             text = lessonTimesReview.subject.title,
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 12.dp)
+                .padding(horizontal = 12.dp),
         )
         SpacerHeight(2.dp)
         Column(
-            Modifier.fillMaxWidth()
+            Modifier.fillMaxWidth(),
         ) {
             lessonTimesReview.days.forEach { item ->
                 SpacerHeight(12.dp)
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .height(IntrinsicSize.Max)
+                        .height(IntrinsicSize.Max),
                 ) {
                     DatesAndTimeUnit(
                         item,
-                        //modifier = Modifier.weight(1f)
+                        // modifier = Modifier.weight(1f)
                     )
                 }
             }
@@ -103,15 +103,15 @@ fun LessonTimesReviewContent(lessonTimesReview: LessonTimesReview) {
 @Composable
 private fun DatesAndTimeUnit(
     lessonTimesReviewByType: LessonTimesReviewByType,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     TonalCard(
         modifier = modifier.fillMaxHeight(),
-        tonalElevation = 3.dp
+        tonalElevation = 3.dp,
     ) {
         Column(Modifier.padding(start = 12.dp, end = 12.dp, top = 10.dp, bottom = 12.dp)) {
             LessonTypeContent(
-                type = lessonTimesReviewByType.lessonType
+                type = lessonTimesReviewByType.lessonType,
             )
             SpacerHeight(12.dp)
             lessonTimesReviewByType.days.forEachIndexed { index, lessonReviewUnit ->
@@ -119,13 +119,13 @@ private fun DatesAndTimeUnit(
                     Divider(
                         Modifier
                             .height(1.dp)
-                            .fillMaxWidth()
+                            .fillMaxWidth(),
                     )
                 }
                 DateRange(
                     dayOfWeek = lessonReviewUnit.dayOfWeek,
                     dates = lessonReviewUnit.dates,
-                    times = lessonReviewUnit.time
+                    times = lessonReviewUnit.time,
                 )
             }
         }
@@ -148,7 +148,7 @@ fun LessonTypeContent(type: LessonType) {
             .padding(horizontal = 10.dp)
             .fillMaxWidth(),
         color = color,
-        textAlign = TextAlign.Center
+        textAlign = TextAlign.Center,
     )
 }
 
@@ -159,13 +159,13 @@ private val weekFormat = DateTimeFormatter.ofPattern("EEE")
 fun DateRange(
     dayOfWeek: DayOfWeek,
     dates: List<LessonDates>,
-    times: List<LessonTime>
+    times: List<LessonTime>,
 ) {
     Row(
         modifier = Modifier
             .padding(start = 12.dp, end = 12.dp)
             .fillMaxWidth()
-            .height(IntrinsicSize.Max)
+            .height(IntrinsicSize.Max),
     ) {
         Text(
             text = weekFormat.format(dayOfWeek).capitalized(),
@@ -173,33 +173,33 @@ fun DateRange(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .weight(1f)
-                .padding(bottom = 8.dp, top = 6.dp)
+                .padding(bottom = 8.dp, top = 6.dp),
         )
         Divider(
             Modifier
                 .padding(horizontal = 10.dp)
                 .width(1.dp)
-                .fillMaxHeight()
+                .fillMaxHeight(),
         )
         Dates(
             dates = dates,
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .weight(6f)
-                .padding(bottom = 8.dp, top = 6.dp)
+                .padding(bottom = 8.dp, top = 6.dp),
         )
         Divider(
             Modifier
                 .padding(horizontal = 10.dp)
                 .width(1.dp)
-                .fillMaxHeight()
+                .fillMaxHeight(),
         )
         Times(
             times = times,
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .weight(6f)
-                .padding(bottom = 8.dp, top = 6.dp)
+                .padding(bottom = 8.dp, top = 6.dp),
         )
     }
 }
@@ -209,7 +209,7 @@ private val dateFormat = DateTimeFormatter.ofPattern("d MMM")
 @Composable
 private fun Dates(
     dates: List<LessonDates>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         dates.forEach { date ->
@@ -222,7 +222,7 @@ private fun Dates(
 
             Text(
                 text = dateText,
-                style = MaterialTheme.typography.bodySmall
+                style = MaterialTheme.typography.bodySmall,
             )
         }
     }
@@ -233,7 +233,7 @@ private val timeFormat = DateTimeFormatter.ofPattern("HH:mm")
 @Composable
 private fun Times(
     times: List<LessonTime>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         times.forEach { time ->
@@ -243,7 +243,7 @@ private fun Times(
 
             Text(
                 text = timeText,
-                style = MaterialTheme.typography.bodySmall
+                style = MaterialTheme.typography.bodySmall,
             )
         }
     }

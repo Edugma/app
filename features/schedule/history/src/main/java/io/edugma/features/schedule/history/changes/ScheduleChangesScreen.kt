@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.domain.schedule.model.group.Group
 import io.edugma.domain.schedule.model.lesson.Lesson
 import io.edugma.domain.schedule.model.lesson.LessonTime
@@ -24,7 +25,6 @@ import io.edugma.features.base.core.theme.AppTheme
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.base.core.utils.withAlpha
-import io.edugma.features.base.elements.PrimaryTopAppBar
 import kotlinx.datetime.Instant
 import org.koin.androidx.compose.getViewModel
 import java.time.format.DateTimeFormatter
@@ -33,13 +33,13 @@ import java.time.format.DateTimeFormatter
 fun ScheduleChangesScreen(
     viewModel: ScheduleChangesViewModel = getViewModel(),
     first: Instant,
-    second: Instant
+    second: Instant,
 ) {
     val state by viewModel.state.collectAsState()
 
     ScheduleChangesContent(
         state = state,
-        onBackClick = viewModel::exit
+        onBackClick = viewModel::exit,
     )
 }
 
@@ -49,15 +49,15 @@ private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM, yyyy")
 @Composable
 fun ScheduleChangesContent(
     state: ScheduleChangesState,
-    onBackClick: ClickListener
+    onBackClick: ClickListener,
 ) {
     Column(
         Modifier
-            .fillMaxSize()
+            .fillMaxSize(),
     ) {
-        PrimaryTopAppBar(
+        EdTopAppBar(
             title = "Изменения",
-            onBackClick = onBackClick
+            onNavigationClick = onBackClick,
         )
 
         LazyColumn(Modifier.fillMaxSize()) {
@@ -65,18 +65,18 @@ fun ScheduleChangesContent(
                 stickyHeader {
                     Box(
                         contentAlignment = Alignment.Center,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         Surface(
                             shape = MaterialTheme3.shapes.small,
                             modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
                             color = MaterialTheme3.colorScheme.background
-                                .withAlpha(0.8f)
+                                .withAlpha(0.8f),
                         ) {
                             Text(
                                 date.format(dateFormatter),
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 5.dp),
-                                style = MaterialTheme3.typography.bodyMedium
+                                style = MaterialTheme3.typography.bodyMedium,
                             )
                         }
                     }
@@ -88,7 +88,7 @@ fun ScheduleChangesContent(
                     }
                     items(lessonsByTime) {
                         LessonChangeContent(
-                            change = it
+                            change = it,
                         )
                     }
                 }
@@ -101,7 +101,7 @@ fun ScheduleChangesContent(
 private fun LessonTime(time: LessonTime) {
     Text(
         "${time.start} - ${time.end}",
-        modifier = Modifier.padding(start = 16.dp)
+        modifier = Modifier.padding(start = 16.dp),
     )
 }
 
@@ -116,7 +116,7 @@ fun LessonChangeContent(change: LessonChange) {
 
     var old: Lesson? = null
     var new: Lesson? = null
-    
+
     when (change) {
         is LessonChange.Added -> {
             new = change.new
@@ -128,19 +128,18 @@ fun LessonChangeContent(change: LessonChange) {
             old = change.old
             new = change.new
         }
-        
     }
 
     Card(
         Modifier
             .padding(horizontal = 8.dp, vertical = 5.dp)
             .fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = containerColor)
+        colors = CardDefaults.cardColors(containerColor = containerColor),
     ) {
         Column(
             Modifier
                 .padding(horizontal = 16.dp, vertical = 10.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             when {
                 old != null && new != null -> {
@@ -203,7 +202,7 @@ private fun ChangedLessonType(type: LessonType, isNew: Boolean? = null) {
     val containerColor = getColor(isNew)
 
     Surface(
-        color = containerColor
+        color = containerColor,
     ) {
         Text(type.title)
     }
@@ -214,7 +213,7 @@ private fun ChangedLessonSubject(subject: LessonSubject, isNew: Boolean? = null)
     val containerColor = getColor(isNew)
 
     Surface(
-        color = containerColor
+        color = containerColor,
     ) {
         Text(subject.title)
     }
@@ -225,7 +224,7 @@ private fun ChangedTeachers(teachers: List<Teacher>, isNew: Boolean? = null) {
     val containerColor = getColor(isNew)
 
     Surface(
-        color = containerColor
+        color = containerColor,
     ) {
         Text(teachers.joinToString { it.name })
     }
@@ -236,7 +235,7 @@ private fun ChangedGroups(groups: List<Group>, isNew: Boolean? = null) {
     val containerColor = getColor(isNew)
 
     Surface(
-        color = containerColor
+        color = containerColor,
     ) {
         Text(groups.joinToString { it.title })
     }
@@ -247,12 +246,11 @@ private fun ChangedPlaces(places: List<Place>, isNew: Boolean? = null) {
     val containerColor = getColor(isNew)
 
     Surface(
-        color = containerColor
+        color = containerColor,
     ) {
         Text(places.joinToString { it.title })
     }
 }
-
 
 @Composable
 private fun getColor(isNew: Boolean?): Color {

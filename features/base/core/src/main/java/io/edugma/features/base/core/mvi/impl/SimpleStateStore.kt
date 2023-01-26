@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class SimpleStateStore<TState, TMutator : BaseMutator<TState>>(
     initialState: TState,
-    private val mutatorFactory: () -> TMutator
-): StateStore<TState, TMutator> {
+    private val mutatorFactory: () -> TMutator,
+) : StateStore<TState, TMutator> {
     private val _state = MutableStateFlow(initialState)
     override val state = _state.asStateFlow()
 
@@ -25,7 +25,6 @@ class SimpleStateStore<TState, TMutator : BaseMutator<TState>>(
             }
         }.state
     }
-
 
     private var mutatorSetup: TMutator.() -> Unit = { }
 

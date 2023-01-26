@@ -3,9 +3,6 @@ package io.edugma.features.schedule.elements.vertical_schedule
 import androidx.lifecycle.viewModelScope
 import io.edugma.domain.base.utils.getOrDefault
 import io.edugma.domain.base.utils.isFinalFailure
-import io.edugma.domain.base.utils.onFailure
-import io.edugma.domain.base.utils.onSuccess
-import io.edugma.domain.schedule.model.group.GroupInfo
 import io.edugma.domain.schedule.model.lesson.Lesson
 import io.edugma.domain.schedule.model.lesson.LessonDateTime
 import io.edugma.domain.schedule.model.lesson.LessonDisplaySettings
@@ -25,7 +22,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class VerticalScheduleViewModel(
-    private val useCase: ScheduleUseCase
+    private val useCase: ScheduleUseCase,
 ) : BaseViewModel<VerticalScheduleState>(VerticalScheduleState()) {
     init {
         setupMutator {
@@ -34,13 +31,12 @@ class VerticalScheduleViewModel(
                     if (it.isNotEmpty()) {
                         val index = calculateTodayIndex(it)
                         state = state.copy(
-                            currentDayIndex = index
+                            currentDayIndex = index,
                         )
                     }
                 }
             }
         }
-
 
         viewModelScope.launch {
             state.prop { scheduleSource }.collect {
@@ -49,7 +45,7 @@ class VerticalScheduleViewModel(
                 } ?: LessonDisplaySettings.Default
                 mutateState {
                     state = state.copy(
-                        lessonDisplaySettings = lessonDisplaySettings
+                        lessonDisplaySettings = lessonDisplaySettings,
                     )
                 }
             }
@@ -64,7 +60,7 @@ class VerticalScheduleViewModel(
 
                         mutateState {
                             state = state.copy(
-                                schedule = schedule.toUiModel()
+                                schedule = schedule.toUiModel(),
                             )
                         }
                     }
@@ -77,7 +73,8 @@ class VerticalScheduleViewModel(
         var index = 0
         val now = LocalDate.now()
         scheduleDays.asSequence()
-            .map { it.date to
+            .map {
+                it.date to
                     it.lessons.sumOf {
                         when (it) {
                             is ScheduleItem.LessonByTime -> it.lesson.lessons.size + 1
@@ -107,9 +104,9 @@ class VerticalScheduleViewModel(
             ScheduleInfoScreens.LessonInfo(
                 lessonInfo = LessonInfo(
                     lesson = lesson,
-                    dateTime = dateTime
-                )
-            )
+                    dateTime = dateTime,
+                ),
+            ),
         )
     }
 }
@@ -118,5 +115,5 @@ data class VerticalScheduleState(
     val scheduleSource: ScheduleSource? = null,
     val schedule: List<ScheduleDayUiModel>? = null,
     val lessonDisplaySettings: LessonDisplaySettings = LessonDisplaySettings.Default,
-    val currentDayIndex: Int = 0
+    val currentDayIndex: Int = 0,
 )

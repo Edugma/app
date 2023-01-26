@@ -8,9 +8,9 @@ object ScheduleScreens {
     object Menu : Screen()
 
     class Main(
-        val date: LocalDate? = null
+        val date: LocalDate? = null,
     ) : Screen(
-        Main::date.name to date.serialized()
+        Main::date.name to date.serialized(),
     )
 
     object Source : Screen()

@@ -12,14 +12,14 @@ import retrofit2.Retrofit
 import java.lang.reflect.Type
 
 class JsonConverterFactory(
-    private val json: Json = Json
+    private val json: Json = Json,
 ) : Converter.Factory() {
 
     @Suppress("RedundantNullableReturnType")
     override fun responseBodyConverter(
         type: Type,
         annotations: Array<out Annotation>,
-        retrofit: Retrofit
+        retrofit: Retrofit,
     ): Converter<ResponseBody, *>? {
         return DeserializationStrategyConverter(json.serializersModule.serializer(type), json)
     }
@@ -29,17 +29,15 @@ class JsonConverterFactory(
         type: Type,
         parameterAnnotations: Array<out Annotation>,
         methodAnnotations: Array<out Annotation>,
-        retrofit: Retrofit
+        retrofit: Retrofit,
     ): Converter<*, RequestBody>? {
         return SerializationStrategyConverter(json.serializersModule.serializer(type), json)
     }
 }
 
-
-
 internal class SerializationStrategyConverter<T>(
     private val serializer: KSerializer<T>,
-    private val json: Json = Json
+    private val json: Json = Json,
 ) : Converter<T, RequestBody> {
     private val contentType = "application/json".toMediaType()
 
@@ -49,7 +47,7 @@ internal class SerializationStrategyConverter<T>(
 
 internal class DeserializationStrategyConverter<T>(
     private val serializer: KSerializer<T>,
-    private val json: Json = Json
+    private val json: Json = Json,
 ) : Converter<ResponseBody, T> {
     override fun convert(value: ResponseBody) =
         json.decodeFromString(serializer, value.string())

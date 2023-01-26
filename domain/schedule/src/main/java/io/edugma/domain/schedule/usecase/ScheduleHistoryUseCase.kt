@@ -17,7 +17,7 @@ import kotlin.math.max
 
 class ScheduleHistoryUseCase(
     private val repository: ScheduleRepository,
-    private val scheduleSourcesRepository: ScheduleSourcesRepository
+    private val scheduleSourcesRepository: ScheduleSourcesRepository,
 ) {
     fun getHistory() =
         scheduleSourcesRepository.getSelectedSource()
@@ -35,12 +35,11 @@ class ScheduleHistoryUseCase(
         val old = repository.getHistory(ScheduleSource(ScheduleSources.Group, "a17b0ee7-f595-11ea-80d1-bfb80b42a394")).first().getOrNull()
 
         return getChanges(old!!.toList().first().second, new!!.toList().first().second)
-
     }
 
     private fun getChanges(
         oldSchedule: List<ScheduleDay>,
-        newSchedule: List<ScheduleDay>
+        newSchedule: List<ScheduleDay>,
     ): List<ScheduleDayChange> {
         val dateToLessons = mutableMapOf<LocalDate, MutableList<List<LessonsByTime>>>()
 
@@ -60,12 +59,12 @@ class ScheduleHistoryUseCase(
 
             val changes = getDayChanges(
                 oldDay = oldScheduleDay,
-                newDay = newScheduleDay
+                newDay = newScheduleDay,
             )
 
             ScheduleDayChange(
                 date = date,
-                lessons = changes
+                lessons = changes,
             )
         }.filter { it.lessons.isNotEmpty() }
             .sortedBy { it.date }
@@ -75,7 +74,7 @@ class ScheduleHistoryUseCase(
 
     private fun getDayChanges(
         oldDay: List<LessonsByTime>,
-        newDay: List<LessonsByTime>
+        newDay: List<LessonsByTime>,
     ): List<LessonsByTimeChange> {
         val timeToLessons = mutableMapOf<LessonTime, MutableList<List<Lesson>>>()
 
@@ -95,7 +94,7 @@ class ScheduleHistoryUseCase(
 
             LessonsByTimeChange(
                 time = time,
-                lessons = getPlaceChanges(old, new)
+                lessons = getPlaceChanges(old, new),
             )
         }.filter { it.lessons.isNotEmpty() }
             .sortedBy { it.time }
@@ -105,7 +104,7 @@ class ScheduleHistoryUseCase(
 
     private fun getPlaceChanges(
         oldLessonsByTime: List<Lesson>,
-        newLessonsByTime: List<Lesson>
+        newLessonsByTime: List<Lesson>,
     ): List<LessonChange> {
         val groupedBySubject = mutableMapOf<LessonSubject, MutableList<MutableList<Lesson>>>()
 
@@ -131,7 +130,7 @@ class ScheduleHistoryUseCase(
             (0 until size).mapNotNull { index ->
                 getLessonChanges(
                     oldLesson = oldList.getOrNull(index),
-                    newLesson = newList.getOrNull(index)
+                    newLesson = newList.getOrNull(index),
                 )
             }
         }
@@ -141,7 +140,7 @@ class ScheduleHistoryUseCase(
 
     private fun getLessonChanges(
         oldLesson: Lesson?,
-        newLesson: Lesson?
+        newLesson: Lesson?,
     ): LessonChange? {
         if (oldLesson == newLesson) return null
 
@@ -158,26 +157,24 @@ class ScheduleHistoryUseCase(
 sealed class LessonChange {
     data class Modified(
         val old: Lesson,
-        val new: Lesson
+        val new: Lesson,
     ) : LessonChange()
 
     data class Added(
-        val new: Lesson
+        val new: Lesson,
     ) : LessonChange()
 
     data class Removed(
-        val old: Lesson
+        val old: Lesson,
     ) : LessonChange()
 }
 
-
 data class ScheduleDayChange(
     val date: LocalDate,
-    val lessons: List<LessonsByTimeChange>
+    val lessons: List<LessonsByTimeChange>,
 )
 
 data class LessonsByTimeChange(
     val time: LessonTime,
-    val lessons: List<LessonChange>
+    val lessons: List<LessonChange>,
 )
-

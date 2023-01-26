@@ -17,7 +17,7 @@ data class Teacher(
     val sex: String? = null,
     @Serializable(LocalDateConverter::class)
     val birthday: LocalDate? = null,
-    val dialogId: String? = null
+    val dialogId: String? = null,
 ) : Comparable<Teacher> {
     override fun compareTo(other: Teacher): Int {
         return name.compareTo(other.name)
@@ -38,13 +38,13 @@ val Teacher.description: String
     }
 
 val Teacher.departments: String
-get() {
-    return buildString {
-        departmentParent?.title?.let { append(it) }
-        var prefix = ""
-        if (isNotEmpty()) {
-            prefix = ", "
+    get() {
+        return buildString {
+            departmentParent?.title?.let { append(it) }
+            var prefix = ""
+            if (isNotEmpty()) {
+                prefix = ", "
+            }
+            department?.title?.let { append(prefix + it) }
         }
-        department?.title?.let { append(prefix + it) }
     }
-}

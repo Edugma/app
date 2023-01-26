@@ -10,5 +10,5 @@ data class PlaceOccupancyTimeRange(
     val timeFrom: LocalTime,
     @Serializable(with = LocalTimeConverter::class)
     val timeTo: LocalTime,
-    val value: Double
+    val value: Double,
 )
