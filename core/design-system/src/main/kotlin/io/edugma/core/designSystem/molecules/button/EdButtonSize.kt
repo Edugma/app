@@ -52,7 +52,7 @@ data class EdButtonSize(
                 height = 32.dp,
                 minSize = DpSize(
                     width = 48.dp,
-                    height = 30.dp,
+                    height = 32.dp,
                 ),
                 contentPadding = PaddingValues(
                     horizontal = 12.dp,

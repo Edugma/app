@@ -8,6 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -17,6 +18,7 @@ import io.edugma.core.designSystem.atoms.loader.EdLoaderStyle
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.tokens.icons.EdIcons
 
 @Composable
 fun EdButton(
@@ -87,6 +89,7 @@ internal fun EdButtonPrimaryPreview() {
                 Text(text = "Button with loader")
                 EdButton(
                     text = "Press to win",
+                    iconPainter = painterResource(EdIcons.ic_fluent_arrow_clockwise_12_regular),
                     onClick = { },
                     isLoading = true,
                     style = EdButtonStyle.primary,
@@ -95,6 +98,7 @@ internal fun EdButtonPrimaryPreview() {
                 Text(text = "Button without loader")
                 EdButton(
                     text = "Press to win",
+                    iconPainter = painterResource(EdIcons.ic_fluent_arrow_clockwise_12_regular),
                     onClick = { },
                     isLoading = false,
                     style = EdButtonStyle.primary,
