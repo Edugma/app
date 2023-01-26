@@ -7,9 +7,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.loader.EdLoader
 import io.edugma.core.designSystem.atoms.loader.EdLoaderStyle
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
@@ -21,6 +23,8 @@ fun EdButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    iconPainter: Painter? = null,
+    iconStart: Boolean = true,
     style: EdButtonStyle = EdButtonStyle.primary,
     size: EdButtonSize = EdButtonSize.medium,
     isLoading: Boolean = false,
@@ -48,13 +52,13 @@ fun EdButton(
             modifier = Modifier,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
+            EdLabel(
                 text = text,
+                iconPainter = iconPainter,
+                iconStart = iconStart,
                 modifier = Modifier.padding(bottom = 3.dp),
                 style = size.textStyle,
-                maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-
             )
             if (isLoading) {
                 SpacerWidth(width = size.spacer)

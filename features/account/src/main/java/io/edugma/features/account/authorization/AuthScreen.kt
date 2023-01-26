@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.airbnb.lottie.compose.*
+import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.features.account.R
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.*
@@ -125,17 +126,12 @@ fun NotAuthorized(
             passwordMode = true,
         )
         SpacerHeight(height = 25.dp)
-        PrimaryButton(modifier = Modifier.defaultMinSize(minWidth = 250.dp), onClick = onAuthorize) {
-            Text(text = "Войти")
-            if (state.isLoading) {
-                SpacerWidth(width = 10.dp)
-                CircularProgressIndicator(
-                    modifier = Modifier.size(24.dp),
-                    color = MaterialTheme3.colorScheme.onPrimary,
-                    strokeWidth = 3.0.dp,
-                )
-            }
-        }
+        EdButton(
+            modifier = Modifier.defaultMinSize(minWidth = 250.dp),
+            onClick = onAuthorize,
+            isLoading = state.isLoading,
+            text = "Войти",
+        )
     }
 }
 
@@ -176,7 +172,7 @@ fun Authorized(state: AuthState, listener: ClickListener) {
                     .fillMaxWidth(),
             )
         }
-        ButtonView(
+        EdButton(
             text = "Перейти к меню",
             onClick = listener,
             modifier = Modifier

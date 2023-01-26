@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.domain.schedule.model.place.description
 import io.edugma.features.base.core.utils.*
@@ -98,9 +99,10 @@ fun FreePlaceContent(
                                     style = MaterialTheme3.typography.titleMedium,
                                 )
                                 SpacerFill()
-                                PrimaryButton(onClick = { dialogDatePickerState.show() }) {
-                                    Text(text = state.date.format(dateFormat))
-                                }
+                                EdButton(
+                                    onClick = { dialogDatePickerState.show() },
+                                    text = state.date.format(dateFormat),
+                                )
                             }
                             SpacerHeight(4.dp)
                             Row(
@@ -112,9 +114,10 @@ fun FreePlaceContent(
                                     style = MaterialTheme3.typography.titleMedium,
                                 )
                                 SpacerFill()
-                                PrimaryButton(onClick = { dialogTimePickerFromState.show() }) {
-                                    Text(text = state.timeFrom.format(timeFormat))
-                                }
+                                EdButton(
+                                    onClick = { dialogTimePickerFromState.show() },
+                                    text = state.timeFrom.format(timeFormat),
+                                )
                             }
                             SpacerHeight(4.dp)
                             Row(
@@ -126,9 +129,10 @@ fun FreePlaceContent(
                                     style = MaterialTheme3.typography.titleMedium,
                                 )
                                 SpacerFill()
-                                PrimaryButton(onClick = { dialogTimePickerToState.show() }) {
-                                    Text(text = state.timeTo.format(timeFormat))
-                                }
+                                EdButton(
+                                    onClick = { dialogTimePickerToState.show() },
+                                    text = state.timeTo.format(timeFormat),
+                                )
                             }
                             SpacerHeight(8.dp)
                             OutlinedTextField(
@@ -166,82 +170,83 @@ fun FreePlaceContent(
                                     }
                                 }
                             }
-                            PrimaryButton(onClick = onFindFreePlaces) {
-                                Text(text = "Найти свободные аудитории")
-                            }
+                            EdButton(
+                                onClick = onFindFreePlaces,
+                                text = "Найти свободные аудитории",
+                            )
                         }
                     }
-                }
-                SpacerHeight(height = 10.dp)
-                val freePlaces = remember(state.freePlaces) {
-                    state.freePlaces.toList().sortedBy { it.first.title }
-                }
-                LazyColumn(
-                    Modifier.fillMaxSize(),
-                ) {
-                    items(freePlaces) { item ->
-                        var checked by remember { mutableStateOf(false) }
-                        Column(
-                            Modifier
-                                .fillMaxWidth()
-                                .clickable { checked = !checked },
-                        ) {
-                            Text(
-                                text = item.first.title,
-                                style = MaterialTheme3.typography.titleSmall,
-                            )
-                            MediumAlpha {
+                    SpacerHeight(height = 10.dp)
+                    val freePlaces = remember(state.freePlaces) {
+                        state.freePlaces.toList().sortedBy { it.first.title }
+                    }
+                    LazyColumn(
+                        Modifier.fillMaxSize(),
+                    ) {
+                        items(freePlaces) { item ->
+                            var checked by remember { mutableStateOf(false) }
+                            Column(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .clickable { checked = !checked },
+                            ) {
                                 Text(
-                                    text = item.first.description,
+                                    text = item.first.title,
                                     style = MaterialTheme3.typography.titleSmall,
                                 )
+                                MediumAlpha {
+                                    Text(
+                                        text = item.first.description,
+                                        style = MaterialTheme3.typography.titleSmall,
+                                    )
+                                }
+                                WithContentAlpha(alpha = ContentAlpha.medium) {
+                                    Text(
+                                        text = "Занятий в это время: " + item.second.toString(),
+                                        style = MaterialTheme3.typography.bodySmall,
+                                    )
+                                }
+                                Spacer(Modifier.height(10.dp))
                             }
-                            WithContentAlpha(alpha = ContentAlpha.medium) {
-                                Text(
-                                    text = "Занятий в это время: " + item.second.toString(),
-                                    style = MaterialTheme3.typography.bodySmall,
-                                )
-                            }
-                            Spacer(Modifier.height(10.dp))
                         }
                     }
                 }
             }
-        }
 
-        MaterialDialog(
-            dialogState = dialogDatePickerState,
-            buttons = {
-                positiveButton("Ок")
-                negativeButton("Отмена")
-            },
-        ) {
-            datepicker(title = "Выберите день") { date ->
-                onDateSelect(date)
+            MaterialDialog(
+                dialogState = dialogDatePickerState,
+                buttons = {
+                    positiveButton("Ок")
+                    negativeButton("Отмена")
+                },
+            ) {
+                datepicker(title = "Выберите день") { date ->
+                    onDateSelect(date)
+                }
             }
-        }
 
-        MaterialDialog(
-            dialogState = dialogTimePickerFromState,
-            buttons = {
-                positiveButton("Ок")
-                negativeButton("Отмена")
-            },
-        ) {
-            timepicker(title = "Выберите начальное время", is24HourClock = true) { time ->
-                onTimeFromSelect(time)
+            MaterialDialog(
+                dialogState = dialogTimePickerFromState,
+                buttons = {
+                    positiveButton("Ок")
+                    negativeButton("Отмена")
+                },
+            ) {
+                timepicker(title = "Выберите начальное время", is24HourClock = true) { time ->
+                    onTimeFromSelect(time)
+                }
             }
-        }
 
-        MaterialDialog(
-            dialogState = dialogTimePickerToState,
-            buttons = {
-                positiveButton("Ок")
-                negativeButton("Отмена")
-            },
-        ) {
-            timepicker(title = "Выбрать конечное время", is24HourClock = true) { time ->
-                onTimeToSelect(time)
+            MaterialDialog(
+                dialogState = dialogTimePickerToState,
+                buttons = {
+                    positiveButton("Ок")
+                    negativeButton("Отмена")
+                },
+            ) {
+                timepicker(title = "Выбрать конечное время", is24HourClock = true) { time ->
+                    onTimeToSelect(time)
+                }
             }
         }
     }

@@ -32,6 +32,7 @@ import androidx.constraintlayout.compose.Dimension
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.edugma.core.designSystem.atoms.label.EdLabel
+import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.domain.account.model.Performance
 import io.edugma.features.account.R
 import io.edugma.features.account.marks.Filter.*
@@ -122,12 +123,11 @@ fun BottomSheetContent(
             state.bottomSheetPlaceholders,
         )
         SpacerHeight(height = 20.dp)
-        PrimaryButton(
+        EdButton(
             onClick = bottomCloseListener,
             modifier = Modifier.fillMaxWidth().placeholder(state.bottomSheetPlaceholders),
-        ) {
-            Text("Применить")
-        }
+            text = "Применить",
+        )
         SpacerHeight(height = 15.dp)
     }
 }

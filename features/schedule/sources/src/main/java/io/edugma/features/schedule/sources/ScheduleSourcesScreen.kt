@@ -21,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.label.EdLabel
+import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.domain.schedule.model.source.ScheduleSourceFull
 import io.edugma.domain.schedule.model.source.ScheduleSources
@@ -262,12 +263,11 @@ private fun ComplexSearch(
             onSelect = onSelectPlaces,
         )
         SpacerHeight(height = 16.dp)
-        PrimaryButton(
+        EdButton(
             onClick = onApply,
             modifier = Modifier.fillMaxWidth(),
-        ) {
-            Text(text = "Применить")
-        }
+            text = "Применить",
+        )
     }
 }
 

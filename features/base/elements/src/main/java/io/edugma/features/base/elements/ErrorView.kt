@@ -1,19 +1,18 @@
 package io.edugma.features.base.elements
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.*
+import io.edugma.core.designSystem.molecules.button.EdButton
+import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.elements.R
@@ -44,18 +43,11 @@ fun ErrorView(message: String = "Упс... Что-то пошло не так", 
                 .fillMaxWidth(),
         )
         SpacerHeight(height = 30.dp)
-        PrimaryButton(
+        EdButton(
             onClick = retryAction,
             modifier = Modifier.fillMaxWidth(),
-        ) {
-            Icon(Icons.Default.Refresh, "refresh")
-            SpacerWidth(width = 5.dp)
-            Text(
-                text = "Повторить".uppercase(),
-                style = MaterialTheme3.typography.bodyMedium,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-        }
+            text = "Повторить",
+            iconPainter = painterResource(EdIcons.ic_fluent_arrow_clockwise_16_regular),
+        )
     }
 }

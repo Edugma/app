@@ -16,11 +16,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.domain.nodes.model.Node
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.base.core.utils.Typed1Listener
-import io.edugma.features.base.elements.PrimaryButton
 import io.edugma.features.base.elements.SpacerHeight
 import io.edugma.features.base.elements.SpacerWidth
 import io.edugma.features.base.elements.TonalCard
@@ -83,12 +83,11 @@ private fun NodesMainContent(
                         modifier = Modifier.fillMaxWidth(),
                     )
                     SpacerHeight(height = 16.dp)
-                    PrimaryButton(
+                    EdButton(
                         onClick = onEnterNodeUrl,
                         modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        Text("Применить")
-                    }
+                        text = "Применить",
+                    )
                     SpacerHeight(height = 32.dp)
                 }
             }

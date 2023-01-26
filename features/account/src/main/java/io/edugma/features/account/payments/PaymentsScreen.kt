@@ -32,6 +32,7 @@ import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.edugma.core.designSystem.atoms.label.EdLabel
+import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.domain.account.model.*
 import io.edugma.features.account.R
 import io.edugma.features.base.core.utils.*
@@ -237,14 +238,13 @@ fun Payments(payments: Payments, onQrClickListener: ClickListener) {
             SpacerHeight(height = 5.dp)
             Text(text = balanceCurrentText, style = MaterialTheme3.typography.titleMedium, fontWeight = FontWeight.Bold, color = balanceCurrentColor, fontSize = 17.sp)
         }
-        PrimaryButton(
+        EdButton(
             onClick = onQrClickListener,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 10.dp, vertical = 15.dp),
-        ) {
-            Text(text = "Оплатить через QR код".uppercase())
-        }
+            text = "Оплатить через QR код".uppercase(),
+        )
     }
 }
 

@@ -31,6 +31,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.AsyncImage
 import io.edugma.core.designSystem.atoms.label.EdLabel
+import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.domain.account.model.student.Student
 import io.edugma.features.account.R
 import io.edugma.features.account.teachers.TeacherPlaceholder
@@ -206,12 +207,11 @@ fun FilterSheetContent(
             onValueChange = textChangeListener,
         )
         SpacerHeight(height = 40.dp)
-        PrimaryButton(
+        EdButton(
             onClick = onAcceptClick,
             modifier = Modifier.fillMaxWidth(),
-        ) {
-            Text("Применить")
-        }
+            text = "Применить",
+        )
         SpacerHeight(height = 15.dp)
     }
 }

@@ -34,6 +34,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.AsyncImage
 import io.edugma.core.designSystem.atoms.label.EdLabel
+import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.domain.account.model.Teacher
 import io.edugma.domain.account.model.departments
 import io.edugma.domain.account.model.description
@@ -176,12 +177,11 @@ fun TeacherSearchBottom(
             onValueChange = nameListener,
         )
         SpacerHeight(height = 40.dp)
-        PrimaryButton(
+        EdButton(
             onClick = searchListener,
             modifier = Modifier.fillMaxWidth(),
-        ) {
-            Text("Применить")
-        }
+            text = "Применить",
+        )
         SpacerHeight(height = 15.dp)
     }
 }
