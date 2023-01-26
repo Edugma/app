@@ -30,14 +30,15 @@ fun <T> Call<T>.registerCallback(
     onSuccess: (response: Response<T>) -> Unit,
     onFailure: (t: Throwable) -> Unit,
 ) {
-    enqueue(object : Callback<T> {
-        override fun onResponse(call: Call<T>, response: Response<T>) {
-            onSuccess(response)
-        }
+    enqueue(
+        object : Callback<T> {
+            override fun onResponse(call: Call<T>, response: Response<T>) {
+                onSuccess(response)
+            }
 
-        override fun onFailure(call: Call<T>, t: Throwable) {
-            onFailure(t)
-        }
-    },
+            override fun onFailure(call: Call<T>, t: Throwable) {
+                onFailure(t)
+            }
+        },
     )
 }

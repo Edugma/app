@@ -30,6 +30,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.AsyncImage
+import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.domain.account.model.student.Student
 import io.edugma.features.account.R
 import io.edugma.features.account.teachers.TeacherPlaceholder
@@ -118,63 +119,63 @@ fun StudentSheetContent(
         )
         SpacerHeight(height = 10.dp)
         student.sex?.let {
-            TextWithIcon(
+            EdLabel(
                 text = it,
-                icon = painterResource(id = FluentIcons.ic_fluent_people_24_regular),
+                iconPainter = painterResource(id = FluentIcons.ic_fluent_people_24_regular),
             )
         }
-        TextWithIcon(
+        EdLabel(
             text = student.branch.title,
-            icon = painterResource(id = FluentIcons.ic_fluent_building_24_regular),
+            iconPainter = painterResource(id = FluentIcons.ic_fluent_building_24_regular),
         )
-        TextWithIcon(
+        EdLabel(
             text = student.educationType,
-            icon = painterResource(id = R.drawable.acc_ic_teacher_24),
+            iconPainter = painterResource(id = R.drawable.acc_ic_teacher_24),
         )
-        TextWithIcon(
+        EdLabel(
             text = student.payment,
-            icon = painterResource(id = FluentIcons.ic_fluent_money_24_regular),
+            iconPainter = painterResource(id = FluentIcons.ic_fluent_money_24_regular),
         )
         student.getFaculty()?.let {
-            TextWithIcon(
+            EdLabel(
                 text = it,
-                icon = painterResource(id = FluentIcons.ic_fluent_book_24_regular),
+                iconPainter = painterResource(id = FluentIcons.ic_fluent_book_24_regular),
             )
         }
         student.group?.direction?.let {
-            TextWithIcon(
+            EdLabel(
                 text = it.title,
-                icon = painterResource(id = FluentIcons.ic_fluent_contact_card_group_24_regular),
+                iconPainter = painterResource(id = FluentIcons.ic_fluent_contact_card_group_24_regular),
             )
         }
         student.specialization?.let {
             if (it.title != student.group?.direction?.title) {
-                TextWithIcon(
+                EdLabel(
                     text = it.title,
-                    icon = painterResource(id = FluentIcons.ic_fluent_data_treemap_24_regular),
+                    iconPainter = painterResource(id = FluentIcons.ic_fluent_data_treemap_24_regular),
                 )
             }
         }
-        TextWithIcon(
+        EdLabel(
             text = "Года обучения: ${student.years}",
-            icon = painterResource(id = FluentIcons.ic_fluent_timer_24_regular),
+            iconPainter = painterResource(id = FluentIcons.ic_fluent_timer_24_regular),
         )
         student.dormitory?.let {
-            TextWithIcon(
+            EdLabel(
                 text = "Общежитие №$it",
-                icon = painterResource(id = FluentIcons.ic_fluent_building_home_24_regular),
+                iconPainter = painterResource(id = FluentIcons.ic_fluent_building_home_24_regular),
             )
         }
         student.dormitoryRoom?.let {
-            TextWithIcon(
+            EdLabel(
                 text = "Комната №$it",
-                icon = painterResource(id = FluentIcons.ic_fluent_conference_room_24_regular),
+                iconPainter = painterResource(id = FluentIcons.ic_fluent_conference_room_24_regular),
             )
         }
         student.birthday?.let {
-            TextWithIcon(
+            EdLabel(
                 text = "Дата рождения: ${it.format()}",
-                icon = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
+                iconPainter = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
             )
         }
 //        Text(text = student.toString())

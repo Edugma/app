@@ -31,6 +31,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.domain.account.model.Performance
 import io.edugma.features.account.R
 import io.edugma.features.account.marks.Filter.*
@@ -263,14 +264,14 @@ fun Performance(
                     width = Dimension.fillToConstraints
                 },
             ) {
-                TextWithIcon(
+                EdLabel(
                     text = performance.teacher,
-                    icon = painterResource(id = R.drawable.acc_ic_teacher_24),
+                    iconPainter = painterResource(id = R.drawable.acc_ic_teacher_24),
                 )
                 performance.date?.let {
-                    TextWithIcon(
+                    EdLabel(
                         text = "${performance.date?.format()} ${performance.time?.format().orEmpty()}",
-                        icon = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
+                        iconPainter = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
                     )
                 }
             }
@@ -331,14 +332,14 @@ fun PerformancePlaceholder() {
                     width = Dimension.fillToConstraints
                 },
             ) {
-                TextWithIcon(
+                EdLabel(
                     text = "",
-                    icon = painterResource(id = R.drawable.acc_ic_teacher_24),
+                    iconPainter = painterResource(id = R.drawable.acc_ic_teacher_24),
                     modifier = Modifier.placeholder(true),
                 )
-                TextWithIcon(
+                EdLabel(
                     text = "",
-                    icon = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
+                    iconPainter = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
                     modifier = Modifier.placeholder(true),
                 )
             }

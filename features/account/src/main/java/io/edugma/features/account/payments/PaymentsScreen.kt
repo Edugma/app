@@ -5,7 +5,6 @@ import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -32,6 +31,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.domain.account.model.*
 import io.edugma.features.account.R
 import io.edugma.features.base.core.utils.*
@@ -94,9 +94,9 @@ fun BottomSheetLayout(
                 },
         )
         SpacerHeight(height = 20.dp)
-        TextWithIcon(
+        EdLabel(
             text = "Вы можете сделать скриншот экрана или скачать QR-код на устройство, затем открыть его в мобильном приложении вашего банка:\nОплата по QR-коду -> Загрузить изображение",
-            icon = painterResource(id = FluentIcons.ic_fluent_info_24_regular),
+            iconPainter = painterResource(id = FluentIcons.ic_fluent_info_24_regular),
         )
         SpacerHeight(height = 20.dp)
     }
@@ -183,27 +183,27 @@ fun Payments(payments: Payments, onQrClickListener: ClickListener) {
     ) {
         val expanded = rememberSaveable { mutableStateOf(false) }
         payments.level?.let {
-            TextWithIcon(
+            EdLabel(
                 text = "Степень образования: ${payments.level}",
-                icon = painterResource(id = R.drawable.acc_ic_teacher_24),
+                iconPainter = painterResource(id = R.drawable.acc_ic_teacher_24),
                 modifier = Modifier,
             )
         }
         payments.dormRoom?.let {
-            TextWithIcon(
+            EdLabel(
                 text = payments.dormNum?.let { "Общежитие №$it, " }.orEmpty() + "комната $it",
-                icon = painterResource(id = FluentIcons.ic_fluent_building_24_regular),
+                iconPainter = painterResource(id = FluentIcons.ic_fluent_building_24_regular),
             )
         }
-        TextWithIcon(
+        EdLabel(
             text = "Срок действия: ${payments.startDate.format()} - ${payments.endDate.format()}",
-            icon = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
+            iconPainter = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
             modifier = Modifier,
         )
         if (payments.balance != "0") {
-            TextWithIcon(
+            EdLabel(
                 text = "Осталось выплатить: ${payments.balance}",
-                icon = painterResource(id = FluentIcons.ic_fluent_money_24_regular),
+                iconPainter = painterResource(id = FluentIcons.ic_fluent_money_24_regular),
             )
         }
         Column(modifier = Modifier.padding(horizontal = 10.dp)) {
@@ -255,14 +255,14 @@ fun PaymentsPlaceholder() {
             .padding(5.dp)
             .heightIn(min = 40.dp),
     ) {
-        TextWithIcon(
+        EdLabel(
             text = "",
-            icon = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
+            iconPainter = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
             modifier = Modifier.placeholder(true),
         )
-        TextWithIcon(
+        EdLabel(
             text = "",
-            icon = painterResource(id = FluentIcons.ic_fluent_money_24_regular),
+            iconPainter = painterResource(id = FluentIcons.ic_fluent_money_24_regular),
             modifier = Modifier.placeholder(true),
         )
         Column(modifier = Modifier.padding(horizontal = 10.dp)) {

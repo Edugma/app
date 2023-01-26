@@ -12,9 +12,9 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.domain.schedule.model.group.description
 import io.edugma.features.base.core.utils.*
-import io.edugma.features.base.elements.TextIcon
 import io.edugma.features.base.elements.TonalCard
 import io.edugma.features.schedule.elements.vertical_schedule.VerticalScheduleComponent
 import org.koin.androidx.compose.getViewModel
@@ -45,9 +45,9 @@ private fun GroupInfoContent(
         onBackClick = onBackClick,
         fields = {
             state.groupInfo?.let { groupInfo ->
-                TextIcon(
+                EdLabel(
                     text = groupInfo.description,
-                    painter = painterResource(FluentIcons.ic_fluent_text_description_20_regular),
+                    iconPainter = painterResource(FluentIcons.ic_fluent_text_description_20_regular),
                 )
 //                TextIcon(
 //                    text = "${groupInfo.course}-й курс",
@@ -124,7 +124,7 @@ fun InfoScaffold(
                     scrolledContainerColor = MaterialTheme3.colorScheme.background,
                 ),
                 navigationIcon = {
-                    //BackIconButton(onBackClick)
+                    // BackIconButton(onBackClick)
                 },
             )
         },

@@ -13,13 +13,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.domain.schedule.model.place.description
 import io.edugma.domain.schedule.model.teacher.description
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.FluentIcons
 import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.base.core.utils.Typed1Listener
-import io.edugma.features.base.elements.TextIcon
 import io.edugma.features.base.elements.TonalCard
 import io.edugma.features.schedule.elements.vertical_schedule.VerticalScheduleComponent
 import io.edugma.features.schedule.schedule_info.group_info.InfoScaffold
@@ -52,9 +52,9 @@ private fun TeacherInfoContent(
         onBackClick = onBackClick,
         fields = {
             state.teacherInfo?.let { groupInfo ->
-                TextIcon(
+                EdLabel(
                     text = groupInfo.description,
-                    painter = painterResource(FluentIcons.ic_fluent_text_description_20_regular),
+                    iconPainter = painterResource(FluentIcons.ic_fluent_text_description_20_regular),
                 )
 //                TextIcon(
 //                    text = "${groupInfo.course}-й курс",

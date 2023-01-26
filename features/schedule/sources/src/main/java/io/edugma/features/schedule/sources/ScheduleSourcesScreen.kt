@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.domain.schedule.model.source.ScheduleSourceFull
 import io.edugma.domain.schedule.model.source.ScheduleSources
@@ -283,10 +284,11 @@ private fun Filter(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(text = title)
-            TextRightIcon(
+            EdLabel(
                 text = "Посмотреть все",
-                painter = painterResource(FluentIcons.ic_fluent_ios_arrow_rtl_24_regular),
+                iconPainter = painterResource(FluentIcons.ic_fluent_ios_arrow_rtl_24_regular),
                 modifier = Modifier.clickable(onClick = onSelect),
+                iconStart = false,
             )
         }
         LazyRow {

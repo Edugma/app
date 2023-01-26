@@ -25,6 +25,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
+import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.domain.schedule.model.group.description
 import io.edugma.domain.schedule.model.place.PlaceInfo
 import io.edugma.domain.schedule.model.place.description
@@ -33,7 +34,6 @@ import io.edugma.features.base.core.utils.FluentIcons
 import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.base.elements.SpacerHeight
-import io.edugma.features.base.elements.TextIcon
 import io.edugma.features.base.elements.TonalCard
 import io.edugma.features.schedule.elements.vertical_schedule.VerticalScheduleComponent
 import io.edugma.features.schedule.schedule_info.R
@@ -71,9 +71,9 @@ private fun PlaceInfoContent(
         onBackClick = onBackClick,
         fields = {
             state.placeInfo?.let { groupInfo ->
-                TextIcon(
+                EdLabel(
                     text = groupInfo.description,
-                    painter = painterResource(FluentIcons.ic_fluent_text_description_20_regular),
+                    iconPainter = painterResource(FluentIcons.ic_fluent_text_description_20_regular),
                 )
 //                TextIcon(
 //                    text = "${groupInfo.course}-й курс",
@@ -164,9 +164,9 @@ private fun PlaceBuilding(place: PlaceInfo.Building) {
         Text(text = place.title)
         if (place.street != null) {
             SpacerHeight(8.dp)
-            TextIcon(
+            EdLabel(
                 text = place.street!!,
-                painter = painterResource(FluentIcons.ic_fluent_location_20_regular),
+                iconPainter = painterResource(FluentIcons.ic_fluent_location_20_regular),
             )
         }
         var resStr = ""
@@ -187,17 +187,17 @@ private fun PlaceBuilding(place: PlaceInfo.Building) {
         }
         if (resStr.isNotEmpty()) {
             SpacerHeight(8.dp)
-            TextIcon(
+            EdLabel(
                 text = resStr,
-                painter = painterResource(FluentIcons.ic_fluent_building_20_regular),
+                iconPainter = painterResource(FluentIcons.ic_fluent_building_20_regular),
             )
         }
         if (place.description != null) {
             SpacerHeight(8.dp)
             val description = place.description!!
-            TextIcon(
+            EdLabel(
                 text = stringResource(R.string.schedule_sch_inf_description),
-                painter = painterResource(FluentIcons.ic_fluent_text_description_20_regular),
+                iconPainter = painterResource(FluentIcons.ic_fluent_text_description_20_regular),
             )
             SpacerHeight(4.dp)
             Text(
@@ -231,9 +231,9 @@ private fun PlaceOnline(place: PlaceInfo.Online) {
         if (place.description != null) {
             SpacerHeight(8.dp)
             val description = place.description!!
-            TextIcon(
+            EdLabel(
                 text = stringResource(R.string.schedule_sch_inf_description),
-                painter = painterResource(FluentIcons.ic_fluent_text_description_20_regular),
+                iconPainter = painterResource(FluentIcons.ic_fluent_text_description_20_regular),
             )
             SpacerHeight(4.dp)
             Text(
@@ -250,9 +250,9 @@ private fun PlaceOther(place: PlaceInfo.Other) {
         if (place.description != null) {
             SpacerHeight(8.dp)
             val description = place.description!!
-            TextIcon(
+            EdLabel(
                 text = stringResource(R.string.schedule_sch_inf_description),
-                painter = painterResource(FluentIcons.ic_fluent_text_description_20_regular),
+                iconPainter = painterResource(FluentIcons.ic_fluent_text_description_20_regular),
             )
             SpacerHeight(4.dp)
             Text(
@@ -269,9 +269,9 @@ private fun PlaceUnclassified(place: PlaceInfo.Unclassified) {
         if (place.description != null) {
             SpacerHeight(8.dp)
             val description = place.description!!
-            TextIcon(
+            EdLabel(
                 text = stringResource(R.string.schedule_sch_inf_description),
-                painter = painterResource(FluentIcons.ic_fluent_text_description_20_regular),
+                iconPainter = painterResource(FluentIcons.ic_fluent_text_description_20_regular),
             )
             SpacerHeight(4.dp)
             Text(

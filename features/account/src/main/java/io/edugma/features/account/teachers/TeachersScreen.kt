@@ -33,6 +33,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.AsyncImage
+import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.domain.account.model.Teacher
 import io.edugma.domain.account.model.departments
 import io.edugma.domain.account.model.description
@@ -119,33 +120,33 @@ fun TeacherInfoBottom(teacher: Teacher) {
         )
         SpacerHeight(height = 10.dp)
         teacher.sex?.let {
-            TextWithIcon(
+            EdLabel(
                 text = it,
-                icon = painterResource(id = FluentIcons.ic_fluent_people_24_regular),
+                iconPainter = painterResource(id = FluentIcons.ic_fluent_people_24_regular),
             )
         }
         teacher.grade?.let {
-            TextWithIcon(
+            EdLabel(
                 text = it,
-                icon = painterResource(id = FluentIcons.ic_fluent_book_24_regular),
+                iconPainter = painterResource(id = FluentIcons.ic_fluent_book_24_regular),
             )
         }
         teacher.stuffType?.let {
-            TextWithIcon(
+            EdLabel(
                 text = it,
-                icon = painterResource(id = R.drawable.acc_ic_teacher_24),
+                iconPainter = painterResource(id = R.drawable.acc_ic_teacher_24),
             )
         }
         teacher.birthday?.let {
-            TextWithIcon(
+            EdLabel(
                 text = it.format(),
-                icon = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
+                iconPainter = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
             )
         }
         if (!teacher.email.isNullOrEmpty()) {
-            TextWithIcon(
-                text = teacher.email,
-                icon = painterResource(id = FluentIcons.ic_fluent_mail_24_regular),
+            EdLabel(
+                text = teacher.email!!,
+                iconPainter = painterResource(id = FluentIcons.ic_fluent_mail_24_regular),
             )
         }
         SpacerHeight(height = 10.dp)
