@@ -14,8 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.MaterialTheme3
 
 @Composable
 fun Refresher(text: String = "Произошла ошибка", onClickListener: ClickListener) {
@@ -29,7 +29,7 @@ fun Refresher(text: String = "Произошла ошибка", onClickListener:
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = text,
-                style = MaterialTheme3.typography.bodyLarge,
+                style = EdTheme.typography.bodyLarge,
             )
             SpacerWidth(width = 20.dp)
             Icon(Icons.Default.Refresh, contentDescription = null, modifier = Modifier.rotate(90f))

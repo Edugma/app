@@ -18,10 +18,10 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.features.account.students.Student
 import io.edugma.features.account.teachers.TeacherPlaceholder
 import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.base.core.utils.isNull
 import io.edugma.features.base.elements.ErrorView
 import io.edugma.features.base.elements.SpacerWidth
@@ -93,7 +93,7 @@ fun AppBar(
             SpacerWidth(width = 15.dp)
             Text(
                 text = "Однокурсники",
-                style = MaterialTheme3.typography.titleLarge,
+                style = EdTheme.typography.titleLarge,
                 modifier = Modifier.fillMaxWidth(),
             )
         }

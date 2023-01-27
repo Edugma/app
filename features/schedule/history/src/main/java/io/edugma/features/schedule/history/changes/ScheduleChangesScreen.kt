@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.domain.schedule.model.group.Group
 import io.edugma.domain.schedule.model.lesson.Lesson
 import io.edugma.domain.schedule.model.lesson.LessonTime
@@ -23,7 +24,6 @@ import io.edugma.domain.schedule.model.teacher.Teacher
 import io.edugma.domain.schedule.usecase.LessonChange
 import io.edugma.features.base.core.theme.AppTheme
 import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.base.core.utils.withAlpha
 import kotlinx.datetime.Instant
 import org.koin.androidx.compose.getViewModel
@@ -68,15 +68,15 @@ fun ScheduleChangesContent(
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         Surface(
-                            shape = MaterialTheme3.shapes.small,
+                            shape = EdTheme.shapes.small,
                             modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
-                            color = MaterialTheme3.colorScheme.background
+                            color = EdTheme.colorScheme.background
                                 .withAlpha(0.8f),
                         ) {
                             Text(
                                 date.format(dateFormatter),
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 5.dp),
-                                style = MaterialTheme3.typography.bodyMedium,
+                                style = EdTheme.typography.bodyMedium,
                             )
                         }
                     }
@@ -110,8 +110,8 @@ private fun LessonTime(time: LessonTime) {
 fun LessonChangeContent(change: LessonChange) {
     val containerColor = when (change) {
         is LessonChange.Added -> AppTheme.colorScheme.successContainer
-        is LessonChange.Modified -> MaterialTheme3.colorScheme.surfaceVariant
-        is LessonChange.Removed -> MaterialTheme3.colorScheme.errorContainer
+        is LessonChange.Modified -> EdTheme.colorScheme.surfaceVariant
+        is LessonChange.Removed -> EdTheme.colorScheme.errorContainer
     }
 
     var old: Lesson? = null
@@ -256,7 +256,7 @@ private fun ChangedPlaces(places: List<Place>, isNew: Boolean? = null) {
 private fun getColor(isNew: Boolean?): Color {
     return when (isNew) {
         true -> AppTheme.colorScheme.successContainer
-        false -> MaterialTheme3.colorScheme.errorContainer
+        false -> EdTheme.colorScheme.errorContainer
         null -> Color.Transparent
     }
 }

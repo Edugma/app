@@ -9,6 +9,7 @@ import androidx.compose.foundation.gestures.ScrollScope
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -22,9 +23,9 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
+import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.features.base.core.utils.*
-import io.edugma.features.base.elements.TonalCard
 import io.edugma.features.schedule.daily.model.DayUiModel
 import io.edugma.features.schedule.daily.model.WeekUiModel
 import java.time.LocalDate
@@ -99,12 +100,12 @@ fun RowScope.DayContent(
     isSelected: Boolean,
     onDayClick: Typed1Listener<LocalDate>,
 ) {
-    val colorFrom = MaterialTheme3.colorScheme.secondary
+    val colorFrom = EdTheme.colorScheme.secondary
 
     val backgroundColor = if (day.isToday) {
-        MaterialTheme3.colorScheme.secondaryContainer
+        EdTheme.colorScheme.secondaryContainer
     } else {
-        MaterialTheme3.colorScheme.surface
+        EdTheme.colorScheme.surface
     }
 
     val borderColor by animateColorAsState(
@@ -127,16 +128,20 @@ fun RowScope.DayContent(
             )
         }
         Spacer(Modifier.height(3.5.dp))
-        TonalCard(
+        EdCard(
             onClick = { onDayClick(day.date) },
             modifier = Modifier
                 .padding(start = 3.dp, end = 3.dp, top = 1.dp, bottom = 1.dp)
                 .size(39.dp),
             shape = EdTheme.shapes.medium,
             border = border,
-            color = backgroundColor,
+            colors = CardDefaults.cardColors(containerColor = backgroundColor),
         ) {
-            Box(Modifier.padding(start = 3.dp, end = 3.dp).fillMaxSize()) {
+            Box(
+                Modifier
+                    .padding(start = 3.dp, end = 3.dp)
+                    .fillMaxSize(),
+            ) {
                 Text(
                     text = day.date.dayOfMonth.toString(),
                     style = MaterialTheme.typography.titleSmall,
@@ -175,7 +180,7 @@ fun RowScope.DayContent(
                     Text(
                         modifier = Modifier.padding(bottom = 1.dp, start = 5.dp, end = 5.dp),
                         text = day.lessonCount.toString(),
-                        style = MaterialTheme3.typography.titleSmall,
+                        style = EdTheme.typography.titleSmall,
                         fontSize = 9.0.dp.sp(),
                         color = MaterialTheme.colorScheme.onPrimary,
                     )

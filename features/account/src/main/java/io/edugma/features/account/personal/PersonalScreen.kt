@@ -28,6 +28,7 @@ import coil.request.ImageRequest
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.edugma.core.designSystem.atoms.label.EdLabel
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.domain.account.model.Application
 import io.edugma.domain.account.model.Order
 import io.edugma.domain.account.model.Personal
@@ -167,7 +168,7 @@ private fun CollapsingToolbar(
         personal?.let {
             Text(
                 text = personal?.getNameSurname() ?: "О вас",
-                style = MaterialTheme3.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                style = EdTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
                 modifier = Modifier
                     .padding(bottom = 5.dp)
                     .constrainAs(name) {
@@ -179,7 +180,7 @@ private fun CollapsingToolbar(
             )
             Text(
                 text = "${personal?.degreeLevel} ${personal?.course} курса группы ${personal?.group}",
-                style = MaterialTheme3.typography.bodySmall,
+                style = EdTheme.typography.bodySmall,
                 modifier = Modifier
                     .constrainAs(info) {
                         linkTo(start = icon.end, end = image.start, endMargin = 8.dp)
@@ -295,13 +296,13 @@ fun Order(order: Order) {
         Box {
             Text(
                 text = order.name,
-                style = MaterialTheme3.typography.titleMedium,
+                style = EdTheme.typography.titleMedium,
                 modifier = Modifier
                     .defaultMinSize(minWidth = 100.dp),
             )
             Text(
                 text = order.date?.format().orEmpty(),
-                style = MaterialTheme3.typography.labelMedium,
+                style = EdTheme.typography.labelMedium,
                 modifier = Modifier
                     .defaultMinSize(minWidth = 50.dp)
                     .align(Alignment.CenterEnd),
@@ -310,7 +311,7 @@ fun Order(order: Order) {
         SpacerHeight(height = 15.dp)
         Text(
             text = order.description,
-            style = MaterialTheme3.typography.bodySmall,
+            style = EdTheme.typography.bodySmall,
             modifier = Modifier.fillMaxWidth(),
         )
     }
@@ -327,14 +328,14 @@ fun OrderPlaceholder() {
         Box {
             Text(
                 text = "",
-                style = MaterialTheme3.typography.titleMedium,
+                style = EdTheme.typography.titleMedium,
                 modifier = Modifier
                     .defaultMinSize(minWidth = 100.dp)
                     .placeholder(true),
             )
             Text(
                 text = "",
-                style = MaterialTheme3.typography.labelMedium,
+                style = EdTheme.typography.labelMedium,
                 modifier = Modifier
                     .defaultMinSize(minWidth = 50.dp)
                     .align(Alignment.CenterEnd)
@@ -344,7 +345,7 @@ fun OrderPlaceholder() {
         SpacerHeight(height = 15.dp)
         Text(
             text = "",
-            style = MaterialTheme3.typography.bodySmall,
+            style = EdTheme.typography.bodySmall,
             modifier = Modifier.fillMaxWidth().placeholder(true),
         )
     }
@@ -362,12 +363,12 @@ fun Application(application: Application) {
         Box(Modifier.fillMaxWidth()) {
             Text(
                 text = application.question,
-                style = MaterialTheme3.typography.titleMedium,
+                style = EdTheme.typography.titleMedium,
             )
             Text(
                 text = application.status.orEmpty(),
-                style = MaterialTheme3.typography.labelMedium,
-                color = MaterialTheme3.colorScheme.tertiary,
+                style = EdTheme.typography.labelMedium,
+                color = EdTheme.colorScheme.tertiary,
                 textAlign = TextAlign.End,
                 modifier = Modifier.align(Alignment.CenterEnd),
             )
@@ -375,12 +376,12 @@ fun Application(application: Application) {
 
         Text(
             text = application.number,
-            style = MaterialTheme3.typography.labelSmall,
-            color = MaterialTheme3.colorScheme.secondary,
+            style = EdTheme.typography.labelSmall,
+            color = EdTheme.colorScheme.secondary,
         )
         SpacerHeight(height = 10.dp)
         application.additionalInfo?.let {
-            Text(text = it, style = MaterialTheme3.typography.bodySmall)
+            Text(text = it, style = EdTheme.typography.bodySmall)
         }
     }
 }
@@ -397,15 +398,15 @@ fun ApplicationPlaceholder() {
         Box(Modifier.fillMaxWidth()) {
             Text(
                 text = "",
-                style = MaterialTheme3.typography.titleMedium,
+                style = EdTheme.typography.titleMedium,
                 modifier = Modifier.align(Alignment.CenterEnd)
                     .defaultMinSize(minWidth = 100.dp)
                     .placeholder(true),
             )
             Text(
                 text = "",
-                style = MaterialTheme3.typography.labelMedium,
-                color = MaterialTheme3.colorScheme.tertiary,
+                style = EdTheme.typography.labelMedium,
+                color = EdTheme.colorScheme.tertiary,
                 textAlign = TextAlign.End,
                 modifier = Modifier.align(Alignment.CenterEnd)
                     .defaultMinSize(minWidth = 50.dp)
@@ -415,8 +416,8 @@ fun ApplicationPlaceholder() {
 
         Text(
             text = "",
-            style = MaterialTheme3.typography.labelSmall,
-            color = MaterialTheme3.colorScheme.secondary,
+            style = EdTheme.typography.labelSmall,
+            color = EdTheme.colorScheme.secondary,
             modifier = Modifier
                 .defaultMinSize(minWidth = 50.dp)
                 .placeholder(true),
@@ -424,7 +425,7 @@ fun ApplicationPlaceholder() {
         SpacerHeight(height = 10.dp)
         Text(
             text = "it",
-            style = MaterialTheme3.typography.bodySmall,
+            style = EdTheme.typography.bodySmall,
             modifier = Modifier
                 .defaultMinSize(minWidth = 100.dp)
                 .placeholder(true),

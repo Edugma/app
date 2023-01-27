@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import io.edugma.features.base.core.utils.MaterialTheme3
+import io.edugma.core.designSystem.theme.EdTheme
 
 @Composable
 fun InitialAvatar(url: String?, initials: String = "") {
@@ -36,7 +36,7 @@ fun InitialAvatar(url: String?, initials: String = "") {
                 .height(48.dp)
                 .width(48.dp),
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme3.colorScheme.surfaceVariant,
+                containerColor = EdTheme.colorScheme.surfaceVariant,
             ),
         ) {
             Box(

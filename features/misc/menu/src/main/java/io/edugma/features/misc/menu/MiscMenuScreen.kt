@@ -7,8 +7,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.MaterialTheme3
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -31,7 +31,7 @@ private fun MiscMenuContent(
     ) {
         Text(
             text = "Прочее",
-            style = MaterialTheme3.typography.headlineMedium,
+            style = EdTheme.typography.headlineMedium,
             modifier = Modifier.padding(start = 16.dp),
         )
         Spacer(Modifier.height(20.dp))

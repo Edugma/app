@@ -29,10 +29,12 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.domain.account.model.*
 import io.edugma.features.account.R
 import io.edugma.features.base.core.utils.*
@@ -79,7 +81,7 @@ fun BottomSheetLayout(
         SpacerHeight(height = 15.dp)
         Text(
             text = "QR код",
-            style = MaterialTheme3.typography.headlineMedium,
+            style = EdTheme.typography.headlineMedium,
             modifier = Modifier.padding(start = 8.dp),
         )
         SpacerHeight(height = 20.dp)
@@ -212,11 +214,11 @@ fun Payments(payments: Payments, onQrClickListener: ClickListener) {
                 }
                 else -> {
                     balanceCurrentText = "Задолженность на текущую дату: ${payments.balanceCurrent}"
-                    balanceCurrentColor = MaterialTheme3.colorScheme.error
+                    balanceCurrentColor = EdTheme.colorScheme.error
                 }
             }
             SpacerHeight(height = 5.dp)
-            Text(text = balanceCurrentText, style = MaterialTheme3.typography.titleMedium, fontWeight = FontWeight.Bold, color = balanceCurrentColor, fontSize = 17.sp)
+            Text(text = balanceCurrentText, style = EdTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = balanceCurrentColor, fontSize = 17.sp)
         }
         EdButton(
             onClick = onQrClickListener,
@@ -257,7 +259,7 @@ fun PaymentsPlaceholder() {
             }
             Text(
                 text = "",
-                style = MaterialTheme3.typography.titleMedium,
+                style = EdTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 fontSize = 17.sp,
                 modifier = Modifier
@@ -276,25 +278,25 @@ fun HorizontalText(modifier: Modifier = Modifier, label: String, text: String) {
             modifier = modifier
                 .align(Alignment.CenterStart)
                 .widthIn(min = 50.dp),
-            style = MaterialTheme3.typography.bodyLarge,
+            style = EdTheme.typography.bodyLarge,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme3.colorScheme.primary,
+            color = EdTheme.colorScheme.primary,
         )
         Text(
             text = text,
             modifier = modifier
                 .align(Alignment.CenterEnd)
                 .widthIn(min = 20.dp),
-            style = MaterialTheme3.typography.bodyLarge,
+            style = EdTheme.typography.bodyLarge,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme3.colorScheme.primary,
+            color = EdTheme.colorScheme.primary,
         )
     }
 }
 
 @Composable
 fun Payment(payment: Payment) {
-    TonalCard(shape = MaterialTheme3.shapes.extraSmall) {
+    EdCard(shape = EdTheme.shapes.extraSmall) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -309,7 +311,7 @@ fun Payment(payment: Payment) {
 
 @Composable
 fun PaymentPlaceholder() {
-    TonalCard(shape = MaterialTheme3.shapes.extraSmall) {
+    EdCard(shape = EdTheme.shapes.extraSmall) {
         Box(
             modifier = Modifier
                 .placeholder(true)
@@ -332,7 +334,7 @@ fun Expander(onClickListener: ClickListener) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = "Показать больше",
-                style = MaterialTheme3.typography.bodyLarge,
+                style = EdTheme.typography.bodyLarge,
             )
             SpacerWidth(width = 20.dp)
             Icon(painterResource(id = FluentIcons.ic_fluent_ios_arrow_rtl_24_filled), contentDescription = null, modifier = Modifier.rotate(90f))

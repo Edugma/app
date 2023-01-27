@@ -37,6 +37,7 @@ import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.textField.EdTextField
 import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.domain.account.model.Teacher
 import io.edugma.domain.account.model.departments
 import io.edugma.domain.account.model.description
@@ -100,7 +101,7 @@ fun TeacherInfoBottom(teacher: Teacher) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = teacher.name,
-                style = MaterialTheme3.typography.headlineSmall,
+                style = EdTheme.typography.headlineSmall,
                 modifier = Modifier
                     .padding(horizontal = 8.dp)
                     .fillMaxWidth(0.8f),
@@ -117,7 +118,7 @@ fun TeacherInfoBottom(teacher: Teacher) {
         Text(
             text = teacher.departments,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme3.colorScheme.secondary,
+            color = EdTheme.colorScheme.secondary,
             modifier = Modifier
                 .padding(horizontal = 8.dp),
         )
@@ -169,7 +170,7 @@ fun TeacherSearchBottom(
         SpacerHeight(height = 15.dp)
         Text(
             text = "Поиск",
-            style = MaterialTheme3.typography.headlineMedium,
+            style = EdTheme.typography.headlineMedium,
             modifier = Modifier.padding(start = 8.dp),
         )
         SpacerHeight(height = 20.dp)
@@ -215,7 +216,7 @@ fun TeachersContent(
                 SpacerWidth(width = 15.dp)
                 Text(
                     text = "Преподаватели",
-                    style = MaterialTheme3.typography.titleLarge,
+                    style = EdTheme.typography.titleLarge,
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
@@ -300,7 +301,7 @@ fun Teacher(
             Column {
                 Text(
                     text = teacher.name,
-                    style = MaterialTheme3.typography.titleMedium,
+                    style = EdTheme.typography.titleMedium,
                     fontSize = 18.sp,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
@@ -351,7 +352,7 @@ fun TeacherPlaceholder() {
             Column {
                 Text(
                     text = "",
-                    style = MaterialTheme3.typography.titleMedium,
+                    style = EdTheme.typography.titleMedium,
                     fontSize = 18.sp,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,

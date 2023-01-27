@@ -11,9 +11,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.features.account.main.cards.*
 import io.edugma.features.account.main.model.MenuUi
-import io.edugma.features.base.core.utils.MaterialTheme3
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -32,7 +32,7 @@ fun AccountContent(state: AccountMenuState, onClickListener: (MenuUi) -> Unit) {
     ) {
         Text(
             text = "Сервисы",
-            style = MaterialTheme3.typography.headlineMedium,
+            style = EdTheme.typography.headlineMedium,
             modifier = Modifier.padding(start = 16.dp),
         )
         Spacer(Modifier.height(20.dp))

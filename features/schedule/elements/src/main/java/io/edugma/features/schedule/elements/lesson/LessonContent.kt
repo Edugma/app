@@ -15,6 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
+import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.domain.schedule.model.group.Group
 import io.edugma.domain.schedule.model.lesson.Lesson
@@ -26,7 +27,6 @@ import io.edugma.domain.schedule.model.teacher.Teacher
 import io.edugma.domain.schedule.utils.getShortName
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.SpacerHeight
-import io.edugma.features.base.elements.TonalCard
 import io.edugma.features.base.elements.placeholder
 import io.edugma.features.schedule.elements.lesson.model.ScheduleItem
 import java.time.format.DateTimeFormatter
@@ -38,7 +38,7 @@ fun LessonContent(
     isLoading: Boolean = false,
     onLessonClick: Typed1Listener<Lesson>,
 ) {
-    TonalCard(
+    EdCard(
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 6.dp)
             .fillMaxWidth(),
@@ -83,7 +83,7 @@ fun LessonHeader(type: LessonType, isLoading: Boolean = false) {
 @Composable
 fun LessonType(type: LessonType, isLoading: Boolean = false) {
     val color = if (type.isImportant) {
-        MaterialTheme3.colorScheme.error
+        EdTheme.colorScheme.error
     } else {
         Color.Unspecified
     }

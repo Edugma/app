@@ -13,14 +13,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.domain.schedule.model.place.description
 import io.edugma.domain.schedule.model.teacher.description
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.FluentIcons
-import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.base.core.utils.Typed1Listener
-import io.edugma.features.base.elements.TonalCard
 import io.edugma.features.schedule.elements.vertical_schedule.VerticalScheduleComponent
 import io.edugma.features.schedule.schedule_info.group_info.InfoScaffold
 import org.koin.androidx.compose.getViewModel
@@ -69,10 +69,10 @@ private fun TeacherInfoContent(
         tabs = {
             LazyRow(Modifier.fillMaxWidth()) {
                 items(state.tabs) {
-                    TonalCard(
+                    EdCard(
                         onClick = { onTabSelected(it) },
                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 5.dp),
-                        shape = MaterialTheme3.shapes.small,
+                        shape = EdTheme.shapes.small,
                     ) {
                         val text = when (it) {
                             TeacherInfoTabs.Schedule -> "Расписание"

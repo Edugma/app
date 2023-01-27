@@ -14,11 +14,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.base.core.utils.format
-import io.edugma.features.base.elements.TonalCard
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toJavaLocalDateTime
@@ -57,7 +57,7 @@ private fun ScheduleHistoryContent(
             onNavigationClick = onBackClick,
         )
         state.history.forEach { (key, value) ->
-            TonalCard(
+            EdCard(
                 onClick = { onScheduleClick(key) },
                 modifier = Modifier
                     .padding(vertical = 10.dp, horizontal = 16.dp)

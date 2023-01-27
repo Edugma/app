@@ -13,8 +13,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.domain.schedule.model.place.description
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.*
@@ -72,7 +74,7 @@ fun FreePlaceContent(
                 onNavigationClick = onBackClick,
             )
             Column(Modifier.padding(start = 8.dp, end = 8.dp)) {
-                TonalCard(Modifier.fillMaxWidth()) {
+                EdCard(Modifier.fillMaxWidth()) {
                     Column(
                         Modifier
                             .fillMaxWidth()
@@ -86,7 +88,7 @@ fun FreePlaceContent(
                         Text(
                             text = "Фильтры",
                             modifier = Modifier.clickable { onShowFilters() },
-                            style = MaterialTheme3.typography.titleLarge,
+                            style = EdTheme.typography.titleLarge,
                         )
                         SpacerHeight(height = 12.dp)
                         if (state.showFilters) {
@@ -96,7 +98,7 @@ fun FreePlaceContent(
                             ) {
                                 Text(
                                     text = "Дата",
-                                    style = MaterialTheme3.typography.titleMedium,
+                                    style = EdTheme.typography.titleMedium,
                                 )
                                 SpacerFill()
                                 EdButton(
@@ -111,7 +113,7 @@ fun FreePlaceContent(
                             ) {
                                 Text(
                                     text = "Начальное время",
-                                    style = MaterialTheme3.typography.titleMedium,
+                                    style = EdTheme.typography.titleMedium,
                                 )
                                 SpacerFill()
                                 EdButton(
@@ -126,7 +128,7 @@ fun FreePlaceContent(
                             ) {
                                 Text(
                                     text = "Конечное время",
-                                    style = MaterialTheme3.typography.titleMedium,
+                                    style = EdTheme.typography.titleMedium,
                                 )
                                 SpacerFill()
                                 EdButton(
@@ -192,18 +194,18 @@ fun FreePlaceContent(
                             ) {
                                 Text(
                                     text = item.first.title,
-                                    style = MaterialTheme3.typography.titleSmall,
+                                    style = EdTheme.typography.titleSmall,
                                 )
                                 MediumAlpha {
                                     Text(
                                         text = item.first.description,
-                                        style = MaterialTheme3.typography.titleSmall,
+                                        style = EdTheme.typography.titleSmall,
                                     )
                                 }
                                 WithContentAlpha(alpha = ContentAlpha.medium) {
                                     Text(
                                         text = "Занятий в это время: " + item.second.toString(),
-                                        style = MaterialTheme3.typography.bodySmall,
+                                        style = EdTheme.typography.bodySmall,
                                     )
                                 }
                                 Spacer(Modifier.height(10.dp))

@@ -20,6 +20,7 @@ import androidx.constraintlayout.compose.Dimension
 import com.airbnb.lottie.compose.*
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.textField.EdTextField
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.features.account.R
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.*
@@ -71,7 +72,7 @@ fun AuthContent(
                 SpacerWidth(width = 15.dp)
                 Text(
                     text = "Авторизация",
-                    style = MaterialTheme3.typography.titleLarge,
+                    style = EdTheme.typography.titleLarge,
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
@@ -168,7 +169,7 @@ fun Authorized(state: AuthState, listener: ClickListener) {
             )
             Text(
                 text = "Привет, ${state.name}!",
-                style = MaterialTheme3.typography.titleLarge,
+                style = EdTheme.typography.titleLarge,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth(),

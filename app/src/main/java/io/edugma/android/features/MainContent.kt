@@ -18,9 +18,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import io.edugma.android.appScreens
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.features.base.core.navigation.compose.getRoute
 import io.edugma.features.base.core.navigation.compose.rememberNavController
-import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.base.core.utils.withAlpha
 import io.edugma.features.base.navigation.MainScreen
 import io.edugma.features.base.navigation.nodes.NodesScreens
@@ -54,8 +54,8 @@ fun MainContent(
                 Modifier.background(
                     brush = Brush.verticalGradient(
                         colors = listOf(
-                            MaterialTheme3.colorScheme.background.withAlpha(0f),
-                            MaterialTheme3.colorScheme.background,
+                            EdTheme.colorScheme.background.withAlpha(0f),
+                            EdTheme.colorScheme.background,
                         ),
                     ),
                 ).fillMaxWidth()
@@ -99,7 +99,7 @@ fun BottomNav(navController: NavHostController) {
                             restoreState = true
                         }
                     },
-                    modifier = Modifier.clip(MaterialTheme3.shapes.medium),
+                    modifier = Modifier.clip(EdTheme.shapes.medium),
                 )
             }
         }

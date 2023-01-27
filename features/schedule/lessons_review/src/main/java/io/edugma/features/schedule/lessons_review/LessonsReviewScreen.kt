@@ -17,7 +17,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.domain.base.utils.capitalized
 import io.edugma.domain.schedule.model.lesson.LessonTime
 import io.edugma.domain.schedule.model.lesson_type.LessonType
@@ -25,9 +27,7 @@ import io.edugma.domain.schedule.model.review.LessonDates
 import io.edugma.domain.schedule.model.review.LessonTimesReview
 import io.edugma.domain.schedule.model.review.LessonTimesReviewByType
 import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.base.elements.SpacerHeight
-import io.edugma.features.base.elements.TonalCard
 import org.koin.androidx.compose.getViewModel
 import java.time.DayOfWeek
 import java.time.format.DateTimeFormatter
@@ -105,9 +105,8 @@ private fun DatesAndTimeUnit(
     lessonTimesReviewByType: LessonTimesReviewByType,
     modifier: Modifier = Modifier,
 ) {
-    TonalCard(
+    EdCard(
         modifier = modifier.fillMaxHeight(),
-        tonalElevation = 3.dp,
     ) {
         Column(Modifier.padding(start = 12.dp, end = 12.dp, top = 10.dp, bottom = 12.dp)) {
             LessonTypeContent(
@@ -135,7 +134,7 @@ private fun DatesAndTimeUnit(
 @Composable
 fun LessonTypeContent(type: LessonType) {
     val color = if (type.isImportant) {
-        MaterialTheme3.colorScheme.error
+        EdTheme.colorScheme.error
     } else {
         Color.Unspecified
     }

@@ -12,9 +12,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import coil.transform.CircleCropTransformation
+import io.edugma.core.designSystem.atoms.card.EdCard
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.MaterialTheme3
-import io.edugma.features.base.elements.TonalCard
 
 @Composable
 fun AuthCard(
@@ -22,7 +22,7 @@ fun AuthCard(
     name: String?,
     onClick: ClickListener,
 ) {
-    TonalCard(
+    EdCard(
         modifier = Modifier
             .padding(horizontal = 4.dp, vertical = 4.dp)
             .heightIn(180.dp)
@@ -66,8 +66,8 @@ fun AuthCard(
                         Spacer(Modifier.height(5.dp))
                         Text(
                             text = name,
-                            style = MaterialTheme3.typography.labelMedium,
-                            color = MaterialTheme3.colorScheme.secondary,
+                            style = EdTheme.typography.labelMedium,
+                            color = EdTheme.colorScheme.secondary,
                             modifier = Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Center,
                             overflow = TextOverflow.Ellipsis,

@@ -12,11 +12,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import io.edugma.core.designSystem.atoms.card.EdCard
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.domain.account.model.toLabel
 import io.edugma.features.account.main.CurrentPayments
 import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.MaterialTheme3
-import io.edugma.features.base.elements.TonalCard
 
 @Composable
 fun PaymentsCard(
@@ -25,7 +25,7 @@ fun PaymentsCard(
     enabled: Boolean,
     onClick: ClickListener,
 ) {
-    TonalCard(
+    EdCard(
         modifier = modifier
             .padding(horizontal = 4.dp, vertical = 4.dp)
             .fillMaxWidth(1f)
@@ -42,20 +42,20 @@ fun PaymentsCard(
                 Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
                         text = it.type.toLabel(),
-                        style = MaterialTheme3.typography.bodySmall,
-                        color = MaterialTheme3.colorScheme.secondary,
+                        style = EdTheme.typography.bodySmall,
+                        color = EdTheme.colorScheme.secondary,
                     )
                     Box(Modifier.fillMaxWidth()) {
                         Text(
                             text = "0",
-                            style = MaterialTheme3.typography.labelSmall,
+                            style = EdTheme.typography.labelSmall,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier.align(Alignment.TopStart),
                         )
                         Text(
                             text = it.sum.toString(),
-                            style = MaterialTheme3.typography.labelSmall,
+                            style = EdTheme.typography.labelSmall,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier.align(Alignment.TopEnd),
@@ -72,8 +72,8 @@ fun PaymentsCard(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(10.dp))
                                 .fillMaxWidth(),
-                            trackColor = MaterialTheme3.colorScheme.onPrimary,
-                            color = MaterialTheme3.colorScheme.primary,
+                            trackColor = EdTheme.colorScheme.onPrimary,
+                            color = EdTheme.colorScheme.primary,
                         )
                     }
                     ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
@@ -85,8 +85,8 @@ fun PaymentsCard(
                                     linkTo(parent.start, parent.end, bias = progress)
                                 },
                             textAlign = TextAlign.End,
-                            style = MaterialTheme3.typography.labelSmall,
-                            color = MaterialTheme3.colorScheme.tertiary,
+                            style = EdTheme.typography.labelSmall,
+                            color = EdTheme.colorScheme.tertiary,
                         )
                     }
                 }

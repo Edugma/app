@@ -20,10 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.searchField.EdSearchField
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.domain.schedule.model.source.ScheduleSourceFull
 import io.edugma.domain.schedule.model.source.ScheduleSources
 import io.edugma.domain.schedule.model.source.ScheduleSourcesTabs
@@ -109,7 +111,7 @@ fun ScheduleSourcesContent(
 // //            )
 //        },
 //        sheetState = q,
-//        sheetBackgroundColor = MaterialTheme3.colorScheme.background
+//        sheetBackgroundColor = EdTheme.colorScheme.background
 //    ) {
 //        Column {
 //            PrimaryTopAppBar(
@@ -171,10 +173,10 @@ private fun FiltersSelector(
                 val tonalElevation = remember(it.second) {
                     if (it.second) 4.dp else 0.dp
                 }
-                TonalCard(
+                EdCard(
                     onClick = { onFilterSelected(it.first) },
                     modifier = Modifier.fillMaxWidth(),
-                    tonalElevation = tonalElevation,
+                    elevation = CardDefaults.cardElevation(defaultElevation = tonalElevation),
                 ) {
                     Text(text = it.first)
                 }
@@ -342,9 +344,9 @@ private fun SourceTypeTab(
     onTabSelected: Typed1Listener<ScheduleSourcesTabs>,
 ) {
     val color = if (isSelected) {
-        MaterialTheme3.colorScheme.secondaryContainer
+        EdTheme.colorScheme.secondaryContainer
     } else {
-        MaterialTheme3.colorScheme.surface
+        EdTheme.colorScheme.surface
     }
 
     val title = when (tab) {
@@ -357,11 +359,11 @@ private fun SourceTypeTab(
         ScheduleSourcesTabs.Complex -> "Расширенный поиск"
     }
 
-    TonalCard(
+    EdCard(
         onClick = { onTabSelected(tab) },
         modifier = Modifier.padding(horizontal = 6.dp, vertical = 5.dp),
-        color = color,
-        shape = MaterialTheme3.shapes.small,
+        colors = CardDefaults.cardColors(containerColor = color),
+        shape = EdTheme.shapes.small,
     ) {
         Text(
             text = title,
@@ -403,12 +405,12 @@ fun SourceItem(
             Column(Modifier.weight(1f)) {
                 Text(
                     text = source.source.title,
-                    style = MaterialTheme3.typography.titleSmall,
+                    style = EdTheme.typography.titleSmall,
                 )
                 WithContentAlpha(alpha = ContentAlpha.medium) {
                     Text(
                         text = source.source.description,
-                        style = MaterialTheme3.typography.bodySmall,
+                        style = EdTheme.typography.bodySmall,
                     )
                 }
             }
@@ -422,7 +424,7 @@ fun SourceItem(
                 },
             ) {
                 val tintColor = if (source.isFavorite) {
-                    MaterialTheme3.colorScheme.primary
+                    EdTheme.colorScheme.primary
                 } else {
                     LocalContentColor.current
                 }

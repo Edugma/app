@@ -34,6 +34,7 @@ import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.textField.EdTextField
 import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.domain.account.model.student.Student
 import io.edugma.features.account.R
 import io.edugma.features.account.teachers.TeacherPlaceholder
@@ -97,7 +98,7 @@ fun StudentSheetContent(
         Row(modifier = Modifier.fillMaxWidth()) {
             Text(
                 text = student.getFullName(),
-                style = MaterialTheme3.typography.headlineSmall,
+                style = EdTheme.typography.headlineSmall,
                 modifier = Modifier
                     .padding(horizontal = 8.dp)
                     .fillMaxWidth(0.8f),
@@ -116,7 +117,7 @@ fun StudentSheetContent(
         Text(
             text = student.getInfo(),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme3.colorScheme.secondary,
+            color = EdTheme.colorScheme.secondary,
             modifier = Modifier
                 .padding(horizontal = 8.dp),
         )
@@ -199,7 +200,7 @@ fun FilterSheetContent(
         SpacerHeight(height = 15.dp)
         Text(
             text = "Поиск",
-            style = MaterialTheme3.typography.headlineMedium,
+            style = EdTheme.typography.headlineMedium,
             modifier = Modifier.padding(start = 8.dp),
         )
         SpacerHeight(height = 20.dp)
@@ -245,7 +246,7 @@ fun StudentsContent(
                 SpacerWidth(width = 15.dp)
                 Text(
                     text = "Студенты",
-                    style = MaterialTheme3.typography.titleLarge,
+                    style = EdTheme.typography.titleLarge,
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
@@ -350,7 +351,7 @@ fun Student(student: Student, onClick: ClickListener) {
             Column {
                 Text(
                     text = student.getFullName(),
-                    style = MaterialTheme3.typography.titleMedium,
+                    style = EdTheme.typography.titleMedium,
                     fontSize = 18.sp,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,

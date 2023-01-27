@@ -12,10 +12,11 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.domain.schedule.model.group.description
 import io.edugma.features.base.core.utils.*
-import io.edugma.features.base.elements.TonalCard
 import io.edugma.features.schedule.elements.vertical_schedule.VerticalScheduleComponent
 import org.koin.androidx.compose.getViewModel
 
@@ -62,10 +63,10 @@ private fun GroupInfoContent(
         tabs = {
             LazyRow(Modifier.fillMaxWidth()) {
                 items(state.tabs) {
-                    TonalCard(
+                    EdCard(
                         onClick = { onTabSelected(it) },
                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 5.dp),
-                        shape = MaterialTheme3.shapes.small,
+                        shape = EdTheme.shapes.small,
                     ) {
                         val text = when (it) {
                             GroupInfoTabs.Schedule -> "Расписание"
@@ -115,13 +116,13 @@ fun InfoScaffold(
                 title = {
                     Text(
                         text = title,
-                        style = MaterialTheme3.typography.titleLarge,
+                        style = EdTheme.typography.titleLarge,
                     )
                 },
                 scrollBehavior = scrollBehavior,
                 colors = TopAppBarDefaults.mediumTopAppBarColors(
-                    containerColor = MaterialTheme3.colorScheme.background,
-                    scrolledContainerColor = MaterialTheme3.colorScheme.background,
+                    containerColor = EdTheme.colorScheme.background,
+                    scrolledContainerColor = EdTheme.colorScheme.background,
                 ),
                 navigationIcon = {
                     // BackIconButton(onBackClick)

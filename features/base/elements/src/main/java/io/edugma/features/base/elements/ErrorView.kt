@@ -12,9 +12,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.*
 import io.edugma.core.designSystem.molecules.button.EdButton
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.elements.R
 
 @Composable
@@ -33,7 +33,7 @@ fun ErrorView(message: String = "Упс... Что-то пошло не так", 
         SpacerHeight(height = 50.dp)
         Text(
             text = message,
-            style = MaterialTheme3.typography.headlineSmall,
+            style = EdTheme.typography.headlineSmall,
         )
         SpacerHeight(height = 30.dp)
         LottieAnimation(

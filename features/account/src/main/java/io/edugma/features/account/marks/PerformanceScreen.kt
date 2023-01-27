@@ -35,6 +35,7 @@ import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.textField.EdTextField
 import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.domain.account.model.Performance
 import io.edugma.features.account.R
 import io.edugma.features.account.marks.Filter.*
@@ -86,7 +87,7 @@ fun BottomSheetContent(
         SpacerHeight(height = 15.dp)
         Text(
             text = "Фильтры",
-            style = MaterialTheme3.typography.headlineMedium,
+            style = EdTheme.typography.headlineMedium,
             modifier = Modifier.padding(start = 8.dp),
         )
         SpacerHeight(height = 20.dp)
@@ -182,8 +183,8 @@ fun PerformanceContent(
                                 if (it > 0) SpacerHeight(height = 15.dp)
                                 Text(
                                     text = "${state.filteredData!![it].course} курс",
-                                    style = MaterialTheme3.typography.headlineSmall,
-                                    color = MaterialTheme3.colorScheme.primary,
+                                    style = EdTheme.typography.headlineSmall,
+                                    color = EdTheme.colorScheme.primary,
                                 )
                                 SpacerHeight(height = 15.dp)
                             }
@@ -223,7 +224,7 @@ fun AppBar(
             SpacerWidth(width = 15.dp)
             Text(
                 text = "Оценки",
-                style = MaterialTheme3.typography.titleLarge,
+                style = EdTheme.typography.titleLarge,
                 modifier = Modifier.fillMaxWidth(),
             )
         }
@@ -253,7 +254,7 @@ fun Performance(
     ) {
         Text(
             text = performance.name,
-            style = MaterialTheme3.typography.titleMedium.copy(fontSize = 19.sp),
+            style = EdTheme.typography.titleMedium.copy(fontSize = 19.sp),
             modifier = Modifier.heightIn(30.dp),
         )
         ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
@@ -279,7 +280,7 @@ fun Performance(
             }
             Text(
                 text = performance.grade,
-                style = MaterialTheme3.typography.titleLarge,
+                style = EdTheme.typography.titleLarge,
                 modifier = Modifier.constrainAs(mark) {
                     linkTo(parent.top, parent.bottom)
                     end.linkTo(parent.end)
@@ -290,21 +291,21 @@ fun Performance(
             Chip(modifier = Modifier.clickable(onClick = { filterClickListener.invoke(Course(performance.course)) })) {
                 Text(
                     text = "${performance.course} курс",
-                    style = MaterialTheme3.typography.labelLarge,
+                    style = EdTheme.typography.labelLarge,
                     overflow = TextOverflow.Ellipsis,
                 )
             }
             Chip(modifier = Modifier.clickable(onClick = { filterClickListener.invoke(Semester(performance.semester)) })) {
                 Text(
                     text = "${performance.semester} семестр",
-                    style = MaterialTheme3.typography.labelLarge,
+                    style = EdTheme.typography.labelLarge,
                     overflow = TextOverflow.Ellipsis,
                 )
             }
             Chip(modifier = Modifier.clickable(onClick = { filterClickListener.invoke(Type(performance.examType)) })) {
                 Text(
                     text = performance.examType,
-                    style = MaterialTheme3.typography.labelLarge,
+                    style = EdTheme.typography.labelLarge,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
                 )
@@ -318,7 +319,7 @@ fun PerformancePlaceholder() {
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
             text = "",
-            style = MaterialTheme3.typography.titleMedium.copy(fontSize = 19.sp),
+            style = EdTheme.typography.titleMedium.copy(fontSize = 19.sp),
             modifier = Modifier
                 .widthIn(min = 200.dp)
                 .placeholder(true),
@@ -347,7 +348,7 @@ fun PerformancePlaceholder() {
             }
             Text(
                 text = "",
-                style = MaterialTheme3.typography.titleLarge,
+                style = EdTheme.typography.titleLarge,
                 modifier = Modifier
                     .widthIn(min = 100.dp)
                     .placeholder(true)
@@ -375,7 +376,7 @@ private fun<T> SelectableChipsRow(
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
             text = name,
-            style = MaterialTheme3.typography.bodyMedium,
+            style = EdTheme.typography.bodyMedium,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
@@ -397,7 +398,7 @@ private fun<T> SelectableChipsRow(
                     ) {
                         Text(
                             text = listItems[it].mappedValue,
-                            style = MaterialTheme3.typography.labelMedium,
+                            style = EdTheme.typography.labelMedium,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                         )
@@ -425,7 +426,7 @@ fun FiltersRow(
             ) {
                 Text(
                     text = filtersList[it].mappedValue,
-                    style = MaterialTheme3.typography.labelMedium,
+                    style = EdTheme.typography.labelMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )

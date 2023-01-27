@@ -3,6 +3,7 @@ package io.edugma.features.base.elements
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -11,18 +12,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import io.edugma.features.base.core.utils.MaterialTheme3
+import io.edugma.core.designSystem.atoms.card.EdCard
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.base.core.utils.isNotNull
 import io.edugma.features.base.core.utils.isNull
 
 @Composable
 fun Chip(modifier: Modifier = Modifier, icon: ImageVector? = null, onClick: (() -> Unit)? = null, body: @Composable () -> Unit = {}) {
-    TonalCard(
+    EdCard(
         modifier = Modifier
             .padding(4.dp)
             .height(32.dp),
-        shape = MaterialTheme3.shapes.extraLarge,
+        shape = EdTheme.shapes.extraLarge,
     ) {
         Row(
             modifier = modifier
@@ -37,7 +39,9 @@ fun Chip(modifier: Modifier = Modifier, icon: ImageVector? = null, onClick: (() 
                         imageVector = icon!!,
                         contentDescription = null,
                         modifier = Modifier
-                            .let { onClick?.let { listener -> it.clickable(onClick = listener) } ?: it }
+                            .let {
+                                onClick?.let { listener -> it.clickable(onClick = listener) } ?: it
+                            }
                             .size(20.dp),
                     )
                 } else {
@@ -51,12 +55,18 @@ fun Chip(modifier: Modifier = Modifier, icon: ImageVector? = null, onClick: (() 
 
 @Composable
 fun SelectableChip(modifier: Modifier = Modifier, selectedState: Boolean = false, onClick: (() -> Unit)? = null, body: @Composable () -> Unit = {}) {
-    TonalCard(
+    EdCard(
         modifier = Modifier
             .padding(4.dp)
             .height(32.dp),
-        color = if (selectedState) MaterialTheme3.colorScheme.primary else MaterialTheme3.colorScheme.surface,
-        shape = MaterialTheme3.shapes.extraLarge,
+        colors = CardDefaults.cardColors(
+            containerColor = if (selectedState) {
+                EdTheme.colorScheme.primary
+            } else {
+                EdTheme.colorScheme.surface
+            },
+        ),
+        shape = EdTheme.shapes.extraLarge,
     ) {
         Row(
             modifier = modifier
@@ -91,7 +101,7 @@ fun<T : Any> SelectableOneTypesRow(
             ) {
                 Text(
                     text = nameMapper.invoke(types[it]),
-                    style = MaterialTheme3.typography.labelLarge,
+                    style = EdTheme.typography.labelLarge,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )

@@ -8,8 +8,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.schedule.menu.cards.*
 import org.koin.androidx.compose.getViewModel
 
@@ -47,7 +47,7 @@ fun ScheduleMenuContent(
     ) {
         Text(
             text = stringResource(R.string.sch_schedule),
-            style = MaterialTheme3.typography.headlineMedium,
+            style = EdTheme.typography.headlineMedium,
             modifier = Modifier.padding(start = 16.dp),
         )
         Spacer(Modifier.height(20.dp))

@@ -16,12 +16,13 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.domain.base.utils.capitalized
 import io.edugma.domain.schedule.model.schedule.ScheduleDay
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.SpacerHeight
-import io.edugma.features.base.elements.TonalCard
 import io.edugma.features.schedule.calendar.model.ScheduleCalendarWeek
 import org.koin.androidx.compose.getViewModel
 import java.time.LocalDate
@@ -153,11 +154,11 @@ private fun WeekNumber(
 //    Column(modifier) {
 //        Text(
 //            text = "Неделя",
-//            style = MaterialTheme3.typography.labelMedium
+//            style = EdTheme.typography.labelMedium
 //        )
 //        Text(
 //            text = (weekNumber + 1).toString(),
-//            style = MaterialTheme3.typography.titleLarge
+//            style = EdTheme.typography.titleLarge
 //        )
 //    }
 
@@ -168,19 +169,19 @@ private fun WeekNumber(
         Column {
             Text(
                 text = "Неделя".uppercase(),
-                style = MaterialTheme3.typography.labelMedium,
-                color = MaterialTheme3.colorScheme.tertiary,
+                style = EdTheme.typography.labelMedium,
+                color = EdTheme.colorScheme.tertiary,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
             )
             Text(
                 text = (weekNumber + 1).toString(),
-                style = MaterialTheme3.typography.displayMedium,
-                color = MaterialTheme3.colorScheme.primary,
+                style = EdTheme.typography.displayMedium,
+                color = EdTheme.colorScheme.primary,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .offset(y = -MaterialTheme3.typography.displayMedium.fontSize.dp() * 0.1f)
-                    .height(MaterialTheme3.typography.displayMedium.fontSize.dp() * 1.1f),
+                    .offset(y = -EdTheme.typography.displayMedium.fontSize.dp() * 0.1f)
+                    .height(EdTheme.typography.displayMedium.fontSize.dp() * 1.1f),
                 textAlign = TextAlign.Center,
             )
         }
@@ -194,7 +195,7 @@ private fun CalendarItem(
     onItemClick: ClickListener,
     modifier: Modifier = Modifier,
 ) {
-    TonalCard(
+    EdCard(
         onClick = onItemClick,
         modifier = modifier
             .fillMaxHeight()
@@ -210,7 +211,7 @@ private fun CalendarItem(
                 style = MaterialTheme.typography.titleSmall,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally),
-                color = MaterialTheme3.colorScheme.secondary,
+                color = EdTheme.colorScheme.secondary,
             )
 
             if (day.lessons.isNotEmpty()) {
@@ -230,7 +231,7 @@ private fun CalendarItem(
                             append(cutTitle(lesson.subject.title))
                             append(" (")
                             if (lesson.type.isImportant) {
-                                pushStyle(SpanStyle(color = MaterialTheme3.colorScheme.error))
+                                pushStyle(SpanStyle(color = EdTheme.colorScheme.error))
                                 append(getShortType(lesson.type.title))
                                 pop()
                             } else {

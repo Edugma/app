@@ -15,12 +15,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.domain.base.utils.capitalized
 import io.edugma.domain.schedule.model.lesson.Lesson
 import io.edugma.domain.schedule.model.lesson.LessonDateTime
 import io.edugma.domain.schedule.model.lesson.LessonDisplaySettings
 import io.edugma.domain.schedule.model.source.ScheduleSource
-import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.base.core.utils.Typed2Listener
 import io.edugma.features.base.core.utils.withAlpha
 import io.edugma.features.base.elements.SpacerHeight
@@ -142,15 +142,15 @@ private fun DayDate(date: LocalDate) {
         modifier = Modifier.fillMaxWidth(),
     ) {
         Surface(
-            shape = MaterialTheme3.shapes.small,
+            shape = EdTheme.shapes.small,
             modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
-            color = MaterialTheme3.colorScheme.background
+            color = EdTheme.colorScheme.background
                 .withAlpha(0.8f),
         ) {
             Text(
                 date.format(dateFormatter).capitalized(),
                 modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
-                style = MaterialTheme3.typography.bodyMedium,
+                style = EdTheme.typography.bodyMedium,
             )
         }
     }

@@ -20,6 +20,7 @@ fun EdCard(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     shape: Shape = CardDefaults.shape,
+    colors: CardColors = CardDefaults.cardColors(),
     elevation: CardElevation = CardDefaults.cardElevation(),
     border: BorderStroke? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -34,6 +35,7 @@ fun EdCard(
         border = border,
         interactionSource = interactionSource,
         content = content,
+        colors = colors,
     )
 }
 

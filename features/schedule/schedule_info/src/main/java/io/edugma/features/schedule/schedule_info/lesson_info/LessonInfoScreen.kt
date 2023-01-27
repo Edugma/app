@@ -16,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.domain.schedule.model.group.Group
 import io.edugma.domain.schedule.model.lesson.LessonDateTime
 import io.edugma.domain.schedule.model.lesson.LessonInfo
@@ -64,7 +65,7 @@ private fun LessonInfoContent(
             .verticalScroll(rememberScrollState()),
     ) {
         Surface(
-            color = MaterialTheme3.colorScheme.surfaceVariant,
+            color = EdTheme.colorScheme.surfaceVariant,
             shape = RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp),
         ) {
             Column(Modifier.fillMaxWidth()) {
@@ -111,7 +112,7 @@ private fun LessonType(type: String) {
     WithContentAlpha(ContentAlpha.medium) {
         Text(
             text = type,
-            style = MaterialTheme3.typography.titleSmall,
+            style = EdTheme.typography.titleSmall,
             modifier = Modifier.padding(start = 16.dp, end = 16.dp),
         )
     }
@@ -121,7 +122,7 @@ private fun LessonType(type: String) {
 private fun LessonTitle(title: String) {
     Text(
         text = title,
-        style = MaterialTheme3.typography.titleLarge,
+        style = EdTheme.typography.titleLarge,
         modifier = Modifier.padding(start = 16.dp, end = 16.dp),
     )
 }
@@ -150,7 +151,7 @@ private fun LessonDateTime(lessonDateTime: LessonDateTime) {
                 SpacerWidth(3.dp)
                 Text(
                     text = "$timeStart - $timeEnd",
-                    style = MaterialTheme3.typography.bodySmall,
+                    style = EdTheme.typography.bodySmall,
                     modifier = Modifier.padding(bottom = 1.dp),
                 )
             }
@@ -165,7 +166,7 @@ private fun LessonDateTime(lessonDateTime: LessonDateTime) {
                 SpacerWidth(3.dp)
                 Text(
                     text = startDate,
-                    style = MaterialTheme3.typography.bodySmall,
+                    style = EdTheme.typography.bodySmall,
                     modifier = Modifier.padding(bottom = 1.dp),
                 )
             }
@@ -190,7 +191,7 @@ private fun LessonTeachers(
             SpacerWidth(4.dp)
             Text(
                 text = "Преподаватели",
-                style = MaterialTheme3.typography.titleSmall,
+                style = EdTheme.typography.titleSmall,
                 modifier = Modifier.padding(bottom = 2.dp),
             )
         }
@@ -229,7 +230,7 @@ private fun LessonPlaces(
             SpacerWidth(4.dp)
             Text(
                 text = "Места",
-                style = MaterialTheme3.typography.titleSmall,
+                style = EdTheme.typography.titleSmall,
                 modifier = Modifier.padding(bottom = 2.dp),
             )
         }
@@ -268,7 +269,7 @@ private fun LessonGroups(
             SpacerWidth(4.dp)
             Text(
                 text = "Группы",
-                style = MaterialTheme3.typography.titleSmall,
+                style = EdTheme.typography.titleSmall,
                 modifier = Modifier.padding(bottom = 2.dp),
             )
         }
@@ -320,14 +321,14 @@ private fun LessonItem(
             Column(Modifier.padding(bottom = 4.dp)) {
                 Text(
                     text = title,
-                    style = MaterialTheme3.typography.titleSmall,
+                    style = EdTheme.typography.titleSmall,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
                 WithContentAlpha(alpha = ContentAlpha.medium) {
                     Text(
                         text = description,
-                        style = MaterialTheme3.typography.bodySmall,
+                        style = EdTheme.typography.bodySmall,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                     )

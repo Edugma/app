@@ -25,16 +25,16 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
+import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.domain.schedule.model.group.description
 import io.edugma.domain.schedule.model.place.PlaceInfo
 import io.edugma.domain.schedule.model.place.description
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.FluentIcons
-import io.edugma.features.base.core.utils.MaterialTheme3
 import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.base.elements.SpacerHeight
-import io.edugma.features.base.elements.TonalCard
 import io.edugma.features.schedule.elements.vertical_schedule.VerticalScheduleComponent
 import io.edugma.features.schedule.schedule_info.R
 import io.edugma.features.schedule.schedule_info.group_info.InfoScaffold
@@ -88,10 +88,10 @@ private fun PlaceInfoContent(
         tabs = {
             LazyRow(Modifier.fillMaxWidth()) {
                 items(state.tabs) {
-                    TonalCard(
+                    EdCard(
                         onClick = { onTabSelected(it) },
                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 5.dp),
-                        shape = MaterialTheme3.shapes.small,
+                        shape = EdTheme.shapes.small,
                     ) {
                         val text = when (it) {
                             PlaceInfoTabs.Occupancy -> "Занятость"
@@ -215,7 +215,7 @@ private fun PlaceOnline(place: PlaceInfo.Online) {
             val uriHandler = LocalUriHandler.current
             val annotatedString = buildAnnotatedString {
                 pushStringAnnotation(tag = "url", annotation = place.url!!)
-                withStyle(style = SpanStyle(color = MaterialTheme3.colorScheme.primary)) {
+                withStyle(style = SpanStyle(color = EdTheme.colorScheme.primary)) {
                     append(place.url!!)
                 }
                 pop()
