@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.molecules.button.EdButton
+import io.edugma.core.designSystem.molecules.searchField.EdSearchField
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.domain.schedule.model.source.ScheduleSourceFull
 import io.edugma.domain.schedule.model.source.ScheduleSources
@@ -157,7 +158,7 @@ private fun FiltersSelector(
     onQueryChange: Typed1Listener<String>,
 ) {
     Column(Modifier.fillMaxSize()) {
-        PrimarySearchField(
+        EdSearchField(
             value = query,
             onValueChange = onQueryChange,
             modifier = Modifier
@@ -316,7 +317,7 @@ private fun Search(
     onAddFavorite: Typed1Listener<ScheduleSourceFull>,
     onDeleteFavorite: Typed1Listener<ScheduleSourceFull>,
 ) {
-    PrimarySearchField(
+    EdSearchField(
         value = query,
         onValueChange = onQueryChange,
         modifier = Modifier
