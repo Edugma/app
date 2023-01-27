@@ -33,6 +33,7 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.molecules.button.EdButton
+import io.edugma.core.designSystem.molecules.textField.EdTextField
 import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
 import io.edugma.domain.account.model.Performance
 import io.edugma.features.account.R
@@ -89,10 +90,10 @@ fun BottomSheetContent(
             modifier = Modifier.padding(start = 8.dp),
         )
         SpacerHeight(height = 20.dp)
-        TextBox(
+        EdTextField(
             modifier = Modifier.placeholder(state.bottomSheetPlaceholders),
             value = state.name.value,
-            title = "Название предмета",
+            placeholder = "Название предмета",
             onValueChange = {
                 viewModel.updateFilter(
                     Name(

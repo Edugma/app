@@ -35,7 +35,7 @@ fun EdSearchField(
     readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,
     label: @Composable (() -> Unit)? = null,
-    placeholder: @Composable (() -> Unit)? = null,
+    placeholder: String? = null,
     supportingText: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
     visualTransformation: VisualTransformation = VisualTransformation.None,

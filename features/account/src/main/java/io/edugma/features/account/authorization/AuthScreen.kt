@@ -12,12 +12,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.airbnb.lottie.compose.*
 import io.edugma.core.designSystem.molecules.button.EdButton
+import io.edugma.core.designSystem.molecules.textField.EdTextField
 import io.edugma.features.account.R
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.*
@@ -113,17 +115,17 @@ fun NotAuthorized(
             .fillMaxHeight(0.7f)
             .verticalScroll(rememberScrollState()),
     ) {
-        TextBox(
+        EdTextField(
             value = state.login,
-            title = "Логин",
+            placeholder = "Логин",
             onValueChange = onLoginChange,
         )
         SpacerHeight(height = 12.dp)
-        TextBox(
+        EdTextField(
             value = state.password,
-            title = "Пароль",
+            placeholder = "Пароль",
             onValueChange = onPasswordChange,
-            passwordMode = true,
+            visualTransformation = PasswordVisualTransformation(),
         )
         SpacerHeight(height = 25.dp)
         EdButton(

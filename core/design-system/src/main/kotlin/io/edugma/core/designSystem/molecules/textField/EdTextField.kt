@@ -1,6 +1,7 @@
 package io.edugma.core.designSystem.molecules.textField
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -10,6 +11,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,6 +19,9 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.atoms.label.EdLabel
+import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,7 +34,7 @@ fun EdTextField(
     readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,
     label: @Composable (() -> Unit)? = null,
-    placeholder: @Composable (() -> Unit)? = null,
+    placeholder: String? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     supportingText: @Composable (() -> Unit)? = null,
@@ -55,7 +60,20 @@ fun EdTextField(
         readOnly = readOnly,
         textStyle = textStyle,
         label = label,
-        placeholder = placeholder,
+        placeholder = placeholder?.let {
+            @Composable {
+                CompositionLocalProvider(
+                    LocalContentColor provides EdTheme.colorScheme.onSurface.copy(
+                        alpha = 0.38f,
+                    ),
+                ) {
+                    EdLabel(
+                        text = placeholder,
+                        style = textStyle,
+                    )
+                }
+            }
+        },
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
         supportingText = supportingText,
@@ -87,9 +105,17 @@ object EdTextFieldDefaults {
 @Composable
 fun EdTextFieldPreview() {
     EdTheme {
-        EdTextField(
-            value = "My search text",
-            onValueChange = { },
-        )
+        Column {
+            EdTextField(
+                value = "My search text",
+                onValueChange = { },
+            )
+            SpacerHeight(height = 10.dp)
+            EdTextField(
+                value = "",
+                placeholder = "Enter search text",
+                onValueChange = { },
+            )
+        }
     }
 }

@@ -35,6 +35,7 @@ import androidx.paging.compose.items
 import coil.compose.AsyncImage
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.molecules.button.EdButton
+import io.edugma.core.designSystem.molecules.textField.EdTextField
 import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
 import io.edugma.domain.account.model.Teacher
 import io.edugma.domain.account.model.departments
@@ -172,9 +173,9 @@ fun TeacherSearchBottom(
             modifier = Modifier.padding(start = 8.dp),
         )
         SpacerHeight(height = 20.dp)
-        TextBox(
+        EdTextField(
             value = state.name,
-            title = "ФИО преподавателя",
+            placeholder = "ФИО преподавателя",
             onValueChange = nameListener,
         )
         SpacerHeight(height = 40.dp)

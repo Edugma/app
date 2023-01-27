@@ -164,13 +164,7 @@ private fun FiltersSelector(
             modifier = Modifier
                 .padding(start = 16.dp, end = 16.dp)
                 .fillMaxWidth(),
-            placeholder = {
-                MediumAlpha {
-                    Text(
-                        text = stringResource(R.string.schedule_sou_search),
-                    )
-                }
-            },
+            placeholder = stringResource(R.string.schedule_sou_search),
         )
         LazyColumn(Modifier.fillMaxWidth()) {
             items(filters) {
@@ -323,13 +317,7 @@ private fun Search(
         modifier = Modifier
             .padding(start = 16.dp, end = 16.dp)
             .fillMaxWidth(),
-        placeholder = {
-            WithContentAlpha(alpha = ContentAlpha.medium) {
-                Text(
-                    text = stringResource(R.string.schedule_sou_search),
-                )
-            }
-        },
+        placeholder = stringResource(R.string.schedule_sou_search),
     )
     SpacerHeight(8.dp)
     LazyColumn(

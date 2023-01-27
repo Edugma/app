@@ -32,6 +32,7 @@ import androidx.paging.compose.items
 import coil.compose.AsyncImage
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.molecules.button.EdButton
+import io.edugma.core.designSystem.molecules.textField.EdTextField
 import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
 import io.edugma.domain.account.model.student.Student
 import io.edugma.features.account.R
@@ -202,9 +203,9 @@ fun FilterSheetContent(
             modifier = Modifier.padding(start = 8.dp),
         )
         SpacerHeight(height = 20.dp)
-        TextBox(
+        EdTextField(
             value = state.name,
-            title = "Фамилия или группа студента",
+            placeholder = "Фамилия или группа студента",
             onValueChange = textChangeListener,
         )
         SpacerHeight(height = 40.dp)
