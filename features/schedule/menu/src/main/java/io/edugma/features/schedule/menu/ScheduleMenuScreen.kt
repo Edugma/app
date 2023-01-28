@@ -52,16 +52,14 @@ fun ScheduleMenuContent(
         )
         Spacer(Modifier.height(20.dp))
         Row(
-            Modifier
-                .height(90.dp)
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             ScheduleSourcesCard(state.source, onScheduleSourceClick)
         }
         Row(
-            Modifier
-                .height(150.dp)
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             ScheduleCard(
                 state.main,
@@ -73,20 +71,18 @@ fun ScheduleMenuContent(
             )
         }
         Row(
-            Modifier
-                .height(100.dp)
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             LessonsReviewCard(onLessonsReviewClick)
-            FindFreePlaceCard(onFreePlaceClick)
+            ChangeHistoryCard(onHistoryClick)
+            ScheduleAppWidgetCard(onAppWidgetClick)
         }
         Row(
-            Modifier
-                .height(100.dp)
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            ChangeHistoryCard(onHistoryClick)
-            // ScheduleAppWidgetCard(onAppWidgetClick)
+            FindFreePlaceCard(onFreePlaceClick)
         }
     }
 }

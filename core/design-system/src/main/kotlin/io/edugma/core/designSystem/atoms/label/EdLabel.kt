@@ -48,6 +48,7 @@ fun EdLabel(
     lineHeight: TextUnit = TextUnit.Unspecified,
     overflow: TextOverflow = TextOverflow.Clip,
     softWrap: Boolean = true,
+    maxLines: Int = 1,
     onTextLayout: (TextLayoutResult) -> Unit = {},
     style: TextStyle = LocalTextStyle.current,
 ) {
@@ -77,7 +78,7 @@ fun EdLabel(
             lineHeight = lineHeight,
             overflow = overflow,
             softWrap = softWrap,
-            maxLines = 1,
+            maxLines = maxLines,
             onTextLayout = onTextLayout,
             style = style,
         )
