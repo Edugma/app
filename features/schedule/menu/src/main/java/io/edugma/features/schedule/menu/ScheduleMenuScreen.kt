@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.schedule.menu.cards.*
@@ -50,37 +51,49 @@ fun ScheduleMenuContent(
             style = EdTheme.typography.headlineMedium,
             modifier = Modifier.padding(start = 16.dp),
         )
-        Spacer(Modifier.height(20.dp))
+        SpacerHeight(height = 14.dp)
+        ScheduleSourcesCard(state.source, onScheduleSourceClick)
+        SpacerHeight(height = 10.dp)
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
-            ScheduleSourcesCard(state.source, onScheduleSourceClick)
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth()
+                .padding(horizontal = 4.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             ScheduleCard(
                 state.main,
                 onScheduleClick,
+                modifier = Modifier.weight(2f),
             )
             CalendarCard(
                 state.date,
                 onScheduleCalendarClick,
+                modifier = Modifier.weight(1f),
             )
         }
+        SpacerHeight(height = 8.dp)
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth()
+                .padding(horizontal = 4.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            LessonsReviewCard(onLessonsReviewClick)
-            ChangeHistoryCard(onHistoryClick)
-            ScheduleAppWidgetCard(onAppWidgetClick)
+            LessonsReviewCard(
+                onLessonsReviewClick = onLessonsReviewClick,
+                modifier = Modifier.weight(1f),
+            )
+            ChangeHistoryCard(
+                onLessonsReviewClick = onHistoryClick,
+                modifier = Modifier.weight(1f),
+            )
+            ScheduleAppWidgetCard(
+                onScheduleWidget = onAppWidgetClick,
+                modifier = Modifier.weight(1f),
+            )
         }
+        SpacerHeight(height = 8.dp)
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth()
+                .padding(horizontal = 4.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             FindFreePlaceCard(onFreePlaceClick)
         }

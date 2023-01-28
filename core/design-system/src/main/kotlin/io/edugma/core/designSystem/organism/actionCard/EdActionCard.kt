@@ -20,13 +20,12 @@ fun EdActionCard(
     title: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    subtitle: String = "",
+    subtitle: String? = null,
     width: EdActionCardWidth = EdActionCardWidth.small,
     content: @Composable BoxScope.() -> Unit,
 ) {
     EdCard(
         modifier = modifier
-            .padding(horizontal = 4.dp, vertical = 4.dp)
             .height(100.dp)
             .width(width.width),
         onClick = onClick,
@@ -51,14 +50,16 @@ fun EdActionCard(
                 style = EdTheme.typography.labelMedium,
                 maxLines = 2,
             )
-            EdLabel(
-                text = subtitle,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.CenterHorizontally),
-                style = EdTheme.typography.labelSmall,
-                color = EdTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-            )
+            if (subtitle != null) {
+                EdLabel(
+                    text = subtitle,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.CenterHorizontally),
+                    style = EdTheme.typography.labelSmall,
+                    color = EdTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                )
+            }
         }
     }
 }

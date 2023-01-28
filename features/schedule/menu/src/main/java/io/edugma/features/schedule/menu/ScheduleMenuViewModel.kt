@@ -1,6 +1,7 @@
 package io.edugma.features.schedule.menu
 
 import androidx.lifecycle.viewModelScope
+import io.edugma.core.designSystem.organism.accountSelector.AccountSelectorVO
 import io.edugma.domain.schedule.model.schedule.LessonsByTime
 import io.edugma.domain.schedule.model.source.ScheduleSourceFull
 import io.edugma.domain.schedule.usecase.ScheduleUseCase
@@ -96,13 +97,25 @@ data class ScheduleMenuState(
 
     data class SourceState(
         val selectedSource: ScheduleSourceFull? = null,
+        val accountSelectorVO: AccountSelectorVO? = null,
     )
 }
 
 class ScheduleMenuMutator : BaseMutator<ScheduleMenuState>() {
     fun setSelectedSource(selectedSource: ScheduleSourceFull?) =
         set(state.source.selectedSource, selectedSource) {
-            copy(source = source.copy(selectedSource = it))
+            copy(
+                source = source.copy(
+                    selectedSource = it,
+                    accountSelectorVO = selectedSource?.let {
+                        AccountSelectorVO(
+                            title = selectedSource.title,
+                            subtitle = selectedSource.description,
+                            avatar = selectedSource.avatarUrl,
+                        )
+                    },
+                ),
+            )
         }
 }
 

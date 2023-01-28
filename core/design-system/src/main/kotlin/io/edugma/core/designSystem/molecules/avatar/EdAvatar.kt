@@ -2,10 +2,8 @@ package io.edugma.core.designSystem.molecules.avatar
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -23,7 +21,11 @@ import coil.request.ImageRequest
 import io.edugma.core.designSystem.theme.EdTheme
 
 @Composable
-fun EdAvatar(url: String?, initials: String? = null) {
+fun EdAvatar(
+    url: String?,
+    modifier: Modifier = Modifier,
+    initials: String? = null,
+) {
     if (url.isNullOrEmpty()) {
         val fixedInitials = initials?.take(5).orEmpty()
         val textSize = when (fixedInitials.length) {
@@ -37,9 +39,8 @@ fun EdAvatar(url: String?, initials: String? = null) {
 
         Card(
             shape = CircleShape,
-            modifier = Modifier
-                .height(48.dp)
-                .width(48.dp),
+            modifier = modifier
+                .size(48.dp),
             colors = CardDefaults.cardColors(
                 containerColor = EdTheme.colorScheme.surfaceVariant,
             ),
@@ -66,7 +67,7 @@ fun EdAvatar(url: String?, initials: String? = null) {
                 .crossfade(true)
                 .build(),
             contentDescription = null,
-            modifier = Modifier
+            modifier = modifier
                 .size(48.dp)
                 .clip(CircleShape),
         )

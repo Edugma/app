@@ -18,12 +18,14 @@ import io.edugma.features.schedule.menu.ScheduleMenuState
 fun ScheduleCard(
     state: ScheduleMenuState.MainState,
     onScheduleClick: ClickListener,
+    modifier: Modifier = Modifier,
 ) {
     EdActionCard(
         title = stringResource(R.string.sch_schedule),
         subtitle = "Сегодня нет занятий",
         onClick = onScheduleClick,
         width = EdActionCardWidth.large,
+        modifier = modifier,
     ) {
         Column(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
             val composition by rememberLottieComposition(

@@ -1,16 +1,21 @@
 package io.edugma.features.schedule.menu.cards
 
 import androidx.compose.runtime.Composable
-import io.edugma.core.designSystem.organism.actionCard.EdActionCard
+import androidx.compose.ui.Modifier
+import io.edugma.core.designSystem.organism.iconCard.EdIconCard
+import io.edugma.core.designSystem.utils.cachedIconPainter
 import io.edugma.features.base.core.utils.ClickListener
 
 @Composable
 fun ScheduleAppWidgetCard(
     onScheduleWidget: ClickListener,
+    modifier: Modifier = Modifier,
 ) {
-    EdActionCard(
+    EdIconCard(
         title = "Виджет",
+        subtitle = "Настроить",
         onClick = onScheduleWidget,
-    ) {
-    }
+        modifier = modifier,
+        icon = cachedIconPainter("https://img.icons8.com/fluency/48/color-widgets.png"),
+    )
 }
