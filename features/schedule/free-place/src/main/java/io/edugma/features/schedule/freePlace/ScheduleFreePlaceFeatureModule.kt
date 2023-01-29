@@ -1,4 +1,4 @@
-package io.edugma.features.schedule.free_place
+package io.edugma.features.schedule.freePlace
 
 import io.edugma.features.base.core.navigation.compose.addScreen
 import io.edugma.features.base.core.navigation.compose.screens

@@ -1,14 +1,25 @@
-package io.edugma.features.schedule.free_place
+package io.edugma.features.schedule.freePlace
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -19,13 +30,16 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.features.base.core.utils.*
-import io.edugma.features.base.elements.*
+import io.edugma.features.base.core.utils.ClickListener
+import io.edugma.features.base.core.utils.ContentAlpha
+import io.edugma.features.base.core.utils.MediumAlpha
+import io.edugma.features.base.core.utils.WithContentAlpha
 import io.edugma.features.base.elements.dialogs.core.MaterialDialog
 import io.edugma.features.base.elements.dialogs.core.rememberMaterialDialogState
 import io.edugma.features.base.elements.dialogs.date.datepicker
 import io.edugma.features.base.elements.dialogs.time.timepicker
 import io.edugma.features.schedule.domain.model.place.description
+import io.edugma.features.schedule.free_place.R
 import org.koin.androidx.compose.getViewModel
 import java.time.LocalDate
 import java.time.LocalTime
@@ -210,7 +224,7 @@ fun FreePlaceContent(
                                         style = EdTheme.typography.bodySmall,
                                     )
                                 }
-                                Spacer(Modifier.height(10.dp))
+                                SpacerHeight(height = 10.dp)
                             }
                         }
                     }

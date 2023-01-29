@@ -1,6 +1,10 @@
 package io.edugma.domain.base.utils
 
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 
 private const val StopTimeoutMillis: Long = 5000
 
@@ -33,7 +37,7 @@ suspend fun<T> Flow<Result<T>>.execute(
     onSuccess: ((T) -> Unit)? = null,
     onError: ((Throwable) -> Unit)? = null,
 ) {
-    onStart { onStart?.invoke() }
+    this.onStart { onStart?.invoke() }
     collect {
         if (it.isSuccess) {
             it.getOrNull()?.let { value -> onSuccess?.invoke(value) }

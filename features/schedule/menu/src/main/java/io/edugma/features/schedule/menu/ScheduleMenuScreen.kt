@@ -65,7 +65,7 @@ fun ScheduleMenuContent(
             if (state.source.accountSelectorVO != null) {
                 IconButton(onClick = onSignOut) {
                     Icon(
-                        painter = painterResource(EdIcons.ic_fluent_sign_out_24_filled),
+                        painter = painterResource(EdIcons.ic_fluent_sign_out_24_regular),
                         contentDescription = null,
                     )
                 }

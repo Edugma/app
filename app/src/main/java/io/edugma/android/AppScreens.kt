@@ -10,9 +10,9 @@ import io.edugma.features.misc.menu.miscMenuScreens
 import io.edugma.features.nodes.nodesScreens
 import io.edugma.features.schedule.calendar.ScheduleCalendarFeatureModule
 import io.edugma.features.schedule.daily.ScheduleDailyFeatureModule
-import io.edugma.features.schedule.free_place.ScheduleFreePlaceFeatureModule
+import io.edugma.features.schedule.freePlace.ScheduleFreePlaceFeatureModule
 import io.edugma.features.schedule.history.ScheduleHistoryFeatureModule
-import io.edugma.features.schedule.lessons_review.ScheduleLessonsReviewFeatureModule
+import io.edugma.features.schedule.lessonsReview.ScheduleLessonsReviewFeatureModule
 import io.edugma.features.schedule.menu.ScheduleMenuFeatureModule
 import io.edugma.features.schedule.schedule_info.ScheduleInfoFeatureModule
 import io.edugma.features.schedule.sources.ScheduleSourcesFeatureModule

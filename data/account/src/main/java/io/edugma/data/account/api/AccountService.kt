@@ -1,10 +1,21 @@
 package io.edugma.data.account.api
 
-import io.edugma.domain.account.model.*
+import io.edugma.domain.account.model.Application
+import io.edugma.domain.account.model.Contracts
+import io.edugma.domain.account.model.Login
+import io.edugma.domain.account.model.PaymentType
+import io.edugma.domain.account.model.Performance
+import io.edugma.domain.account.model.Personal
+import io.edugma.domain.account.model.SemestersWithCourse
+import io.edugma.domain.account.model.Teacher
+import io.edugma.domain.account.model.Token
 import io.edugma.domain.account.model.student.Student
 import io.edugma.domain.base.model.PagingDTO
 import kotlinx.coroutines.flow.Flow
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface AccountService {
 

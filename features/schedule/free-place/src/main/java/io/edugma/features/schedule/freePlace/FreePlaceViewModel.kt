@@ -1,4 +1,4 @@
-package io.edugma.features.schedule.free_place
+package io.edugma.features.schedule.freePlace
 
 import androidx.lifecycle.viewModelScope
 import io.edugma.domain.base.utils.onFailure

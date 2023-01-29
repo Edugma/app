@@ -1,4 +1,4 @@
-package io.edugma.features.schedule.lessons_review
+package io.edugma.features.schedule.lessonsReview
 
 import androidx.lifecycle.viewModelScope
 import io.edugma.features.base.core.mvi.BaseViewModel

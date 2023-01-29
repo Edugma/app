@@ -1,7 +1,13 @@
 package io.edugma.features.account.marks
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -38,11 +44,17 @@ import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.textField.EdTextField
 import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.domain.account.model.Performance
 import io.edugma.features.account.R
-import io.edugma.features.account.marks.Filter.*
-import io.edugma.features.base.core.utils.*
-import io.edugma.features.base.elements.*
+import io.edugma.features.base.core.utils.ClickListener
+import io.edugma.features.base.core.utils.Typed1Listener
+import io.edugma.features.base.core.utils.format
+import io.edugma.features.base.core.utils.isNull
+import io.edugma.features.base.elements.Chip
+import io.edugma.features.base.elements.ErrorView
+import io.edugma.features.base.elements.SelectableChip
+import io.edugma.features.base.elements.placeholder
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
@@ -99,7 +111,7 @@ fun BottomSheetContent(
             placeholder = "Название предмета",
             onValueChange = {
                 viewModel.updateFilter(
-                    Name(
+                    Filter.Name(
                         value = it,
                         isChecked = it.isEmpty(),
                     ),
@@ -238,7 +250,7 @@ fun AppBar(
             },
         ) {
             Icon(
-                painterResource(id = FluentIcons.ic_fluent_filter_24_regular),
+                painterResource(id = EdIcons.ic_fluent_filter_24_regular),
                 contentDescription = "Фильтр",
             )
         }
@@ -276,7 +288,7 @@ fun Performance(
                 performance.date?.let {
                     EdLabel(
                         text = "${performance.date?.format()} ${performance.time?.format().orEmpty()}",
-                        iconPainter = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
+                        iconPainter = painterResource(id = EdIcons.ic_fluent_calendar_ltr_24_regular),
                     )
                 }
             }
@@ -290,21 +302,45 @@ fun Performance(
             )
         }
         Row {
-            Chip(modifier = Modifier.clickable(onClick = { filterClickListener.invoke(Course(performance.course)) })) {
+            Chip(
+                modifier = Modifier.clickable(onClick = {
+                    filterClickListener.invoke(
+                        Filter.Course(
+                            performance.course,
+                        ),
+                    )
+                },),
+            ) {
                 Text(
                     text = "${performance.course} курс",
                     style = EdTheme.typography.labelLarge,
                     overflow = TextOverflow.Ellipsis,
                 )
             }
-            Chip(modifier = Modifier.clickable(onClick = { filterClickListener.invoke(Semester(performance.semester)) })) {
+            Chip(
+                modifier = Modifier.clickable(onClick = {
+                    filterClickListener.invoke(
+                        Filter.Semester(
+                            performance.semester,
+                        ),
+                    )
+                },),
+            ) {
                 Text(
                     text = "${performance.semester} семестр",
                     style = EdTheme.typography.labelLarge,
                     overflow = TextOverflow.Ellipsis,
                 )
             }
-            Chip(modifier = Modifier.clickable(onClick = { filterClickListener.invoke(Type(performance.examType)) })) {
+            Chip(
+                modifier = Modifier.clickable(onClick = {
+                    filterClickListener.invoke(
+                        Filter.Type(
+                            performance.examType,
+                        ),
+                    )
+                },),
+            ) {
                 Text(
                     text = performance.examType,
                     style = EdTheme.typography.labelLarge,
@@ -344,7 +380,7 @@ fun PerformancePlaceholder() {
                 )
                 EdLabel(
                     text = "",
-                    iconPainter = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
+                    iconPainter = painterResource(id = EdIcons.ic_fluent_calendar_ltr_24_regular),
                     modifier = Modifier.placeholder(true),
                 )
             }

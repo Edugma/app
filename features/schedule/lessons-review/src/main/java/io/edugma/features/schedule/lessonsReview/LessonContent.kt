@@ -1,6 +1,8 @@
-package io.edugma.features.schedule.lessons_review
+package io.edugma.features.schedule.lessonsReview
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -11,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.features.base.core.utils.FluentIcons
 import io.edugma.features.base.elements.placeholder
 import io.edugma.features.schedule.domain.model.group.Group
@@ -42,7 +45,7 @@ fun TeachersContent(teachers: List<Teacher>, isLoading: Boolean = false) {
                 .size(17.dp)
                 .align(Alignment.CenterVertically),
         )
-        Spacer(Modifier.width(5.dp))
+        SpacerWidth(width = 5.dp)
         val teachersText = remember(teachers) {
             if (teachers.size == 1) {
                 teachers.first().name
@@ -74,7 +77,7 @@ fun GroupsContent(groups: List<Group>, isLoading: Boolean = false) {
                 .size(17.dp)
                 .align(Alignment.CenterVertically),
         )
-        Spacer(Modifier.width(5.dp))
+        SpacerWidth(width = 5.dp)
         val groupsText = remember(groups) { groups.joinToString { it.title } }
         Text(
             text = groupsText,
@@ -100,7 +103,7 @@ fun PlacesContent(places: List<Place>, isLoading: Boolean = false) {
                 .size(17.dp)
                 .align(Alignment.CenterVertically),
         )
-        Spacer(Modifier.width(5.dp))
+        SpacerWidth(width = 5.dp)
         val placesText = remember(places) { places.joinToString { it.title } }
         Text(
             text = placesText,

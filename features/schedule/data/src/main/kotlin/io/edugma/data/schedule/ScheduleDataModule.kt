@@ -7,7 +7,11 @@ import io.edugma.data.schedule.api.ScheduleInfoService
 import io.edugma.data.schedule.api.ScheduleService
 import io.edugma.data.schedule.api.ScheduleSourcesService
 import io.edugma.data.schedule.local.ScheduleLocalDS
-import io.edugma.data.schedule.repository.*
+import io.edugma.data.schedule.repository.FreePlaceRepositoryImpl
+import io.edugma.data.schedule.repository.LessonsReviewRepositoryImpl
+import io.edugma.data.schedule.repository.ScheduleInfoRepositoryImpl
+import io.edugma.data.schedule.repository.ScheduleRepositoryImpl
+import io.edugma.data.schedule.repository.ScheduleSourcesRepositoryImpl
 import io.edugma.features.schedule.domain.repository.FreePlaceRepository
 import io.edugma.features.schedule.domain.repository.LessonsReviewRepository
 import io.edugma.features.schedule.domain.repository.ScheduleInfoRepository

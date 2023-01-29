@@ -1,4 +1,4 @@
-package io.edugma.features.schedule.lessons_review
+package io.edugma.features.schedule.lessonsReview
 
 import io.edugma.features.base.core.navigation.compose.addScreen
 import io.edugma.features.base.core.navigation.compose.screens
