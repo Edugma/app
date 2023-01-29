@@ -1,7 +1,7 @@
 package io.edugma.core.designSystem.tokens.colors
 
-import android.graphics.Color
 import androidx.compose.runtime.Immutable
+import androidx.compose.ui.graphics.Color
 
 @Immutable
 class CustomColorScheme(

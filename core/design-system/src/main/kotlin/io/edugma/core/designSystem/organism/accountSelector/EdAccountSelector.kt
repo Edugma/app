@@ -48,6 +48,7 @@ fun EdAccountSelector(
             EdLabel(
                 text = state.title,
                 style = EdTheme.typography.titleMedium,
+                overflow = TextOverflow.Ellipsis,
             )
             EdLabel(
                 text = state.subtitle,

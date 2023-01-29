@@ -22,7 +22,6 @@ import io.edugma.domain.schedule.model.lesson_type.LessonType
 import io.edugma.domain.schedule.model.place.Place
 import io.edugma.domain.schedule.model.teacher.Teacher
 import io.edugma.domain.schedule.usecase.LessonChange
-import io.edugma.features.base.core.theme.AppTheme
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.withAlpha
 import kotlinx.datetime.Instant
@@ -109,7 +108,7 @@ private fun LessonTime(time: LessonTime) {
 @Composable
 fun LessonChangeContent(change: LessonChange) {
     val containerColor = when (change) {
-        is LessonChange.Added -> AppTheme.colorScheme.successContainer
+        is LessonChange.Added -> EdTheme.customColorScheme.successContainer
         is LessonChange.Modified -> EdTheme.colorScheme.surfaceVariant
         is LessonChange.Removed -> EdTheme.colorScheme.errorContainer
     }
@@ -255,7 +254,7 @@ private fun ChangedPlaces(places: List<Place>, isNew: Boolean? = null) {
 @Composable
 private fun getColor(isNew: Boolean?): Color {
     return when (isNew) {
-        true -> AppTheme.colorScheme.successContainer
+        true -> EdTheme.customColorScheme.successContainer
         false -> EdTheme.colorScheme.errorContainer
         null -> Color.Transparent
     }
