@@ -9,9 +9,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.elements.SpacerHeight
 import io.edugma.features.misc.settings.R
 import org.koin.androidx.compose.getViewModel
 

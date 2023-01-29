@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.domain.base.utils.capitalized
 import io.edugma.domain.schedule.model.lesson.Lesson
@@ -23,7 +24,6 @@ import io.edugma.domain.schedule.model.lesson.LessonDisplaySettings
 import io.edugma.domain.schedule.model.source.ScheduleSource
 import io.edugma.features.base.core.utils.Typed2Listener
 import io.edugma.features.base.core.utils.withAlpha
-import io.edugma.features.base.elements.SpacerHeight
 import io.edugma.features.schedule.elements.lesson.LessonPlace
 import io.edugma.features.schedule.elements.lesson.LessonWindow
 import io.edugma.features.schedule.elements.lesson.model.ScheduleItem

@@ -15,6 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
+import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.domain.schedule.model.group.Group
@@ -25,8 +27,6 @@ import io.edugma.domain.schedule.model.teacher.TeacherInfo
 import io.edugma.domain.schedule.model.teacher.description
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.InitialAvatar
-import io.edugma.features.base.elements.SpacerHeight
-import io.edugma.features.base.elements.SpacerWidth
 import org.koin.androidx.compose.getViewModel
 import java.time.format.DateTimeFormatter
 
@@ -175,7 +175,7 @@ private fun LessonDateTime(lessonDateTime: LessonDateTime) {
 }
 
 @Composable
-private fun LessonTeachers(
+private fun ColumnScope.LessonTeachers(
     teachers: List<TeacherInfo>,
     onItemClick: Typed1Listener<String>,
 ) {
@@ -214,7 +214,7 @@ private fun LessonTeachers(
 }
 
 @Composable
-private fun LessonPlaces(
+private fun ColumnScope.LessonPlaces(
     places: List<Place>,
     onItemClick: Typed1Listener<String>,
 ) {
@@ -253,7 +253,7 @@ private fun LessonPlaces(
 }
 
 @Composable
-private fun LessonGroups(
+private fun ColumnScope.LessonGroups(
     groups: List<Group>,
     onItemClick: Typed1Listener<String>,
 ) {

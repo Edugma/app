@@ -19,6 +19,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.domain.schedule.model.group.Group
 import io.edugma.domain.schedule.model.lesson.Lesson
 import io.edugma.domain.schedule.model.lesson.LessonDateTime
@@ -31,7 +32,6 @@ import io.edugma.domain.schedule.model.schedule.LessonsByTime
 import io.edugma.domain.schedule.model.teacher.Teacher
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.Typed2Listener
-import io.edugma.features.base.elements.SpacerHeight
 import io.edugma.features.schedule.elements.lesson.LessonPlace
 import io.edugma.features.schedule.elements.lesson.LessonWindow
 import io.edugma.features.schedule.elements.lesson.model.ScheduleItem

@@ -17,12 +17,12 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.card.EdCard
+import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.domain.base.utils.capitalized
 import io.edugma.domain.schedule.model.schedule.ScheduleDay
 import io.edugma.features.base.core.utils.*
-import io.edugma.features.base.elements.SpacerHeight
 import io.edugma.features.schedule.calendar.model.ScheduleCalendarWeek
 import org.koin.androidx.compose.getViewModel
 import java.time.LocalDate

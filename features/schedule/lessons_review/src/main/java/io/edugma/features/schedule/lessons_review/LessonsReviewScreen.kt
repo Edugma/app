@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.card.EdCard
+import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.domain.base.utils.capitalized
@@ -27,7 +28,6 @@ import io.edugma.domain.schedule.model.review.LessonDates
 import io.edugma.domain.schedule.model.review.LessonTimesReview
 import io.edugma.domain.schedule.model.review.LessonTimesReviewByType
 import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.elements.SpacerHeight
 import org.koin.androidx.compose.getViewModel
 import java.time.DayOfWeek
 import java.time.format.DateTimeFormatter

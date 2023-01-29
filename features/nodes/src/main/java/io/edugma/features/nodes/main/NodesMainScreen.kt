@@ -18,13 +18,13 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import io.edugma.core.designSystem.atoms.card.EdCard
+import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
+import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.domain.nodes.model.Node
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.Typed1Listener
-import io.edugma.features.base.elements.SpacerHeight
-import io.edugma.features.base.elements.SpacerWidth
 import org.koin.androidx.compose.getViewModel
 
 @Composable
