@@ -1,7 +1,7 @@
 package io.edugma.features.schedule.domain.usecase
 
-import io.edugma.domain.schedule.model.review.LessonTimesReview
-import io.edugma.domain.schedule.model.source.ScheduleSource
+import io.edugma.features.schedule.domain.model.review.LessonTimesReview
+import io.edugma.features.schedule.domain.model.source.ScheduleSource
 import io.edugma.features.schedule.domain.repository.LessonsReviewRepository
 import io.edugma.features.schedule.domain.repository.ScheduleSourcesRepository
 import kotlinx.coroutines.flow.emitAll

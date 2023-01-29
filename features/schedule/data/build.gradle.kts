@@ -1,6 +1,6 @@
 plugins {
     id("android-lib")
-    kotlin("plugin.serialization")
+    alias(libs.plugins.kotlin.serialization)
 }
 
 dependencies {

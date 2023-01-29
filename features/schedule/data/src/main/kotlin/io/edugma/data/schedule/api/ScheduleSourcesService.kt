@@ -1,7 +1,7 @@
 package io.edugma.data.schedule.api
 
-import io.edugma.domain.schedule.model.source.ScheduleSourceFull
-import io.edugma.domain.schedule.model.source.ScheduleSources
+import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
+import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import kotlinx.coroutines.flow.Flow
 import retrofit2.http.GET
 import retrofit2.http.Path

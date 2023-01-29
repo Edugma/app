@@ -1,8 +1,8 @@
 package io.edugma.features.schedule.domain.usecase
 
-import io.edugma.domain.schedule.model.source.ScheduleSourceFull
-import io.edugma.domain.schedule.model.source.ScheduleSources
-import io.edugma.domain.schedule.model.source.ScheduleSourcesTabs
+import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
+import io.edugma.features.schedule.domain.model.source.ScheduleSources
+import io.edugma.features.schedule.domain.model.source.ScheduleSourcesTabs
 import io.edugma.features.schedule.domain.repository.ScheduleSourcesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first

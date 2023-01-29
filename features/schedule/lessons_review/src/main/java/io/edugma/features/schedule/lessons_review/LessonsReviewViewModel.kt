@@ -1,9 +1,9 @@
 package io.edugma.features.schedule.lessons_review
 
 import androidx.lifecycle.viewModelScope
-import io.edugma.domain.schedule.model.review.LessonTimesReview
-import io.edugma.features.schedule.domain.usecase.LessonsReviewUseCase
 import io.edugma.features.base.core.mvi.BaseViewModel
+import io.edugma.features.schedule.domain.model.review.LessonTimesReview
+import io.edugma.features.schedule.domain.usecase.LessonsReviewUseCase
 import kotlinx.coroutines.launch
 
 class LessonsReviewViewModel(

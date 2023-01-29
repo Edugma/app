@@ -1,10 +1,11 @@
 package io.edugma.features.base.navigation.schedule
 
 import io.edugma.features.base.core.navigation.core.Screen
+import io.edugma.features.schedule.domain.model.lesson.LessonInfo
 
 object ScheduleInfoScreens {
     class LessonInfo(
-        val lessonInfo: io.edugma.domain.schedule.model.lesson.LessonInfo,
+        val lessonInfo: io.edugma.features.schedule.domain.model.lesson.LessonInfo,
     ) : Screen(
         LessonInfo::lessonInfo.name to lessonInfo.serialized(),
     )

@@ -1,16 +1,23 @@
 package io.edugma.features.schedule.domain
 
+import io.edugma.features.schedule.domain.usecase.GetClosestLessonsUseCase
+import io.edugma.features.schedule.domain.usecase.IsScheduleSourceSelectedUseCase
 import io.edugma.features.schedule.domain.usecase.LessonsReviewUseCase
+import io.edugma.features.schedule.domain.usecase.RemoveSelectedScheduleSourceUseCase
 import io.edugma.features.schedule.domain.usecase.ScheduleHistoryUseCase
 import io.edugma.features.schedule.domain.usecase.ScheduleSourcesUseCase
 import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
+import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 object ScheduleDomainModule {
     val deps = module {
-        factory { ScheduleUseCase(get(), get()) }
-        factory { ScheduleSourcesUseCase(get()) }
-        factory { LessonsReviewUseCase(get(), get()) }
-        factory { ScheduleHistoryUseCase(get(), get()) }
+        factoryOf(::ScheduleUseCase)
+        factoryOf(::ScheduleSourcesUseCase)
+        factoryOf(::LessonsReviewUseCase)
+        factoryOf(::ScheduleHistoryUseCase)
+        factoryOf(::GetClosestLessonsUseCase)
+        factoryOf(::IsScheduleSourceSelectedUseCase)
+        factoryOf(::RemoveSelectedScheduleSourceUseCase)
     }
 }

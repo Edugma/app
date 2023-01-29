@@ -3,12 +3,12 @@ package io.edugma.features.schedule.schedule_info.group_info
 import androidx.lifecycle.viewModelScope
 import io.edugma.domain.base.utils.onFailure
 import io.edugma.domain.base.utils.onSuccess
-import io.edugma.domain.schedule.model.group.GroupInfo
-import io.edugma.domain.schedule.model.source.ScheduleSource
-import io.edugma.domain.schedule.model.source.ScheduleSources
-import io.edugma.features.schedule.domain.repository.ScheduleInfoRepository
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.mvi.prop
+import io.edugma.features.schedule.domain.model.group.GroupInfo
+import io.edugma.features.schedule.domain.model.source.ScheduleSource
+import io.edugma.features.schedule.domain.model.source.ScheduleSources
+import io.edugma.features.schedule.domain.repository.ScheduleInfoRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch

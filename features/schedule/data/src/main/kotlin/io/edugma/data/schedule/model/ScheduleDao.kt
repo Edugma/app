@@ -1,7 +1,7 @@
 package io.edugma.data.schedule.model
 
-import io.edugma.domain.schedule.model.compact.CompactSchedule
-import io.edugma.domain.schedule.model.source.ScheduleSource
+import io.edugma.features.schedule.domain.model.compact.CompactSchedule
+import io.edugma.features.schedule.domain.model.source.ScheduleSource
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable

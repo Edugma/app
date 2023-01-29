@@ -22,12 +22,12 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.domain.base.utils.capitalized
-import io.edugma.domain.schedule.model.lesson.LessonTime
-import io.edugma.domain.schedule.model.lesson_type.LessonType
-import io.edugma.domain.schedule.model.review.LessonDates
-import io.edugma.domain.schedule.model.review.LessonTimesReview
-import io.edugma.domain.schedule.model.review.LessonTimesReviewByType
 import io.edugma.features.base.core.utils.ClickListener
+import io.edugma.features.schedule.domain.model.lesson.LessonTime
+import io.edugma.features.schedule.domain.model.lesson_type.LessonType
+import io.edugma.features.schedule.domain.model.review.LessonDates
+import io.edugma.features.schedule.domain.model.review.LessonTimesReview
+import io.edugma.features.schedule.domain.model.review.LessonTimesReviewByType
 import org.koin.androidx.compose.getViewModel
 import java.time.DayOfWeek
 import java.time.format.DateTimeFormatter

@@ -8,12 +8,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.edugma.domain.schedule.model.lesson.Lesson
-import io.edugma.domain.schedule.model.lesson.LessonDisplaySettings
-import io.edugma.domain.schedule.model.lesson.LessonTime
-import io.edugma.domain.schedule.model.schedule.LessonsByTime
 import io.edugma.features.base.core.utils.Typed2Listener
 import io.edugma.features.base.elements.placeholder
+import io.edugma.features.schedule.domain.model.lesson.Lesson
+import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
+import io.edugma.features.schedule.domain.model.lesson.LessonTime
+import io.edugma.features.schedule.domain.model.schedule.LessonsByTime
 
 fun LazyListScope.LessonPlace(
     lessonsByTime: LessonsByTime,

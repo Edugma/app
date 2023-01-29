@@ -20,18 +20,19 @@ import com.google.accompanist.pager.PagerState
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
-import io.edugma.domain.schedule.model.group.Group
-import io.edugma.domain.schedule.model.lesson.Lesson
-import io.edugma.domain.schedule.model.lesson.LessonDateTime
-import io.edugma.domain.schedule.model.lesson.LessonDisplaySettings
-import io.edugma.domain.schedule.model.lesson.LessonTime
-import io.edugma.domain.schedule.model.lesson_subject.LessonSubject
-import io.edugma.domain.schedule.model.place.Place
-import io.edugma.domain.schedule.model.place.PlaceType
-import io.edugma.domain.schedule.model.schedule.LessonsByTime
-import io.edugma.domain.schedule.model.teacher.Teacher
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.Typed2Listener
+import io.edugma.features.schedule.domain.model.group.Group
+import io.edugma.features.schedule.domain.model.lesson.Lesson
+import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
+import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
+import io.edugma.features.schedule.domain.model.lesson.LessonTime
+import io.edugma.features.schedule.domain.model.lesson_subject.LessonSubject
+import io.edugma.features.schedule.domain.model.lesson_type.LessonType
+import io.edugma.features.schedule.domain.model.place.Place
+import io.edugma.features.schedule.domain.model.place.PlaceType
+import io.edugma.features.schedule.domain.model.schedule.LessonsByTime
+import io.edugma.features.schedule.domain.model.teacher.Teacher
 import io.edugma.features.schedule.elements.lesson.LessonPlace
 import io.edugma.features.schedule.elements.lesson.LessonWindow
 import io.edugma.features.schedule.elements.lesson.model.ScheduleItem
@@ -159,7 +160,7 @@ fun ScheduleDayPlaceHolder() {
             lessons = listOf(
                 Lesson(
                     LessonSubject("", ""),
-                    io.edugma.domain.schedule.model.lesson_type.LessonType("", "Qwerty qwerty", false),
+                    LessonType("", "Qwerty qwerty", false),
                     listOf(Teacher("", "", "")),
                     listOf(Group("", "", "")),
                     listOf(Place("", "", PlaceType.Undefined, "")),

@@ -21,9 +21,9 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.domain.base.utils.capitalized
-import io.edugma.domain.schedule.model.schedule.ScheduleDay
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.schedule.calendar.model.ScheduleCalendarWeek
+import io.edugma.features.schedule.domain.model.schedule.ScheduleDay
 import org.koin.androidx.compose.getViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

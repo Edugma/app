@@ -1,11 +1,11 @@
 package io.edugma.features.schedule.domain.usecase
 
 import io.edugma.domain.base.utils.Lce
-import io.edugma.domain.schedule.model.lesson.LessonDisplaySettings
-import io.edugma.domain.schedule.model.schedule.LessonsByTime
-import io.edugma.domain.schedule.model.schedule.ScheduleDay
-import io.edugma.domain.schedule.model.source.ScheduleSource
-import io.edugma.domain.schedule.model.source.ScheduleSources
+import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
+import io.edugma.features.schedule.domain.model.schedule.LessonsByTime
+import io.edugma.features.schedule.domain.model.schedule.ScheduleDay
+import io.edugma.features.schedule.domain.model.source.ScheduleSource
+import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import io.edugma.features.schedule.domain.repository.ScheduleRepository
 import io.edugma.features.schedule.domain.repository.ScheduleSourcesRepository
 import kotlinx.coroutines.flow.emitAll

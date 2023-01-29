@@ -1,13 +1,13 @@
 package io.edugma.data.schedule.repository
 
-import io.edugma.domain.schedule.model.lesson.LessonTime
-import io.edugma.domain.schedule.model.lesson_subject.LessonSubject
-import io.edugma.domain.schedule.model.lesson_type.LessonType
-import io.edugma.domain.schedule.model.review.LessonDates
-import io.edugma.domain.schedule.model.review.LessonReviewUnit
-import io.edugma.domain.schedule.model.review.LessonTimesReview
-import io.edugma.domain.schedule.model.review.LessonTimesReviewByType
-import io.edugma.domain.schedule.model.source.ScheduleSource
+import io.edugma.features.schedule.domain.model.lesson.LessonTime
+import io.edugma.features.schedule.domain.model.lesson_subject.LessonSubject
+import io.edugma.features.schedule.domain.model.lesson_type.LessonType
+import io.edugma.features.schedule.domain.model.review.LessonDates
+import io.edugma.features.schedule.domain.model.review.LessonReviewUnit
+import io.edugma.features.schedule.domain.model.review.LessonTimesReview
+import io.edugma.features.schedule.domain.model.review.LessonTimesReviewByType
+import io.edugma.features.schedule.domain.model.source.ScheduleSource
 import io.edugma.features.schedule.domain.repository.LessonsReviewRepository
 import io.edugma.features.schedule.domain.repository.ScheduleRepository
 import kotlinx.coroutines.Dispatchers

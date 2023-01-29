@@ -20,13 +20,13 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.molecules.avatar.EdAvatar
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.domain.schedule.model.group.Group
-import io.edugma.domain.schedule.model.lesson.LessonDateTime
-import io.edugma.domain.schedule.model.lesson.LessonInfo
-import io.edugma.domain.schedule.model.place.Place
-import io.edugma.domain.schedule.model.teacher.TeacherInfo
-import io.edugma.domain.schedule.model.teacher.description
 import io.edugma.features.base.core.utils.*
+import io.edugma.features.schedule.domain.model.group.Group
+import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
+import io.edugma.features.schedule.domain.model.lesson.LessonInfo
+import io.edugma.features.schedule.domain.model.place.Place
+import io.edugma.features.schedule.domain.model.teacher.TeacherInfo
+import io.edugma.features.schedule.domain.model.teacher.description
 import org.koin.androidx.compose.getViewModel
 import java.time.format.DateTimeFormatter
 

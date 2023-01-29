@@ -3,11 +3,11 @@ package io.edugma.features.schedule.calendar
 import androidx.lifecycle.viewModelScope
 import io.edugma.domain.base.utils.getOrDefault
 import io.edugma.domain.base.utils.isFinalFailure
-import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.navigation.ScheduleScreens
 import io.edugma.features.schedule.calendar.model.ScheduleCalendarWeek
 import io.edugma.features.schedule.calendar.model.toCalendarUiModel
+import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 

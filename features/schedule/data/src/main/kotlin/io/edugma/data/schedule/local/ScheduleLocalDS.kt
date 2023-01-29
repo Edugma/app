@@ -1,7 +1,7 @@
 package io.edugma.data.schedule.local
 
 import io.edugma.data.schedule.model.ScheduleDao
-import io.edugma.domain.schedule.model.source.ScheduleSource
+import io.edugma.features.schedule.domain.model.source.ScheduleSource
 import org.kodein.db.DB
 import org.kodein.db.asModelSequence
 import org.kodein.db.find

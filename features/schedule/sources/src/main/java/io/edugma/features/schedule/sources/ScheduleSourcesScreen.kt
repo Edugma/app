@@ -29,11 +29,11 @@ import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.searchField.EdSearchField
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.domain.schedule.model.source.ScheduleSourceFull
-import io.edugma.domain.schedule.model.source.ScheduleSources
-import io.edugma.domain.schedule.model.source.ScheduleSourcesTabs
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.*
+import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
+import io.edugma.features.schedule.domain.model.source.ScheduleSources
+import io.edugma.features.schedule.domain.model.source.ScheduleSourcesTabs
 import org.koin.androidx.compose.getViewModel
 
 @Composable

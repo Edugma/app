@@ -1,15 +1,15 @@
 package io.edugma.features.schedule.appwidget.current_lessons
 
-import io.edugma.domain.schedule.model.group.Group
-import io.edugma.domain.schedule.model.lesson.Lesson
-import io.edugma.domain.schedule.model.lesson.LessonTime
-import io.edugma.domain.schedule.model.lesson_subject.LessonSubject
-import io.edugma.domain.schedule.model.lesson_type.LessonType
-import io.edugma.domain.schedule.model.place.Place
-import io.edugma.domain.schedule.model.place.PlaceType
-import io.edugma.domain.schedule.model.teacher.Teacher
-import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
 import io.edugma.features.base.core.mvi.BaseViewModel
+import io.edugma.features.schedule.domain.model.group.Group
+import io.edugma.features.schedule.domain.model.lesson.Lesson
+import io.edugma.features.schedule.domain.model.lesson.LessonTime
+import io.edugma.features.schedule.domain.model.lesson_subject.LessonSubject
+import io.edugma.features.schedule.domain.model.lesson_type.LessonType
+import io.edugma.features.schedule.domain.model.place.Place
+import io.edugma.features.schedule.domain.model.place.PlaceType
+import io.edugma.features.schedule.domain.model.teacher.Teacher
+import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
 import kotlinx.coroutines.flow.last
 import java.time.LocalDate
 import java.time.LocalTime

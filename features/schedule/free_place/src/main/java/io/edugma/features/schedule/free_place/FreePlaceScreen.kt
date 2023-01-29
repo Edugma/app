@@ -19,13 +19,13 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.domain.schedule.model.place.description
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.*
 import io.edugma.features.base.elements.dialogs.core.MaterialDialog
 import io.edugma.features.base.elements.dialogs.core.rememberMaterialDialogState
 import io.edugma.features.base.elements.dialogs.date.datepicker
 import io.edugma.features.base.elements.dialogs.time.timepicker
+import io.edugma.features.schedule.domain.model.place.description
 import org.koin.androidx.compose.getViewModel
 import java.time.LocalDate
 import java.time.LocalTime

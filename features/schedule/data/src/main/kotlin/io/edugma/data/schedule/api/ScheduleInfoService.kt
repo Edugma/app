@@ -1,10 +1,10 @@
 package io.edugma.data.schedule.api
 
-import io.edugma.domain.schedule.model.group.GroupInfo
-import io.edugma.domain.schedule.model.lesson_subject.LessonSubjectInfo
-import io.edugma.domain.schedule.model.lesson_type.LessonTypeInfo
-import io.edugma.domain.schedule.model.place.PlaceInfo
-import io.edugma.domain.schedule.model.teacher.TeacherInfo
+import io.edugma.features.schedule.domain.model.group.GroupInfo
+import io.edugma.features.schedule.domain.model.lesson_subject.LessonSubjectInfo
+import io.edugma.features.schedule.domain.model.lesson_type.LessonTypeInfo
+import io.edugma.features.schedule.domain.model.place.PlaceInfo
+import io.edugma.features.schedule.domain.model.teacher.TeacherInfo
 import kotlinx.coroutines.flow.Flow
 import retrofit2.http.GET
 import retrofit2.http.Path

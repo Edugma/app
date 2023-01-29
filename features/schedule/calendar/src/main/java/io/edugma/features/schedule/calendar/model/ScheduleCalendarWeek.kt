@@ -2,7 +2,7 @@ package io.edugma.features.schedule.calendar.model
 
 import io.edugma.domain.base.utils.getCeilSunday
 import io.edugma.domain.base.utils.getFloorMonday
-import io.edugma.domain.schedule.model.schedule.ScheduleDay
+import io.edugma.features.schedule.domain.model.schedule.ScheduleDay
 import java.time.temporal.ChronoUnit
 
 data class ScheduleCalendarWeek(

@@ -22,10 +22,10 @@ import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
-import io.edugma.domain.schedule.model.lesson.Lesson
-import io.edugma.domain.schedule.model.lesson.LessonTime
-import io.edugma.domain.schedule.utils.getShortName
 import io.edugma.features.schedule.appwidget.R
+import io.edugma.features.schedule.domain.model.lesson.Lesson
+import io.edugma.features.schedule.domain.model.lesson.LessonTime
+import io.edugma.features.schedule.domain.usecase.getShortName
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.time.ZonedDateTime

@@ -1,9 +1,9 @@
 package io.edugma.features.schedule.history.changes
 
 import androidx.lifecycle.viewModelScope
+import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.schedule.domain.usecase.ScheduleDayChange
 import io.edugma.features.schedule.domain.usecase.ScheduleHistoryUseCase
-import io.edugma.features.base.core.mvi.BaseViewModel
 import kotlinx.coroutines.launch
 
 class ScheduleChangesViewModel(

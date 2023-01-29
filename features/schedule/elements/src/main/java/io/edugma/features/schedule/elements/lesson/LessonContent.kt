@@ -18,16 +18,16 @@ import coil.compose.rememberImagePainter
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.domain.schedule.model.group.Group
-import io.edugma.domain.schedule.model.lesson.Lesson
-import io.edugma.domain.schedule.model.lesson.LessonDisplaySettings
-import io.edugma.domain.schedule.model.lesson_subject.LessonSubject
-import io.edugma.domain.schedule.model.lesson_type.LessonType
-import io.edugma.domain.schedule.model.place.Place
-import io.edugma.domain.schedule.model.teacher.Teacher
-import io.edugma.domain.schedule.utils.getShortName
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.placeholder
+import io.edugma.features.schedule.domain.model.group.Group
+import io.edugma.features.schedule.domain.model.lesson.Lesson
+import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
+import io.edugma.features.schedule.domain.model.lesson_subject.LessonSubject
+import io.edugma.features.schedule.domain.model.lesson_type.LessonType
+import io.edugma.features.schedule.domain.model.place.Place
+import io.edugma.features.schedule.domain.model.teacher.Teacher
+import io.edugma.features.schedule.domain.usecase.getShortName
 import io.edugma.features.schedule.elements.lesson.model.ScheduleItem
 import java.time.format.DateTimeFormatter
 

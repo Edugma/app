@@ -2,14 +2,18 @@ package io.edugma.features.schedule.menu
 
 import androidx.lifecycle.viewModelScope
 import io.edugma.core.designSystem.organism.accountSelector.AccountSelectorVO
-import io.edugma.domain.schedule.model.schedule.LessonsByTime
-import io.edugma.domain.schedule.model.source.ScheduleSourceFull
-import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
-import io.edugma.domain.schedule.utils.getClosestLessons
 import io.edugma.features.base.core.mvi.BaseMutator
 import io.edugma.features.base.core.mvi.BaseViewModelFull
 import io.edugma.features.base.navigation.ScheduleScreens
 import io.edugma.features.base.navigation.schedule.ScheduleHistoryScreens
+import io.edugma.features.schedule.domain.model.schedule.LessonsByTime
+import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
+import io.edugma.features.schedule.domain.usecase.GetClosestLessonsUseCase
+import io.edugma.features.schedule.domain.usecase.RemoveSelectedScheduleSourceUseCase
+import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
+import io.edugma.features.schedule.menu.model.MenuItem
+import io.edugma.features.schedule.menu.usecase.GetScheduleMenuItems
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
@@ -20,6 +24,9 @@ import kotlin.time.toDuration
 
 class ScheduleMenuViewModel(
     private val useCase: ScheduleUseCase,
+    private val getClosestLessonsUseCase: GetClosestLessonsUseCase,
+    private val getScheduleMenuItems: GetScheduleMenuItems,
+    private val removeSelectedScheduleSourceUseCase: RemoveSelectedScheduleSourceUseCase,
 ) : BaseViewModelFull<ScheduleMenuState, ScheduleMenuMutator, Nothing>(
     ScheduleMenuState(),
     ::ScheduleMenuMutator,
@@ -32,7 +39,7 @@ class ScheduleMenuViewModel(
                 } ?: emptyList()
 
                 val now = LocalTime.now()
-                val closestLessons = getClosestLessons(lessons)
+                val closestLessons = getClosestLessonsUseCase(lessons)
                     .map {
                         ClosestLessons(
                             now.until(it.time.start, ChronoUnit.MINUTES)
@@ -53,8 +60,18 @@ class ScheduleMenuViewModel(
         viewModelScope.launch {
             useCase.getSelectedSource().collect {
                 mutateState { setSelectedSource(it.getOrNull()) }
+                setMenuItems()
             }
         }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            setMenuItems()
+        }
+    }
+
+    private suspend fun setMenuItems() {
+        val menuItems = getScheduleMenuItems.invoke()
+        mutateState { state = state.copy(menuItems = menuItems) }
     }
 
     fun onScheduleClick() {
@@ -83,9 +100,17 @@ class ScheduleMenuViewModel(
     fun onHistoryClick() {
         router.navigateTo(ScheduleHistoryScreens.Main)
     }
+
+    fun onSignOut() {
+        viewModelScope.launch {
+            removeSelectedScheduleSourceUseCase()
+            setMenuItems()
+        }
+    }
 }
 
 data class ScheduleMenuState(
+    val menuItems: List<List<MenuItem>> = emptyList(),
     val main: MainState = MainState(),
     val source: SourceState = SourceState(),
     val date: LocalDate = LocalDate.now(),

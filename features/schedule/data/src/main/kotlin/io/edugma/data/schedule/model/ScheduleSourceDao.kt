@@ -1,6 +1,6 @@
 package io.edugma.data.schedule.model
 
-import io.edugma.domain.schedule.model.source.ScheduleSource
+import io.edugma.features.schedule.domain.model.source.ScheduleSource
 import kotlinx.serialization.Serializable
 import org.kodein.db.model.orm.Metadata
 

@@ -6,16 +6,18 @@ import io.edugma.data.base.consts.PrefConst
 import io.edugma.data.base.local.CacheLocalDS
 import io.edugma.data.base.local.PreferencesDS
 import io.edugma.data.base.local.flowOf
+import io.edugma.data.base.local.get
 import io.edugma.data.base.local.set
 import io.edugma.data.schedule.api.ScheduleSourcesService
 import io.edugma.domain.base.utils.onFailure
-import io.edugma.domain.schedule.model.source.ScheduleSourceFull
-import io.edugma.domain.schedule.model.source.ScheduleSources
+import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
+import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import io.edugma.features.schedule.domain.repository.ScheduleSourcesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
 class ScheduleSourcesRepositoryImpl(
     private val scheduleSourcesService: ScheduleSourcesService,
@@ -42,11 +44,15 @@ class ScheduleSourcesRepositoryImpl(
         cachedDS.save(sources, CacheConst.FavoriteScheduleSources)
     }
 
-    override suspend fun setSelectedSource(source: ScheduleSourceFull) {
+    override suspend fun setSelectedSource(source: ScheduleSourceFull?) {
         preferencesDS.set(source, PrefConst.SelectedScheduleSource)
     }
 
     override fun getSelectedSource() = preferencesDS
         .flowOf<ScheduleSourceFull>(PrefConst.SelectedScheduleSource)
         .flowOn(Dispatchers.IO)
+
+    override suspend fun getSelectedSourceSuspend() = withContext(Dispatchers.IO) {
+        preferencesDS.get<ScheduleSourceFull?>(PrefConst.SelectedScheduleSource, null)
+    }
 }

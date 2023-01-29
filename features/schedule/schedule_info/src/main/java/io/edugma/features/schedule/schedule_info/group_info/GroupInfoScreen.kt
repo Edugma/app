@@ -15,8 +15,8 @@ import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.domain.schedule.model.group.description
 import io.edugma.features.base.core.utils.*
+import io.edugma.features.schedule.domain.model.group.description
 import io.edugma.features.schedule.elements.vertical_schedule.VerticalScheduleComponent
 import org.koin.androidx.compose.getViewModel
 

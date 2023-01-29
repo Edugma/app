@@ -1,10 +1,10 @@
 package io.edugma.features.schedule.domain.repository
 
 import io.edugma.domain.base.utils.Lce
-import io.edugma.domain.schedule.model.compact.CompactSchedule
-import io.edugma.domain.schedule.model.schedule.ScheduleDay
-import io.edugma.domain.schedule.model.source.ScheduleSource
-import io.edugma.domain.schedule.model.teacher.TeacherInfo
+import io.edugma.features.schedule.domain.model.compact.CompactSchedule
+import io.edugma.features.schedule.domain.model.schedule.ScheduleDay
+import io.edugma.features.schedule.domain.model.source.ScheduleSource
+import io.edugma.features.schedule.domain.model.teacher.TeacherInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.Instant
 

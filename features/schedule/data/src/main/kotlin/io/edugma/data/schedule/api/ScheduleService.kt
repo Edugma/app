@@ -2,9 +2,9 @@ package io.edugma.data.schedule.api
 
 import io.edugma.data.schedule.model.LoginRequest
 import io.edugma.data.schedule.model.ScheduleComplexRequest
-import io.edugma.domain.schedule.model.ScheduleComplexFilter
-import io.edugma.domain.schedule.model.compact.CompactSchedule
-import io.edugma.domain.schedule.model.source.ScheduleSource
+import io.edugma.features.schedule.domain.model.ScheduleComplexFilter
+import io.edugma.features.schedule.domain.model.compact.CompactSchedule
+import io.edugma.features.schedule.domain.model.source.ScheduleSource
 import kotlinx.coroutines.flow.Flow
 import retrofit2.http.Body
 import retrofit2.http.GET

@@ -16,9 +16,9 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import io.edugma.core.designSystem.atoms.loader.EdLoader
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
-import io.edugma.domain.schedule.model.lesson.Lesson
-import io.edugma.domain.schedule.model.lesson.LessonDateTime
 import io.edugma.features.base.core.utils.*
+import io.edugma.features.schedule.domain.model.lesson.Lesson
+import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
 import org.koin.androidx.compose.getViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

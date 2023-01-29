@@ -16,11 +16,11 @@ import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.domain.schedule.model.place.description
-import io.edugma.domain.schedule.model.teacher.description
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.FluentIcons
 import io.edugma.features.base.core.utils.Typed1Listener
+import io.edugma.features.schedule.domain.model.place.description
+import io.edugma.features.schedule.domain.model.teacher.description
 import io.edugma.features.schedule.elements.vertical_schedule.VerticalScheduleComponent
 import io.edugma.features.schedule.schedule_info.group_info.InfoScaffold
 import org.koin.androidx.compose.getViewModel

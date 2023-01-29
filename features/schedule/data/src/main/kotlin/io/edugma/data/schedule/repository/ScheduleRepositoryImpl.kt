@@ -13,11 +13,11 @@ import io.edugma.data.schedule.model.toModel
 import io.edugma.domain.base.utils.Lce
 import io.edugma.domain.base.utils.loading
 import io.edugma.domain.base.utils.map
-import io.edugma.domain.schedule.model.ScheduleComplexFilter
-import io.edugma.domain.schedule.model.compact.CompactSchedule
-import io.edugma.domain.schedule.model.schedule.ScheduleDay
-import io.edugma.domain.schedule.model.source.ScheduleSource
-import io.edugma.domain.schedule.model.source.ScheduleSources
+import io.edugma.features.schedule.domain.model.ScheduleComplexFilter
+import io.edugma.features.schedule.domain.model.compact.CompactSchedule
+import io.edugma.features.schedule.domain.model.schedule.ScheduleDay
+import io.edugma.features.schedule.domain.model.source.ScheduleSource
+import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import io.edugma.features.schedule.domain.repository.ScheduleRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

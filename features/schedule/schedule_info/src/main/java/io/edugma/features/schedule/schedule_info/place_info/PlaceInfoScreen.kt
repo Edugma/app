@@ -29,11 +29,11 @@ import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.domain.schedule.model.place.PlaceInfo
-import io.edugma.domain.schedule.model.place.description
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.FluentIcons
 import io.edugma.features.base.core.utils.Typed1Listener
+import io.edugma.features.schedule.domain.model.place.PlaceInfo
+import io.edugma.features.schedule.domain.model.place.description
 import io.edugma.features.schedule.elements.vertical_schedule.VerticalScheduleComponent
 import io.edugma.features.schedule.schedule_info.R
 import io.edugma.features.schedule.schedule_info.group_info.InfoScaffold

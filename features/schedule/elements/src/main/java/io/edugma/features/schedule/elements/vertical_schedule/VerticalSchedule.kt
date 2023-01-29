@@ -18,12 +18,12 @@ import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.domain.base.utils.capitalized
-import io.edugma.domain.schedule.model.lesson.Lesson
-import io.edugma.domain.schedule.model.lesson.LessonDateTime
-import io.edugma.domain.schedule.model.lesson.LessonDisplaySettings
-import io.edugma.domain.schedule.model.source.ScheduleSource
 import io.edugma.features.base.core.utils.Typed2Listener
 import io.edugma.features.base.core.utils.withAlpha
+import io.edugma.features.schedule.domain.model.lesson.Lesson
+import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
+import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
+import io.edugma.features.schedule.domain.model.source.ScheduleSource
 import io.edugma.features.schedule.elements.lesson.LessonPlace
 import io.edugma.features.schedule.elements.lesson.LessonWindow
 import io.edugma.features.schedule.elements.lesson.model.ScheduleItem
