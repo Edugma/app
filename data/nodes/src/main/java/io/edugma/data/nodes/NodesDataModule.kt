@@ -9,6 +9,6 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 
 val nodesDataModule = module {
-    single { get<Retrofit>(named(DiConst.Schedule)).create(NodesService::class.java) }
+    single { get<Retrofit>(named(DiConst.OtherClient)).create(NodesService::class.java) }
     single<NodesRepository> { NodesRepositoryImpl(get(), get(), get()) }
 }
