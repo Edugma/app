@@ -8,8 +8,8 @@ import io.edugma.domain.schedule.model.place.PlaceFilters
 import io.edugma.domain.schedule.model.place.PlaceInfo
 import io.edugma.domain.schedule.model.place.PlaceType
 import io.edugma.domain.schedule.model.source.ScheduleSources
-import io.edugma.domain.schedule.repository.FreePlaceRepository
-import io.edugma.domain.schedule.usecase.ScheduleUseCase
+import io.edugma.features.schedule.domain.repository.FreePlaceRepository
+import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
 import io.edugma.features.base.core.mvi.BaseMutator
 import io.edugma.features.base.core.mvi.BaseViewModelFull
 import kotlinx.coroutines.flow.collect

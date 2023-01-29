@@ -1,9 +1,19 @@
 [versions]
+ksp = "1.8.0-1.0.9"
+kotlin = "1.8.0"
+androidGradle = "7.4.0"
+kotlinter = "3.13.0"
+
+desugaring = "2.0.0"
+
 kotlinxDateTime = "0.4.0"
 kotlinCoroutines = "1.6.4"
 kotlinxSerialization = "1.4.0"
 
-koin = "3.2.0"
+koin = "3.3.2"
+koin-android= "3.3.2"
+koin-android-compose= "3.4.1"
+koin-ksp = "1.1.0"
 
 coil = "2.2.0"
 
@@ -32,7 +42,13 @@ fluentIcons = "1.1.192"
 splashScreen = "1.0.0"
 glance = "1.0.0-alpha05"
 
+[plugins]
+kotlinx-serialization = { id = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+
 [libraries]
+gradlePlugin-android = { module = "com.android.tools.build:gradle", version.ref = "androidGradle" }
+gradlePlugin-kotlin-jvm = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+gradlePlugin-ktlint = { module = "org.jmailen.gradle:kotlinter-gradle", version.ref = "kotlinter" }
 
 accompanist-flowLayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
 accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist" }
@@ -66,9 +82,13 @@ compose-uiUtil = { group = "androidx.compose.ui", name = "ui-util" }
 
 coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 
-koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
-koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
+desugaring = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugaring" }
+
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin-android" }
+koin-annotations = { module = "io.insert-koin:koin-annotations", version.ref = "koin-ksp" }
+koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-android-compose" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-ksp = { module = "io.insert-koin:koin-ksp-compiler", version.ref = "koin-ksp" }
 
 kodeindb-debug = { module = "org.kodein.db:kodein-db-android-debug", version.ref = "kodeinDB" }
 kodeindb-kotlinx-serializer = { module = "org.kodein.db:kodein-db-serializer-kotlinx", version.ref = "kodeinDB" }
@@ -102,6 +122,3 @@ test-espressoCore = { module = "androidx.test.espresso:espresso-core", version =
 
 jdkDesugar = { module = "com.android.tools:desugar_jdk_libs", version = "2.0.1" }
 ktorUtils = { module = "io.ktor:ktor-utils", version = "2.1.0" }
-
-[plugins]
-kotlinx-serialization = { id = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "kotlinxSerialization" }

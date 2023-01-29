@@ -1,12 +1,12 @@
 plugins {
-    id("android-feature-base")
+    id("compose-android-lib")
 }
 
 dependencies {
     implementation(projects.features.base.core)
     implementation(projects.features.base.navigation)
     implementation(projects.features.base.elements)
-    api(projects.domain.schedule)
+    api(projects.features.schedule.domain)
 
     implementation(libs.androidx.appWidget)
 }

@@ -1,5 +1,5 @@
 plugins {
-    id("android-feature-base")
+    id("compose-android-lib")
 }
 
 dependencies {

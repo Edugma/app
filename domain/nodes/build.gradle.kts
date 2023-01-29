@@ -1,5 +1,5 @@
 plugins {
-    id("android-domain-base")
+    id("kotlin-lib")
     kotlin("plugin.serialization")
 }
 

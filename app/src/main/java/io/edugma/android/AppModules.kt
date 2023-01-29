@@ -12,7 +12,7 @@ import io.edugma.data.schedule.model.ScheduleSourceDao
 import io.edugma.data.schedule.model.ScheduleSourceFullDao
 import io.edugma.domain.account.accountDomainModule
 import io.edugma.domain.base.baseDomainModule
-import io.edugma.domain.schedule.ScheduleDomainModule
+import io.edugma.features.schedule.domain.ScheduleDomainModule
 import io.edugma.features.account.accountFeaturesModule
 import io.edugma.features.base.core.baseFeaturesModule
 import io.edugma.features.misc.menu.miscMenuFeaturesModule

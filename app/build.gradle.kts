@@ -1,5 +1,9 @@
 plugins {
-    id("android-app-base")
+    id("android-app")
+}
+
+android {
+    namespace = "io.edugma.android"
 }
 
 dependencies {
@@ -30,7 +34,7 @@ dependencies {
 
 
     implementation(projects.data.nodes)
-    implementation(projects.data.schedule)
+    implementation(projects.features.schedule.data)
     implementation(projects.data.account)
 
     testImplementation(libs.test.junit)
@@ -38,7 +42,4 @@ dependencies {
     androidTestImplementation(libs.test.espressoCore)
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.compose.uiTest)
-}
-android {
-    namespace = "io.edugma.android"
 }

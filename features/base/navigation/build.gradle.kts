@@ -1,11 +1,11 @@
 plugins {
-    id("android-feature-base")
+    id("compose-android-lib")
 }
 
 dependencies {
     api(projects.features.base.core)
 
-    implementation(projects.domain.schedule)
+    implementation(projects.features.schedule.domain)
 }
 android {
     namespace = "io.edugma.features.navigation"

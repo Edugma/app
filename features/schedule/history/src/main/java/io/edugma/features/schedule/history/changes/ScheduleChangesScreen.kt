@@ -21,7 +21,7 @@ import io.edugma.domain.schedule.model.lesson_subject.LessonSubject
 import io.edugma.domain.schedule.model.lesson_type.LessonType
 import io.edugma.domain.schedule.model.place.Place
 import io.edugma.domain.schedule.model.teacher.Teacher
-import io.edugma.domain.schedule.usecase.LessonChange
+import io.edugma.features.schedule.domain.usecase.LessonChange
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.withAlpha
 import kotlinx.datetime.Instant

@@ -3,7 +3,7 @@ package io.edugma.features.schedule.schedule_info.lesson_info
 import androidx.lifecycle.viewModelScope
 import io.edugma.domain.schedule.model.lesson.LessonInfo
 import io.edugma.domain.schedule.model.teacher.TeacherInfo
-import io.edugma.domain.schedule.usecase.ScheduleUseCase
+import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.mvi.prop
 import io.edugma.features.base.navigation.schedule.ScheduleInfoScreens

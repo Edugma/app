@@ -32,8 +32,8 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 rootProject.name = "edugma"
 
+includeBuild("convention-plugins")
 include(":app")
-
 includeSubmodules(
     "data",
     "domain",

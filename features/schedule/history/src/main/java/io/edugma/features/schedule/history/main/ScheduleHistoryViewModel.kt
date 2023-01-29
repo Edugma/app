@@ -2,7 +2,7 @@ package io.edugma.features.schedule.history.main
 
 import androidx.lifecycle.viewModelScope
 import io.edugma.domain.schedule.model.schedule.ScheduleDay
-import io.edugma.domain.schedule.usecase.ScheduleHistoryUseCase
+import io.edugma.features.schedule.domain.usecase.ScheduleHistoryUseCase
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.navigation.schedule.ScheduleHistoryScreens
 import kotlinx.coroutines.launch

@@ -1,5 +1,5 @@
 plugins {
-    id("android-data-base")
+    id("android-lib")
     kotlin("plugin.serialization")
 }
 

@@ -9,7 +9,7 @@ import io.edugma.domain.schedule.model.lesson.Lesson
 import io.edugma.domain.schedule.model.lesson.LessonDateTime
 import io.edugma.domain.schedule.model.lesson.LessonDisplaySettings
 import io.edugma.domain.schedule.model.lesson.LessonInfo
-import io.edugma.domain.schedule.usecase.ScheduleUseCase
+import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.mvi.impl.SimpleMutator
 import io.edugma.features.base.core.mvi.prop

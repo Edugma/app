@@ -8,14 +8,13 @@ import io.edugma.domain.schedule.model.lesson.LessonDateTime
 import io.edugma.domain.schedule.model.lesson.LessonDisplaySettings
 import io.edugma.domain.schedule.model.lesson.LessonInfo
 import io.edugma.domain.schedule.model.source.ScheduleSource
-import io.edugma.domain.schedule.usecase.ScheduleUseCase
+import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.mvi.prop
 import io.edugma.features.base.navigation.schedule.ScheduleInfoScreens
 import io.edugma.features.schedule.elements.lesson.model.ScheduleItem
 import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
 import io.edugma.features.schedule.elements.utils.toUiModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch

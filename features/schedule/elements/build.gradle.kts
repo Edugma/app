@@ -1,5 +1,5 @@
 plugins {
-    id("android-feature-base")
+    id("compose-android-lib")
 }
 
 dependencies {
@@ -7,7 +7,7 @@ dependencies {
     implementation(projects.features.base.core)
     implementation(projects.features.base.navigation)
     implementation(projects.features.base.elements)
-    api(projects.domain.schedule)
+    api(projects.features.schedule.domain)
 }
 android {
     namespace = "io.edugma.features.schedule.elements"

@@ -8,7 +8,7 @@ import io.edugma.domain.schedule.model.lesson_type.LessonType
 import io.edugma.domain.schedule.model.place.Place
 import io.edugma.domain.schedule.model.place.PlaceType
 import io.edugma.domain.schedule.model.teacher.Teacher
-import io.edugma.domain.schedule.usecase.ScheduleUseCase
+import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
 import io.edugma.features.base.core.mvi.BaseViewModel
 import kotlinx.coroutines.flow.last
 import java.time.LocalDate

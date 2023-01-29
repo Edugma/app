@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import io.edugma.core.designSystem.organism.accountSelector.AccountSelectorVO
 import io.edugma.domain.schedule.model.schedule.LessonsByTime
 import io.edugma.domain.schedule.model.source.ScheduleSourceFull
-import io.edugma.domain.schedule.usecase.ScheduleUseCase
+import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
 import io.edugma.domain.schedule.utils.getClosestLessons
 import io.edugma.features.base.core.mvi.BaseMutator
 import io.edugma.features.base.core.mvi.BaseViewModelFull

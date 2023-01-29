@@ -6,7 +6,7 @@ import io.edugma.domain.base.utils.onSuccess
 import io.edugma.domain.schedule.model.group.GroupInfo
 import io.edugma.domain.schedule.model.source.ScheduleSource
 import io.edugma.domain.schedule.model.source.ScheduleSources
-import io.edugma.domain.schedule.repository.ScheduleInfoRepository
+import io.edugma.features.schedule.domain.repository.ScheduleInfoRepository
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.mvi.prop
 import kotlinx.coroutines.flow.collect
