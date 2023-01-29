@@ -24,6 +24,7 @@ import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
+import io.edugma.core.designSystem.molecules.avatar.EdAvatar
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.searchField.EdSearchField
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
@@ -402,7 +403,7 @@ fun SourceItem(
                 ScheduleSources.Complex -> source.source.title.split(' ')
                     .joinToString(separator = "") { it.take(1) }
             }
-            InitialAvatar(url = source.source.avatarUrl ?: "", initials)
+            EdAvatar(url = source.source.avatarUrl ?: "", initials = initials)
             SpacerWidth(8.dp)
             Column(Modifier.weight(1f)) {
                 Text(

@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.molecules.avatar.EdAvatar
+import io.edugma.core.designSystem.molecules.avatar.EdAvatarSize
 import io.edugma.core.designSystem.molecules.avatar.toAvatarInitials
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
@@ -39,7 +40,7 @@ fun EdAccountSelector(
         EdAvatar(
             url = state.avatar,
             initials = remember { state.title.toAvatarInitials() },
-            modifier = Modifier.size(56.dp),
+            size = EdAvatarSize.large,
         )
         SpacerWidth(width = 10.dp)
         Column(
