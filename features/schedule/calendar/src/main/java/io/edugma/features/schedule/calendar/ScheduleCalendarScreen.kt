@@ -1,16 +1,18 @@
 package io.edugma.features.schedule.calendar
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -31,10 +33,11 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.card.EdCard
+import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
+import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.domain.base.utils.capitalized
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.ContentAlpha
 import io.edugma.features.base.core.utils.Typed1Listener
@@ -57,7 +60,6 @@ fun ScheduleCalendarScreen(viewModel: ScheduleCalendarViewModel = getViewModel()
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ScheduleCalendarContent(
     state: ScheduleCalendarState,
@@ -70,31 +72,44 @@ private fun ScheduleCalendarContent(
 //        cellCount = (cellCount + ((1f - zoomChange) / 0.05f).toInt()).coerceIn(1..6)
 //    }
 
-    Column() {
-        EdTopAppBar(
-            title = stringResource(R.string.schedule_cal_calendar),
-            onNavigationClick = onBackClick,
-        )
+    Box(Modifier.fillMaxSize()) {
         CalendarThree(
             schedule = state.schedule,
             onItemClick = onItemClick,
         )
+        EdTopAppBar(
+            title = stringResource(R.string.schedule_cal_calendar),
+            onNavigationClick = onBackClick,
+            windowInsets = WindowInsets.statusBars,
+            colors = EdTopAppBarDefaults.colors(
+                EdTheme.colorScheme.surface.copy(alpha = 0.9f),
+            ),
+        )
     }
 }
 
-private val dateFormat = DateTimeFormatter.ofPattern("EEE, d MMM")
+private val dateFormat = DateTimeFormatter.ofPattern("EEE, d MMMM")
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun CalendarThree(
     schedule: List<ScheduleCalendarWeek>,
     onItemClick: Typed1Listener<LocalDate>,
 ) {
     LazyColumn(Modifier.fillMaxSize()) {
+        item {
+            SpacerHeight(
+                height = WindowInsets.statusBars.asPaddingValues().calculateTopPadding() +
+                    EdTopAppBarDefaults.ContainerHeight,
+            )
+        }
         items(schedule) { week ->
             SpacerHeight(8.dp)
             Surface {
-                Column(Modifier.fillMaxWidth().padding(horizontal = 2.dp)) {
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 2.dp),
+                ) {
                     Row(
                         Modifier
                             .fillMaxWidth()
@@ -181,7 +196,9 @@ private fun WeekNumber(
 //    }
 
     Box(
-        modifier = modifier.fillMaxHeight().padding(bottom = 12.dp, top = 10.dp),
+        modifier = modifier
+            .fillMaxHeight()
+            .padding(bottom = 12.dp, top = 10.dp),
         contentAlignment = Alignment.Center,
     ) {
         Column {
@@ -217,23 +234,23 @@ private fun CalendarItem(
         onClick = onItemClick,
         modifier = modifier
             .fillMaxHeight()
-            .padding(start = 7.dp, end = 7.dp, top = 7.dp, bottom = 7.dp),
+            .padding(start = 4.dp, end = 4.dp, top = 4.dp, bottom = 4.dp),
+        shape = EdTheme.shapes.medium,
     ) {
         Column(
             Modifier
                 .fillMaxWidth()
-                .padding(top = 4.dp, bottom = 14.dp, start = 12.dp, end = 12.dp),
+                .padding(top = 3.dp, bottom = 8.dp, start = 7.dp, end = 7.dp),
         ) {
-            Text(
-                text = dateFormat.format(day.date).capitalized(),
-                style = MaterialTheme.typography.titleSmall,
+            EdLabel(
+                text = dateFormat.format(day.date).uppercase(),
+                style = MaterialTheme.typography.labelSmall,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally),
                 color = EdTheme.colorScheme.secondary,
             )
-
             if (day.lessons.isNotEmpty()) {
-                SpacerHeight(6.dp)
+                SpacerHeight(3.dp)
             }
             day.lessons.forEachIndexed { index, lessonsByTime ->
                 if (index != 0) {
@@ -263,7 +280,7 @@ private fun CalendarItem(
                     }
                     Text(
                         text = text,
-                        style = MaterialTheme.typography.bodySmall,
+                        style = MaterialTheme.typography.labelSmall,
                     )
                 }
             }

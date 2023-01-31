@@ -1,25 +1,32 @@
 package io.edugma.android.features
 
-import androidx.compose.foundation.background
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.add
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -27,11 +34,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import io.edugma.android.appScreens
+import io.edugma.core.designSystem.atoms.label.EdLabel
+import io.edugma.core.designSystem.organism.navigationBar.EdNavigationBar
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.features.base.core.navigation.compose.getRoute
+import io.edugma.features.base.core.navigation.compose.getFullRawRoute
 import io.edugma.features.base.core.navigation.compose.rememberNavController
-import io.edugma.features.base.core.utils.withAlpha
 import io.edugma.features.base.navigation.MainScreen
+import io.edugma.features.base.navigation.ScheduleScreens
 import io.edugma.features.base.navigation.nodes.NodesScreens
 import org.koin.androidx.compose.getViewModel
 
@@ -42,35 +51,59 @@ val showNavBar = listOf(
     MainScreen.Misc,
 ).map { it.route }
 
+val removeTopInset = listOf(
+    ScheduleScreens.Calendar,
+).map { it.getFullRawRoute() } + listOf(
+    "io-edugma-features-base-navigation-schedule-ScheduleInfoScreens-LessonInfo?screen={screen}",
+)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainContent(
     viewModel: MainViewModel = getViewModel(),
 ) {
     val navController = rememberNavController(viewModel.router)
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+    val isStatusBarInsetEnabled = remember(currentDestination) {
+        currentDestination?.route !in removeTopInset
+    }
+
+    val insets = WindowInsets.navigationBars.run {
+        if (isStatusBarInsetEnabled) {
+            add(WindowInsets.statusBars)
+        } else {
+            this
+        }
+    }
 
     Scaffold(
         bottomBar = { BottomNav(navController) },
+        contentWindowInsets = insets,
     ) { innerPadding ->
-        Box(modifier = Modifier.padding(innerPadding).fillMaxSize()) {
+        Box(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize(),
+        ) {
             NavHost(
                 navController = navController,
-                startDestination = NodesScreens.Main.getRoute() + "?screen={screen}",
+                startDestination = NodesScreens.Main.getFullRawRoute(),
             ) {
                 appScreens()
             }
-            Box(
-                Modifier.background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            EdTheme.colorScheme.background.withAlpha(0f),
-                            EdTheme.colorScheme.background,
-                        ),
-                    ),
-                ).fillMaxWidth()
-                    .height(10.dp)
-                    .align(Alignment.BottomCenter),
-            )
+//            Box(
+//                Modifier.background(
+//                    brush = Brush.verticalGradient(
+//                        colors = listOf(
+//                            EdTheme.colorScheme.background.withAlpha(0f),
+//                            EdTheme.colorScheme.background,
+//                        ),
+//                    ),
+//                ).fillMaxWidth()
+//                    .height(10.dp)
+//                    .align(Alignment.BottomCenter),
+//            )
         }
     }
 }
@@ -85,17 +118,49 @@ fun BottomNav(navController: NavHostController) {
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
+    val isNavigationBarVisible = remember(currentDestination) {
+        currentDestination?.route in showNavBar
+    }
+    val density = LocalDensity.current
 
-    if (true || currentDestination?.route in showNavBar) {
-        NavigationBar(
-            tonalElevation = 0.dp,
+    AnimatedVisibility(
+        visible = isNavigationBarVisible,
+        enter = slideInVertically {
+            // Slide in from 40 dp from the top.
+            with(density) { 40.dp.roundToPx() }
+        } + expandVertically() + fadeIn(
+            // Fade in with the initial alpha of 0.3f.
+            initialAlpha = 0.3f,
+        ),
+        exit = slideOutVertically {
+            with(density) { 40.dp.roundToPx() }
+        } + shrinkVertically() + fadeOut(),
+
+    ) {
+        EdNavigationBar(
+            tonalElevation = 3.dp,
+            height = 80.dp,
         ) {
             items.forEach { screen ->
-                val selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
+                val selected = currentDestination?.hierarchy?.any {
+                    it.route == screen.route
+                } == true
                 NavigationBarItem(
-                    icon = { Icon(painterResource(screen.getIcon(selected)), contentDescription = null) },
+                    icon = {
+                        Icon(painterResource(screen.getIcon(selected)), contentDescription = null)
+                    },
                     selected = selected,
-                    label = { Text(stringResource(screen.resourceId)) },
+                    label = {
+                        EdLabel(
+                            text = stringResource(screen.resourceId),
+                            fontWeight = if (selected) {
+                                FontWeight.Bold
+                            } else {
+                                FontWeight.Medium
+                            },
+                            style = EdTheme.typography.labelMedium,
+                        )
+                    },
                     onClick = {
                         navController.navigate(screen.route) {
                             // Pop up to the start destination of the graph to

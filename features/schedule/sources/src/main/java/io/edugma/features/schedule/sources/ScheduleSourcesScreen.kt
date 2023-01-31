@@ -2,7 +2,13 @@ package io.edugma.features.schedule.sources
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -11,7 +17,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
-import androidx.compose.material3.*
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.InputChip
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -19,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
@@ -29,8 +41,11 @@ import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.searchField.EdSearchField
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.features.base.core.utils.*
-import io.edugma.features.base.elements.*
+import io.edugma.core.designSystem.tokens.icons.EdIcons
+import io.edugma.features.base.core.utils.ClickListener
+import io.edugma.features.base.core.utils.ContentAlpha
+import io.edugma.features.base.core.utils.Typed1Listener
+import io.edugma.features.base.core.utils.WithContentAlpha
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
 import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import io.edugma.features.schedule.domain.model.source.ScheduleSourcesTabs
@@ -52,7 +67,7 @@ fun ScheduleSourcesScreen(viewModel: ScheduleSourcesViewModel = getViewModel()) 
     )
 }
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ScheduleSourcesContent(
     state: ScheduleSourceState,
@@ -154,7 +169,6 @@ fun ScheduleSourcesContent(
 //    }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun FiltersSelector(
     filters: List<Pair<String, Boolean>>,
@@ -181,7 +195,7 @@ private fun FiltersSelector(
                     modifier = Modifier.fillMaxWidth(),
                     elevation = CardDefaults.cardElevation(defaultElevation = tonalElevation),
                 ) {
-                    Text(text = it.first)
+                    EdLabel(text = it.first)
                 }
             }
         }
@@ -283,10 +297,10 @@ private fun Filter(
             Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            Text(text = title)
+            EdLabel(text = title)
             EdLabel(
                 text = "Посмотреть все",
-                iconPainter = painterResource(FluentIcons.ic_fluent_ios_arrow_rtl_24_regular),
+                iconPainter = painterResource(EdIcons.ic_fluent_ios_arrow_rtl_24_regular),
                 modifier = Modifier.clickable(onClick = onSelect),
                 iconStart = false,
             )
@@ -296,7 +310,7 @@ private fun Filter(
                 InputChip(
                     onClick = { },
                     label = {
-                        Text(text = it)
+                        EdLabel(text = it)
                     },
                     selected = false,
                 )
@@ -305,7 +319,7 @@ private fun Filter(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ColumnScope.Search(
     query: String,
@@ -368,7 +382,7 @@ private fun SourceTypeTab(
         colors = CardDefaults.cardColors(containerColor = color),
         shape = EdTheme.shapes.small,
     ) {
-        Text(
+        EdLabel(
             text = title,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
         )
@@ -406,14 +420,18 @@ fun SourceItem(
             EdAvatar(url = source.source.avatarUrl ?: "", initials = initials)
             SpacerWidth(8.dp)
             Column(Modifier.weight(1f)) {
-                Text(
+                EdLabel(
                     text = source.source.title,
                     style = EdTheme.typography.titleSmall,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
                 )
                 WithContentAlpha(alpha = ContentAlpha.medium) {
-                    Text(
+                    EdLabel(
                         text = source.source.description,
                         style = EdTheme.typography.bodySmall,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
             }
@@ -432,9 +450,9 @@ fun SourceItem(
                     LocalContentColor.current
                 }
                 val painter = if (source.isFavorite) {
-                    painterResource(FluentIcons.ic_fluent_star_24_filled)
+                    painterResource(EdIcons.ic_fluent_star_24_filled)
                 } else {
-                    painterResource(FluentIcons.ic_fluent_star_24_regular)
+                    painterResource(EdIcons.ic_fluent_star_24_regular)
                 }
                 Icon(
                     painter = painter,

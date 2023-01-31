@@ -73,6 +73,10 @@ fun Screen.getFullRoute(): String {
     return "${getRoute()}?screen=$args"
 }
 
+fun Screen.getFullRawRoute(): String {
+    return "${getRoute()}?screen={screen}"
+}
+
 fun toScreenInfo(text: String): ScreenInfo? {
     val decoded = text.decodeBase64String()
     Log.d("toScreenInfo", "decoded: $decoded")

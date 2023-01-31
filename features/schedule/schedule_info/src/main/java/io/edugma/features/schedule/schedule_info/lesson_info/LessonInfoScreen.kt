@@ -19,6 +19,7 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.molecules.avatar.EdAvatar
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
+import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.schedule.domain.model.group.Group
@@ -72,7 +73,8 @@ private fun LessonInfoContent(
                 EdTopAppBar(
                     title = "",
                     onNavigationClick = onBackClick,
-                    colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent),
+                    colors = EdTopAppBarDefaults.colors(containerColor = Color.Transparent),
+                    windowInsets = WindowInsets.statusBars,
                 )
                 SpacerHeight(height = 32.dp)
                 LessonType(

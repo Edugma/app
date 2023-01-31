@@ -102,7 +102,7 @@ val EdTypography = Typography(
         fontWeight = FontWeight.SemiBold,
         fontSize = 11.5.sp,
         // lineHeight = 16.sp,
-        letterSpacing = 1.0.sp,
+        letterSpacing = 0.8.sp,
     ),
     labelSmall = TextStyle(
         fontFamily = manropeFontFamily,

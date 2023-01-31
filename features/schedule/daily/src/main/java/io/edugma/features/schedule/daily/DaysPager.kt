@@ -6,7 +6,16 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.gestures.ScrollScope
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CardDefaults
@@ -24,6 +33,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import io.edugma.core.designSystem.atoms.card.EdCard
+import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.schedule.daily.model.DayUiModel
@@ -127,7 +137,7 @@ fun RowScope.DayContent(
                 textAlign = TextAlign.Center,
             )
         }
-        Spacer(Modifier.height(3.5.dp))
+        SpacerHeight(height = 3.5.dp)
         EdCard(
             onClick = { onDayClick(day.date) },
             modifier = Modifier
@@ -153,7 +163,7 @@ fun RowScope.DayContent(
                 )
             }
         }
-        Spacer(Modifier.height(2.5.dp))
+        SpacerHeight(height = 2.5.dp)
         if (day.lessonCount < 6) {
             Row(
                 modifier = Modifier

@@ -20,7 +20,6 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.designSystem.utils.ifNotNull
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EdTopAppBar(
     title: String,
@@ -28,25 +27,26 @@ fun EdTopAppBar(
     subtitle: String? = null,
     titleIcon: Painter? = null,
     subtitleIcon: Painter? = null,
-    navigationIcon: Painter? = painterResource(EdIcons.ic_fluent_arrow_left_24_filled),
+    navigationIcon: Painter? = painterResource(EdIcons.ic_fluent_arrow_left_32_regular),
     onNavigationClick: (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
     windowInsets: WindowInsets = WindowInsets(0.dp), // TopAppBarDefaults.windowInsets,
-    colors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(),
-    scrollBehavior: TopAppBarScrollBehavior? = null,
+    colors: EdTopAppBarColors = EdTopAppBarDefaults.colors(),
 ) {
-    CenterAlignedTopAppBar(
+    EdSingleRowTopAppBar(
         title = {
             if (subtitle == null) {
                 EdLabel(
                     text = title,
                     iconPainter = titleIcon,
+                    style = EdTheme.typography.titleMedium,
                 )
             } else {
                 Column {
                     EdLabel(
                         text = title,
                         iconPainter = titleIcon,
+                        style = EdTheme.typography.titleMedium,
                     )
                     CompositionLocalProvider(LocalContentColor provides EdTheme.colorScheme.onSurfaceVariant) {
                         EdLabel(
@@ -77,18 +77,19 @@ fun EdTopAppBar(
                                     radius = 24.dp,
                                 ),
                             )
-                        }.padding(12.dp),
+                        }
+                        .padding(13.dp),
                 )
             }
         },
         actions = actions,
         windowInsets = windowInsets,
         colors = colors,
-        scrollBehavior = scrollBehavior,
+        titleTextStyle = EdTheme.typography.titleLarge,
+        centeredTitle = true,
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 internal fun EdTopAppBarPreview() {
