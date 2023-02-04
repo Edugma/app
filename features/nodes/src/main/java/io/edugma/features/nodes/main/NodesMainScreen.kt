@@ -28,6 +28,7 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.domain.nodes.model.Node
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.Typed1Listener
@@ -37,13 +38,15 @@ import org.koin.androidx.compose.getViewModel
 fun NodesMainScreen(viewModel: NodesMainViewModel = getViewModel()) {
     val state by viewModel.state.collectAsState()
 
-    NodesMainContent(
-        state = state,
-        onTabClick = viewModel::onTabClick,
-        onNodeUrl = viewModel::onNodeUrl,
-        onEnterNodeUrl = viewModel::onEnterNodeUrl,
-        onNodeItemClick = viewModel::onNodeItemClick,
-    )
+    FeatureScreen {
+        NodesMainContent(
+            state = state,
+            onTabClick = viewModel::onTabClick,
+            onNodeUrl = viewModel::onNodeUrl,
+            onEnterNodeUrl = viewModel::onEnterNodeUrl,
+            onNodeItemClick = viewModel::onNodeItemClick,
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

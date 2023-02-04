@@ -22,7 +22,11 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,7 +39,12 @@ import com.google.accompanist.pager.PagerState
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.features.base.core.utils.*
+import io.edugma.features.base.core.utils.ContentAlpha
+import io.edugma.features.base.core.utils.Typed1Listener
+import io.edugma.features.base.core.utils.WithContentAlpha
+import io.edugma.features.base.core.utils.disabledHorizontalPointerInputScroll
+import io.edugma.features.base.core.utils.isItemFullyVisible
+import io.edugma.features.base.core.utils.sp
 import io.edugma.features.schedule.daily.model.DayUiModel
 import io.edugma.features.schedule.daily.model.WeekUiModel
 import java.time.LocalDate

@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.features.account.main.cards.*
 import io.edugma.features.account.main.model.MenuUi
 import org.koin.androidx.compose.getViewModel
@@ -19,7 +20,10 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun AccountMainScreen(viewModel: AccountMainViewModel = getViewModel()) {
     val state by viewModel.state.collectAsState()
-    AccountContent(state) { it.action(viewModel) }
+
+    FeatureScreen {
+        AccountContent(state) { it.action(viewModel) }
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)

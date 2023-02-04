@@ -1,4 +1,4 @@
-package io.edugma.features.schedule.appwidget.current_lessons
+package io.edugma.features.schedule.appwidget.currentLessons
 
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver

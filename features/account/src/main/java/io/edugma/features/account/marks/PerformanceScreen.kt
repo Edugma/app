@@ -45,6 +45,7 @@ import io.edugma.core.designSystem.molecules.textField.EdTextField
 import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
+import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.domain.account.model.Performance
 import io.edugma.features.account.R
 import io.edugma.features.base.core.utils.ClickListener
@@ -66,25 +67,28 @@ fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
         initialValue = ModalBottomSheetValue.Hidden,
     )
     val scope = rememberCoroutineScope()
-    ModalBottomSheetLayout(
-        sheetState = bottomState,
-        sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
-        scrimColor = Color.Black.copy(alpha = 0.5f),
-        sheetBackgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.surface,
-        sheetContent = {
-            BottomSheetContent(
+
+    FeatureScreen {
+        ModalBottomSheetLayout(
+            sheetState = bottomState,
+            sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
+            scrimColor = Color.Black.copy(alpha = 0.5f),
+            sheetBackgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.surface,
+            sheetContent = {
+                BottomSheetContent(
+                    state,
+                    viewModel,
+                ) { scope.launch { bottomState.hide() } }
+            },
+        ) {
+            PerformanceContent(
                 state,
-                viewModel,
-            ) { scope.launch { bottomState.hide() } }
-        },
-    ) {
-        PerformanceContent(
-            state,
-            showBottomSheet = { scope.launch { bottomState.show() } },
-            retryListener = viewModel::loadMarks,
-            filterClickListener = viewModel::updateFilter,
-            backListener = viewModel::exit,
-        )
+                showBottomSheet = { scope.launch { bottomState.show() } },
+                retryListener = viewModel::loadMarks,
+                filterClickListener = viewModel::updateFilter,
+                backListener = viewModel::exit,
+            )
+        }
     }
 }
 
@@ -142,7 +146,9 @@ fun BottomSheetContent(
         SpacerHeight(height = 20.dp)
         EdButton(
             onClick = bottomCloseListener,
-            modifier = Modifier.fillMaxWidth().placeholder(state.bottomSheetPlaceholders),
+            modifier = Modifier
+                .fillMaxWidth()
+                .placeholder(state.bottomSheetPlaceholders),
             text = "Применить",
         )
         SpacerHeight(height = 15.dp)

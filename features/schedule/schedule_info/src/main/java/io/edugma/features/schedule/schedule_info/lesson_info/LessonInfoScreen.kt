@@ -21,6 +21,7 @@ import io.edugma.core.designSystem.molecules.avatar.EdAvatar
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.schedule.domain.model.group.Group
 import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
@@ -42,13 +43,17 @@ fun LessonInfoScreen(
         viewModel.onLessonInfo(lessonInfo)
     }
 
-    LessonInfoContent(
-        state = state,
-        onBackClick = viewModel::exit,
-        onTeacherClick = viewModel::onTeacherClick,
-        onGroupClick = viewModel::onGroupClick,
-        onPlaceClick = viewModel::onPlaceClick,
-    )
+    FeatureScreen(
+        statusBarPadding = false,
+    ) {
+        LessonInfoContent(
+            state = state,
+            onBackClick = viewModel::exit,
+            onTeacherClick = viewModel::onTeacherClick,
+            onGroupClick = viewModel::onGroupClick,
+            onPlaceClick = viewModel::onPlaceClick,
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

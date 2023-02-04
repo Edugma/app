@@ -1,4 +1,4 @@
-package io.edugma.features.schedule.appwidget.current_lessons
+package io.edugma.features.schedule.appwidget.currentLessons
 
 import android.annotation.SuppressLint
 import android.os.Build

@@ -29,6 +29,7 @@ import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.domain.base.utils.capitalized
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.schedule.domain.model.lesson.LessonTime
@@ -47,10 +48,14 @@ fun LessonsReviewScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
-    LessonsReviewContent(state.lessons, viewModel::exit)
+    FeatureScreen {
+        LessonsReviewContent(
+            lessons = state.lessons,
+            onBackClick = viewModel::exit,
+        )
+    }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LessonsReviewContent(
     lessons: List<LessonTimesReview>,

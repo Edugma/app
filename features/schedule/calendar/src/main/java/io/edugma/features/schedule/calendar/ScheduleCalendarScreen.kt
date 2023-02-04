@@ -38,6 +38,7 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.ContentAlpha
 import io.edugma.features.base.core.utils.Typed1Listener
@@ -53,11 +54,16 @@ import java.time.format.DateTimeFormatter
 fun ScheduleCalendarScreen(viewModel: ScheduleCalendarViewModel = getViewModel()) {
     val state by viewModel.state.collectAsState()
 
-    ScheduleCalendarContent(
-        state = state,
-        onBackClick = viewModel::exit,
-        onItemClick = viewModel::onDayClick,
-    )
+    FeatureScreen(
+        statusBarPadding = false,
+        navigationBarPadding = false,
+    ) {
+        ScheduleCalendarContent(
+            state = state,
+            onBackClick = viewModel::exit,
+            onItemClick = viewModel::onDayClick,
+        )
+    }
 }
 
 @Composable

@@ -1,6 +1,6 @@
 package io.edugma.features.schedule.appwidget
 
-import io.edugma.features.schedule.appwidget.current_lessons.CurrentLessonViewModel
+import io.edugma.features.schedule.appwidget.currentLessons.CurrentLessonViewModel
 import org.koin.dsl.module
 
 object ScheduleAppwidgetFeatureModule {

@@ -1,19 +1,20 @@
 package io.edugma.android.features
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.with
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.add
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
@@ -22,7 +23,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -40,7 +40,6 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.features.base.core.navigation.compose.getFullRawRoute
 import io.edugma.features.base.core.navigation.compose.rememberNavController
 import io.edugma.features.base.navigation.MainScreen
-import io.edugma.features.base.navigation.ScheduleScreens
 import io.edugma.features.base.navigation.nodes.NodesScreens
 import org.koin.androidx.compose.getViewModel
 
@@ -51,35 +50,16 @@ val showNavBar = listOf(
     MainScreen.Misc,
 ).map { it.route }
 
-val removeTopInset = listOf(
-    ScheduleScreens.Calendar,
-).map { it.getFullRawRoute() } + listOf(
-    "io-edugma-features-base-navigation-schedule-ScheduleInfoScreens-LessonInfo?screen={screen}",
-)
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainContent(
     viewModel: MainViewModel = getViewModel(),
 ) {
     val navController = rememberNavController(viewModel.router)
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
-    val isStatusBarInsetEnabled = remember(currentDestination) {
-        currentDestination?.route !in removeTopInset
-    }
-
-    val insets = WindowInsets.navigationBars.run {
-        if (isStatusBarInsetEnabled) {
-            add(WindowInsets.statusBars)
-        } else {
-            this
-        }
-    }
 
     Scaffold(
         bottomBar = { BottomNav(navController) },
-        contentWindowInsets = insets,
+        contentWindowInsets = WindowInsets(0.dp),
     ) { innerPadding ->
         Box(
             modifier = Modifier
@@ -108,6 +88,7 @@ fun MainContent(
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun BottomNav(navController: NavHostController) {
     val items = listOf(
@@ -147,7 +128,22 @@ fun BottomNav(navController: NavHostController) {
                 } == true
                 NavigationBarItem(
                     icon = {
-                        Icon(painterResource(screen.getIcon(selected)), contentDescription = null)
+                        Crossfade(
+                            targetState = selected,
+                            animationSpec = tween(durationMillis = 400),
+                        ) { selected ->
+                            if (selected) {
+                                Icon(
+                                    painter = painterResource(screen.getIcon(true)),
+                                    contentDescription = null,
+                                )
+                            } else {
+                                Icon(
+                                    painter = painterResource(screen.getIcon(false)),
+                                    contentDescription = null,
+                                )
+                            }
+                        }
                     },
                     selected = selected,
                     label = {
@@ -173,7 +169,6 @@ fun BottomNav(navController: NavHostController) {
                             restoreState = true
                         }
                     },
-                    modifier = Modifier.clip(EdTheme.shapes.medium),
                 )
             }
         }

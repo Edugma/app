@@ -36,6 +36,7 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.domain.account.model.*
 import io.edugma.features.account.R
 import io.edugma.features.base.core.utils.*
@@ -53,20 +54,22 @@ fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
     )
     val scope = rememberCoroutineScope()
 
-    ModalBottomSheetLayout(
-        sheetState = bottomState,
-        sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
-        scrimColor = Color.Black.copy(alpha = 0.5f),
-        sheetBackgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.surface,
-        sheetContent = { BottomSheetLayout(state) },
-    ) {
-        PaymentsContent(
-            state,
-            retryListener = viewModel::load,
-            onPaymentChange = viewModel::typeChange,
-            onQrClickListener = { scope.launch { bottomState.show() } },
-            backListener = viewModel::exit,
-        )
+    FeatureScreen {
+        ModalBottomSheetLayout(
+            sheetState = bottomState,
+            sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
+            scrimColor = Color.Black.copy(alpha = 0.5f),
+            sheetBackgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.surface,
+            sheetContent = { BottomSheetLayout(state) },
+        ) {
+            PaymentsContent(
+                state,
+                retryListener = viewModel::load,
+                onPaymentChange = viewModel::typeChange,
+                onQrClickListener = { scope.launch { bottomState.show() } },
+                backListener = viewModel::exit,
+            )
+        }
     }
 }
 

@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.withAlpha
 import io.edugma.features.schedule.domain.model.group.Group
@@ -44,10 +45,12 @@ fun ScheduleChangesScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
-    ScheduleChangesContent(
-        state = state,
-        onBackClick = viewModel::exit,
-    )
+    FeatureScreen {
+        ScheduleChangesContent(
+            state = state,
+            onBackClick = viewModel::exit,
+        )
+    }
 }
 
 private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM, yyyy")

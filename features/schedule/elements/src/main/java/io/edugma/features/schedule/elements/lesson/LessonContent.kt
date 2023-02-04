@@ -1,7 +1,11 @@
 package io.edugma.features.schedule.elements.lesson
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -17,8 +21,12 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
+import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.features.base.core.utils.*
+import io.edugma.core.designSystem.tokens.icons.EdIcons
+import io.edugma.features.base.core.utils.ContentAlpha
+import io.edugma.features.base.core.utils.Typed1Listener
+import io.edugma.features.base.core.utils.WithContentAlpha
 import io.edugma.features.base.elements.placeholder
 import io.edugma.features.schedule.domain.model.group.Group
 import io.edugma.features.schedule.domain.model.lesson.Lesson
@@ -114,13 +122,13 @@ fun TeachersContent(teachers: List<Teacher>, isLoading: Boolean = false) {
         modifier = Modifier.placeholder(visible = isLoading),
     ) {
         Icon(
-            painter = painterResource(id = FluentIcons.ic_fluent_hat_graduation_16_regular),
+            painter = painterResource(id = EdIcons.ic_fluent_hat_graduation_16_regular),
             contentDescription = null,
             modifier = Modifier
                 .size(17.dp)
                 .align(Alignment.CenterVertically),
         )
-        Spacer(Modifier.width(5.dp))
+        SpacerWidth(width = 5.dp)
         val teachersText = remember(teachers) {
             if (teachers.size == 1) {
                 teachers.first().name
@@ -146,13 +154,13 @@ fun GroupsContent(groups: List<Group>, isLoading: Boolean = false) {
         modifier = Modifier.placeholder(visible = isLoading),
     ) {
         Icon(
-            painter = painterResource(id = FluentIcons.ic_fluent_people_16_regular),
+            painter = painterResource(id = EdIcons.ic_fluent_people_16_regular),
             contentDescription = null,
             modifier = Modifier
                 .size(17.dp)
                 .align(Alignment.CenterVertically),
         )
-        Spacer(Modifier.width(5.dp))
+        SpacerWidth(width = 5.dp)
         val groupsText = remember(groups) { groups.joinToString { it.title } }
         Text(
             text = groupsText,
@@ -172,13 +180,13 @@ fun PlacesContent(places: List<Place>, isLoading: Boolean = false) {
         modifier = Modifier.placeholder(visible = isLoading),
     ) {
         Icon(
-            painter = painterResource(id = FluentIcons.ic_fluent_location_16_regular),
+            painter = painterResource(id = EdIcons.ic_fluent_location_16_regular),
             contentDescription = null,
             modifier = Modifier
                 .size(17.dp)
                 .align(Alignment.CenterVertically),
         )
-        Spacer(Modifier.width(5.dp))
+        SpacerWidth(width = 5.dp)
         val placesText = remember(places) { places.joinToString { it.title } }
         Text(
             text = placesText,

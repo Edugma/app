@@ -1,6 +1,5 @@
 package io.edugma.features.schedule.menu.cards
 
-import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.edugma.core.designSystem.organism.accountSelector.AccountSelectorVO

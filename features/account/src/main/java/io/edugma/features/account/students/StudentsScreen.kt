@@ -37,6 +37,7 @@ import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.textField.EdTextField
 import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.domain.account.model.student.Student
 import io.edugma.features.account.R
 import io.edugma.features.account.teachers.TeacherPlaceholder
@@ -54,37 +55,39 @@ fun StudentsScreen(viewModel: StudentsViewModel = getViewModel()) {
         initialValue = ModalBottomSheetValue.Hidden,
     )
     val scope = rememberCoroutineScope()
-    ModalBottomSheetLayout(
-        sheetState = bottomState,
-        sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
-        scrimColor = Color.Black.copy(alpha = 0.5f),
-        sheetBackgroundColor = MaterialTheme.colorScheme.surface,
-        sheetContent = {
-            when (state.bottomType) {
-                BottomSheetType.Filter -> {
-                    FilterSheetContent(state = state, textChangeListener = viewModel::setName) {
-                        viewModel.load(state.name)
-                        scope.launch { bottomState.hide() }
+    FeatureScreen {
+        ModalBottomSheetLayout(
+            sheetState = bottomState,
+            sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
+            scrimColor = Color.Black.copy(alpha = 0.5f),
+            sheetBackgroundColor = MaterialTheme.colorScheme.surface,
+            sheetContent = {
+                when (state.bottomType) {
+                    BottomSheetType.Filter -> {
+                        FilterSheetContent(state = state, textChangeListener = viewModel::setName) {
+                            viewModel.load(state.name)
+                            scope.launch { bottomState.hide() }
+                        }
+                    }
+                    BottomSheetType.Student -> {
+                        state.selectedStudent?.let { StudentSheetContent(it) }
                     }
                 }
-                BottomSheetType.Student -> {
-                    state.selectedStudent?.let { StudentSheetContent(it) }
-                }
-            }
-        },
-    ) {
-        StudentsContent(
-            state,
-            backListener = viewModel::exit,
-            openBottomSheetListener = {
-                viewModel.selectFilter()
-                scope.launch { bottomState.show() }
             },
-            studentClick = {
-                viewModel.selectStudent(it)
-                scope.launch { bottomState.show() }
-            },
-        )
+        ) {
+            StudentsContent(
+                state,
+                backListener = viewModel::exit,
+                openBottomSheetListener = {
+                    viewModel.selectFilter()
+                    scope.launch { bottomState.show() }
+                },
+                studentClick = {
+                    viewModel.selectStudent(it)
+                    scope.launch { bottomState.show() }
+                },
+            )
+        }
     }
 }
 

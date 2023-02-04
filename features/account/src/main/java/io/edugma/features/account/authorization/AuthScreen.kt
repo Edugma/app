@@ -23,6 +23,7 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.textField.EdTextField
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.features.account.R
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.*
@@ -33,15 +34,17 @@ fun AuthScreen(viewModel: AuthViewModel = getViewModel()) {
     with(viewModel) {
         val state by state.collectAsState()
 
-        AuthContent(
-            state = state,
-            onLoginClick = ::authorize,
-            onLoggedClick = ::exit,
-            onLoginChange = ::setLogin,
-            onPasswordChange = ::setPassword,
-            onCheckBoxChanged = ::setCheckBox,
-            onLogout = ::logout,
-        )
+        FeatureScreen {
+            AuthContent(
+                state = state,
+                onLoginClick = ::authorize,
+                onLoggedClick = ::exit,
+                onLoginChange = ::setLogin,
+                onPasswordChange = ::setPassword,
+                onCheckBoxChanged = ::setCheckBox,
+                onLogout = ::logout,
+            )
+        }
     }
 }
 

@@ -20,6 +20,7 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.features.account.students.Student
 import io.edugma.features.account.teachers.TeacherPlaceholder
 import io.edugma.features.base.core.utils.ClickListener
@@ -30,11 +31,14 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun ClassmatesScreen(viewModel: ClassmatesViewModel = getViewModel()) {
     val state by viewModel.state.collectAsState()
-    ClassmatesContent(
-        state,
-        retryListener = viewModel::updateClassmates,
-        backListener = viewModel::exit,
-    )
+
+    FeatureScreen {
+        ClassmatesContent(
+            state,
+            retryListener = viewModel::updateClassmates,
+            backListener = viewModel::exit,
+        )
+    }
 }
 
 @Composable

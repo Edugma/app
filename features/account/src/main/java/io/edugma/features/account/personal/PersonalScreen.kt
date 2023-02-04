@@ -30,6 +30,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.domain.account.model.Application
 import io.edugma.domain.account.model.Order
 import io.edugma.domain.account.model.Personal
@@ -44,12 +45,14 @@ import kotlin.math.min
 fun PersonalScreen(viewModel: PersonalViewModel = getViewModel()) {
     val state by viewModel.state.collectAsState()
 
-    PersonalContent(
-        state,
-        backListener = viewModel::exit,
-        refreshListener = viewModel::update,
-        typeListener = viewModel::setColumn,
-    )
+    FeatureScreen {
+        PersonalContent(
+            state = state,
+            backListener = viewModel::exit,
+            refreshListener = viewModel::update,
+            typeListener = viewModel::setColumn,
+        )
+    }
 }
 
 @Composable
@@ -72,7 +75,12 @@ fun PersonalContent(
                 scrollOffset,
                 backListener,
             )
-            LazyColumn(Modifier.padding(8.dp).fillMaxSize(), state = scrollState) {
+            LazyColumn(
+                Modifier
+                    .padding(8.dp)
+                    .fillMaxSize(),
+                state = scrollState,
+            ) {
                 when {
                     state.isError && state.personal.isNull() -> {
                         item { ErrorView(retryAction = refreshListener) }
@@ -347,7 +355,9 @@ fun OrderPlaceholder() {
         Text(
             text = "",
             style = EdTheme.typography.bodySmall,
-            modifier = Modifier.fillMaxWidth().placeholder(true),
+            modifier = Modifier
+                .fillMaxWidth()
+                .placeholder(true),
         )
     }
 }
@@ -400,7 +410,8 @@ fun ApplicationPlaceholder() {
             Text(
                 text = "",
                 style = EdTheme.typography.titleMedium,
-                modifier = Modifier.align(Alignment.CenterEnd)
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
                     .defaultMinSize(minWidth = 100.dp)
                     .placeholder(true),
             )
@@ -409,7 +420,8 @@ fun ApplicationPlaceholder() {
                 style = EdTheme.typography.labelMedium,
                 color = EdTheme.colorScheme.tertiary,
                 textAlign = TextAlign.End,
-                modifier = Modifier.align(Alignment.CenterEnd)
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
                     .defaultMinSize(minWidth = 50.dp)
                     .placeholder(true),
             )

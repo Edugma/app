@@ -42,6 +42,7 @@ import io.edugma.core.designSystem.molecules.searchField.EdSearchField
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
+import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.ContentAlpha
 import io.edugma.features.base.core.utils.Typed1Listener
@@ -55,16 +56,18 @@ import org.koin.androidx.compose.getViewModel
 fun ScheduleSourcesScreen(viewModel: ScheduleSourcesViewModel = getViewModel()) {
     val state by viewModel.state.collectAsState()
 
-    ScheduleSourcesContent(
-        state = state,
-        onBackClick = viewModel::exit,
-        onQueryChange = viewModel::onQueryChange,
-        onTabSelected = viewModel::onSelectTab,
-        onSourceSelected = viewModel::onSelectSource,
-        onAddFavorite = viewModel::onAddFavorite,
-        onDeleteFavorite = viewModel::onDeleteFavorite,
-        onApplyComplexSearch = viewModel::onApplyComplexSearch,
-    )
+    FeatureScreen {
+        ScheduleSourcesContent(
+            state = state,
+            onBackClick = viewModel::exit,
+            onQueryChange = viewModel::onQueryChange,
+            onTabSelected = viewModel::onSelectTab,
+            onSourceSelected = viewModel::onSelectSource,
+            onAddFavorite = viewModel::onAddFavorite,
+            onDeleteFavorite = viewModel::onDeleteFavorite,
+            onApplyComplexSearch = viewModel::onApplyComplexSearch,
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterialApi::class)

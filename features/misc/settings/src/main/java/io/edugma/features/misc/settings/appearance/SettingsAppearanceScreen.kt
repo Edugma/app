@@ -13,6 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
+import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.misc.settings.R
@@ -22,11 +23,13 @@ import org.koin.androidx.compose.getViewModel
 fun SettingsAppearanceScreen(viewModel: SettingsAppearanceViewModel = getViewModel()) {
     val state by viewModel.state.collectAsState()
 
-    SettingsAppearanceContent(
-        state = state,
-        onBackClick = viewModel::exit,
-        onNightModeCheckedChange = viewModel::onNightModeCheckedChange,
-    )
+    FeatureScreen {
+        SettingsAppearanceContent(
+            state = state,
+            onBackClick = viewModel::exit,
+            onNightModeCheckedChange = viewModel::onNightModeCheckedChange,
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

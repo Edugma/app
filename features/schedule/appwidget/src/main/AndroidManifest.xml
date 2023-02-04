@@ -3,7 +3,7 @@
     <application>
 
         <receiver
-            android:name=".current_lessons.CurrentLessonAppWidgetReceiver"
+            android:name=".currentLessons.CurrentLessonAppWidgetReceiver"
             android:enabled="@bool/glance_appwidget_available"
             android:exported="false">
             <intent-filter>

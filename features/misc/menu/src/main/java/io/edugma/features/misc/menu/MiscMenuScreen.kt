@@ -13,15 +13,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.features.base.core.utils.ClickListener
 import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun MiscMenuScreen(viewModel: MiscMenuViewModel = getViewModel()) {
 
-    MiscMenuContent(
-        onSettingsClick = viewModel::onSettingsClick,
-    )
+    FeatureScreen {
+        MiscMenuContent(
+            onSettingsClick = viewModel::onSettingsClick,
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,7 +45,9 @@ private fun MiscMenuContent(
         SpacerHeight(height = 20.dp)
         Card(
             onClick = onSettingsClick,
-            modifier = Modifier.height(150.dp).width(300.dp),
+            modifier = Modifier
+                .height(150.dp)
+                .width(300.dp),
         ) {
             Text(text = "Настройки")
         }

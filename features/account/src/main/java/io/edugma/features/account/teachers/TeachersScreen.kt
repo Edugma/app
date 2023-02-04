@@ -40,6 +40,7 @@ import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.textField.EdTextField
 import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.domain.account.model.Teacher
 import io.edugma.domain.account.model.departments
 import io.edugma.domain.account.model.description
@@ -57,39 +58,42 @@ fun TeachersScreen(viewModel: TeachersViewModel = getViewModel()) {
         initialValue = ModalBottomSheetValue.Hidden,
     )
     val scope = rememberCoroutineScope()
-    ModalBottomSheetLayout(
-        sheetState = bottomState,
-        sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
-        scrimColor = Color.Black.copy(alpha = 0.5f),
-        sheetBackgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.surface,
-        sheetContent = {
-            when (state.bottomType) {
-                BottomType.Teacher -> {
-                    state.selectedEntity?.let {
-                        TeacherInfoBottom(teacher = it)
+
+    FeatureScreen {
+        ModalBottomSheetLayout(
+            sheetState = bottomState,
+            sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
+            scrimColor = Color.Black.copy(alpha = 0.5f),
+            sheetBackgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.surface,
+            sheetContent = {
+                when (state.bottomType) {
+                    BottomType.Teacher -> {
+                        state.selectedEntity?.let {
+                            TeacherInfoBottom(teacher = it)
+                        }
+                    }
+                    BottomType.Search -> {
+                        TeacherSearchBottom(state = state, nameListener = viewModel::setName) {
+                            viewModel.load(state.name)
+                            scope.launch { bottomState.hide() }
+                        }
                     }
                 }
-                BottomType.Search -> {
-                    TeacherSearchBottom(state = state, nameListener = viewModel::setName) {
-                        viewModel.load(state.name)
-                        scope.launch { bottomState.hide() }
-                    }
-                }
-            }
-        },
-    ) {
-        TeachersContent(
-            state,
-            backListener = viewModel::exit,
-            openBottomListener = {
-                viewModel.openSearch()
-                scope.launch { bottomState.show() }
             },
-            openTeacher = {
-                viewModel.openTeacher(it)
-                scope.launch { bottomState.show() }
-            },
-        )
+        ) {
+            TeachersContent(
+                state,
+                backListener = viewModel::exit,
+                openBottomListener = {
+                    viewModel.openSearch()
+                    scope.launch { bottomState.show() }
+                },
+                openTeacher = {
+                    viewModel.openTeacher(it)
+                    scope.launch { bottomState.show() }
+                },
+            )
+        }
     }
 }
 
@@ -113,7 +117,9 @@ fun TeacherInfoBottom(teacher: Teacher) {
             AsyncImage(
                 model = teacher.avatar,
                 contentDescription = "avatar",
-                modifier = Modifier.fillMaxWidth().clip(CircleShape),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(CircleShape),
             )
         }
         SpacerHeight(height = 3.dp)
@@ -358,7 +364,9 @@ fun TeacherPlaceholder() {
                     fontSize = 18.sp,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.placeholder(true).widthIn(min = 100.dp),
+                    modifier = Modifier
+                        .placeholder(true)
+                        .widthIn(min = 100.dp),
                 )
                 SpacerHeight(height = 3.dp)
                 WithContentAlpha(alpha = ContentAlpha.medium) {

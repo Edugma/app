@@ -2,44 +2,29 @@ plugins {
     id("compose-android-lib")
 }
 
-android.namespace = "io.edugma.core.designSystem"
+android {
+    namespace = "io.edugma.core.designSystem"
+    resourcePrefix("core_ed_")
+}
 
 dependencies {
-    api(projects.domain.base)
-    api(projects.data.base)
+    implementation(projects.domain.base)
+    implementation(projects.data.base)
 
-    api(platform(libs.compose.bom))
-    api(libs.compose.ui)
-    api(libs.compose.activity)
-    api(libs.compose.material3)
-    debugApi(libs.compose.uiTooling)
-    api(libs.compose.uiToolingPreview)
-    api(libs.androidx.lifecycleRuntime)
-    api(libs.androidx.splashScreen)
+    implementation(libs.androidx.lifecycleRuntime)
 
-    api(libs.accompanist.systemUiController)
-    api(libs.accompanist.flowLayout)
-    api(libs.accompanist.pager)
-    api(libs.accompanist.pagerIndicators)
-    api(libs.accompanist.placeholder)
-    api(libs.accompanist.swiperefresh)
-    api(libs.accompanist.permissions)
+    implementation(libs.accompanist.systemUiController)
+    implementation(libs.accompanist.flowLayout)
+    implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.pagerIndicators)
+    implementation(libs.accompanist.placeholder)
+    implementation(libs.accompanist.swiperefresh)
 
-    api(libs.androidx.coreKtx)
-    api(libs.androidx.appCompat)
-    api(libs.androidx.constraintLayout)
-    api(libs.lottie)
+    implementation(libs.androidx.coreKtx)
+    implementation(libs.androidx.appCompat)
+    implementation(libs.lottie)
+    implementation(libs.coil)
+
     api(libs.fluentIcons) { artifact { type = "aar" } }
-
-    api(libs.material3)
-
-    api(libs.koin.android)
-    api(libs.koin.compose)
-
-    api(libs.navigation)
-
-    api(libs.coil)
-
-    api(libs.androidx.startup)
 }
 

@@ -1,6 +1,13 @@
 package io.edugma.features.schedule.menu
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -17,8 +24,15 @@ import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.button.EdButtonSize
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
+import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.schedule.menu.cards.*
+import io.edugma.features.schedule.menu.cards.CalendarCard
+import io.edugma.features.schedule.menu.cards.ChangeHistoryCard
+import io.edugma.features.schedule.menu.cards.FindFreePlaceCard
+import io.edugma.features.schedule.menu.cards.LessonsReviewCard
+import io.edugma.features.schedule.menu.cards.ScheduleAppWidgetCard
+import io.edugma.features.schedule.menu.cards.ScheduleCard
+import io.edugma.features.schedule.menu.cards.ScheduleSourcesCard
 import io.edugma.features.schedule.menu.model.MenuItem
 import org.koin.androidx.compose.getViewModel
 
@@ -26,17 +40,19 @@ import org.koin.androidx.compose.getViewModel
 fun ScheduleMenuScreen(viewModel: ScheduleMenuViewModel = getViewModel()) {
     val state by viewModel.state.collectAsState()
 
-    ScheduleMenuContent(
-        state = state,
-        onScheduleClick = viewModel::onScheduleClick,
-        onLessonsReviewClick = viewModel::onLessonsReviewClick,
-        onScheduleCalendarClick = viewModel::onScheduleCalendarClick,
-        onScheduleSourceClick = viewModel::onScheduleSourceClick,
-        onFreePlaceClick = viewModel::onFreePlaceClick,
-        onAppWidgetClick = viewModel::onAppWidgetClick,
-        onHistoryClick = viewModel::onHistoryClick,
-        onSignOut = viewModel::onSignOut,
-    )
+    FeatureScreen {
+        ScheduleMenuContent(
+            state = state,
+            onScheduleClick = viewModel::onScheduleClick,
+            onLessonsReviewClick = viewModel::onLessonsReviewClick,
+            onScheduleCalendarClick = viewModel::onScheduleCalendarClick,
+            onScheduleSourceClick = viewModel::onScheduleSourceClick,
+            onFreePlaceClick = viewModel::onFreePlaceClick,
+            onAppWidgetClick = viewModel::onAppWidgetClick,
+            onHistoryClick = viewModel::onHistoryClick,
+            onSignOut = viewModel::onSignOut,
+        )
+    }
 }
 
 @Composable
@@ -60,7 +76,9 @@ fun ScheduleMenuContent(
             Text(
                 text = stringResource(R.string.sch_schedule),
                 style = EdTheme.typography.headlineMedium,
-                modifier = Modifier.padding(start = 16.dp).weight(1f),
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .weight(1f),
             )
             if (state.source.accountSelectorVO != null) {
                 IconButton(onClick = onSignOut) {
@@ -106,7 +124,11 @@ fun ScheduleMenuContent(
 private fun NeedSelectScheduleSource(
     onClick: ClickListener,
 ) {
-    Column(Modifier.fillMaxWidth().padding(horizontal = 8.dp)) {
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp),
+    ) {
         Text(text = stringResource(R.string.schedule_menu_need_select_source))
         SpacerHeight(height = 10.dp)
         EdButton(

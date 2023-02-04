@@ -1,4 +1,4 @@
-package io.edugma.features.schedule.appwidget.current_lessons
+package io.edugma.features.schedule.appwidget.currentLessons
 
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.schedule.domain.model.group.Group

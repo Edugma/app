@@ -1,7 +1,11 @@
 package io.edugma.data.base
 
 import io.edugma.data.base.consts.DiConst
-import io.edugma.data.base.local.*
+import io.edugma.data.base.local.CacheLocalDS
+import io.edugma.data.base.local.CacheVersionLocalDS
+import io.edugma.data.base.local.DataVersionLocalDS
+import io.edugma.data.base.local.PreferencesDS
+import io.edugma.data.base.local.PreferencesLocalDS
 import io.edugma.data.base.repository.EventRepository
 import io.edugma.data.base.utils.PathProvider
 import io.edugma.data.base.utils.retrofit.buildRetrofitBuilder

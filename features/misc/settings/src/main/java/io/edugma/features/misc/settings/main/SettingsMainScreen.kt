@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
+import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.misc.settings.R
 import org.koin.androidx.compose.getViewModel
@@ -22,10 +23,12 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun SettingsMainScreen(viewModel: SettingsMainViewModel = getViewModel()) {
 
-    SettingsMainContent(
-        onBackClick = viewModel::exit,
-        onAppearanceClick = viewModel::onAppearanceClick,
-    )
+    FeatureScreen {
+        SettingsMainContent(
+            onBackClick = viewModel::exit,
+            onAppearanceClick = viewModel::onAppearanceClick,
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

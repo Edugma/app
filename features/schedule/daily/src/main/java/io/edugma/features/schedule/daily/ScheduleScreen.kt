@@ -16,6 +16,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import io.edugma.core.designSystem.atoms.loader.EdLoader
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
+import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
@@ -35,21 +36,23 @@ fun ScheduleScreen(
     }
 
     if (!state.schedule.isNullOrEmpty() || state.isPreloading) {
-        ScheduleContent(
-            state,
-            viewModel::exit,
-            viewModel::onFabClick,
-            viewModel::onSchedulePosChanged,
-            viewModel::onWeeksPosChanged,
-            onDayClick = viewModel::onDayClick,
-            onLessonClick = viewModel::onLessonClick,
-            onRefreshing = viewModel::onRefreshing,
-        )
+        FeatureScreen {
+            ScheduleContent(
+                state,
+                viewModel::exit,
+                viewModel::onFabClick,
+                viewModel::onSchedulePosChanged,
+                viewModel::onWeeksPosChanged,
+                onDayClick = viewModel::onDayClick,
+                onLessonClick = viewModel::onLessonClick,
+                onRefreshing = viewModel::onRefreshing,
+            )
+        }
     }
 }
 private val dateTimeFormat = DateTimeFormatter.ofPattern("d MMMM, yyyy")
 
-@OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun ScheduleContent(
     state: ScheduleState,

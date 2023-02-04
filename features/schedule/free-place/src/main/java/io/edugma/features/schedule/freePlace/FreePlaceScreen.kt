@@ -30,6 +30,7 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.ContentAlpha
 import io.edugma.features.base.core.utils.MediumAlpha
@@ -49,16 +50,18 @@ import java.time.format.DateTimeFormatter
 fun FreePlaceScreen(viewModel: FreePlaceViewModel = getViewModel()) {
     val state by viewModel.state.collectAsState()
 
-    FreePlaceContent(
-        state,
-        viewModel::exit,
-        viewModel::onDateSelect,
-        viewModel::onTimeFromSelect,
-        viewModel::onTimeToSelect,
-        viewModel::onEnterFilterQuery,
-        viewModel::onFindFreePlaces,
-        onShowFilters = viewModel::onShowFilters,
-    )
+    FeatureScreen {
+        FreePlaceContent(
+            state = state,
+            onBackClick = viewModel::exit,
+            onDateSelect = viewModel::onDateSelect,
+            onTimeFromSelect = viewModel::onTimeFromSelect,
+            onTimeToSelect = viewModel::onTimeToSelect,
+            onEnterFilterQuery = viewModel::onEnterFilterQuery,
+            onFindFreePlaces = viewModel::onFindFreePlaces,
+            onShowFilters = viewModel::onShowFilters,
+        )
+    }
 }
 
 private val dateFormat = DateTimeFormatter.ofPattern("d MMMM yyyy")
