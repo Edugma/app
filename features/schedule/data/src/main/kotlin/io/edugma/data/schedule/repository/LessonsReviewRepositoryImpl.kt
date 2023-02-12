@@ -1,8 +1,8 @@
 package io.edugma.data.schedule.repository
 
 import io.edugma.features.schedule.domain.model.lesson.LessonTime
-import io.edugma.features.schedule.domain.model.lesson_subject.LessonSubject
-import io.edugma.features.schedule.domain.model.lesson_type.LessonType
+import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubject
+import io.edugma.features.schedule.domain.model.lessonType.LessonType
 import io.edugma.features.schedule.domain.model.review.LessonDates
 import io.edugma.features.schedule.domain.model.review.LessonReviewUnit
 import io.edugma.features.schedule.domain.model.review.LessonTimesReview

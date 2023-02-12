@@ -28,8 +28,8 @@ import io.edugma.features.base.core.utils.withAlpha
 import io.edugma.features.schedule.domain.model.group.Group
 import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonTime
-import io.edugma.features.schedule.domain.model.lesson_subject.LessonSubject
-import io.edugma.features.schedule.domain.model.lesson_type.LessonType
+import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubject
+import io.edugma.features.schedule.domain.model.lessonType.LessonType
 import io.edugma.features.schedule.domain.model.place.Place
 import io.edugma.features.schedule.domain.model.teacher.Teacher
 import io.edugma.features.schedule.domain.usecase.LessonChange

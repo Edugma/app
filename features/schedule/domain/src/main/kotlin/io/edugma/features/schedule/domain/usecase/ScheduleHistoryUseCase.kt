@@ -2,7 +2,7 @@ package io.edugma.features.schedule.domain.usecase
 
 import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonTime
-import io.edugma.features.schedule.domain.model.lesson_subject.LessonSubject
+import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubject
 import io.edugma.features.schedule.domain.model.schedule.LessonsByTime
 import io.edugma.features.schedule.domain.model.schedule.ScheduleDay
 import io.edugma.features.schedule.domain.model.source.ScheduleSource

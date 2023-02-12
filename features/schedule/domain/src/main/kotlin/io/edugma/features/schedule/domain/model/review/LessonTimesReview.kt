@@ -2,8 +2,8 @@ package io.edugma.features.schedule.domain.model.review
 
 import io.edugma.domain.base.utils.converters.LocalDateConverter
 import io.edugma.features.schedule.domain.model.lesson.LessonTime
-import io.edugma.features.schedule.domain.model.lesson_subject.LessonSubject
-import io.edugma.features.schedule.domain.model.lesson_type.LessonType
+import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubject
+import io.edugma.features.schedule.domain.model.lessonType.LessonType
 import kotlinx.serialization.Serializable
 import java.time.DayOfWeek
 import java.time.LocalDate

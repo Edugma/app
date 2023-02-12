@@ -1,54 +1,73 @@
 package io.edugma.features.schedule.calendar
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
+import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
+import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.tokens.elevation.EdElevation
+import io.edugma.core.designSystem.tokens.icons.EdIcons
+import io.edugma.core.designSystem.utils.ifThen
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.ContentAlpha
 import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.base.core.utils.WithContentAlpha
-import io.edugma.features.base.core.utils.dp
-import io.edugma.features.schedule.calendar.model.ScheduleCalendarWeek
-import io.edugma.features.schedule.domain.model.schedule.ScheduleDay
+import io.edugma.features.schedule.calendar.model.CalendarDayVO
+import io.edugma.features.schedule.calendar.model.CalendarScheduleVO
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun ScheduleCalendarScreen(viewModel: ScheduleCalendarViewModel = getViewModel()) {
@@ -56,7 +75,7 @@ fun ScheduleCalendarScreen(viewModel: ScheduleCalendarViewModel = getViewModel()
 
     FeatureScreen(
         statusBarPadding = false,
-        navigationBarPadding = false,
+        navigationBarPadding = true,
     ) {
         ScheduleCalendarContent(
             state = state,
@@ -81,6 +100,8 @@ private fun ScheduleCalendarContent(
     Box(Modifier.fillMaxSize()) {
         CalendarThree(
             schedule = state.schedule,
+            currentDayIndex = state.currentDayIndex,
+            currentDayOfWeekIndex = state.currentDayOfWeekIndex,
             onItemClick = onItemClick,
         )
         EdTopAppBar(
@@ -94,257 +115,358 @@ private fun ScheduleCalendarContent(
     }
 }
 
-private val dateFormat = DateTimeFormatter.ofPattern("EEE, d MMMM")
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+private fun BoxScope.Fab(isVisible: Boolean, onClick: () -> Unit) {
+    AnimatedVisibility(
+        visible = isVisible,
+        modifier = Modifier
+            .align(Alignment.BottomEnd)
+            .navigationBarsPadding()
+            .padding(24.dp),
+        enter = fadeIn() + slideInVertically { it / 2 } + scaleIn(),
+        exit = slideOutVertically { it / 2 } + fadeOut() + scaleOut(),
+    ) {
+        ExtendedFloatingActionButton(
+            onClick = onClick,
+            containerColor = MaterialTheme.colorScheme.primary,
+            text = {
+                Text(text = "На сегодня")
+            },
+            icon = {
+                Icon(
+                    painter = painterResource(EdIcons.ic_fluent_calendar_today_24_regular),
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp),
+                )
+            },
+        )
+    }
+}
 
 @Composable
-private fun CalendarThree(
-    schedule: List<ScheduleCalendarWeek>,
+private fun BoxScope.CalendarThree(
+    schedule: List<CalendarScheduleVO>,
+    currentDayIndex: Int,
+    currentDayOfWeekIndex: Int,
     onItemClick: Typed1Listener<LocalDate>,
 ) {
-    LazyColumn(Modifier.fillMaxSize()) {
+    val scrollState = rememberLazyListState()
+    var wasScrolled by remember { mutableStateOf(false) }
+
+    LaunchedEffect(key1 = currentDayIndex) {
+        if (currentDayIndex == -1) {
+            return@LaunchedEffect
+        }
+        if (!wasScrolled) {
+            scrollState.scrollToItem(currentDayIndex)
+            wasScrolled = true
+        }
+    }
+
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        state = scrollState,
+    ) {
         item {
             SpacerHeight(
                 height = WindowInsets.statusBars.asPaddingValues().calculateTopPadding() +
                     EdTopAppBarDefaults.ContainerHeight,
             )
         }
-        items(schedule) { week ->
+        itemsIndexed(schedule) { index, week ->
             SpacerHeight(8.dp)
-            Surface {
-                Column(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 2.dp),
-                ) {
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .height(IntrinsicSize.Max),
-                    ) {
-                        WeekNumber(
-                            weekNumber = week.weekNumber,
-                            modifier = Modifier.weight(1f),
-                        )
-                        CalendarItem(
-                            day = week.schedule[0],
-                            modifier = Modifier.weight(1f),
-                            onItemClick = { onItemClick(week.schedule[0].date) },
-                        )
-                    }
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .height(IntrinsicSize.Max),
-                    ) {
-                        CalendarItem(
-                            day = week.schedule[1],
-                            modifier = Modifier.weight(1f),
-                            onItemClick = { onItemClick(week.schedule[1].date) },
-                        )
-                        CalendarItem(
-                            day = week.schedule[2],
-                            modifier = Modifier.weight(1f),
-                            onItemClick = { onItemClick(week.schedule[2].date) },
-                        )
-                    }
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .height(IntrinsicSize.Max),
-                    ) {
-                        CalendarItem(
-                            day = week.schedule[3],
-                            modifier = Modifier.weight(1f),
-                            onItemClick = { onItemClick(week.schedule[3].date) },
-                        )
-                        CalendarItem(
-                            day = week.schedule[4],
-                            modifier = Modifier.weight(1f),
-                            onItemClick = { onItemClick(week.schedule[4].date) },
-                        )
-                    }
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .height(IntrinsicSize.Max),
-                    ) {
-                        CalendarItem(
-                            day = week.schedule[5],
-                            modifier = Modifier.weight(1f),
-                            onItemClick = { onItemClick(week.schedule[5].date) },
-                        )
-                        CalendarItem(
-                            day = week.schedule[6],
-                            modifier = Modifier.weight(1f),
-                            onItemClick = { onItemClick(week.schedule[6].date) },
-                        )
-                    }
+            CalendarWeek(
+                week = week,
+                currentDayOfWeekIndex = currentDayOfWeekIndex,
+                onItemClick = onItemClick,
+                isCurrentWeek = index == currentDayIndex,
+            )
+        }
+    }
+    val coroutineScope = rememberCoroutineScope()
+
+    Fab(
+        isVisible = true,
+        onClick = {
+            if (currentDayIndex != -1) {
+                coroutineScope.launch {
+                    scrollState.animateScrollToItem(currentDayIndex)
                 }
+            }
+        },
+    )
+}
+
+@Composable
+private fun CalendarWeek(
+    week: CalendarScheduleVO,
+    isCurrentWeek: Boolean,
+    currentDayOfWeekIndex: Int,
+    onItemClick: Typed1Listener<LocalDate>,
+) {
+    EdSurface(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = EdElevation.Level1,
+    ) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            WeekNumber(
+                weekNumber = week.weekNumber,
+                isCurrentWeek = isCurrentWeek,
+            )
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .height(IntrinsicSize.Max),
+            ) {
+                CalendarItem(
+                    day = week.weekSchedule[0],
+                    isCurrentDay = isCurrentWeek && currentDayOfWeekIndex == 0,
+                    isStart = true,
+                    isEnd = false,
+                    modifier = Modifier.weight(1f),
+                    onItemClick = { onItemClick(week.weekSchedule[0].date) },
+                )
+                CalendarItem(
+                    day = week.weekSchedule[1],
+                    isCurrentDay = isCurrentWeek && currentDayOfWeekIndex == 1,
+                    isStart = false,
+                    isEnd = false,
+                    modifier = Modifier.weight(1f),
+                    onItemClick = { onItemClick(week.weekSchedule[1].date) },
+                )
+                CalendarItem(
+                    day = week.weekSchedule[2],
+                    isCurrentDay = isCurrentWeek && currentDayOfWeekIndex == 2,
+                    isStart = false,
+                    isEnd = true,
+                    modifier = Modifier.weight(1f),
+                    onItemClick = { onItemClick(week.weekSchedule[2].date) },
+                )
+            }
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .height(IntrinsicSize.Max),
+            ) {
+                CalendarItem(
+                    day = week.weekSchedule[3],
+                    isCurrentDay = isCurrentWeek && currentDayOfWeekIndex == 3,
+                    isStart = true,
+                    isEnd = false,
+                    modifier = Modifier.weight(1f),
+                    onItemClick = { onItemClick(week.weekSchedule[3].date) },
+                )
+                CalendarItem(
+                    day = week.weekSchedule[4],
+                    isCurrentDay = isCurrentWeek && currentDayOfWeekIndex == 4,
+                    isStart = false,
+                    isEnd = false,
+                    modifier = Modifier.weight(1f),
+                    onItemClick = { onItemClick(week.weekSchedule[4].date) },
+                )
+                CalendarItem(
+                    day = week.weekSchedule[5],
+                    isCurrentDay = isCurrentWeek && currentDayOfWeekIndex == 5,
+                    isStart = false,
+                    isEnd = true,
+                    modifier = Modifier.weight(1f),
+                    onItemClick = { onItemClick(week.weekSchedule[5].date) },
+                )
+            }
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .height(IntrinsicSize.Max),
+            ) {
+                CalendarItem(
+                    day = week.weekSchedule[6],
+                    isCurrentDay = isCurrentWeek && currentDayOfWeekIndex == 6,
+                    isStart = true,
+                    isEnd = false,
+                    modifier = Modifier.weight(1f),
+                    onItemClick = { onItemClick(week.weekSchedule[6].date) },
+                )
+                DayStub(
+                    modifier = Modifier.weight(1f),
+                )
+                DayStub(
+                    modifier = Modifier.weight(1f),
+                )
             }
         }
     }
 }
 
 @Composable
-private fun WeekNumber(
+private fun ColumnScope.WeekNumber(
     weekNumber: Int,
+    isCurrentWeek: Boolean,
     modifier: Modifier = Modifier,
 ) {
-//    Column(modifier) {
-//        Text(
-//            text = "Неделя",
-//            style = EdTheme.typography.labelMedium
-//        )
-//        Text(
-//            text = (weekNumber + 1).toString(),
-//            style = EdTheme.typography.titleLarge
-//        )
-//    }
-
-    Box(
-        modifier = modifier
-            .fillMaxHeight()
-            .padding(bottom = 12.dp, top = 10.dp),
-        contentAlignment = Alignment.Center,
+    Row(
+        modifier = Modifier
+            .align(Alignment.CenterHorizontally)
+            .padding(vertical = 9.dp, horizontal = 6.dp),
     ) {
-        Column {
-            Text(
-                text = "Неделя".uppercase(),
-                style = EdTheme.typography.labelMedium,
-                color = EdTheme.colorScheme.tertiary,
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center,
-            )
+        EdSurface(
+            modifier = modifier,
+            color = if (isCurrentWeek) {
+                EdTheme.colorScheme.primaryContainer
+            } else {
+                Color.Transparent
+            },
+            shape = EdTheme.shapes.small,
+        ) {
             Text(
                 text = (weekNumber + 1).toString(),
-                style = EdTheme.typography.displayMedium,
-                color = EdTheme.colorScheme.primary,
+                style = EdTheme.typography.labelMedium,
+                color = if (isCurrentWeek) {
+                    EdTheme.colorScheme.onPrimaryContainer
+                } else {
+                    EdTheme.colorScheme.primary
+                },
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .offset(y = -EdTheme.typography.displayMedium.fontSize.dp() * 0.1f)
-                    .height(EdTheme.typography.displayMedium.fontSize.dp() * 1.1f),
+                    .padding(bottom = 3.dp, top = 1.dp)
+                    .ifThen(isCurrentWeek) {
+                        padding(start = 4.dp, end = 4.dp)
+                    },
                 textAlign = TextAlign.Center,
             )
         }
+        SpacerWidth(width = 3.dp)
+        Text(
+            text = "Неделя".uppercase(),
+            style = EdTheme.typography.labelMedium,
+            color = EdTheme.colorScheme.tertiary,
+            modifier = Modifier.padding(bottom = 3.dp, top = 1.dp),
+            textAlign = TextAlign.Center,
+        )
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CalendarItem(
-    day: ScheduleDay,
+    day: CalendarDayVO,
+    isCurrentDay: Boolean,
+    isStart: Boolean,
+    isEnd: Boolean,
     onItemClick: ClickListener,
     modifier: Modifier = Modifier,
 ) {
-    EdCard(
-        onClick = onItemClick,
-        modifier = modifier
-            .fillMaxHeight()
-            .padding(start = 4.dp, end = 4.dp, top = 4.dp, bottom = 4.dp),
-        shape = EdTheme.shapes.medium,
+    Column(
+        modifier
+            .fillMaxSize()
+            .heightIn(min = 48.dp)
+            .clickable { onItemClick() }
+            .background(
+                color = if (isCurrentDay) {
+                    EdTheme.colorScheme.tertiaryContainer.copy(alpha = 0.4f)
+                } else {
+                    Color.Transparent
+                },
+            )
+            .padding(bottom = 8.dp),
     ) {
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .padding(top = 3.dp, bottom = 8.dp, start = 7.dp, end = 7.dp),
+        EdSurface(
+            modifier = Modifier.fillMaxWidth(),
+            elevation = EdElevation.Level3,
+            color = if (isCurrentDay) {
+                EdTheme.colorScheme.tertiaryContainer
+            } else {
+                EdTheme.colorScheme.surface
+            },
         ) {
             EdLabel(
-                text = dateFormat.format(day.date).uppercase(),
+                text = day.dayTitle,
                 style = MaterialTheme.typography.labelSmall,
                 modifier = Modifier
-                    .align(Alignment.CenterHorizontally),
-                color = EdTheme.colorScheme.secondary,
+                    .fillMaxWidth(),
+                color = if (isCurrentDay) {
+                    EdTheme.colorScheme.onTertiaryContainer
+                } else {
+                    EdTheme.colorScheme.secondary
+                },
+                textAlign = TextAlign.Center,
             )
-            if (day.lessons.isNotEmpty()) {
+        }
+        if (day.lessons.isNotEmpty()) {
+            SpacerHeight(3.dp)
+        }
+        day.lessons.forEachIndexed { index, lessonsByTime ->
+            if (index != 0) {
                 SpacerHeight(3.dp)
             }
-            day.lessons.forEachIndexed { index, lessonsByTime ->
-                if (index != 0) {
-                    SpacerHeight(5.dp)
-                }
-                Text(
-                    text = "•" + lessonsByTime.time.start.toString() + " - " + lessonsByTime.time.end.toString(),
-                    style = MaterialTheme.typography.labelMedium,
-                )
-                WithContentAlpha(ContentAlpha.medium) {
-                    val text = buildAnnotatedString {
-                        lessonsByTime.lessons.forEachIndexed { index, lesson ->
-                            append(cutTitle(lesson.subject.title))
-                            append(" (")
-                            if (lesson.type.isImportant) {
-                                pushStyle(SpanStyle(color = EdTheme.colorScheme.error))
-                                append(getShortType(lesson.type.title))
-                                pop()
-                            } else {
-                                append(getShortType(lesson.type.title))
-                            }
-                            append(")")
-                            if (index != lessonsByTime.lessons.lastIndex) {
-                                append("\n")
-                            }
-                        }
+            WithContentAlpha(ContentAlpha.medium) {
+                lessonsByTime.lessons.forEach { lesson ->
+                    val containerColor = if (lesson.isImportant) {
+                        EdTheme.colorScheme.error
+                    } else {
+                        EdTheme.colorScheme.secondaryContainer
                     }
-                    Text(
-                        text = text,
-                        style = MaterialTheme.typography.labelSmall,
-                    )
+                    val textColor = if (lesson.isImportant) {
+                        EdTheme.colorScheme.onError
+                    } else {
+                        EdTheme.colorScheme.onSecondaryContainer
+                    }
+
+                    Box(
+                        Modifier
+                            .height(IntrinsicSize.Min)
+                            .padding(
+                                start = when {
+                                    isStart -> 3.dp
+                                    !isEnd -> 2.dp
+                                    else -> 1.5.dp
+                                },
+                                end = when {
+                                    isEnd -> 3.dp
+                                    !isStart -> 2.dp
+                                    else -> 1.5.dp
+                                },
+                            )
+                            .fillMaxWidth()
+                            .background(
+                                containerColor,
+                                EdTheme.shapes.extraSmall,
+                            ),
+                    ) {
+                        Text(
+                            text = lesson.title,
+                            style = MaterialTheme.typography.labelSmall,
+                            modifier = Modifier.padding(
+                                start = 2.dp,
+                                end = 2.dp,
+                                bottom = 2.dp,
+                                top = 0.dp,
+                            ),
+                            color = textColor,
+                        )
+                    }
                 }
             }
         }
     }
 }
 
-private const val minCriticalTitleLength = 10
-private const val minCriticalWordLength = 5
-
-private const val vowels = "аеёиоуыэьъюя"
-private const val specChars = "ьъ"
-
-// TODO: Fix ьъ
-fun cutTitle(title: String): String {
-    if (title.length <= minCriticalTitleLength) {
-        return title
-    }
-    val words = title.split(' ').filter { it.isNotEmpty() }
-    if (words.size == 1) {
-        return words.first()
-    }
-
-    return words.joinToString(" ") { cutWord(it) }
-}
-
-private fun cutWord(word: String): String {
-    if (word.length <= minCriticalWordLength) {
-        return word
-    }
-
-    val vowelIndex = word.indexOfFirst { vowels.contains(it, ignoreCase = true) }
-    if (vowelIndex == -1) {
-        return word
-    }
-    for (i in vowelIndex + 1 until word.length) {
-        // TODO: Fix for spec chars
-        if (vowels.contains(word[i], ignoreCase = true) && !specChars.contains(word[i], ignoreCase = true)) {
-            // if two vowels are near or shorted word will be too short
-            if (i == vowelIndex + 1 || i < 3) {
-                continue
-            }
-            return word.substring(0, i) + '.'
+@Composable
+private fun DayStub(
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier
+            .fillMaxWidth()
+            .padding(bottom = 8.dp),
+    ) {
+        EdSurface(
+            modifier = Modifier.fillMaxWidth(),
+            elevation = EdElevation.Level3,
+        ) {
+            EdLabel(
+                text = "",
+                style = MaterialTheme.typography.labelSmall,
+                modifier = Modifier.fillMaxWidth(),
+            )
         }
     }
-    return word
-}
-
-fun abbreviationFrom(title: String): String {
-    val words = title.split(' ').filter { it.isNotEmpty() }
-    if (words.size == 1) {
-        return cutWord(words.first())
-    }
-    val cutWords = words.map { it.first().toUpperCase() }
-
-    return cutWords.joinToString("")
-}
-
-fun getShortType(type: String): String {
-    return type.split(' ').filter { it.isNotEmpty() }.joinToString(" ") { cutWord(it) }
 }

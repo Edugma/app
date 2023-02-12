@@ -41,6 +41,7 @@ import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.searchField.EdSearchField
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.tokens.elevation.EdElevation
 import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.features.base.core.utils.ClickListener
@@ -191,12 +192,12 @@ private fun FiltersSelector(
         LazyColumn(Modifier.fillMaxWidth()) {
             items(filters) {
                 val tonalElevation = remember(it.second) {
-                    if (it.second) 4.dp else 0.dp
+                    if (it.second) EdElevation.Level3 else EdElevation.Level1
                 }
                 EdCard(
                     onClick = { onFilterSelected(it.first) },
                     modifier = Modifier.fillMaxWidth(),
-                    elevation = CardDefaults.cardElevation(defaultElevation = tonalElevation),
+                    elevation = tonalElevation,
                 ) {
                     EdLabel(text = it.first)
                 }

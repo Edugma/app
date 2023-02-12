@@ -1,5 +1,6 @@
 package io.edugma.core.designSystem.atoms.label
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -55,6 +56,7 @@ fun EdLabel(
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = textAlign.toHorizontalAlignment(),
     ) {
         if (iconPainter != null && iconStart) {
             Icon(
@@ -66,6 +68,7 @@ fun EdLabel(
             )
         }
         Text(
+            modifier = Modifier.weight(1f, fill = false),
             text = text,
             color = color,
             fontSize = fontSize,
@@ -74,7 +77,6 @@ fun EdLabel(
             fontFamily = fontFamily,
             letterSpacing = letterSpacing,
             textDecoration = textDecoration,
-            textAlign = textAlign,
             lineHeight = lineHeight,
             overflow = overflow,
             softWrap = softWrap,
@@ -91,6 +93,15 @@ fun EdLabel(
                     .padding(start = spacing),
             )
         }
+    }
+}
+
+private fun TextAlign?.toHorizontalAlignment(): Arrangement.Horizontal {
+    return when (this) {
+        TextAlign.Left, TextAlign.Start -> Arrangement.Start
+        TextAlign.Right, TextAlign.End -> Arrangement.End
+        TextAlign.Center -> Arrangement.Center
+        else -> Arrangement.Start
     }
 }
 

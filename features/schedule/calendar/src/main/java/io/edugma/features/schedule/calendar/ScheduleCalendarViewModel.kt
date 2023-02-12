@@ -1,29 +1,36 @@
 package io.edugma.features.schedule.calendar
 
-import androidx.lifecycle.viewModelScope
+import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.domain.base.utils.getOrDefault
 import io.edugma.domain.base.utils.isFinalFailure
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.navigation.ScheduleScreens
-import io.edugma.features.schedule.calendar.model.ScheduleCalendarWeek
-import io.edugma.features.schedule.calendar.model.toCalendarUiModel
+import io.edugma.features.schedule.calendar.mapper.CalendarMapper
+import io.edugma.features.schedule.calendar.model.CalendarScheduleVO
+import io.edugma.features.schedule.calendar.usecase.GetCurrentDayIndex
 import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class ScheduleCalendarViewModel(
     private val useCase: ScheduleUseCase,
+    private val calendarMapper: CalendarMapper,
+    private val getCurrentDayIndex: GetCurrentDayIndex,
 ) : BaseViewModel<ScheduleCalendarState>(ScheduleCalendarState()) {
     init {
-        viewModelScope.launch {
+        launchCoroutine {
             useCase.getSchedule().collect {
                 if (!it.isFinalFailure) {
                     mutateState {
+                        val schedule = calendarMapper.map(it.getOrDefault(emptyList()))
 
-                        val schedule = it.getOrDefault(emptyList()).toCalendarUiModel()
+                        val (currentDayIndex, currentDayOfWeekIndex) = getCurrentDayIndex(schedule)
 
                         if (state.schedule != schedule) {
-                            state = state.copy(schedule = schedule)
+                            state = state.copy(
+                                schedule = schedule,
+                                currentDayIndex = currentDayIndex,
+                                currentDayOfWeekIndex = currentDayOfWeekIndex,
+                            )
                         }
                     }
                 }
@@ -32,12 +39,14 @@ class ScheduleCalendarViewModel(
     }
 
     fun onDayClick(date: LocalDate) {
-        router.replaceScreen(
+        router.navigateTo(
             ScheduleScreens.Main(date = date),
         )
     }
 }
 
 data class ScheduleCalendarState(
-    val schedule: List<ScheduleCalendarWeek> = emptyList(),
+    val schedule: List<CalendarScheduleVO> = emptyList(),
+    val currentDayIndex: Int = -1,
+    val currentDayOfWeekIndex: Int = -1,
 )

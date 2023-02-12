@@ -1,6 +1,6 @@
 package io.edugma.data.base.utils.retrofit
 
-import io.edugma.data.base.utils.retrofit.call_adapters.flow_result.FlowResultCallAdapterFactory
+import io.edugma.data.base.utils.retrofit.callAdapters.flowResult.FlowResultCallAdapterFactory
 import kotlinx.serialization.json.Json
 import retrofit2.Call
 import retrofit2.Callback

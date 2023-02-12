@@ -1,8 +1,8 @@
 package io.edugma.data.schedule.api
 
 import io.edugma.features.schedule.domain.model.group.GroupInfo
-import io.edugma.features.schedule.domain.model.lesson_subject.LessonSubjectInfo
-import io.edugma.features.schedule.domain.model.lesson_type.LessonTypeInfo
+import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubjectInfo
+import io.edugma.features.schedule.domain.model.lessonType.LessonTypeInfo
 import io.edugma.features.schedule.domain.model.place.PlaceInfo
 import io.edugma.features.schedule.domain.model.teacher.TeacherInfo
 import kotlinx.coroutines.flow.Flow

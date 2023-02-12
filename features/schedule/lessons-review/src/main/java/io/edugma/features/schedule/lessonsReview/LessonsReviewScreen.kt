@@ -33,7 +33,7 @@ import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.domain.base.utils.capitalized
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.schedule.domain.model.lesson.LessonTime
-import io.edugma.features.schedule.domain.model.lesson_type.LessonType
+import io.edugma.features.schedule.domain.model.lessonType.LessonType
 import io.edugma.features.schedule.domain.model.review.LessonDates
 import io.edugma.features.schedule.domain.model.review.LessonTimesReview
 import io.edugma.features.schedule.domain.model.review.LessonTimesReviewByType

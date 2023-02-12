@@ -29,7 +29,7 @@ composeCompiler = "1.4.0"
 composeActivity = "1.6.1"
 accompanist = "0.28.0"
 
-lifecycle = "2.5.1"
+androidxLifecycle = "2.5.1"
 navigation = "2.5.1"
 coreKtx = "1.8.0"
 appcompat = "1.5.0"
@@ -59,7 +59,8 @@ accompanist-systemUiController = { module = "com.google.accompanist:accompanist-
 androidx-appCompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx-appWidget = { module = "androidx.glance:glance-appwidget", version.ref = "glance" }
 androidx-coreKtx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
-androidx-lifecycleRuntime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
+androidx-lifecycleViewModel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
+androidx-lifecycleRuntime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
 androidx-splashScreen = { module = "androidx.core:core-splashscreen", version.ref = "splashScreen" }
 androidx-constraintLayout = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintLayout" }
 androidx-startup = { module = "androidx.startup:startup-runtime", version.ref = "startup" }

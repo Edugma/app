@@ -5,6 +5,7 @@ plugins {
 dependencies {
     implementation(projects.core.designSystem)
     implementation(projects.core.ui)
+    implementation(projects.core.utils)
 
     implementation(projects.features.base.core)
     implementation(projects.features.base.navigation)
@@ -13,5 +14,5 @@ dependencies {
     implementation(projects.features.schedule.elements)
 }
 android {
-    namespace = "io.edugma.features.schedule.schedule_info"
+    namespace = "io.edugma.features.schedule.scheduleInfo"
 }

@@ -13,7 +13,7 @@ val EdShapes = Shapes(
 )
 
 object EdShapeTokens {
-    val CornerExtraSmall = RoundedCornerShape(6.0.dp)
+    val CornerExtraSmall = RoundedCornerShape(4.0.dp)
     val CornerSmall = RoundedCornerShape(10.0.dp)
     val CornerMedium = RoundedCornerShape(16.0.dp)
     val CornerLarge = RoundedCornerShape(24.0.dp)

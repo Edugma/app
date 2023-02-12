@@ -26,7 +26,7 @@ import io.edugma.features.schedule.freePlace.ScheduleFreePlaceFeatureModule
 import io.edugma.features.schedule.history.ScheduleHistoryFeatureModule
 import io.edugma.features.schedule.lessonsReview.ScheduleLessonsReviewFeatureModule
 import io.edugma.features.schedule.menu.ScheduleMenuFeatureModule
-import io.edugma.features.schedule.schedule_info.ScheduleInfoFeatureModule
+import io.edugma.features.schedule.scheduleInfo.ScheduleInfoFeatureModule
 import io.edugma.features.schedule.sources.ScheduleSourcesFeatureModule
 import org.kodein.db.orm.kotlinx.KotlinxSerializer
 import org.koin.dsl.module

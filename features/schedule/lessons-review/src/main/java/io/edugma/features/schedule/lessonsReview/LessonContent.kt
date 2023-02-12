@@ -17,7 +17,7 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.features.base.core.utils.FluentIcons
 import io.edugma.features.base.elements.placeholder
 import io.edugma.features.schedule.domain.model.group.Group
-import io.edugma.features.schedule.domain.model.lesson_subject.LessonSubject
+import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubject
 import io.edugma.features.schedule.domain.model.place.Place
 import io.edugma.features.schedule.domain.model.teacher.Teacher
 import io.edugma.features.schedule.domain.usecase.getShortName

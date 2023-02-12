@@ -1,14 +1,29 @@
 package io.edugma.features.schedule.daily
 
-import androidx.compose.animation.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -16,8 +31,15 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import io.edugma.core.designSystem.atoms.loader.EdLoader
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
+import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
+import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureScreen
-import io.edugma.features.base.core.utils.*
+import io.edugma.features.base.core.utils.ClickListener
+import io.edugma.features.base.core.utils.Typed1Listener
+import io.edugma.features.base.core.utils.Typed2Listener
+import io.edugma.features.base.core.utils.bindTo
+import io.edugma.features.base.core.utils.onPageChanged
 import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
 import org.koin.androidx.compose.getViewModel
@@ -79,6 +101,9 @@ fun ScheduleContent(
                         EdLoader()
                     }
                 },
+                colors = EdTopAppBarDefaults.colors(
+                    containerColor = Color.Transparent,
+                ),
             )
 
             DaysPager(
@@ -122,13 +147,13 @@ fun BoxScope.Fab(isVisible: Boolean, onClick: () -> Unit) {
     ) {
         ExtendedFloatingActionButton(
             onClick = onClick,
-            containerColor = MaterialTheme.colorScheme.primary,
+            containerColor = EdTheme.colorScheme.primary,
             text = {
                 Text(text = stringResource(R.string.sch_to_today))
             },
             icon = {
                 Icon(
-                    painter = painterResource(FluentIcons.ic_fluent_calendar_today_24_regular),
+                    painter = painterResource(EdIcons.ic_fluent_calendar_today_24_regular),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp),
                 )

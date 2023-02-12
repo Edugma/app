@@ -27,7 +27,7 @@ data class EdButtonSize(
             @Composable
             @ReadOnlyComposable
             get() = EdButtonSize(
-                shape = EdTheme.shapes.extraSmall,
+                shape = EdTheme.shapes.small,
                 minSize = DpSize(
                     width = 10.dp,
                     height = 32.dp,

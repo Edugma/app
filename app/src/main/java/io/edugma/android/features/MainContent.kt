@@ -2,7 +2,6 @@ package io.edugma.android.features
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -72,23 +71,10 @@ fun MainContent(
             ) {
                 appScreens()
             }
-//            Box(
-//                Modifier.background(
-//                    brush = Brush.verticalGradient(
-//                        colors = listOf(
-//                            EdTheme.colorScheme.background.withAlpha(0f),
-//                            EdTheme.colorScheme.background,
-//                        ),
-//                    ),
-//                ).fillMaxWidth()
-//                    .height(10.dp)
-//                    .align(Alignment.BottomCenter),
-//            )
         }
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun BottomNav(navController: NavHostController) {
     val items = listOf(
