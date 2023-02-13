@@ -40,6 +40,7 @@ import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.textField.EdTextField
 import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.domain.account.model.Teacher
 import io.edugma.domain.account.model.departments
@@ -134,13 +135,13 @@ fun TeacherInfoBottom(teacher: Teacher) {
         teacher.sex?.let {
             EdLabel(
                 text = it,
-                iconPainter = painterResource(id = FluentIcons.ic_fluent_people_24_regular),
+                iconPainter = painterResource(id = EdIcons.ic_fluent_people_24_regular),
             )
         }
         teacher.grade?.let {
             EdLabel(
                 text = it,
-                iconPainter = painterResource(id = FluentIcons.ic_fluent_book_24_regular),
+                iconPainter = painterResource(id = EdIcons.ic_fluent_book_24_regular),
             )
         }
         teacher.stuffType?.let {
@@ -152,13 +153,13 @@ fun TeacherInfoBottom(teacher: Teacher) {
         teacher.birthday?.let {
             EdLabel(
                 text = it.format(),
-                iconPainter = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
+                iconPainter = painterResource(id = EdIcons.ic_fluent_calendar_ltr_24_regular),
             )
         }
         if (!teacher.email.isNullOrEmpty()) {
             EdLabel(
                 text = teacher.email!!,
-                iconPainter = painterResource(id = FluentIcons.ic_fluent_mail_24_regular),
+                iconPainter = painterResource(id = EdIcons.ic_fluent_mail_24_regular),
             )
         }
         SpacerHeight(height = 10.dp)
@@ -236,7 +237,7 @@ fun TeachersContent(
                 },
             ) {
                 Icon(
-                    painterResource(id = FluentIcons.ic_fluent_search_24_regular),
+                    painterResource(id = EdIcons.ic_fluent_search_24_regular),
                     contentDescription = "Фильтр",
                 )
             }
@@ -318,7 +319,7 @@ fun Teacher(
                 WithContentAlpha(alpha = ContentAlpha.medium) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
-                            painter = painterResource(id = FluentIcons.ic_fluent_info_16_regular),
+                            painter = painterResource(id = EdIcons.ic_fluent_info_16_regular),
                             contentDescription = null,
                             modifier = Modifier
                                 .size(17.dp),
@@ -372,7 +373,7 @@ fun TeacherPlaceholder() {
                 WithContentAlpha(alpha = ContentAlpha.medium) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
-                            painter = painterResource(id = FluentIcons.ic_fluent_info_16_regular),
+                            painter = painterResource(id = EdIcons.ic_fluent_info_16_regular),
                             contentDescription = null,
                             modifier = Modifier
                                 .size(17.dp),

@@ -23,12 +23,12 @@ class ScheduleCalendarViewModel(
                     mutateState {
                         val schedule = calendarMapper.map(it.getOrDefault(emptyList()))
 
-                        val (currentDayIndex, currentDayOfWeekIndex) = getCurrentDayIndex(schedule)
+                        val (currentWeekIndex, currentDayOfWeekIndex) = getCurrentDayIndex(schedule)
 
                         if (state.schedule != schedule) {
                             state = state.copy(
                                 schedule = schedule,
-                                currentDayIndex = currentDayIndex,
+                                currentWeekIndex = currentWeekIndex,
                                 currentDayOfWeekIndex = currentDayOfWeekIndex,
                             )
                         }
@@ -47,6 +47,6 @@ class ScheduleCalendarViewModel(
 
 data class ScheduleCalendarState(
     val schedule: List<CalendarScheduleVO> = emptyList(),
-    val currentDayIndex: Int = -1,
+    val currentWeekIndex: Int = -1,
     val currentDayOfWeekIndex: Int = -1,
 )

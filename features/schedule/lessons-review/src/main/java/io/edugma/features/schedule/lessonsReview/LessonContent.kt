@@ -14,7 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
-import io.edugma.features.base.core.utils.FluentIcons
+import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.features.base.elements.placeholder
 import io.edugma.features.schedule.domain.model.group.Group
 import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubject
@@ -39,7 +39,7 @@ fun TeachersContent(teachers: List<Teacher>, isLoading: Boolean = false) {
         modifier = Modifier.placeholder(visible = isLoading),
     ) {
         Icon(
-            painter = painterResource(id = FluentIcons.ic_fluent_hat_graduation_16_regular),
+            painter = painterResource(id = EdIcons.ic_fluent_hat_graduation_16_regular),
             contentDescription = null,
             modifier = Modifier
                 .size(17.dp)
@@ -71,7 +71,7 @@ fun GroupsContent(groups: List<Group>, isLoading: Boolean = false) {
         modifier = Modifier.placeholder(visible = isLoading),
     ) {
         Icon(
-            painter = painterResource(id = FluentIcons.ic_fluent_people_16_regular),
+            painter = painterResource(id = EdIcons.ic_fluent_people_16_regular),
             contentDescription = null,
             modifier = Modifier
                 .size(17.dp)
@@ -97,7 +97,7 @@ fun PlacesContent(places: List<Place>, isLoading: Boolean = false) {
         modifier = Modifier.placeholder(visible = isLoading),
     ) {
         Icon(
-            painter = painterResource(id = FluentIcons.ic_fluent_location_16_regular),
+            painter = painterResource(id = EdIcons.ic_fluent_location_16_regular),
             contentDescription = null,
             modifier = Modifier
                 .size(17.dp)

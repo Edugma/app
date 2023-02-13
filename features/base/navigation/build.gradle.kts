@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
     api(projects.features.base.core)
+    implementation(projects.core.designSystem)
 
     implementation(projects.features.schedule.domain)
 }

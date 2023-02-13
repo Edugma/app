@@ -9,7 +9,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -36,6 +35,7 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.domain.account.model.*
 import io.edugma.features.account.R
@@ -103,13 +103,13 @@ fun BottomSheetLayout(
         SpacerHeight(height = 20.dp)
         EdLabel(
             text = "Вы можете сделать скриншот экрана или скачать QR-код на устройство, затем открыть его в мобильном приложении вашего банка:\nОплата по QR-коду -> Загрузить изображение",
-            iconPainter = painterResource(id = FluentIcons.ic_fluent_info_24_regular),
+            iconPainter = painterResource(id = EdIcons.ic_fluent_info_24_regular),
         )
         SpacerHeight(height = 20.dp)
     }
 }
 
-@OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun PaymentsContent(
     state: PaymentsState,
@@ -179,18 +179,18 @@ fun Payments(payments: Payments, onQrClickListener: ClickListener) {
         payments.dormRoom?.let {
             EdLabel(
                 text = payments.dormNum?.let { "Общежитие №$it, " }.orEmpty() + "комната $it",
-                iconPainter = painterResource(id = FluentIcons.ic_fluent_building_24_regular),
+                iconPainter = painterResource(id = EdIcons.ic_fluent_building_24_regular),
             )
         }
         EdLabel(
             text = "Срок действия: ${payments.startDate.format()} - ${payments.endDate.format()}",
-            iconPainter = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
+            iconPainter = painterResource(id = EdIcons.ic_fluent_calendar_ltr_24_regular),
             modifier = Modifier,
         )
         if (payments.balance != "0") {
             EdLabel(
                 text = "Осталось выплатить: ${payments.balance}",
-                iconPainter = painterResource(id = FluentIcons.ic_fluent_money_24_regular),
+                iconPainter = painterResource(id = EdIcons.ic_fluent_money_24_regular),
             )
         }
         Column(modifier = Modifier.padding(horizontal = 10.dp)) {
@@ -243,12 +243,12 @@ fun PaymentsPlaceholder() {
     ) {
         EdLabel(
             text = "",
-            iconPainter = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
+            iconPainter = painterResource(id = EdIcons.ic_fluent_calendar_ltr_24_regular),
             modifier = Modifier.placeholder(true),
         )
         EdLabel(
             text = "",
-            iconPainter = painterResource(id = FluentIcons.ic_fluent_money_24_regular),
+            iconPainter = painterResource(id = EdIcons.ic_fluent_money_24_regular),
             modifier = Modifier.placeholder(true),
         )
         Column(modifier = Modifier.padding(horizontal = 10.dp)) {
@@ -341,7 +341,7 @@ fun Expander(onClickListener: ClickListener) {
                 style = EdTheme.typography.bodyLarge,
             )
             SpacerWidth(width = 20.dp)
-            Icon(painterResource(id = FluentIcons.ic_fluent_ios_arrow_rtl_24_filled), contentDescription = null, modifier = Modifier.rotate(90f))
+            Icon(painterResource(id = EdIcons.ic_fluent_ios_arrow_rtl_24_filled), contentDescription = null, modifier = Modifier.rotate(90f))
         }
     }
 }

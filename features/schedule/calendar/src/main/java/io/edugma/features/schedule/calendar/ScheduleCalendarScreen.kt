@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -27,6 +28,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -36,6 +38,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -61,8 +64,10 @@ import io.edugma.core.designSystem.utils.ifThen
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.ContentAlpha
+import io.edugma.features.base.core.utils.LocalContentAlpha
 import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.base.core.utils.WithContentAlpha
+import io.edugma.features.base.core.utils.isItemFullyVisible
 import io.edugma.features.schedule.calendar.model.CalendarDayVO
 import io.edugma.features.schedule.calendar.model.CalendarScheduleVO
 import kotlinx.coroutines.launch
@@ -100,7 +105,7 @@ private fun ScheduleCalendarContent(
     Box(Modifier.fillMaxSize()) {
         CalendarThree(
             schedule = state.schedule,
-            currentDayIndex = state.currentDayIndex,
+            currentWeekIndex = state.currentWeekIndex,
             currentDayOfWeekIndex = state.currentDayOfWeekIndex,
             onItemClick = onItemClick,
         )
@@ -115,11 +120,89 @@ private fun ScheduleCalendarContent(
     }
 }
 
+@Composable
+private fun BoxScope.CalendarThree(
+    schedule: List<CalendarScheduleVO>,
+    currentWeekIndex: Int,
+    currentDayOfWeekIndex: Int,
+    onItemClick: Typed1Listener<LocalDate>,
+) {
+    val scrollState = rememberLazyListState()
+    var wasScrolled by remember { mutableStateOf(false) }
+
+    LaunchedEffect(key1 = currentWeekIndex) {
+        if (currentWeekIndex == -1) {
+            return@LaunchedEffect
+        }
+        if (!wasScrolled) {
+            scrollState.scrollToItem(currentWeekIndex)
+            wasScrolled = true
+        }
+    }
+
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        state = scrollState,
+        contentPadding = PaddingValues(
+            top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding() +
+                EdTopAppBarDefaults.ContainerHeight,
+        ),
+    ) {
+        itemsIndexed(schedule) { index, week ->
+            SpacerHeight(9.dp)
+            CalendarWeek(
+                week = week,
+                currentDayOfWeekIndex = currentDayOfWeekIndex,
+                onItemClick = onItemClick,
+                isCurrentWeek = index == currentWeekIndex,
+            )
+        }
+    }
+    val coroutineScope = rememberCoroutineScope()
+
+    Fab(
+        scrollState = scrollState,
+        currentWeekIndex = currentWeekIndex,
+        onClick = {
+            if (currentWeekIndex != -1) {
+                coroutineScope.launch {
+                    scrollState.animateScrollToItem(currentWeekIndex)
+                }
+            }
+        },
+    )
+}
+
+@Composable
+private fun LazyListState.isScrollingUp(): Boolean {
+    var previousIndex by remember(this) { mutableStateOf(firstVisibleItemIndex) }
+    var previousScrollOffset by remember(this) { mutableStateOf(firstVisibleItemScrollOffset) }
+    return remember(this) {
+        derivedStateOf {
+            if (previousIndex != firstVisibleItemIndex) {
+                previousIndex > firstVisibleItemIndex
+            } else {
+                previousScrollOffset >= firstVisibleItemScrollOffset
+            }.also {
+                previousIndex = firstVisibleItemIndex
+                previousScrollOffset = firstVisibleItemScrollOffset
+            }
+        }
+    }.value
+}
+
+@Composable
+private fun LazyListState.isItemVisible(itemIndex: Int): Boolean {
+    return remember(this, itemIndex) {
+        derivedStateOf { isItemFullyVisible(itemIndex) }
+    }.value
+}
+
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-private fun BoxScope.Fab(isVisible: Boolean, onClick: () -> Unit) {
+private fun BoxScope.Fab(scrollState: LazyListState, currentWeekIndex: Int, onClick: () -> Unit) {
     AnimatedVisibility(
-        visible = isVisible,
+        visible = !scrollState.isItemVisible(currentWeekIndex),
         modifier = Modifier
             .align(Alignment.BottomEnd)
             .navigationBarsPadding()
@@ -142,60 +225,6 @@ private fun BoxScope.Fab(isVisible: Boolean, onClick: () -> Unit) {
             },
         )
     }
-}
-
-@Composable
-private fun BoxScope.CalendarThree(
-    schedule: List<CalendarScheduleVO>,
-    currentDayIndex: Int,
-    currentDayOfWeekIndex: Int,
-    onItemClick: Typed1Listener<LocalDate>,
-) {
-    val scrollState = rememberLazyListState()
-    var wasScrolled by remember { mutableStateOf(false) }
-
-    LaunchedEffect(key1 = currentDayIndex) {
-        if (currentDayIndex == -1) {
-            return@LaunchedEffect
-        }
-        if (!wasScrolled) {
-            scrollState.scrollToItem(currentDayIndex)
-            wasScrolled = true
-        }
-    }
-
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        state = scrollState,
-    ) {
-        item {
-            SpacerHeight(
-                height = WindowInsets.statusBars.asPaddingValues().calculateTopPadding() +
-                    EdTopAppBarDefaults.ContainerHeight,
-            )
-        }
-        itemsIndexed(schedule) { index, week ->
-            SpacerHeight(8.dp)
-            CalendarWeek(
-                week = week,
-                currentDayOfWeekIndex = currentDayOfWeekIndex,
-                onItemClick = onItemClick,
-                isCurrentWeek = index == currentDayIndex,
-            )
-        }
-    }
-    val coroutineScope = rememberCoroutineScope()
-
-    Fab(
-        isVisible = true,
-        onClick = {
-            if (currentDayIndex != -1) {
-                coroutineScope.launch {
-                    scrollState.animateScrollToItem(currentDayIndex)
-                }
-            }
-        },
-    )
 }
 
 @Composable
@@ -338,7 +367,7 @@ private fun ColumnScope.WeekNumber(
         Text(
             text = "Неделя".uppercase(),
             style = EdTheme.typography.labelMedium,
-            color = EdTheme.colorScheme.tertiary,
+            color = EdTheme.colorScheme.tertiary.copy(alpha = 0.8f),
             modifier = Modifier.padding(bottom = 3.dp, top = 1.dp),
             textAlign = TextAlign.Center,
         )
@@ -391,7 +420,7 @@ private fun CalendarItem(
             )
         }
         if (day.lessons.isNotEmpty()) {
-            SpacerHeight(3.dp)
+            SpacerHeight(4.dp)
         }
         day.lessons.forEachIndexed { index, lessonsByTime ->
             if (index != 0) {
@@ -400,14 +429,14 @@ private fun CalendarItem(
             WithContentAlpha(ContentAlpha.medium) {
                 lessonsByTime.lessons.forEach { lesson ->
                     val containerColor = if (lesson.isImportant) {
-                        EdTheme.colorScheme.error
+                        EdTheme.colorScheme.error.copy(alpha = 0.8f)
                     } else {
-                        EdTheme.colorScheme.secondaryContainer
+                        EdTheme.colorScheme.secondaryContainer.copy(alpha = 0.8f)
                     }
                     val textColor = if (lesson.isImportant) {
-                        EdTheme.colorScheme.onError
+                        EdTheme.colorScheme.onError.copy(alpha = LocalContentAlpha.current)
                     } else {
-                        EdTheme.colorScheme.onSecondaryContainer
+                        EdTheme.colorScheme.onSecondaryContainer.copy(alpha = LocalContentAlpha.current)
                     }
 
                     Box(

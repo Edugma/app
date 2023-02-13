@@ -21,6 +21,7 @@ import io.edugma.core.designSystem.molecules.avatar.EdAvatar
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.schedule.domain.model.group.Group
@@ -151,7 +152,7 @@ private fun LessonDateTime(lessonDateTime: LessonDateTime) {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
-                    painter = painterResource(FluentIcons.ic_fluent_clock_16_regular),
+                    painter = painterResource(EdIcons.ic_fluent_clock_16_regular),
                     contentDescription = null,
                 )
                 SpacerWidth(3.dp)
@@ -166,7 +167,7 @@ private fun LessonDateTime(lessonDateTime: LessonDateTime) {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
-                    painter = painterResource(FluentIcons.ic_fluent_calendar_ltr_16_regular),
+                    painter = painterResource(EdIcons.ic_fluent_calendar_ltr_16_regular),
                     contentDescription = null,
                 )
                 SpacerWidth(3.dp)
@@ -191,7 +192,7 @@ private fun ColumnScope.LessonTeachers(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
-                painter = painterResource(FluentIcons.ic_fluent_hat_graduation_20_regular),
+                painter = painterResource(EdIcons.ic_fluent_hat_graduation_20_regular),
                 contentDescription = null,
             )
             SpacerWidth(4.dp)
@@ -230,7 +231,7 @@ private fun ColumnScope.LessonPlaces(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
-                painter = painterResource(FluentIcons.ic_fluent_location_20_regular),
+                painter = painterResource(EdIcons.ic_fluent_location_20_regular),
                 contentDescription = null,
             )
             SpacerWidth(4.dp)
@@ -269,7 +270,7 @@ private fun ColumnScope.LessonGroups(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
-                painter = painterResource(FluentIcons.ic_fluent_people_20_regular),
+                painter = painterResource(EdIcons.ic_fluent_people_20_regular),
                 contentDescription = null,
             )
             SpacerWidth(4.dp)

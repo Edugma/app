@@ -37,6 +37,7 @@ import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.textField.EdTextField
 import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.domain.account.model.student.Student
 import io.edugma.features.account.R
@@ -130,12 +131,12 @@ fun StudentSheetContent(
         student.sex?.let {
             EdLabel(
                 text = it,
-                iconPainter = painterResource(id = FluentIcons.ic_fluent_people_24_regular),
+                iconPainter = painterResource(id = EdIcons.ic_fluent_people_24_regular),
             )
         }
         EdLabel(
             text = student.branch.title,
-            iconPainter = painterResource(id = FluentIcons.ic_fluent_building_24_regular),
+            iconPainter = painterResource(id = EdIcons.ic_fluent_building_24_regular),
         )
         EdLabel(
             text = student.educationType,
@@ -143,48 +144,48 @@ fun StudentSheetContent(
         )
         EdLabel(
             text = student.payment,
-            iconPainter = painterResource(id = FluentIcons.ic_fluent_money_24_regular),
+            iconPainter = painterResource(id = EdIcons.ic_fluent_money_24_regular),
         )
         student.getFaculty()?.let {
             EdLabel(
                 text = it,
-                iconPainter = painterResource(id = FluentIcons.ic_fluent_book_24_regular),
+                iconPainter = painterResource(id = EdIcons.ic_fluent_book_24_regular),
             )
         }
         student.group?.direction?.let {
             EdLabel(
                 text = it.title,
-                iconPainter = painterResource(id = FluentIcons.ic_fluent_contact_card_group_24_regular),
+                iconPainter = painterResource(id = EdIcons.ic_fluent_contact_card_group_24_regular),
             )
         }
         student.specialization?.let {
             if (it.title != student.group?.direction?.title) {
                 EdLabel(
                     text = it.title,
-                    iconPainter = painterResource(id = FluentIcons.ic_fluent_data_treemap_24_regular),
+                    iconPainter = painterResource(id = EdIcons.ic_fluent_data_treemap_24_regular),
                 )
             }
         }
         EdLabel(
             text = "Года обучения: ${student.years}",
-            iconPainter = painterResource(id = FluentIcons.ic_fluent_timer_24_regular),
+            iconPainter = painterResource(id = EdIcons.ic_fluent_timer_24_regular),
         )
         student.dormitory?.let {
             EdLabel(
                 text = "Общежитие №$it",
-                iconPainter = painterResource(id = FluentIcons.ic_fluent_building_home_24_regular),
+                iconPainter = painterResource(id = EdIcons.ic_fluent_building_home_24_regular),
             )
         }
         student.dormitoryRoom?.let {
             EdLabel(
                 text = "Комната №$it",
-                iconPainter = painterResource(id = FluentIcons.ic_fluent_conference_room_24_regular),
+                iconPainter = painterResource(id = EdIcons.ic_fluent_conference_room_24_regular),
             )
         }
         student.birthday?.let {
             EdLabel(
                 text = "Дата рождения: ${it.format()}",
-                iconPainter = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
+                iconPainter = painterResource(id = EdIcons.ic_fluent_calendar_ltr_24_regular),
             )
         }
 //        Text(text = student.toString())
@@ -286,7 +287,7 @@ fun StudentsContent(
                 }
                 IconButton(onClick = openBottomSheetListener) {
                     Icon(
-                        painterResource(id = FluentIcons.ic_fluent_search_24_regular),
+                        painterResource(id = EdIcons.ic_fluent_search_24_regular),
                         contentDescription = "Фильтр",
                     )
                 }
@@ -365,7 +366,7 @@ fun Student(student: Student, onClick: ClickListener) {
                 WithContentAlpha(alpha = ContentAlpha.medium) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
-                            painter = painterResource(id = FluentIcons.ic_fluent_info_16_regular),
+                            painter = painterResource(id = EdIcons.ic_fluent_info_16_regular),
                             contentDescription = null,
                             modifier = Modifier
                                 .size(17.dp),

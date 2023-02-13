@@ -23,6 +23,7 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.textField.EdTextField
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.features.account.R
 import io.edugma.features.base.core.utils.*
@@ -90,7 +91,7 @@ fun AuthContent(
                     },
                 ) {
                     Icon(
-                        painterResource(id = FluentIcons.ic_fluent_sign_out_24_regular),
+                        painterResource(id = EdIcons.ic_fluent_sign_out_24_regular),
                         contentDescription = "Выход",
                     )
                 }

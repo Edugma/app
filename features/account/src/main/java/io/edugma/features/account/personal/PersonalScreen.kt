@@ -30,6 +30,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.domain.account.model.Application
 import io.edugma.domain.account.model.Order
@@ -172,7 +173,7 @@ private fun CollapsingToolbar(
                 linkTo(parent.top, info.bottom)
             },
         ) {
-            Icon(painter = painterResource(FluentIcons.ic_fluent_arrow_left_20_filled), contentDescription = null)
+            Icon(painter = painterResource(EdIcons.ic_fluent_arrow_left_20_filled), contentDescription = null)
         }
         personal?.let {
             Text(
@@ -222,7 +223,7 @@ fun Personal(personal: Personal) {
     Column(Modifier.padding(8.dp)) {
         EdLabel(
             text = personal.faculty,
-            iconPainter = painterResource(id = FluentIcons.ic_fluent_building_24_regular),
+            iconPainter = painterResource(id = EdIcons.ic_fluent_building_24_regular),
         )
         EdLabel(
             text = personal.specialty,
@@ -231,24 +232,24 @@ fun Personal(personal: Personal) {
         personal.specialization?.let {
             EdLabel(
                 text = it,
-                iconPainter = painterResource(id = FluentIcons.ic_fluent_book_24_regular),
+                iconPainter = painterResource(id = EdIcons.ic_fluent_book_24_regular),
             )
         }
         EdLabel(
             text = "Номер зачетной книжки: ${personal.code}",
-            iconPainter = painterResource(id = FluentIcons.ic_fluent_album_24_regular),
+            iconPainter = painterResource(id = EdIcons.ic_fluent_album_24_regular),
         )
         EdLabel(
             text = "${personal.finance} ${personal.educationForm.lowercase()} основа обучения",
-            iconPainter = painterResource(id = FluentIcons.ic_fluent_money_24_regular),
+            iconPainter = painterResource(id = EdIcons.ic_fluent_money_24_regular),
         )
         EdLabel(
             text = "Год поступления ${personal.enterYear}",
-            iconPainter = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
+            iconPainter = painterResource(id = EdIcons.ic_fluent_calendar_ltr_24_regular),
         )
         EdLabel(
             text = "Лет обучения ${personal.degreeLength}",
-            iconPainter = painterResource(id = FluentIcons.ic_fluent_timer_24_regular),
+            iconPainter = painterResource(id = EdIcons.ic_fluent_timer_24_regular),
         )
     }
 }
@@ -258,7 +259,7 @@ fun PersonalPlaceholder() {
     Column(Modifier.padding(8.dp)) {
         EdLabel(
             text = "",
-            iconPainter = painterResource(id = FluentIcons.ic_fluent_building_24_regular),
+            iconPainter = painterResource(id = EdIcons.ic_fluent_building_24_regular),
             modifier = Modifier.placeholder(true),
         )
         EdLabel(
@@ -268,27 +269,27 @@ fun PersonalPlaceholder() {
         )
         EdLabel(
             text = "",
-            iconPainter = painterResource(id = FluentIcons.ic_fluent_book_24_regular),
+            iconPainter = painterResource(id = EdIcons.ic_fluent_book_24_regular),
             modifier = Modifier.placeholder(true),
         )
         EdLabel(
             text = "",
-            iconPainter = painterResource(id = FluentIcons.ic_fluent_album_24_regular),
+            iconPainter = painterResource(id = EdIcons.ic_fluent_album_24_regular),
             modifier = Modifier.placeholder(true),
         )
         EdLabel(
             text = "",
-            iconPainter = painterResource(id = FluentIcons.ic_fluent_money_24_regular),
+            iconPainter = painterResource(id = EdIcons.ic_fluent_money_24_regular),
             modifier = Modifier.placeholder(true),
         )
         EdLabel(
             text = "",
-            iconPainter = painterResource(id = FluentIcons.ic_fluent_calendar_ltr_24_regular),
+            iconPainter = painterResource(id = EdIcons.ic_fluent_calendar_ltr_24_regular),
             modifier = Modifier.placeholder(true),
         )
         EdLabel(
             text = "",
-            iconPainter = painterResource(id = FluentIcons.ic_fluent_timer_24_regular),
+            iconPainter = painterResource(id = EdIcons.ic_fluent_timer_24_regular),
             modifier = Modifier.placeholder(true),
         )
     }

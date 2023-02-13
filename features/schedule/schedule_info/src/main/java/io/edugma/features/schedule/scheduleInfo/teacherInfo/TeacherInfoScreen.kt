@@ -16,8 +16,8 @@ import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.FluentIcons
 import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.schedule.domain.model.teacher.description
 import io.edugma.features.schedule.elements.verticalSchedule.VerticalScheduleComponent
@@ -53,15 +53,15 @@ private fun TeacherInfoContent(
             state.teacherInfo?.let { groupInfo ->
                 EdLabel(
                     text = groupInfo.description,
-                    iconPainter = painterResource(FluentIcons.ic_fluent_text_description_20_regular),
+                    iconPainter = painterResource(EdIcons.ic_fluent_text_description_20_regular),
                 )
 //                TextIcon(
 //                    text = "${groupInfo.course}-й курс",
-//                    painter = painterResource(FluentIcons.ic_fluent_timer_20_regular)
+//                    painter = painterResource(EdIcons.ic_fluent_timer_20_regular)
 //                )
 //                TextIcon(
 //                    text = groupInfo.toString(),
-//                    painter = painterResource(FluentIcons.ic_fluent_weather_moon_20_regular)
+//                    painter = painterResource(EdIcons.ic_fluent_weather_moon_20_regular)
 //                )
             }
         },

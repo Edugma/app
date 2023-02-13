@@ -29,8 +29,8 @@ import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.FluentIcons
 import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.schedule.domain.model.place.PlaceInfo
 import io.edugma.features.schedule.domain.model.place.description
@@ -72,15 +72,15 @@ private fun PlaceInfoContent(
             state.placeInfo?.let { groupInfo ->
                 EdLabel(
                     text = groupInfo.description,
-                    iconPainter = painterResource(FluentIcons.ic_fluent_text_description_20_regular),
+                    iconPainter = painterResource(EdIcons.ic_fluent_text_description_20_regular),
                 )
 //                TextIcon(
 //                    text = "${groupInfo.course}-й курс",
-//                    painter = painterResource(FluentIcons.ic_fluent_timer_20_regular)
+//                    painter = painterResource(EdIcons.ic_fluent_timer_20_regular)
 //                )
 //                TextIcon(
 //                    text = groupInfo.toString(),
-//                    painter = painterResource(FluentIcons.ic_fluent_weather_moon_20_regular)
+//                    painter = painterResource(EdIcons.ic_fluent_weather_moon_20_regular)
 //                )
             }
         },
@@ -165,7 +165,7 @@ private fun PlaceBuilding(place: PlaceInfo.Building) {
             SpacerHeight(8.dp)
             EdLabel(
                 text = place.street!!,
-                iconPainter = painterResource(FluentIcons.ic_fluent_location_20_regular),
+                iconPainter = painterResource(EdIcons.ic_fluent_location_20_regular),
             )
         }
         var resStr = ""
@@ -188,7 +188,7 @@ private fun PlaceBuilding(place: PlaceInfo.Building) {
             SpacerHeight(8.dp)
             EdLabel(
                 text = resStr,
-                iconPainter = painterResource(FluentIcons.ic_fluent_building_20_regular),
+                iconPainter = painterResource(EdIcons.ic_fluent_building_20_regular),
             )
         }
         if (place.description != null) {
@@ -196,7 +196,7 @@ private fun PlaceBuilding(place: PlaceInfo.Building) {
             val description = place.description!!
             EdLabel(
                 text = stringResource(R.string.schedule_sch_inf_description),
-                iconPainter = painterResource(FluentIcons.ic_fluent_text_description_20_regular),
+                iconPainter = painterResource(EdIcons.ic_fluent_text_description_20_regular),
             )
             SpacerHeight(4.dp)
             Text(
@@ -232,7 +232,7 @@ private fun PlaceOnline(place: PlaceInfo.Online) {
             val description = place.description!!
             EdLabel(
                 text = stringResource(R.string.schedule_sch_inf_description),
-                iconPainter = painterResource(FluentIcons.ic_fluent_text_description_20_regular),
+                iconPainter = painterResource(EdIcons.ic_fluent_text_description_20_regular),
             )
             SpacerHeight(4.dp)
             Text(
@@ -251,7 +251,7 @@ private fun PlaceOther(place: PlaceInfo.Other) {
             val description = place.description!!
             EdLabel(
                 text = stringResource(R.string.schedule_sch_inf_description),
-                iconPainter = painterResource(FluentIcons.ic_fluent_text_description_20_regular),
+                iconPainter = painterResource(EdIcons.ic_fluent_text_description_20_regular),
             )
             SpacerHeight(4.dp)
             Text(
@@ -270,7 +270,7 @@ private fun PlaceUnclassified(place: PlaceInfo.Unclassified) {
             val description = place.description!!
             EdLabel(
                 text = stringResource(R.string.schedule_sch_inf_description),
-                iconPainter = painterResource(FluentIcons.ic_fluent_text_description_20_regular),
+                iconPainter = painterResource(EdIcons.ic_fluent_text_description_20_regular),
             )
             SpacerHeight(4.dp)
             Text(
