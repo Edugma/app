@@ -36,7 +36,9 @@ fun includeSubmodules(vararg projectPaths: String, deep: Int = 1) {
         val childFiles = File(path).listFiles() ?: return@forEach
         childFiles.forEach { subproject ->
             if (subproject.isDirectory && File(subproject, "build.gradle.kts").exists()) {
-                val projectName = subproject.path.replace('\\', ':')
+                val projectName = subproject.path
+                    .replace('\\', ':') //for windows
+                    .replace('/', ':') //for mac
                 include(projectName)
             }
             if (deep != 1) {
