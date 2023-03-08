@@ -17,7 +17,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -33,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.card.EdCard
+import io.edugma.core.designSystem.atoms.card.EdCardDefaults
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
@@ -383,7 +383,7 @@ private fun SourceTypeTab(
     EdCard(
         onClick = { onTabSelected(tab) },
         modifier = Modifier.padding(horizontal = 6.dp, vertical = 5.dp),
-        colors = CardDefaults.cardColors(containerColor = color),
+        colors = EdCardDefaults.cardColors(containerColor = color),
         shape = EdTheme.shapes.small,
     ) {
         EdLabel(

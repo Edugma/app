@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
+import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.molecules.avatar.EdAvatar
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
@@ -70,9 +71,8 @@ private fun LessonInfoContent(
             .fillMaxSize()
             .verticalScroll(rememberScrollState()),
     ) {
-        Surface(
-            color = EdTheme.colorScheme.surfaceVariant,
-            shape = RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp),
+        EdSurface(
+            shape = EdTheme.shapes.large,
         ) {
             Column(Modifier.fillMaxWidth()) {
                 EdTopAppBar(
@@ -95,22 +95,28 @@ private fun LessonInfoContent(
                 SpacerHeight(height = 16.dp)
             }
         }
-        SpacerHeight(height = 8.dp)
-        LessonTeachers(
-            teachers = state.teachers,
-            onItemClick = onTeacherClick,
-        )
-        SpacerHeight(height = 14.dp)
-        LessonPlaces(
-            places = state.lessonInfo?.lesson?.places ?: emptyList(),
-            onItemClick = onPlaceClick,
-        )
-        SpacerHeight(height = 14.dp)
-        LessonGroups(
-            groups = state.lessonInfo?.lesson?.groups ?: emptyList(),
-            onItemClick = onGroupClick,
-        )
-        SpacerHeight(height = 14.dp)
+        if (state.teachers.isNotEmpty()) {
+            SpacerHeight(height = 10.dp)
+            LessonTeachers(
+                teachers = state.teachers,
+                onItemClick = onTeacherClick,
+            )
+        }
+        if (state.lessonInfo?.lesson?.places?.isNotEmpty() == true) {
+            SpacerHeight(height = 10.dp)
+            LessonPlaces(
+                places = state.lessonInfo.lesson.places,
+                onItemClick = onPlaceClick,
+            )
+        }
+        if (state.lessonInfo?.lesson?.groups?.isNotEmpty() == true) {
+            SpacerHeight(height = 10.dp)
+            LessonGroups(
+                groups = state.lessonInfo.lesson.groups,
+                onItemClick = onGroupClick,
+            )
+        }
+        SpacerHeight(height = 10.dp)
     }
 }
 
@@ -182,118 +188,136 @@ private fun LessonDateTime(lessonDateTime: LessonDateTime) {
 }
 
 @Composable
-private fun ColumnScope.LessonTeachers(
+private fun LessonTeachers(
     teachers: List<TeacherInfo>,
     onItemClick: Typed1Listener<String>,
 ) {
-    WithContentAlpha(ContentAlpha.medium) {
-        Row(
-            Modifier.padding(start = 16.dp, end = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Icon(
-                painter = painterResource(EdIcons.ic_fluent_hat_graduation_20_regular),
-                contentDescription = null,
-            )
-            SpacerWidth(4.dp)
-            Text(
-                text = "Преподаватели",
-                style = EdTheme.typography.titleSmall,
-                modifier = Modifier.padding(bottom = 2.dp),
-            )
-        }
-    }
-    SpacerHeight(1.dp)
-    teachers.forEachIndexed { index, teacher ->
-        LessonItem(
-            imageUrl = "",
-            imageInitials = teacher.name
-                .split(' ')
-                .joinToString(separator = "") { it.take(1) },
-            title = teacher.name,
-            description = teacher.description,
-            onItemClick = { onItemClick(teacher.id) },
-        )
-        if (index != teachers.size - 1) {
-            Divider(Modifier.padding(start = 70.dp, end = 20.dp))
+    EdSurface(
+        shape = EdTheme.shapes.large,
+    ) {
+        Column(Modifier.fillMaxWidth().padding(vertical = 10.dp)) {
+            WithContentAlpha(ContentAlpha.medium) {
+                Row(
+                    Modifier.padding(start = 16.dp, end = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(
+                        painter = painterResource(EdIcons.ic_fluent_hat_graduation_20_regular),
+                        contentDescription = null,
+                    )
+                    SpacerWidth(4.dp)
+                    Text(
+                        text = "Преподаватели",
+                        style = EdTheme.typography.titleSmall,
+                        modifier = Modifier.padding(bottom = 2.dp),
+                    )
+                }
+            }
+            SpacerHeight(1.dp)
+            teachers.forEachIndexed { index, teacher ->
+                LessonItem(
+                    imageUrl = "",
+                    imageInitials = teacher.name
+                        .split(' ')
+                        .joinToString(separator = "") { it.take(1) },
+                    title = teacher.name,
+                    description = teacher.description,
+                    onItemClick = { onItemClick(teacher.id) },
+                )
+                if (index != teachers.size - 1) {
+                    Divider(Modifier.padding(start = 70.dp, end = 20.dp))
+                }
+            }
         }
     }
 }
 
 @Composable
-private fun ColumnScope.LessonPlaces(
+private fun LessonPlaces(
     places: List<Place>,
     onItemClick: Typed1Listener<String>,
 ) {
-    WithContentAlpha(ContentAlpha.medium) {
-        Row(
-            Modifier.padding(start = 16.dp, end = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Icon(
-                painter = painterResource(EdIcons.ic_fluent_location_20_regular),
-                contentDescription = null,
-            )
-            SpacerWidth(4.dp)
-            Text(
-                text = "Места",
-                style = EdTheme.typography.titleSmall,
-                modifier = Modifier.padding(bottom = 2.dp),
-            )
-        }
-    }
-    SpacerHeight(1.dp)
-    places.forEachIndexed { index, place ->
-        LessonItem(
-            imageUrl = "",
-            imageInitials = place.title
-                .split(' ')
-                .joinToString(separator = "") { it.take(1) },
-            title = place.title,
-            description = place.description,
-            onItemClick = { onItemClick(place.id) },
-        )
-        if (index != places.size - 1) {
-            Divider(Modifier.padding(start = 70.dp, end = 20.dp))
+    EdSurface(
+        shape = EdTheme.shapes.large,
+    ) {
+        Column(Modifier.fillMaxWidth().padding(vertical = 10.dp)) {
+            WithContentAlpha(ContentAlpha.medium) {
+                Row(
+                    Modifier.padding(start = 16.dp, end = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(
+                        painter = painterResource(EdIcons.ic_fluent_location_20_regular),
+                        contentDescription = null,
+                    )
+                    SpacerWidth(4.dp)
+                    Text(
+                        text = "Места",
+                        style = EdTheme.typography.titleSmall,
+                        modifier = Modifier.padding(bottom = 2.dp),
+                    )
+                }
+            }
+            SpacerHeight(1.dp)
+            places.forEachIndexed { index, place ->
+                LessonItem(
+                    imageUrl = "",
+                    imageInitials = place.title
+                        .split(' ')
+                        .joinToString(separator = "") { it.take(1) },
+                    title = place.title,
+                    description = place.description,
+                    onItemClick = { onItemClick(place.id) },
+                )
+                if (index != places.size - 1) {
+                    Divider(Modifier.padding(start = 70.dp, end = 20.dp))
+                }
+            }
         }
     }
 }
 
 @Composable
-private fun ColumnScope.LessonGroups(
+private fun LessonGroups(
     groups: List<Group>,
     onItemClick: Typed1Listener<String>,
 ) {
-    WithContentAlpha(ContentAlpha.medium) {
-        Row(
-            Modifier.padding(start = 16.dp, end = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Icon(
-                painter = painterResource(EdIcons.ic_fluent_people_20_regular),
-                contentDescription = null,
-            )
-            SpacerWidth(4.dp)
-            Text(
-                text = "Группы",
-                style = EdTheme.typography.titleSmall,
-                modifier = Modifier.padding(bottom = 2.dp),
-            )
-        }
-    }
-    SpacerHeight(1.dp)
-    groups.forEachIndexed { index, group ->
-        LessonItem(
-            imageUrl = "",
-            imageInitials = group.title
-                .split(' ')
-                .joinToString(separator = "") { it.take(1) },
-            title = group.title,
-            description = group.description,
-            onItemClick = { onItemClick(group.id) },
-        )
-        if (index != groups.size - 1) {
-            Divider(Modifier.padding(start = 70.dp, end = 20.dp))
+    EdSurface(
+        shape = EdTheme.shapes.large,
+    ) {
+        Column(Modifier.fillMaxWidth().padding(vertical = 10.dp)) {
+            WithContentAlpha(ContentAlpha.medium) {
+                Row(
+                    Modifier.padding(start = 16.dp, end = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(
+                        painter = painterResource(EdIcons.ic_fluent_people_20_regular),
+                        contentDescription = null,
+                    )
+                    SpacerWidth(4.dp)
+                    Text(
+                        text = "Группы",
+                        style = EdTheme.typography.titleSmall,
+                        modifier = Modifier.padding(bottom = 2.dp),
+                    )
+                }
+            }
+            SpacerHeight(1.dp)
+            groups.forEachIndexed { index, group ->
+                LessonItem(
+                    imageUrl = "",
+                    imageInitials = group.title
+                        .split(' ')
+                        .joinToString(separator = "") { it.take(1) },
+                    title = group.title,
+                    description = group.description,
+                    onItemClick = { onItemClick(group.id) },
+                )
+                if (index != groups.size - 1) {
+                    Divider(Modifier.padding(start = 70.dp, end = 20.dp))
+                }
+            }
         }
     }
 }

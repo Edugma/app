@@ -32,7 +32,7 @@ fun EdTopAppBar(
     subtitle: String? = null,
     titleIcon: Painter? = null,
     subtitleIcon: Painter? = null,
-    navigationIcon: Painter? = painterResource(EdIcons.ic_fluent_arrow_left_32_regular),
+    navigationIcon: Painter? = painterResource(EdIcons.ic_fluent_chevron_left_20_filled),
     onNavigationClick: (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
     windowInsets: WindowInsets = WindowInsets(0.dp), // TopAppBarDefaults.windowInsets,
@@ -83,7 +83,7 @@ fun EdTopAppBar(
                                 ),
                             )
                         }
-                        .padding(13.dp),
+                        .padding(11.dp),
                 )
             }
         },

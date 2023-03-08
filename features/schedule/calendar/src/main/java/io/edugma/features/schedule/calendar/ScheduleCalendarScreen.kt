@@ -43,6 +43,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,6 +61,7 @@ import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
 import io.edugma.core.designSystem.tokens.icons.EdIcons
+import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.designSystem.utils.ifThen
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.features.base.core.utils.ClickListener
@@ -109,14 +111,21 @@ private fun ScheduleCalendarContent(
             currentDayOfWeekIndex = state.currentDayOfWeekIndex,
             onItemClick = onItemClick,
         )
-        EdTopAppBar(
-            title = stringResource(R.string.schedule_cal_calendar),
-            onNavigationClick = onBackClick,
-            windowInsets = WindowInsets.statusBars,
-            colors = EdTopAppBarDefaults.colors(
-                EdTheme.colorScheme.surface.copy(alpha = 0.9f),
-            ),
-        )
+
+        EdSurface(
+            modifier = Modifier.fillMaxWidth(),
+            shape = EdTheme.shapes.large.bottom(),
+            elevatedAlpha = 0.9f,
+        ) {
+            EdTopAppBar(
+                title = stringResource(R.string.schedule_cal_calendar),
+                onNavigationClick = onBackClick,
+                windowInsets = WindowInsets.statusBars,
+                colors = EdTopAppBarDefaults.colors(
+                    Color.Transparent,
+                ),
+            )
+        }
     }
 }
 
@@ -128,7 +137,7 @@ private fun BoxScope.CalendarThree(
     onItemClick: Typed1Listener<LocalDate>,
 ) {
     val scrollState = rememberLazyListState()
-    var wasScrolled by remember { mutableStateOf(false) }
+    var wasScrolled by rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(key1 = currentWeekIndex) {
         if (currentWeekIndex == -1) {
@@ -237,6 +246,7 @@ private fun CalendarWeek(
     EdSurface(
         modifier = Modifier.fillMaxWidth(),
         elevation = EdElevation.Level1,
+        shape = EdTheme.shapes.large,
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             WeekNumber(

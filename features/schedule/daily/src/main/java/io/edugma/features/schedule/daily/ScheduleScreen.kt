@@ -11,9 +11,12 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -30,10 +33,14 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import io.edugma.core.designSystem.atoms.loader.EdLoader
+import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
+import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
+import io.edugma.core.designSystem.tokens.shapes.bottom
+import io.edugma.core.designSystem.tokens.shapes.top
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.Typed1Listener
@@ -58,7 +65,9 @@ fun ScheduleScreen(
     }
 
     if (!state.schedule.isNullOrEmpty() || state.isPreloading) {
-        FeatureScreen {
+        FeatureScreen(
+            statusBarPadding = false,
+        ) {
             ScheduleContent(
                 state,
                 viewModel::exit,
@@ -92,42 +101,54 @@ fun ScheduleContent(
             weekPagerState.bindTo(state.weeksPos)
             weekPagerState.onPageChanged { onWeeksPosChanged(it) }
 
-            EdTopAppBar(
-                title = stringResource(R.string.sch_schedule),
-                subtitle = state.selectedDate.format(dateTimeFormat),
-                onNavigationClick = onBackClick,
-                actions = {
-                    if (state.isLoading) {
-                        EdLoader()
-                    }
-                },
-                colors = EdTopAppBarDefaults.colors(
-                    containerColor = Color.Transparent,
-                ),
-            )
+            EdSurface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = EdTheme.shapes.large.bottom(),
+            ) {
+                Column(Modifier.fillMaxWidth()) {
+                    EdTopAppBar(
+                        title = stringResource(R.string.sch_schedule),
+                        subtitle = state.selectedDate.format(dateTimeFormat),
+                        onNavigationClick = onBackClick,
+                        actions = {
+                            if (state.isLoading) {
+                                EdLoader()
+                            }
+                        },
+                        colors = EdTopAppBarDefaults.colors(
+                            containerColor = Color.Transparent,
+                        ),
+                        windowInsets = WindowInsets.statusBars,
+                    )
+                    DaysPager(
+                        weeks = state.weeks,
+                        dayOfWeekPos = state.dayOfWeekPos,
+                        pagerState = weekPagerState,
+                        onDayClick = onDayClick,
+                    )
+                }
+            }
+            SpacerHeight(height = 10.dp)
+            EdSurface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = EdTheme.shapes.large.top(),
+            ) {
+                if (state.isPreloading) {
+                    ScheduleDayPlaceHolder()
+                } else {
+                    val schedulePagerState = rememberPagerState(state.schedulePos)
+                    schedulePagerState.bindTo(state.schedulePos)
+                    schedulePagerState.onPageChanged { onSchedulePosChanged(it) }
 
-            DaysPager(
-                weeks = state.weeks,
-                dayOfWeekPos = state.dayOfWeekPos,
-                pagerState = weekPagerState,
-                onDayClick = onDayClick,
-            )
-
-            if (state.isPreloading) {
-                ScheduleDayPlaceHolder()
-            } else {
-                val schedulePagerState = rememberPagerState(state.schedulePos)
-                schedulePagerState.bindTo(state.schedulePos)
-                schedulePagerState.onPageChanged { onSchedulePosChanged(it) }
-
-                SchedulePager(
-                    scheduleDays = state.schedule ?: emptyList(),
-                    lessonDisplaySettings = state.lessonDisplaySettings,
-                    isRefreshing = state.isRefreshing,
-                    pagerState = schedulePagerState,
-                    onLessonClick = onLessonClick,
-                    onRefreshing = onRefreshing,
-                )
+                    SchedulePager(
+                        scheduleDays = state.schedule ?: emptyList(),
+                        lessonDisplaySettings = state.lessonDisplaySettings,
+                        isRefreshing = state.isRefreshing,
+                        pagerState = schedulePagerState,
+                        onLessonClick = onLessonClick,
+                        onRefreshing = onRefreshing,
+                    )
+                }
             }
         }
         Fab(state.showBackToTodayFab, onFabClick)

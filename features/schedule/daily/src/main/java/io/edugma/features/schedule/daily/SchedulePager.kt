@@ -73,8 +73,8 @@ fun SchedulePager(
             count = scheduleDays.size,
             state = pagerState,
             modifier = Modifier.fillMaxSize(),
-        ) {
-            val scheduleDay by remember(scheduleDays, it) { mutableStateOf(scheduleDays[it]) }
+        ) { page ->
+            val scheduleDay by remember(scheduleDays, page) { mutableStateOf(scheduleDays[page]) }
 
             if (scheduleDay.lessons.isNotEmpty()) {
                 LessonList(
@@ -85,21 +85,26 @@ fun SchedulePager(
                     },
                 )
             } else {
-                val randomAnim = remember { relaxAnims[it % relaxAnims.size] }
-                NoLessonsDay(randomAnim)
+                val randomAnim = remember { relaxAnims[page % relaxAnims.size] }
+                NoLessonsDay(
+                    animation = randomAnim,
+                )
             }
         }
     }
 }
 
 @Composable
-fun NoLessonsDay(@RawRes animation: Int) {
+fun NoLessonsDay(
+    @RawRes animation: Int,
+    modifier: Modifier = Modifier,
+) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(animation))
     val progress by animateLottieCompositionAsState(
         composition,
         iterations = LottieConstants.IterateForever,
     )
-    Column {
+    Column(modifier = modifier) {
         Spacer(modifier = Modifier.weight(1f))
         LottieAnimation(
             composition,
@@ -129,10 +134,11 @@ fun DateContent(date: LocalDate) {
 fun LessonList(
     lessons: List<ScheduleItem>,
     lessonDisplaySettings: LessonDisplaySettings,
-    isLoading: Boolean = false,
     onLessonClick: Typed2Listener<Lesson, LessonTime>,
+    modifier: Modifier = Modifier,
+    isLoading: Boolean = false,
 ) {
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
+    LazyColumn(modifier = modifier.fillMaxSize()) {
         for (item in lessons) {
             when (item) {
                 is ScheduleItem.LessonByTime -> {
@@ -182,5 +188,6 @@ fun ScheduleDayPlaceHolder() {
             .filterIsInstance<ScheduleItem.LessonByTime>(),
         lessonDisplaySettings = LessonDisplaySettings.Default,
         isLoading = true,
-    ) { _, _ -> }
+        onLessonClick = { _, _ -> },
+    )
 }

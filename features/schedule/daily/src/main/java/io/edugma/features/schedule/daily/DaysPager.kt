@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -37,6 +36,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import io.edugma.core.designSystem.atoms.card.EdCard
+import io.edugma.core.designSystem.atoms.card.EdCardDefaults
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.features.base.core.utils.ContentAlpha
@@ -146,7 +146,7 @@ fun RowScope.DayContent(
                 textAlign = TextAlign.Center,
             )
         }
-        SpacerHeight(height = 3.5.dp)
+        SpacerHeight(height = 3.0.dp)
         EdCard(
             onClick = { onDayClick(day.date) },
             modifier = Modifier
@@ -154,7 +154,7 @@ fun RowScope.DayContent(
                 .size(39.dp),
             shape = EdTheme.shapes.medium,
             border = border,
-            colors = CardDefaults.cardColors(containerColor = backgroundColor),
+            colors = EdCardDefaults.cardColors(containerColor = backgroundColor),
         ) {
             Box(
                 Modifier

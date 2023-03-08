@@ -23,6 +23,7 @@ import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.tokens.elevation.EdElevation
 import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.features.base.core.utils.ContentAlpha
 import io.edugma.features.base.core.utils.Typed1Listener
@@ -50,6 +51,7 @@ fun LessonContent(
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 6.dp)
             .fillMaxWidth(),
+        elevation = EdElevation.Level2,
         onClick = { onLessonClick(lesson) },
         shape = EdTheme.shapes.large,
     ) {

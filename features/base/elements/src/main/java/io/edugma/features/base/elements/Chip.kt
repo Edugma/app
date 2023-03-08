@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,6 +17,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.card.EdCard
+import io.edugma.core.designSystem.atoms.card.EdCardDefaults
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.features.base.core.utils.Typed1Listener
@@ -65,7 +65,7 @@ fun SelectableChip(modifier: Modifier = Modifier, selectedState: Boolean = false
         modifier = Modifier
             .padding(4.dp)
             .height(32.dp),
-        colors = CardDefaults.cardColors(
+        colors = EdCardDefaults.cardColors(
             containerColor = if (selectedState) {
                 EdTheme.colorScheme.primary
             } else {

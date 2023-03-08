@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -24,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import io.edugma.core.designSystem.atoms.card.EdCard
+import io.edugma.core.designSystem.atoms.card.EdCardDefaults
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.molecules.button.EdButton
@@ -151,7 +151,7 @@ private fun NodeTab(
         onClick = { onTabSelected(tab) },
         modifier = Modifier.padding(horizontal = 6.dp, vertical = 5.dp),
         shape = EdTheme.shapes.small,
-        colors = CardDefaults.cardColors(
+        colors = EdCardDefaults.cardColors(
             containerColor = color,
         ),
     ) {

@@ -7,29 +7,28 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
+import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
+@NonRestartableComposable
 fun EdCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     shape: Shape = CardDefaults.shape,
-    colors: CardColors = CardDefaults.cardColors(
+    colors: EdCardColors = EdCardDefaults.cardColors(
         containerColor = EdTheme.colorScheme.surface,
     ),
     elevation: EdElevation = EdElevation.Level1,
@@ -37,38 +36,43 @@ fun EdCard(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    Card(
+    EdSurface(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
         shape = shape,
-        elevation = elevation.toCardElevation(),
+        color = colors.containerColor(enabled).value,
+        contentColor = colors.contentColor(enabled).value,
+        elevation = elevation,
         border = border,
         interactionSource = interactionSource,
-        content = content,
-        colors = colors,
-    )
+    ) {
+        Column(content = content)
+    }
 }
 
 @Composable
+@NonRestartableComposable
 fun EdCard(
     modifier: Modifier = Modifier,
     shape: Shape = CardDefaults.shape,
-    colors: CardColors = CardDefaults.cardColors(
+    colors: EdCardColors = EdCardDefaults.cardColors(
         containerColor = EdTheme.colorScheme.surface,
     ),
     elevation: EdElevation = EdElevation.Level1,
     border: BorderStroke? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    Card(
+    EdSurface(
         modifier = modifier,
         shape = shape,
-        colors = colors,
-        elevation = elevation.toCardElevation(),
+        color = colors.containerColor(enabled = true).value,
+        contentColor = colors.contentColor(enabled = true).value,
+        elevation = elevation,
         border = border,
-        content = content,
-    )
+    ) {
+        Column(content = content)
+    }
 }
 
 @Composable
