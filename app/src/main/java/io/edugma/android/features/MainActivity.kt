@@ -3,13 +3,13 @@ package io.edugma.android.features
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.background
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
+import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.tokens.elevation.EdElevation
 import io.edugma.core.designSystem.utils.IconCacheLoader
 
 class MainActivity : ComponentActivity() {
@@ -24,12 +24,11 @@ class MainActivity : ComponentActivity() {
             EdTheme(
                 useDynamicColors = true,
             ) {
-                Surface(color = MaterialTheme.colorScheme.background) {
-                    Box(
-                        Modifier,
-                    ) {
-                        MainContent()
-                    }
+                EdSurface(
+                    color = MaterialTheme.colorScheme.background,
+                    elevation = EdElevation.Level0,
+                ) {
+                    MainContent()
                 }
             }
         }

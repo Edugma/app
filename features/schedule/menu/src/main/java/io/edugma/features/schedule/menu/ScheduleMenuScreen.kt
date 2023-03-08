@@ -41,7 +41,7 @@ import org.koin.androidx.compose.getViewModel
 fun ScheduleMenuScreen(viewModel: ScheduleMenuViewModel = getViewModel()) {
     val state by viewModel.state.collectAsState()
 
-    FeatureScreen {
+    FeatureScreen() {
         ScheduleMenuContent(
             state = state,
             onScheduleClick = viewModel::onScheduleClick,

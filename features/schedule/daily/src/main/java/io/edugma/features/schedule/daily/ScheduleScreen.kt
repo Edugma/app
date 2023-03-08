@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
@@ -67,6 +68,7 @@ fun ScheduleScreen(
     if (!state.schedule.isNullOrEmpty() || state.isPreloading) {
         FeatureScreen(
             statusBarPadding = false,
+            navigationBarPadding = false,
         ) {
             ScheduleContent(
                 state,
@@ -162,7 +164,8 @@ fun BoxScope.Fab(isVisible: Boolean, onClick: () -> Unit) {
         visible = isVisible,
         modifier = Modifier
             .align(Alignment.BottomEnd)
-            .padding(24.dp),
+            .padding(24.dp)
+            .navigationBarsPadding(),
         enter = fadeIn() + slideInVertically { it / 2 } + scaleIn(),
         exit = slideOutVertically { it / 2 } + fadeOut() + scaleOut(),
     ) {

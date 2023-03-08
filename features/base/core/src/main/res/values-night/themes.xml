@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ResourceName">
-    <style name="Theme.AppTheme" parent="Theme.Material3.DayNight.NoActionBar" >
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
-        <item name="android:navigationBarColor">@color/navigationBarColor</item>
-        <item name="backgroundRadius">24dp</item>
-
+    <style name="Theme.AppTheme.Base" parent="Theme.Material3.DayNight.NoActionBar" >
         <item name="colorPrimary">@color/md_theme_dark_primary</item>
         <item name="colorOnPrimary">@color/md_theme_dark_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_dark_primaryContainer</item>
@@ -31,8 +26,8 @@
         <item name="colorOutline">@color/md_theme_dark_outline</item>
         <item name="colorOnSurfaceInverse">@color/md_theme_dark_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/md_theme_dark_inverseSurface</item>
-<!--        <item name="colorInversePrimary">@color/md_theme_dark_inversePrimary</item>-->
-<!--        <item name="colorShadow">@color/md_theme_dark_shadow</item>-->
+        <!--        <item name="colorInversePrimary">@color/md_theme_dark_inversePrimary</item>-->
+        <!--        <item name="colorShadow">@color/md_theme_dark_shadow</item>-->
         <item name="colorPrimaryInverse">@color/md_theme_dark_primaryInverse</item>
     </style>
 </resources>

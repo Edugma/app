@@ -82,7 +82,7 @@ fun ScheduleCalendarScreen(viewModel: ScheduleCalendarViewModel = getViewModel()
 
     FeatureScreen(
         statusBarPadding = false,
-        navigationBarPadding = true,
+        navigationBarPadding = false,
     ) {
         ScheduleCalendarContent(
             state = state,
@@ -215,7 +215,8 @@ private fun BoxScope.Fab(scrollState: LazyListState, currentWeekIndex: Int, onCl
         modifier = Modifier
             .align(Alignment.BottomEnd)
             .navigationBarsPadding()
-            .padding(24.dp),
+            .padding(24.dp)
+            .navigationBarsPadding(),
         enter = fadeIn() + slideInVertically { it / 2 } + scaleIn(),
         exit = slideOutVertically { it / 2 } + fadeOut() + scaleOut(),
     ) {

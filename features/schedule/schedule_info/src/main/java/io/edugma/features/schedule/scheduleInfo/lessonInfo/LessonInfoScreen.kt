@@ -1,10 +1,18 @@
 package io.edugma.features.schedule.scheduleInfo.lessonInfo
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -15,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.atoms.divider.EdDivider
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.atoms.surface.EdSurface
@@ -24,7 +33,11 @@ import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureScreen
-import io.edugma.features.base.core.utils.*
+import io.edugma.features.base.core.utils.ClickListener
+import io.edugma.features.base.core.utils.ContentAlpha
+import io.edugma.features.base.core.utils.HighAlpha
+import io.edugma.features.base.core.utils.Typed1Listener
+import io.edugma.features.base.core.utils.WithContentAlpha
 import io.edugma.features.schedule.domain.model.group.Group
 import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
 import io.edugma.features.schedule.domain.model.lesson.LessonInfo
@@ -225,7 +238,7 @@ private fun LessonTeachers(
                     onItemClick = { onItemClick(teacher.id) },
                 )
                 if (index != teachers.size - 1) {
-                    Divider(Modifier.padding(start = 70.dp, end = 20.dp))
+                    EdDivider(Modifier.padding(start = 70.dp, end = 20.dp))
                 }
             }
         }
@@ -270,7 +283,7 @@ private fun LessonPlaces(
                     onItemClick = { onItemClick(place.id) },
                 )
                 if (index != places.size - 1) {
-                    Divider(Modifier.padding(start = 70.dp, end = 20.dp))
+                    EdDivider(Modifier.padding(start = 70.dp, end = 20.dp))
                 }
             }
         }
@@ -315,7 +328,7 @@ private fun LessonGroups(
                     onItemClick = { onItemClick(group.id) },
                 )
                 if (index != groups.size - 1) {
-                    Divider(Modifier.padding(start = 70.dp, end = 20.dp))
+                    EdDivider(Modifier.padding(start = 70.dp, end = 20.dp))
                 }
             }
         }
@@ -331,12 +344,12 @@ private fun LessonItem(
     description: String,
     onItemClick: ClickListener,
 ) {
-    Surface(
+    EdSurface(
         modifier = Modifier
             .padding(start = 10.dp, end = 10.dp)
             .fillMaxWidth(),
         onClick = onItemClick,
-        shape = RoundedCornerShape(10.dp),
+        shape = EdTheme.shapes.large,
     ) {
         Row(
             Modifier
