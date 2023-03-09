@@ -3,16 +3,17 @@ package io.edugma.features.schedule.lessonsReview
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,10 +26,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import io.edugma.core.designSystem.atoms.card.EdCard
+import io.edugma.core.designSystem.atoms.spacer.NavigationBarSpacer
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
+import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
+import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.tokens.elevation.EdElevation
+import io.edugma.core.designSystem.tokens.shapes.bottom
+import io.edugma.core.designSystem.tokens.shapes.top
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.domain.base.utils.capitalized
 import io.edugma.features.base.core.utils.ClickListener
@@ -48,7 +54,10 @@ fun LessonsReviewScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
-    FeatureScreen {
+    FeatureScreen(
+        statusBarPadding = false,
+        navigationBarPadding = false,
+    ) {
         LessonsReviewContent(
             lessons = state.lessons,
             onBackClick = viewModel::exit,
@@ -62,46 +71,56 @@ fun LessonsReviewContent(
     onBackClick: ClickListener,
 ) {
     Column(Modifier.fillMaxSize()) {
-        EdTopAppBar(
-            title = stringResource(R.string.schedule_les_rev_lessons_review),
-            onNavigationClick = onBackClick,
-        )
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(lessons) { lessonTimesReview ->
-                LessonTimesReviewContent(lessonTimesReview)
-                SpacerHeight(12.dp)
-            }
-            item {
-                SpacerHeight(4.dp)
+        EdSurface(
+            shape = EdTheme.shapes.large.bottom(),
+        ) {
+            EdTopAppBar(
+                title = stringResource(R.string.schedule_les_rev_lessons_review),
+                onNavigationClick = onBackClick,
+                windowInsets = WindowInsets.statusBars,
+                colors = EdTopAppBarDefaults.transparent(),
+            )
+        }
+        SpacerHeight(10.dp)
+        EdSurface(
+            shape = EdTheme.shapes.large.top(),
+        ) {
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                items(lessons) { lessonTimesReview ->
+                    LessonTimesReviewContent(lessonTimesReview)
+                }
+                item {
+                    NavigationBarSpacer(10.dp)
+                }
             }
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LessonTimesReviewContent(lessonTimesReview: LessonTimesReview) {
     Column(
         Modifier
-            .padding(horizontal = 8.dp, vertical = 4.dp)
+            .padding(horizontal = 8.dp, vertical = 8.dp)
             .fillMaxWidth(),
     ) {
         Text(
             text = lessonTimesReview.subject.title,
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.titleMedium,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 12.dp),
         )
         SpacerHeight(2.dp)
         Column(
-            Modifier.fillMaxWidth(),
+            Modifier.fillMaxWidth()
+                .padding(),
         ) {
             lessonTimesReview.days.forEach { item ->
-                SpacerHeight(12.dp)
                 Row(
                     Modifier
                         .fillMaxWidth()
+                        .padding(vertical = 6.dp)
                         .height(IntrinsicSize.Max),
                 ) {
                     DatesAndTimeUnit(
@@ -119,8 +138,10 @@ private fun DatesAndTimeUnit(
     lessonTimesReviewByType: LessonTimesReviewByType,
     modifier: Modifier = Modifier,
 ) {
-    EdCard(
+    EdSurface(
         modifier = modifier.fillMaxHeight(),
+        elevation = EdElevation.Level2,
+        shape = EdTheme.shapes.medium,
     ) {
         Column(Modifier.padding(start = 12.dp, end = 12.dp, top = 10.dp, bottom = 12.dp)) {
             LessonTypeContent(
@@ -154,7 +175,7 @@ fun LessonTypeContent(type: LessonType) {
     }
     Text(
         text = type.title,
-        style = MaterialTheme.typography.titleMedium,
+        style = MaterialTheme.typography.titleSmall,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         modifier = Modifier
@@ -167,7 +188,6 @@ fun LessonTypeContent(type: LessonType) {
 
 private val weekFormat = DateTimeFormatter.ofPattern("EEE")
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DateRange(
     dayOfWeek: DayOfWeek,

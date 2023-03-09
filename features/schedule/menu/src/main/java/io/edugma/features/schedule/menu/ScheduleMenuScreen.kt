@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -21,10 +22,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
+import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.button.EdButtonSize
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
+import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.schedule.menu.cards.CalendarCard
@@ -41,7 +44,9 @@ import org.koin.androidx.compose.getViewModel
 fun ScheduleMenuScreen(viewModel: ScheduleMenuViewModel = getViewModel()) {
     val state by viewModel.state.collectAsState()
 
-    FeatureScreen() {
+    FeatureScreen(
+        statusBarPadding = false,
+    ) {
         ScheduleMenuContent(
             state = state,
             onScheduleClick = viewModel::onScheduleClick,
@@ -69,32 +74,48 @@ fun ScheduleMenuContent(
     onSignOut: ClickListener,
 ) {
     Column(
-        Modifier
-            .padding(top = 20.dp, start = 4.dp, end = 4.dp)
-            .fillMaxSize(),
+        Modifier.fillMaxSize(),
     ) {
-        Row(Modifier.fillMaxWidth()) {
-            Text(
-                text = stringResource(R.string.sch_schedule),
-                style = EdTheme.typography.headlineMedium,
-                modifier = Modifier
-                    .padding(start = 16.dp)
-                    .weight(1f),
-            )
-            if (state.source.accountSelectorVO != null) {
-                IconButton(onClick = onSignOut) {
-                    Icon(
-                        painter = painterResource(EdIcons.ic_fluent_sign_out_24_regular),
-                        contentDescription = null,
+        EdSurface(
+            shape = EdTheme.shapes.large.bottom(),
+        ) {
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .statusBarsPadding()
+                    .padding(top = 20.dp, start = 4.dp, end = 4.dp),
+            ) {
+                Row(Modifier.fillMaxWidth()) {
+                    Text(
+                        text = stringResource(R.string.sch_schedule),
+                        style = EdTheme.typography.headlineMedium,
+                        modifier = Modifier
+                            .padding(start = 16.dp)
+                            .weight(1f),
                     )
+                    if (state.source.accountSelectorVO != null) {
+                        IconButton(onClick = onSignOut) {
+                            Icon(
+                                painter = painterResource(EdIcons.ic_fluent_sign_out_24_filled),
+                                contentDescription = null,
+                            )
+                        }
+                    }
+                }
+                SpacerHeight(height = 14.dp)
+                if (state.source.accountSelectorVO == null) {
+                    NeedSelectScheduleSource(
+                        onClick = onScheduleSourceClick,
+                    )
+                    SpacerHeight(height = 10.dp)
+                } else {
+                    ScheduleSourcesCard(
+                        accountSelectorVO = state.source.accountSelectorVO,
+                        onScheduleSourceClick = onScheduleSourceClick,
+                    )
+                    SpacerHeight(height = 14.dp)
                 }
             }
-        }
-        SpacerHeight(height = 14.dp)
-        if (state.source.accountSelectorVO == null) {
-            NeedSelectScheduleSource(onScheduleSourceClick)
-        } else {
-            ScheduleSourcesCard(state.source.accountSelectorVO, onScheduleSourceClick)
         }
 
         SpacerHeight(height = 10.dp)
@@ -102,7 +123,7 @@ fun ScheduleMenuContent(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 4.dp),
+                    .padding(horizontal = 8.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 MenuCard(
@@ -124,9 +145,10 @@ fun ScheduleMenuContent(
 @Composable
 private fun NeedSelectScheduleSource(
     onClick: ClickListener,
+    modifier: Modifier = Modifier,
 ) {
     Column(
-        Modifier
+        modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp),
     ) {

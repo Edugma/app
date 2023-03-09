@@ -124,7 +124,7 @@ fun TeachersContent(teachers: List<Teacher>, isLoading: Boolean = false) {
         modifier = Modifier.placeholder(visible = isLoading),
     ) {
         Icon(
-            painter = painterResource(id = EdIcons.ic_fluent_hat_graduation_16_regular),
+            painter = painterResource(id = EdIcons.ic_fluent_hat_graduation_16_filled),
             contentDescription = null,
             modifier = Modifier
                 .size(17.dp)
@@ -156,7 +156,7 @@ fun GroupsContent(groups: List<Group>, isLoading: Boolean = false) {
         modifier = Modifier.placeholder(visible = isLoading),
     ) {
         Icon(
-            painter = painterResource(id = EdIcons.ic_fluent_people_16_regular),
+            painter = painterResource(id = EdIcons.ic_fluent_people_16_filled),
             contentDescription = null,
             modifier = Modifier
                 .size(17.dp)
@@ -182,7 +182,7 @@ fun PlacesContent(places: List<Place>, isLoading: Boolean = false) {
         modifier = Modifier.placeholder(visible = isLoading),
     ) {
         Icon(
-            painter = painterResource(id = EdIcons.ic_fluent_location_16_regular),
+            painter = painterResource(id = EdIcons.ic_fluent_location_16_filled),
             contentDescription = null,
             modifier = Modifier
                 .size(17.dp)

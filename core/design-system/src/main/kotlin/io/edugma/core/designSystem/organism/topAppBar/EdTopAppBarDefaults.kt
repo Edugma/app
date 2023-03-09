@@ -40,5 +40,19 @@ object EdTopAppBarDefaults {
             actionIconContentColor,
         )
 
-    val ContainerHeight = 52.0.dp
+    @Composable
+    fun transparent(
+        containerColor: Color = Color.Transparent,
+        navigationIconContentColor: Color = EdTheme.colorScheme.onSurface,
+        titleContentColor: Color = EdTheme.colorScheme.onSurface,
+        actionIconContentColor: Color = EdTheme.colorScheme.onSurfaceVariant,
+    ): EdTopAppBarColors =
+        EdTopAppBarColors(
+            containerColor,
+            navigationIconContentColor,
+            titleContentColor,
+            actionIconContentColor,
+        )
+
+    val ContainerHeight = 54.0.dp
 }

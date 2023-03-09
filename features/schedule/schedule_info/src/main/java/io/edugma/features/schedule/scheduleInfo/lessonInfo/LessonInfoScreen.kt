@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.divider.EdDivider
+import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.atoms.surface.EdSurface
@@ -31,6 +31,7 @@ import io.edugma.core.designSystem.molecules.avatar.EdAvatar
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.tokens.elevation.EdElevation
 import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.features.base.core.utils.ClickListener
@@ -208,25 +209,22 @@ private fun LessonTeachers(
     EdSurface(
         shape = EdTheme.shapes.large,
     ) {
-        Column(Modifier.fillMaxWidth().padding(vertical = 10.dp)) {
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 10.dp),
+        ) {
             WithContentAlpha(ContentAlpha.medium) {
-                Row(
-                    Modifier.padding(start = 16.dp, end = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(
-                        painter = painterResource(EdIcons.ic_fluent_hat_graduation_20_regular),
-                        contentDescription = null,
-                    )
-                    SpacerWidth(4.dp)
-                    Text(
-                        text = "Преподаватели",
-                        style = EdTheme.typography.titleSmall,
-                        modifier = Modifier.padding(bottom = 2.dp),
-                    )
-                }
+                EdLabel(
+                    text = "Преподаватели",
+                    iconPainter = painterResource(EdIcons.ic_fluent_hat_graduation_24_filled),
+                    spacing = 8.dp,
+                    style = EdTheme.typography.titleMedium,
+                    modifier = Modifier.padding(start = 16.dp, end = 8.dp),
+                    iconStart = true,
+                )
             }
-            SpacerHeight(1.dp)
+            SpacerHeight(8.dp)
             teachers.forEachIndexed { index, teacher ->
                 LessonItem(
                     imageUrl = "",
@@ -253,25 +251,22 @@ private fun LessonPlaces(
     EdSurface(
         shape = EdTheme.shapes.large,
     ) {
-        Column(Modifier.fillMaxWidth().padding(vertical = 10.dp)) {
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 10.dp),
+        ) {
             WithContentAlpha(ContentAlpha.medium) {
-                Row(
-                    Modifier.padding(start = 16.dp, end = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(
-                        painter = painterResource(EdIcons.ic_fluent_location_20_regular),
-                        contentDescription = null,
-                    )
-                    SpacerWidth(4.dp)
-                    Text(
-                        text = "Места",
-                        style = EdTheme.typography.titleSmall,
-                        modifier = Modifier.padding(bottom = 2.dp),
-                    )
-                }
+                EdLabel(
+                    text = "Места",
+                    iconPainter = painterResource(EdIcons.ic_fluent_location_24_filled),
+                    spacing = 8.dp,
+                    style = EdTheme.typography.titleMedium,
+                    modifier = Modifier.padding(start = 16.dp, end = 8.dp),
+                    iconStart = true,
+                )
             }
-            SpacerHeight(1.dp)
+            SpacerHeight(8.dp)
             places.forEachIndexed { index, place ->
                 LessonItem(
                     imageUrl = "",
@@ -298,25 +293,22 @@ private fun LessonGroups(
     EdSurface(
         shape = EdTheme.shapes.large,
     ) {
-        Column(Modifier.fillMaxWidth().padding(vertical = 10.dp)) {
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 10.dp),
+        ) {
             WithContentAlpha(ContentAlpha.medium) {
-                Row(
-                    Modifier.padding(start = 16.dp, end = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(
-                        painter = painterResource(EdIcons.ic_fluent_people_20_regular),
-                        contentDescription = null,
-                    )
-                    SpacerWidth(4.dp)
-                    Text(
-                        text = "Группы",
-                        style = EdTheme.typography.titleSmall,
-                        modifier = Modifier.padding(bottom = 2.dp),
-                    )
-                }
+                EdLabel(
+                    text = "Группы",
+                    iconPainter = painterResource(EdIcons.ic_fluent_people_24_filled),
+                    spacing = 8.dp,
+                    style = EdTheme.typography.titleMedium,
+                    modifier = Modifier.padding(start = 16.dp, end = 8.dp),
+                    iconStart = true,
+                )
             }
-            SpacerHeight(1.dp)
+            SpacerHeight(8.dp)
             groups.forEachIndexed { index, group ->
                 LessonItem(
                     imageUrl = "",
@@ -335,7 +327,6 @@ private fun LessonGroups(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun LessonItem(
     imageUrl: String,
@@ -350,6 +341,7 @@ private fun LessonItem(
             .fillMaxWidth(),
         onClick = onItemClick,
         shape = EdTheme.shapes.large,
+        elevation = EdElevation.Level0,
     ) {
         Row(
             Modifier

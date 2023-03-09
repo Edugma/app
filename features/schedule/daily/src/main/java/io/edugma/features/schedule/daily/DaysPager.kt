@@ -57,13 +57,14 @@ fun DaysPager(
     dayOfWeekPos: Int,
     pagerState: PagerState,
     onDayClick: Typed1Listener<LocalDate>,
+    modifier: Modifier = Modifier,
 ) {
     HorizontalPager(
         count = weeks.size,
         state = pagerState,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .height(85.dp)
+            .height(82.dp)
             .disabledHorizontalPointerInputScroll(),
         flingBehavior = object : FlingBehavior {
             override suspend fun ScrollScope.performFling(initialVelocity: Float): Float {
@@ -131,8 +132,8 @@ fun RowScope.DayContent(
         if (isSelected) colorFrom else Color.Transparent,
         tween(250),
     )
-
     val border = BorderStroke(1.dp, borderColor)
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.weight(1f),
@@ -146,7 +147,7 @@ fun RowScope.DayContent(
                 textAlign = TextAlign.Center,
             )
         }
-        SpacerHeight(height = 3.0.dp)
+        SpacerHeight(height = 1.5.dp)
         EdCard(
             onClick = { onDayClick(day.date) },
             modifier = Modifier

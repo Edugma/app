@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
@@ -25,9 +27,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
+import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.Typed2Listener
 import io.edugma.features.schedule.domain.model.group.Group
@@ -65,8 +65,8 @@ fun SchedulePager(
     onLessonClick: Typed2Listener<Lesson, LessonDateTime>,
     onRefreshing: ClickListener,
 ) {
-    SwipeRefresh(
-        state = rememberSwipeRefreshState(isRefreshing),
+    EdPullRefresh(
+        refreshing = isRefreshing,
         onRefresh = onRefreshing,
     ) {
         HorizontalPager(
@@ -161,7 +161,7 @@ fun LessonList(
             }
         }
         item {
-            SpacerHeight(24.dp)
+            Spacer(modifier = Modifier.navigationBarsPadding().height(30.dp))
         }
     }
 }

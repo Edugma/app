@@ -7,7 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalAbsoluteTonalElevation
 import androidx.compose.material3.LocalContentColor
@@ -24,7 +23,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.LayoutModifier
 import androidx.compose.ui.layout.Measurable
@@ -37,10 +35,9 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
-import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
-import kotlin.math.ln
+import io.edugma.core.designSystem.utils.surfaceColorAtElevation
 import kotlin.math.roundToInt
 
 @Composable
@@ -196,12 +193,4 @@ private fun surfaceColorAtElevation(
     } else {
         color
     }
-}
-
-fun ColorScheme.surfaceColorAtElevation(
-    elevation: Dp,
-): Color {
-    if (elevation == 0.dp) return surface
-    val alpha = ((3.5f * ln(elevation.value * elevation.value + 1)) + 2f) / 100f
-    return surfaceTint.copy(alpha = alpha).compositeOver(surface)
 }
