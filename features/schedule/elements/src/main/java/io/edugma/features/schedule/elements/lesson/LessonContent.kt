@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,8 +19,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import io.edugma.core.designSystem.atoms.card.EdCard
+import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
-import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
 import io.edugma.core.designSystem.tokens.icons.EdIcons
@@ -120,86 +119,53 @@ fun LessonTitle(subject: LessonSubject, isLoading: Boolean = false) {
 
 @Composable
 fun TeachersContent(teachers: List<Teacher>, isLoading: Boolean = false) {
-    Row(
-        modifier = Modifier.placeholder(visible = isLoading),
-    ) {
-        Icon(
-            painter = painterResource(id = EdIcons.ic_fluent_hat_graduation_16_filled),
-            contentDescription = null,
-            modifier = Modifier
-                .size(17.dp)
-                .align(Alignment.CenterVertically),
-        )
-        SpacerWidth(width = 5.dp)
-        val teachersText = remember(teachers) {
-            if (teachers.size == 1) {
-                teachers.first().name
-            } else {
-                teachers.joinToString { it.getShortName() }
-            }
+    val teachersText = remember(teachers) {
+        if (teachers.size == 1) {
+            teachers.first().name
+        } else {
+            teachers.joinToString { it.getShortName() }
         }
-        Text(
-            text = teachersText,
-            style = MaterialTheme.typography.bodyMedium,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.CenterVertically),
-        )
     }
+    EdLabel(
+        text = teachersText,
+        iconPainter = painterResource(id = EdIcons.ic_fluent_hat_graduation_16_filled),
+        style = MaterialTheme.typography.bodyMedium,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+        modifier = Modifier.fillMaxWidth().placeholder(visible = isLoading),
+        spacing = 5.dp,
+        iconSize = 17.dp,
+    )
 }
 
 @Composable
 fun GroupsContent(groups: List<Group>, isLoading: Boolean = false) {
-    Row(
-        modifier = Modifier.placeholder(visible = isLoading),
-    ) {
-        Icon(
-            painter = painterResource(id = EdIcons.ic_fluent_people_16_filled),
-            contentDescription = null,
-            modifier = Modifier
-                .size(17.dp)
-                .align(Alignment.CenterVertically),
-        )
-        SpacerWidth(width = 5.dp)
-        val groupsText = remember(groups) { groups.joinToString { it.title } }
-        Text(
-            text = groupsText,
-            style = MaterialTheme.typography.bodyMedium,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.CenterVertically),
-        )
-    }
+    val groupsText = remember(groups) { groups.joinToString { it.title } }
+    EdLabel(
+        text = groupsText,
+        iconPainter = painterResource(id = EdIcons.ic_fluent_people_16_filled),
+        style = MaterialTheme.typography.bodyMedium,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+        modifier = Modifier.fillMaxWidth().placeholder(visible = isLoading),
+        spacing = 5.dp,
+        iconSize = 17.dp,
+    )
 }
 
 @Composable
 fun PlacesContent(places: List<Place>, isLoading: Boolean = false) {
-    Row(
-        modifier = Modifier.placeholder(visible = isLoading),
-    ) {
-        Icon(
-            painter = painterResource(id = EdIcons.ic_fluent_location_16_filled),
-            contentDescription = null,
-            modifier = Modifier
-                .size(17.dp)
-                .align(Alignment.CenterVertically),
-        )
-        SpacerWidth(width = 5.dp)
-        val placesText = remember(places) { places.joinToString { it.title } }
-        Text(
-            text = placesText,
-            style = MaterialTheme.typography.bodyMedium,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.CenterVertically),
-        )
-    }
+    val placesText = remember(places) { places.joinToString { it.title } }
+    EdLabel(
+        text = placesText,
+        iconPainter = painterResource(id = EdIcons.ic_fluent_location_16_filled),
+        style = MaterialTheme.typography.bodyMedium,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+        modifier = Modifier.fillMaxWidth().placeholder(visible = isLoading),
+        spacing = 5.dp,
+        iconSize = 17.dp,
+    )
 }
 
 private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")

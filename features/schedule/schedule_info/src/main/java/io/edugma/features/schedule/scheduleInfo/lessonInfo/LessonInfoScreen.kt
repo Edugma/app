@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -167,36 +166,20 @@ private fun LessonDateTime(lessonDateTime: LessonDateTime) {
             val timeStart = lessonDateTime.time.start.format(lessonTimeFormat)
             val timeEnd = lessonDateTime.time.end.format(lessonTimeFormat)
             val startDate = lessonDateTime.startDate.format(lessonDateFormat) // + "!!"
-            Row(
-                Modifier.padding(start = 16.dp, end = 8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Icon(
-                    painter = painterResource(EdIcons.ic_fluent_clock_16_regular),
-                    contentDescription = null,
-                )
-                SpacerWidth(3.dp)
-                Text(
-                    text = "$timeStart - $timeEnd",
-                    style = EdTheme.typography.bodySmall,
-                    modifier = Modifier.padding(bottom = 1.dp),
-                )
-            }
-            Row(
-                Modifier.padding(start = 8.dp, end = 16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Icon(
-                    painter = painterResource(EdIcons.ic_fluent_calendar_ltr_16_regular),
-                    contentDescription = null,
-                )
-                SpacerWidth(3.dp)
-                Text(
-                    text = startDate,
-                    style = EdTheme.typography.bodySmall,
-                    modifier = Modifier.padding(bottom = 1.dp),
-                )
-            }
+            EdLabel(
+                text = "$timeStart - $timeEnd",
+                style = EdTheme.typography.bodySmall,
+                iconPainter = painterResource(EdIcons.ic_fluent_clock_16_regular),
+                spacing = 3.dp,
+                modifier = Modifier.padding(start = 16.dp, end = 8.dp),
+            )
+            EdLabel(
+                text = startDate,
+                style = EdTheme.typography.bodySmall,
+                iconPainter = painterResource(EdIcons.ic_fluent_calendar_ltr_16_regular),
+                spacing = 3.dp,
+                modifier = Modifier.padding(start = 8.dp, end = 16.dp),
+            )
         }
     }
 }

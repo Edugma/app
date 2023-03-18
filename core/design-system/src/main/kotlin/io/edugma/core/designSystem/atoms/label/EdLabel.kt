@@ -84,8 +84,8 @@ fun EdLabel(
                     tint = if (color.isUnspecified) LocalContentColor.current else color,
                     modifier = Modifier
                         .layoutId("icon")
-                        .then(iconSizeModifier)
-                        .padding(end = spacing),
+                        .padding(end = spacing)
+                        .then(iconSizeModifier),
                 )
             }
             Text(
@@ -116,8 +116,8 @@ fun EdLabel(
                     tint = if (color.isUnspecified) LocalContentColor.current else color,
                     modifier = Modifier
                         .layoutId("icon")
-                        .then(iconSizeModifier)
-                        .padding(start = spacing),
+                        .padding(start = spacing)
+                        .then(iconSizeModifier),
                 )
             }
         },
@@ -179,18 +179,17 @@ private fun calculatePositions(
     val iconY: Int
     val textY: Int
 
+    // Center percent = 0.5. 0.56 is magic number
+    // More percent - lower icon
+    val almostCenterPercent = 0.565
+
     if (textPlaceable.height > iconPlaceable.height) {
         val firstLineHeight = requireNotNull(textResult.value).getLineBottom(0)
-
-        // Center percent = 0.5. 0.56 is magic number
-        val almostCenterPercent = 0.56
         val firstLineCenter = (firstLineHeight * almostCenterPercent).toInt()
 
         iconY = (firstLineCenter - iconCenter).coerceAtLeast(0)
         textY = (iconCenter - firstLineCenter).coerceAtLeast(0)
     } else {
-        // Center percent = 0.5. 0.56 is magic number
-        val almostCenterPercent = 0.56
         val textCenter = (textPlaceable.height * almostCenterPercent).toInt()
 
         textY = (iconCenter - textCenter).coerceAtLeast(0)
@@ -262,6 +261,13 @@ internal fun EdLabelPreview() {
                 text = "Sample my text",
                 iconPainter = null,
                 modifier = Modifier.size(50.dp),
+            )
+            SpacerHeight(height = 8.dp)
+            EdLabel(
+                text = "15 Sample",
+                style = EdTheme.typography.bodySmall,
+                iconPainter = painterResource(EdIcons.ic_fluent_calendar_ltr_16_regular),
+                spacing = 3.dp,
             )
             SpacerHeight(height = 8.dp)
             EdLabel(
