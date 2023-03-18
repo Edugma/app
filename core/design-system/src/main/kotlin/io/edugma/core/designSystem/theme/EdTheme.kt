@@ -13,6 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import io.edugma.core.designSystem.tokens.colors.CustomColorScheme
 import io.edugma.core.designSystem.tokens.colors.EdDarkColors
 import io.edugma.core.designSystem.tokens.colors.EdLightColors
+import io.edugma.core.designSystem.tokens.paddings.EdPaddings
 import io.edugma.core.designSystem.tokens.shapes.EdShapes
 import io.edugma.core.designSystem.tokens.typography.EdTypography
 import kotlin.text.Typography
@@ -74,4 +75,12 @@ object EdTheme {
         @Composable
         @ReadOnlyComposable
         get() = MaterialTheme.shapes
+
+    /**
+     * Retrieves the current [Shapes] at the call site's position in the hierarchy.
+     */
+    val paddings: EdPaddings
+        @Composable
+        @ReadOnlyComposable
+        get() = EdPaddings
 }

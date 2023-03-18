@@ -1,19 +1,27 @@
 package io.edugma.core.designSystem.atoms.label
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.isUnspecified
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.Measurable
+import androidx.compose.ui.layout.Placeable
+import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
@@ -24,10 +32,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.isUnspecified
+import androidx.compose.ui.unit.sp
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
+import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
 
@@ -37,6 +49,7 @@ fun EdLabel(
     modifier: Modifier = Modifier,
     iconPainter: Painter? = null,
     iconStart: Boolean = true,
+    iconSize: Dp = Dp.Unspecified,
     spacing: Dp = 6.dp,
     color: Color = Color.Unspecified,
     fontSize: TextUnit = TextUnit.Unspecified,
@@ -49,61 +62,196 @@ fun EdLabel(
     lineHeight: TextUnit = TextUnit.Unspecified,
     overflow: TextOverflow = TextOverflow.Clip,
     softWrap: Boolean = true,
-    maxLines: Int = 1,
+    maxLines: Int = Int.MAX_VALUE,
     onTextLayout: (TextLayoutResult) -> Unit = {},
     style: TextStyle = LocalTextStyle.current,
 ) {
-    Row(
+    val textResult = remember { mutableStateOf<TextLayoutResult?>(null) }
+
+    Layout(
         modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = textAlign.toHorizontalAlignment(),
-    ) {
-        if (iconPainter != null && iconStart) {
-            Icon(
-                painter = iconPainter,
-                contentDescription = "",
-                tint = if (color.isUnspecified) LocalContentColor.current else color,
-                modifier = Modifier
-                    .padding(end = spacing),
+        content = {
+            val iconSizeModifier = if (iconSize.isUnspecified) {
+                Modifier
+            } else {
+                Modifier.size(iconSize)
+            }
+
+            if (iconPainter != null && iconStart) {
+                Icon(
+                    painter = iconPainter,
+                    contentDescription = "",
+                    tint = if (color.isUnspecified) LocalContentColor.current else color,
+                    modifier = Modifier
+                        .layoutId("icon")
+                        .then(iconSizeModifier)
+                        .padding(end = spacing),
+                )
+            }
+            Text(
+                modifier = Modifier.layoutId("text"),
+                text = text,
+                color = color,
+                fontSize = fontSize,
+                fontStyle = fontStyle,
+                fontWeight = fontWeight,
+                fontFamily = fontFamily,
+                letterSpacing = letterSpacing,
+                textDecoration = textDecoration,
+                lineHeight = lineHeight,
+                overflow = overflow,
+                softWrap = softWrap,
+                maxLines = maxLines,
+                textAlign = textAlign,
+                onTextLayout = {
+                    textResult.value = it
+                    onTextLayout(it)
+                },
+                style = style,
             )
-        }
-        Text(
-            modifier = Modifier.weight(1f, fill = false),
-            text = text,
-            color = color,
-            fontSize = fontSize,
-            fontStyle = fontStyle,
-            fontWeight = fontWeight,
-            fontFamily = fontFamily,
-            letterSpacing = letterSpacing,
-            textDecoration = textDecoration,
-            lineHeight = lineHeight,
-            overflow = overflow,
-            softWrap = softWrap,
-            maxLines = maxLines,
-            onTextLayout = onTextLayout,
-            style = style,
-        )
-        if (iconPainter != null && iconStart.not()) {
-            Icon(
-                painter = iconPainter,
-                contentDescription = "",
-                tint = if (color.isUnspecified) LocalContentColor.current else color,
-                modifier = Modifier
-                    .padding(start = spacing),
+            if (iconPainter != null && iconStart.not()) {
+                Icon(
+                    painter = iconPainter,
+                    contentDescription = "",
+                    tint = if (color.isUnspecified) LocalContentColor.current else color,
+                    modifier = Modifier
+                        .layoutId("icon")
+                        .then(iconSizeModifier)
+                        .padding(start = spacing),
+                )
+            }
+        },
+    ) { measurables, constraints ->
+
+        val textMeasurable = measurables.first { it.layoutId == "text" }
+        val iconMeasurable = measurables.firstOrNull { it.layoutId == "icon" }
+
+        if (iconMeasurable == null) {
+            val textPlaceable = textMeasurable.measure(constraints)
+
+            layout(textPlaceable.width, textPlaceable.height) {
+                textPlaceable.placeRelative(0, 0)
+            }
+        } else {
+            val iconPlaceable = measureIcon(
+                constraints = constraints,
+                iconMeasurable = iconMeasurable,
             )
+            val textPlaceable = measureText(
+                constraints = constraints,
+                iconPlaceable = iconPlaceable,
+                textMeasurable = textMeasurable,
+            )
+
+            val labelMeasures = calculatePositions(
+                iconPlaceable = iconPlaceable,
+                textPlaceable = textPlaceable,
+                textResult = textResult,
+                iconStart = iconStart,
+            )
+
+            val layoutWidth = maxOf(
+                labelMeasures.textX + textPlaceable.width,
+                labelMeasures.iconX + iconPlaceable.width,
+                constraints.minWidth,
+            )
+            val layoutHeight = maxOf(
+                iconPlaceable.height + labelMeasures.iconY,
+                textPlaceable.height + labelMeasures.textY,
+            )
+
+            layout(layoutWidth, layoutHeight) {
+                iconPlaceable.placeRelative(labelMeasures.iconX, labelMeasures.iconY)
+                textPlaceable.placeRelative(labelMeasures.textX, labelMeasures.textY)
+            }
         }
     }
 }
 
-private fun TextAlign?.toHorizontalAlignment(): Arrangement.Horizontal {
-    return when (this) {
-        TextAlign.Left, TextAlign.Start -> Arrangement.Start
-        TextAlign.Right, TextAlign.End -> Arrangement.End
-        TextAlign.Center -> Arrangement.Center
-        else -> Arrangement.Start
+private fun calculatePositions(
+    iconPlaceable: Placeable,
+    textPlaceable: Placeable,
+    textResult: MutableState<TextLayoutResult?>,
+    iconStart: Boolean,
+): EdLabelMeasures {
+    val iconCenter = iconPlaceable.height / 2
+
+    val iconY: Int
+    val textY: Int
+
+    if (textPlaceable.height > iconPlaceable.height) {
+        val firstLineHeight = requireNotNull(textResult.value).getLineBottom(0)
+
+        // Center percent = 0.5. 0.56 is magic number
+        val almostCenterPercent = 0.56
+        val firstLineCenter = (firstLineHeight * almostCenterPercent).toInt()
+
+        iconY = (firstLineCenter - iconCenter).coerceAtLeast(0)
+        textY = (iconCenter - firstLineCenter).coerceAtLeast(0)
+    } else {
+        // Center percent = 0.5. 0.56 is magic number
+        val almostCenterPercent = 0.56
+        val textCenter = (textPlaceable.height * almostCenterPercent).toInt()
+
+        textY = (iconCenter - textCenter).coerceAtLeast(0)
+        iconY = (textCenter - iconCenter).coerceAtLeast(0)
     }
+
+    val iconX: Int
+    val textX: Int
+
+    if (iconStart) {
+        iconX = 0
+        textX = iconPlaceable.width
+    } else {
+        iconX = textPlaceable.width
+        textX = 0
+    }
+
+    return EdLabelMeasures(
+        iconX = iconX,
+        iconY = iconY,
+        textX = textX,
+        textY = textY,
+    )
 }
+
+private class EdLabelMeasures(
+    val iconX: Int,
+    val iconY: Int,
+    val textX: Int,
+    val textY: Int,
+)
+
+private fun measureText(
+    constraints: Constraints,
+    iconPlaceable: Placeable,
+    textMeasurable: Measurable,
+): Placeable {
+    val textConstraints = if (constraints.hasBoundedWidth) {
+        constraints.copy(
+            maxWidth = (constraints.maxWidth - iconPlaceable.width).coerceAtLeast(0),
+            minWidth = (constraints.minWidth - iconPlaceable.width).coerceAtLeast(0),
+            minHeight = 0,
+        )
+    } else {
+        constraints.copy(
+            minWidth = 0,
+            minHeight = 0,
+        )
+    }
+    return textMeasurable.measure(textConstraints)
+}
+
+private fun measureIcon(
+    constraints: Constraints,
+    iconMeasurable: Measurable,
+) = iconMeasurable.measure(
+    constraints.copy(
+        minWidth = 0,
+        minHeight = 0,
+    ),
+)
 
 @Preview
 @Composable
@@ -112,8 +260,23 @@ internal fun EdLabelPreview() {
         Column {
             EdLabel(
                 text = "Sample my text",
+                iconPainter = null,
+                modifier = Modifier.size(50.dp),
+            )
+            SpacerHeight(height = 8.dp)
+            EdLabel(
+                text = "Sample my text",
                 iconStart = true,
                 iconPainter = painterResource(id = EdIcons.ic_fluent_person_16_filled),
+                spacing = 0.dp,
+                fontSize = 8.sp,
+            )
+            SpacerHeight(height = 8.dp)
+            EdLabel(
+                text = "Sample my text",
+                iconStart = true,
+                iconPainter = painterResource(id = EdIcons.ic_fluent_person_16_filled),
+                fontSize = 30.sp,
             )
             SpacerHeight(height = 8.dp)
             EdLabel(
@@ -121,6 +284,72 @@ internal fun EdLabelPreview() {
                 iconStart = false,
                 iconPainter = painterResource(id = EdIcons.ic_fluent_person_16_filled),
             )
+            SpacerHeight(height = 8.dp)
+            EdLabel(
+                text = "Sample",
+                iconStart = false,
+                iconPainter = painterResource(id = EdIcons.ic_fluent_person_16_filled),
+                modifier = Modifier.width(100.dp),
+            )
+            SpacerHeight(height = 8.dp)
+            EdLabel(
+                text = "Sample",
+                iconStart = true,
+                iconPainter = painterResource(id = EdIcons.ic_fluent_person_16_filled),
+                modifier = Modifier.width(100.dp),
+                textAlign = TextAlign.Center,
+            )
+            SpacerHeight(height = 8.dp)
+            EdLabel(
+                text = "Sample",
+                iconStart = true,
+                iconPainter = painterResource(id = EdIcons.ic_fluent_person_16_filled),
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+            )
+            SpacerHeight(height = 8.dp)
+            EdLabel(
+                text = "Sample my text ".repeat(10),
+                maxLines = 10,
+                iconStart = true,
+                iconPainter = painterResource(id = EdIcons.ic_fluent_person_16_filled),
+            )
+            SpacerHeight(height = 8.dp)
+            LazyRow {
+                item {
+                    EdLabel(
+                        text = "Sample my text",
+                        iconStart = false,
+                        iconPainter = painterResource(id = EdIcons.ic_fluent_person_16_filled),
+                    )
+                }
+                item {
+                    SpacerWidth(width = 6.dp)
+                }
+                item {
+                    EdLabel(
+                        text = "Sample my text",
+                        iconStart = false,
+                        iconPainter = painterResource(id = EdIcons.ic_fluent_person_16_filled),
+                    )
+                }
+            }
+            SpacerHeight(height = 8.dp)
+            LazyRow {
+                item {
+                    EdLabel(
+                        text = "Sample my text",
+                    )
+                }
+                item {
+                    SpacerWidth(width = 6.dp)
+                }
+                item {
+                    EdLabel(
+                        text = "Sample my text",
+                    )
+                }
+            }
         }
     }
 }
