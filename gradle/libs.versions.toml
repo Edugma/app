@@ -29,6 +29,9 @@ composeCompiler = "1.4.0"
 composeActivity = "1.6.1"
 accompanist = "0.28.0"
 
+google-maps-compose = "2.11.1"
+play-service-maps = "18.1.0"
+
 androidxLifecycle = "2.5.1"
 navigation = "2.5.1"
 coreKtx = "1.8.0"
@@ -79,6 +82,8 @@ compose-uiTooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-uiToolingPreview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-uiUtil = { group = "androidx.compose.ui", name = "ui-util" }
 
+google-maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "google-maps-compose" }
+gms-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "play-service-maps" }
 coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 
 desugaring = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugaring" }

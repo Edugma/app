@@ -5,10 +5,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -36,6 +39,7 @@ import io.edugma.core.designSystem.atoms.card.EdCardDefaults
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
+import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.molecules.avatar.EdAvatar
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.searchField.EdSearchField
@@ -57,7 +61,9 @@ import org.koin.androidx.compose.getViewModel
 fun ScheduleSourcesScreen(viewModel: ScheduleSourcesViewModel = getViewModel()) {
     val state by viewModel.state.collectAsState()
 
-    FeatureScreen {
+    FeatureScreen(
+        statusBarPadding = false,
+    ) {
         ScheduleSourcesContent(
             state = state,
             onBackClick = viewModel::exit,
@@ -87,15 +93,32 @@ fun ScheduleSourcesContent(
     val q = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
 
     Column {
-        EdTopAppBar(
-            title = stringResource(R.string.schedule_sou_schedule_selection),
-            onNavigationClick = onBackClick,
-        )
-        SourceTypeTabs(
-            tabs = state.tabs,
-            selectedTab = state.selectedTab,
-            onTabSelected = onTabSelected,
-        )
+        EdSurface(
+            elevation = EdElevation.Level1,
+            shape = EdTheme.shapes.large,
+        ) {
+            Column(Modifier.fillMaxWidth()) {
+                EdTopAppBar(
+                    title = stringResource(R.string.schedule_sou_schedule_selection),
+                    onNavigationClick = onBackClick,
+                    windowInsets = WindowInsets.statusBars,
+                )
+                SourceTypeTabs(
+                    tabs = state.tabs,
+                    selectedTab = state.selectedTab,
+                    onTabSelected = onTabSelected,
+                )
+                EdSearchField(
+                    value = state.query,
+                    onValueChange = onQueryChange,
+                    modifier = Modifier
+                        .padding(horizontal = EdTheme.paddings.smallSecondary)
+                        .fillMaxWidth(),
+                    placeholder = stringResource(R.string.schedule_sou_search),
+                )
+                SpacerHeight(height = EdTheme.paddings.smallSecondary)
+            }
+        }
         if (state.selectedTab == ScheduleSourcesTabs.Complex) {
             ComplexSearch(
                 typesId = emptyList(),
@@ -112,10 +135,8 @@ fun ScheduleSourcesContent(
             )
         } else {
             Search(
-                query = state.query,
                 filteredSources = state.filteredSources,
                 selectedTab = state.selectedTab,
-                onQueryChange = onQueryChange,
                 onSourceSelected = onSourceSelected,
                 onAddFavorite = onAddFavorite,
                 onDeleteFavorite = onDeleteFavorite,
@@ -214,19 +235,14 @@ private fun SourceTypeTabs(
 ) {
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(horizontal = EdTheme.paddings.extraSmallTertiary),
     ) {
-        item {
-            SpacerWidth(10.dp)
-        }
         items(tabs) { tab ->
             SourceTypeTab(
                 tab,
                 tab == selectedTab,
                 onTabSelected = onTabSelected,
             )
-        }
-        item {
-            SpacerWidth(10.dp)
         }
     }
 }
@@ -326,25 +342,15 @@ private fun Filter(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ColumnScope.Search(
-    query: String,
     filteredSources: List<ScheduleSourceUiModel>,
     selectedTab: ScheduleSourcesTabs?,
-    onQueryChange: Typed1Listener<String>,
     onSourceSelected: Typed1Listener<ScheduleSourceFull>,
     onAddFavorite: Typed1Listener<ScheduleSourceFull>,
     onDeleteFavorite: Typed1Listener<ScheduleSourceFull>,
 ) {
-    EdSearchField(
-        value = query,
-        onValueChange = onQueryChange,
-        modifier = Modifier
-            .padding(start = 16.dp, end = 16.dp)
-            .fillMaxWidth(),
-        placeholder = stringResource(R.string.schedule_sou_search),
-    )
-    SpacerHeight(8.dp)
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(top = 10.dp),
     ) {
         items(filteredSources, key = { selectedTab to it.hashCode() }) { source ->
             SourceItem(
@@ -382,13 +388,14 @@ private fun SourceTypeTab(
 
     EdCard(
         onClick = { onTabSelected(tab) },
-        modifier = Modifier.padding(horizontal = 6.dp, vertical = 5.dp),
+        modifier = Modifier.padding(horizontal = 4.dp, vertical = 3.dp),
         colors = EdCardDefaults.cardColors(containerColor = color),
         shape = EdTheme.shapes.small,
     ) {
         EdLabel(
             text = title,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+            style = EdTheme.typography.bodyMedium,
         )
     }
 }

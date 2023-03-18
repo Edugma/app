@@ -17,10 +17,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import io.edugma.core.designSystem.atoms.divider.EdDivider
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
@@ -264,6 +267,18 @@ private fun LessonPlaces(
                     EdDivider(Modifier.padding(start = 70.dp, end = 20.dp))
                 }
             }
+            SpacerHeight(8.dp)
+            val text = "https://static-maps.yandex.ru/1.x/?l=map&pt=37.544180,55.833268,org&z=16&size=450,250"
+            AsyncImage(
+                model = text,
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(horizontal = 10.dp)
+                    .fillMaxWidth()
+                    .clip(EdTheme.shapes.large),
+                contentScale = ContentScale.FillWidth,
+            )
+            SpacerHeight(8.dp)
         }
     }
 }
