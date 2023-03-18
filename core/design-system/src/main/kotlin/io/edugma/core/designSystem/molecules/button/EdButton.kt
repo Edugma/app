@@ -58,14 +58,23 @@ fun EdButton(
             modifier = Modifier,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            EdLabel(
-                text = text,
-                iconPainter = iconPainter,
-                iconStart = iconStart,
-                modifier = Modifier.padding(bottom = 3.dp),
-                style = size.textStyle,
-                overflow = TextOverflow.Ellipsis,
-            )
+            if (iconPainter != null) {
+                EdLabel(
+                    text = text,
+                    iconPainter = iconPainter,
+                    iconStart = iconStart,
+                    modifier = Modifier.padding(bottom = 3.dp),
+                    style = size.textStyle,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            } else {
+                EdLabel(
+                    text = text,
+                    modifier = Modifier.padding(bottom = 3.dp),
+                    style = size.textStyle,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
             if (isLoading) {
                 SpacerWidth(width = size.spacer)
                 EdLoader(

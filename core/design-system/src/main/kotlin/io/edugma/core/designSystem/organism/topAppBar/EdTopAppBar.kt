@@ -41,24 +41,45 @@ fun EdTopAppBar(
     EdSingleRowTopAppBar(
         title = {
             if (subtitle == null) {
-                EdLabel(
-                    text = title,
-                    iconPainter = titleIcon,
-                    style = EdTheme.typography.titleMedium,
-                )
-            } else {
-                Column {
+                if (titleIcon != null) {
                     EdLabel(
                         text = title,
                         iconPainter = titleIcon,
                         style = EdTheme.typography.titleMedium,
                     )
-                    CompositionLocalProvider(LocalContentColor provides EdTheme.colorScheme.onSurfaceVariant) {
+                } else {
+                    EdLabel(
+                        text = title,
+                        style = EdTheme.typography.titleMedium,
+                    )
+                }
+            } else {
+                Column {
+                    if (titleIcon != null) {
                         EdLabel(
-                            text = subtitle,
-                            iconPainter = subtitleIcon,
-                            style = EdTheme.typography.bodySmall,
+                            text = title,
+                            iconPainter = titleIcon,
+                            style = EdTheme.typography.titleMedium,
                         )
+                    } else {
+                        EdLabel(
+                            text = title,
+                            style = EdTheme.typography.titleMedium,
+                        )
+                    }
+                    CompositionLocalProvider(LocalContentColor provides EdTheme.colorScheme.onSurfaceVariant) {
+                        if (subtitleIcon != null) {
+                            EdLabel(
+                                text = subtitle,
+                                iconPainter = subtitleIcon,
+                                style = EdTheme.typography.bodySmall,
+                            )
+                        } else {
+                            EdLabel(
+                                text = subtitle,
+                                style = EdTheme.typography.bodySmall,
+                            )
+                        }
                     }
                 }
             }

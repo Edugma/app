@@ -25,7 +25,6 @@ import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -47,7 +46,44 @@ import io.edugma.core.designSystem.tokens.icons.EdIcons
 fun EdLabel(
     text: String,
     modifier: Modifier = Modifier,
-    iconPainter: Painter? = null,
+    color: Color = Color.Unspecified,
+    fontSize: TextUnit = TextUnit.Unspecified,
+    fontStyle: FontStyle? = null,
+    fontWeight: FontWeight? = null,
+    letterSpacing: TextUnit = TextUnit.Unspecified,
+    textDecoration: TextDecoration? = null,
+    textAlign: TextAlign? = null,
+    lineHeight: TextUnit = TextUnit.Unspecified,
+    overflow: TextOverflow = TextOverflow.Clip,
+    softWrap: Boolean = true,
+    maxLines: Int = Int.MAX_VALUE,
+    onTextLayout: (TextLayoutResult) -> Unit = {},
+    style: TextStyle = LocalTextStyle.current,
+) {
+    Text(
+        modifier = modifier,
+        text = text,
+        color = color,
+        fontSize = fontSize,
+        fontStyle = fontStyle,
+        fontWeight = fontWeight,
+        letterSpacing = letterSpacing,
+        textDecoration = textDecoration,
+        lineHeight = lineHeight,
+        overflow = overflow,
+        softWrap = softWrap,
+        maxLines = maxLines,
+        textAlign = textAlign,
+        onTextLayout = onTextLayout,
+        style = style,
+    )
+}
+
+@Composable
+fun EdLabel(
+    text: String,
+    iconPainter: Painter,
+    modifier: Modifier = Modifier,
     iconStart: Boolean = true,
     iconSize: Dp = Dp.Unspecified,
     spacing: Dp = 6.dp,
@@ -55,7 +91,6 @@ fun EdLabel(
     fontSize: TextUnit = TextUnit.Unspecified,
     fontStyle: FontStyle? = null,
     fontWeight: FontWeight? = null,
-    fontFamily: FontFamily? = null,
     letterSpacing: TextUnit = TextUnit.Unspecified,
     textDecoration: TextDecoration? = null,
     textAlign: TextAlign? = null,
@@ -77,7 +112,7 @@ fun EdLabel(
                 Modifier.size(iconSize)
             }
 
-            if (iconPainter != null && iconStart) {
+            if (iconStart) {
                 Icon(
                     painter = iconPainter,
                     contentDescription = "",
@@ -95,7 +130,6 @@ fun EdLabel(
                 fontSize = fontSize,
                 fontStyle = fontStyle,
                 fontWeight = fontWeight,
-                fontFamily = fontFamily,
                 letterSpacing = letterSpacing,
                 textDecoration = textDecoration,
                 lineHeight = lineHeight,
@@ -109,7 +143,7 @@ fun EdLabel(
                 },
                 style = style,
             )
-            if (iconPainter != null && iconStart.not()) {
+            if (iconStart.not()) {
                 Icon(
                     painter = iconPainter,
                     contentDescription = "",
@@ -124,46 +158,38 @@ fun EdLabel(
     ) { measurables, constraints ->
 
         val textMeasurable = measurables.first { it.layoutId == "text" }
-        val iconMeasurable = measurables.firstOrNull { it.layoutId == "icon" }
+        val iconMeasurable = measurables.first { it.layoutId == "icon" }
 
-        if (iconMeasurable == null) {
-            val textPlaceable = textMeasurable.measure(constraints)
+        val iconPlaceable = measureIcon(
+            constraints = constraints,
+            iconMeasurable = iconMeasurable,
+        )
+        val textPlaceable = measureText(
+            constraints = constraints,
+            iconPlaceable = iconPlaceable,
+            textMeasurable = textMeasurable,
+        )
 
-            layout(textPlaceable.width, textPlaceable.height) {
-                textPlaceable.placeRelative(0, 0)
-            }
-        } else {
-            val iconPlaceable = measureIcon(
-                constraints = constraints,
-                iconMeasurable = iconMeasurable,
-            )
-            val textPlaceable = measureText(
-                constraints = constraints,
-                iconPlaceable = iconPlaceable,
-                textMeasurable = textMeasurable,
-            )
+        val labelMeasures = calculatePositions(
+            iconPlaceable = iconPlaceable,
+            textPlaceable = textPlaceable,
+            textResult = textResult,
+            iconStart = iconStart,
+        )
 
-            val labelMeasures = calculatePositions(
-                iconPlaceable = iconPlaceable,
-                textPlaceable = textPlaceable,
-                textResult = textResult,
-                iconStart = iconStart,
-            )
+        val layoutWidth = maxOf(
+            labelMeasures.textX + textPlaceable.width,
+            labelMeasures.iconX + iconPlaceable.width,
+            constraints.minWidth,
+        )
+        val layoutHeight = maxOf(
+            iconPlaceable.height + labelMeasures.iconY,
+            textPlaceable.height + labelMeasures.textY,
+        )
 
-            val layoutWidth = maxOf(
-                labelMeasures.textX + textPlaceable.width,
-                labelMeasures.iconX + iconPlaceable.width,
-                constraints.minWidth,
-            )
-            val layoutHeight = maxOf(
-                iconPlaceable.height + labelMeasures.iconY,
-                textPlaceable.height + labelMeasures.textY,
-            )
-
-            layout(layoutWidth, layoutHeight) {
-                iconPlaceable.placeRelative(labelMeasures.iconX, labelMeasures.iconY)
-                textPlaceable.placeRelative(labelMeasures.textX, labelMeasures.textY)
-            }
+        layout(layoutWidth, layoutHeight) {
+            iconPlaceable.placeRelative(labelMeasures.iconX, labelMeasures.iconY)
+            textPlaceable.placeRelative(labelMeasures.textX, labelMeasures.textY)
         }
     }
 }
@@ -259,7 +285,6 @@ internal fun EdLabelPreview() {
         Column {
             EdLabel(
                 text = "Sample my text",
-                iconPainter = null,
                 modifier = Modifier.size(50.dp),
             )
             SpacerHeight(height = 8.dp)

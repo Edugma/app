@@ -47,6 +47,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -113,7 +114,7 @@ private fun ScheduleCalendarContent(
 
         EdSurface(
             modifier = Modifier.fillMaxWidth(),
-            shape = EdTheme.shapes.large.bottom(),
+            shape = RectangleShape,
             elevatedAlpha = 0.9f,
         ) {
             EdTopAppBar(
@@ -246,7 +247,7 @@ private fun CalendarWeek(
     EdSurface(
         modifier = Modifier.fillMaxWidth(),
         elevation = EdElevation.Level1,
-        shape = EdTheme.shapes.large,
+        shape = RectangleShape,
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             WeekNumber(
