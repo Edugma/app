@@ -73,7 +73,7 @@ fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
             sheetState = bottomState,
             sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
             scrimColor = Color.Black.copy(alpha = 0.5f),
-            sheetBackgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.surface,
+            sheetBackgroundColor = EdTheme.colorScheme.surface,
             sheetContent = {
                 BottomSheetContent(
                     state,

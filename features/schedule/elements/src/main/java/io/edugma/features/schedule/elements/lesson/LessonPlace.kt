@@ -3,11 +3,11 @@ package io.edugma.features.schedule.elements.lesson
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.features.base.core.utils.Typed2Listener
 import io.edugma.features.base.elements.placeholder
 import io.edugma.features.schedule.domain.model.lesson.Lesson
@@ -38,7 +38,7 @@ fun LazyListScope.LessonPlace(
 private fun LessonTimeContent(lessonTime: LessonTime, isLoading: Boolean = false) {
     Text(
         text = "${lessonTime.start} - ${lessonTime.end}",
-        style = MaterialTheme.typography.titleSmall,
+        style = EdTheme.typography.titleSmall,
         modifier = Modifier
             .padding(start = 34.dp, end = 34.dp, top = 4.dp, bottom = 2.dp)
             .placeholder(visible = isLoading),

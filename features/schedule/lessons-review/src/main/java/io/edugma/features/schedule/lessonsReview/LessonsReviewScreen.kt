@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -106,7 +105,7 @@ fun LessonTimesReviewContent(lessonTimesReview: LessonTimesReview) {
     ) {
         Text(
             text = lessonTimesReview.subject.title,
-            style = MaterialTheme.typography.titleMedium,
+            style = EdTheme.typography.titleMedium,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 12.dp),
@@ -175,7 +174,7 @@ fun LessonTypeContent(type: LessonType) {
     }
     Text(
         text = type.title,
-        style = MaterialTheme.typography.titleSmall,
+        style = EdTheme.typography.titleSmall,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         modifier = Modifier
@@ -202,7 +201,7 @@ fun DateRange(
     ) {
         Text(
             text = weekFormat.format(dayOfWeek).capitalized(),
-            style = MaterialTheme.typography.bodyMedium,
+            style = EdTheme.typography.bodyMedium,
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .weight(1f)
@@ -255,7 +254,7 @@ private fun Dates(
 
             Text(
                 text = dateText,
-                style = MaterialTheme.typography.bodySmall,
+                style = EdTheme.typography.bodySmall,
             )
         }
     }
@@ -276,7 +275,7 @@ private fun Times(
 
             Text(
                 text = timeText,
-                style = MaterialTheme.typography.bodySmall,
+                style = EdTheme.typography.bodySmall,
             )
         }
     }

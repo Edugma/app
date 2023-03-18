@@ -1,6 +1,5 @@
 package io.edugma.core.designSystem.atoms.card
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
@@ -21,7 +20,7 @@ object EdCardDefaults {
             EdTheme.colorScheme.surfaceVariant
                 .copy(alpha = DisabledContainerOpacity)
                 .compositeOver(
-                    MaterialTheme.colorScheme.surfaceColorAtElevation(
+                    EdTheme.colorScheme.surfaceColorAtElevation(
                         0.dp,
                     ),
                 ),

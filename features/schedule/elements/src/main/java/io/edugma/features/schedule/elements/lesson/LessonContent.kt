@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -98,7 +97,7 @@ fun LessonType(type: LessonType, isLoading: Boolean = false) {
     }
     Text(
         text = type.title.uppercase(),
-        style = MaterialTheme.typography.labelSmall,
+        style = EdTheme.typography.labelSmall,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         modifier = Modifier.placeholder(visible = isLoading),
@@ -110,7 +109,7 @@ fun LessonType(type: LessonType, isLoading: Boolean = false) {
 fun LessonTitle(subject: LessonSubject, isLoading: Boolean = false) {
     Text(
         text = subject.title,
-        style = MaterialTheme.typography.titleMedium,
+        style = EdTheme.typography.titleMedium,
         modifier = Modifier
             .fillMaxWidth()
             .placeholder(visible = isLoading),
@@ -129,7 +128,7 @@ fun TeachersContent(teachers: List<Teacher>, isLoading: Boolean = false) {
     EdLabel(
         text = teachersText,
         iconPainter = painterResource(id = EdIcons.ic_fluent_hat_graduation_16_filled),
-        style = MaterialTheme.typography.bodyMedium,
+        style = EdTheme.typography.bodyMedium,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         modifier = Modifier.fillMaxWidth().placeholder(visible = isLoading),
@@ -144,7 +143,7 @@ fun GroupsContent(groups: List<Group>, isLoading: Boolean = false) {
     EdLabel(
         text = groupsText,
         iconPainter = painterResource(id = EdIcons.ic_fluent_people_16_filled),
-        style = MaterialTheme.typography.bodyMedium,
+        style = EdTheme.typography.bodyMedium,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         modifier = Modifier.fillMaxWidth().placeholder(visible = isLoading),
@@ -159,7 +158,7 @@ fun PlacesContent(places: List<Place>, isLoading: Boolean = false) {
     EdLabel(
         text = placesText,
         iconPainter = painterResource(id = EdIcons.ic_fluent_location_16_filled),
-        style = MaterialTheme.typography.bodyMedium,
+        style = EdTheme.typography.bodyMedium,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         modifier = Modifier.fillMaxWidth().placeholder(visible = isLoading),
@@ -208,12 +207,12 @@ fun LessonWindow(lessonWindow: ScheduleItem.Window) {
         ) {
             Text(
                 text = "Окно на $timeText",
-                style = MaterialTheme.typography.titleMedium,
+                style = EdTheme.typography.titleMedium,
             )
             WithContentAlpha(alpha = ContentAlpha.medium) {
                 Text(
                     text = "$timeFrom - $timeTo",
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = EdTheme.typography.bodyMedium,
                 )
             }
         }

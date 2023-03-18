@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -141,7 +140,7 @@ fun RowScope.DayContent(
         WithContentAlpha(ContentAlpha.medium) {
             Text(
                 text = weekFormat.format(day.date).uppercase(),
-                style = MaterialTheme.typography.labelSmall,
+                style = EdTheme.typography.labelSmall,
                 maxLines = 1,
                 overflow = TextOverflow.Clip,
                 textAlign = TextAlign.Center,
@@ -164,7 +163,7 @@ fun RowScope.DayContent(
             ) {
                 Text(
                     text = day.date.dayOfMonth.toString(),
-                    style = MaterialTheme.typography.titleSmall,
+                    style = EdTheme.typography.titleSmall,
                     maxLines = 1,
                     overflow = TextOverflow.Clip,
                     modifier = Modifier
@@ -186,14 +185,14 @@ fun RowScope.DayContent(
                         modifier = Modifier
                             .padding(horizontal = 1.5.dp)
                             .size(4.5.dp)
-                            .background(MaterialTheme.colorScheme.primary, CircleShape),
+                            .background(EdTheme.colorScheme.primary, CircleShape),
                     )
                 }
             }
         } else {
             Surface(
                 modifier = Modifier.height(14.dp),
-                color = MaterialTheme.colorScheme.primary,
+                color = EdTheme.colorScheme.primary,
                 shape = CircleShape,
             ) {
                 Box(contentAlignment = Alignment.Center) {
@@ -202,7 +201,7 @@ fun RowScope.DayContent(
                         text = day.lessonCount.toString(),
                         style = EdTheme.typography.titleSmall,
                         fontSize = 9.0.dp.sp(),
-                        color = MaterialTheme.colorScheme.onPrimary,
+                        color = EdTheme.colorScheme.onPrimary,
                     )
                 }
             }

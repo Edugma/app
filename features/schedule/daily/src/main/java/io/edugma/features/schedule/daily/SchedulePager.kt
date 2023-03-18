@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,6 +27,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.Typed2Listener
 import io.edugma.features.schedule.domain.model.group.Group
@@ -114,7 +114,7 @@ fun NoLessonsDay(
         )
         Text(
             text = stringResource(R.string.sch_no_lessons_today),
-            style = MaterialTheme.typography.titleLarge,
+            style = EdTheme.typography.titleLarge,
             modifier = Modifier
                 .weight(4f)
                 .fillMaxWidth()

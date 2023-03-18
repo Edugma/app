@@ -11,7 +11,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalAbsoluteTonalElevation
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalMinimumTouchTargetEnforcement
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -188,8 +187,8 @@ private fun surfaceColorAtElevation(
     elevation: Dp,
     elevatedAlpha: Float,
 ): Color {
-    return if (color == MaterialTheme.colorScheme.surface) {
-        MaterialTheme.colorScheme.surfaceColorAtElevation(elevation).copy(alpha = elevatedAlpha)
+    return if (color == EdTheme.colorScheme.surface) {
+        EdTheme.colorScheme.surfaceColorAtElevation(elevation).copy(alpha = elevatedAlpha)
     } else {
         color
     }

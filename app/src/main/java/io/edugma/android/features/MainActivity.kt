@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
-import androidx.compose.material3.MaterialTheme
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import io.edugma.core.designSystem.atoms.surface.EdSurface
@@ -25,7 +24,7 @@ class MainActivity : ComponentActivity() {
                 useDynamicColors = true,
             ) {
                 EdSurface(
-                    color = MaterialTheme.colorScheme.background,
+                    color = EdTheme.colorScheme.background,
                     elevation = EdElevation.Level0,
                 ) {
                     MainContent()

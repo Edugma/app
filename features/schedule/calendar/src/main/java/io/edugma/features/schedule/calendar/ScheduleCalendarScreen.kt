@@ -33,7 +33,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -222,7 +221,7 @@ private fun BoxScope.Fab(scrollState: LazyListState, currentWeekIndex: Int, onCl
     ) {
         ExtendedFloatingActionButton(
             onClick = onClick,
-            containerColor = MaterialTheme.colorScheme.primary,
+            containerColor = EdTheme.colorScheme.primary,
             text = {
                 Text(text = "На сегодня")
             },
@@ -419,7 +418,7 @@ private fun CalendarItem(
         ) {
             EdLabel(
                 text = day.dayTitle,
-                style = MaterialTheme.typography.labelSmall,
+                style = EdTheme.typography.labelSmall,
                 modifier = Modifier
                     .fillMaxWidth(),
                 color = if (isCurrentDay) {
@@ -473,7 +472,7 @@ private fun CalendarItem(
                     ) {
                         Text(
                             text = lesson.title,
-                            style = MaterialTheme.typography.labelSmall,
+                            style = EdTheme.typography.labelSmall,
                             modifier = Modifier.padding(
                                 start = 2.dp,
                                 end = 2.dp,
@@ -504,7 +503,7 @@ private fun DayStub(
         ) {
             EdLabel(
                 text = "",
-                style = MaterialTheme.typography.labelSmall,
+                style = EdTheme.typography.labelSmall,
                 modifier = Modifier.fillMaxWidth(),
             )
         }

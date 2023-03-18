@@ -13,7 +13,6 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -65,7 +64,7 @@ fun TeachersScreen(viewModel: TeachersViewModel = getViewModel()) {
             sheetState = bottomState,
             sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
             scrimColor = Color.Black.copy(alpha = 0.5f),
-            sheetBackgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.surface,
+            sheetBackgroundColor = EdTheme.colorScheme.surface,
             sheetContent = {
                 when (state.bottomType) {
                     BottomType.Teacher -> {
@@ -126,7 +125,7 @@ fun TeacherInfoBottom(teacher: Teacher) {
         SpacerHeight(height = 3.dp)
         Text(
             text = teacher.departments,
-            style = MaterialTheme.typography.bodyMedium,
+            style = EdTheme.typography.bodyMedium,
             color = EdTheme.colorScheme.secondary,
             modifier = Modifier
                 .padding(horizontal = 8.dp),
@@ -327,7 +326,7 @@ fun Teacher(
                         Spacer(Modifier.width(5.dp))
                         Text(
                             text = teacher.description,
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = EdTheme.typography.bodyMedium,
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier
@@ -381,7 +380,7 @@ fun TeacherPlaceholder() {
                         Spacer(Modifier.width(5.dp))
                         Text(
                             text = "",
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = EdTheme.typography.bodyMedium,
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier

@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -14,6 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.features.base.elements.placeholder
 import io.edugma.features.schedule.domain.model.group.Group
@@ -26,7 +26,7 @@ import io.edugma.features.schedule.domain.usecase.getShortName
 fun LessonTitle(subject: LessonSubject, isLoading: Boolean = false) {
     Text(
         text = subject.title,
-        style = MaterialTheme.typography.titleMedium,
+        style = EdTheme.typography.titleMedium,
         modifier = Modifier
             .fillMaxWidth()
             .placeholder(visible = isLoading),
@@ -55,7 +55,7 @@ fun TeachersContent(teachers: List<Teacher>, isLoading: Boolean = false) {
         }
         Text(
             text = teachersText,
-            style = MaterialTheme.typography.bodyMedium,
+            style = EdTheme.typography.bodyMedium,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier
@@ -81,7 +81,7 @@ fun GroupsContent(groups: List<Group>, isLoading: Boolean = false) {
         val groupsText = remember(groups) { groups.joinToString { it.title } }
         Text(
             text = groupsText,
-            style = MaterialTheme.typography.bodyMedium,
+            style = EdTheme.typography.bodyMedium,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier
@@ -107,7 +107,7 @@ fun PlacesContent(places: List<Place>, isLoading: Boolean = false) {
         val placesText = remember(places) { places.joinToString { it.title } }
         Text(
             text = placesText,
-            style = MaterialTheme.typography.bodyMedium,
+            style = EdTheme.typography.bodyMedium,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier
