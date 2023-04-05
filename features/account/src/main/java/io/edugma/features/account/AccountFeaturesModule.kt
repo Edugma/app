@@ -8,6 +8,7 @@ import io.edugma.features.account.payments.PaymentsViewModel
 import io.edugma.features.account.personal.PersonalViewModel
 import io.edugma.features.account.students.StudentsViewModel
 import io.edugma.features.account.teachers.TeachersViewModel
+import io.edugma.features.account.web.WebViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -20,4 +21,5 @@ val accountFeaturesModule = module {
     viewModel { PersonalViewModel(get(), get()) }
     viewModel { TeachersViewModel(get()) }
     viewModel { AuthViewModel(get(), get(), get(), get()) }
+    viewModel { WebViewModel() }
 }

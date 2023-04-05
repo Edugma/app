@@ -23,4 +23,9 @@ object AccountScreens {
     object Teachers : Screen() // "$prefix-teachers")
 
     object Payments : Screen() // "$prefix-payments")
+
+    data class Web(
+        val url: String,
+        val isFullScreen: Boolean = false,
+    ) : Screen(Web::url.name to url, Web::isFullScreen.name to isFullScreen) // "$prefix-web")
 }

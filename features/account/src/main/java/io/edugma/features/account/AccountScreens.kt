@@ -9,6 +9,7 @@ import io.edugma.features.account.payments.PaymentsScreen
 import io.edugma.features.account.personal.PersonalScreen
 import io.edugma.features.account.students.StudentsScreen
 import io.edugma.features.account.teachers.TeachersScreen
+import io.edugma.features.account.web.WebScreen
 import io.edugma.features.base.core.navigation.compose.addScreen
 import io.edugma.features.base.core.navigation.compose.groupScreen
 import io.edugma.features.base.navigation.AccountScreens
@@ -24,5 +25,11 @@ fun NavGraphBuilder.accountScreens() {
         addScreen<AccountScreens.Students> { StudentsScreen() }
         addScreen<AccountScreens.Marks> { PerformanceScreen() }
         addScreen<AccountScreens.Personal> { PersonalScreen() }
+        addScreen<AccountScreens.Web> {
+            WebScreen(
+                getArg(AccountScreens.Web::url.name),
+                getArg(AccountScreens.Web::isFullScreen.name)
+            )
+        }
     }
 }
