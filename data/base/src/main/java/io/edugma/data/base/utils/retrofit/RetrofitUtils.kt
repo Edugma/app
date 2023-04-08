@@ -1,6 +1,7 @@
 package io.edugma.data.base.utils.retrofit
 
 import io.edugma.data.base.utils.retrofit.callAdapters.flowResult.FlowResultCallAdapterFactory
+import io.edugma.data.base.utils.retrofit.callAdapters.suspendResult.SuspendResultCallAdapterFactory
 import kotlinx.serialization.json.Json
 import retrofit2.Call
 import retrofit2.Callback
@@ -23,6 +24,7 @@ fun buildRetrofitBuilder(client: okhttp3.OkHttpClient, baseUrl: String = ""): Re
             ),
         )
         .addCallAdapterFactory(FlowResultCallAdapterFactory { code: Int, body: Any? -> })
+        .addCallAdapterFactory(SuspendResultCallAdapterFactory { code: Int, body: Any? -> })
         .client(client)
 }
 

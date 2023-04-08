@@ -22,6 +22,9 @@ interface AccountService {
     @POST("/login")
     fun login(@Body login: Login): Flow<Result<Token>>
 
+    @POST("/login")
+    suspend fun loginSuspend(@Body login: Login): Result<Token>
+
     @GET("/peoples/classmates/")
     fun getClassmates(): Flow<Result<List<Student>>>
 
@@ -53,14 +56,25 @@ interface AccountService {
         @Path("semester") semester: String,
     ): Flow<Result<List<Performance>>>
 
+    @GET("/performance/semesters/{semester}")
+    suspend fun getMarksSuspend(
+        @Path("semester") semester: String,
+    ): Result<List<Performance>>
+
     @GET("/performance/courses")
     fun getCourses(): Flow<Result<List<Int>>>
 
     @GET("/personal")
     fun getPersonalInfo(): Flow<Result<Personal>>
 
+    @GET("/personal")
+    suspend fun getPersonalInfoSuspend(): Result<Personal>
+
     @GET("/payments/{type}")
     fun getPayments(@Path("type") type: String): Flow<Result<Contracts>>
+
+    @GET("/payments/{type}")
+    suspend fun getPaymentsSuspend(@Path("type") type: String): Result<Contracts>
 
     @GET("/payments/types/")
     fun getPaymentsTypes(): Flow<Result<List<PaymentType>>>

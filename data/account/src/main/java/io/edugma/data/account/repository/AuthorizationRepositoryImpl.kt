@@ -18,6 +18,7 @@ import io.edugma.domain.base.utils.onSuccess
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 
 class AuthorizationRepositoryImpl(
     private val api: AccountService,
@@ -29,6 +30,16 @@ class AuthorizationRepositoryImpl(
             .mapResult { it.getBearer() }
             .onSuccess(::saveToken)
             .flowOn(Dispatchers.IO)
+    }
+
+    override suspend fun authorizationSuspend(login: String, password: String): Result<String> {
+        return api.loginSuspend(Login(login, password))
+            .map { it.getBearer() }
+            .onSuccess {
+                withContext(Dispatchers.IO) {
+                    saveToken(it)
+                }
+            }
     }
 
     override suspend fun logout() {

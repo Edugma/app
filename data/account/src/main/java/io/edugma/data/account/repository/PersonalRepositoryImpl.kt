@@ -10,6 +10,7 @@ import io.edugma.domain.account.repository.PersonalRepository
 import io.edugma.domain.base.utils.onSuccess
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 
 class PersonalRepositoryImpl(
     private val api: AccountService,
@@ -19,6 +20,15 @@ class PersonalRepositoryImpl(
         api.getPersonalInfo()
             .onSuccess { setLocalPersonalInfo(it) }
             .flowOn(Dispatchers.IO)
+
+    override suspend fun getPersonalInfoSuspend(): Result<Personal> {
+        return api.getPersonalInfoSuspend()
+            .onSuccess {
+                withContext(Dispatchers.IO) {
+                    setLocalPersonalInfo(it)
+                }
+            }
+    }
 
     override suspend fun setLocalPersonalInfo(personal: Personal) {
         localStore.setJsonLazy(personal, PersonalKey)

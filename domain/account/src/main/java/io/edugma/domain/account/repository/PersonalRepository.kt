@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface PersonalRepository {
     fun getPersonalInfo(): Flow<Result<Personal>>
+    suspend fun getPersonalInfoSuspend(): Result<Personal>
     suspend fun setLocalPersonalInfo(personal: Personal)
     suspend fun getLocalPersonalInfo(): Personal?
 }

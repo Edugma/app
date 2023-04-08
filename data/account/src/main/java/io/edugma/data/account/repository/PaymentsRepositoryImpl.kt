@@ -12,6 +12,7 @@ import io.edugma.domain.base.utils.onSuccess
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 
 class PaymentsRepositoryImpl(
     private val api: AccountService,
@@ -29,6 +30,15 @@ class PaymentsRepositoryImpl(
 
     override fun getPayments() = flow {
         emit(getPaymentsLocal())
+    }
+
+    override suspend fun getPaymentsSuspend(type: PaymentType?): Result<Contracts?> {
+        return api.getPaymentsSuspend(type?.name?.lowercase().orEmpty())
+            .onSuccess {
+                withContext(Dispatchers.IO) {
+                    savePayments(it)
+                }
+            }
     }
 
     override suspend fun savePayments(contracts: Contracts) {

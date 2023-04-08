@@ -14,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 
 class PerformanceRepositoryImpl(
     private val api: AccountService,
@@ -46,6 +47,17 @@ class PerformanceRepositoryImpl(
                 }
             }
             .flowOn(Dispatchers.IO)
+
+    override suspend fun getMarksBySemesterSuspend(semester: Int?): Result<List<Performance>> {
+        return api.getMarksSuspend(semester?.toString().orEmpty())
+            .onSuccess {
+                withContext(Dispatchers.IO) {
+                    if (semester == null) {
+                        setLocalMarks(it)
+                    }
+                }
+            }
+    }
 
     override suspend fun getLocalMarks() = localStore.getJsonLazy<List<Performance>>(PerformanceKey)
 
