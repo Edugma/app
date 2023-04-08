@@ -1,5 +1,6 @@
 package io.edugma.features.account.menu.screens
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,17 +18,22 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.organism.accountSelector.AccountSelectorVO
 import io.edugma.core.designSystem.organism.accountSelector.EdAccountSelector
+import io.edugma.core.designSystem.organism.iconCard.EdIconCard
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.designSystem.tokens.shapes.bottom
+import io.edugma.core.designSystem.utils.cachedIconPainter
+import io.edugma.domain.account.model.menu.CardType
 import io.edugma.features.account.menu.MenuState
 import io.edugma.features.base.core.utils.ClickListener
+import io.edugma.features.base.core.utils.Typed2Listener
 
 @Composable
 fun MainScreen(
     state: MenuState.Menu,
     onSignOut: ClickListener,
     onPersonalClick: ClickListener,
+    cardClick: Typed2Listener<CardType, String?>
 ) {
     Column(
         Modifier.fillMaxSize(),
@@ -63,6 +69,28 @@ fun MainScreen(
                 )
                 SpacerHeight(height = 14.dp)
             }
+        }
+
+        SpacerHeight(height = 10.dp)
+
+        state.cards.forEach { menuRow ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                menuRow.forEach { card ->
+                    EdIconCard(
+                        title = card.name,
+                        subtitle = card.label,
+                        modifier = Modifier.weight(card.weight),
+                        onClick = { cardClick(card.type, card.url) },
+                        icon = cachedIconPainter(card.icon),
+                    )
+                }
+            }
+            SpacerHeight(height = 8.dp)
         }
     }
 }

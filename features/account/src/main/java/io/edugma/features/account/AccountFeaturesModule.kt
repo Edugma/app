@@ -15,7 +15,7 @@ import org.koin.dsl.module
 
 val accountFeaturesModule = module {
     viewModel { AccountMainViewModel(get(), get(), get(), get()) }
-    viewModel { MenuViewModel(get(), get()) }
+    viewModel { MenuViewModel(get(), get(), get()) }
     viewModel { ClassmatesViewModel(get()) }
     viewModel { PaymentsViewModel(get()) }
     viewModel { StudentsViewModel(get()) }

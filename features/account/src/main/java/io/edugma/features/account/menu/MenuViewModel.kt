@@ -1,6 +1,10 @@
 package io.edugma.features.account.menu
 
 import androidx.lifecycle.viewModelScope
+import io.edugma.domain.account.model.menu.Card
+import io.edugma.domain.account.model.menu.CardType
+import io.edugma.domain.account.model.menu.CardType.*
+import io.edugma.domain.account.repository.CardsRepository
 import io.edugma.domain.account.usecase.AuthWithCachingDataUseCase
 import io.edugma.domain.account.usecase.CurrentPayments
 import io.edugma.domain.account.usecase.CurrentPerformance
@@ -17,6 +21,7 @@ import kotlinx.coroutines.withContext
 class MenuViewModel(
     private val authCachingUseCase: AuthWithCachingDataUseCase,
     private val converterUseCase: MenuDataConverterUseCase,
+    private val cardsRepository: CardsRepository,
 ) : BaseViewModel<MenuState>(MenuState.Loading) {
     //init
     init {
@@ -84,6 +89,17 @@ class MenuViewModel(
         router.navigateTo(AccountScreens.Personal)
     }
 
+    fun cardClick(type: CardType, url: String?) {
+        when(type) {
+            Students -> router.navigateTo(AccountScreens.Students)
+            Teachers -> router.navigateTo(AccountScreens.Teachers)
+            Classmates -> router.navigateTo(AccountScreens.Classmates)
+            Payments -> router.navigateTo(AccountScreens.Payments)
+            Marks -> router.navigateTo(AccountScreens.Marks)
+            Web -> router.navigateTo(AccountScreens.Web(url.orEmpty()))
+        }
+    }
+
     //common
     private fun setData(dataDto: DataDto) {
         mutateStateWithCheck<MenuState.Menu> { state ->
@@ -114,7 +130,7 @@ class MenuViewModel(
 
     private fun setAuthorizedState() {
         mutateState {
-            state = MenuState.Menu()
+            state = MenuState.Menu(cards = cardsRepository.getCards())
         }
     }
 
@@ -152,6 +168,7 @@ sealed class MenuState {
         val personalData: PersonalData? = null,
         val currentPayments: CurrentPayments? = null,
         val currentPerformance: CurrentPerformance? = null,
+        val cards: List<List<Card>> = emptyList()
     ) : MenuState()
 }
 
