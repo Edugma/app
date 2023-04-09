@@ -25,6 +25,7 @@ import io.edugma.features.base.core.utils.isNotNull
 import io.edugma.features.base.core.utils.isNull
 
 @Composable
+@Deprecated("use EdChip", ReplaceWith("EdChip"))
 fun Chip(modifier: Modifier = Modifier, icon: ImageVector? = null, onClick: (() -> Unit)? = null, body: @Composable () -> Unit = {}) {
     EdCard(
         modifier = Modifier
@@ -60,6 +61,7 @@ fun Chip(modifier: Modifier = Modifier, icon: ImageVector? = null, onClick: (() 
 }
 
 @Composable
+@Deprecated("use EdSelectableChip", ReplaceWith("EdSelectableChip"))
 fun SelectableChip(modifier: Modifier = Modifier, selectedState: Boolean = false, onClick: (() -> Unit)? = null, body: @Composable () -> Unit = {}) {
     EdCard(
         modifier = Modifier
@@ -90,6 +92,7 @@ fun SelectableChip(modifier: Modifier = Modifier, selectedState: Boolean = false
 }
 
 @Composable
+@Deprecated("use EdSelectableChipRow", ReplaceWith("EdSelectableChipRow"))
 fun<T : Any> SelectableOneTypesRow(
     types: List<T>,
     selectedType: T?,
@@ -117,6 +120,7 @@ fun<T : Any> SelectableOneTypesRow(
 }
 
 @Composable
+@Deprecated("use EdSelectableChipRowPlaceholders", ReplaceWith("EdSelectableChipRowPlaceholders"))
 fun SelectableTypesRowPlaceholders(count: Int = 2) {
     LazyRow() {
         items(

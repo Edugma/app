@@ -1,5 +1,6 @@
 package io.edugma.domain.account.model
 
+import io.edugma.domain.account.model.ui.Label
 import io.edugma.domain.base.utils.converters.LocalDateConverter
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
@@ -28,9 +29,13 @@ data class Personal(
     val enterYear: String,
     val orders: List<Order>,
     val subdivisions: List<Subdivision>? = null,
+    val applications: List<Application> = emptyList(),
+    val labels: List<Label> = emptyList()
 ) {
     fun getFullName() = "$surname $name $patronymic"
     fun getNameSurname() = "$name $surname"
+
+    val initials = "${name.firstOrNull() ?: ""}${surname.firstOrNull() ?: ""}"
 }
 
 @Serializable

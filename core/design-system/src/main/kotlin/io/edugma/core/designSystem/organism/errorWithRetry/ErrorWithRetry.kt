@@ -1,4 +1,4 @@
-package io.edugma.features.base.elements
+package io.edugma.core.designSystem.organism.errorWithRetry
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,18 +17,15 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
+import io.edugma.core.designSystem.R
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.molecules.button.EdButton
-import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
-import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.elements.R
 
 @Composable
 @Preview
-@Deprecated("use ErrorWithRetry", replaceWith = ReplaceWith("ErrorWithRetry"))
-fun ErrorView(message: String = "Упс... Что-то пошло не так", retryAction: ClickListener = {}) {
+fun ErrorWithRetry(message: String = "Упс... Что-то пошло не так", retryAction: () -> Unit = {}) {
     val anim = remember { R.raw.error }
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(anim))
     val progress by animateLottieCompositionAsState(

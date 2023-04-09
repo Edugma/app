@@ -10,56 +10,49 @@ import io.edugma.domain.base.utils.onSuccess
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.utils.isNotNull
 import io.edugma.features.base.core.utils.isNull
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PersonalViewModel(
     private val repository: PersonalRepository,
     private val applicationsRepository: ApplicationsRepository,
 ) : BaseViewModel<PersonalState>(PersonalState()) {
-
     init {
         load()
     }
 
     private fun load() {
-        setLoading(true)
-        val job = viewModelScope.launch {
-            repository.getLocalPersonalInfo()?.let {
-                setData(it)
-                setLoading(false)
-            }
-        }
         viewModelScope.launch {
-            applicationsRepository.loadApplications()?.let { setApplications(it, true) }
-        }
-        viewModelScope.launch {
-            repository.getPersonalInfo()
-                .onSuccess {
-                    job.cancel()
-                    setData(it)
-                    setLoading(false)
-                }
+            setLoading(true)
+            val local = async { repository.getLocalPersonalInfo() }
+            val remote = async { repository.getPersonalInfoSuspend() }
+            local.await()?.also(::setData)
+            remote.await()
+                .onSuccess(::setData)
                 .onFailure { setError(true) }
-                .collect()
+            setLoading(false)
+            //не доделано api со стороны политеха
+//            applicationsRepository.loadApplications()?.let { setApplications(it, true) }
         }
     }
 
     fun update() {
+        //не доделано api со стороны политеха
+//        viewModelScope.launch {
+//            applicationsRepository.getApplications()
+//                .onSuccess { setApplications(it, false) }
+//                .collect()
+//        }
         viewModelScope.launch {
-            applicationsRepository.getApplications()
-                .onSuccess { setApplications(it, false) }
-                .collect()
-        }
-        viewModelScope.launch {
-            repository.getPersonalInfo()
-                .onStart { setLoading(true) }
-                .onSuccess {
-                    setData(it)
-                    setLoading(false)
-                }
+            setLoading(true)
+            setError(false)
+            repository.getPersonalInfoSuspend()
+                .onSuccess(::setData)
                 .onFailure { setError(true) }
-                .collect()
+            setLoading(false)
         }
     }
 
@@ -75,32 +68,29 @@ class PersonalViewModel(
     }
 
     private fun loadApplications() {
-        viewModelScope.launch {
-            applicationsRepository.getApplications()
-                .onStart {
-                    setLoading(true)
-                }
-                .onSuccess {
-                    setApplications(it, false)
-                    setLoading(false)
-                }
-                .onFailure { setError(true) }
-                .collect()
-        }
+//        viewModelScope.launch {
+//            applicationsRepository.getApplications()
+//                .onStart {
+//                    setLoading(true)
+//                }
+//                .onSuccess {
+//                    setApplications(it, false)
+//                    setLoading(false)
+//                }
+//                .onFailure { setError(true) }
+//                .collect()
+//        }
     }
 
     private fun setLoading(loading: Boolean) {
         mutateState {
-            state = state.copy(
-                isLoading = loading,
-                isError = false,
-            )
+            state = state.copy(isLoading = loading)
         }
     }
 
     private fun setError(error: Boolean = true) {
         mutateState {
-            state = state.copy(isError = error, isLoading = false)
+            state = state.copy(isError = error)
         }
     }
 
@@ -119,8 +109,8 @@ class PersonalViewModel(
 
 data class PersonalState(
     val personal: Personal? = null,
-    val applications: List<Application>? = null,
-    val applicationsFromCache: Boolean? = null,
+    val applications: List<Application>? = emptyList(),
+    val applicationsFromCache: Boolean? = true,
     val selectedColumn: Columns = Columns.Orders,
     val isLoading: Boolean = false,
     val isError: Boolean = false,
