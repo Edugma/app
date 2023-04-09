@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
@@ -37,6 +36,7 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.molecules.avatar.EdAvatar
 import io.edugma.core.designSystem.organism.chipRow.EdSelectableChipRow
+import io.edugma.core.designSystem.organism.chipRow.EdSelectableChipRowPlaceholders
 import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
@@ -54,7 +54,6 @@ import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.base.core.utils.format
 import io.edugma.features.base.core.utils.isNull
-import io.edugma.features.base.elements.SelectableTypesRowPlaceholders
 import org.koin.androidx.compose.getViewModel
 import kotlin.math.min
 
@@ -110,7 +109,7 @@ fun PersonalContent(
                             PersonalPlaceholder()
                         }
                         item(key = "selector") {
-                            SelectableTypesRowPlaceholders()
+                            EdSelectableChipRowPlaceholders()
                         }
                         items(3) {
                             SpacerHeight(height = 3.dp)
@@ -198,7 +197,7 @@ private fun CollapsingToolbar(
                 contentDescription = null,
             )
         }
-        Text(
+        EdLabel(
             text = personal?.getNameSurname() ?: "О вас",
             style = EdTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
             modifier = Modifier
@@ -210,7 +209,7 @@ private fun CollapsingToolbar(
                 }
                 .edPlaceholder(placeholders),
         )
-        Text(
+        EdLabel(
             text = "${personal?.degreeLevel} ${personal?.course} курса группы ${personal?.group}",
             style = EdTheme.typography.bodySmall,
             modifier = Modifier
@@ -241,38 +240,45 @@ fun Personal(personal: Personal) {
         EdLabel(
             text = personal.faculty,
             iconPainter = painterResource(id = EdIcons.ic_fluent_building_24_regular),
+            style = EdTheme.typography.bodyMedium
         )
         SpacerHeight(height = 8.dp)
         EdLabel(
             text = personal.specialty,
             iconPainter = painterResource(id = R.drawable.acc_ic_teacher_24),
+            style = EdTheme.typography.bodyMedium
         )
         SpacerHeight(height = 8.dp)
         personal.specialization?.let {
             EdLabel(
                 text = it,
                 iconPainter = painterResource(id = EdIcons.ic_fluent_book_24_regular),
+                style = EdTheme.typography.bodyMedium
             )
             SpacerHeight(height = 8.dp)
         }
         EdLabel(
             text = "Номер зачетной книжки: ${personal.code}",
             iconPainter = painterResource(id = EdIcons.ic_fluent_album_24_regular),
+            style = EdTheme.typography.bodyMedium
         )
         SpacerHeight(height = 8.dp)
         EdLabel(
             text = "${personal.finance} ${personal.educationForm.lowercase()} основа обучения",
             iconPainter = painterResource(id = EdIcons.ic_fluent_money_24_regular),
+            style = EdTheme.typography.bodyMedium
         )
         SpacerHeight(height = 8.dp)
         EdLabel(
             text = "Год поступления ${personal.enterYear}",
             iconPainter = painterResource(id = EdIcons.ic_fluent_calendar_ltr_24_regular),
+            style = EdTheme.typography.bodyMedium
         )
         SpacerHeight(height = 8.dp)
         EdLabel(
             text = "Лет обучения ${personal.degreeLength}",
             iconPainter = painterResource(id = EdIcons.ic_fluent_timer_24_regular),
+            style = EdTheme.typography.bodyMedium
         )
     }
 }
@@ -341,13 +347,13 @@ fun Order(order: Order) {
             .defaultMinSize(minHeight = 55.dp),
     ) {
         Box {
-            Text(
+            EdLabel(
                 text = order.name,
                 style = EdTheme.typography.titleMedium,
                 modifier = Modifier
                     .defaultMinSize(minWidth = 100.dp),
             )
-            Text(
+            EdLabel(
                 text = order.date?.format().orEmpty(),
                 style = EdTheme.typography.labelMedium,
                 modifier = Modifier
@@ -356,7 +362,7 @@ fun Order(order: Order) {
             )
         }
         SpacerHeight(height = 15.dp)
-        Text(
+        EdLabel(
             text = order.description,
             style = EdTheme.typography.bodySmall,
             modifier = Modifier.fillMaxWidth(),
@@ -373,14 +379,14 @@ fun OrderPlaceholder() {
             .defaultMinSize(minHeight = 55.dp),
     ) {
         Box {
-            Text(
+            EdLabel(
                 text = "",
                 style = EdTheme.typography.titleMedium,
                 modifier = Modifier
                     .defaultMinSize(minWidth = 100.dp)
                     .edPlaceholder(),
             )
-            Text(
+            EdLabel(
                 text = "",
                 style = EdTheme.typography.labelMedium,
                 modifier = Modifier
@@ -390,7 +396,7 @@ fun OrderPlaceholder() {
             )
         }
         SpacerHeight(height = 15.dp)
-        Text(
+        EdLabel(
             text = "",
             style = EdTheme.typography.bodySmall,
             modifier = Modifier
@@ -410,11 +416,11 @@ fun Application(application: Application) {
             .defaultMinSize(minHeight = 55.dp),
     ) {
         Box(Modifier.fillMaxWidth()) {
-            Text(
+            EdLabel(
                 text = application.question,
                 style = EdTheme.typography.titleMedium,
             )
-            Text(
+            EdLabel(
                 text = application.status.orEmpty(),
                 style = EdTheme.typography.labelMedium,
                 color = EdTheme.colorScheme.tertiary,
@@ -423,14 +429,14 @@ fun Application(application: Application) {
             )
         }
 
-        Text(
+        EdLabel(
             text = application.number,
             style = EdTheme.typography.labelSmall,
             color = EdTheme.colorScheme.secondary,
         )
         SpacerHeight(height = 10.dp)
         application.additionalInfo?.let {
-            Text(text = it, style = EdTheme.typography.bodySmall)
+            EdLabel(text = it, style = EdTheme.typography.bodySmall)
         }
     }
 }
@@ -445,7 +451,7 @@ fun ApplicationPlaceholder() {
             .defaultMinSize(minHeight = 55.dp),
     ) {
         Box(Modifier.fillMaxWidth()) {
-            Text(
+            EdLabel(
                 text = "",
                 style = EdTheme.typography.titleMedium,
                 modifier = Modifier
@@ -453,7 +459,7 @@ fun ApplicationPlaceholder() {
                     .defaultMinSize(minWidth = 100.dp)
                     .edPlaceholder(),
             )
-            Text(
+            EdLabel(
                 text = "",
                 style = EdTheme.typography.labelMedium,
                 color = EdTheme.colorScheme.tertiary,
@@ -465,7 +471,7 @@ fun ApplicationPlaceholder() {
             )
         }
 
-        Text(
+        EdLabel(
             text = "",
             style = EdTheme.typography.labelSmall,
             color = EdTheme.colorScheme.secondary,
@@ -474,7 +480,7 @@ fun ApplicationPlaceholder() {
                 .edPlaceholder(),
         )
         SpacerHeight(height = 10.dp)
-        Text(
+        EdLabel(
             text = "it",
             style = EdTheme.typography.bodySmall,
             modifier = Modifier
