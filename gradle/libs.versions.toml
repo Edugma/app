@@ -24,7 +24,7 @@ okHttp = "4.10.0"
 
 kodeinDB = "0.9.0-beta"
 
-composeBom = "2023.01.00"
+composeBom = "2023.03.00"
 composeCompiler = "1.4.0"
 composeActivity = "1.6.1"
 accompanist = "0.28.0"

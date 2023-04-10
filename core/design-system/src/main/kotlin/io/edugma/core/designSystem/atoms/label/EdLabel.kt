@@ -317,6 +317,15 @@ internal fun EdLabelPreview() {
             )
             SpacerHeight(height = 8.dp)
             EdLabel(
+                text = "Sample my text Sample my text Sample my text",
+                iconStart = false,
+                iconPainter = painterResource(id = EdIcons.ic_fluent_person_16_filled),
+                modifier = Modifier.width(170.dp),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            SpacerHeight(height = 8.dp)
+            EdLabel(
                 text = "Sample",
                 iconStart = false,
                 iconPainter = painterResource(id = EdIcons.ic_fluent_person_16_filled),
