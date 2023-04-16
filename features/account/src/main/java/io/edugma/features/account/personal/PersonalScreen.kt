@@ -193,7 +193,7 @@ private fun CollapsingToolbar(
             },
         ) {
             Icon(
-                painter = painterResource(EdIcons.ic_fluent_arrow_left_20_filled),
+                painter = painterResource(EdIcons.ic_fluent_chevron_left_20_filled),
                 contentDescription = null,
             )
         }
