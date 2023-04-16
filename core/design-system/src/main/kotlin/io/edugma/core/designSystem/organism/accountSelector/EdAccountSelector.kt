@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
@@ -16,12 +18,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.label.EdLabel
+import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.molecules.avatar.EdAvatar
 import io.edugma.core.designSystem.molecules.avatar.EdAvatarSize
 import io.edugma.core.designSystem.molecules.avatar.toAvatarInitials
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
+import io.edugma.core.designSystem.utils.edPlaceholder
 
 @Composable
 fun EdAccountSelector(
@@ -66,3 +70,46 @@ fun EdAccountSelector(
         )
     }
 }
+
+@Composable
+fun EdAccountSelectorPlaceholder() {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .clip(EdTheme.shapes.small)
+            .padding(horizontal = 10.dp, vertical = 10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        EdAvatar(
+            url = null,
+            size = EdAvatarSize.large,
+            modifier = Modifier.clip(CircleShape).edPlaceholder()
+        )
+        SpacerWidth(width = 10.dp)
+        Column(
+            modifier = Modifier.weight(1f),
+        ) {
+            EdLabel(
+                text = "state.title",
+                style = EdTheme.typography.titleMedium,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .width(100.dp)
+                    .edPlaceholder()
+            )
+            SpacerHeight(height = 5.dp)
+            EdLabel(
+                text = "state.subtitle",
+                maxLines = 2,
+                style = EdTheme.typography.bodySmall,
+                color = LocalContentColor.current.copy(alpha = 0.6f),
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .width(150.dp)
+                    .edPlaceholder()
+            )
+        }
+    }
+}
+
+

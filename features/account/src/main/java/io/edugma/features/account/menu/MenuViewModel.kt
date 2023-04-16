@@ -1,6 +1,7 @@
 package io.edugma.features.account.menu
 
 import androidx.lifecycle.viewModelScope
+import io.edugma.core.designSystem.organism.accountSelector.AccountSelectorVO
 import io.edugma.domain.account.model.menu.Card
 import io.edugma.domain.account.model.menu.CardType
 import io.edugma.domain.account.model.menu.CardType.Classmates
@@ -201,12 +202,14 @@ sealed class MenuState {
 
     data class Menu(
         val isLoading: Boolean = false,
-        val webScreens: List<WebScreen> = emptyList(),
         val personalData: PersonalData? = null,
         val currentPayments: CurrentPayments? = null,
         val currentPerformance: CurrentPerformance? = null,
         val cards: List<List<Card>> = emptyList()
-    ) : MenuState()
+    ) : MenuState() {
+        val account: AccountSelectorVO? = personalData
+            ?.let { AccountSelectorVO(personalData.fullName, personalData.label, personalData.avatar) }
+    }
 }
 
 data class WebScreen(
