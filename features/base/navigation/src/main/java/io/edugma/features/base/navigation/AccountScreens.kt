@@ -8,8 +8,6 @@ object AccountScreens {
 
     object Menu : Screen() // "$prefix-menu")
 
-    object Authorization : Screen() // "$prefix-auth")
-
     object Applications : Screen() // "$prefix-applications")
 
     object Personal : Screen() // "$prefix-personal")

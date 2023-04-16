@@ -1,8 +1,6 @@
 package io.edugma.features.account
 
-import io.edugma.features.account.authorization.AuthViewModel
 import io.edugma.features.account.classmates.ClassmatesViewModel
-import io.edugma.features.account.main.AccountMainViewModel
 import io.edugma.features.account.marks.PerformanceViewModel
 import io.edugma.features.account.menu.MenuViewModel
 import io.edugma.features.account.payments.PaymentsViewModel
@@ -14,7 +12,6 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val accountFeaturesModule = module {
-    viewModel { AccountMainViewModel(get(), get(), get(), get()) }
     viewModel { MenuViewModel(get(), get(), get()) }
     viewModel { ClassmatesViewModel(get()) }
     viewModel { PaymentsViewModel(get()) }
@@ -22,6 +19,5 @@ val accountFeaturesModule = module {
     viewModel { PerformanceViewModel(get()) }
     viewModel { PersonalViewModel(get(), get()) }
     viewModel { TeachersViewModel(get()) }
-    viewModel { AuthViewModel(get(), get(), get(), get()) }
     viewModel { WebViewModel() }
 }
