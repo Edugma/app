@@ -3,7 +3,12 @@ package io.edugma.features.account.menu
 import androidx.lifecycle.viewModelScope
 import io.edugma.domain.account.model.menu.Card
 import io.edugma.domain.account.model.menu.CardType
-import io.edugma.domain.account.model.menu.CardType.*
+import io.edugma.domain.account.model.menu.CardType.Classmates
+import io.edugma.domain.account.model.menu.CardType.Marks
+import io.edugma.domain.account.model.menu.CardType.Payments
+import io.edugma.domain.account.model.menu.CardType.Students
+import io.edugma.domain.account.model.menu.CardType.Teachers
+import io.edugma.domain.account.model.menu.CardType.Web
 import io.edugma.domain.account.repository.CardsRepository
 import io.edugma.domain.account.usecase.AuthWithCachingDataUseCase
 import io.edugma.domain.account.usecase.CurrentPayments
@@ -44,13 +49,13 @@ class MenuViewModel(
     //auth
     fun loginInput(text: String) {
         mutateStateWithCheck<MenuState.Authorization> {
-            it.copy(login = text)
+            it.copy(login = text, loginError = false)
         }
     }
 
     fun passwordInput(text: String) {
         mutateStateWithCheck<MenuState.Authorization> {
-            it.copy(password = text)
+            it.copy(password = text, passwordError = false)
         }
     }
 
@@ -62,17 +67,53 @@ class MenuViewModel(
                 ?.let {
                     login = it.login
                     password = it.password
+                    if (login.isEmpty()) {
+                        setLoginError()
+                    }
+                    if (password.isEmpty()) {
+                        setPasswordError()
+                    }
+                    if (login.isEmpty() || password.isEmpty()) {
+                        setError("Заполните все поля")
+                        return@launch
+                    }
                 } ?: return@launch
             setLoading(true)
+            setError(null)
             authCachingUseCase.authorize(
                 login = login,
                 password = password,
                 onAuthSuccess = ::setAuthorizedState,
-                onAuthFailure = { setLoading(false) },
+                onAuthFailure = {
+                    setLoading(false)
+                    setError(it)
+                },
                 onGetData = ::setData
             )
         }
 
+    }
+
+    private fun setError(error: Throwable) {
+        setError(error.let { "Ошибка авторизации" }) //todo добавить исключения
+    }
+
+    private fun setError(error: String?) {
+        mutateStateWithCheck<MenuState.Authorization> {
+            it.copy(error = error.orEmpty())
+        }
+    }
+
+    private fun setLoginError() {
+        mutateStateWithCheck<MenuState.Authorization> {
+            it.copy(loginError = true)
+        }
+    }
+
+    private fun setPasswordError() {
+        mutateStateWithCheck<MenuState.Authorization> {
+            it.copy(passwordError = true)
+        }
     }
 
     //menu
@@ -113,18 +154,16 @@ class MenuViewModel(
 
     //todo подумать как лучше
     private fun setLoading(isLoading: Boolean) {
-        mutateState {
-            when (state) {
-                is MenuState.Authorization ->
-                    mutateStateWithCheck<MenuState.Authorization> {
-                        it.copy(isLoading = isLoading)
-                    }
-                is MenuState.Menu ->
-                    mutateStateWithCheck<MenuState.Menu> {
-                        it.copy(isLoading = isLoading)
-                    }
-                else -> {}
-            }
+        when (state.value) {
+            is MenuState.Authorization ->
+                mutateStateWithCheck<MenuState.Authorization> {
+                    it.copy(isLoading = isLoading)
+                }
+            is MenuState.Menu ->
+                mutateStateWithCheck<MenuState.Menu> {
+                    it.copy(isLoading = isLoading)
+                }
+            else -> {}
         }
     }
 
@@ -140,12 +179,9 @@ class MenuViewModel(
         }
     }
 
-    private inline fun <reified TState : MenuState> mutateStateWithCheck(crossinline mutate: (TState) -> TState) {
+    private inline fun <reified TState : MenuState> mutateStateWithCheck(noinline mutate: (TState) -> TState) {
         mutateState {
-            val cachedState = state
-            if (cachedState is TState) {
-                state = mutate(cachedState)
-            }
+            state = (state as? TState)?.let(mutate::invoke) ?: state
         }
     }
 
@@ -156,9 +192,10 @@ sealed class MenuState {
 
     data class Authorization(
         val login: String = "",
+        val loginError: Boolean = false,
         val password: String = "",
-        val savePassword: Boolean = false,
-        val auth: Boolean = false,
+        val passwordError: Boolean = false,
+        val error: String = "",
         val isLoading: Boolean = false,
     ) : MenuState()
 
