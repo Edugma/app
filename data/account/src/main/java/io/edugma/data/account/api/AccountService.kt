@@ -51,6 +51,9 @@ interface AccountService {
     @GET("/performance/courses_semesters")
     fun getCoursesWithSemesters(): Flow<Result<SemestersWithCourse>>
 
+    @GET("/performance/courses_semesters")
+    suspend fun getCoursesWithSemestersSuspend(): Result<SemestersWithCourse>
+
     @GET("/performance/semesters/{semester}")
     fun getMarks(
         @Path("semester") semester: String,

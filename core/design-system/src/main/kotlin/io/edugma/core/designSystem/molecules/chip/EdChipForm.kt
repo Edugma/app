@@ -5,14 +5,14 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Immutable
-class EdChipSize(
+class EdChipForm(
     val shapeSize: Dp,
 ) {
     companion object {
         val circle
-            get() = EdChipSize(28.0.dp)
+            get() = EdChipForm(28.0.dp)
 
         val roundedSquare
-            get() = EdChipSize(8.dp)
+            get() = EdChipForm(8.dp)
     }
 }

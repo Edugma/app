@@ -8,6 +8,7 @@ import io.edugma.data.base.local.PreferencesDS
 import io.edugma.data.base.local.getJsonLazy
 import io.edugma.data.base.local.setJsonLazy
 import io.edugma.domain.account.model.Performance
+import io.edugma.domain.account.model.SemestersWithCourse
 import io.edugma.domain.account.repository.PerformanceRepository
 import io.edugma.domain.base.utils.onSuccess
 import kotlinx.coroutines.Dispatchers
@@ -38,6 +39,14 @@ class PerformanceRepositoryImpl(
                 setLocalCourses(it.coursesWithSemesters.values.toSet().toList())
             }
             .flowOn(Dispatchers.IO)
+
+    override suspend fun getCoursesWithSemestersSuspend(): Result<SemestersWithCourse> {
+        return api.getCoursesWithSemestersSuspend()
+            .onSuccess {
+                setLocalSemesters(it.coursesWithSemesters.keys.toList())
+                setLocalCourses(it.coursesWithSemesters.values.toSet().toList())
+            }
+    }
 
     override fun getMarksBySemester(semester: Int?) =
         api.getMarks(semester?.toString().orEmpty())

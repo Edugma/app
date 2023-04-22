@@ -1,5 +1,6 @@
 package io.edugma.core.designSystem.organism.nothingFound
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -22,7 +23,7 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
 
 @Composable
-fun EdNothingFound(message: String = "К сожалению, ничего не найдено.") {
+fun EdNothingFound(modifier: Modifier = Modifier, message: String = "К сожалению, ничего не найдено.") {
     val anim = remember { R.raw.emptylist }
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(anim))
     val progress by animateLottieCompositionAsState(
@@ -30,10 +31,10 @@ fun EdNothingFound(message: String = "К сожалению, ничего не �
         iterations = LottieConstants.IterateForever,
     )
     Column(
-        modifier = Modifier.padding(10.dp),
+        modifier = modifier.padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        SpacerHeight(height = 50.dp)
         LottieAnimation(
             composition = composition,
             progress = { progress },

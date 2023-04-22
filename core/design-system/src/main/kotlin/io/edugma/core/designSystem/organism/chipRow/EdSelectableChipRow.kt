@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import io.edugma.core.designSystem.molecules.chip.EdChipSize
+import io.edugma.core.designSystem.molecules.chip.EdChipForm
 import io.edugma.core.designSystem.molecules.chip.EdSelectableChip
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.edPlaceholder
@@ -18,7 +18,7 @@ fun<T : Any> EdSelectableChipRow(
     types: List<T>,
     selectedType: T?,
     nameMapper: (T) -> String,
-    chipSize: EdChipSize = EdChipSize.roundedSquare,
+    chipForm: EdChipForm = EdChipForm.roundedSquare,
     defaultColor: Color = EdTheme.colorScheme.primary,
     selectedColor: Color = EdTheme.colorScheme.surface,
     clickListener: (T) -> Unit,
@@ -30,7 +30,7 @@ fun<T : Any> EdSelectableChipRow(
         ) {
             EdSelectableChip(
                 selectedState = types[it] == selectedType,
-                chipSize = chipSize,
+                chipForm = chipForm,
                 defaultColor = defaultColor,
                 selectedColor = selectedColor,
                 onClick = { clickListener.invoke(types[it]) },
@@ -49,7 +49,7 @@ fun<T : Any> EdSelectableChipRow(
 @Composable
 fun EdSelectableChipRowPlaceholders(
     count: Int = 2,
-    chipSize: EdChipSize = EdChipSize.roundedSquare,
+    chipForm: EdChipForm = EdChipForm.roundedSquare,
 ) {
     LazyRow() {
         items(
@@ -59,7 +59,7 @@ fun EdSelectableChipRowPlaceholders(
                 modifier = Modifier
                     .edPlaceholder()
                     .widthIn(80.dp),
-                chipSize = chipSize,
+                chipForm = chipForm,
             ) {}
         }
     }

@@ -1,5 +1,6 @@
 package io.edugma.core.designSystem.organism.errorWithRetry
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -25,7 +26,7 @@ import io.edugma.core.designSystem.tokens.icons.EdIcons
 
 @Composable
 @Preview
-fun ErrorWithRetry(message: String = "Упс... Что-то пошло не так", retryAction: () -> Unit = {}) {
+fun ErrorWithRetry(modifier: Modifier = Modifier, message: String = "Упс... Что-то пошло не так", retryAction: () -> Unit = {}) {
     val anim = remember { R.raw.error }
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(anim))
     val progress by animateLottieCompositionAsState(
@@ -33,10 +34,10 @@ fun ErrorWithRetry(message: String = "Упс... Что-то пошло не та
         iterations = LottieConstants.IterateForever,
     )
     Column(
-        modifier = Modifier.padding(10.dp),
+        modifier = modifier.padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        SpacerHeight(height = 50.dp)
         Text(
             text = message,
             style = EdTheme.typography.headlineSmall,

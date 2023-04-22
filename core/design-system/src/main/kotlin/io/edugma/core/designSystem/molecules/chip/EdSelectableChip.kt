@@ -21,7 +21,7 @@ import io.edugma.core.designSystem.utils.ifThen
 @Composable
 fun EdSelectableChip(
     modifier: Modifier = Modifier,
-    chipSize: EdChipSize = EdChipSize.circle,
+    chipForm: EdChipForm = EdChipForm.circle,
     selectedState: Boolean = false,
     defaultColor: Color = EdTheme.colorScheme.primary,
     selectedColor: Color = EdTheme.colorScheme.surface,
@@ -33,7 +33,7 @@ fun EdSelectableChip(
             .padding(4.dp)
             .height(32.dp),
         colors = EdCardDefaults.cardColors(if (selectedState) defaultColor else selectedColor),
-        shape = RoundedCornerShape(chipSize.shapeSize)
+        shape = RoundedCornerShape(chipForm.shapeSize)
     ) {
         Row(
             modifier = modifier

@@ -19,17 +19,18 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.utils.ifThen
 
 @Composable
-fun EdChip(modifier: Modifier = Modifier, chipSize: EdChipSize = EdChipSize.circle, icon: ImageVector? = null, onClick: (() -> Unit)? = null, body: @Composable () -> Unit = {}) {
+fun EdChip(modifier: Modifier = Modifier, chipForm: EdChipForm = EdChipForm.circle, icon: ImageVector? = null, onClick: (() -> Unit)? = null, body: @Composable () -> Unit = {}) {
     EdCard(
         modifier = Modifier
             .padding(4.dp)
             .height(32.dp),
-        shape = RoundedCornerShape(chipSize.shapeSize),
+        shape = RoundedCornerShape(chipForm.shapeSize),
     ) {
         Row(
             modifier = modifier
                 .padding(end = 15.dp, start = 5.dp)
                 .widthIn(min = 50.dp, max = 100.dp)
+                .height(32.dp)
                 .ifThen(onClick != null) { clickable(onClick = onClick!!) },
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
