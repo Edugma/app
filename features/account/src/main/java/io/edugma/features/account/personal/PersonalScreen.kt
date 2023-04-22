@@ -29,8 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.surface.EdSurface
@@ -38,6 +36,7 @@ import io.edugma.core.designSystem.molecules.avatar.EdAvatar
 import io.edugma.core.designSystem.organism.chipRow.EdSelectableChipRow
 import io.edugma.core.designSystem.organism.chipRow.EdSelectableChipRowPlaceholders
 import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
+import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.designSystem.tokens.shapes.bottom
@@ -93,7 +92,10 @@ fun PersonalContent(
                 backListener,
             )
         }
-        SwipeRefresh(state = rememberSwipeRefreshState(state.isRefreshing), onRefresh = refreshListener) {
+        EdPullRefresh(
+            refreshing = state.isRefreshing,
+            onRefresh = refreshListener
+        ) {
             LazyColumn(
                 Modifier
                     .padding(horizontal = 8.dp)

@@ -10,7 +10,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,19 +29,19 @@ import io.edugma.core.designSystem.utils.edPlaceholder
 @Composable
 fun EdAccountSelector(
     state: AccountSelectorVO,
-    onClick: () -> Unit,
+    onClick: (() -> Unit)? = null,
 ) {
     Row(
         Modifier
             .fillMaxWidth()
             .clip(EdTheme.shapes.small)
-            .clickable(onClick = onClick)
+            .clickable(onClick = { onClick?.invoke() }, enabled = onClick != null)
             .padding(horizontal = 10.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         EdAvatar(
             url = state.avatar,
-            initials = remember { state.title.toAvatarInitials() },
+            initials = state.title.toAvatarInitials(),
             size = EdAvatarSize.large,
         )
         SpacerWidth(width = 10.dp)
@@ -62,12 +61,14 @@ fun EdAccountSelector(
                 overflow = TextOverflow.Ellipsis,
             )
         }
-        SpacerWidth(width = 4.dp)
-        Icon(
-            painter = painterResource(EdIcons.ic_fluent_chevron_right_20_filled),
-            contentDescription = null,
-            tint = EdTheme.colorScheme.outline,
-        )
+        if (onClick != null) {
+            SpacerWidth(width = 4.dp)
+            Icon(
+                painter = painterResource(EdIcons.ic_fluent_chevron_right_20_filled),
+                contentDescription = null,
+                tint = EdTheme.colorScheme.outline,
+            )
+        }
     }
 }
 
@@ -83,7 +84,9 @@ fun EdAccountSelectorPlaceholder() {
         EdAvatar(
             url = null,
             size = EdAvatarSize.large,
-            modifier = Modifier.clip(CircleShape).edPlaceholder()
+            modifier = Modifier
+                .clip(CircleShape)
+                .edPlaceholder()
         )
         SpacerWidth(width = 10.dp)
         Column(

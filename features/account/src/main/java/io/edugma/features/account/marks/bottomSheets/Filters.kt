@@ -38,7 +38,7 @@ fun FiltersBottomSheetContent(
         headerStyle = EdTheme.typography.headlineSmall,
         modifier = Modifier.navigationBarsPadding()
     ) {
-        Column(modifier = Modifier.padding(horizontal = 15.dp)) {
+        Column(modifier = Modifier.padding(15.dp)) {
             SelectableChipsRow(
                 "Курс",
                 state.courses,
@@ -66,7 +66,6 @@ fun FiltersBottomSheetContent(
                 text = "Сбросить",
                 enabled = state.currentFilters.isNotEmpty(),
             )
-            SpacerHeight(height = 15.dp)
         }
     }
 }

@@ -41,9 +41,8 @@ fun BottomSheet(
             EdLabel(
                 text = header,
                 style = headerStyle,
-                modifier = Modifier.padding(start = 16.dp, end = 8.dp),
+                modifier = Modifier.padding(start = 16.dp, end = 8.dp, bottom = 5.dp),
             )
-            SpacerHeight(height = 20.dp)
         }
         content()
     }
