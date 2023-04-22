@@ -63,24 +63,24 @@ fun PerformanceBottomSheetContent(performance: Performance) {
                     fontWeight = FontWeight.Bold
                 )
             }
-            SpacerHeight(height = 10.dp)
-            TeacherItem(performance = performance)
+            performance.teacher.takeIf { it.isNotEmpty() }?.let {
+                TeacherItem(performance = performance)
+            }
         }
     }
 }
 
 @Composable
 private fun ColumnScope.TeacherItem(performance: Performance) {
-    performance.teacher.takeIf { it.isNotEmpty() }?.let {
-        EdDivider(thickness = 1.dp)
-        SpacerHeight(height = 5.dp)
-        EdLabel(
-            text = "Преподаватель",
-            style = EdTheme.typography.bodyLarge,
-        )
-        EdAccountSelector(
-            state = AccountSelectorVO(it, performance.chair, null),
-            onClick = null,
-        )
-    }
+    SpacerHeight(height = 10.dp)
+    EdDivider(thickness = 1.dp)
+    SpacerHeight(height = 10.dp)
+    EdLabel(
+        text = "Преподаватель",
+        style = EdTheme.typography.bodyLarge,
+    )
+    EdAccountSelector(
+        state = AccountSelectorVO(performance.teacher, performance.chair, null),
+        onClick = null,
+    )
 }
