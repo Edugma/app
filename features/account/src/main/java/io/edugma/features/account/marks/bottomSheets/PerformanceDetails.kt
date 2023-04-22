@@ -1,6 +1,7 @@
 package io.edugma.features.account.marks.bottomSheets
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -8,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.atoms.divider.EdDivider
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.organism.accountSelector.AccountSelectorVO
@@ -26,13 +28,7 @@ fun PerformanceBottomSheetContent(performance: Performance) {
         headerStyle = EdTheme.typography.headlineSmall,
         modifier = Modifier.navigationBarsPadding()
     ) {
-        performance.teacher.takeIf { it.isNotEmpty() }?.let {
-            EdAccountSelector(
-                state = AccountSelectorVO(it, performance.chair, null),
-                onClick = null,
-            )
-        }
-        Column(modifier = Modifier.padding(15.dp)) {
+        Column(modifier = Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
             EdLabel(
                 text = "Номер ведомости: ${performance.billNum}",
                 iconPainter = painterResource(id = EdIcons.ic_fluent_book_24_regular),
@@ -53,6 +49,12 @@ fun PerformanceBottomSheetContent(performance: Performance) {
                 style = EdTheme.typography.bodyLarge
             )
             SpacerHeight(height = 12.dp)
+            EdLabel(
+                text = performance.examType,
+                iconPainter = painterResource(id = EdIcons.ic_fluent_person_note_24_regular),
+                style = EdTheme.typography.bodyLarge
+            )
+            SpacerHeight(height = 12.dp)
             performance.grade.takeIf { it.isNotEmpty() }?.let {
                 EdLabel(
                     text = performance.grade,
@@ -61,7 +63,24 @@ fun PerformanceBottomSheetContent(performance: Performance) {
                     fontWeight = FontWeight.Bold
                 )
             }
+            SpacerHeight(height = 10.dp)
+            TeacherItem(performance = performance)
         }
     }
+}
 
+@Composable
+private fun ColumnScope.TeacherItem(performance: Performance) {
+    performance.teacher.takeIf { it.isNotEmpty() }?.let {
+        EdDivider(thickness = 1.dp)
+        SpacerHeight(height = 5.dp)
+        EdLabel(
+            text = "Преподаватель",
+            style = EdTheme.typography.bodyLarge,
+        )
+        EdAccountSelector(
+            state = AccountSelectorVO(it, performance.chair, null),
+            onClick = null,
+        )
+    }
 }

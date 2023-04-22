@@ -7,6 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.style.TextOverflow
 import io.edugma.core.designSystem.molecules.chip.EdChip
+import io.edugma.core.designSystem.molecules.chip.EdChipForm
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.features.account.marks.Filter
 import io.edugma.features.base.core.utils.Typed1Listener
@@ -25,6 +26,7 @@ fun FiltersRow(
         ) {
             EdChip(
                 icon = Icons.Rounded.Close,
+                chipForm = EdChipForm.roundedSquare,
                 onClick = { filterClickListener.invoke(filtersList[it]) },
             ) {
                 Text(
