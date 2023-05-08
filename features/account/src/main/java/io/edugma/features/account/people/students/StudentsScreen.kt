@@ -1,6 +1,5 @@
 package io.edugma.features.account.people.students
 
-import android.content.Context
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -39,7 +38,7 @@ import io.edugma.features.account.R
 import io.edugma.features.account.people.common.bottomSheets.SearchBottomSheet
 import io.edugma.features.account.people.common.items.PeopleItem
 import io.edugma.features.account.people.common.items.PeopleItemPlaceholder
-import io.edugma.features.account.people.common.utlis.share
+import io.edugma.features.account.people.common.utlis.convertAndShare
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.*
 import kotlinx.coroutines.launch
@@ -282,8 +281,4 @@ fun StudentsList(
             }
         }
     }
-}
-
-private fun List<Student>.convertAndShare(context: Context) {
-    share(context) { index, student -> "${index + 1}. ${student.getFullName()}" }
 }

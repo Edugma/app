@@ -2,6 +2,12 @@ package io.edugma.features.account.people.common.utlis
 
 import android.content.Context
 import android.content.Intent
+import io.edugma.domain.account.model.student.Student
+
+
+fun List<Student>.convertAndShare(context: Context) {
+    share(context) { index, student -> "${index + 1}. ${student.getFullName()}" }
+}
 
 fun<T> List<T>.share(context: Context, mapper: (Int, T) -> String) {
     mapIndexed { index: Int, t: T -> mapper(index, t) }.share(context)

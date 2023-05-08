@@ -3,13 +3,10 @@ package io.edugma.features.account.people.classmates
 import androidx.lifecycle.viewModelScope
 import io.edugma.domain.account.model.student.Student
 import io.edugma.domain.account.repository.PeoplesRepository
-import io.edugma.domain.base.utils.onFailure
-import io.edugma.domain.base.utils.onSuccess
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.utils.isNotNull
 import io.edugma.features.base.core.utils.isNull
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class ClassmatesViewModel(private val repository: PeoplesRepository) :
@@ -22,29 +19,28 @@ class ClassmatesViewModel(private val repository: PeoplesRepository) :
     private fun loadClassmates() {
         viewModelScope.launch {
             setLoading(true)
-            repository.loadClassmates()?.let {
-                setData(it)
-            }
-            repository.getClassmates()
-                .onSuccess {
-                    setData(it)
-                    setLoading(false)
+
+            val localData = async { repository.loadClassmates() }
+            val remoteData = async { repository.getClassmatesSuspend() }
+
+            localData.await()?.let(::setData)
+            remoteData.await()
+                .onSuccess(::setData)
+                .onFailure {
+                    setError(true)
                 }
-                .onFailure { setError(true) }
-                .collect()
+            setLoading(false)
         }
     }
 
     fun updateClassmates() {
         viewModelScope.launch {
-            repository.getClassmates()
-                .onStart { setLoading(true) }
-                .onSuccess {
-                    setData(it)
-                    setLoading(false)
-                }
+            setError(false)
+            setLoading(true)
+            repository.getClassmatesSuspend()
+                .onSuccess(::setData)
                 .onFailure { setError(true) }
-                .collect()
+            setLoading(false)
         }
     }
 
@@ -56,19 +52,13 @@ class ClassmatesViewModel(private val repository: PeoplesRepository) :
 
     private fun setLoading(isLoading: Boolean) {
         mutateState {
-            state = state.copy(isLoading = isLoading, isError = !isLoading && state.isError)
+            state = state.copy(isLoading = isLoading)
         }
     }
 
     private fun setError(isError: Boolean) {
         mutateState {
-            state = state.copy(isError = isError, isLoading = false)
-        }
-    }
-
-    fun openStudent(student: Student) {
-        mutateState {
-            state = state.copy(selectedStudent = student)
+            state = state.copy(isError = isError)
         }
     }
 }
@@ -77,7 +67,6 @@ data class ClassmatesState(
     val data: List<Student>? = null,
     val isLoading: Boolean = false,
     val isError: Boolean = false,
-    val selectedStudent: Student? = null,
 ) {
     val placeholders = data.isNull() && isLoading && !isError
     val isRefreshing = data.isNotNull() && isLoading && !isError

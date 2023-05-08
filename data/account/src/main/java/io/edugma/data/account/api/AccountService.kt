@@ -28,6 +28,9 @@ interface AccountService {
     @GET("/peoples/classmates/")
     fun getClassmates(): Flow<Result<List<Student>>>
 
+    @GET("/peoples/classmates/")
+    suspend fun getClassmatesSuspend(): Result<List<Student>>
+
     @GET("/peoples/students/{pageSize}/{page}/{name}")
     suspend fun getStudents(
         @Path("name") name: String?,
