@@ -8,12 +8,10 @@ import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import io.edugma.features.account.web.utils.setLkToken
+import io.edugma.features.account.web.utils.updateLkTheme
 
 class WebViewView(context: Context): WebView(context) {
-
-    companion object {
-        private const val AUTH_TOKEN_HEADER = "setAuthToken"
-    }
 
     var failListener: ((errorCode: Int, description: String) -> Unit)? = null
     var pageLoadedListener: (() -> Unit)? = null
@@ -46,7 +44,8 @@ class WebViewView(context: Context): WebView(context) {
             }
 
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                authToken?.let(::addAuthToken)
+                authToken?.let { setLkToken(it) }
+                updateLkTheme()
                 super.onPageStarted(view, url, favicon)
             }
 
@@ -63,14 +62,6 @@ class WebViewView(context: Context): WebView(context) {
                 return super.shouldOverrideUrlLoading(view, url)
             }
         }
-    }
-
-    private fun addAuthToken(token: String) {
-        addLocalStorageValue(AUTH_TOKEN_HEADER, "{\"token\":\"$token\",\"jwt\":null,\"jwt_refresh\":null}")
-    }
-
-    private fun addLocalStorageValue(key: String, value: String) {
-        evaluateJavascript("window.localStorage.setItem('$key','$value');", null)
     }
 
 }
