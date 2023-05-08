@@ -1,4 +1,4 @@
-package io.edugma.features.account.classmates
+package io.edugma.features.account.people.classmates
 
 import androidx.lifecycle.viewModelScope
 import io.edugma.domain.account.model.student.Student

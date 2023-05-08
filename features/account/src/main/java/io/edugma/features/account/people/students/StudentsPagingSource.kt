@@ -1,4 +1,4 @@
-package io.edugma.features.account.students
+package io.edugma.features.account.people.students
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState

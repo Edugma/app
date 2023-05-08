@@ -1,17 +1,17 @@
-package io.edugma.features.account.students
+package io.edugma.features.account.people.teachers
 
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import io.edugma.domain.account.model.student.Student
+import io.edugma.domain.account.model.Teacher
 import io.edugma.domain.account.repository.PeoplesRepository
 import io.edugma.features.base.core.mvi.BaseViewModel
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.*
 
-class StudentsViewModel(private val repository: PeoplesRepository) :
-    BaseViewModel<StudentsState>(StudentsState()) {
+class TeachersViewModel(private val repository: PeoplesRepository) :
+    BaseViewModel<TeachersState>(TeachersState()) {
 
     companion object {
         private const val PAGE_SIZE = 10
@@ -22,7 +22,7 @@ class StudentsViewModel(private val repository: PeoplesRepository) :
     }
 
     private fun requestPagingData(name: String) = Pager(PagingConfig(pageSize = PAGE_SIZE)) {
-        StudentsPagingSource(repository, name, PAGE_SIZE)
+        TeachersPagingSource(repository, name, PAGE_SIZE)
     }
 
     fun load(name: String = "") {
@@ -40,26 +40,26 @@ class StudentsViewModel(private val repository: PeoplesRepository) :
         }
     }
 
-    fun selectFilter() {
+    fun openSearch() {
         mutateState {
-            state = state.copy(bottomType = BottomSheetType.Filter)
+            state = state.copy(bottomType = BottomType.Search, selectedEntity = null)
         }
     }
 
-    fun selectStudent(student: Student) {
+    fun openTeacher(teacher: Teacher) {
         mutateState {
-            state = state.copy(selectedStudent = student, bottomType = BottomSheetType.Student)
+            state = state.copy(bottomType = BottomType.Teacher, selectedEntity = teacher)
         }
     }
 }
 
-data class StudentsState(
-    val pagingData: Flow<PagingData<Student>>? = null,
+data class TeachersState(
+    val pagingData: Flow<PagingData<Teacher>>? = null,
     val name: String = "",
-    val bottomType: BottomSheetType = BottomSheetType.Filter,
-    val selectedStudent: Student? = null,
+    val bottomType: BottomType = BottomType.Search,
+    val selectedEntity: Teacher? = null,
 )
 
-enum class BottomSheetType {
-    Filter, Student
+enum class BottomType {
+    Teacher, Search
 }

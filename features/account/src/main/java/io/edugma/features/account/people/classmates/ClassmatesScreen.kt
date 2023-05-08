@@ -1,4 +1,4 @@
-package io.edugma.features.account.classmates
+package io.edugma.features.account.people.classmates
 
 import android.content.Intent
 import androidx.compose.foundation.layout.*
@@ -21,8 +21,8 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.ui.screen.FeatureScreen
-import io.edugma.features.account.students.Student
-import io.edugma.features.account.teachers.TeacherPlaceholder
+import io.edugma.features.account.people.common.items.PeopleItem
+import io.edugma.features.account.people.common.items.PeopleItemPlaceholder
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.isNull
 import io.edugma.features.base.elements.ErrorView
@@ -57,7 +57,7 @@ fun ClassmatesContent(
                     }
                     state.placeholders -> {
                         items(3) {
-                            TeacherPlaceholder()
+                            PeopleItemPlaceholder()
                         }
                     }
                     else -> {
@@ -65,7 +65,8 @@ fun ClassmatesContent(
                             count = state.data?.size ?: 0,
                             key = { state.data?.get(it)?.id ?: it },
                         ) {
-                            Student(student = state.data!![it]) {}
+                            val item = state.data!![it]
+                            PeopleItem(title = item.getFullName(), description = item.getInfo(), avatar = item.avatar)
                         }
                     }
                 }

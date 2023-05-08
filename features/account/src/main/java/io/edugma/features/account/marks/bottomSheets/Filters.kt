@@ -1,10 +1,7 @@
 package io.edugma.features.account.marks.bottomSheets
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,37 +33,36 @@ fun FiltersBottomSheetContent(
     BottomSheet(
         header = "Фильтры",
         headerStyle = EdTheme.typography.headlineSmall,
-        modifier = Modifier.navigationBarsPadding()
+        horizontalContentPadding = 15.dp,
+        verticalContentPadding = 15.dp
     ) {
-        Column(modifier = Modifier.padding(15.dp)) {
-            SelectableChipsRow(
-                "Курс",
-                state.courses,
-                filterUpdateListener,
-                state.bottomSheetPlaceholders,
-            )
-            SpacerHeight(height = 15.dp)
-            SelectableChipsRow(
-                "Семестр",
-                state.semesters,
-                filterUpdateListener,
-                state.bottomSheetPlaceholders,
-            )
-            SpacerHeight(height = 15.dp)
-            SelectableChipsRow(
-                "Тип",
-                state.types,
-                filterUpdateListener,
-                state.bottomSheetPlaceholders,
-            )
-            SpacerHeight(height = 15.dp)
-            EdButton(
-                onClick = resetFilterListener,
-                modifier = Modifier.fillMaxWidth(),
-                text = "Сбросить",
-                enabled = state.currentFilters.isNotEmpty(),
-            )
-        }
+        SelectableChipsRow(
+            "Курс",
+            state.courses,
+            filterUpdateListener,
+            state.bottomSheetPlaceholders,
+        )
+        SpacerHeight(height = 15.dp)
+        SelectableChipsRow(
+            "Семестр",
+            state.semesters,
+            filterUpdateListener,
+            state.bottomSheetPlaceholders,
+        )
+        SpacerHeight(height = 15.dp)
+        SelectableChipsRow(
+            "Тип",
+            state.types,
+            filterUpdateListener,
+            state.bottomSheetPlaceholders,
+        )
+        SpacerHeight(height = 15.dp)
+        EdButton(
+            onClick = resetFilterListener,
+            modifier = Modifier.fillMaxWidth(),
+            text = "Сбросить",
+            enabled = state.currentFilters.isNotEmpty(),
+        )
     }
 }
 

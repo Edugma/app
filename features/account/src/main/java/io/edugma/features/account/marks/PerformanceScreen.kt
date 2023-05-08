@@ -96,15 +96,14 @@ fun PerformanceContent(
             title = "Оценки",
             onNavigationClick = backListener,
             actions = {
-                if (!state.isLoading) {
-                    IconButton(
-                        onClick = { showBottomSheet(null) },
-                    ) {
-                        Icon(
-                            painterResource(id = EdIcons.ic_fluent_filter_24_regular),
-                            contentDescription = "Фильтр",
-                        )
-                    }
+                IconButton(
+                    onClick = { showBottomSheet(null) },
+                    enabled = !state.isLoading
+                ) {
+                    Icon(
+                        painterResource(id = EdIcons.ic_fluent_filter_24_regular),
+                        contentDescription = "Фильтр",
+                    )
                 }
             },
         )

@@ -3,11 +3,8 @@ package io.edugma.features.account.payments.bottomSheet
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -26,28 +23,24 @@ fun PaymentBottomSheet(
 ) {
     BottomSheet(
         header = "QR код",
-        modifier = Modifier.navigationBarsPadding()
+        verticalContentPadding = 15.dp
     ) {
         val context = LocalContext.current
-        Column(
-            modifier = Modifier.padding(15.dp),
-        ) {
-            AsyncImage(
-                model = qrUrl,
-                contentDescription = "qr code",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1f)
-                    .clickable {
-                        Intent(Intent.ACTION_VIEW, Uri.parse(qrUrl)).apply(context::startActivity)
-                    },
-            )
-            SpacerHeight(height = 20.dp)
-            EdLabel(
-                text = "Вы можете сделать скриншот экрана или скачать QR-код на устройство, затем открыть его в мобильном приложении вашего банка:\nОплата по QR-коду -> Загрузить изображение",
-                iconPainter = painterResource(id = EdIcons.ic_fluent_info_24_regular),
-                style = EdTheme.typography.bodyMedium
-            )
-        }
+        AsyncImage(
+            model = qrUrl,
+            contentDescription = "qr code",
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f)
+                .clickable {
+                    Intent(Intent.ACTION_VIEW, Uri.parse(qrUrl)).apply(context::startActivity)
+                },
+        )
+        SpacerHeight(height = 20.dp)
+        EdLabel(
+            text = "Вы можете сделать скриншот экрана или скачать QR-код на устройство, затем открыть его в мобильном приложении вашего банка:\nОплата по QR-коду -> Загрузить изображение",
+            iconPainter = painterResource(id = EdIcons.ic_fluent_info_24_regular),
+            style = EdTheme.typography.bodyMedium
+        )
     }
 }
