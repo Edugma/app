@@ -8,6 +8,7 @@ import androidx.paging.cachedIn
 import io.edugma.domain.account.model.Teacher
 import io.edugma.domain.account.repository.PeoplesRepository
 import io.edugma.features.base.core.mvi.BaseViewModel
+import io.edugma.features.base.navigation.schedule.ScheduleInfoScreens
 import kotlinx.coroutines.flow.*
 
 class TeachersViewModel(private val repository: PeoplesRepository) :
@@ -50,6 +51,13 @@ class TeachersViewModel(private val repository: PeoplesRepository) :
         mutateState {
             state = state.copy(bottomType = BottomType.Teacher, selectedEntity = teacher)
         }
+    }
+
+    fun openTeacherSchedule() {
+        state.value.selectedEntity?.id?.let {
+            router.navigateTo(ScheduleInfoScreens.TeacherInfo(it))
+        }
+
     }
 }
 

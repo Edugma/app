@@ -2,40 +2,45 @@ package io.edugma.features.account.people.teachers
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import coil.compose.AsyncImage
+import io.edugma.core.designSystem.atoms.divider.EdDivider
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.loader.EdLoader
 import io.edugma.core.designSystem.atoms.loader.EdLoaderSize
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
+import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
+import io.edugma.core.designSystem.molecules.avatar.EdAvatar
+import io.edugma.core.designSystem.molecules.avatar.EdAvatarSize
+import io.edugma.core.designSystem.molecules.avatar.toAvatarInitials
+import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
 import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
+import io.edugma.core.ui.screen.BottomSheet
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.domain.account.model.Teacher
 import io.edugma.domain.account.model.departments
@@ -68,7 +73,10 @@ fun TeachersScreen(viewModel: TeachersViewModel = getViewModel()) {
                 when (state.bottomType) {
                     BottomType.Teacher -> {
                         state.selectedEntity?.let {
-                            TeacherInfoBottom(teacher = it)
+                            TeacherBottomSheet(
+                                teacher = it,
+                                openSchedule = viewModel::openTeacherSchedule
+                            )
                         }
                     }
                     BottomType.Search -> {
@@ -101,72 +109,81 @@ fun TeachersScreen(viewModel: TeachersViewModel = getViewModel()) {
 }
 
 @Composable
-fun TeacherInfoBottom(teacher: Teacher) {
-    Column(
-        modifier = Modifier
-            .padding(horizontal = 15.dp),
-    ) {
-        SpacerHeight(height = 15.dp)
-        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Text(
+fun TeacherBottomSheet(teacher: Teacher, openSchedule: ClickListener) {
+    BottomSheet{
+        Row(
+            Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            EdLabel(
                 text = teacher.name,
                 style = EdTheme.typography.headlineSmall,
-                modifier = Modifier
-                    .padding(horizontal = 8.dp)
-                    .fillMaxWidth(0.8f),
-                maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
+                maxLines = 3,
+                modifier = Modifier.fillMaxWidth(0.7f)
             )
-            AsyncImage(
-                model = teacher.avatar,
-                contentDescription = "avatar",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(CircleShape),
+            SpacerWidth(width = 10.dp)
+            EdAvatar(
+                url = teacher.avatar,
+                initials = teacher.name.toAvatarInitials(),
+                size = EdAvatarSize(
+                    size = 80.dp,
+                    textSizes = listOf(21.sp, 25.sp, 25.sp, 23.sp, 22.sp, 21.sp),
+                ),
             )
         }
-        SpacerHeight(height = 3.dp)
-        Text(
+        SpacerHeight(height = 5.dp)
+        EdLabel(
             text = teacher.departments,
-            style = EdTheme.typography.bodyMedium,
-            color = EdTheme.colorScheme.secondary,
-            modifier = Modifier
-                .padding(horizontal = 8.dp),
+            style = EdTheme.typography.bodyMedium
         )
         SpacerHeight(height = 10.dp)
-        teacher.sex?.let {
+        EdDivider(thickness = 1.dp)
+        SpacerHeight(height = 10.dp)
+        teacher.stuffType?.let {
             EdLabel(
                 text = it,
-                iconPainter = painterResource(id = EdIcons.ic_fluent_people_24_regular),
+                iconPainter = painterResource(id = EdIcons.ic_fluent_book_24_regular),
+                style = EdTheme.typography.bodyMedium
             )
+            SpacerHeight(height = 7.dp)
         }
         teacher.grade?.let {
             EdLabel(
                 text = it,
-                iconPainter = painterResource(id = EdIcons.ic_fluent_book_24_regular),
-            )
-        }
-        teacher.stuffType?.let {
-            EdLabel(
-                text = it,
                 iconPainter = painterResource(id = R.drawable.acc_ic_teacher_24),
+                style = EdTheme.typography.bodyMedium
             )
+            SpacerHeight(height = 7.dp)
         }
-        teacher.birthday?.let {
+        teacher.sex?.let {
             EdLabel(
-                text = it.format(),
-                iconPainter = painterResource(id = EdIcons.ic_fluent_calendar_ltr_24_regular),
+                text = "Пол: $it",
+                iconPainter = painterResource(id = EdIcons.ic_fluent_people_24_regular),
+                style = EdTheme.typography.bodyMedium
             )
+            SpacerHeight(height = 7.dp)
         }
         if (!teacher.email.isNullOrEmpty()) {
-            EdLabel(
-                text = teacher.email!!,
-                iconPainter = painterResource(id = EdIcons.ic_fluent_mail_24_regular),
-            )
+            SelectionContainer {
+                EdLabel(
+                    text = teacher.email!!,
+                    iconPainter = painterResource(id = EdIcons.ic_fluent_mail_24_regular),
+                    style = EdTheme.typography.bodyMedium,
+                )
+            }
+            SpacerHeight(height = 7.dp)
         }
         SpacerHeight(height = 10.dp)
+        EdButton(
+            text = "Посмотреть расписание",
+            onClick = openSchedule,
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
+
 @Composable
 fun TeachersListContent(
     state: TeachersState,
@@ -212,8 +229,14 @@ fun TeachersList(
 ) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(teacherListItems) { item ->
-            item?.let {
-                PeopleItem(it.name, it.description, it.avatar) { teacherClick.invoke(it) }
+            item?.let { teacher ->
+                PeopleItem(
+                    title = teacher.name,
+                    description = teacher.description,
+                    avatar = teacher.avatar,
+                    onClick = { teacherClick.invoke(teacher) }
+                        .takeIf { teacher.avatar.isNotNull() || teacher.sex.isNotNull() || teacher.description.isNotEmpty() }
+                )
             }
         }
         when {
