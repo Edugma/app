@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.searchField.EdSearchField
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.ui.screen.BottomSheet
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -24,6 +25,7 @@ fun SearchBottomSheet(
 ) {
     BottomSheet(
         header = title,
+        headerStyle = EdTheme.typography.headlineSmall,
         imePadding = true,
     ) {
         val keyboardController = LocalSoftwareKeyboardController.current

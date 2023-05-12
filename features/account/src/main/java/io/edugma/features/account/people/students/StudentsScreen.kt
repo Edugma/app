@@ -18,20 +18,27 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.AsyncImage
+import io.edugma.core.designSystem.atoms.divider.EdDivider
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.loader.EdLoader
 import io.edugma.core.designSystem.atoms.loader.EdLoaderSize
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
+import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
+import io.edugma.core.designSystem.molecules.avatar.EdAvatar
+import io.edugma.core.designSystem.molecules.avatar.EdAvatarSize
+import io.edugma.core.designSystem.molecules.avatar.toAvatarInitials
 import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
 import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
+import io.edugma.core.ui.screen.BottomSheet
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.domain.account.model.student.Student
 import io.edugma.features.account.R
@@ -72,7 +79,7 @@ fun StudentsScreen(viewModel: StudentsViewModel = getViewModel()) {
                         }
                     }
                     BottomSheetType.Student -> {
-                        state.selectedStudent?.let { StudentSheetContent(it) }
+                        state.selectedStudent?.let { StudentBottomSheet(it) }
                     }
                 }
             },
@@ -90,6 +97,61 @@ fun StudentsScreen(viewModel: StudentsViewModel = getViewModel()) {
                 },
             )
         }
+    }
+}
+
+@Composable
+fun StudentBottomSheet(student: Student) {
+    BottomSheet{
+        Row(
+            Modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            EdLabel(
+                text = student.getFullName(),
+                style = EdTheme.typography.headlineSmall,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 3,
+                modifier = Modifier.fillMaxWidth(0.7f)
+            )
+            SpacerWidth(width = 10.dp)
+            EdAvatar(
+                url = student.avatar,
+                initials = student.getFullName().toAvatarInitials(),
+                size = EdAvatarSize(
+                    size = 80.dp,
+                    textSizes = listOf(21.sp, 25.sp, 25.sp, 23.sp, 22.sp, 21.sp),
+                ),
+            )
+        }
+        SpacerHeight(height = 20.dp)
+        EdLabel(
+            iconPainter = painterResource(id = EdIcons.ic_fluent_building_24_regular),
+            text = student.branch.title,
+            style = EdTheme.typography.bodyLarge
+        )
+        SpacerHeight(height = 12.dp)
+        EdLabel(
+            iconPainter = painterResource(id = EdIcons.ic_fluent_building_24_regular),
+            text = "${student.course} курс, ${student.educationType.lowercase()}",
+            style = EdTheme.typography.bodyLarge
+        )
+        SpacerHeight(height = 12.dp)
+        EdLabel(
+            iconPainter = painterResource(id = EdIcons.ic_fluent_people_24_regular),
+            text = "Пол: ${student.sex}",
+            style = EdTheme.typography.bodyLarge
+        )
+        SpacerHeight(height = 10.dp)
+        EdDivider(thickness = 1.dp)
+        SpacerHeight(height = 10.dp)
+        EdLabel(
+            text = "Группа",
+            style = EdTheme.typography.bodyLarge,
+        )
+        EdLabel(text = student.toString())
     }
 }
 

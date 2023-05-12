@@ -84,4 +84,7 @@ interface AccountService {
 
     @GET("/payments/types/")
     fun getPaymentsTypes(): Flow<Result<List<PaymentType>>>
+
+    @GET("/getLkToken")
+    suspend fun getLkToken(): Result<Token>
 }

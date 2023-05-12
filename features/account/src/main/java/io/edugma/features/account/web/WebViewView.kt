@@ -27,6 +27,8 @@ class WebViewView(context: Context): WebView(context) {
         settings.javaScriptEnabled = true
         settings.domStorageEnabled = true
 
+        clearCache(true)
+
         webViewClient = object : WebViewClient() {
 
             @Suppress("OverridingDeprecatedMember")

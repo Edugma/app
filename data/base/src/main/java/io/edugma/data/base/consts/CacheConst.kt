@@ -6,6 +6,8 @@ object CacheConst {
     const val FavoriteScheduleSources = "ScheduleSources"
 
     // account
+    const val TokenKey = "token"
+    const val LkTokenKey = "token"
     const val ApplicationsKey = "applications"
     const val PerformanceKey = "Performance"
     const val CourseKey = "Courses"

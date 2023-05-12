@@ -19,5 +19,5 @@ val accountFeaturesModule = module {
     viewModel { PerformanceViewModel(get()) }
     viewModel { PersonalViewModel(get(), get()) }
     viewModel { TeachersViewModel(get()) }
-    viewModel { WebViewModel() }
+    viewModel { WebViewModel(get()) }
 }
