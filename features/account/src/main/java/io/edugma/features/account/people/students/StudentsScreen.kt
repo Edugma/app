@@ -72,7 +72,7 @@ fun StudentsScreen(viewModel: StudentsViewModel = getViewModel()) {
                         SearchBottomSheet(
                             hint = "Введите фамилию или группу",
                             searchValue = state.name,
-                            onSearchValueChanged = viewModel::setName
+                            onSearchValueChanged = viewModel::setName,
                         ) {
                             viewModel.load(state.name)
                             scope.launch { bottomState.hide() }
@@ -102,19 +102,19 @@ fun StudentsScreen(viewModel: StudentsViewModel = getViewModel()) {
 
 @Composable
 fun StudentBottomSheet(student: Student) {
-    BottomSheet{
+    BottomSheet {
         Row(
             Modifier
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             EdLabel(
                 text = student.getFullName(),
                 style = EdTheme.typography.headlineSmall,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 3,
-                modifier = Modifier.fillMaxWidth(0.7f)
+                modifier = Modifier.fillMaxWidth(0.7f),
             )
             SpacerWidth(width = 10.dp)
             EdAvatar(
@@ -130,19 +130,19 @@ fun StudentBottomSheet(student: Student) {
         EdLabel(
             iconPainter = painterResource(id = EdIcons.ic_fluent_building_24_regular),
             text = student.branch.title,
-            style = EdTheme.typography.bodyLarge
+            style = EdTheme.typography.bodyLarge,
         )
         SpacerHeight(height = 12.dp)
         EdLabel(
             iconPainter = painterResource(id = EdIcons.ic_fluent_building_24_regular),
             text = "${student.course} курс, ${student.educationType.lowercase()}",
-            style = EdTheme.typography.bodyLarge
+            style = EdTheme.typography.bodyLarge,
         )
         SpacerHeight(height = 12.dp)
         EdLabel(
             iconPainter = painterResource(id = EdIcons.ic_fluent_people_24_regular),
             text = "Пол: ${student.sex}",
-            style = EdTheme.typography.bodyLarge
+            style = EdTheme.typography.bodyLarge,
         )
         SpacerHeight(height = 10.dp)
         EdDivider(thickness = 1.dp)
@@ -274,7 +274,7 @@ fun StudentsListContent(
 
                 IconButton(
                     onClick = { students?.convertAndShare(context) },
-                    enabled = !students.isNullOrEmpty()
+                    enabled = !students.isNullOrEmpty(),
                 ) {
                     Icon(
                         painterResource(id = EdIcons.ic_fluent_share_24_regular),
@@ -294,7 +294,7 @@ fun StudentsListContent(
                 studentListItems.loadState.refresh is LoadState.Error -> {
                     ErrorWithRetry(
                         modifier = Modifier.fillMaxSize(),
-                        retryAction = studentListItems::refresh
+                        retryAction = studentListItems::refresh,
                     )
                 }
                 studentListItems.itemCount == 0 && studentListItems.loadState.append.endOfPaginationReached -> {
@@ -309,7 +309,7 @@ fun StudentsListContent(
 @Composable
 fun StudentsList(
     studentListItems: LazyPagingItems<Student>,
-    studentClick: Typed1Listener<Student>
+    studentClick: Typed1Listener<Student>,
 ) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(studentListItems) { item ->
@@ -333,7 +333,7 @@ fun StudentsList(
                         EdLoader(
                             modifier = Modifier
                                 .align(Alignment.Center),
-                            size = EdLoaderSize.medium
+                            size = EdLoaderSize.medium,
                         )
                     }
                 }

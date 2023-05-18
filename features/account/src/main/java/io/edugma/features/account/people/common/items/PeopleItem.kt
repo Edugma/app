@@ -20,7 +20,7 @@ fun PeopleItem(title: String, description: String, avatar: String?, onClick: Cli
         )
         EdDivider(
             modifier = Modifier.padding(start = 75.dp, end = 10.dp).padding(vertical = 5.dp),
-            thickness = 1.dp
+            thickness = 1.dp,
         )
     }
 }
@@ -31,7 +31,7 @@ fun PeopleItemPlaceholder() {
         EdAccountSelectorPlaceholder()
         EdDivider(
             modifier = Modifier.padding(start = 75.dp, end = 10.dp).padding(vertical = 5.dp),
-            thickness = 1.dp
+            thickness = 1.dp,
         )
     }
 }

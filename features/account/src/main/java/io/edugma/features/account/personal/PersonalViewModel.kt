@@ -10,11 +10,9 @@ import io.edugma.domain.base.utils.onSuccess
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.utils.isNotNull
 import io.edugma.features.base.core.utils.isNull
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class PersonalViewModel(
     private val repository: PersonalRepository,
@@ -34,13 +32,13 @@ class PersonalViewModel(
                 .onSuccess(::setData)
                 .onFailure { setError(true) }
             setLoading(false)
-            //не доделано api со стороны политеха
+            // не доделано api со стороны политеха
 //            applicationsRepository.loadApplications()?.let { setApplications(it, true) }
         }
     }
 
     fun update() {
-        //не доделано api со стороны политеха
+        // не доделано api со стороны политеха
 //        viewModelScope.launch {
 //            applicationsRepository.getApplications()
 //                .onSuccess { setApplications(it, false) }

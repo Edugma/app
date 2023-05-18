@@ -59,9 +59,10 @@ fun WebScreen(
                 )
                 when {
                     state.isLoading || state.isWebViewLoading -> {
-                        Box(modifier = Modifier
-                            .background(EdTheme.colorScheme.background)
-                            .fillMaxSize()
+                        Box(
+                            modifier = Modifier
+                                .background(EdTheme.colorScheme.background)
+                                .fillMaxSize(),
                         ) {
                             EdLoader(modifier = Modifier.align(Alignment.Center))
                         }
@@ -75,6 +76,5 @@ fun WebScreen(
                 }
             }
         }
-
     }
 }

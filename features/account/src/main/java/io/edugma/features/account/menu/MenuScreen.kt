@@ -21,7 +21,7 @@ fun MenuScreen(viewModel: MenuViewModel = getViewModel()) {
                     state = state as MenuState.Authorization,
                     onLoginClick = viewModel::authorize,
                     onLoginChange = viewModel::loginInput,
-                    onPasswordChange = viewModel::passwordInput
+                    onPasswordChange = viewModel::passwordInput,
                 )
             }
             MenuState.Loading -> LoadingScreen()
@@ -30,12 +30,9 @@ fun MenuScreen(viewModel: MenuViewModel = getViewModel()) {
                     state = state as MenuState.Menu,
                     onSignOut = viewModel::logout,
                     onPersonalClick = viewModel::openPersonal,
-                    cardClick = viewModel::cardClick
+                    cardClick = viewModel::cardClick,
                 )
             }
         }
     }
-
 }
-
-

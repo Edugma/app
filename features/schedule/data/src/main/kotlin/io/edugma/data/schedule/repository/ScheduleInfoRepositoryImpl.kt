@@ -4,6 +4,7 @@ import io.edugma.data.schedule.api.ScheduleInfoService
 import io.edugma.features.schedule.domain.repository.ScheduleInfoRepository
 import io.edugma.features.schedule.domain.repository.ScheduleRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
 class ScheduleInfoRepositoryImpl(
@@ -11,22 +12,22 @@ class ScheduleInfoRepositoryImpl(
     private val scheduleInfoService: ScheduleInfoService,
 ) : ScheduleInfoRepository {
     override fun getTeacherInfo(id: String) =
-        scheduleInfoService.getTeacherInfo(id)
+        flow { emit(scheduleInfoService.getTeacherInfo(id)) }
             .flowOn(Dispatchers.IO)
 
     override fun getGroupInfo(id: String) =
-        scheduleInfoService.getGroupInfo(id)
+        flow { emit(scheduleInfoService.getGroupInfo(id)) }
             .flowOn(Dispatchers.IO)
 
     override fun getPlaceInfo(id: String) =
-        scheduleInfoService.getPlaceInfo(id)
+        flow { emit(scheduleInfoService.getPlaceInfo(id)) }
             .flowOn(Dispatchers.IO)
 
     override fun getLessonSubjectInfo(id: String) =
-        scheduleInfoService.getSubjectInfo(id)
+        flow { emit(scheduleInfoService.getSubjectInfo(id)) }
             .flowOn(Dispatchers.IO)
 
     override fun getLessonTypeInfo(id: String) =
-        scheduleInfoService.getLessonTypeInfo(id)
+        flow { emit(scheduleInfoService.getLessonTypeInfo(id)) }
             .flowOn(Dispatchers.IO)
 }

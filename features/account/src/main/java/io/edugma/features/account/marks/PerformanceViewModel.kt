@@ -134,7 +134,8 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
     }
 
     private fun List<Performance>.getExamTypes() = map { it.examType }.toSet()
-    //todo рефакторить и вынести в usecase
+
+    // todo рефакторить и вынести в usecase
     private fun<T> Set<Filter<T>>.updateFilter(newFilter: Filter<T>): Set<Filter<T>> {
         val newSet = toMutableList()
         newSet.forEachIndexed { index, filter ->
@@ -180,7 +181,7 @@ data class MarksState(
     val currentFilters: Set<Filter<*>> = emptySet(),
     val isLoading: Boolean = false,
     val isError: Boolean = false,
-    val selectedPerformance: Performance? = null
+    val selectedPerformance: Performance? = null,
 ) {
     val placeholders = data.isNull() && isLoading && !isError
     val bottomSheetPlaceholders = (isLoading && !isError) || (isError && data.isNull())

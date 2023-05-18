@@ -22,5 +22,4 @@ internal object CardTypeSerializer : KSerializer<CardType> {
     override fun serialize(encoder: Encoder, value: CardType) {
         encoder.encodeString(value.name)
     }
-
 }

@@ -33,7 +33,7 @@ fun EdNothingFound(modifier: Modifier = Modifier, message: String = "К сожа
     Column(
         modifier = modifier.padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         LottieAnimation(
             composition = composition,

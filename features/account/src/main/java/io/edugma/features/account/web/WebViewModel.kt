@@ -6,7 +6,7 @@ import io.edugma.features.base.core.mvi.BaseViewModel
 import kotlinx.coroutines.launch
 
 class WebViewModel(
-    private val authorizationRepository: AuthorizationRepository
+    private val authorizationRepository: AuthorizationRepository,
 ) : BaseViewModel<WebState>(WebState()) {
 
     init {
@@ -55,7 +55,6 @@ class WebViewModel(
             state = state.copy(authToken = token)
         }
     }
-
 }
 
 data class WebState(

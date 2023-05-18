@@ -19,11 +19,11 @@ import io.edugma.core.ui.screen.BottomSheet
 
 @Composable
 fun PaymentBottomSheet(
-    qrUrl: String
+    qrUrl: String,
 ) {
     BottomSheet(
         header = "QR код",
-        verticalContentPadding = 15.dp
+        verticalContentPadding = 15.dp,
     ) {
         val context = LocalContext.current
         AsyncImage(
@@ -40,7 +40,7 @@ fun PaymentBottomSheet(
         EdLabel(
             text = "Вы можете сделать скриншот экрана или скачать QR-код на устройство, затем открыть его в мобильном приложении вашего банка:\nОплата по QR-коду -> Загрузить изображение",
             iconPainter = painterResource(id = EdIcons.ic_fluent_info_24_regular),
-            style = EdTheme.typography.bodyMedium
+            style = EdTheme.typography.bodyMedium,
         )
     }
 }

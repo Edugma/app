@@ -19,7 +19,7 @@ class SuspendResultCallAdapterFactory(
     override fun get(
         returnType: Type,
         annotations: Array<out Annotation>,
-        retrofit: Retrofit
+        retrofit: Retrofit,
     ): CallAdapter<*, *>? {
         val insideCallType = checkCall(returnType) ?: return null
         val insideResultType = checkResult(insideCallType) ?: return null
@@ -38,7 +38,7 @@ class SuspendResultCallAdapterFactory(
         override fun adapt(call: Call<T>): Call<Result<T>> = CatchingCall(call, mapper)
     }
 
-    private class CatchingCall<T: Any>(
+    private class CatchingCall<T : Any>(
         private val delegate: Call<T>,
         private val mapper: ResponseMapper<T>,
     ) : Call<Result<T>> {
@@ -51,7 +51,7 @@ class SuspendResultCallAdapterFactory(
                     val throwable = HttpException(response)
                     callback.onResponse(
                         this@CatchingCall,
-                        Response.success(mapper.mapFailure(throwable))
+                        Response.success(mapper.mapFailure(throwable)),
                     )
                 }
             }
@@ -59,7 +59,7 @@ class SuspendResultCallAdapterFactory(
             override fun onFailure(call: Call<T>, t: Throwable) {
                 callback.onResponse(
                     this@CatchingCall,
-                    Response.success(mapper.mapFailure(t))
+                    Response.success(mapper.mapFailure(t)),
                 )
             }
         })

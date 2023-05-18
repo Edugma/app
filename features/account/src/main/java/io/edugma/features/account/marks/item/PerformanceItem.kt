@@ -26,11 +26,10 @@ import io.edugma.domain.account.model.Performance
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.format
 
-
 @Composable
 fun PerformanceItem(
     performance: Performance,
-    onClick: ClickListener
+    onClick: ClickListener,
 ) {
     Column(
         modifier = Modifier
@@ -39,28 +38,28 @@ fun PerformanceItem(
             .clickable(
                 onClick = onClick,
                 interactionSource = remember { MutableInteractionSource() },
-                indication = null
+                indication = null,
             ),
-        verticalArrangement = Arrangement.SpaceBetween
+        verticalArrangement = Arrangement.SpaceBetween,
     ) {
         EdLabel(
             text = performance.name,
             style = EdTheme.typography.titleMedium.copy(fontSize = 19.sp),
             modifier = Modifier.heightIn(30.dp),
             maxLines = 2,
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
         )
         Text(
             text = performance.grade,
             style = EdTheme.typography.titleLarge,
             modifier = Modifier
                 .align(Alignment.End)
-                .padding(vertical = 5.dp)
+                .padding(vertical = 5.dp),
         )
         Row {
             performance.date?.let {
                 EdChip(
-                    chipForm = EdChipForm.roundedSquare
+                    chipForm = EdChipForm.roundedSquare,
                 ) {
                     Text(
                         text = performance.date!!.format("dd.MM.yyyy"),
@@ -89,7 +88,7 @@ fun PerformancePlaceholder() {
         modifier = Modifier
             .defaultMinSize(minHeight = 120.dp)
             .fillMaxWidth(),
-        verticalArrangement = Arrangement.SpaceBetween
+        verticalArrangement = Arrangement.SpaceBetween,
     ) {
         EdLabel(
             text = "performancermance",
@@ -98,7 +97,7 @@ fun PerformancePlaceholder() {
                 .heightIn(30.dp)
                 .edPlaceholder(),
             maxLines = 2,
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
         )
         Text(
             text = "performance",
@@ -106,16 +105,16 @@ fun PerformancePlaceholder() {
             modifier = Modifier
                 .align(Alignment.End)
                 .padding(vertical = 5.dp)
-                .edPlaceholder()
+                .edPlaceholder(),
         )
         Row {
             EdChip(
                 chipForm = EdChipForm.roundedSquare,
-                modifier = Modifier.edPlaceholder()
+                modifier = Modifier.edPlaceholder(),
             )
             EdChip(
                 chipForm = EdChipForm.roundedSquare,
-                modifier = Modifier.edPlaceholder()
+                modifier = Modifier.edPlaceholder(),
             )
         }
     }

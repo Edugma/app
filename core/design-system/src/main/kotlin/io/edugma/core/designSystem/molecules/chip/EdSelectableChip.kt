@@ -26,14 +26,14 @@ fun EdSelectableChip(
     defaultColor: Color = EdTheme.colorScheme.primary,
     selectedColor: Color = EdTheme.colorScheme.surface,
     onClick: (() -> Unit)? = null,
-    body: @Composable () -> Unit = {}
+    body: @Composable () -> Unit = {},
 ) {
     EdCard(
         modifier = Modifier
             .padding(4.dp)
             .height(32.dp),
         colors = EdCardDefaults.cardColors(if (selectedState) defaultColor else selectedColor),
-        shape = RoundedCornerShape(chipForm.shapeSize)
+        shape = RoundedCornerShape(chipForm.shapeSize),
     ) {
         Row(
             modifier = modifier

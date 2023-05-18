@@ -20,6 +20,6 @@ fun Dragger(modifier: Modifier = Modifier, width: Dp = 35.dp) {
         modifier = modifier.height(5.dp).width(width),
         colors = cardColors(Color.Gray, Color.Gray, Color.Gray, Color.Gray),
         elevation = EdElevation.Level0,
-        shape = EdShapes.extraLarge
+        shape = EdShapes.extraLarge,
     ) {}
 }

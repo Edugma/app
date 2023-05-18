@@ -28,7 +28,7 @@ fun BottomSheet(
     imePadding: Boolean = false,
     horizontalContentPadding: Dp = 16.dp,
     verticalContentPadding: Dp = 5.dp,
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()

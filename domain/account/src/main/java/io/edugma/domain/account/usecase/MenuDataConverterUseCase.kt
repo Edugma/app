@@ -8,11 +8,11 @@ import kotlin.math.roundToInt
 
 class MenuDataConverterUseCase {
 
-    fun convert(personal: Personal) : PersonalData {
+    fun convert(personal: Personal): PersonalData {
         return personal.toPersonalData()
     }
 
-    fun convert(contracts: Contracts) : CurrentPayments? {
+    fun convert(contracts: Contracts): CurrentPayments? {
         return contracts.getCurrent()
     }
 

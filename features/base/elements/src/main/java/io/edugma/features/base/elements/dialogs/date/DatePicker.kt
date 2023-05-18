@@ -276,7 +276,7 @@ private fun CalendarViewHeader(
                                 )
                             }
                         }
-                    },),
+                    }),
                 tint = state.colors.calendarHeaderTextColor,
             )
 
@@ -296,7 +296,7 @@ private fun CalendarViewHeader(
                                 )
                             }
                         }
-                    },),
+                    }),
                 tint = state.colors.calendarHeaderTextColor,
             )
         }

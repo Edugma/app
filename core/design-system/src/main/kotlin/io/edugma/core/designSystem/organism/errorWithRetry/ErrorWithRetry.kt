@@ -36,7 +36,7 @@ fun ErrorWithRetry(modifier: Modifier = Modifier, message: String = "Упс... �
     Column(
         modifier = modifier.padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         Text(
             text = message,

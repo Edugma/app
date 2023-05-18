@@ -98,7 +98,7 @@ fun PerformanceContent(
             actions = {
                 IconButton(
                     onClick = { showBottomSheet(null) },
-                    enabled = !state.isLoading
+                    enabled = !state.isLoading,
                 ) {
                     Icon(
                         painterResource(id = EdIcons.ic_fluent_filter_24_regular),

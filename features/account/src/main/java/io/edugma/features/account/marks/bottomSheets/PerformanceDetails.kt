@@ -21,32 +21,32 @@ fun PerformanceBottomSheetContent(performance: Performance) {
     BottomSheet(
         header = performance.name,
         headerStyle = EdTheme.typography.headlineSmall,
-        verticalContentPadding = 5.dp
+        verticalContentPadding = 5.dp,
     ) {
         EdLabel(
             text = "Номер ведомости: ${performance.billNum}",
             iconPainter = painterResource(id = EdIcons.ic_fluent_book_24_regular),
-            style = EdTheme.typography.bodyMedium
+            style = EdTheme.typography.bodyMedium,
         )
         SpacerHeight(height = 7.dp)
         performance.date?.let {
             EdLabel(
                 text = "Дата проведения: ${it.format()}",
                 iconPainter = painterResource(id = EdIcons.ic_fluent_calendar_ltr_24_regular),
-                style = EdTheme.typography.bodyMedium
+                style = EdTheme.typography.bodyMedium,
             )
             SpacerHeight(height = 7.dp)
         }
         EdLabel(
             text = "${performance.course} курс ${performance.semester} семестр",
             iconPainter = painterResource(id = R.drawable.acc_ic_teacher_24),
-            style = EdTheme.typography.bodyMedium
+            style = EdTheme.typography.bodyMedium,
         )
         SpacerHeight(height = 7.dp)
         EdLabel(
             text = performance.examType,
             iconPainter = painterResource(id = EdIcons.ic_fluent_person_note_24_regular),
-            style = EdTheme.typography.bodyMedium
+            style = EdTheme.typography.bodyMedium,
         )
         SpacerHeight(height = 12.dp)
         performance.grade.takeIf { it.isNotEmpty() }?.let {
@@ -54,7 +54,7 @@ fun PerformanceBottomSheetContent(performance: Performance) {
                 text = performance.grade,
                 iconPainter = painterResource(id = EdIcons.ic_fluent_album_24_regular),
                 style = EdTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
         }
         performance.teacher.takeIf { it.isNotEmpty() }?.let {

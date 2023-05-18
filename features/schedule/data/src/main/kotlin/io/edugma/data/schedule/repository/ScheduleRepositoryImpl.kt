@@ -21,6 +21,7 @@ import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import io.edugma.features.schedule.domain.repository.ScheduleRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -36,7 +37,11 @@ class ScheduleRepositoryImpl(
     }
 
     private val scheduleStore0 = Store<ScheduleSource, CompactSchedule>(
-        fetcher = { key -> scheduleService.getCompactSchedule(key) },
+        fetcher = { key ->
+            flow {
+                emit(scheduleService.getCompactSchedule(key))
+            }
+        },
         reader = { key ->
             dataVersionLocalDS.getFlow(key.id, expireAt) {
                 kotlin.runCatching { localDS.getLast(it) }
@@ -90,9 +95,14 @@ class ScheduleRepositoryImpl(
     override fun getSchedule(source: ScheduleSource, forceUpdate: Boolean):
         Flow<Lce<List<ScheduleDay>>> =
         if (source.type == ScheduleSources.Complex) {
-            scheduleService.getComplexSchedule(
-                ScheduleComplexFilter(),
-            ).map { it.loading(false).map { it.toModel() } }
+            flow {
+                emit(
+                    scheduleService.getComplexSchedule(
+                        ScheduleComplexFilter(),
+                    ),
+                )
+            }
+                .map { it.loading(false).map { it.toModel() } }
                 .flowOn(Dispatchers.IO)
         } else {
             scheduleStore0.get(source, forceUpdate)

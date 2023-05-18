@@ -4,7 +4,7 @@ import io.edugma.domain.account.model.menu.Card
 import io.edugma.domain.account.model.menu.CardType
 import io.edugma.domain.account.repository.CardsRepository
 
-class CardsRepositoryImpl: CardsRepository {
+class CardsRepositoryImpl : CardsRepository {
     override fun getCards(): List<List<Card>> {
         return listOf(
             listOf(
@@ -59,7 +59,7 @@ class CardsRepositoryImpl: CardsRepository {
                     icon = "",
                     type = CardType.Web,
                     weight = 0.5f,
-                    url = "https://e.mospolytech.ru/#/project-activity"
+                    url = "https://e.mospolytech.ru/#/project-activity",
                 ),
             ),
         )

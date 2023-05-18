@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import io.edugma.domain.account.model.student.Student
 
-
 fun List<Student>.convertAndShare(context: Context) {
     share(context) { index, student -> "${index + 1}. ${student.getFullName()}" }
 }

@@ -54,7 +54,7 @@ fun ClassmatesContent(
 
                 IconButton(
                     onClick = { students?.convertAndShare(context) },
-                    enabled = !students.isNullOrEmpty()
+                    enabled = !students.isNullOrEmpty(),
                 ) {
                     Icon(
                         painterResource(id = EdIcons.ic_fluent_share_24_regular),

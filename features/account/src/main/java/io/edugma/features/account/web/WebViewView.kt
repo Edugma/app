@@ -11,7 +11,7 @@ import android.webkit.WebViewClient
 import io.edugma.features.account.web.utils.setLkToken
 import io.edugma.features.account.web.utils.updateLkTheme
 
-class WebViewView(context: Context): WebView(context) {
+class WebViewView(context: Context) : WebView(context) {
 
     var failListener: ((errorCode: Int, description: String) -> Unit)? = null
     var pageLoadedListener: (() -> Unit)? = null
@@ -21,7 +21,7 @@ class WebViewView(context: Context): WebView(context) {
     init {
         layoutParams = LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
+            ViewGroup.LayoutParams.MATCH_PARENT,
         )
         @SuppressLint("SetJavaScriptEnabled")
         settings.javaScriptEnabled = true
@@ -36,7 +36,7 @@ class WebViewView(context: Context): WebView(context) {
                 webView: WebView,
                 errorCode: Int,
                 description: String,
-                failingUrl: String
+                failingUrl: String,
             ) {
                 failListener?.invoke(errorCode, description)
             }
@@ -65,5 +65,4 @@ class WebViewView(context: Context): WebView(context) {
             }
         }
     }
-
 }

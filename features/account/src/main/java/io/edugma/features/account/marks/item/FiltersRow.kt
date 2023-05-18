@@ -12,7 +12,6 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.features.account.marks.Filter
 import io.edugma.features.base.core.utils.Typed1Listener
 
-
 @Composable
 fun FiltersRow(
     filters: Set<Filter<*>>,

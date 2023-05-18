@@ -17,10 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.surface.EdSurface
-import io.edugma.core.designSystem.organism.accountSelector.AccountSelectorVO
 import io.edugma.core.designSystem.organism.accountSelector.EdAccountSelector
 import io.edugma.core.designSystem.organism.accountSelector.EdAccountSelectorPlaceholder
 import io.edugma.core.designSystem.organism.iconCard.EdIconCard
@@ -33,14 +31,13 @@ import io.edugma.domain.account.model.menu.CardType
 import io.edugma.features.account.menu.MenuState
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.Typed2Listener
-import io.edugma.features.base.core.utils.isNull
 
 @Composable
 fun MainScreen(
     state: MenuState.Menu,
     onSignOut: ClickListener,
     onPersonalClick: ClickListener,
-    cardClick: Typed2Listener<CardType, String?>
+    cardClick: Typed2Listener<CardType, String?>,
 ) {
     Column(
         Modifier.fillMaxSize(),
@@ -75,7 +72,7 @@ fun MainScreen(
                 } else {
                     EdAccountSelector(
                         state = state.account,
-                        onClick = onPersonalClick
+                        onClick = onPersonalClick,
                     )
                 }
                 SpacerHeight(height = 14.dp)
@@ -124,7 +121,7 @@ fun ColumnScope.CardPlaceholders() {
                 .weight(0.66f)
                 .clip(CardDefaults.shape)
                 .edPlaceholder(),
-            onClick = {}
+            onClick = {},
         )
         EdIconCard(
             title = "",
@@ -132,7 +129,7 @@ fun ColumnScope.CardPlaceholders() {
                 .weight(0.33f)
                 .clip(CardDefaults.shape)
                 .edPlaceholder(),
-            onClick = {}
+            onClick = {},
         )
     }
     SpacerHeight(height = 8.dp)
@@ -149,7 +146,7 @@ fun ColumnScope.CardPlaceholders() {
                 .weight(0.33f)
                 .clip(CardDefaults.shape)
                 .edPlaceholder(),
-            onClick = {}
+            onClick = {},
         )
         EdIconCard(
             title = "",
@@ -157,7 +154,7 @@ fun ColumnScope.CardPlaceholders() {
                 .weight(0.33f)
                 .clip(CardDefaults.shape)
                 .edPlaceholder(),
-            onClick = {}
+            onClick = {},
         )
         EdIconCard(
             title = "",
@@ -165,7 +162,7 @@ fun ColumnScope.CardPlaceholders() {
                 .weight(0.33f)
                 .clip(CardDefaults.shape)
                 .edPlaceholder(),
-            onClick = {}
+            onClick = {},
         )
     }
     SpacerHeight(height = 8.dp)
@@ -182,7 +179,7 @@ fun ColumnScope.CardPlaceholders() {
                 .weight(1f)
                 .clip(CardDefaults.shape)
                 .edPlaceholder(),
-            onClick = {}
+            onClick = {},
         )
     }
     SpacerHeight(height = 8.dp)
@@ -198,7 +195,7 @@ fun ColumnScope.CardPlaceholders() {
                 .weight(1f)
                 .clip(CardDefaults.shape)
                 .edPlaceholder(),
-            onClick = {}
+            onClick = {},
         )
     }
     SpacerHeight(height = 8.dp)

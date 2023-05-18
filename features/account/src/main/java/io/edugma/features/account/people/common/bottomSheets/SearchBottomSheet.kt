@@ -43,7 +43,7 @@ fun SearchBottomSheet(
             value = searchValue,
             onValueChange = onSearchValueChanged,
             placeholder = hint,
-            keyboardActions = KeyboardActions(onDone = { searchClickListener() })
+            keyboardActions = KeyboardActions(onDone = { searchClickListener() }),
         )
         SpacerHeight(height = 20.dp)
         EdButton(

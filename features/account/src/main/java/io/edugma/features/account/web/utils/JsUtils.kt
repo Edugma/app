@@ -32,8 +32,10 @@ fun WebView.updateLkTheme() {
 }
 
 private fun Context.isUsingNightModeResources(): Boolean {
-    return when (resources.configuration.uiMode and
-        Configuration.UI_MODE_NIGHT_MASK) {
+    return when (
+        resources.configuration.uiMode and
+            Configuration.UI_MODE_NIGHT_MASK
+    ) {
         Configuration.UI_MODE_NIGHT_YES -> true
         Configuration.UI_MODE_NIGHT_NO -> false
         Configuration.UI_MODE_NIGHT_UNDEFINED -> false

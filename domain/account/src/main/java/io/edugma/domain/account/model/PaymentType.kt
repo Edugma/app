@@ -10,8 +10,6 @@ enum class PaymentType {
 
     @SerialName("education")
     Education,
-
-    ;
 }
 
 fun PaymentType.toLabel() =

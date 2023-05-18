@@ -10,8 +10,8 @@ fun <T> Flow<T>.filterAction(actionSelector: () -> T): Flow<Unit> {
 }
 
 fun <T, TState, TMutator : BaseMutator<TState>, TAction>
-BaseViewModelFull<TState, TMutator, TAction>
-.rememberActionFlow(actionSelector: () -> T): Flow<Unit> {
+    BaseViewModelFull<TState, TMutator, TAction>
+    .rememberActionFlow(actionSelector: () -> T): Flow<Unit> {
     return this.action.filter { it == actionSelector() }.map { }
 }
 

@@ -57,7 +57,7 @@ fun AuthorizationScreen(
                 isError = state.loginError,
                 modifier = Modifier
                     .widthIn(max = 500.dp)
-                    .fillMaxWidth(0.9f)
+                    .fillMaxWidth(0.9f),
             )
             SpacerHeight(height = 12.dp)
             EdTextField(
@@ -68,7 +68,7 @@ fun AuthorizationScreen(
                 visualTransformation = PasswordVisualTransformation(),
                 modifier = Modifier
                     .widthIn(max = 500.dp)
-                    .fillMaxWidth(0.9f)
+                    .fillMaxWidth(0.9f),
             )
             SpacerHeight(height = 2.dp)
             EdLabel(
@@ -77,7 +77,7 @@ fun AuthorizationScreen(
                 style = EdTheme.typography.bodySmall,
                 modifier = Modifier
                     .widthIn(max = 500.dp)
-                    .fillMaxWidth(0.9f)
+                    .fillMaxWidth(0.9f),
             )
             SpacerHeight(height = 15.dp)
             EdButton(

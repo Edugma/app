@@ -29,7 +29,7 @@ class MenuViewModel(
     private val converterUseCase: MenuDataConverterUseCase,
     private val cardsRepository: CardsRepository,
 ) : BaseViewModel<MenuState>(MenuState.Loading) {
-    //init
+    // init
     init {
         checkAuth()
     }
@@ -47,7 +47,7 @@ class MenuViewModel(
         }
     }
 
-    //auth
+    // auth
     fun loginInput(text: String) {
         mutateStateWithCheck<MenuState.Authorization> {
             it.copy(login = text, loginError = false)
@@ -89,14 +89,13 @@ class MenuViewModel(
                     setLoading(false)
                     setError(it)
                 },
-                onGetData = ::setData
+                onGetData = ::setData,
             )
         }
-
     }
 
     private fun setError(error: Throwable) {
-        setError(error.let { "Ошибка авторизации" }) //todo добавить исключения
+        setError(error.let { "Ошибка авторизации" }) // todo добавить исключения
     }
 
     private fun setError(error: String?) {
@@ -117,7 +116,7 @@ class MenuViewModel(
         }
     }
 
-    //menu
+    // menu
     fun logout() {
         viewModelScope.launch {
             withContext(Dispatchers.IO + NonCancellable) {
@@ -132,7 +131,7 @@ class MenuViewModel(
     }
 
     fun cardClick(type: CardType, url: String?) {
-        when(type) {
+        when (type) {
             Students -> router.navigateTo(AccountScreens.Students)
             Teachers -> router.navigateTo(AccountScreens.Teachers)
             Classmates -> router.navigateTo(AccountScreens.Classmates)
@@ -142,7 +141,7 @@ class MenuViewModel(
         }
     }
 
-    //common
+    // common
     private fun setData(dataDto: DataDto) {
         mutateStateWithCheck<MenuState.Menu> { state ->
             state.copy(
@@ -153,7 +152,7 @@ class MenuViewModel(
         }
     }
 
-    //todo подумать как лучше
+    // todo подумать как лучше
     private fun setLoading(isLoading: Boolean) {
         when (state.value) {
             is MenuState.Authorization ->
@@ -185,7 +184,6 @@ class MenuViewModel(
             state = (state as? TState)?.let(mutate::invoke) ?: state
         }
     }
-
 }
 
 sealed class MenuState {
@@ -205,7 +203,7 @@ sealed class MenuState {
         val personalData: PersonalData? = null,
         val currentPayments: CurrentPayments? = null,
         val currentPerformance: CurrentPerformance? = null,
-        val cards: List<List<Card>> = emptyList()
+        val cards: List<List<Card>> = emptyList(),
     ) : MenuState() {
         val account: AccountSelectorVO? = personalData
             ?.let { AccountSelectorVO(personalData.fullName, personalData.label, personalData.avatar) }
@@ -214,7 +212,5 @@ sealed class MenuState {
 
 data class WebScreen(
     val label: String,
-    val url: String
+    val url: String,
 )
-
-

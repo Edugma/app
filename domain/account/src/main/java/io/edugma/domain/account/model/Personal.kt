@@ -30,7 +30,7 @@ data class Personal(
     val orders: List<Order>,
     val subdivisions: List<Subdivision>? = null,
     val applications: List<Application> = emptyList(),
-    val labels: List<Label> = emptyList()
+    val labels: List<Label> = emptyList(),
 ) {
     fun getFullName() = "$surname $name $patronymic"
     fun getNameSurname() = "$name $surname"

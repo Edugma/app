@@ -23,7 +23,6 @@ import io.edugma.features.account.marks.MarksState
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.Typed1Listener
 
-
 @Composable
 fun FiltersBottomSheetContent(
     state: MarksState,
@@ -34,7 +33,7 @@ fun FiltersBottomSheetContent(
         header = "Фильтры",
         headerStyle = EdTheme.typography.headlineSmall,
         horizontalContentPadding = 15.dp,
-        verticalContentPadding = 15.dp
+        verticalContentPadding = 15.dp,
     ) {
         SelectableChipsRow(
             "Курс",

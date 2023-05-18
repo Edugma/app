@@ -86,7 +86,7 @@ fun EdAccountSelectorPlaceholder() {
             size = EdAvatarSize.large,
             modifier = Modifier
                 .clip(CircleShape)
-                .edPlaceholder()
+                .edPlaceholder(),
         )
         SpacerWidth(width = 10.dp)
         Column(
@@ -98,7 +98,7 @@ fun EdAccountSelectorPlaceholder() {
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
                     .width(100.dp)
-                    .edPlaceholder()
+                    .edPlaceholder(),
             )
             SpacerHeight(height = 5.dp)
             EdLabel(
@@ -109,10 +109,8 @@ fun EdAccountSelectorPlaceholder() {
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
                     .width(150.dp)
-                    .edPlaceholder()
+                    .edPlaceholder(),
             )
         }
     }
 }
-
-

@@ -5,5 +5,4 @@ import io.edugma.domain.account.model.menu.Card
 interface CardsRepository {
 
     fun getCards(): List<List<Card>>
-
 }

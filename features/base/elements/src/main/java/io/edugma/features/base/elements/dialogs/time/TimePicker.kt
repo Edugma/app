@@ -645,7 +645,7 @@ private fun ClockLayout(
                 if ((success || !dragSuccess.value) && anchorsChanged) {
                     onLift()
                 }
-            },)
+            })
         }
 
         val inactiveTextColor = colors.textColor(false).value.toArgb()

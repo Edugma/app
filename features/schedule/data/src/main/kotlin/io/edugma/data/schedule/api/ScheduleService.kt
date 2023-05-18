@@ -5,7 +5,6 @@ import io.edugma.data.schedule.model.ScheduleComplexRequest
 import io.edugma.features.schedule.domain.model.ScheduleComplexFilter
 import io.edugma.features.schedule.domain.model.compact.CompactSchedule
 import io.edugma.features.schedule.domain.model.source.ScheduleSource
-import kotlinx.coroutines.flow.Flow
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -14,30 +13,30 @@ import retrofit2.http.Path
 interface ScheduleService {
     // Compact
     @GET("/schedules/compact/{type}/{key}")
-    fun getCompactSchedule(
+    suspend fun getCompactSchedule(
         @Path("type") type: String,
         @Path("key") key: String,
-    ): Flow<Result<CompactSchedule>>
+    ): Result<CompactSchedule>
 
     @POST("/schedules/compact/complex")
-    fun getComplexSchedule(
+    suspend fun getComplexSchedule(
         @Body filter: ScheduleComplexFilter,
-    ): Flow<Result<CompactSchedule>>
+    ): Result<CompactSchedule>
 
     @POST("/schedules/compact/complex")
-    fun getFilteredCompactSchedule(
+    suspend fun getFilteredCompactSchedule(
         @Body filters: ScheduleComplexRequest,
-    ): Flow<Result<CompactSchedule>>
+    ): Result<CompactSchedule>
 
     // My
     @GET("/schedules/my")
-    fun getMySchedule(): Flow<Result<CompactSchedule>>
+    suspend fun getMySchedule(): Result<CompactSchedule>
 
     @POST("/login")
-    fun login(
+    suspend fun login(
         @Body loginRequest: LoginRequest,
-    ): Flow<Result<CompactSchedule>>
+    ): Result<CompactSchedule>
 }
 
-fun ScheduleService.getCompactSchedule(source: ScheduleSource) =
+suspend fun ScheduleService.getCompactSchedule(source: ScheduleSource) =
     getCompactSchedule(source.type.name.lowercase(), source.key)

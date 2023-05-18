@@ -75,7 +75,7 @@ fun TeachersScreen(viewModel: TeachersViewModel = getViewModel()) {
                         state.selectedEntity?.let {
                             TeacherBottomSheet(
                                 teacher = it,
-                                openSchedule = viewModel::openTeacherSchedule
+                                openSchedule = viewModel::openTeacherSchedule,
                             )
                         }
                     }
@@ -83,7 +83,7 @@ fun TeachersScreen(viewModel: TeachersViewModel = getViewModel()) {
                         SearchBottomSheet(
                             hint = "ФИО преподавателя",
                             searchValue = state.name,
-                            onSearchValueChanged = viewModel::setName
+                            onSearchValueChanged = viewModel::setName,
                         ) {
                             viewModel.load(state.name)
                             scope.launch { bottomState.hide() }
@@ -110,18 +110,18 @@ fun TeachersScreen(viewModel: TeachersViewModel = getViewModel()) {
 
 @Composable
 fun TeacherBottomSheet(teacher: Teacher, openSchedule: ClickListener) {
-    BottomSheet{
+    BottomSheet {
         Row(
             Modifier
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             EdLabel(
                 text = teacher.name,
                 style = EdTheme.typography.headlineSmall,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 3,
-                modifier = Modifier.fillMaxWidth(0.7f)
+                modifier = Modifier.fillMaxWidth(0.7f),
             )
             SpacerWidth(width = 10.dp)
             EdAvatar(
@@ -136,7 +136,7 @@ fun TeacherBottomSheet(teacher: Teacher, openSchedule: ClickListener) {
         SpacerHeight(height = 5.dp)
         EdLabel(
             text = teacher.departments,
-            style = EdTheme.typography.bodyMedium
+            style = EdTheme.typography.bodyMedium,
         )
         SpacerHeight(height = 10.dp)
         EdDivider(thickness = 1.dp)
@@ -145,7 +145,7 @@ fun TeacherBottomSheet(teacher: Teacher, openSchedule: ClickListener) {
             EdLabel(
                 text = it,
                 iconPainter = painterResource(id = EdIcons.ic_fluent_book_24_regular),
-                style = EdTheme.typography.bodyMedium
+                style = EdTheme.typography.bodyMedium,
             )
             SpacerHeight(height = 7.dp)
         }
@@ -153,7 +153,7 @@ fun TeacherBottomSheet(teacher: Teacher, openSchedule: ClickListener) {
             EdLabel(
                 text = it,
                 iconPainter = painterResource(id = R.drawable.acc_ic_teacher_24),
-                style = EdTheme.typography.bodyMedium
+                style = EdTheme.typography.bodyMedium,
             )
             SpacerHeight(height = 7.dp)
         }
@@ -161,7 +161,7 @@ fun TeacherBottomSheet(teacher: Teacher, openSchedule: ClickListener) {
             EdLabel(
                 text = "Пол: $it",
                 iconPainter = painterResource(id = EdIcons.ic_fluent_people_24_regular),
-                style = EdTheme.typography.bodyMedium
+                style = EdTheme.typography.bodyMedium,
             )
             SpacerHeight(height = 7.dp)
         }
@@ -179,7 +179,7 @@ fun TeacherBottomSheet(teacher: Teacher, openSchedule: ClickListener) {
         EdButton(
             text = "Посмотреть расписание",
             onClick = openSchedule,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }
@@ -210,7 +210,7 @@ fun TeachersListContent(
                 studentListItems.loadState.refresh is LoadState.Error -> {
                     ErrorWithRetry(
                         modifier = Modifier.fillMaxSize(),
-                        retryAction = studentListItems::refresh
+                        retryAction = studentListItems::refresh,
                     )
                 }
                 studentListItems.itemCount == 0 && studentListItems.loadState.append.endOfPaginationReached -> {
@@ -225,7 +225,7 @@ fun TeachersListContent(
 @Composable
 fun TeachersList(
     teacherListItems: LazyPagingItems<Teacher>,
-    teacherClick: Typed1Listener<Teacher>
+    teacherClick: Typed1Listener<Teacher>,
 ) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(teacherListItems) { item ->
@@ -235,7 +235,7 @@ fun TeachersList(
                     description = teacher.description,
                     avatar = teacher.avatar,
                     onClick = { teacherClick.invoke(teacher) }
-                        .takeIf { teacher.avatar.isNotNull() || teacher.sex.isNotNull() || teacher.description.isNotEmpty() }
+                        .takeIf { teacher.avatar.isNotNull() || teacher.sex.isNotNull() || teacher.description.isNotEmpty() },
                 )
             }
         }
@@ -255,7 +255,7 @@ fun TeachersList(
                         EdLoader(
                             modifier = Modifier
                                 .align(Alignment.Center),
-                            size = EdLoaderSize.medium
+                            size = EdLoaderSize.medium,
                         )
                     }
                 }

@@ -264,7 +264,7 @@ fun PaymentsLeftText(balanceCurrent: String) {
             balanceCurrentColor = Color.Green.copy(alpha = 0.85f)
         }
         else -> {
-            balanceCurrentText = "Задолженность на текущую дату: ${balanceCurrent}"
+            balanceCurrentText = "Задолженность на текущую дату: $balanceCurrent"
             balanceCurrentColor = EdTheme.colorScheme.error
         }
     }

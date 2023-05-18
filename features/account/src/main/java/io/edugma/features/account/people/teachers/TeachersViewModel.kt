@@ -57,7 +57,6 @@ class TeachersViewModel(private val repository: PeoplesRepository) :
         state.value.selectedEntity?.id?.let {
             router.navigateTo(ScheduleInfoScreens.TeacherInfo(it))
         }
-
     }
 }
 

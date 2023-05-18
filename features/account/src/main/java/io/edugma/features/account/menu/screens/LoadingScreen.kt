@@ -31,7 +31,7 @@ fun LoadingScreen() {
         Box(modifier = Modifier.fillMaxSize()) {
             EdLoader(
                 Modifier.align(Alignment.Center),
-                EdLoaderSize.large
+                EdLoaderSize.large,
             )
         }
     }

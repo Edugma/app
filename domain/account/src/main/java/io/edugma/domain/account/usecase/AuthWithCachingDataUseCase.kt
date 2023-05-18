@@ -26,7 +26,7 @@ class AuthWithCachingDataUseCase(
         password: String,
         onAuthSuccess: () -> Unit,
         onAuthFailure: (Throwable) -> Unit,
-        onGetData: (DataDto) -> Unit
+        onGetData: (DataDto) -> Unit,
     ) {
         val authResult = authorizationRepository.authorizationSuspend(login, password)
             .onFailure { onAuthFailure(it) }
@@ -44,11 +44,10 @@ class AuthWithCachingDataUseCase(
         }
 
     suspend fun logout() = authorizationRepository.logout()
-
 }
 
 data class DataDto(
     val personal: Personal?,
     val contracts: Contracts?,
-    val performance: List<Performance>?
+    val performance: List<Performance>?,
 )

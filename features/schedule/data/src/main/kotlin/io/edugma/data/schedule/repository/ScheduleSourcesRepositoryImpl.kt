@@ -15,6 +15,7 @@ import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import io.edugma.features.schedule.domain.repository.ScheduleSourcesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -27,11 +28,11 @@ class ScheduleSourcesRepositoryImpl(
     private val TAG = "ScheduleSourcesReposito"
 
     override fun getSourceTypes() =
-        scheduleSourcesService.getSourceTypes()
+        flow { emit(scheduleSourcesService.getSourceTypes()) }
             .flowOn(Dispatchers.IO)
 
     override fun getSources(type: ScheduleSources) =
-        scheduleSourcesService.getSources(type.name.lowercase())
+        flow { emit(scheduleSourcesService.getSources(type.name.lowercase())) }
             .onFailure { Log.e(TAG, "getSources: ", it) }
             .flowOn(Dispatchers.IO)
 

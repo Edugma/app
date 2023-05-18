@@ -5,33 +5,32 @@ import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubjectInfo
 import io.edugma.features.schedule.domain.model.lessonType.LessonTypeInfo
 import io.edugma.features.schedule.domain.model.place.PlaceInfo
 import io.edugma.features.schedule.domain.model.teacher.TeacherInfo
-import kotlinx.coroutines.flow.Flow
 import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface ScheduleInfoService {
     @GET("/schedule/info/group/{key}")
-    fun getGroupInfo(
+    suspend fun getGroupInfo(
         @Path("key") key: String,
-    ): Flow<Result<GroupInfo>>
+    ): Result<GroupInfo>
 
     @GET("/schedule/info/teacher/{key}")
-    fun getTeacherInfo(
+    suspend fun getTeacherInfo(
         @Path("key") key: String,
-    ): Flow<Result<TeacherInfo>>
+    ): Result<TeacherInfo>
 
     @GET("/schedule/info/place/{key}")
-    fun getPlaceInfo(
+    suspend fun getPlaceInfo(
         @Path("key") key: String,
-    ): Flow<Result<PlaceInfo>>
+    ): Result<PlaceInfo>
 
     @GET("/schedule/info/subject/{key}")
-    fun getSubjectInfo(
+    suspend fun getSubjectInfo(
         @Path("key") key: String,
-    ): Flow<Result<LessonSubjectInfo>>
+    ): Result<LessonSubjectInfo>
 
     @GET("/schedule/info/lesson-type/{key}")
-    fun getLessonTypeInfo(
+    suspend fun getLessonTypeInfo(
         @Path("key") key: String,
-    ): Flow<Result<LessonTypeInfo>>
+    ): Result<LessonTypeInfo>
 }

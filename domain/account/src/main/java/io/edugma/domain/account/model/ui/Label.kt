@@ -4,5 +4,5 @@ package io.edugma.domain.account.model.ui
 data class Label(
     val id: String,
     val text: String,
-    val icon: String
+    val icon: String,
 )

@@ -79,7 +79,7 @@ fun PersonalContent(
 ) {
     Column {
         val scrollState = rememberLazyListState()
-        val offset = remember { derivedStateOf { scrollState.firstVisibleItemScrollOffset / 600f + scrollState.firstVisibleItemIndex} }
+        val offset = remember { derivedStateOf { scrollState.firstVisibleItemScrollOffset / 600f + scrollState.firstVisibleItemIndex } }
         val scrollOffset: Float = min(
             1f,
             1 - offset.value,
@@ -94,7 +94,7 @@ fun PersonalContent(
         }
         EdPullRefresh(
             refreshing = state.isRefreshing,
-            onRefresh = refreshListener
+            onRefresh = refreshListener,
         ) {
             LazyColumn(
                 Modifier
@@ -242,45 +242,45 @@ fun Personal(personal: Personal) {
         EdLabel(
             text = personal.faculty,
             iconPainter = painterResource(id = EdIcons.ic_fluent_building_24_regular),
-            style = EdTheme.typography.bodyMedium
+            style = EdTheme.typography.bodyMedium,
         )
         SpacerHeight(height = 8.dp)
         EdLabel(
             text = personal.specialty,
             iconPainter = painterResource(id = R.drawable.acc_ic_teacher_24),
-            style = EdTheme.typography.bodyMedium
+            style = EdTheme.typography.bodyMedium,
         )
         SpacerHeight(height = 8.dp)
         personal.specialization?.let {
             EdLabel(
                 text = it,
                 iconPainter = painterResource(id = EdIcons.ic_fluent_book_24_regular),
-                style = EdTheme.typography.bodyMedium
+                style = EdTheme.typography.bodyMedium,
             )
             SpacerHeight(height = 8.dp)
         }
         EdLabel(
             text = "Номер зачетной книжки: ${personal.code}",
             iconPainter = painterResource(id = EdIcons.ic_fluent_album_24_regular),
-            style = EdTheme.typography.bodyMedium
+            style = EdTheme.typography.bodyMedium,
         )
         SpacerHeight(height = 8.dp)
         EdLabel(
             text = "${personal.finance} ${personal.educationForm.lowercase()} основа обучения",
             iconPainter = painterResource(id = EdIcons.ic_fluent_money_24_regular),
-            style = EdTheme.typography.bodyMedium
+            style = EdTheme.typography.bodyMedium,
         )
         SpacerHeight(height = 8.dp)
         EdLabel(
             text = "Год поступления ${personal.enterYear}",
             iconPainter = painterResource(id = EdIcons.ic_fluent_calendar_ltr_24_regular),
-            style = EdTheme.typography.bodyMedium
+            style = EdTheme.typography.bodyMedium,
         )
         SpacerHeight(height = 8.dp)
         EdLabel(
             text = "Лет обучения ${personal.degreeLength}",
             iconPainter = painterResource(id = EdIcons.ic_fluent_timer_24_regular),
-            style = EdTheme.typography.bodyMedium
+            style = EdTheme.typography.bodyMedium,
         )
     }
 }
