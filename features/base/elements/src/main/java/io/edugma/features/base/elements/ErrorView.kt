@@ -19,6 +19,7 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.molecules.button.EdButton
+import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.features.base.core.utils.ClickListener
@@ -26,6 +27,7 @@ import io.edugma.features.elements.R
 
 @Composable
 @Preview
+@Deprecated("use ErrorWithRetry", replaceWith = ReplaceWith("ErrorWithRetry"))
 fun ErrorView(message: String = "Упс... Что-то пошло не так", retryAction: ClickListener = {}) {
     val anim = remember { R.raw.error }
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(anim))

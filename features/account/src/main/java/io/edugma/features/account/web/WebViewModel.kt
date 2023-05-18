@@ -1,31 +1,58 @@
 package io.edugma.features.account.web
 
+import androidx.lifecycle.viewModelScope
+import io.edugma.domain.account.repository.AuthorizationRepository
 import io.edugma.features.base.core.mvi.BaseViewModel
+import kotlinx.coroutines.launch
 
-class WebViewModel : BaseViewModel<WebState>(WebState()) {
+class WebViewModel(
+    private val authorizationRepository: AuthorizationRepository
+) : BaseViewModel<WebState>(WebState()) {
+
+    init {
+        setTokenLoading(true)
+        viewModelScope.launch {
+            authorizationRepository.getLkToken()
+                .onSuccess(::setToken)
+                .onFailure { loadingError(-1) }
+        }
+        setWebLoading(true)
+        setTokenLoading(false)
+    }
 
     fun init(url: String, isFullScreen: Boolean) {
-        //todo добавить проброс токена авторизации лк с бэка (можно отдельной ручкой)
         mutateState {
-            state = state.copy(isFullScreen = isFullScreen, url = url)
+            state = state.copy(isFullScreen = isFullScreen, url = url, errorCode = null)
         }
-        setLoading(true)
     }
 
     fun loadingEnd() {
-        setLoading(false)
+        setWebLoading(false)
     }
 
     fun loadingError(code: Int) {
         mutateState {
             state = state.copy(errorCode = code, url = null)
         }
-        setLoading(false)
+        setTokenLoading(false)
+        setWebLoading(false)
     }
 
-    private fun setLoading(isLoading: Boolean) {
+    private fun setTokenLoading(isLoading: Boolean) {
         mutateState {
             state = state.copy(isLoading = isLoading)
+        }
+    }
+
+    private fun setWebLoading(isLoading: Boolean) {
+        mutateState {
+            state = state.copy(isWebViewLoading = isLoading)
+        }
+    }
+
+    private fun setToken(token: String) {
+        mutateState {
+            state = state.copy(authToken = token)
         }
     }
 
@@ -36,5 +63,6 @@ data class WebState(
     val authToken: String? = null,
     val isFullScreen: Boolean = false,
     val isLoading: Boolean = false,
+    val isWebViewLoading: Boolean = false,
     val errorCode: Int? = null,
 )

@@ -1,8 +1,8 @@
 package io.edugma.data.base.utils.retrofit.interceptors
 
+import io.edugma.data.base.consts.CacheConst.TokenKey
 import io.edugma.data.base.local.PreferencesDS
 import io.edugma.data.base.local.getSourceValue
-import io.edugma.domain.base.PrefKeys
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -16,7 +16,7 @@ class TokenInterceptor(
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        val token = runBlocking { preferences.getSourceValue(PrefKeys.TokenKey) }
+        val token = runBlocking { preferences.getSourceValue(TokenKey) }
         return if (token.isNullOrEmpty()) {
             chain
                 .request()

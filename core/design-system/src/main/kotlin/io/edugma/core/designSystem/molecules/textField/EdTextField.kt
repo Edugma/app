@@ -116,6 +116,12 @@ fun EdTextFieldPreview() {
                 placeholder = "Enter search text",
                 onValueChange = { },
             )
+            SpacerHeight(height = 10.dp)
+            EdTextField(
+                value = "error text",
+                isError = true,
+                onValueChange = { },
+            )
         }
     }
 }

@@ -1,5 +1,8 @@
 package io.edugma.features.account.web
 
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -9,8 +12,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import io.edugma.core.designSystem.atoms.loader.EdLoader
+import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
+import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.ui.screen.FeatureScreen
+import io.edugma.features.base.core.utils.isNotNull
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -30,11 +36,7 @@ fun WebScreen(
             if (!state.isFullScreen) {
                 EdTopAppBar("", onNavigationClick = viewModel::exit)
             }
-            if (state.isLoading) {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    EdLoader(modifier = Modifier.align(Alignment.Center))
-                }
-            } else {
+            Box(modifier = Modifier.fillMaxSize()) {
                 AndroidView(
                     factory = { context ->
                         WebViewView(context).apply {
@@ -48,8 +50,29 @@ fun WebScreen(
                         state.url
                             ?.takeIf { it != view.url }
                             ?.let(view::loadUrl)
-                    }
+                        view.visibility = if (state.isLoading || state.isWebViewLoading) {
+                            INVISIBLE
+                        } else {
+                            VISIBLE
+                        }
+                    },
                 )
+                when {
+                    state.isLoading || state.isWebViewLoading -> {
+                        Box(modifier = Modifier
+                            .background(EdTheme.colorScheme.background)
+                            .fillMaxSize()
+                        ) {
+                            EdLoader(modifier = Modifier.align(Alignment.Center))
+                        }
+                    }
+                    state.errorCode.isNotNull() -> {
+                        ErrorWithRetry(
+                            modifier = Modifier.background(EdTheme.colorScheme.background).fillMaxSize(),
+                            retryAction = { viewModel.init(url, isFullScreen) },
+                        )
+                    }
+                }
             }
         }
 

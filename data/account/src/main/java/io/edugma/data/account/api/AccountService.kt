@@ -28,6 +28,9 @@ interface AccountService {
     @GET("/peoples/classmates/")
     fun getClassmates(): Flow<Result<List<Student>>>
 
+    @GET("/peoples/classmates/")
+    suspend fun getClassmatesSuspend(): Result<List<Student>>
+
     @GET("/peoples/students/{pageSize}/{page}/{name}")
     suspend fun getStudents(
         @Path("name") name: String?,
@@ -50,6 +53,9 @@ interface AccountService {
 
     @GET("/performance/courses_semesters")
     fun getCoursesWithSemesters(): Flow<Result<SemestersWithCourse>>
+
+    @GET("/performance/courses_semesters")
+    suspend fun getCoursesWithSemestersSuspend(): Result<SemestersWithCourse>
 
     @GET("/performance/semesters/{semester}")
     fun getMarks(
@@ -78,4 +84,7 @@ interface AccountService {
 
     @GET("/payments/types/")
     fun getPaymentsTypes(): Flow<Result<List<PaymentType>>>
+
+    @GET("/getLkToken")
+    suspend fun getLkToken(): Result<Token>
 }

@@ -7,7 +7,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.fade
 import com.google.accompanist.placeholder.placeholder
-
+@Deprecated("edPlaceholder", replaceWith = ReplaceWith("edPlaceholder"))
 fun Modifier.placeholder(
     visible: Boolean,
     color: Color = Color.Gray,

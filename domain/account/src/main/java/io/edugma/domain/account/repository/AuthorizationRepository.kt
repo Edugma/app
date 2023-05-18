@@ -10,4 +10,6 @@ interface AuthorizationRepository {
     suspend fun logout()
 
     suspend fun getSavedToken(): String?
+
+    suspend fun getLkToken(): Result<String>
 }

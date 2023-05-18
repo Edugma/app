@@ -1,18 +1,16 @@
 package io.edugma.features.account.marks
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import io.edugma.domain.account.model.Performance
 import io.edugma.domain.account.repository.PerformanceRepository
-import io.edugma.domain.base.utils.onFailure
-import io.edugma.domain.base.utils.onSuccess
-import io.edugma.features.account.marks.Filter.*
+import io.edugma.features.account.marks.Filter.Course
+import io.edugma.features.account.marks.Filter.Name
+import io.edugma.features.account.marks.Filter.Semester
+import io.edugma.features.account.marks.Filter.Type
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.utils.isNotNull
 import io.edugma.features.base.core.utils.isNull
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.zip
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class PerformanceViewModel(private val repository: PerformanceRepository) :
@@ -25,8 +23,13 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
     fun loadMarks() {
         viewModelScope.launch {
             setLoading(true)
-            repository.getLocalMarks()?.let {
-                delay(300) // todo говнокод пофиксить
+            setError(false)
+
+            val localMarks = async { repository.getLocalMarks() }
+            val coursesAndSemesters = async { repository.getCoursesWithSemestersSuspend() }
+            val marks = async { repository.getMarksBySemesterSuspend() }
+
+            localMarks.await()?.let {
                 setFilters(
                     courses = repository.getLocalCourses()?.toSet() ?: emptySet(),
                     semesters = repository.getLocalSemesters()?.toSet() ?: emptySet(),
@@ -34,12 +37,10 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
                 )
                 setPerformanceData(it)
             }
-            repository.getCoursesWithSemesters()
-                .zip(repository.getMarksBySemester()) { coursesWithSemester, performance ->
-                    runCatching {
-                        coursesWithSemester.getOrThrow() to performance.getOrThrow()
-                    }
-                }
+
+            kotlin.runCatching {
+                coursesAndSemesters.await().getOrThrow() to marks.await().getOrThrow()
+            }
                 .onSuccess {
                     val semestersWithCourses = it.first.coursesWithSemesters
                     val performance = it.second
@@ -49,13 +50,18 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
                         semesters = semestersWithCourses.keys,
                         types = performance.getExamTypes(),
                     )
-                    setLoading(false)
                 }
                 .onFailure {
-                    Log.e("performance loading error", it.localizedMessage ?: it.message ?: it::class.java.canonicalName)
-                    setError()
+                    setError(true)
                 }
-                .collect()
+
+            setLoading(false)
+        }
+    }
+
+    fun openBottomSheetClick(performance: Performance?) {
+        mutateState {
+            state = state.copy(selectedPerformance = performance)
         }
     }
 
@@ -67,13 +73,13 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
 
     private fun setLoading(isLoading: Boolean) {
         mutateState {
-            state = state.copy(isLoading = isLoading, isError = !isLoading && state.isError)
+            state = state.copy(isLoading = isLoading)
         }
     }
 
-    private fun setError() {
+    private fun setError(isError: Boolean) {
         mutateState {
-            state = state.copy(isError = true, isLoading = false)
+            state = state.copy(isError = isError)
         }
     }
 
@@ -116,8 +122,19 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
         }
     }
 
-    private fun List<Performance>.getExamTypes() = map { it.examType }.toSet()
+    fun resetFilters() {
+        mutateState {
+            state = state.copy(
+                currentFilters = emptySet(),
+                courses = state.courses.map { it.copy(isChecked = false) }.toSet(),
+                semesters = state.semesters.map { it.copy(isChecked = false) }.toSet(),
+                types = state.types.map { it.copy(isChecked = false) }.toSet(),
+            )
+        }
+    }
 
+    private fun List<Performance>.getExamTypes() = map { it.examType }.toSet()
+    //todo рефакторить и вынести в usecase
     private fun<T> Set<Filter<T>>.updateFilter(newFilter: Filter<T>): Set<Filter<T>> {
         val newSet = toMutableList()
         newSet.forEachIndexed { index, filter ->
@@ -163,6 +180,7 @@ data class MarksState(
     val currentFilters: Set<Filter<*>> = emptySet(),
     val isLoading: Boolean = false,
     val isError: Boolean = false,
+    val selectedPerformance: Performance? = null
 ) {
     val placeholders = data.isNull() && isLoading && !isError
     val bottomSheetPlaceholders = (isLoading && !isError) || (isError && data.isNull())

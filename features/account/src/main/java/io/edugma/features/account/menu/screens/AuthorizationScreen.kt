@@ -2,11 +2,11 @@ package io.edugma.features.account.menu.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.textField.EdTextField
@@ -45,7 +46,7 @@ fun AuthorizationScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
             modifier = Modifier
-                .padding(horizontal = 32.dp)
+                .padding(horizontal = 24.dp)
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState()),
         ) {
@@ -53,19 +54,39 @@ fun AuthorizationScreen(
                 value = state.login,
                 placeholder = "Логин",
                 onValueChange = onLoginChange,
+                isError = state.loginError,
+                modifier = Modifier
+                    .widthIn(max = 500.dp)
+                    .fillMaxWidth(0.9f)
             )
             SpacerHeight(height = 12.dp)
             EdTextField(
                 value = state.password,
                 placeholder = "Пароль",
                 onValueChange = onPasswordChange,
+                isError = state.passwordError,
                 visualTransformation = PasswordVisualTransformation(),
+                modifier = Modifier
+                    .widthIn(max = 500.dp)
+                    .fillMaxWidth(0.9f)
             )
-            SpacerHeight(height = 25.dp)
+            SpacerHeight(height = 2.dp)
+            EdLabel(
+                text = state.error,
+                color = EdTheme.colorScheme.error,
+                style = EdTheme.typography.bodySmall,
+                modifier = Modifier
+                    .widthIn(max = 500.dp)
+                    .fillMaxWidth(0.9f)
+            )
+            SpacerHeight(height = 15.dp)
             EdButton(
-                modifier = Modifier.defaultMinSize(minWidth = 250.dp),
+                modifier = Modifier
+                    .widthIn(250.dp, 450.dp)
+                    .fillMaxWidth(0.8f),
                 onClick = onLoginClick,
                 isLoading = state.isLoading,
+//                enabled = !state.isLoading,
                 text = "Войти",
             )
         }

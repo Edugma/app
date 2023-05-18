@@ -1,14 +1,13 @@
 package io.edugma.features.account
 
 import androidx.navigation.NavGraphBuilder
-import io.edugma.features.account.authorization.AuthScreen
-import io.edugma.features.account.classmates.ClassmatesScreen
+import io.edugma.features.account.people.classmates.ClassmatesScreen
 import io.edugma.features.account.marks.PerformanceScreen
 import io.edugma.features.account.menu.MenuScreen
 import io.edugma.features.account.payments.PaymentsScreen
 import io.edugma.features.account.personal.PersonalScreen
-import io.edugma.features.account.students.StudentsScreen
-import io.edugma.features.account.teachers.TeachersScreen
+import io.edugma.features.account.people.students.StudentsScreen
+import io.edugma.features.account.people.teachers.TeachersScreen
 import io.edugma.features.account.web.WebScreen
 import io.edugma.features.base.core.navigation.compose.addScreen
 import io.edugma.features.base.core.navigation.compose.groupScreen
@@ -18,7 +17,6 @@ import io.edugma.features.base.navigation.MainScreen
 fun NavGraphBuilder.accountScreens() {
     groupScreen<MainScreen.Account, AccountScreens.Menu> {
         addScreen<AccountScreens.Menu> { MenuScreen() }
-        addScreen<AccountScreens.Authorization> { AuthScreen() }
         addScreen<AccountScreens.Payments> { PaymentsScreen() }
         addScreen<AccountScreens.Teachers> { TeachersScreen() }
         addScreen<AccountScreens.Classmates> { ClassmatesScreen() }

@@ -8,6 +8,7 @@ interface PerformanceRepository {
     fun getCourses(): Flow<Result<List<Int>>>
     fun getSemesters(): Flow<Result<List<Int>>>
     fun getCoursesWithSemesters(): Flow<Result<SemestersWithCourse>>
+    suspend fun getCoursesWithSemestersSuspend(): Result<SemestersWithCourse>
     fun getMarksBySemester(semester: Int? = null): Flow<Result<List<Performance>>>
     suspend fun getMarksBySemesterSuspend(semester: Int? = null): Result<List<Performance>>
     suspend fun getLocalMarks(): List<Performance>?
