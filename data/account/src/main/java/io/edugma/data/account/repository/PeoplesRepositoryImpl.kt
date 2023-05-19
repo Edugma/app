@@ -9,6 +9,7 @@ import io.edugma.domain.account.model.student.Student
 import io.edugma.domain.account.repository.PeoplesRepository
 import io.edugma.domain.base.utils.onSuccess
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
 class PeoplesRepositoryImpl(
@@ -19,16 +20,16 @@ class PeoplesRepositoryImpl(
         name: String,
         page: Int,
         pageSize: Int,
-    ) = api.getTeachers(name, page, pageSize)
+    ) = api.getTeachers(name, page, pageSize).getOrThrow()
 
     override suspend fun getStudents(
         name: String,
         page: Int,
         pageSize: Int,
-    ) = api.getStudents(name, page, pageSize)
+    ) = api.getStudents(name, page, pageSize).getOrThrow()
 
     override fun getClassmates() =
-        api.getClassmates()
+        flow { emit(api.getClassmates()) }
             .onSuccess { saveClassmates(it) }
             .flowOn(Dispatchers.IO)
 

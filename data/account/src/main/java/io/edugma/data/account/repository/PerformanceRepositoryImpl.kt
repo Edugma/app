@@ -23,17 +23,17 @@ class PerformanceRepositoryImpl(
 ) : PerformanceRepository {
 
     override fun getCourses() =
-        api.getCourses()
+        flow { emit(api.getCourses()) }
             .onSuccess(::setLocalCourses)
             .flowOn(Dispatchers.IO)
 
     override fun getSemesters() =
-        api.getSemesters()
+        flow { emit(api.getSemesters()) }
             .onSuccess(::setLocalCourses)
             .flowOn(Dispatchers.IO)
 
     override fun getCoursesWithSemesters() =
-        api.getCoursesWithSemesters()
+        flow { emit(api.getCoursesWithSemesters()) }
             .onSuccess {
                 setLocalSemesters(it.coursesWithSemesters.keys.toList())
                 setLocalCourses(it.coursesWithSemesters.values.toSet().toList())
@@ -49,7 +49,7 @@ class PerformanceRepositoryImpl(
     }
 
     override fun getMarksBySemester(semester: Int?) =
-        api.getMarks(semester?.toString().orEmpty())
+        flow { emit(api.getMarks(semester?.toString().orEmpty())) }
             .onSuccess {
                 if (semester == null) {
                     setLocalMarks(it)

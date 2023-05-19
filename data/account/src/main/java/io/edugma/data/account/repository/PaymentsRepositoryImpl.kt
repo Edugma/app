@@ -20,11 +20,11 @@ class PaymentsRepositoryImpl(
 ) : PaymentsRepository {
 
     override fun getPaymentTypes() =
-        api.getPaymentsTypes()
+        flow { emit(api.getPaymentsTypes()) }
             .flowOn(Dispatchers.IO)
 
     override fun getPayment(type: PaymentType?) =
-        api.getPayments(type?.name?.lowercase().orEmpty())
+        flow { emit(api.getPayments(type?.name?.lowercase().orEmpty())) }
             .onSuccess(::savePayments)
             .flowOn(Dispatchers.IO)
 

@@ -9,6 +9,7 @@ import io.edugma.domain.account.model.Personal
 import io.edugma.domain.account.repository.PersonalRepository
 import io.edugma.domain.base.utils.onSuccess
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 
@@ -17,7 +18,7 @@ class PersonalRepositoryImpl(
     private val localStore: PreferencesDS,
 ) : PersonalRepository {
     override fun getPersonalInfo() =
-        api.getPersonalInfo()
+        flow { emit(api.getPersonalInfo()) }
             .onSuccess { setLocalPersonalInfo(it) }
             .flowOn(Dispatchers.IO)
 

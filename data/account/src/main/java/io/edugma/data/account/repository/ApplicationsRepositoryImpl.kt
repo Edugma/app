@@ -9,6 +9,7 @@ import io.edugma.domain.account.model.Application
 import io.edugma.domain.account.repository.ApplicationsRepository
 import io.edugma.domain.base.utils.onSuccess
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
 class ApplicationsRepositoryImpl(
@@ -17,7 +18,7 @@ class ApplicationsRepositoryImpl(
 ) : ApplicationsRepository {
 
     override fun getApplications() =
-        api.getApplications()
+        flow { emit(api.getApplications()) }
             .onSuccess(::saveApplications)
             .flowOn(Dispatchers.IO)
 

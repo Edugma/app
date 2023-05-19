@@ -1,5 +1,6 @@
 package io.edugma.data.account
 
+import de.jensklingenberg.ktorfit.Ktorfit
 import io.edugma.data.account.api.AccountService
 import io.edugma.data.account.repository.ApplicationsRepositoryImpl
 import io.edugma.data.account.repository.AuthorizationRepositoryImpl
@@ -18,10 +19,9 @@ import io.edugma.domain.account.repository.PerformanceRepository
 import io.edugma.domain.account.repository.PersonalRepository
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import retrofit2.Retrofit
 
 val accountDataModule = module {
-    single { get<Retrofit>(named(DiConst.Account)).create(AccountService::class.java) }
+    single { get<Ktorfit>(named(DiConst.Account)).create<AccountService>() }
     single<ApplicationsRepository> { ApplicationsRepositoryImpl(get(), get()) }
     single<PaymentsRepository> { PaymentsRepositoryImpl(get(), get()) }
     single<PeoplesRepository> { PeoplesRepositoryImpl(get(), get()) }

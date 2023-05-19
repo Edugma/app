@@ -1,9 +1,9 @@
 package io.edugma.data.schedule.api
 
+import de.jensklingenberg.ktorfit.http.GET
+import de.jensklingenberg.ktorfit.http.Path
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
 import io.edugma.features.schedule.domain.model.source.ScheduleSources
-import retrofit2.http.GET
-import retrofit2.http.Path
 
 interface ScheduleSourcesService {
     @GET("/schedule/sources/{type}")

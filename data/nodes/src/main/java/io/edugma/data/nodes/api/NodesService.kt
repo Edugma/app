@@ -1,10 +1,9 @@
 package io.edugma.data.nodes.api
 
+import de.jensklingenberg.ktorfit.http.GET
+import de.jensklingenberg.ktorfit.http.Url
 import io.edugma.domain.nodes.model.Node
 import io.edugma.domain.nodes.model.NodeContract
-import kotlinx.coroutines.flow.Flow
-import retrofit2.http.GET
-import retrofit2.http.Url
 
 interface NodesService {
     companion object {
@@ -13,12 +12,12 @@ interface NodesService {
     }
 
     @GET
-    fun getNodeContract(
+    suspend fun getNodeContract(
         @Url url: String,
-    ): Flow<Result<NodeContract>>
+    ): Result<NodeContract>
 
     @GET
-    fun getNodeList(
+    suspend fun getNodeList(
         @Url url: String = nodeListUrl,
-    ): Flow<Result<List<Node>>>
+    ): Result<List<Node>>
 }

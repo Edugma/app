@@ -1,14 +1,16 @@
 package io.edugma.data.schedule.api
 
+import de.jensklingenberg.ktorfit.http.Body
+import de.jensklingenberg.ktorfit.http.GET
+import de.jensklingenberg.ktorfit.http.Headers
+import de.jensklingenberg.ktorfit.http.POST
+import de.jensklingenberg.ktorfit.http.Path
 import io.edugma.features.schedule.domain.model.place.PlaceDailyOccupancy
 import io.edugma.features.schedule.domain.model.place.PlaceFilters
 import io.edugma.features.schedule.domain.model.place.PlaceInfo
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
 
 interface FreePlacesService {
+    @Headers("Content-Type: application/json")
     @POST("/schedule/places/free")
     suspend fun findFreePlaces(
         @Body filters: PlaceFilters,

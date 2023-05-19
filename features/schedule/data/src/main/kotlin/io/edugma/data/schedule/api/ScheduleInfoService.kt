@@ -1,12 +1,12 @@
 package io.edugma.data.schedule.api
 
+import de.jensklingenberg.ktorfit.http.GET
+import de.jensklingenberg.ktorfit.http.Path
 import io.edugma.features.schedule.domain.model.group.GroupInfo
 import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubjectInfo
 import io.edugma.features.schedule.domain.model.lessonType.LessonTypeInfo
 import io.edugma.features.schedule.domain.model.place.PlaceInfo
 import io.edugma.features.schedule.domain.model.teacher.TeacherInfo
-import retrofit2.http.GET
-import retrofit2.http.Path
 
 interface ScheduleInfoService {
     @GET("/schedule/info/group/{key}")

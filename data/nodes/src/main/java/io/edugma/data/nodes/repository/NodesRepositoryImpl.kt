@@ -28,7 +28,9 @@ class NodesRepositoryImpl(
     private val preferencesDS: PreferencesDS,
 ) : NodesRepository {
     private val nodeStore = StoreImpl<String, NodeContract>(
-        fetcher = { key -> service.getNodeContract(key) },
+        fetcher = { key ->
+            flow { emit(service.getNodeContract(key)) }
+        },
         reader = { key ->
             cachedDS.getFlow<NodeContractDao>(CacheConst.SelectNode, expireAt)
                 .map { it.map { it?.toModel() } }
@@ -55,5 +57,5 @@ class NodesRepositoryImpl(
         nodeStore.get(url)
 
     override fun getNodeList(): Flow<Result<List<Node>>> =
-        service.getNodeList()
+        flow { emit(service.getNodeList()) }
 }

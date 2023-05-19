@@ -18,6 +18,7 @@ import io.edugma.domain.base.utils.mapResult
 import io.edugma.domain.base.utils.onSuccess
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 
@@ -27,7 +28,7 @@ class AuthorizationRepositoryImpl(
 ) : AuthorizationRepository {
 
     override fun authorization(login: String, password: String): Flow<Result<String>> {
-        return api.login(Login(login, password))
+        return flow { emit(api.login(Login(login, password))) }
             .mapResult { it.getBearer() }
             .onSuccess(::saveToken)
             .flowOn(Dispatchers.IO)
