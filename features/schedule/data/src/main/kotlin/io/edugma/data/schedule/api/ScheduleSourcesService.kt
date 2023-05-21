@@ -6,11 +6,11 @@ import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
 import io.edugma.features.schedule.domain.model.source.ScheduleSources
 
 interface ScheduleSourcesService {
-    @GET("/schedule/sources/{type}")
+    @GET("schedule/sources/{type}")
     suspend fun getSources(
         @Path("type") type: String,
     ): Result<List<ScheduleSourceFull>>
 
-    @GET("/schedule/sources")
+    @GET("schedule/sources")
     suspend fun getSourceTypes(): Result<List<ScheduleSources>>
 }

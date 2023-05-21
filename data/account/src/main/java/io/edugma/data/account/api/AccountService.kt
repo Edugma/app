@@ -20,73 +20,73 @@ import io.edugma.domain.base.model.PagingDTO
 interface AccountService {
 
     @Headers("Content-Type: application/json")
-    @POST("/login")
+    @POST("login")
     suspend fun login(@Body login: Login): Result<Token>
 
     @Headers("Content-Type: application/json")
-    @POST("/login")
+    @POST("login")
     suspend fun loginSuspend(@Body login: Login): Result<Token>
 
-    @GET("/peoples/classmates/")
+    @GET("peoples/classmates/")
     suspend fun getClassmates(): Result<List<Student>>
 
-    @GET("/peoples/classmates/")
+    @GET("peoples/classmates/")
     suspend fun getClassmatesSuspend(): Result<List<Student>>
 
-    @GET("/peoples/students/{pageSize}/{page}/{name}")
+    @GET("peoples/students/{pageSize}/{page}/{name}")
     suspend fun getStudents(
         @Path("name") name: String,
         @Path("page") page: Int,
         @Path("pageSize") pageSize: Int,
     ): Result<PagingDTO<Student>>
 
-    @GET("/peoples/teachers/{pageSize}/{page}/{name}")
+    @GET("peoples/teachers/{pageSize}/{page}/{name}")
     suspend fun getTeachers(
         @Path("name") name: String,
         @Path("page") page: Int,
         @Path("pageSize") pageSize: Int,
     ): Result<PagingDTO<Teacher>>
 
-    @GET("/applications")
+    @GET("applications")
     suspend fun getApplications(): Result<List<Application>>
 
-    @GET("/performance/semesters")
+    @GET("performance/semesters")
     suspend fun getSemesters(): Result<List<Int>>
 
-    @GET("/performance/courses_semesters")
+    @GET("performance/courses_semesters")
     suspend fun getCoursesWithSemesters(): Result<SemestersWithCourse>
 
-    @GET("/performance/courses_semesters")
+    @GET("performance/courses_semesters")
     suspend fun getCoursesWithSemestersSuspend(): Result<SemestersWithCourse>
 
-    @GET("/performance/semesters/{semester}")
+    @GET("performance/semesters/{semester}")
     suspend fun getMarks(
         @Path("semester") semester: String,
     ): Result<List<Performance>>
 
-    @GET("/performance/semesters/{semester}")
+    @GET("performance/semesters/{semester}")
     suspend fun getMarksSuspend(
         @Path("semester") semester: String,
     ): Result<List<Performance>>
 
-    @GET("/performance/courses")
+    @GET("performance/courses")
     suspend fun getCourses(): Result<List<Int>>
 
-    @GET("/personal")
+    @GET("personal")
     suspend fun getPersonalInfo(): Result<Personal>
 
-    @GET("/personal")
+    @GET("personal")
     suspend fun getPersonalInfoSuspend(): Result<Personal>
 
-    @GET("/payments/{type}")
+    @GET("payments/{type}")
     suspend fun getPayments(@Path("type") type: String): Result<Contracts>
 
-    @GET("/payments/{type}")
+    @GET("payments/{type}")
     suspend fun getPaymentsSuspend(@Path("type") type: String): Result<Contracts>
 
-    @GET("/payments/types/")
+    @GET("payments/types/")
     suspend fun getPaymentsTypes(): Result<List<PaymentType>>
 
-    @GET("/getLkToken")
+    @GET("getLkToken")
     suspend fun getLkToken(): Result<Token>
 }

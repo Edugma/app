@@ -7,7 +7,7 @@ object CacheConst {
 
     // account
     const val TokenKey = "token"
-    const val LkTokenKey = "token"
+    const val LkTokenKey = "lk_token"
     const val ApplicationsKey = "applications"
     const val PerformanceKey = "Performance"
     const val CourseKey = "Courses"

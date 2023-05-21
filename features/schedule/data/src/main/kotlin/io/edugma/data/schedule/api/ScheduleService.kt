@@ -13,30 +13,30 @@ import io.edugma.features.schedule.domain.model.source.ScheduleSource
 
 interface ScheduleService {
     // Compact
-    @GET("/schedules/compact/{type}/{key}")
+    @GET("schedules/compact/{type}/{key}")
     suspend fun getCompactSchedule(
         @Path("type") type: String,
         @Path("key") key: String,
     ): Result<CompactSchedule>
 
     @Headers("Content-Type: application/json")
-    @POST("/schedules/compact/complex")
+    @POST("schedules/compact/complex")
     suspend fun getComplexSchedule(
         @Body filter: ScheduleComplexFilter,
     ): Result<CompactSchedule>
 
     @Headers("Content-Type: application/json")
-    @POST("/schedules/compact/complex")
+    @POST("schedules/compact/complex")
     suspend fun getFilteredCompactSchedule(
         @Body filters: ScheduleComplexRequest,
     ): Result<CompactSchedule>
 
     // My
-    @GET("/schedules/my")
+    @GET("schedules/my")
     suspend fun getMySchedule(): Result<CompactSchedule>
 
     @Headers("Content-Type: application/json")
-    @POST("/login")
+    @POST("login")
     suspend fun login(
         @Body loginRequest: LoginRequest,
     ): Result<CompactSchedule>

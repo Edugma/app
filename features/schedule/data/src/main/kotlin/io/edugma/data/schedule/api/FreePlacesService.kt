@@ -11,12 +11,12 @@ import io.edugma.features.schedule.domain.model.place.PlaceInfo
 
 interface FreePlacesService {
     @Headers("Content-Type: application/json")
-    @POST("/schedule/places/free")
+    @POST("schedule/places/free")
     suspend fun findFreePlaces(
         @Body filters: PlaceFilters,
     ): Result<Map<PlaceInfo, Int>>
 
-    @GET("/schedule/places/occupancy/{placeId}")
+    @GET("schedule/places/occupancy/{placeId}")
     suspend fun getPlaceOccupancy(
         @Path("placeId") placeId: String,
     ): Result<List<PlaceDailyOccupancy>>
