@@ -7,12 +7,18 @@ import io.edugma.data.base.local.DataVersionLocalDS
 import io.edugma.data.base.local.PreferencesDS
 import io.edugma.data.base.local.PreferencesLocalDS
 import io.edugma.data.base.repository.EventRepository
+import io.edugma.data.base.repository.PathRepositoryImpl
+import io.edugma.data.base.repository.SettingsRepositoryImpl
 import io.edugma.data.base.utils.PathProvider
 import io.edugma.data.base.utils.ktorfit.buildKtorClient
 import io.edugma.data.base.utils.ktorfit.buildKtorfit
 import io.edugma.data.base.utils.ktorfit.interceptors.ApiVersionInterceptor
 import io.edugma.data.base.utils.ktorfit.interceptors.TokenInterceptor
+import io.edugma.domain.base.repository.PathRepository
+import io.edugma.domain.base.repository.SettingsRepository
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -25,11 +31,13 @@ val baseDataModule = module {
     accountClient()
     otherClient()
 
+    singleOf(::PathRepositoryImpl) { bind<PathRepository>() }
     single { EventRepository() }
     single { DataVersionLocalDS(get()) }
     single<PreferencesDS> { PreferencesLocalDS(get()) }
     single { CacheLocalDS(get()) }
     single { CacheVersionLocalDS(get(), get()) }
+    singleOf(::SettingsRepositoryImpl) { bind<SettingsRepository>() }
 }
 
 private fun Module.otherClient() {
