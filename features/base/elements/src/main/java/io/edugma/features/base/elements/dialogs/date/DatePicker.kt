@@ -25,6 +25,9 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ContentAlpha
@@ -50,10 +53,6 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W600
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerState
-import com.google.accompanist.pager.rememberPagerState
 import io.edugma.features.base.elements.dialogs.core.MaterialDialogScope
 import io.edugma.features.base.elements.dialogs.util.getFullLocalName
 import io.edugma.features.base.elements.dialogs.util.getShortLocalName
@@ -102,7 +101,7 @@ fun MaterialDialogScope.datepicker(
     }
 }
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun DatePickerImpl(
     title: String,
@@ -117,7 +116,7 @@ internal fun DatePickerImpl(
     Column(Modifier.fillMaxWidth()) {
         CalendarHeader(title, state, locale)
         HorizontalPager(
-            count = (state.yearRange.last - state.yearRange.first + 1) * 12,
+            pageCount = (state.yearRange.last - state.yearRange.first + 1) * 12,
             state = pagerState,
             verticalAlignment = Alignment.Top,
             modifier = Modifier.height(336.dp),
@@ -151,7 +150,7 @@ internal fun DatePickerImpl(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun YearPicker(
     viewDate: LocalDate,
@@ -213,7 +212,7 @@ private fun YearPickerItem(
     }
 }
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun CalendarViewHeader(
     viewDate: LocalDate,
@@ -290,7 +289,7 @@ private fun CalendarViewHeader(
                     .size(24.dp)
                     .clickable(onClick = {
                         coroutineScope.launch {
-                            if (pagerState.currentPage + 1 < pagerState.pageCount) {
+                            if (pagerState.canScrollForward) {
                                 pagerState.animateScrollToPage(
                                     pagerState.currentPage + 1,
                                 )

@@ -26,6 +26,7 @@ ktor = "2.3.0"
 kodeinDB = "0.9.0-beta"
 
 composeBom = "2023.05.00"
+composeMaterial2 = "1.4.3"
 composeCompiler = "1.4.7"
 composeActivity = "1.7.1"
 accompanist = "0.30.1"
@@ -34,12 +35,13 @@ google-maps-compose = "2.11.1"
 play-service-maps = "18.1.0"
 
 androidxLifecycle = "2.6.1"
+androidxDatastore = "1.1.0-alpha04"
 navigation = "2.5.3"
 coreKtx = "1.10.1"
 appcompat = "1.6.1"
 startup = "1.1.1"
 
-material = "1.9.0"
+materialView = "1.9.0"
 constraintLayout = "1.0.1"
 lottie = "6.0.0"
 fluentIcons = "1.1.192"
@@ -52,13 +54,7 @@ gradlePlugin-kotlin-jvm = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin"
 gradlePlugin-ktlint = { module = "org.jmailen.gradle:kotlinter-gradle", version.ref = "kotlinter" }
 gradlePlugin-ksp = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp"}
 
-accompanist-flowLayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
-accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist" }
-accompanist-pagerIndicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanist" }
-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
 accompanist-placeholder = { module = "com.google.accompanist:accompanist-placeholder", version.ref = "accompanist" }
-accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist" }
-accompanist-systemUiController = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 
 androidx-appCompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx-appWidget = { module = "androidx.glance:glance-appwidget", version.ref = "glance" }
@@ -68,11 +64,13 @@ androidx-lifecycleRuntime = { module = "androidx.lifecycle:lifecycle-runtime-ktx
 androidx-splashScreen = { module = "androidx.core:core-splashscreen", version.ref = "splashScreen" }
 androidx-constraintLayout = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintLayout" }
 androidx-startup = { module = "androidx.startup:startup-runtime", version.ref = "startup" }
+androidx-datastore = { module = "androidx.datastore:datastore-preferences-core", version.ref = "androidxDatastore" }
 
-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 compose-activity = { module = "androidx.activity:activity-compose", version.ref = "composeActivity" }
 compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "composeCompiler" }
-compose-material = { group = "androidx.compose.material", name = "material" }
+compose-material = { module = "androidx.compose.material:material", version.ref = "composeMaterial2" }
+
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
 compose-test = { group = "androidx.compose.ui", name = "ui-test" }
@@ -107,7 +105,7 @@ kotlinx-dateTime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 kotlinx-serializationCbor = { module = "org.jetbrains.kotlinx:kotlinx-serialization-cbor", version.ref = "kotlinxSerialization" }
 kotlinx-serializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 
-material3 = { module = "com.google.android.material:material", version.ref = "material" }
+material3 = { module = "com.google.android.material:material", version.ref = "materialView" }
 fluentIcons = { module = "com.microsoft.design:fluent-system-icons", version.ref = "fluentIcons" }
 lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }
 navigation = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }

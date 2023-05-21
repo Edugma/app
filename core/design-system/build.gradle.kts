@@ -13,17 +13,13 @@ dependencies {
 
     implementation(libs.androidx.lifecycleRuntime)
 
-    implementation(libs.accompanist.systemUiController)
-    implementation(libs.accompanist.flowLayout)
-    implementation(libs.accompanist.pager)
-    implementation(libs.accompanist.pagerIndicators)
     implementation(libs.accompanist.placeholder)
-    implementation(libs.accompanist.swiperefresh)
 
     implementation(libs.androidx.coreKtx)
     implementation(libs.androidx.appCompat)
     implementation(libs.lottie)
     implementation(libs.coil)
+    implementation(libs.compose.material)
 
     api(libs.fluentIcons) { artifact { type = "aar" } }
 }

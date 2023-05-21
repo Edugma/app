@@ -1,9 +1,13 @@
 package io.edugma.features.account.payments
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material3.Icon
@@ -18,10 +22,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerState
-import com.google.accompanist.pager.rememberPagerState
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
@@ -71,7 +71,7 @@ fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
     }
 }
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PaymentsContent(
     state: PaymentsState,
@@ -120,7 +120,7 @@ fun PaymentsScreenPlaceholder() {
     }
 }
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PaymentScreen(
     state: PaymentsState,
@@ -136,7 +136,7 @@ fun PaymentScreen(
             state.data?.keys?.indexOf(it)?.let(onPaymentChange::invoke)
         }
         HorizontalPager(
-            count = state.data?.size ?: 0,
+            pageCount = state.data?.size ?: 0,
             state = paymentsPagerState,
             key = { state.getTypeByIndex(it) ?: PaymentType.Dormitory },
         ) { page ->

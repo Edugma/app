@@ -1,12 +1,12 @@
 package io.edugma.features.base.core.utils
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.PagerState
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PagerState.onPageChanged(action: suspend (page: Int) -> Unit) {
     LaunchedEffect(this) {
@@ -16,7 +16,7 @@ fun PagerState.onPageChanged(action: suspend (page: Int) -> Unit) {
     }
 }
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PagerState.bindTo(position: Int, animated: Boolean = false) {
     LaunchedEffect(position, animated) {

@@ -1,6 +1,7 @@
 package io.edugma.features.schedule.daily
 
 import androidx.annotation.RawRes
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,6 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,9 +26,6 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerState
 import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.features.base.core.utils.ClickListener
@@ -55,7 +55,7 @@ private val relaxAnims = listOf(
     R.raw.sch_relax_2,
 )
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SchedulePager(
     scheduleDays: List<ScheduleDayUiModel>,
@@ -70,7 +70,7 @@ fun SchedulePager(
         onRefresh = onRefreshing,
     ) {
         HorizontalPager(
-            count = scheduleDays.size,
+            pageCount = scheduleDays.size,
             state = pagerState,
             modifier = Modifier.fillMaxSize(),
         ) { page ->

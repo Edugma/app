@@ -3,9 +3,8 @@ package io.edugma.features.schedule.daily
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.FlingBehavior
-import androidx.compose.foundation.gestures.ScrollScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +16,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -31,9 +32,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerState
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.card.EdCardDefaults
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
@@ -41,7 +39,6 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.features.base.core.utils.ContentAlpha
 import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.base.core.utils.WithContentAlpha
-import io.edugma.features.base.core.utils.disabledHorizontalPointerInputScroll
 import io.edugma.features.base.core.utils.isItemFullyVisible
 import io.edugma.features.base.core.utils.sp
 import io.edugma.features.schedule.daily.model.DayUiModel
@@ -49,7 +46,7 @@ import io.edugma.features.schedule.daily.model.WeekUiModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DaysPager(
     weeks: List<WeekUiModel>,
@@ -59,17 +56,12 @@ fun DaysPager(
     modifier: Modifier = Modifier,
 ) {
     HorizontalPager(
-        count = weeks.size,
+        pageCount = weeks.size,
         state = pagerState,
         modifier = modifier
             .fillMaxWidth()
-            .height(82.dp)
-            .disabledHorizontalPointerInputScroll(),
-        flingBehavior = object : FlingBehavior {
-            override suspend fun ScrollScope.performFling(initialVelocity: Float): Float {
-                return initialVelocity
-            }
-        },
+            .height(82.dp),
+        userScrollEnabled = false,
     ) {
         val week by remember(weeks, it) { mutableStateOf(weeks[it]) }
         WeekContent(
