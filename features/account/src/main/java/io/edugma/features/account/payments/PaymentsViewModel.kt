@@ -1,6 +1,6 @@
 package io.edugma.features.account.payments
 
-import androidx.lifecycle.viewModelScope
+import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.domain.account.model.PaymentType
 import io.edugma.domain.account.model.Payments
 import io.edugma.domain.account.repository.PaymentsRepository
@@ -10,7 +10,6 @@ import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.utils.isNotNull
 import io.edugma.features.base.core.utils.isNull
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 class PaymentsViewModel(private val repository: PaymentsRepository) :
     BaseViewModel<PaymentsState>(PaymentsState()) {
@@ -20,7 +19,7 @@ class PaymentsViewModel(private val repository: PaymentsRepository) :
     }
 
     fun load() {
-        viewModelScope.launch {
+        launchCoroutine {
             setLoading(true)
             repository.getPaymentsLocal()?.let {
                 setData(it.contracts)

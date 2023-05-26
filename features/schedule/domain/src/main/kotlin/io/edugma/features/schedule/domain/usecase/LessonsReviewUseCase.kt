@@ -13,8 +13,7 @@ class LessonsReviewUseCase(
 ) {
     fun getLessonsReview() =
         scheduleSourcesRepository.getSelectedSource()
-            .transformLatest {
-                val source = it.getOrNull()
+            .transformLatest { source ->
                 if (source == null) {
                     emit(Result.failure<List<LessonTimesReview>>(Exception()))
                 } else {

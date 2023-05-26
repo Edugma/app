@@ -21,9 +21,6 @@ dependencies {
     api(libs.paging)
     api(libs.paging.compose)
 
-    debugApi(libs.kodeindb.debug)
-    releaseApi(libs.kodeindb.release)
-    api(libs.kodeindb.kotlinx.serializer)
     api(libs.androidx.datastore)
 }
 android {

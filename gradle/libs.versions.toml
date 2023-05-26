@@ -23,8 +23,6 @@ pagingCompose = "1.0.0-alpha19"
 ktorfit = "1.3.0"
 ktor = "2.3.0"
 
-kodeinDB = "0.9.0-beta"
-
 composeBom = "2023.05.00"
 composeMaterial2 = "1.4.3"
 composeCompiler = "1.4.7"
@@ -92,10 +90,6 @@ koin-annotations = { module = "io.insert-koin:koin-annotations", version.ref = "
 koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-android-compose" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-ksp = { module = "io.insert-koin:koin-ksp-compiler", version.ref = "koin-ksp" }
-
-kodeindb-debug = { module = "org.kodein.db:kodein-db-android-debug", version.ref = "kodeinDB" }
-kodeindb-kotlinx-serializer = { module = "org.kodein.db:kodein-db-serializer-kotlinx", version.ref = "kodeinDB" }
-kodeindb-release = { module = "org.kodein.db:kodein-db-android", version.ref = "kodeinDB" }
 
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinCoroutines" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }

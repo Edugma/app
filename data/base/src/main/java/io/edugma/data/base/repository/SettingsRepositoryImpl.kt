@@ -1,51 +1,91 @@
 package io.edugma.data.base.repository
 
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
-import io.edugma.data.base.local.DataStoreFactory
-import io.edugma.domain.base.repository.PathRepository
+import io.edugma.domain.base.repository.PreferenceRepository
 import io.edugma.domain.base.repository.SettingsRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
+import io.edugma.domain.base.utils.InternalApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.cbor.Cbor
+import kotlinx.serialization.serializer
+import kotlin.reflect.KType
 
 class SettingsRepositoryImpl(
-    pathRepository: PathRepository,
+    private val preferenceRepository: PreferenceRepository,
 ) : SettingsRepository {
-    private val dataStore: DataStore<Preferences>
-    private val scope = CoroutineScope(Dispatchers.IO)
 
     init {
-        dataStore = DataStoreFactory.createDataStore(
-            coroutineScope = scope,
-            producePath = { pathRepository.getDatastorePath(SETTINGS_PATH) },
-        )
+        preferenceRepository.init(PATH)
     }
 
     override suspend fun getString(key: String): String? {
-        return dataStore.data.first()[stringPreferencesKey(key)]
-    }
-
-    override suspend fun saveString(key: String, value: String) {
-        dataStore.edit { settings ->
-            settings[stringPreferencesKey(key)] = value
-        }
+        return preferenceRepository.getString(key)
     }
 
     override suspend fun getBoolean(key: String): Boolean? {
-        return dataStore.data.first()[booleanPreferencesKey(key)]
+        return preferenceRepository.getBoolean(key)
     }
 
-    override suspend fun saveBoolean(key: String, value: Boolean) {
-        dataStore.edit { settings ->
-            settings[booleanPreferencesKey(key)] = value
+    @InternalApi
+    @OptIn(ExperimentalSerializationApi::class)
+    @Suppress("UNCHECKED_CAST")
+    override suspend fun <T : Any> getInternal(key: String, type: KType): T? {
+        val serializer = Cbor.serializersModule.serializer(type) as KSerializer<T>
+        val byteArray = preferenceRepository.getByteArray(key) ?: return null
+        return Cbor.decodeFromByteArray(serializer, byteArray)
+    }
+
+    override fun getStringFlow(key: String): Flow<String?> {
+        return preferenceRepository.getStringFlow(key)
+    }
+    override fun getBooleanFlow(key: String): Flow<Boolean?> {
+        return preferenceRepository.getBooleanFlow(key)
+    }
+
+    @InternalApi
+    @OptIn(ExperimentalSerializationApi::class)
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : Any> getFlowInternal(key: String, type: KType): Flow<T?> {
+        val serializer = Cbor.serializersModule.serializer(type) as KSerializer<T>
+        val byteArrayFlow = preferenceRepository.getByteArrayFlow(key)
+        return byteArrayFlow.map { byteArray ->
+            byteArray?.let {
+                Cbor.decodeFromByteArray(serializer, byteArray)
+            }
         }
     }
 
+    override suspend fun saveString(key: String, value: String) {
+        preferenceRepository.saveString(key, value)
+    }
+
+    override suspend fun saveBoolean(key: String, value: Boolean) {
+        preferenceRepository.saveBoolean(key, value)
+    }
+
+    override suspend fun removeBoolean(key: String) {
+        preferenceRepository.removeBoolean(key)
+    }
+
+    override suspend fun removeString(key: String) {
+        preferenceRepository.removeString(key)
+    }
+
+    @InternalApi
+    @Suppress("UNCHECKED_CAST")
+    @OptIn(ExperimentalSerializationApi::class)
+    override suspend fun <T : Any> saveInternal(key: String, value: T, type: KType) {
+        val serializer = Cbor.serializersModule.serializer(type) as KSerializer<T>
+        val byteArray = Cbor.encodeToByteArray(serializer, value)
+        preferenceRepository.saveByteArray(key, byteArray)
+    }
+
+    override suspend fun <T : Any> remove(key: String) {
+        preferenceRepository.removeByteArray(key)
+    }
+
     companion object {
-        private const val SETTINGS_PATH = "ds_settings.preferences_pb"
+        private const val PATH = "ds_settings"
     }
 }

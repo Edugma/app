@@ -1,10 +1,8 @@
 package io.edugma.features.schedule.daily
 
-import androidx.lifecycle.viewModelScope
+import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.domain.base.utils.getOrDefault
 import io.edugma.domain.base.utils.isFinalFailure
-import io.edugma.domain.base.utils.onFailure
-import io.edugma.domain.base.utils.onSuccess
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.mvi.impl.SimpleMutator
 import io.edugma.features.base.core.mvi.prop
@@ -21,7 +19,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class ScheduleViewModel(
@@ -75,7 +72,7 @@ class ScheduleViewModel(
             }
         }
 
-        viewModelScope.launch {
+        launchCoroutine {
             useCase.getSchedule().collect {
                 if (!it.isFinalFailure) {
                     val schedule = it.getOrDefault(emptyList())
@@ -94,7 +91,7 @@ class ScheduleViewModel(
             }
         }
 
-        viewModelScope.launch {
+        launchCoroutine {
             state.prop { isRefreshing }.filter { it }.collect {
                 useCase.getSchedule(forceUpdate = true).collect {
                     if (!it.isFinalFailure) {
@@ -115,24 +112,25 @@ class ScheduleViewModel(
             }
         }
 
-        viewModelScope.launch {
-            useCase.getSelectedSource()
-                .onSuccess {
-                    val lessonDisplaySettings = it?.let {
-                        useCase.getLessonDisplaySettings(it.type)
-                    } ?: LessonDisplaySettings.Default
-                    mutateState {
-                        state = state.copy(
-                            lessonDisplaySettings = lessonDisplaySettings,
-                        )
-                    }
-                }.onFailure {
-                    mutateState {
-                        state = state.copy(
-                            lessonDisplaySettings = LessonDisplaySettings.Default,
-                        )
-                    }
-                }.collect()
+        launchCoroutine(
+            onError = {
+                mutateState {
+                    state = state.copy(
+                        lessonDisplaySettings = LessonDisplaySettings.Default,
+                    )
+                }
+            },
+        ) {
+            useCase.getSelectedSource().collect {
+                val lessonDisplaySettings = it?.let {
+                    useCase.getLessonDisplaySettings(it.type)
+                } ?: LessonDisplaySettings.Default
+                mutateState {
+                    state = state.copy(
+                        lessonDisplaySettings = lessonDisplaySettings,
+                    )
+                }
+            }
         }
     }
 
@@ -184,7 +182,7 @@ class ScheduleViewModel(
         if (date != null) {
             val schedule = state.value.schedule
             if (schedule == null) {
-                viewModelScope.launch {
+                launchCoroutine {
                     val newSchedule = state.prop { this.schedule }
                         .filterNotNull()
                         .first()

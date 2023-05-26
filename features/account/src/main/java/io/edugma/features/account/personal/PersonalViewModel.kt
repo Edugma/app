@@ -1,6 +1,6 @@
 package io.edugma.features.account.personal
 
-import androidx.lifecycle.viewModelScope
+import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.domain.account.model.Application
 import io.edugma.domain.account.model.Personal
 import io.edugma.domain.account.repository.ApplicationsRepository
@@ -12,7 +12,6 @@ import io.edugma.features.base.core.utils.isNotNull
 import io.edugma.features.base.core.utils.isNull
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 
 class PersonalViewModel(
     private val repository: PersonalRepository,
@@ -23,7 +22,7 @@ class PersonalViewModel(
     }
 
     private fun load() {
-        viewModelScope.launch {
+        launchCoroutine {
             setLoading(true)
             val local = async { repository.getLocalPersonalInfo() }
             val remote = async { repository.getPersonalInfoSuspend() }
@@ -39,12 +38,12 @@ class PersonalViewModel(
 
     fun update() {
         // не доделано api со стороны политеха
-//        viewModelScope.launch {
+//        launchCoroutine {
 //            applicationsRepository.getApplications()
 //                .onSuccess { setApplications(it, false) }
 //                .collect()
 //        }
-        viewModelScope.launch {
+        launchCoroutine {
             setLoading(true)
             setError(false)
             repository.getPersonalInfoSuspend()
@@ -66,7 +65,7 @@ class PersonalViewModel(
     }
 
     private fun loadApplications() {
-//        viewModelScope.launch {
+//        launchCoroutine {
 //            applicationsRepository.getApplications()
 //                .onStart {
 //                    setLoading(true)

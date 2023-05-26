@@ -1,7 +1,7 @@
 package io.edugma.features.schedule.menu
 
-import androidx.lifecycle.viewModelScope
 import io.edugma.core.designSystem.organism.accountSelector.AccountSelectorVO
+import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.features.base.core.mvi.BaseMutator
 import io.edugma.features.base.core.mvi.BaseViewModelFull
 import io.edugma.features.base.navigation.ScheduleScreens
@@ -13,8 +13,6 @@ import io.edugma.features.schedule.domain.usecase.RemoveSelectedScheduleSourceUs
 import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
 import io.edugma.features.schedule.menu.model.MenuItem
 import io.edugma.features.schedule.menu.usecase.GetScheduleMenuItems
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.temporal.ChronoUnit
@@ -32,7 +30,7 @@ class ScheduleMenuViewModel(
     ::ScheduleMenuMutator,
 ) {
     init {
-        viewModelScope.launch {
+        launchCoroutine {
             useCase.getSchedule().collect {
                 val lessons = it.getOrNull()?.let {
                     useCase.getScheduleDay(it, LocalDate.now())
@@ -57,14 +55,14 @@ class ScheduleMenuViewModel(
             }
         }
 
-        viewModelScope.launch {
+        launchCoroutine {
             useCase.getSelectedSource().collect {
-                mutateState { setSelectedSource(it.getOrNull()) }
+                mutateState { setSelectedSource(it) }
                 setMenuItems()
             }
         }
 
-        viewModelScope.launch(Dispatchers.IO) {
+        launchCoroutine {
             setMenuItems()
         }
     }
@@ -102,7 +100,7 @@ class ScheduleMenuViewModel(
     }
 
     fun onSignOut() {
-        viewModelScope.launch {
+        launchCoroutine {
             removeSelectedScheduleSourceUseCase()
             setMenuItems()
         }

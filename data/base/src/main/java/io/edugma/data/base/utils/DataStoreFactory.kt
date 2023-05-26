@@ -1,4 +1,4 @@
-package io.edugma.data.base.local
+package io.edugma.data.base.utils
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory

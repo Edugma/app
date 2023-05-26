@@ -1,6 +1,6 @@
 package io.edugma.features.account.marks
 
-import androidx.lifecycle.viewModelScope
+import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.domain.account.model.Performance
 import io.edugma.domain.account.repository.PerformanceRepository
 import io.edugma.features.account.marks.Filter.Course
@@ -11,7 +11,6 @@ import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.utils.isNotNull
 import io.edugma.features.base.core.utils.isNull
 import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 
 class PerformanceViewModel(private val repository: PerformanceRepository) :
     BaseViewModel<MarksState>(MarksState()) {
@@ -21,7 +20,7 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
     }
 
     fun loadMarks() {
-        viewModelScope.launch {
+        launchCoroutine {
             setLoading(true)
             setError(false)
 

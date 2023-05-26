@@ -1,6 +1,6 @@
 package io.edugma.features.schedule.elements.verticalSchedule
 
-import androidx.lifecycle.viewModelScope
+import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.domain.base.utils.getOrDefault
 import io.edugma.domain.base.utils.isFinalFailure
 import io.edugma.features.base.core.mvi.BaseViewModel
@@ -17,7 +17,6 @@ import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
 import io.edugma.features.schedule.elements.utils.toUiModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class VerticalScheduleViewModel(
@@ -37,7 +36,7 @@ class VerticalScheduleViewModel(
             }
         }
 
-        viewModelScope.launch {
+        launchCoroutine {
             state.prop { scheduleSource }.collect {
                 val lessonDisplaySettings = it?.let {
                     useCase.getLessonDisplaySettings(it.type)
@@ -50,7 +49,7 @@ class VerticalScheduleViewModel(
             }
         }
 
-        viewModelScope.launch {
+        launchCoroutine {
             state.prop { scheduleSource }.filterNotNull().collectLatest {
                 useCase.getSchedule(it).collect {
                     if (!it.isFinalFailure) {

@@ -16,7 +16,7 @@ class ScheduleUseCase(
     private val repository: ScheduleRepository,
     private val scheduleSourcesRepository: ScheduleSourcesRepository,
 ) {
-    fun getSources(type: ScheduleSources) =
+    suspend fun getSources(type: ScheduleSources) =
         scheduleSourcesRepository.getSources(type)
 
     fun getSelectedSource() =
@@ -24,8 +24,7 @@ class ScheduleUseCase(
 
     fun getSchedule(forceUpdate: Boolean = false) =
         scheduleSourcesRepository.getSelectedSource()
-            .transformLatest {
-                val source = it.getOrNull()
+            .transformLatest { source ->
                 if (source == null) {
                     emit(Lce.failure<List<ScheduleDay>>(Exception()))
                 } else {
@@ -50,8 +49,7 @@ class ScheduleUseCase(
 
     fun getTeacher(id: String) =
         scheduleSourcesRepository.getSelectedSource()
-            .transformLatest {
-                val source = it.getOrNull()
+            .transformLatest { source ->
                 if (source == null) {
                     emit(null)
                 } else {

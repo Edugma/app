@@ -3,13 +3,8 @@ package io.edugma.android
 import io.edugma.android.features.mainModule
 import io.edugma.data.account.accountDataModule
 import io.edugma.data.base.baseDataModule
-import io.edugma.data.base.model.DataVersion
-import io.edugma.data.base.utils.buildDB
 import io.edugma.data.nodes.nodesDataModule
 import io.edugma.data.schedule.ScheduleDataModule
-import io.edugma.data.schedule.model.ScheduleDao
-import io.edugma.data.schedule.model.ScheduleSourceDao
-import io.edugma.data.schedule.model.ScheduleSourceFullDao
 import io.edugma.domain.account.accountDomainModule
 import io.edugma.domain.base.baseDomainModule
 import io.edugma.features.account.accountFeaturesModule
@@ -28,8 +23,6 @@ import io.edugma.features.schedule.lessonsReview.ScheduleLessonsReviewFeatureMod
 import io.edugma.features.schedule.menu.ScheduleMenuFeatureModule
 import io.edugma.features.schedule.scheduleInfo.ScheduleInfoFeatureModule
 import io.edugma.features.schedule.sources.ScheduleSourcesFeatureModule
-import org.kodein.db.orm.kotlinx.KotlinxSerializer
-import org.koin.dsl.module
 
 val appModules = listOf(
     mainModule,
@@ -63,19 +56,4 @@ val appModules = listOf(
     accountFeaturesModule,
     miscMenuFeaturesModule,
     settingsFeaturesModule,
-
-    // TODO: Temp
-    module {
-        single {
-            buildDB(
-                get(),
-                KotlinxSerializer {
-                    +ScheduleDao.serializer()
-                    +ScheduleSourceDao.serializer()
-                    +DataVersion.serializer()
-                    +ScheduleSourceFullDao.serializer()
-                },
-            )
-        }
-    },
 )

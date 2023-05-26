@@ -21,8 +21,7 @@ class ScheduleHistoryUseCase(
 ) {
     fun getHistory() =
         scheduleSourcesRepository.getSelectedSource()
-            .transformLatest {
-                val source = it.getOrNull()
+            .transformLatest { source ->
                 if (source == null) {
                     emit(Result.failure(Exception()))
                 } else {

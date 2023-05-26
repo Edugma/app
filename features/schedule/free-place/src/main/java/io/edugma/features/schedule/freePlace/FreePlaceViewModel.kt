@@ -1,8 +1,6 @@
 package io.edugma.features.schedule.freePlace
 
-import androidx.lifecycle.viewModelScope
-import io.edugma.domain.base.utils.onFailure
-import io.edugma.domain.base.utils.onSuccess
+import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.features.base.core.mvi.BaseMutator
 import io.edugma.features.base.core.mvi.BaseViewModelFull
 import io.edugma.features.schedule.domain.model.place.Place
@@ -13,7 +11,6 @@ import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import io.edugma.features.schedule.domain.repository.FreePlaceRepository
 import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -38,15 +35,15 @@ class FreePlaceViewModel(
 //    }
 
     init {
-        viewModelScope.launch {
-            useCase.getSources(ScheduleSources.Place)
-                .onSuccess {
-                    mutateState {
-                        setPlaces(it.map { Place(it.key, it.title, PlaceType.Undefined, it.description) }.sortedBy { it.title })
-                    }
-                }
-                .onFailure { mutateState { setPlaces(emptyList()) } }
-                .collect()
+        launchCoroutine(
+            onError = {
+                mutateState { setPlaces(emptyList()) }
+            },
+        ) {
+            val it = useCase.getSources(ScheduleSources.Place)
+            mutateState {
+                setPlaces(it.map { Place(it.key, it.title, PlaceType.Undefined, it.description) }.sortedBy { it.title })
+            }
         }
     }
 
@@ -75,16 +72,18 @@ class FreePlaceViewModel(
     }
 
     fun onFindFreePlaces() {
-        viewModelScope.launch {
+        launchCoroutine(
+            onError = {
+                mutateState { setFreePlaces(emptyMap()) }
+            },
+        ) {
             repository.findFreePlaces(
                 PlaceFilters(
                     ids = state.value.places.map { it.id },
                     dateTimeFrom = LocalDateTime.of(state.value.date, state.value.timeFrom),
                     dateTimeTo = LocalDateTime.of(state.value.date, state.value.timeTo),
                 ),
-            ).onSuccess { mutateState { setFreePlaces(it) } }
-                .onFailure { mutateState { setFreePlaces(emptyMap()) } }
-                .collect()
+            ).collect { mutateState { setFreePlaces(it.getOrThrow()) } }
         }
     }
 

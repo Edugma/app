@@ -1,7 +1,7 @@
 package io.edugma.features.account.menu
 
-import androidx.lifecycle.viewModelScope
 import io.edugma.core.designSystem.organism.accountSelector.AccountSelectorVO
+import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.domain.account.model.menu.Card
 import io.edugma.domain.account.model.menu.CardType
 import io.edugma.domain.account.model.menu.CardType.Classmates
@@ -21,7 +21,6 @@ import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.navigation.AccountScreens
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MenuViewModel(
@@ -35,7 +34,7 @@ class MenuViewModel(
     }
 
     private fun checkAuth() {
-        viewModelScope.launch {
+        launchCoroutine {
             if (authCachingUseCase.isAuthorized()) {
                 setAuthorizedState()
                 setLoading(true)
@@ -61,7 +60,7 @@ class MenuViewModel(
     }
 
     fun authorize() {
-        viewModelScope.launch {
+        launchCoroutine {
             lateinit var login: String
             lateinit var password: String
             (state.value as? MenuState.Authorization)
@@ -76,9 +75,9 @@ class MenuViewModel(
                     }
                     if (login.isEmpty() || password.isEmpty()) {
                         setError("Заполните все поля")
-                        return@launch
+                        return@launchCoroutine
                     }
-                } ?: return@launch
+                } ?: return@launchCoroutine
             setLoading(true)
             setError(null)
             authCachingUseCase.authorize(
@@ -118,7 +117,7 @@ class MenuViewModel(
 
     // menu
     fun logout() {
-        viewModelScope.launch {
+        launchCoroutine {
             withContext(Dispatchers.IO + NonCancellable) {
                 authCachingUseCase.logout()
                 setNotAuthorizedState()

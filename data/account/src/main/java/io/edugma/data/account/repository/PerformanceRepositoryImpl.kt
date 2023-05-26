@@ -4,12 +4,12 @@ import io.edugma.data.account.api.AccountService
 import io.edugma.data.base.consts.CacheConst.CourseKey
 import io.edugma.data.base.consts.CacheConst.PerformanceKey
 import io.edugma.data.base.consts.CacheConst.SemesterKey
-import io.edugma.data.base.local.PreferencesDS
-import io.edugma.data.base.local.getJsonLazy
-import io.edugma.data.base.local.setJsonLazy
 import io.edugma.domain.account.model.Performance
 import io.edugma.domain.account.model.SemestersWithCourse
 import io.edugma.domain.account.repository.PerformanceRepository
+import io.edugma.domain.base.repository.CacheRepository
+import io.edugma.domain.base.repository.get
+import io.edugma.domain.base.repository.save
 import io.edugma.domain.base.utils.onSuccess
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -19,7 +19,7 @@ import kotlinx.coroutines.withContext
 
 class PerformanceRepositoryImpl(
     private val api: AccountService,
-    private val localStore: PreferencesDS,
+    private val cacheRepository: CacheRepository,
 ) : PerformanceRepository {
 
     override fun getCourses() =
@@ -68,22 +68,28 @@ class PerformanceRepositoryImpl(
             }
     }
 
-    override suspend fun getLocalMarks() = localStore.getJsonLazy<List<Performance>>(PerformanceKey)
+    override suspend fun getLocalMarks(): List<Performance>? {
+        return cacheRepository.get<List<Performance>>(PerformanceKey)
+    }
 
-    override suspend fun getLocalSemesters() = localStore.getJsonLazy<List<Int>>(SemesterKey)
+    override suspend fun getLocalSemesters(): List<Int>? {
+        return cacheRepository.get<List<Int>>(SemesterKey)
+    }
 
-    override suspend fun getLocalCourses() = localStore.getJsonLazy<List<Int>>(CourseKey)
+    override suspend fun getLocalCourses(): List<Int>? {
+        return cacheRepository.get<List<Int>>(CourseKey)
+    }
 
     override suspend fun setLocalMarks(data: List<Performance>) {
-        localStore.setJsonLazy(data, PerformanceKey)
+        cacheRepository.save(PerformanceKey, data)
     }
 
     override suspend fun setLocalSemesters(data: List<Int>) {
-        localStore.setJsonLazy(data, SemesterKey)
+        cacheRepository.save(SemesterKey, data)
     }
 
     override suspend fun setLocalCourses(data: List<Int>) {
-        localStore.setJsonLazy(data, CourseKey)
+        cacheRepository.save(CourseKey, data)
     }
 
     override fun getCoursesWithSemestersLocal(): Flow<Pair<List<Int>, List<Int>>?> =

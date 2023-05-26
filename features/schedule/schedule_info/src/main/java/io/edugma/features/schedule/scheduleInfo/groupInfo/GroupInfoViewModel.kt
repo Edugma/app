@@ -1,6 +1,6 @@
 package io.edugma.features.schedule.scheduleInfo.groupInfo
 
-import androidx.lifecycle.viewModelScope
+import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.domain.base.utils.onFailure
 import io.edugma.domain.base.utils.onSuccess
 import io.edugma.features.base.core.mvi.BaseViewModel
@@ -11,13 +11,12 @@ import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import io.edugma.features.schedule.domain.repository.ScheduleInfoRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.launch
 
 class GroupInfoViewModel(
     private val repository: ScheduleInfoRepository,
 ) : BaseViewModel<GroupInfoState>(GroupInfoState()) {
     init {
-        viewModelScope.launch {
+        launchCoroutine {
             state.prop { id }.filterNotNull().collect {
                 repository.getGroupInfo(it)
                     .onSuccess {

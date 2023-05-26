@@ -1,6 +1,6 @@
 package io.edugma.features.schedule.scheduleInfo.lessonInfo
 
-import androidx.lifecycle.viewModelScope
+import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.mvi.prop
 import io.edugma.features.base.navigation.schedule.ScheduleInfoScreens
@@ -9,14 +9,13 @@ import io.edugma.features.schedule.domain.model.teacher.TeacherInfo
 import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 
 class LessonInfoViewModel(
     private val scheduleUseCase: ScheduleUseCase,
 ) : BaseViewModel<LessonInfoState>(LessonInfoState()) {
 
     init {
-        viewModelScope.launch {
+        launchCoroutine {
             state.prop { lessonInfo }
                 .collectLatest {
                     val teachers = it?.lesson?.teachers?.map {

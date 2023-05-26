@@ -2,11 +2,11 @@ package io.edugma.data.account.repository
 
 import io.edugma.data.account.api.AccountService
 import io.edugma.data.base.consts.CacheConst.PersonalKey
-import io.edugma.data.base.local.PreferencesDS
-import io.edugma.data.base.local.getJsonLazy
-import io.edugma.data.base.local.setJsonLazy
 import io.edugma.domain.account.model.Personal
 import io.edugma.domain.account.repository.PersonalRepository
+import io.edugma.domain.base.repository.CacheRepository
+import io.edugma.domain.base.repository.get
+import io.edugma.domain.base.repository.save
 import io.edugma.domain.base.utils.onSuccess
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
@@ -15,7 +15,7 @@ import kotlinx.coroutines.withContext
 
 class PersonalRepositoryImpl(
     private val api: AccountService,
-    private val localStore: PreferencesDS,
+    private val cacheRepository: CacheRepository,
 ) : PersonalRepository {
     override fun getPersonalInfo() =
         flow { emit(api.getPersonalInfo()) }
@@ -32,8 +32,10 @@ class PersonalRepositoryImpl(
     }
 
     override suspend fun setLocalPersonalInfo(personal: Personal) {
-        localStore.setJsonLazy(personal, PersonalKey)
+        cacheRepository.save(PersonalKey, personal)
     }
 
-    override suspend fun getLocalPersonalInfo(): Personal? = localStore.getJsonLazy(PersonalKey)
+    override suspend fun getLocalPersonalInfo(): Personal? {
+        return cacheRepository.get(PersonalKey)
+    }
 }

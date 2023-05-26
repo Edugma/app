@@ -10,10 +10,10 @@ import io.edugma.data.base.consts.CacheConst.PerformanceKey
 import io.edugma.data.base.consts.CacheConst.PersonalKey
 import io.edugma.data.base.consts.CacheConst.SemesterKey
 import io.edugma.data.base.consts.CacheConst.TokenKey
-import io.edugma.data.base.local.PreferencesDS
-import io.edugma.data.base.local.getSourceValue
 import io.edugma.domain.account.model.Login
 import io.edugma.domain.account.repository.AuthorizationRepository
+import io.edugma.domain.base.repository.CacheRepository
+import io.edugma.domain.base.repository.SettingsRepository
 import io.edugma.domain.base.utils.mapResult
 import io.edugma.domain.base.utils.onSuccess
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +24,8 @@ import kotlinx.coroutines.withContext
 
 class AuthorizationRepositoryImpl(
     private val api: AccountService,
-    private val localStore: PreferencesDS,
+    private val settingsRepository: SettingsRepository,
+    private val cacheRepository: CacheRepository,
 ) : AuthorizationRepository {
 
     override fun authorization(login: String, password: String): Flow<Result<String>> {
@@ -45,14 +46,15 @@ class AuthorizationRepositoryImpl(
     }
 
     override suspend fun logout() {
-        localStore.delete(PersonalKey)
-        localStore.delete(ApplicationsKey)
-        localStore.delete(PerformanceKey)
-        localStore.delete(CourseKey)
-        localStore.delete(SemesterKey)
-        localStore.delete(PaymentsKey)
-        localStore.delete(ClassmatesKey)
-        localStore.delete(TokenKey)
+        cacheRepository.remove(PersonalKey)
+        cacheRepository.remove(ApplicationsKey)
+        cacheRepository.remove(PerformanceKey)
+        cacheRepository.remove(CourseKey)
+        cacheRepository.remove(SemesterKey)
+        cacheRepository.remove(PaymentsKey)
+        cacheRepository.remove(ClassmatesKey)
+
+        settingsRepository.removeString(TokenKey)
     }
 
     override suspend fun getLkToken(): Result<String> {
@@ -61,14 +63,18 @@ class AuthorizationRepositoryImpl(
         return local ?: remote
     }
 
-    override suspend fun getSavedToken(): String? = localStore.getSourceValue(TokenKey)
+    override suspend fun getSavedToken(): String? {
+        return settingsRepository.getString(TokenKey)
+    }
 
     private suspend fun saveToken(token: String) {
-        localStore.setString(token, TokenKey)
+        settingsRepository.saveString(TokenKey, token)
     }
     private suspend fun saveLkToken(token: String) {
-        localStore.setString(token, LkTokenKey)
+        settingsRepository.saveString(LkTokenKey, token)
     }
 
-    private suspend fun getSavedLkToken(): String? = localStore.getSourceValue(LkTokenKey)
+    private suspend fun getSavedLkToken(): String? {
+        return settingsRepository.getString(LkTokenKey)
+    }
 }

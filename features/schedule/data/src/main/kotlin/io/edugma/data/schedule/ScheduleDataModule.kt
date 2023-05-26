@@ -6,7 +6,6 @@ import io.edugma.data.schedule.api.FreePlacesService
 import io.edugma.data.schedule.api.ScheduleInfoService
 import io.edugma.data.schedule.api.ScheduleService
 import io.edugma.data.schedule.api.ScheduleSourcesService
-import io.edugma.data.schedule.local.ScheduleLocalDS
 import io.edugma.data.schedule.repository.FreePlaceRepositoryImpl
 import io.edugma.data.schedule.repository.LessonsReviewRepositoryImpl
 import io.edugma.data.schedule.repository.ScheduleInfoRepositoryImpl
@@ -17,6 +16,8 @@ import io.edugma.features.schedule.domain.repository.LessonsReviewRepository
 import io.edugma.features.schedule.domain.repository.ScheduleInfoRepository
 import io.edugma.features.schedule.domain.repository.ScheduleRepository
 import io.edugma.features.schedule.domain.repository.ScheduleSourcesRepository
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -26,8 +27,7 @@ object ScheduleDataModule {
         single { get<Ktorfit>(named(DiConst.Schedule)).create<ScheduleInfoService>() }
         single { get<Ktorfit>(named(DiConst.Schedule)).create<ScheduleSourcesService>() }
         single { get<Ktorfit>(named(DiConst.Schedule)).create<FreePlacesService>() }
-        single { ScheduleLocalDS(get()) }
-        single<ScheduleRepository> { ScheduleRepositoryImpl(get(), get(), get()) }
+        singleOf(::ScheduleRepositoryImpl) { bind<ScheduleRepository>() }
         single<ScheduleInfoRepository> { ScheduleInfoRepositoryImpl(get(), get()) }
         single<FreePlaceRepository> { FreePlaceRepositoryImpl(get()) }
         single<ScheduleSourcesRepository> { ScheduleSourcesRepositoryImpl(get(), get(), get()) }

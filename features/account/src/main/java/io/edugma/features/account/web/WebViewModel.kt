@@ -1,9 +1,8 @@
 package io.edugma.features.account.web
 
-import androidx.lifecycle.viewModelScope
+import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.domain.account.repository.AuthorizationRepository
 import io.edugma.features.base.core.mvi.BaseViewModel
-import kotlinx.coroutines.launch
 
 class WebViewModel(
     private val authorizationRepository: AuthorizationRepository,
@@ -11,7 +10,7 @@ class WebViewModel(
 
     init {
         setTokenLoading(true)
-        viewModelScope.launch {
+        launchCoroutine {
             authorizationRepository.getLkToken()
                 .onSuccess(::setToken)
                 .onFailure { loadingError(-1) }

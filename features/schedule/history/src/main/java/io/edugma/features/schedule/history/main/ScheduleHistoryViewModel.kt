@@ -1,18 +1,17 @@
 package io.edugma.features.schedule.history.main
 
-import androidx.lifecycle.viewModelScope
+import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.navigation.schedule.ScheduleHistoryScreens
 import io.edugma.features.schedule.domain.model.schedule.ScheduleDay
 import io.edugma.features.schedule.domain.usecase.ScheduleHistoryUseCase
-import kotlinx.coroutines.launch
 import kotlinx.datetime.Instant
 
 class ScheduleHistoryViewModel(
     private val useCase: ScheduleHistoryUseCase,
 ) : BaseViewModel<ScheduleHistoryState>(ScheduleHistoryState()) {
     init {
-        viewModelScope.launch {
+        launchCoroutine {
             useCase.getHistory().collect {
                 it.onSuccess {
                     mutateState {

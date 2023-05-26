@@ -1,13 +1,12 @@
 package io.edugma.features.account.people.classmates
 
-import androidx.lifecycle.viewModelScope
+import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.domain.account.model.student.Student
 import io.edugma.domain.account.repository.PeoplesRepository
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.utils.isNotNull
 import io.edugma.features.base.core.utils.isNull
 import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 
 class ClassmatesViewModel(private val repository: PeoplesRepository) :
     BaseViewModel<ClassmatesState>(ClassmatesState()) {
@@ -17,7 +16,7 @@ class ClassmatesViewModel(private val repository: PeoplesRepository) :
     }
 
     private fun loadClassmates() {
-        viewModelScope.launch {
+        launchCoroutine {
             setLoading(true)
 
             val localData = async { repository.loadClassmates() }
@@ -34,7 +33,7 @@ class ClassmatesViewModel(private val repository: PeoplesRepository) :
     }
 
     fun updateClassmates() {
-        viewModelScope.launch {
+        launchCoroutine {
             setError(false)
             setLoading(true)
             repository.getClassmatesSuspend()

@@ -1,6 +1,6 @@
 package io.edugma.features.schedule.sources
 
-import androidx.lifecycle.viewModelScope
+import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.domain.base.utils.onFailure
 import io.edugma.domain.base.utils.onSuccess
 import io.edugma.features.base.core.mvi.BaseViewModel
@@ -10,12 +10,10 @@ import io.edugma.features.schedule.domain.model.source.ScheduleSourcesTabs
 import io.edugma.features.schedule.domain.usecase.ScheduleSourcesUseCase
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 
 class ScheduleSourcesViewModel(
     private val useCase: ScheduleSourcesUseCase,
@@ -41,34 +39,32 @@ class ScheduleSourcesViewModel(
             }
         }
 
-        viewModelScope.launch {
+        launchCoroutine {
             useCase.getSourceTypes()
                 .onSuccess { mutateState { state = state.copy(tabs = it) } }
                 .onFailure { mutateState { state = state.copy(tabs = emptyList()) } }
                 .collect()
         }
 
-        viewModelScope.launch {
+        launchCoroutine(
+            onError = {
+                mutateState { state = state.copy(sources = emptyList()) }
+            },
+        ) {
             state.map { it.selectedTab }
                 .filterNotNull()
                 .filter { it != ScheduleSourcesTabs.Complex }
                 .distinctUntilChanged()
                 .collectLatest {
-                    useCase.getScheduleSources(it)
-                        .combine(useCase.getFavoriteSources()) { sources, favoriteSources ->
-                            sources.map {
-                                val favoriteSources = favoriteSources.getOrNull() ?: emptyList()
-                                it.map {
-                                    ScheduleSourceUiModel(
-                                        source = it,
-                                        isFavorite = it in favoriteSources,
-                                    )
-                                }
-                            }
-                        }
-                        .onSuccess { mutateState { state = state.copy(sources = it) } }
-                        .onFailure { mutateState { state = state.copy(sources = emptyList()) } }
-                        .collect()
+                    val sources = useCase.getScheduleSources(it)
+                    val favoriteSources = useCase.getFavoriteSources()
+                    val uiModel = sources.map {
+                        ScheduleSourceUiModel(
+                            source = it,
+                            isFavorite = it in favoriteSources,
+                        )
+                    }
+                    mutateState { state = state.copy(sources = uiModel) }
                 }
         }
     }
@@ -80,20 +76,20 @@ class ScheduleSourcesViewModel(
     }
 
     fun onSelectSource(source: ScheduleSourceFull) {
-        viewModelScope.launch {
+        launchCoroutine {
             useCase.setSelectedSource(source)
             router.exit()
         }
     }
 
     fun onAddFavorite(source: ScheduleSourceFull) {
-        viewModelScope.launch {
+        launchCoroutine {
             useCase.addFavoriteSource(source)
         }
     }
 
     fun onDeleteFavorite(source: ScheduleSourceFull) {
-        viewModelScope.launch {
+        launchCoroutine {
             useCase.deleteFavoriteSource(source)
         }
     }
@@ -105,7 +101,7 @@ class ScheduleSourcesViewModel(
     }
 
     fun onApplyComplexSearch() {
-        viewModelScope.launch {
+        launchCoroutine {
             useCase.setSelectedSource(
                 ScheduleSourceFull(
                     type = ScheduleSources.Complex,

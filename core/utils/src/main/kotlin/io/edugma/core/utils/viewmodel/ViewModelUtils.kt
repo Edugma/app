@@ -1,5 +1,6 @@
 package io.edugma.core.utils.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineDispatcher
@@ -10,7 +11,8 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.AbstractCoroutineContextElement
 import kotlin.coroutines.CoroutineContext
 
-fun ViewModel.launchCoroutine(
+@PublishedApi
+internal fun ViewModel.launchCoroutine(
     dispatcher: CoroutineDispatcher = Dispatchers.IO,
     errorHandler: CoroutineExceptionHandler? = null,
     block: suspend CoroutineScope.() -> Unit,
@@ -18,10 +20,25 @@ fun ViewModel.launchCoroutine(
     val coroutineContext = if (errorHandler != null) {
         dispatcher + errorHandler
     } else {
-        dispatcher
+        dispatcher + ErrorHandler {
+            Log.e("ViewModelCoroutine", "launchCoroutine: ", it)
+        }
     }
     viewModelScope.launch(
         context = coroutineContext,
+        block = block,
+    )
+}
+inline fun ViewModel.launchCoroutine(
+    dispatcher: CoroutineDispatcher = Dispatchers.IO,
+    crossinline onError: (Throwable) -> Unit? = {},
+    noinline block: suspend CoroutineScope.() -> Unit,
+) {
+    launchCoroutine(
+        dispatcher = dispatcher,
+        errorHandler = ErrorHandler {
+            onError(it)
+        },
         block = block,
     )
 }

@@ -17,6 +17,8 @@ import io.edugma.domain.account.repository.PaymentsRepository
 import io.edugma.domain.account.repository.PeoplesRepository
 import io.edugma.domain.account.repository.PerformanceRepository
 import io.edugma.domain.account.repository.PersonalRepository
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -27,6 +29,6 @@ val accountDataModule = module {
     single<PeoplesRepository> { PeoplesRepositoryImpl(get(), get()) }
     single<PerformanceRepository> { PerformanceRepositoryImpl(get(), get()) }
     single<PersonalRepository> { PersonalRepositoryImpl(get(), get()) }
-    single<AuthorizationRepository> { AuthorizationRepositoryImpl(get(), get()) }
+    singleOf(::AuthorizationRepositoryImpl) { bind<AuthorizationRepository>() }
     single<CardsRepository> { CardsRepositoryImpl() }
 }

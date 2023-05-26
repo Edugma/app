@@ -4,8 +4,6 @@ import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
 import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import io.edugma.features.schedule.domain.model.source.ScheduleSourcesTabs
 import io.edugma.features.schedule.domain.repository.ScheduleSourcesRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 
 class ScheduleSourcesUseCase(
@@ -14,7 +12,7 @@ class ScheduleSourcesUseCase(
     fun getScheduleSources() =
         flowOf(ScheduleSources.values().toList())
 
-    fun getScheduleSources(sourcesType: ScheduleSourcesTabs): Flow<Result<List<ScheduleSourceFull>>> {
+    suspend fun getScheduleSources(sourcesType: ScheduleSourcesTabs): List<ScheduleSourceFull> {
         return when (sourcesType) {
             ScheduleSourcesTabs.Favorite ->
                 scheduleSourcesRepository.getFavoriteSources()
@@ -22,7 +20,7 @@ class ScheduleSourcesUseCase(
             else -> {
                 sourcesType.toSourceType()?.let {
                     scheduleSourcesRepository.getSources(it)
-                } ?: flowOf(Result.success(emptyList()))
+                } ?: emptyList()
             }
         }
     }
@@ -31,30 +29,28 @@ class ScheduleSourcesUseCase(
         scheduleSourcesRepository.setFavoriteSources(sources)
     }
 
-    fun getFavoriteSources() =
+    suspend fun getFavoriteSources() =
         scheduleSourcesRepository.getFavoriteSources()
 
     suspend fun addFavoriteSource(source: ScheduleSourceFull) {
-        scheduleSourcesRepository.getFavoriteSources().first()
-            .map { if (source in it) it else it + source }
-            .onSuccess {
-                scheduleSourcesRepository.setFavoriteSources(it)
-            }
+        val favoriteSources = scheduleSourcesRepository.getFavoriteSources()
+        if (source in favoriteSources) {
+            scheduleSourcesRepository.setFavoriteSources(favoriteSources)
+        } else {
+            scheduleSourcesRepository.setFavoriteSources(favoriteSources + source)
+        }
     }
 
     suspend fun deleteFavoriteSource(source: ScheduleSourceFull) {
-        scheduleSourcesRepository.getFavoriteSources().first()
-            .map { it - source }
-            .onSuccess {
-                scheduleSourcesRepository.setFavoriteSources(it)
-            }
+        val favoriteSources = scheduleSourcesRepository.getFavoriteSources()
+        scheduleSourcesRepository.setFavoriteSources(favoriteSources - source)
     }
 
     fun getSourceTypes() =
         flowOf(Result.success(ScheduleSourcesTabs.values().toList()))
     // scheduleSourcesRepository.getSourceTypes()
 
-    fun getSources(type: ScheduleSources) =
+    suspend fun getSources(type: ScheduleSources) =
         scheduleSourcesRepository.getSources(type)
 
     suspend fun setSelectedSource(source: ScheduleSourceFull) =
