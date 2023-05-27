@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface ScheduleSourcesRepository {
     suspend fun getSources(type: ScheduleSources): List<ScheduleSourceFull>
 
-    suspend fun getFavoriteSources(): List<ScheduleSourceFull>
+    suspend fun getFavoriteSources(): Flow<List<ScheduleSourceFull>>
     suspend fun setFavoriteSources(sources: List<ScheduleSourceFull>)
 
     suspend fun setSelectedSource(source: ScheduleSourceFull?)

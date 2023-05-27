@@ -120,8 +120,10 @@ fun PersonalContent(
                         }
                     }
                     else -> {
-                        item(key = "header") {
-                            Personal(state.personal!!)
+                        state.personal?.let {
+                            item(key = "header") {
+                                Personal(state.personal)
+                            }
                         }
                         item(key = "selector") {
                             EdSelectableChipRow(

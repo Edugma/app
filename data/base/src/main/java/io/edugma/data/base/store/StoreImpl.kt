@@ -6,8 +6,8 @@ import io.edugma.domain.base.utils.TAG
 import io.edugma.domain.base.utils.onFailure
 import io.edugma.domain.base.utils.onSuccess
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.transform
 import kotlin.time.Duration
 
@@ -19,22 +19,24 @@ class StoreImpl<TKey, TData>(
 ) : Store<TKey, TData> {
     override fun get(key: TKey, forceUpdate: Boolean): Flow<Lce<TData?>> {
         return flow {
-            reader(key).transform { data ->
-                val isExpired = data == null
-                val needUpdate = isExpired || forceUpdate
-                emit(Lce(Result.success(data), needUpdate))
-                if (needUpdate) {
-                    emit(
-                        runCatching {
-                            fetcher(key)
-                        }.onSuccess { newData ->
-                            writer(key, newData)
-                        }.onFailure {
-                            Log.e(this@StoreImpl.TAG, "Fail to fetch data", it)
-                        }.map { Lce(Result.success(it), false) },
-                    )
-                }
-            }
+            emitAll(
+                reader(key)
+                    .transform { data ->
+                        val isExpired = data == null
+                        val needUpdate = isExpired || forceUpdate
+                        emit(Lce(Result.success(data), needUpdate))
+                        if (needUpdate) {
+                            runCatching {
+                                fetcher(key)
+                            }.onSuccess { newData ->
+                                writer(key, newData)
+                                emit(Lce(Result.success(newData), false))
+                            }.onFailure {
+                                Log.e(this@StoreImpl.TAG, "Fail to fetch data", it)
+                            }
+                        }
+                    },
+            )
         }
     }
 }

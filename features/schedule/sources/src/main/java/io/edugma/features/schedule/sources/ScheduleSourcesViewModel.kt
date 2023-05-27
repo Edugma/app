@@ -8,11 +8,13 @@ import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
 import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import io.edugma.features.schedule.domain.model.source.ScheduleSourcesTabs
 import io.edugma.features.schedule.domain.usecase.ScheduleSourcesUseCase
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 
 class ScheduleSourcesViewModel(
@@ -55,17 +57,21 @@ class ScheduleSourcesViewModel(
                 .filterNotNull()
                 .filter { it != ScheduleSourcesTabs.Complex }
                 .distinctUntilChanged()
-                .collectLatest {
-                    val sources = useCase.getScheduleSources(it)
+                .flatMapLatest { tab ->
+                    val sources = useCase.getScheduleSources(tab)
                     val favoriteSources = useCase.getFavoriteSources()
-                    val uiModel = sources.map {
-                        ScheduleSourceUiModel(
-                            source = it,
-                            isFavorite = it in favoriteSources,
-                        )
+                    combine(sources, favoriteSources) { sources, favoriteSources ->
+                        val uiModel = sources.map {
+                            ScheduleSourceUiModel(
+                                source = it,
+                                isFavorite = it in favoriteSources,
+                            )
+                        }
+                        mutateState { state = state.copy(sources = uiModel) }
                     }
-                    mutateState { state = state.copy(sources = uiModel) }
-                }
+                }.catch {
+                    mutateState { state = state.copy(sources = emptyList()) }
+                }.collect()
         }
     }
 

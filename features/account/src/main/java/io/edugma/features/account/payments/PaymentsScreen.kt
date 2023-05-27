@@ -58,7 +58,7 @@ fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
             sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
             scrimColor = Color.Black.copy(alpha = 0.5f),
             sheetBackgroundColor = EdTheme.colorScheme.surface,
-            sheetContent = { PaymentBottomSheet(state.selectedPayment?.qr.orEmpty()) },
+            sheetContent = { PaymentBottomSheet(state.selectedPayment?.qrCurrent.orEmpty()) },
         ) {
             PaymentsContent(
                 state,
@@ -88,7 +88,7 @@ fun PaymentsContent(
             title = state.selectedPayment?.let { "Договор №${it.number}" } ?: "Оплаты",
             onNavigationClick = backListener,
             actions = {
-                if (!state.selectedPayment?.qr.isNullOrEmpty()) {
+                if (!state.selectedPayment?.qrCurrent.isNullOrEmpty()) {
                     androidx.compose.material3.IconButton(
                         onClick = { onQrClickListener() },
                     ) {

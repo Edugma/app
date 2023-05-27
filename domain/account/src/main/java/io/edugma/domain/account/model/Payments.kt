@@ -18,7 +18,8 @@ data class Payments(
     val startDate: LocalDate,
     @Serializable(with = LocalDateConverter::class)
     val endDate: LocalDate,
-    val qr: String,
+    val qrCurrent: String,
+    val qrTotal: String,
     val sum: String,
     val balance: String,
     val balanceCurrent: String,

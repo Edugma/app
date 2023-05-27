@@ -72,7 +72,7 @@ class ScheduleViewModel(
             }
         }
 
-        launchCoroutine {
+        launchCoroutine() {
             useCase.getSchedule().collect {
                 if (!it.isFinalFailure) {
                     val schedule = it.getOrDefault(emptyList())

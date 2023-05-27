@@ -32,7 +32,7 @@ class StoreBuilder<TKey, TData> {
         }
 
         fun expiresIn(duration: Duration) {
-            this.expiresIn = expiresIn
+            this.expiresIn = duration
         }
     }
 

@@ -4,6 +4,8 @@ import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
 import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import io.edugma.features.schedule.domain.model.source.ScheduleSourcesTabs
 import io.edugma.features.schedule.domain.repository.ScheduleSourcesRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 
 class ScheduleSourcesUseCase(
@@ -12,15 +14,17 @@ class ScheduleSourcesUseCase(
     fun getScheduleSources() =
         flowOf(ScheduleSources.values().toList())
 
-    suspend fun getScheduleSources(sourcesType: ScheduleSourcesTabs): List<ScheduleSourceFull> {
+    suspend fun getScheduleSources(sourcesType: ScheduleSourcesTabs): Flow<List<ScheduleSourceFull>> {
         return when (sourcesType) {
             ScheduleSourcesTabs.Favorite ->
                 scheduleSourcesRepository.getFavoriteSources()
             ScheduleSourcesTabs.Complex -> error("Complex source type is not allowed")
             else -> {
-                sourcesType.toSourceType()?.let {
-                    scheduleSourcesRepository.getSources(it)
-                } ?: emptyList()
+                flowOf(
+                    sourcesType.toSourceType()?.let {
+                        scheduleSourcesRepository.getSources(it)
+                    } ?: emptyList(),
+                )
             }
         }
     }
@@ -33,7 +37,7 @@ class ScheduleSourcesUseCase(
         scheduleSourcesRepository.getFavoriteSources()
 
     suspend fun addFavoriteSource(source: ScheduleSourceFull) {
-        val favoriteSources = scheduleSourcesRepository.getFavoriteSources()
+        val favoriteSources = scheduleSourcesRepository.getFavoriteSources().first()
         if (source in favoriteSources) {
             scheduleSourcesRepository.setFavoriteSources(favoriteSources)
         } else {
@@ -42,7 +46,7 @@ class ScheduleSourcesUseCase(
     }
 
     suspend fun deleteFavoriteSource(source: ScheduleSourceFull) {
-        val favoriteSources = scheduleSourcesRepository.getFavoriteSources()
+        val favoriteSources = scheduleSourcesRepository.getFavoriteSources().first()
         scheduleSourcesRepository.setFavoriteSources(favoriteSources - source)
     }
 

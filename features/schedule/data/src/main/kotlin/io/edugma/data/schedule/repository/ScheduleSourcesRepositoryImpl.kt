@@ -16,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 
 class ScheduleSourcesRepositoryImpl(
     private val scheduleSourcesService: ScheduleSourcesService,
@@ -31,9 +32,9 @@ class ScheduleSourcesRepositoryImpl(
     override suspend fun getSources(type: ScheduleSources) =
         scheduleSourcesService.getSources(type.name.lowercase()).getOrThrow()
 
-    override suspend fun getFavoriteSources(): List<ScheduleSourceFull> =
-        cacheRepository.get<List<ScheduleSourceFull>>(CacheConst.FavoriteScheduleSources)
-            ?: emptyList()
+    override suspend fun getFavoriteSources(): Flow<List<ScheduleSourceFull>> =
+        cacheRepository.getFlow<List<ScheduleSourceFull>>(CacheConst.FavoriteScheduleSources)
+            .map { it ?: emptyList() }
 
     override suspend fun setFavoriteSources(sources: List<ScheduleSourceFull>) {
         cacheRepository.save(CacheConst.FavoriteScheduleSources, sources)
