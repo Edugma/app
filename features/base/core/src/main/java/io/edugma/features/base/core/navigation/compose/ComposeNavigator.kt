@@ -1,7 +1,7 @@
 package io.edugma.features.base.core.navigation.compose
 
-import android.util.Log
 import androidx.navigation.NavHostController
+import co.touchlab.kermit.Logger
 import io.edugma.features.base.core.navigation.core.Command
 import io.edugma.features.base.core.navigation.core.Router
 import kotlinx.coroutines.CoroutineScope
@@ -26,14 +26,14 @@ class ComposeNavigator(
                 try {
                     processCommand(it)
                 } catch (e: Exception) {
-                    Log.e(TAG, "", e)
+                    Logger.e("", e, tag = TAG)
                 }
             }
         }
 
         scope.launch {
             navController.currentBackStackEntryFlow.collect {
-                Log.d(TAG, "CurrentBackStackEntry: ${it.destination.route}")
+                Logger.d("CurrentBackStackEntry: ${it.destination.route}", tag = TAG)
             }
         }
     }
@@ -45,7 +45,7 @@ class ComposeNavigator(
     }
 
     private fun applyCommand(command: Command) {
-        Log.d(TAG, "applyCommand: $command")
+        Logger.d("applyCommand: $command", tag = TAG)
         when (command) {
             is Command.Forward -> forward(command)
             is Command.Replace -> replace(command)

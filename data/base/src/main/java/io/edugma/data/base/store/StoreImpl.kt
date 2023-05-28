@@ -1,6 +1,6 @@
 package io.edugma.data.base.store
 
-import android.util.Log
+import co.touchlab.kermit.Logger
 import io.edugma.domain.base.utils.Lce
 import io.edugma.domain.base.utils.TAG
 import io.edugma.domain.base.utils.onFailure
@@ -32,7 +32,7 @@ class StoreImpl<TKey, TData>(
                                 writer(key, newData)
                                 emit(Lce(Result.success(newData), false))
                             }.onFailure {
-                                Log.e(this@StoreImpl.TAG, "Fail to fetch data", it)
+                                Logger.e("Fail to fetch data", it, tag = this@StoreImpl.TAG)
                             }
                         }
                     },

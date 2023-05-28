@@ -28,6 +28,7 @@ dependencies {
     api(libs.coil)
 
     api(libs.androidx.startup)
+    implementation(libs.kermit)
 }
 android {
     namespace = "io.edugma.features.base.core"

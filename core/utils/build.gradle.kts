@@ -13,4 +13,5 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.jvm)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kermit)
 }

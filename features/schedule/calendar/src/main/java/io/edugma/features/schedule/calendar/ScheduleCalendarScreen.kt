@@ -100,7 +100,7 @@ private fun ScheduleCalendarContent(
 ) {
     var cellCount by remember { mutableStateOf(3) }
 //    val q = rememberTransformableState { zoomChange, _, _ ->
-//        Log.d("ZOOM", zoomChange.toString())
+//        Logger.d(tag = "ZOOM", zoomChange.toString())
 //        cellCount = (cellCount + ((1f - zoomChange) / 0.05f).toInt()).coerceIn(1..6)
 //    }
 

@@ -1,6 +1,6 @@
-package io.edugma.data.base.utils.ktorfit.interceptors
+package io.edugma.core.network.interceptors
 
-import io.edugma.data.base.utils.ktorfit.KtorInterceptor
+import io.edugma.core.network.KtorInterceptor
 import io.ktor.client.call.HttpClientCall
 import io.ktor.client.plugins.Sender
 import io.ktor.client.request.HttpRequestBuilder

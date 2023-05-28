@@ -1,7 +1,6 @@
-package io.edugma.data.base.utils.ktorfit.interceptors
+package io.edugma.core.network.interceptors
 
-import io.edugma.data.base.consts.CacheConst.TokenKey
-import io.edugma.data.base.utils.ktorfit.KtorInterceptor
+import io.edugma.core.network.KtorInterceptor
 import io.edugma.domain.base.repository.SettingsRepository
 import io.ktor.client.call.HttpClientCall
 import io.ktor.client.plugins.Sender
@@ -14,6 +13,7 @@ class TokenInterceptor(
 
     companion object {
         const val AuthHeader = "Authorization"
+        const val TokenKey = "token"
     }
 
     override suspend fun invoke(sender: Sender, request: HttpRequestBuilder): HttpClientCall {

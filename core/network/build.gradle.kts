@@ -11,7 +11,6 @@ configure<de.jensklingenberg.ktorfit.gradle.KtorfitGradleConfiguration> {
 
 dependencies {
     api(projects.domain.base)
-    implementation(projects.core.network)
 
     ksp(libs.ktorfit.ksp)
     implementation(libs.ktorfit)
@@ -22,7 +21,7 @@ dependencies {
     api(libs.paging)
     api(libs.paging.compose)
 
-    implementation(libs.androidx.datastore)
+    api(libs.androidx.datastore)
     implementation(libs.kermit)
 }
 android {

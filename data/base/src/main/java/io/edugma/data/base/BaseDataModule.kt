@@ -1,16 +1,15 @@
 package io.edugma.data.base
 
+import io.edugma.core.network.buildKtorClient
+import io.edugma.core.network.buildKtorfit
+import io.edugma.core.network.interceptors.ApiVersionInterceptor
+import io.edugma.core.network.interceptors.TokenInterceptor
 import io.edugma.data.base.consts.DiConst
 import io.edugma.data.base.repository.CacheRepositoryImpl
 import io.edugma.data.base.repository.EventRepository
 import io.edugma.data.base.repository.PathRepositoryImpl
 import io.edugma.data.base.repository.PreferenceRepositoryImpl
 import io.edugma.data.base.repository.SettingsRepositoryImpl
-import io.edugma.data.base.utils.PathProvider
-import io.edugma.data.base.utils.ktorfit.buildKtorClient
-import io.edugma.data.base.utils.ktorfit.buildKtorfit
-import io.edugma.data.base.utils.ktorfit.interceptors.ApiVersionInterceptor
-import io.edugma.data.base.utils.ktorfit.interceptors.TokenInterceptor
 import io.edugma.domain.base.repository.CacheRepository
 import io.edugma.domain.base.repository.PathRepository
 import io.edugma.domain.base.repository.PreferenceRepository
@@ -23,7 +22,6 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val baseDataModule = module {
-    single { PathProvider(get()) }
     single { TokenInterceptor(get()) }
     single { ApiVersionInterceptor() }
 

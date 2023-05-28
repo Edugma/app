@@ -1,4 +1,4 @@
-package io.edugma.data.base.utils.ktorfit.errors
+package io.edugma.core.network.errors
 
 /**
  * Failure response with body

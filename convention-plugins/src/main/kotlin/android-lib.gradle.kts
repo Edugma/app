@@ -31,7 +31,6 @@ android {
         }
     }
     compileOptions {
-        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_19
         targetCompatibility = JavaVersion.VERSION_19
     }
@@ -65,8 +64,4 @@ fun getPrefix(): String {
     }
 
     return parentPrefix + prefix
-}
-
-dependencies {
-    coreLibraryDesugaring(libs.desugaring)
 }

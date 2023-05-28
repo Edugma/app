@@ -5,7 +5,7 @@ androidGradlePlugin = "8.0.0"
 kotlinter = "3.14.0"
 ktorfitGradle = "1.0.0"
 
-desugaring = "2.0.3"
+kermit = "2.0.0-RC4"
 
 kotlinxDateTime = "0.4.0"
 kotlinCoroutines = "1.7.1"
@@ -83,7 +83,7 @@ google-maps-compose = { module = "com.google.maps.android:maps-compose", version
 gms-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "play-service-maps" }
 coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 
-desugaring = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugaring" }
+kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin-android" }
 koin-annotations = { module = "io.insert-koin:koin-annotations", version.ref = "koin-ksp" }

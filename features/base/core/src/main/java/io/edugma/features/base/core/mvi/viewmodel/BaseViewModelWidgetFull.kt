@@ -1,8 +1,8 @@
 package io.edugma.features.base.core.mvi.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import io.edugma.features.base.core.mvi.ActionProducer
 import io.edugma.features.base.core.mvi.BaseMutator
 import io.edugma.features.base.core.mvi.StateStore
@@ -25,7 +25,7 @@ abstract class BaseViewModelWidgetFull<TState, TMutator : BaseMutator<TState>, T
     init {
         viewModelScope.launch(Dispatchers.Default) {
             state.collect {
-                Log.d("STATE", it.toString())
+                Logger.d(it.toString(), tag = "STATE")
             }
         }
     }

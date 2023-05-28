@@ -1,13 +1,13 @@
-package io.edugma.data.base.utils.ktorfit
+package io.edugma.core.network
 
-import android.util.Log
+import co.touchlab.kermit.Logger
 import de.jensklingenberg.ktorfit.Ktorfit
 import de.jensklingenberg.ktorfit.converter.SuspendResponseConverter
 import de.jensklingenberg.ktorfit.internal.TypeData
-import io.edugma.data.base.utils.ktorfit.errors.ApiError
-import io.edugma.data.base.utils.ktorfit.errors.ConvertError
-import io.edugma.data.base.utils.ktorfit.errors.NetworkError
-import io.edugma.data.base.utils.ktorfit.errors.UnknownResponseError
+import io.edugma.core.network.errors.ApiError
+import io.edugma.core.network.errors.ConvertError
+import io.edugma.core.network.errors.NetworkError
+import io.edugma.core.network.errors.UnknownResponseError
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.isSuccess
@@ -34,7 +34,7 @@ class ResultConverter : SuspendResponseConverter {
                 Result.success<RequestType>(body)
             } else {
                 val e = ApiError(body as Any, response.status.value)
-                Log.e(TAG, "wrapSuspendResponse: ", e)
+                Logger.e("wrapSuspendResponse: ", e, tag = TAG)
                 Result.failure<RequestType>(e)
             }
         } catch (e: Throwable) {
@@ -44,7 +44,7 @@ class ResultConverter : SuspendResponseConverter {
                 else -> UnknownResponseError(e)
             }
 
-            Log.e(TAG, "wrapSuspendResponse: ", error)
+            Logger.e("wrapSuspendResponse: ", error, tag = TAG)
             Result.failure<RequestType>(error)
         }
     }

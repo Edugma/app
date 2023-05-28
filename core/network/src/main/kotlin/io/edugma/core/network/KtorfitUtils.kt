@@ -1,6 +1,5 @@
-package io.edugma.data.base.utils.ktorfit
+package io.edugma.core.network
 
-import android.util.Log
 import de.jensklingenberg.ktorfit.Ktorfit
 import de.jensklingenberg.ktorfit.ktorfit
 import io.ktor.client.HttpClient
@@ -53,7 +52,7 @@ fun buildKtorClient(
         install(Logging) {
             logger = object : Logger {
                 override fun log(message: String) {
-                    Log.d("Network", message)
+                    co.touchlab.kermit.Logger.d(message, tag = "Network")
                 }
             }
             level = LogLevel.ALL

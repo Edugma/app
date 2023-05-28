@@ -1,8 +1,8 @@
 package io.edugma.core.utils.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -21,7 +21,7 @@ internal fun ViewModel.launchCoroutine(
         dispatcher + errorHandler
     } else {
         dispatcher + ErrorHandler {
-            Log.e("ViewModelCoroutine", "launchCoroutine: ", it)
+            Logger.e("launchCoroutine: ", it, tag = "ViewModelCoroutine")
         }
     }
     viewModelScope.launch(

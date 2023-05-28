@@ -1,6 +1,6 @@
 package io.edugma.features.base.core.navigation.core
 
-import android.util.Log
+import co.touchlab.kermit.Logger
 import io.edugma.domain.base.utils.TAG
 import io.edugma.domain.base.utils.converters.LocalDateConverter
 import io.edugma.domain.base.utils.converters.LocalDateTimeConverter
@@ -72,7 +72,7 @@ abstract class Screen(
                 try {
                     Json.decodeFromString<T>(it)
                 } catch (e: Exception) {
-                    Log.e(Screen::class.TAG, "Source: $it, type: ${T::class.qualifiedName}", e)
+                    Logger.e("Source: $it, type: ${T::class.qualifiedName}", e, tag = Screen::class.TAG)
                     throw e
                 }
             } as T
