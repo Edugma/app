@@ -23,10 +23,10 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
 import io.edugma.core.designSystem.tokens.icons.EdIcons
+import io.edugma.core.designSystem.utils.edPlaceholder
 import io.edugma.features.base.core.utils.ContentAlpha
 import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.base.core.utils.WithContentAlpha
-import io.edugma.features.base.elements.placeholder
 import io.edugma.features.schedule.domain.model.group.Group
 import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
@@ -100,7 +100,7 @@ fun LessonType(type: LessonType, isLoading: Boolean = false) {
         style = EdTheme.typography.labelSmall,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
-        modifier = Modifier.placeholder(visible = isLoading),
+        modifier = Modifier.edPlaceholder(visible = isLoading),
         color = color,
     )
 }
@@ -112,7 +112,7 @@ fun LessonTitle(subject: LessonSubject, isLoading: Boolean = false) {
         style = EdTheme.typography.titleMedium,
         modifier = Modifier
             .fillMaxWidth()
-            .placeholder(visible = isLoading),
+            .edPlaceholder(visible = isLoading),
     )
 }
 
@@ -131,7 +131,7 @@ fun TeachersContent(teachers: List<Teacher>, isLoading: Boolean = false) {
         style = EdTheme.typography.bodyMedium,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
-        modifier = Modifier.fillMaxWidth().placeholder(visible = isLoading),
+        modifier = Modifier.fillMaxWidth().edPlaceholder(visible = isLoading),
         spacing = 5.dp,
         iconSize = 17.dp,
     )
@@ -146,7 +146,7 @@ fun GroupsContent(groups: List<Group>, isLoading: Boolean = false) {
         style = EdTheme.typography.bodyMedium,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
-        modifier = Modifier.fillMaxWidth().placeholder(visible = isLoading),
+        modifier = Modifier.fillMaxWidth().edPlaceholder(visible = isLoading),
         spacing = 5.dp,
         iconSize = 17.dp,
     )
@@ -161,7 +161,7 @@ fun PlacesContent(places: List<Place>, isLoading: Boolean = false) {
         style = EdTheme.typography.bodyMedium,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
-        modifier = Modifier.fillMaxWidth().placeholder(visible = isLoading),
+        modifier = Modifier.fillMaxWidth().edPlaceholder(visible = isLoading),
         spacing = 5.dp,
         iconSize = 17.dp,
     )

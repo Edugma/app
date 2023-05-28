@@ -27,7 +27,6 @@ composeBom = "2023.05.00"
 composeMaterial2 = "1.4.3"
 composeCompiler = "1.4.7"
 composeActivity = "1.7.1"
-accompanist = "0.30.1"
 
 google-maps-compose = "2.11.1"
 play-service-maps = "18.1.0"
@@ -51,8 +50,6 @@ gradlePlugin-android = { module = "com.android.tools.build:gradle", version.ref 
 gradlePlugin-kotlin-jvm = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 gradlePlugin-ktlint = { module = "org.jmailen.gradle:kotlinter-gradle", version.ref = "kotlinter" }
 gradlePlugin-ksp = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp"}
-
-accompanist-placeholder = { module = "com.google.accompanist:accompanist-placeholder", version.ref = "accompanist" }
 
 androidx-appCompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx-appWidget = { module = "androidx.glance:glance-appwidget", version.ref = "glance" }

@@ -37,6 +37,7 @@ import io.edugma.core.designSystem.molecules.avatar.toAvatarInitials
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
 import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
+import io.edugma.core.designSystem.organism.refresher.Refresher
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
@@ -261,7 +262,7 @@ fun TeachersList(
                 }
             }
             teacherListItems.loadState.append is LoadState.Error -> {
-                item { Refresher(onClickListener = teacherListItems::retry) }
+                item { Refresher(onClick = teacherListItems::retry) }
             }
         }
     }

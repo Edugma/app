@@ -25,7 +25,6 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
 
 @Composable
-@Preview
 fun ErrorWithRetry(modifier: Modifier = Modifier, message: String = "Упс... Что-то пошло не так", retryAction: () -> Unit = {}) {
     val anim = remember { R.raw.error }
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(anim))
@@ -44,10 +43,10 @@ fun ErrorWithRetry(modifier: Modifier = Modifier, message: String = "Упс... �
         )
         SpacerHeight(height = 30.dp)
         LottieAnimation(
-            composition,
-            progress,
             modifier = Modifier
                 .fillMaxWidth(),
+            composition = composition,
+            progress = { progress },
         )
         SpacerHeight(height = 30.dp)
         EdButton(
@@ -56,5 +55,13 @@ fun ErrorWithRetry(modifier: Modifier = Modifier, message: String = "Упс... �
             text = "Повторить",
             iconPainter = painterResource(EdIcons.ic_fluent_arrow_clockwise_16_regular),
         )
+    }
+}
+
+@Preview
+@Composable
+fun ErrorWithRetryPreview() {
+    EdTheme {
+        ErrorWithRetry()
     }
 }

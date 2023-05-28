@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
-import io.edugma.features.base.elements.placeholder
+import io.edugma.core.designSystem.utils.edPlaceholder
 import io.edugma.features.schedule.domain.model.group.Group
 import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubject
 import io.edugma.features.schedule.domain.model.place.Place
@@ -29,14 +29,14 @@ fun LessonTitle(subject: LessonSubject, isLoading: Boolean = false) {
         style = EdTheme.typography.titleMedium,
         modifier = Modifier
             .fillMaxWidth()
-            .placeholder(visible = isLoading),
+            .edPlaceholder(visible = isLoading),
     )
 }
 
 @Composable
 fun TeachersContent(teachers: List<Teacher>, isLoading: Boolean = false) {
     Row(
-        modifier = Modifier.placeholder(visible = isLoading),
+        modifier = Modifier.edPlaceholder(visible = isLoading),
     ) {
         Icon(
             painter = painterResource(id = EdIcons.ic_fluent_hat_graduation_16_regular),
@@ -68,7 +68,7 @@ fun TeachersContent(teachers: List<Teacher>, isLoading: Boolean = false) {
 @Composable
 fun GroupsContent(groups: List<Group>, isLoading: Boolean = false) {
     Row(
-        modifier = Modifier.placeholder(visible = isLoading),
+        modifier = Modifier.edPlaceholder(visible = isLoading),
     ) {
         Icon(
             painter = painterResource(id = EdIcons.ic_fluent_people_16_regular),
@@ -94,7 +94,7 @@ fun GroupsContent(groups: List<Group>, isLoading: Boolean = false) {
 @Composable
 fun PlacesContent(places: List<Place>, isLoading: Boolean = false) {
     Row(
-        modifier = Modifier.placeholder(visible = isLoading),
+        modifier = Modifier.edPlaceholder(visible = isLoading),
     ) {
         Icon(
             painter = painterResource(id = EdIcons.ic_fluent_location_16_regular),

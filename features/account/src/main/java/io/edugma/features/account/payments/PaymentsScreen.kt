@@ -33,6 +33,7 @@ import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
+import io.edugma.core.designSystem.utils.edPlaceholder
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.domain.account.model.*
 import io.edugma.features.account.R
@@ -220,16 +221,16 @@ fun PaymentsPlaceholder() {
         EdLabel(
             text = "",
             iconPainter = painterResource(id = EdIcons.ic_fluent_calendar_ltr_24_regular),
-            modifier = Modifier.placeholder(true),
+            modifier = Modifier.edPlaceholder(true),
         )
         EdLabel(
             text = "",
             iconPainter = painterResource(id = EdIcons.ic_fluent_money_24_regular),
-            modifier = Modifier.placeholder(true),
+            modifier = Modifier.edPlaceholder(true),
         )
         Column(modifier = Modifier.padding(horizontal = 10.dp)) {
             SpacerHeight(height = 10.dp)
-            HorizontalText(modifier = Modifier.placeholder(true), "", "")
+            HorizontalText(modifier = Modifier.edPlaceholder(true), "", "")
             SpacerHeight(height = 10.dp)
             LazyColumn() {
                 items(3) {
@@ -243,7 +244,7 @@ fun PaymentsPlaceholder() {
                 fontWeight = FontWeight.Bold,
                 fontSize = 17.sp,
                 modifier = Modifier
-                    .placeholder(true)
+                    .edPlaceholder(true)
                     .widthIn(100.dp),
             )
         }
@@ -315,7 +316,7 @@ fun PaymentPlaceholder() {
     EdCard(shape = EdTheme.shapes.extraSmall) {
         Box(
             modifier = Modifier
-                .placeholder(true)
+                .edPlaceholder(true)
                 .fillMaxWidth()
                 .padding(horizontal = 10.dp)
                 .heightIn(min = 50.dp),

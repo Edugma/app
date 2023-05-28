@@ -8,8 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.utils.edPlaceholder
 import io.edugma.features.base.core.utils.Typed2Listener
-import io.edugma.features.base.elements.placeholder
 import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
 import io.edugma.features.schedule.domain.model.lesson.LessonTime
@@ -41,6 +41,6 @@ private fun LessonTimeContent(lessonTime: LessonTime, isLoading: Boolean = false
         style = EdTheme.typography.titleSmall,
         modifier = Modifier
             .padding(start = 34.dp, end = 34.dp, top = 4.dp, bottom = 2.dp)
-            .placeholder(visible = isLoading),
+            .edPlaceholder(visible = isLoading),
     )
 }
