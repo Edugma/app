@@ -36,6 +36,7 @@ import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.designSystem.utils.edPlaceholder
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.domain.account.model.*
+import io.edugma.domain.base.utils.format
 import io.edugma.features.account.R
 import io.edugma.features.account.payments.bottomSheet.PaymentBottomSheet
 import io.edugma.features.base.core.utils.*

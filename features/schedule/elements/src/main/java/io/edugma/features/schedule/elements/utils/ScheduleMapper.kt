@@ -1,12 +1,12 @@
 package io.edugma.features.schedule.elements.utils
 
 import io.edugma.domain.base.utils.insertSeparators
+import io.edugma.domain.base.utils.untilMinutes
 import io.edugma.features.schedule.domain.model.lesson.LessonTime
 import io.edugma.features.schedule.domain.model.schedule.LessonsByTime
 import io.edugma.features.schedule.domain.model.schedule.ScheduleDay
 import io.edugma.features.schedule.elements.lesson.model.ScheduleItem
 import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
-import java.time.temporal.ChronoUnit
 
 @JvmName("toUiModelScheduleDay")
 fun List<ScheduleDay>.toUiModel(): List<ScheduleDayUiModel> {
@@ -30,7 +30,7 @@ fun List<LessonsByTime>.toUiModel(): List<ScheduleItem> {
 }
 
 private fun getWindowOrNull(before: LessonTime, next: LessonTime): ScheduleItem.Window? {
-    val totalMinutes = before.end.until(next.start, ChronoUnit.MINUTES)
+    val totalMinutes = before.end.untilMinutes(next.start)
     return if (totalMinutes < 15) {
         null
     } else {

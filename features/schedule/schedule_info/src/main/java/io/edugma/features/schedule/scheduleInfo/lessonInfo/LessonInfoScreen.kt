@@ -36,6 +36,7 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
 import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureScreen
+import io.edugma.domain.base.utils.format
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.ContentAlpha
 import io.edugma.features.base.core.utils.HighAlpha
@@ -48,7 +49,6 @@ import io.edugma.features.schedule.domain.model.place.Place
 import io.edugma.features.schedule.domain.model.teacher.TeacherInfo
 import io.edugma.features.schedule.domain.model.teacher.description
 import org.koin.androidx.compose.getViewModel
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun LessonInfoScreen(
@@ -156,9 +156,6 @@ private fun LessonTitle(title: String) {
     )
 }
 
-private val lessonDateFormat = DateTimeFormatter.ofPattern("d MMMM yyyy (EE)")
-private val lessonTimeFormat = DateTimeFormatter.ofPattern("HH:mm")
-
 @Composable
 private fun LessonDateTime(lessonDateTime: LessonDateTime) {
     Row(
@@ -166,9 +163,9 @@ private fun LessonDateTime(lessonDateTime: LessonDateTime) {
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         WithContentAlpha(ContentAlpha.medium) {
-            val timeStart = lessonDateTime.time.start.format(lessonTimeFormat)
-            val timeEnd = lessonDateTime.time.end.format(lessonTimeFormat)
-            val startDate = lessonDateTime.startDate.format(lessonDateFormat) // + "!!"
+            val timeStart = lessonDateTime.time.start.format("HH:mm")
+            val timeEnd = lessonDateTime.time.end.format("HH:mm")
+            val startDate = lessonDateTime.startDate.format("d MMMM yyyy (EE)") // + "!!"
             EdLabel(
                 text = "$timeStart - $timeEnd",
                 style = EdTheme.typography.bodySmall,

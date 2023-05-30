@@ -13,8 +13,8 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.ui.screen.BottomSheet
 import io.edugma.domain.account.model.Performance
+import io.edugma.domain.base.utils.format
 import io.edugma.features.account.R
-import io.edugma.features.base.core.utils.format
 
 @Composable
 fun PerformanceBottomSheetContent(performance: Performance) {

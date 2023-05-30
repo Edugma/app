@@ -1,6 +1,6 @@
 package io.edugma.core.network.errors
 
-import java.io.IOException
+import io.ktor.utils.io.errors.IOException
 
 /**
  * Network error

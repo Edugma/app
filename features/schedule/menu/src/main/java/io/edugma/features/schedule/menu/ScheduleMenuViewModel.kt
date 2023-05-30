@@ -2,6 +2,9 @@ package io.edugma.features.schedule.menu
 
 import io.edugma.core.designSystem.organism.accountSelector.AccountSelectorVO
 import io.edugma.core.utils.viewmodel.launchCoroutine
+import io.edugma.domain.base.utils.nowLocalDate
+import io.edugma.domain.base.utils.nowLocalTime
+import io.edugma.domain.base.utils.untilMinutes
 import io.edugma.features.base.core.mvi.BaseMutator
 import io.edugma.features.base.core.mvi.BaseViewModelFull
 import io.edugma.features.base.navigation.ScheduleScreens
@@ -13,9 +16,8 @@ import io.edugma.features.schedule.domain.usecase.RemoveSelectedScheduleSourceUs
 import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
 import io.edugma.features.schedule.menu.model.MenuItem
 import io.edugma.features.schedule.menu.usecase.GetScheduleMenuItems
-import java.time.LocalDate
-import java.time.LocalTime
-import java.time.temporal.ChronoUnit
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
@@ -33,14 +35,14 @@ class ScheduleMenuViewModel(
         launchCoroutine {
             useCase.getSchedule().collect {
                 val lessons = it.getOrNull()?.let {
-                    useCase.getScheduleDay(it, LocalDate.now())
+                    useCase.getScheduleDay(it, Clock.System.nowLocalDate())
                 } ?: emptyList()
 
-                val now = LocalTime.now()
+                val now = Clock.System.nowLocalTime()
                 val closestLessons = getClosestLessonsUseCase(lessons)
                     .map {
                         ClosestLessons(
-                            now.until(it.time.start, ChronoUnit.MINUTES)
+                            now.untilMinutes(it.time.start)
                                 .toDuration(DurationUnit.MINUTES),
                             it,
                         )
@@ -111,7 +113,7 @@ data class ScheduleMenuState(
     val menuItems: List<List<MenuItem>> = emptyList(),
     val main: MainState = MainState(),
     val source: SourceState = SourceState(),
-    val date: LocalDate = LocalDate.now(),
+    val date: LocalDate = Clock.System.nowLocalDate(),
 ) {
     data class MainState(
         val currentLessons: List<ClosestLessons> = emptyList(),

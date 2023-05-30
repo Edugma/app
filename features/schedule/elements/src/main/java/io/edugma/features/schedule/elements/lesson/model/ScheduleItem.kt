@@ -1,7 +1,7 @@
 package io.edugma.features.schedule.elements.lesson.model
 
 import io.edugma.features.schedule.domain.model.schedule.LessonsByTime
-import java.time.LocalTime
+import kotlinx.datetime.LocalTime
 
 sealed interface ScheduleItem {
     data class LessonByTime(

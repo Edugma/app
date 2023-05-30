@@ -3,6 +3,7 @@ package io.edugma.features.schedule.daily
 import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.domain.base.utils.getOrDefault
 import io.edugma.domain.base.utils.isFinalFailure
+import io.edugma.domain.base.utils.nowLocalDate
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.mvi.impl.SimpleMutator
 import io.edugma.features.base.core.mvi.prop
@@ -19,7 +20,8 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
-import java.time.LocalDate
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
 
 class ScheduleViewModel(
     private val useCase: ScheduleUseCase,
@@ -51,7 +53,7 @@ class ScheduleViewModel(
                 val schedulePos = schedule.getSchedulePos(state.selectedDate)
                 val weekPos = state.getWeeksPos(state.selectedDate)
                 val dayOfWeekPos = state.getDayOfWeekPos(state.selectedDate)
-                val dateIsToday = state.selectedDate == LocalDate.now()
+                val dateIsToday = state.selectedDate == Clock.System.nowLocalDate()
 
                 state = state.copy(
                     schedulePos = schedulePos,
@@ -62,7 +64,7 @@ class ScheduleViewModel(
             }
 
             forProp { schedulePos }.onChanged {
-                val date = state.schedule?.getOrNull(state.schedulePos)?.date ?: LocalDate.now()
+                val date = state.schedule?.getOrNull(state.schedulePos)?.date ?: Clock.System.nowLocalDate()
                 state = state.copy(selectedDate = date)
             }
 
@@ -136,7 +138,7 @@ class ScheduleViewModel(
 
     fun onFabClick() {
         mutateState {
-            state = state.copy(selectedDate = LocalDate.now())
+            state = state.copy(selectedDate = Clock.System.nowLocalDate())
         }
     }
 
@@ -258,7 +260,7 @@ data class ScheduleState(
     val weeks: List<WeekUiModel> = emptyList(),
     val lessonDisplaySettings: LessonDisplaySettings = LessonDisplaySettings.Default,
 
-    val selectedDate: LocalDate = LocalDate.now(),
+    val selectedDate: LocalDate = Clock.System.nowLocalDate(),
     val schedulePos: Int = 0,
     val weeksPos: Int = 0,
     val dayOfWeekPos: Int = 0,

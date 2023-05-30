@@ -16,15 +16,13 @@ import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.ui.screen.FeatureScreen
+import io.edugma.domain.base.utils.format
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.Typed1Listener
-import io.edugma.features.base.core.utils.format
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toLocalDateTime
 import org.koin.androidx.compose.getViewModel
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun ScheduleHistoryScreen(viewModel: ScheduleHistoryViewModel = getViewModel()) {
@@ -38,9 +36,6 @@ fun ScheduleHistoryScreen(viewModel: ScheduleHistoryViewModel = getViewModel()) 
         )
     }
 }
-
-private val dateFormat = DateTimeFormatter
-    .ofPattern("dd MMMM yyyy, hh:mm")
 
 @Composable
 private fun ScheduleHistoryContent(
@@ -70,9 +65,9 @@ private fun ScheduleHistoryContent(
                         .fillMaxSize(),
                 ) {
                     val date = remember(key) {
-                        key.toLocalDateTime(TimeZone.currentSystemDefault()).toJavaLocalDateTime()
+                        key.toLocalDateTime(TimeZone.currentSystemDefault())
                     }
-                    Text(text = date.format(dateFormat))
+                    Text(text = date.format("dd MMMM yyyy, hh:mm"))
                 }
             }
         }

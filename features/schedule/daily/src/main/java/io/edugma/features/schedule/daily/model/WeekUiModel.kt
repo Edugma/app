@@ -3,9 +3,11 @@ package io.edugma.features.schedule.daily.model
 import io.edugma.domain.base.utils.WeekIterator
 import io.edugma.domain.base.utils.getCeilSunday
 import io.edugma.domain.base.utils.getFloorMonday
+import io.edugma.domain.base.utils.nowLocalDate
 import io.edugma.features.schedule.elements.lesson.model.ScheduleItem
 import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
-import java.time.LocalDate
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
 
 data class WeekUiModel(
     val days: List<DayUiModel>,
@@ -13,7 +15,7 @@ data class WeekUiModel(
     companion object {
         fun fromSchedule(
             schedule: List<ScheduleDayUiModel>,
-            today: LocalDate = LocalDate.now(),
+            today: LocalDate = Clock.System.nowLocalDate(),
         ): List<WeekUiModel> {
             val dateFrom = schedule.firstOrNull()?.date?.getFloorMonday()
             val dateTo = schedule.lastOrNull()?.date?.getCeilSunday()

@@ -9,7 +9,7 @@ import io.edugma.features.schedule.calendar.mapper.CalendarMapper
 import io.edugma.features.schedule.calendar.model.CalendarScheduleVO
 import io.edugma.features.schedule.calendar.usecase.GetCurrentDayIndex
 import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 
 class ScheduleCalendarViewModel(
     private val useCase: ScheduleUseCase,

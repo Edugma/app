@@ -48,6 +48,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.edugma.domain.base.utils.MAX
+import io.edugma.domain.base.utils.MIN
+import io.edugma.domain.base.utils.copy
+import io.edugma.domain.base.utils.nowLocalTime
 import io.edugma.features.base.elements.dialogs.core.MaterialDialogScope
 import io.edugma.features.base.elements.dialogs.util.getOffset
 import io.edugma.features.base.elements.dialogs.util.isAM
@@ -56,7 +60,8 @@ import io.edugma.features.base.elements.dialogs.util.noSeconds
 import io.edugma.features.base.elements.dialogs.util.simpleHour
 import io.edugma.features.base.elements.dialogs.util.toAM
 import io.edugma.features.base.elements.dialogs.util.toPM
-import java.time.LocalTime
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalTime
 import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.cos
@@ -86,7 +91,7 @@ private data class SelectedOffset(
  */
 @Composable
 fun MaterialDialogScope.timepicker(
-    initialTime: LocalTime = LocalTime.now().noSeconds(),
+    initialTime: LocalTime = Clock.System.nowLocalTime().noSeconds(),
     title: String = "SELECT TIME",
     colors: TimePickerColors = TimePickerDefaults.colors(),
     waitForPositiveButton: Boolean = true,
@@ -215,7 +220,9 @@ private fun ExtendedClockHourLayout(state: TimePickerState) {
         onAnchorChange = { anchor ->
             /* Swapping 12 and 00 as this is the standard layout */
             state.selectedTime =
-                state.selectedTime.withHour(adjustAnchor(anchor)).coerceIn(state.timeRange)
+                state.selectedTime.copy(
+                    hour = adjustAnchor(anchor),
+                ).coerceIn(state.timeRange)
         },
         startAnchor = adjustAnchor(state.selectedTime.hour),
         onLift = { state.currentScreen = ClockScreen.Minute },
@@ -242,7 +249,7 @@ private fun ClockHourLayout(state: TimePickerState) {
                 12 -> if (state.selectedTime.isAM) 0 else 12
                 else -> if (state.selectedTime.isAM) hours else hours + 12
             }
-            state.selectedTime = state.selectedTime.withHour(adjustedHour).coerceIn(state.timeRange)
+            state.selectedTime = state.selectedTime.copy(hour = adjustedHour).coerceIn(state.timeRange)
         },
         startAnchor = state.selectedTime.simpleHour % 12,
         onLift = { state.currentScreen = ClockScreen.Minute },
@@ -262,7 +269,7 @@ private fun ClockMinuteLayout(state: TimePickerState) {
     ClockLayout(
         anchorPoints = 60,
         label = { index -> index.toString().padStart(2, '0') },
-        onAnchorChange = { mins -> state.selectedTime = state.selectedTime.withMinute(mins) },
+        onAnchorChange = { mins -> state.selectedTime = state.selectedTime.copy(minute = mins) },
         startAnchor = state.selectedTime.minute,
         isNamedAnchor = { anchor -> anchor % 5 == 0 },
         colors = state.colors,

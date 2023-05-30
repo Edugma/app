@@ -21,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.domain.base.utils.capitalized
+import io.edugma.domain.base.utils.format
+import io.edugma.domain.base.utils.nowLocalDate
 import io.edugma.features.base.core.utils.Typed2Listener
 import io.edugma.features.base.core.utils.withAlpha
 import io.edugma.features.schedule.domain.model.lesson.Lesson
@@ -31,9 +33,9 @@ import io.edugma.features.schedule.elements.lesson.LessonPlace
 import io.edugma.features.schedule.elements.lesson.LessonWindow
 import io.edugma.features.schedule.elements.lesson.model.ScheduleItem
 import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
 import org.koin.androidx.compose.getViewModel
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun VerticalScheduleComponent(
@@ -126,17 +128,15 @@ private fun EmptyDay() {
     }
 }
 
-private val dateFormatter = DateTimeFormatter.ofPattern("EEEE, d MMMM, yyyy")
-private val dateFormatterCurrentYear = DateTimeFormatter.ofPattern("EEEE, d MMMM")
-
 @Composable
 private fun DayDate(date: LocalDate) {
-    val now = LocalDate.now()
-    val dateFormatter = remember(date, now) {
+    val now = Clock.System.nowLocalDate()
+
+    val dateFormatted = remember(date, now) {
         if (date.year == now.year) {
-            dateFormatterCurrentYear
+            date.format("EEEE, d MMMM").capitalized()
         } else {
-            dateFormatter
+            date.format("EEEE, d MMMM, yyyy").capitalized()
         }
     }
 
@@ -151,7 +151,7 @@ private fun DayDate(date: LocalDate) {
                 .withAlpha(0.8f),
         ) {
             Text(
-                date.format(dateFormatter).capitalized(),
+                dateFormatted,
                 modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
                 style = EdTheme.typography.bodyMedium,
             )

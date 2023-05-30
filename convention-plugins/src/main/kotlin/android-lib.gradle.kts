@@ -46,6 +46,10 @@ android {
     resourcePrefix = getPrefix()
 }
 
+dependencies {
+    implementation(libs.uuid)
+}
+
 fun getPrefix(): String {
     val parentName = project.parent?.name ?: ""
     val parentBlockList = listOf("data", "domain", "features")

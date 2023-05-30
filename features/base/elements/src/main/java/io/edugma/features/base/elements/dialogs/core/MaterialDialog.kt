@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import java.util.concurrent.atomic.AtomicInteger
+import kotlinx.atomicfu.atomic
 import kotlin.math.min
 
 /**
@@ -86,10 +86,10 @@ internal class MaterialDialogScopeImpl(
     override val dialogButtons = MaterialDialogButtons(this)
 
     override val callbacks = mutableStateMapOf<Int, () -> Unit>()
-    private val callbackCounter = AtomicInteger(0)
+    private val callbackCounter = atomic(0)
 
     override val positiveButtonEnabled = mutableStateMapOf<Int, Boolean>()
-    private val positiveEnabledCounter = AtomicInteger(0)
+    private val positiveEnabledCounter = atomic(0)
 
     /**
      * Hides the dialog and calls any callbacks from components in the dialog
@@ -109,8 +109,8 @@ internal class MaterialDialogScopeImpl(
         positiveButtonEnabled.clear()
         callbacks.clear()
 
-        positiveEnabledCounter.set(0)
-        callbackCounter.set(0)
+        positiveEnabledCounter.getAndSet(0)
+        callbackCounter.getAndSet(0)
     }
 
     /**

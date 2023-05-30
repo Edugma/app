@@ -10,7 +10,7 @@ import io.edugma.features.schedule.domain.repository.ScheduleRepository
 import io.edugma.features.schedule.domain.repository.ScheduleSourcesRepository
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.transformLatest
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 
 class ScheduleUseCase(
     private val repository: ScheduleRepository,

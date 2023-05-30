@@ -1,8 +1,7 @@
 package io.edugma.features.schedule.domain.model.lesson
 
-import io.edugma.domain.base.utils.converters.LocalDateConverter
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
-import java.time.LocalDate
 
 @Serializable
 data class LessonDateTimes(
@@ -16,9 +15,7 @@ data class LessonDateTimes(
 
 @Serializable
 data class LessonDateTime(
-    @Serializable(with = LocalDateConverter::class)
     val startDate: LocalDate,
-    @Serializable(with = LocalDateConverter::class)
     val endDate: LocalDate? = null,
     val time: LessonTime,
 )

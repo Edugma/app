@@ -28,6 +28,7 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.domain.base.utils.nowLocalTime
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.Typed2Listener
 import io.edugma.features.schedule.domain.model.group.Group
@@ -46,8 +47,8 @@ import io.edugma.features.schedule.elements.lesson.LessonWindow
 import io.edugma.features.schedule.elements.lesson.model.ScheduleItem
 import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
 import io.edugma.features.schedule.elements.utils.toUiModel
-import java.time.LocalDate
-import java.time.LocalTime
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
 
 private val relaxAnims = listOf(
     R.raw.sch_relax_0,
@@ -170,7 +171,7 @@ fun LessonList(
 fun ScheduleDayPlaceHolder() {
     val lessons = List(3) {
         LessonsByTime(
-            time = LessonTime(LocalTime.now(), LocalTime.now()),
+            time = LessonTime(Clock.System.nowLocalTime(), Clock.System.nowLocalTime()),
             lessons = listOf(
                 Lesson(
                     LessonSubject("", ""),

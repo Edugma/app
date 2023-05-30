@@ -1,6 +1,9 @@
 package io.edugma.features.schedule.freePlace
 
 import io.edugma.core.utils.viewmodel.launchCoroutine
+import io.edugma.domain.base.utils.MAX
+import io.edugma.domain.base.utils.MIN
+import io.edugma.domain.base.utils.nowLocalDate
 import io.edugma.features.base.core.mvi.BaseMutator
 import io.edugma.features.base.core.mvi.BaseViewModelFull
 import io.edugma.features.schedule.domain.model.place.Place
@@ -11,9 +14,10 @@ import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import io.edugma.features.schedule.domain.repository.FreePlaceRepository
 import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
 import kotlinx.coroutines.flow.collect
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
 
 class FreePlaceViewModel(
     private val repository: FreePlaceRepository,
@@ -80,8 +84,8 @@ class FreePlaceViewModel(
             repository.findFreePlaces(
                 PlaceFilters(
                     ids = state.value.places.map { it.id },
-                    dateTimeFrom = LocalDateTime.of(state.value.date, state.value.timeFrom),
-                    dateTimeTo = LocalDateTime.of(state.value.date, state.value.timeTo),
+                    dateTimeFrom = LocalDateTime(state.value.date, state.value.timeFrom),
+                    dateTimeTo = LocalDateTime(state.value.date, state.value.timeTo),
                 ),
             ).collect { mutateState { setFreePlaces(it.getOrThrow()) } }
         }
@@ -103,7 +107,7 @@ data class FreePlaceState(
 //    val timeFrom: LocalTime = LocalTime.MIN,
 //    val timeTo: LocalTime = LocalTime.MAX,
 //    val timesPositionRange: ClosedFloatingPointRange<Float> = 0f..1f,
-    val date: LocalDate = LocalDate.now(),
+    val date: LocalDate = Clock.System.nowLocalDate(),
     val timeFrom: LocalTime = LocalTime.MIN,
     val timeTo: LocalTime = LocalTime.MAX,
     val filterQuery: String = "",

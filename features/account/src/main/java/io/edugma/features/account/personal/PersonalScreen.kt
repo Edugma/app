@@ -45,13 +45,13 @@ import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.domain.account.model.Application
 import io.edugma.domain.account.model.Order
 import io.edugma.domain.account.model.Personal
+import io.edugma.domain.base.utils.format
 import io.edugma.features.account.R
 import io.edugma.features.account.personal.Columns.Applications
 import io.edugma.features.account.personal.Columns.Orders
 import io.edugma.features.account.personal.Columns.values
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.Typed1Listener
-import io.edugma.features.base.core.utils.format
 import io.edugma.features.base.core.utils.isNull
 import org.koin.androidx.compose.getViewModel
 import kotlin.math.min

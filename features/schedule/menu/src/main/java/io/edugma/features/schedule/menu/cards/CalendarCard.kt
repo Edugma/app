@@ -6,12 +6,10 @@ import androidx.compose.ui.res.stringResource
 import io.edugma.core.designSystem.organism.iconCard.EdIconCard
 import io.edugma.core.designSystem.utils.cachedIconPainter
 import io.edugma.domain.base.utils.capitalized
+import io.edugma.domain.base.utils.format
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.schedule.menu.R
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-
-private val dayOfWeekFormat = DateTimeFormatter.ofPattern("EEEE")
+import kotlinx.datetime.LocalDate
 
 @Composable
 fun CalendarCard(
@@ -21,7 +19,7 @@ fun CalendarCard(
 ) {
     EdIconCard(
         title = stringResource(R.string.sch_calendar),
-        subtitle = date.format(dayOfWeekFormat).capitalized(),
+        subtitle = date.format("EEEE").capitalized(),
         onClick = onScheduleCalendarClick,
         icon = cachedIconPainter(
             "https://img.icons8.com/fluency/48/calendar-${date.dayOfMonth}.png",

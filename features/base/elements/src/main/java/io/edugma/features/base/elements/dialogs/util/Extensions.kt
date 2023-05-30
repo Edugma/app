@@ -1,20 +1,22 @@
 package io.edugma.features.base.elements.dialogs.util
 
 import androidx.compose.ui.geometry.Offset
-import java.time.DayOfWeek
-import java.time.LocalDate
-import java.time.LocalTime
-import java.time.Month
-import java.time.YearMonth
-import java.util.Locale
+import io.edugma.domain.base.utils.format
+import io.edugma.domain.base.utils.minus
+import io.edugma.domain.base.utils.plus
+import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.Month
 import kotlin.math.cos
 import kotlin.math.sin
+import kotlin.time.Duration.Companion.hours
 
 internal fun Float.getOffset(angle: Double): Offset =
     Offset((this * cos(angle)).toFloat(), (this * sin(angle)).toFloat())
 
-internal val LocalDate.yearMonth: YearMonth
-    get() = YearMonth.of(this.year, this.month)
+internal val LocalDate.yearMonth: Pair<Int, Month>
+    get() = this.year to this.month
 
 internal val LocalTime.isAM: Boolean
     get() = this.hour in 0..11
@@ -25,16 +27,16 @@ internal val LocalTime.simpleHour: Int
         return if (tempHour == 0) 12 else tempHour
     }
 
-internal fun Month.getShortLocalName(locale: Locale): String =
-    this.getDisplayName(java.time.format.TextStyle.SHORT, locale)
+internal fun Month.getShortLocalName(): String =
+    this.format("MMM")
 
-internal fun Month.getFullLocalName(locale: Locale) =
-    this.getDisplayName(java.time.format.TextStyle.FULL_STANDALONE, locale)
+internal fun Month.getFullLocalName() =
+    this.format("MMMM")
 
-internal fun DayOfWeek.getShortLocalName(locale: Locale) =
-    this.getDisplayName(java.time.format.TextStyle.SHORT, locale)
+internal fun DayOfWeek.getShortLocalName() =
+    this.format("EE")
 
-internal fun LocalTime.toAM(): LocalTime = if (this.isAM) this else this.minusHours(12)
-internal fun LocalTime.toPM(): LocalTime = if (!this.isAM) this else this.plusHours(12)
+internal fun LocalTime.toAM(): LocalTime = if (this.isAM) this else this.minus(12.hours)
+internal fun LocalTime.toPM(): LocalTime = if (!this.isAM) this else this.plus(12.hours)
 
-internal fun LocalTime.noSeconds(): LocalTime = LocalTime.of(this.hour, this.minute)
+internal fun LocalTime.noSeconds(): LocalTime = LocalTime(this.hour, this.minute)

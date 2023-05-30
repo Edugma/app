@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.ui.screen.FeatureScreen
+import io.edugma.domain.base.utils.format
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.withAlpha
 import io.edugma.features.schedule.domain.model.group.Group
@@ -35,7 +36,6 @@ import io.edugma.features.schedule.domain.model.teacher.Teacher
 import io.edugma.features.schedule.domain.usecase.LessonChange
 import kotlinx.datetime.Instant
 import org.koin.androidx.compose.getViewModel
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun ScheduleChangesScreen(
@@ -52,8 +52,6 @@ fun ScheduleChangesScreen(
         )
     }
 }
-
-private val dateFormatter = DateTimeFormatter.ofPattern("d MMMM, yyyy")
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -84,7 +82,7 @@ fun ScheduleChangesContent(
                                 .withAlpha(0.8f),
                         ) {
                             Text(
-                                date.format(dateFormatter),
+                                date.format("d MMMM, yyyy"),
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 5.dp),
                                 style = EdTheme.typography.bodyMedium,
                             )

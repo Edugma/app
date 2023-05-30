@@ -1,9 +1,8 @@
 package io.edugma.domain.account.model
 
 import io.edugma.domain.account.model.ui.Label
-import io.edugma.domain.base.utils.converters.LocalDateConverter
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
-import java.time.LocalDate
 
 @Serializable
 data class Personal(
@@ -49,7 +48,6 @@ data class Subdivision(
 
 @Serializable
 data class Order(
-    @Serializable(LocalDateConverter::class)
     val date: LocalDate? = null,
     val name: String,
     val description: String,

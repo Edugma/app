@@ -36,6 +36,7 @@ import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.designSystem.tokens.shapes.top
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.domain.base.utils.capitalized
+import io.edugma.domain.base.utils.format
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.schedule.domain.model.lesson.LessonTime
 import io.edugma.features.schedule.domain.model.lessonType.LessonType
@@ -43,9 +44,8 @@ import io.edugma.features.schedule.domain.model.review.LessonDates
 import io.edugma.features.schedule.domain.model.review.LessonTimesReview
 import io.edugma.features.schedule.domain.model.review.LessonTimesReviewByType
 import io.edugma.features.schedule.lessons_review.R
+import kotlinx.datetime.DayOfWeek
 import org.koin.androidx.compose.getViewModel
-import java.time.DayOfWeek
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun LessonsReviewScreen(
@@ -185,8 +185,6 @@ fun LessonTypeContent(type: LessonType) {
     )
 }
 
-private val weekFormat = DateTimeFormatter.ofPattern("EEE")
-
 @Composable
 fun DateRange(
     dayOfWeek: DayOfWeek,
@@ -200,7 +198,7 @@ fun DateRange(
             .height(IntrinsicSize.Max),
     ) {
         Text(
-            text = weekFormat.format(dayOfWeek).capitalized(),
+            text = dayOfWeek.format("EEE").capitalized(),
             style = EdTheme.typography.bodyMedium,
             modifier = Modifier
                 .align(Alignment.CenterVertically)
@@ -236,8 +234,6 @@ fun DateRange(
     }
 }
 
-private val dateFormat = DateTimeFormatter.ofPattern("d MMM")
-
 @Composable
 private fun Dates(
     dates: List<LessonDates>,
@@ -245,11 +241,11 @@ private fun Dates(
 ) {
     Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         dates.forEach { date ->
-            val dateFrom = date.start.format(dateFormat)
+            val dateFrom = date.start.format("d MMM")
             var dateText = dateFrom
 
             if (date.end != null) {
-                dateText += " - " + date.end!!.format(dateFormat)
+                dateText += " - " + date.end!!.format("d MMM")
             }
 
             Text(
@@ -260,8 +256,6 @@ private fun Dates(
     }
 }
 
-private val timeFormat = DateTimeFormatter.ofPattern("HH:mm")
-
 @Composable
 private fun Times(
     times: List<LessonTime>,
@@ -269,8 +263,8 @@ private fun Times(
 ) {
     Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         times.forEach { time ->
-            val timeFrom = time.start.format(timeFormat)
-            val timeTo = time.end.format(timeFormat)
+            val timeFrom = time.start.format("HH:mm")
+            val timeTo = time.end.format("HH:mm")
             val timeText = "$timeFrom - $timeTo"
 
             Text(

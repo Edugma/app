@@ -1,6 +1,7 @@
 package io.edugma.features.schedule.calendar.mapper
 
 import androidx.compose.ui.text.buildAnnotatedString
+import io.edugma.domain.base.utils.format
 import io.edugma.domain.base.utils.getCeilSunday
 import io.edugma.domain.base.utils.getFloorMonday
 import io.edugma.features.schedule.calendar.model.CalendarDayVO
@@ -11,12 +12,11 @@ import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonTime
 import io.edugma.features.schedule.domain.model.schedule.LessonsByTime
 import io.edugma.features.schedule.domain.model.schedule.ScheduleDay
-import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.daysUntil
+import kotlinx.datetime.plus
 
 class CalendarMapper {
-    private val dateFormat = DateTimeFormatter.ofPattern("EEE, d MMM")
-
     fun map(list: List<ScheduleDay>): List<CalendarScheduleVO> {
         return list.toCalendarUiModel()
     }
@@ -30,10 +30,10 @@ class CalendarMapper {
         val floorMonday = firstItem.date.getFloorMonday()
 
         if (floorMonday != firstItem.date) {
-            val daysToAdd = floorMonday.until(firstItem.date, ChronoUnit.DAYS)
+            val daysToAdd = floorMonday.daysUntil(firstItem.date)
             res = sequence {
                 (0 until daysToAdd).forEach {
-                    val date = floorMonday.plusDays(it)
+                    val date = floorMonday.plus(it, DateTimeUnit.DAY)
                     yield(
                         ScheduleDay(
                             date = date,
@@ -48,10 +48,10 @@ class CalendarMapper {
         val ceilSunday = lastItem.date.getCeilSunday()
 
         if (ceilSunday != lastItem.date) {
-            val daysToAdd = lastItem.date.until(ceilSunday, ChronoUnit.DAYS)
+            val daysToAdd = lastItem.date.daysUntil(ceilSunday)
             res += sequence {
                 (1..daysToAdd).forEach {
-                    val date = lastItem.date.plusDays(it)
+                    val date = lastItem.date.plus(it, DateTimeUnit.DAY)
                     yield(
                         ScheduleDay(
                             date = date,
@@ -68,7 +68,7 @@ class CalendarMapper {
                     weekNumber = index,
                     weekSchedule = list.map { scheduleDay ->
                         CalendarDayVO(
-                            dayTitle = scheduleDay.date.format(dateFormat).uppercase(),
+                            dayTitle = scheduleDay.date.format("EEE, d MMM").uppercase(),
                             date = scheduleDay.date,
                             lessons = scheduleDay.lessons.map { lessonsByTime ->
                                 mapToLessonPlace(lessonsByTime)

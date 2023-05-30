@@ -30,6 +30,7 @@ import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
+import io.edugma.domain.base.utils.format
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.schedule.domain.model.place.PlaceInfo
@@ -38,7 +39,6 @@ import io.edugma.features.schedule.elements.verticalSchedule.VerticalScheduleCom
 import io.edugma.features.schedule.scheduleInfo.R
 import io.edugma.features.schedule.scheduleInfo.groupInfo.InfoScaffold
 import org.koin.androidx.compose.getViewModel
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun PlaceInfoScreen(viewModel: PlaceInfoViewModel = getViewModel(), id: String) {
@@ -54,9 +54,6 @@ fun PlaceInfoScreen(viewModel: PlaceInfoViewModel = getViewModel(), id: String) 
         onTabSelected = viewModel::onTabSelected,
     )
 }
-
-private val timeFormat = DateTimeFormatter.ofPattern("HH:mm")
-private val dateFormat = DateTimeFormatter.ofPattern("d MMMM yyyy")
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -133,15 +130,15 @@ private fun OccupancyTab(
     ) {
         val currentDay = state.placeOccupancy[it]
         Column(Modifier.fillMaxSize()) {
-            Text(text = currentDay.date.format(dateFormat))
+            Text(text = currentDay.date.format("d MMMM yyyy"))
             SpacerHeight(10.dp)
             LazyColumn(Modifier.fillMaxWidth()) {
                 items(currentDay.values) {
                     Card(
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                     ) {
-                        val time = it.timeFrom.format(timeFormat) +
-                            "-" + it.timeTo.format(timeFormat)
+                        val time = it.timeFrom.format("HH:mm") +
+                            "-" + it.timeTo.format("HH:mm")
                         Text(
                             text = time,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),

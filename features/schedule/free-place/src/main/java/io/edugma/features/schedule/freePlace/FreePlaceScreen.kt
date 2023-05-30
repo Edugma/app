@@ -31,6 +31,7 @@ import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.ui.screen.FeatureScreen
+import io.edugma.domain.base.utils.format
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.ContentAlpha
 import io.edugma.features.base.core.utils.MediumAlpha
@@ -41,10 +42,9 @@ import io.edugma.features.base.elements.dialogs.date.datepicker
 import io.edugma.features.base.elements.dialogs.time.timepicker
 import io.edugma.features.schedule.domain.model.place.description
 import io.edugma.features.schedule.free_place.R
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalTime
 import org.koin.androidx.compose.getViewModel
-import java.time.LocalDate
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun FreePlaceScreen(viewModel: FreePlaceViewModel = getViewModel()) {
@@ -63,9 +63,6 @@ fun FreePlaceScreen(viewModel: FreePlaceViewModel = getViewModel()) {
         )
     }
 }
-
-private val dateFormat = DateTimeFormatter.ofPattern("d MMMM yyyy")
-private val timeFormat = DateTimeFormatter.ofPattern("HH:mm")
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -122,7 +119,7 @@ fun FreePlaceContent(
                                 SpacerFill()
                                 EdButton(
                                     onClick = { dialogDatePickerState.show() },
-                                    text = state.date.format(dateFormat),
+                                    text = state.date.format("d MMMM yyyy"),
                                 )
                             }
                             SpacerHeight(4.dp)
@@ -137,7 +134,7 @@ fun FreePlaceContent(
                                 SpacerFill()
                                 EdButton(
                                     onClick = { dialogTimePickerFromState.show() },
-                                    text = state.timeFrom.format(timeFormat),
+                                    text = state.timeFrom.format("HH:mm"),
                                 )
                             }
                             SpacerHeight(4.dp)
@@ -152,7 +149,7 @@ fun FreePlaceContent(
                                 SpacerFill()
                                 EdButton(
                                     onClick = { dialogTimePickerToState.show() },
-                                    text = state.timeTo.format(timeFormat),
+                                    text = state.timeTo.format("HH:mm"),
                                 )
                             }
                             SpacerHeight(8.dp)

@@ -12,8 +12,6 @@ import io.edugma.features.base.core.navigation.core.Screen
 import io.edugma.features.base.core.navigation.core.ScreenInfo
 import io.edugma.features.base.core.navigation.core.ScreenInfoSerializer
 import io.ktor.util.*
-import java.net.URLDecoder
-import java.net.URLEncoder
 import kotlin.reflect.KClass
 
 inline fun <reified T : Screen> NavGraphBuilder.addScreen(
@@ -50,11 +48,9 @@ fun screens(
 }
 
 private fun String.encodeUrl(): String {
-    return URLEncoder.encode(this, Charsets.UTF_8.name())
-}
-
-private fun String.decodeUrl(): String {
-    return URLDecoder.decode(this, Charsets.UTF_8.name())
+    return this.replace("+", "%2B")
+        .replace("/", "%2F")
+        .replace("=", "%3D")
 }
 
 fun Screen.getRoute() =

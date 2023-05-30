@@ -1,5 +1,6 @@
 package io.edugma.data.schedule.model
 
+import io.edugma.domain.base.utils.nowLocalDate
 import io.edugma.features.schedule.domain.model.compact.CompactLessonFeatures
 import io.edugma.features.schedule.domain.model.compact.CompactSchedule
 import io.edugma.features.schedule.domain.model.compact.ScheduleInfo
@@ -17,8 +18,13 @@ import io.edugma.features.schedule.domain.model.schedule.LessonsByTime
 import io.edugma.features.schedule.domain.model.schedule.ScheduleDay
 import io.edugma.features.schedule.domain.model.teacher.Teacher
 import io.edugma.features.schedule.domain.model.teacher.description
-import java.time.LocalDate
-import java.util.*
+import kotlinx.datetime.Clock
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.plus
+import kotlinx.datetime.toLocalDateTime
 
 fun CompactSchedule.toModel(): List<ScheduleDay> {
     val lessons: List<LessonDateTimes> = this.lessons.map {
@@ -41,17 +47,17 @@ private fun buildSchedule(
     dateFrom: LocalDate,
     dateTo: LocalDate,
 ): List<ScheduleDay> {
-    val resMap: MutableMap<LocalDate, MutableMap<LessonTime, MutableList<Lesson>>> = TreeMap()
+    val resMap: MutableMap<LocalDate, MutableMap<LessonTime, MutableList<Lesson>>> = sortedMapOf()
 
     var currentDay = dateFrom
     do {
-        resMap[currentDay] = TreeMap<LessonTime, MutableList<Lesson>>()
-        currentDay = currentDay.plusDays(1)
+        resMap[currentDay] = sortedMapOf<LessonTime, MutableList<Lesson>>()
+        currentDay = currentDay.plus(1, DateTimeUnit.DAY)
     } while (currentDay <= dateTo)
 
     for (lessonDateTimes in lessons) {
         for (dateTime in lessonDateTimes.time.getLessonDates()) {
-            val timeToLessonsMap = resMap.getOrPut(dateTime.date) { TreeMap<LessonTime, MutableList<Lesson>>() }
+            val timeToLessonsMap = resMap.getOrPut(dateTime.date) { sortedMapOf<LessonTime, MutableList<Lesson>>() }
             val lessonList = timeToLessonsMap.getOrPut(dateTime.time) { mutableListOf() }
             lessonList.add(lessonDateTimes.lesson)
         }
@@ -75,8 +81,13 @@ private fun buildSchedule(
 }
 
 private fun getLessonDateRange(lessons: List<LessonDateTimes>): Pair<LocalDate, LocalDate> {
-    var minDate = LocalDate.MAX
-    var maxDate = LocalDate.MIN
+    val distantFutureDate = Instant.DISTANT_FUTURE
+        .toLocalDateTime(TimeZone.currentSystemDefault()).date
+    val distantPastDate = Instant.DISTANT_PAST
+        .toLocalDateTime(TimeZone.currentSystemDefault()).date
+
+    var minDate = distantFutureDate
+    var maxDate = distantPastDate
 
     for (lessonDateTimes in lessons) {
         for (dateTime in lessonDateTimes.time) {
@@ -96,17 +107,22 @@ private fun getLessonDateRange(lessons: List<LessonDateTimes>): Pair<LocalDate, 
         }
     }
 
-    if (minDate == LocalDate.MAX && maxDate == LocalDate.MIN) {
-        minDate = LocalDate.now()
-        maxDate = LocalDate.now()
+    if (minDate == distantFutureDate && maxDate == distantPastDate) {
+        minDate = Clock.System.nowLocalDate()
+        maxDate = Clock.System.nowLocalDate()
     }
 
     return minDate to maxDate
 }
 
 private fun getDateRange(lessons: List<LocalDate>): Pair<LocalDate, LocalDate> {
-    var minDate = LocalDate.MAX
-    var maxDate = LocalDate.MIN
+    val distantFutureDate = Instant.DISTANT_FUTURE
+        .toLocalDateTime(TimeZone.currentSystemDefault()).date
+    val distantPastDate = Instant.DISTANT_PAST
+        .toLocalDateTime(TimeZone.currentSystemDefault()).date
+
+    var minDate = distantFutureDate
+    var maxDate = distantPastDate
 
     for (dateTime in lessons) {
         if (dateTime < minDate) {
@@ -142,7 +158,7 @@ private fun generateDatesFromRange(startDate: LocalDate, endDate: LocalDate, tim
         var currentDay = startDate
         do {
             yield(LocalLessonDateTime(currentDay, time))
-            currentDay = currentDay.plusDays(7)
+            currentDay = currentDay.plus(7, DateTimeUnit.DAY)
         } while (currentDay <= endDate)
     }
 

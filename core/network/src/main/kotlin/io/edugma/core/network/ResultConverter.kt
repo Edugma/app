@@ -13,7 +13,7 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.isSuccess
 import io.ktor.serialization.JsonConvertException
 import io.ktor.util.reflect.TypeInfo
-import java.io.IOException
+import io.ktor.utils.io.errors.IOException
 
 class ResultConverter : SuspendResponseConverter {
 

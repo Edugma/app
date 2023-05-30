@@ -1,11 +1,13 @@
 package io.edugma.features.schedule.calendar.usecase
 
+import io.edugma.domain.base.utils.nowLocalDate
 import io.edugma.features.schedule.calendar.model.CalendarScheduleVO
-import java.time.LocalDate
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
 
 class GetCurrentDayIndex {
     operator fun invoke(schedule: List<CalendarScheduleVO>): Pair<Int, Int> {
-        val currentDay = LocalDate.now()
+        val currentDay = Clock.System.nowLocalDate()
         var notBeforeLessons = false
 
         val index = schedule.indexOfFirst {

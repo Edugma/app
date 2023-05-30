@@ -3,6 +3,7 @@ package io.edugma.features.schedule.elements.verticalSchedule
 import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.domain.base.utils.getOrDefault
 import io.edugma.domain.base.utils.isFinalFailure
+import io.edugma.domain.base.utils.nowLocalDate
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.mvi.prop
 import io.edugma.features.base.navigation.schedule.ScheduleInfoScreens
@@ -17,7 +18,7 @@ import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
 import io.edugma.features.schedule.elements.utils.toUiModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filterNotNull
-import java.time.LocalDate
+import kotlinx.datetime.Clock
 
 class VerticalScheduleViewModel(
     private val useCase: ScheduleUseCase,
@@ -69,7 +70,7 @@ class VerticalScheduleViewModel(
 
     private fun calculateTodayIndex(scheduleDays: List<ScheduleDayUiModel>): Int {
         var index = 0
-        val now = LocalDate.now()
+        val now = Clock.System.nowLocalDate()
         scheduleDays.asSequence()
             .map {
                 it.date to

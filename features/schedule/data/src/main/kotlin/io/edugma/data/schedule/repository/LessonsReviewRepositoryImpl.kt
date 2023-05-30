@@ -14,7 +14,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.last
-import java.time.LocalDate
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.plus
 
 class LessonsReviewRepositoryImpl(
     private val scheduleRepository: ScheduleRepository,
@@ -99,7 +101,7 @@ class LessonsReviewRepositoryImpl(
         sortedDates.forEach { date ->
             val lastDate = resList.lastOrNull()
             if (lastDate == null ||
-                lastDate.end != null && lastDate.end!!.plusDays(7L) != date
+                lastDate.end != null && lastDate.end!!.plus(7L, DateTimeUnit.DAY) != date
             ) {
                 resList.add(LessonDates(date, null))
             } else {
@@ -121,7 +123,7 @@ class LessonsReviewRepositoryImpl(
             var currentDay = startDate
             do {
                 yield(currentDay)
-                currentDay = currentDay.plusDays(7)
+                currentDay = currentDay.plus(7, DateTimeUnit.DAY)
             } while (currentDay <= endDate)
         }
 }

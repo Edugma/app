@@ -73,8 +73,8 @@ import io.edugma.features.base.core.utils.isItemFullyVisible
 import io.edugma.features.schedule.calendar.model.CalendarDayVO
 import io.edugma.features.schedule.calendar.model.CalendarScheduleVO
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDate
 import org.koin.androidx.compose.getViewModel
-import java.time.LocalDate
 
 @Composable
 fun ScheduleCalendarScreen(viewModel: ScheduleCalendarViewModel = getViewModel()) {

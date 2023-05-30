@@ -36,6 +36,7 @@ import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.card.EdCardDefaults
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.domain.base.utils.format
 import io.edugma.features.base.core.utils.ContentAlpha
 import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.base.core.utils.WithContentAlpha
@@ -43,8 +44,7 @@ import io.edugma.features.base.core.utils.isItemFullyVisible
 import io.edugma.features.base.core.utils.sp
 import io.edugma.features.schedule.daily.model.DayUiModel
 import io.edugma.features.schedule.daily.model.WeekUiModel
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import kotlinx.datetime.LocalDate
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -102,8 +102,6 @@ fun WeekContent(
     }
 }
 
-private val weekFormat = DateTimeFormatter.ofPattern("EEE")
-
 @OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
 @Composable
 fun RowScope.DayContent(
@@ -131,7 +129,7 @@ fun RowScope.DayContent(
     ) {
         WithContentAlpha(ContentAlpha.medium) {
             Text(
-                text = weekFormat.format(day.date).uppercase(),
+                text = day.date.format("EEE").uppercase(),
                 style = EdTheme.typography.labelSmall,
                 maxLines = 1,
                 overflow = TextOverflow.Clip,

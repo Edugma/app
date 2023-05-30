@@ -1,8 +1,7 @@
 package io.edugma.domain.account.model.student
 
-import io.edugma.domain.base.utils.converters.LocalDateConverter
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
-import java.time.LocalDate
 
 @Serializable
 data class Student(
@@ -12,7 +11,6 @@ data class Student(
     val middleName: String? = null,
     val sex: String? = null,
     val avatar: String? = null,
-    @Serializable(LocalDateConverter::class)
     val birthday: LocalDate? = null,
     val group: Group? = null,
     val specialization: StudentSpecialization? = null,

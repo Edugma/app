@@ -36,14 +36,16 @@ import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
+import io.edugma.domain.base.utils.format
 import io.edugma.features.schedule.appwidget.R
 import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonTime
 import io.edugma.features.schedule.domain.usecase.getShortName
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 
 class CurrentLessonAppWidget : GlanceAppWidget(), KoinComponent {
 
@@ -139,14 +141,12 @@ private fun NoLessons() {
     }
 }
 
-private val timeFormat = DateTimeFormatter.ofPattern("HH:mm")
-
 @Composable
 private fun LessonContent(time: LessonTime, lesson: Lesson) {
     Column {
         Row {
-            val timeFrom = time.start.format(timeFormat)
-            val timeTo = time.end.format(timeFormat)
+            val timeFrom = time.start.format("HH:mm")
+            val timeTo = time.end.format("HH:mm")
             Text(
                 text = "$timeFrom - $timeTo",
                 style = TextStyle(
@@ -280,11 +280,9 @@ private fun LessonSelector(
     }
 }
 
-private val dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM, HH:mm")
-
 @Composable
 private fun Timestamp(
-    updateDateTime: ZonedDateTime,
+    updateDateTime: Instant,
     modifier: GlanceModifier = GlanceModifier,
 ) {
     Row(
@@ -292,7 +290,8 @@ private fun Timestamp(
         horizontalAlignment = Alignment.End,
     ) {
         Text(
-            text = updateDateTime.format(dateTimeFormatter),
+            text = updateDateTime.toLocalDateTime(TimeZone.currentSystemDefault())
+                .format("dd.MM, HH:mm"),
             maxLines = 1,
             style = TextStyle(
                 fontSize = 10.sp,

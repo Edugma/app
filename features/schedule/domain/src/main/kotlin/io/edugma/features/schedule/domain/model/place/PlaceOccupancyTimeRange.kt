@@ -1,14 +1,11 @@
 package io.edugma.features.schedule.domain.model.place
 
-import io.edugma.domain.base.utils.converters.LocalTimeConverter
+import kotlinx.datetime.LocalTime
 import kotlinx.serialization.Serializable
-import java.time.LocalTime
 
 @Serializable
 data class PlaceOccupancyTimeRange(
-    @Serializable(with = LocalTimeConverter::class)
     val timeFrom: LocalTime,
-    @Serializable(with = LocalTimeConverter::class)
     val timeTo: LocalTime,
     val value: Double,
 )

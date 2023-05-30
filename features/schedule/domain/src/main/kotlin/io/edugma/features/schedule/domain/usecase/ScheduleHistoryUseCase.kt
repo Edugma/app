@@ -12,7 +12,7 @@ import io.edugma.features.schedule.domain.repository.ScheduleSourcesRepository
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.transformLatest
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 import kotlin.math.max
 
 class ScheduleHistoryUseCase(

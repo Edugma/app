@@ -1,20 +1,21 @@
 package io.edugma.features.schedule.domain.usecase
 
-import io.edugma.domain.base.utils.ZoneIds
+import io.edugma.domain.base.utils.TimeZones
+import io.edugma.domain.base.utils.nowLocalTime
+import io.edugma.domain.base.utils.plus
 import io.edugma.features.schedule.domain.model.schedule.LessonsByTime
-import java.time.ZonedDateTime
+import kotlinx.datetime.Clock
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
-import kotlin.time.toJavaDuration
 
 class GetClosestLessonsUseCase {
     operator fun invoke(
         lessons: List<LessonsByTime>,
         timeToCombine: Duration = 15.toDuration(DurationUnit.MINUTES),
     ): List<LessonsByTime> {
-        val now = ZonedDateTime.now().withZoneSameInstant(ZoneIds.main).toLocalTime()
-        val latestTimeToCombine = now.plus(timeToCombine.toJavaDuration())
+        val now = Clock.System.nowLocalTime(TimeZones.main)
+        val latestTimeToCombine = now.plus(timeToCombine)
 
         var firstCeilingLessonIndex: Int = -1
         val closestLessons = mutableListOf<Int>()

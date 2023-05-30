@@ -1,7 +1,7 @@
 package io.edugma.features.schedule.daily.model
 
 import androidx.compose.runtime.Immutable
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 
 @Immutable
 data class DayUiModel(

@@ -42,6 +42,7 @@ import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.designSystem.tokens.shapes.top
 import io.edugma.core.ui.screen.FeatureScreen
+import io.edugma.domain.base.utils.format
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.base.core.utils.Typed2Listener
@@ -49,9 +50,8 @@ import io.edugma.features.base.core.utils.bindTo
 import io.edugma.features.base.core.utils.onPageChanged
 import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
+import kotlinx.datetime.LocalDate
 import org.koin.androidx.compose.getViewModel
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun ScheduleScreen(
@@ -82,7 +82,6 @@ fun ScheduleScreen(
         }
     }
 }
-private val dateTimeFormat = DateTimeFormatter.ofPattern("d MMMM, yyyy")
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -109,7 +108,7 @@ fun ScheduleContent(
                 Column(Modifier.fillMaxWidth()) {
                     EdTopAppBar(
                         title = stringResource(R.string.sch_schedule),
-                        subtitle = state.selectedDate.format(dateTimeFormat),
+                        subtitle = state.selectedDate.format("d MMMM, yyyy"),
                         onNavigationClick = onBackClick,
                         actions = {
                             if (state.isLoading) {

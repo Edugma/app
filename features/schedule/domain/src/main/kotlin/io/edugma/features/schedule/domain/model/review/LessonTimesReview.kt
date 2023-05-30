@@ -1,12 +1,11 @@
 package io.edugma.features.schedule.domain.model.review
 
-import io.edugma.domain.base.utils.converters.LocalDateConverter
 import io.edugma.features.schedule.domain.model.lesson.LessonTime
 import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubject
 import io.edugma.features.schedule.domain.model.lessonType.LessonType
+import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
-import java.time.DayOfWeek
-import java.time.LocalDate
 
 @Serializable
 data class LessonTimesReview(
@@ -44,9 +43,7 @@ data class LessonReviewUnit(
 
 @Serializable
 data class LessonDates(
-    @Serializable(with = LocalDateConverter::class)
     val start: LocalDate,
-    @Serializable(with = LocalDateConverter::class)
     val end: LocalDate?,
 ) : Comparable<LessonDates> {
     override fun compareTo(other: LessonDates): Int {

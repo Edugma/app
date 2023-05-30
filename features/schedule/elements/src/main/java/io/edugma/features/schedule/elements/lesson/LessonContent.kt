@@ -24,6 +24,7 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
 import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.designSystem.utils.edPlaceholder
+import io.edugma.domain.base.utils.format
 import io.edugma.features.base.core.utils.ContentAlpha
 import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.base.core.utils.WithContentAlpha
@@ -36,7 +37,6 @@ import io.edugma.features.schedule.domain.model.place.Place
 import io.edugma.features.schedule.domain.model.teacher.Teacher
 import io.edugma.features.schedule.domain.usecase.getShortName
 import io.edugma.features.schedule.elements.lesson.model.ScheduleItem
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun LessonContent(
@@ -167,12 +167,10 @@ fun PlacesContent(places: List<Place>, isLoading: Boolean = false) {
     )
 }
 
-private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
-
 @Composable
 fun LessonWindow(lessonWindow: ScheduleItem.Window) {
-    val timeFrom = remember(lessonWindow) { lessonWindow.timeFrom.format(timeFormatter) }
-    val timeTo = remember(lessonWindow) { lessonWindow.timeTo.format(timeFormatter) }
+    val timeFrom = remember(lessonWindow) { lessonWindow.timeFrom.format("HH:mm") }
+    val timeTo = remember(lessonWindow) { lessonWindow.timeTo.format("HH:mm") }
 
     val timeText = remember(lessonWindow) {
         getTimeText(lessonWindow.totalMinutes)
