@@ -24,5 +24,6 @@ java {
 
 dependencies {
     implementation(libs.uuid)
+    implementation(libs.kermit)
 }
 

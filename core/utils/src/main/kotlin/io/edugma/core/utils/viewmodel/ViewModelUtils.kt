@@ -38,6 +38,7 @@ inline fun ViewModel.launchCoroutine(
         dispatcher = dispatcher,
         errorHandler = ErrorHandler {
             onError(it)
+            Logger.e("ViewModel launchCoroutine error: ", it, tag = "launchCoroutine")
         },
         block = block,
     )

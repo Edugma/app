@@ -14,7 +14,7 @@ class LessonsReviewViewModel(
             useCase.getLessonsReview().collect {
                 mutateState {
                     state = state.copy(
-                        lessons = it.getOrDefault(emptyList()),
+                        lessons = it,
                     )
                 }
             }

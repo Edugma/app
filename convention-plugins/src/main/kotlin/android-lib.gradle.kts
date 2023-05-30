@@ -48,6 +48,7 @@ android {
 
 dependencies {
     implementation(libs.uuid)
+    implementation(libs.kermit)
 }
 
 fun getPrefix(): String {

@@ -10,10 +10,7 @@ import io.edugma.features.schedule.domain.model.review.LessonTimesReviewByType
 import io.edugma.features.schedule.domain.model.source.ScheduleSource
 import io.edugma.features.schedule.domain.repository.LessonsReviewRepository
 import io.edugma.features.schedule.domain.repository.ScheduleRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.flow.first
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.plus
@@ -22,13 +19,8 @@ class LessonsReviewRepositoryImpl(
     private val scheduleRepository: ScheduleRepository,
 ) : LessonsReviewRepository {
 
-    override fun getLessonsReview(source: ScheduleSource) =
-        flow {
-            emit(kotlin.runCatching { getLessonsReview2(source) })
-        }.flowOn(Dispatchers.IO)
-
-    private suspend fun getLessonsReview2(source: ScheduleSource): List<LessonTimesReview> {
-        val schedule = scheduleRepository.getRawSchedule(source).last().getOrNull()
+    override suspend fun getLessonsReview(source: ScheduleSource): List<LessonTimesReview> {
+        val schedule = scheduleRepository.getRawSchedule(source).first { it.isSuccess }.getOrNull()
 
         val lessons = schedule?.lessons ?: emptyList()
         val info = schedule?.info
