@@ -25,8 +25,8 @@ import io.edugma.core.designSystem.organism.iconCard.EdIconCard
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.designSystem.tokens.shapes.bottom
-import io.edugma.core.designSystem.utils.cachedIconPainter
 import io.edugma.core.designSystem.utils.edPlaceholder
+import io.edugma.core.designSystem.utils.rememberCachedIconPainter
 import io.edugma.domain.account.model.menu.CardType
 import io.edugma.features.account.menu.MenuState
 import io.edugma.features.base.core.utils.ClickListener
@@ -98,7 +98,7 @@ fun MainScreen(
                         subtitle = card.label,
                         modifier = Modifier.weight(card.weight),
                         onClick = { cardClick(card.type, card.url) },
-                        icon = cachedIconPainter(card.icon),
+                        icon = rememberCachedIconPainter(card.icon),
                     )
                 }
             }

@@ -8,12 +8,10 @@ import androidx.core.view.WindowCompat
 import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
-import io.edugma.core.designSystem.utils.IconCacheLoader
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        IconCacheLoader.initLoader(this)
 
         installSplashScreen().apply {
         }

@@ -16,7 +16,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberImagePainter
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
@@ -24,6 +23,7 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
 import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.designSystem.utils.edPlaceholder
+import io.edugma.core.designSystem.utils.rememberAsyncImagePainter
 import io.edugma.domain.base.utils.format
 import io.edugma.features.base.core.utils.ContentAlpha
 import io.edugma.features.base.core.utils.Typed1Listener
@@ -191,7 +191,7 @@ fun LessonWindow(lessonWindow: ScheduleItem.Window) {
         val url = remember { urls.random() }
 
         Image(
-            painter = rememberImagePainter(data = url),
+            painter = rememberAsyncImagePainter(model = url),
             contentDescription = null,
             modifier = Modifier
                 .padding(start = 16.dp)

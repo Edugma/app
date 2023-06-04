@@ -19,6 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -36,6 +37,8 @@ import io.edugma.android.appScreens
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.organism.navigationBar.EdNavigationBar
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.utils.LocalEdIconLoader
+import io.edugma.core.designSystem.utils.LocalEdImageLoader
 import io.edugma.features.base.core.navigation.compose.getFullRawRoute
 import io.edugma.features.base.core.navigation.compose.rememberNavController
 import io.edugma.features.base.navigation.MainScreen
@@ -56,20 +59,25 @@ fun MainContent(
 ) {
     val navController = rememberNavController(viewModel.router)
 
-    Scaffold(
-        bottomBar = { BottomNav(navController) },
-        contentWindowInsets = WindowInsets(0.dp),
-    ) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize(),
-        ) {
-            NavHost(
-                navController = navController,
-                startDestination = NodesScreens.Main.getFullRawRoute(),
+    CompositionLocalProvider(
+        LocalEdImageLoader provides viewModel.commonImageLoader,
+        LocalEdIconLoader provides viewModel.iconImageLoader,
+    ) {
+        Scaffold(
+            bottomBar = { BottomNav(navController) },
+            contentWindowInsets = WindowInsets(0.dp),
+        ) { innerPadding ->
+            Box(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize(),
             ) {
-                appScreens()
+                NavHost(
+                    navController = navController,
+                    startDestination = NodesScreens.Main.getFullRawRoute(),
+                ) {
+                    appScreens()
+                }
             }
         }
     }

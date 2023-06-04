@@ -56,4 +56,5 @@ val appModules = listOf(
     accountFeaturesModule,
     miscMenuFeaturesModule,
     settingsFeaturesModule,
+    coreModule,
 )

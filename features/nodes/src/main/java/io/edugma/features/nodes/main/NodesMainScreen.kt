@@ -1,5 +1,6 @@
 package io.edugma.features.nodes.main
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,16 +19,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.card.EdCardDefaults
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.utils.rememberAsyncImagePainter
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.domain.nodes.model.Node
 import io.edugma.features.base.core.utils.ClickListener
@@ -179,11 +178,9 @@ private fun NodeContent(
                 .padding(horizontal = 16.dp, vertical = 10.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(node.image)
-                    .crossfade(true)
-                    .build(),
+            val painter = rememberAsyncImagePainter(model = node.image)
+            Image(
+                painter = painter,
                 contentDescription = null,
                 modifier = Modifier
                     .size(48.dp),

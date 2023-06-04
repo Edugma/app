@@ -17,7 +17,7 @@ koin-android= "3.4.0"
 koin-android-compose= "3.4.4"
 koin-ksp = "1.2.0"
 
-coil = "2.3.0"
+imageLoader = "1.4.5"
 
 paging = "3.1.1"
 pagingCompose = "1.0.0-alpha19"
@@ -81,7 +81,7 @@ compose-uiUtil = { group = "androidx.compose.ui", name = "ui-util" }
 
 google-maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "google-maps-compose" }
 gms-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "play-service-maps" }
-coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+imageLoader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "imageLoader" }
 
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 
@@ -91,9 +91,7 @@ koin-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = 
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-ksp = { module = "io.insert-koin:koin-ksp-compiler", version.ref = "koin-ksp" }
 
-kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinCoroutines" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }
-kotlinx-coroutines-jvm = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm", version.ref = "kotlinCoroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinCoroutines" }
 kotlinx-dateTime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDateTime" }
 kotlinx-serializationCbor = { module = "org.jetbrains.kotlinx:kotlinx-serialization-cbor", version.ref = "kotlinxSerialization" }

@@ -25,8 +25,6 @@ dependencies {
 
     api(libs.navigation)
 
-    api(libs.coil)
-
     api(libs.androidx.startup)
     implementation(libs.kermit)
 }

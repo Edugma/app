@@ -1,5 +1,6 @@
 package io.edugma.features.account.people.students
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -23,7 +24,6 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import coil.compose.AsyncImage
 import io.edugma.core.designSystem.atoms.divider.EdDivider
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.loader.EdLoader
@@ -39,6 +39,7 @@ import io.edugma.core.designSystem.organism.refresher.Refresher
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
+import io.edugma.core.designSystem.utils.rememberAsyncImagePainter
 import io.edugma.core.ui.screen.BottomSheet
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.domain.account.model.student.Student
@@ -176,13 +177,16 @@ fun StudentSheetContent(
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
             )
-            AsyncImage(
-                model = student.avatar,
-                contentDescription = "avatar",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(CircleShape),
-            )
+            student.avatar?.let { avatarUrl ->
+                val painter = rememberAsyncImagePainter(model = avatarUrl)
+                Image(
+                    painter = painter,
+                    contentDescription = "avatar",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(CircleShape),
+                )
+            }
         }
         SpacerHeight(height = 3.dp)
         Text(

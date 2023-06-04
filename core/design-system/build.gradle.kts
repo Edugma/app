@@ -16,7 +16,7 @@ dependencies {
     implementation(libs.androidx.coreKtx)
     implementation(libs.androidx.appCompat)
     implementation(libs.lottie)
-    implementation(libs.coil)
+    implementation(libs.imageLoader)
     implementation(libs.compose.material)
     implementation(libs.compose.uiUtil)
 

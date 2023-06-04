@@ -1,5 +1,6 @@
 package io.edugma.features.schedule.scheduleInfo.lessonInfo
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,7 +24,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import io.edugma.core.designSystem.atoms.divider.EdDivider
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
@@ -35,6 +35,7 @@ import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
 import io.edugma.core.designSystem.tokens.icons.EdIcons
+import io.edugma.core.designSystem.utils.rememberAsyncImagePainter
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.domain.base.utils.format
 import io.edugma.features.base.core.utils.ClickListener
@@ -266,8 +267,9 @@ private fun LessonPlaces(
             }
             SpacerHeight(8.dp)
             val text = "https://static-maps.yandex.ru/1.x/?l=map&pt=37.544180,55.833268,org&z=16&size=450,250"
-            AsyncImage(
-                model = text,
+            val painter = rememberAsyncImagePainter(model = text)
+            Image(
+                painter = painter,
                 contentDescription = null,
                 modifier = Modifier
                     .padding(horizontal = 10.dp)
