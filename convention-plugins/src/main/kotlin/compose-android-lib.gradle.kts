@@ -23,5 +23,9 @@ dependencies {
     implementation(libs.compose.ui)
     implementation(libs.compose.material3)
     implementation(libs.compose.uiToolingPreview)
+    implementation(libs.voyager.navigator)
+    implementation(libs.voyager.koin)
+    implementation(libs.voyager.bottomSheetNavigator)
+    implementation(libs.voyager.tabNavigator)
     debugImplementation(libs.compose.uiTooling)
 }

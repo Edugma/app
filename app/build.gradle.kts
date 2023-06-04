@@ -43,6 +43,11 @@ dependencies {
     implementation(libs.compose.uiToolingPreview)
     debugImplementation(libs.compose.uiTooling)
 
+    implementation(libs.voyager.navigator)
+    implementation(libs.voyager.koin)
+    implementation(libs.voyager.bottomSheetNavigator)
+    implementation(libs.voyager.tabNavigator)
+
     testImplementation(libs.test.junit)
     androidTestImplementation(libs.test.junit.ext)
     androidTestImplementation(libs.test.espressoCore)

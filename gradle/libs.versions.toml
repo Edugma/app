@@ -18,6 +18,7 @@ koin-android-compose= "3.4.4"
 koin-ksp = "1.2.0"
 
 imageLoader = "1.4.5"
+voyager = "1.0.0-rc05"
 
 paging = "3.1.1"
 pagingCompose = "1.0.0-alpha19"
@@ -82,6 +83,12 @@ compose-uiUtil = { group = "androidx.compose.ui", name = "ui-util" }
 google-maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "google-maps-compose" }
 gms-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "play-service-maps" }
 imageLoader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "imageLoader" }
+voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
+voyager-bottomSheetNavigator = { module = "cafe.adriel.voyager:voyager-bottom-sheet-navigator", version.ref = "voyager" }
+voyager-tabNavigator = { module = "cafe.adriel.voyager:voyager-tab-navigator", version.ref = "voyager" }
+voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", version.ref = "voyager" }
+# voyager-androidx = { module = "cafe.adriel.voyager:voyager-androidx", version.ref = "voyager" }
+voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyager" }
 
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 

@@ -99,7 +99,24 @@ class IconImageLoader(
 ) : BaseImageLoader() {
     init {
         this.init(
-            cachePath = pathRepository.getIconCachePath(),
+            diskCache = DiskCache(path = pathRepository.getIconCachePath()),
+            componentSetup = {
+                // Android
+                setupDefaultComponents(appContext)
+                // iOS
+                // this.setupDefaultComponents()
+            },
+        )
+    }
+}
+
+open class CommonImageLoader(
+    pathRepository: PathRepository,
+    appContext: Context,
+) : BaseImageLoader() {
+    init {
+        this.init(
+            // diskCache = DiskCache(path = pathRepository.getImageCachePath()),
             componentSetup = {
                 // Android
                 setupDefaultComponents(appContext)
@@ -113,10 +130,9 @@ class IconImageLoader(
 abstract class BaseImageLoader {
     internal lateinit var loader: ImageLoader
 
-    protected fun init(
-        cachePath: String,
+    internal fun init(
         memCacheSize: Int = 32 * 1024 * 1024, // 32MB
-        diskCacheSize: Int = 512 * 1024 * 1024, // 512MB
+        diskCache: DiskCache? = null,
         componentSetup: ComponentRegistryBuilder.() -> Unit,
     ) {
 
@@ -125,9 +141,11 @@ abstract class BaseImageLoader {
                 memoryCacheConfig {
                     maxSizeBytes(memCacheSize)
                 }
-                diskCacheConfig {
-                    directory(cachePath.toPath())
-                    maxSizeBytes(diskCacheSize.toLong())
+                diskCache?.let {
+                    diskCacheConfig {
+                        directory(diskCache.path.toPath())
+                        maxSizeBytes(diskCache.size.toLong())
+                    }
                 }
             }
             components {
@@ -137,19 +155,7 @@ abstract class BaseImageLoader {
     }
 }
 
-open class CommonImageLoader(
-    pathRepository: PathRepository,
-    appContext: Context,
-) : BaseImageLoader() {
-    init {
-        this.init(
-            cachePath = pathRepository.getImageCachePath(),
-            componentSetup = {
-                // Android
-                setupDefaultComponents(appContext)
-                // iOS
-                // this.setupDefaultComponents()
-            },
-        )
-    }
-}
+internal class DiskCache(
+    val path: String,
+    val size: Int = 512 * 1024 * 1024, // 512MB,
+)
