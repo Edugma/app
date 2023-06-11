@@ -1,8 +1,6 @@
 package io.edugma.features.schedule.scheduleInfo
 
-import io.edugma.features.base.core.navigation.compose.addScreen
-import io.edugma.features.base.core.navigation.compose.screens
-import io.edugma.features.base.navigation.schedule.ScheduleInfoScreens
+import io.edugma.core.navigation.schedule.ScheduleInfoScreens
 import io.edugma.features.schedule.scheduleInfo.groupInfo.GroupInfoScreen
 import io.edugma.features.schedule.scheduleInfo.groupInfo.GroupInfoViewModel
 import io.edugma.features.schedule.scheduleInfo.lessonInfo.LessonInfoScreen
@@ -11,6 +9,8 @@ import io.edugma.features.schedule.scheduleInfo.placeInfo.PlaceInfoScreen
 import io.edugma.features.schedule.scheduleInfo.placeInfo.PlaceInfoViewModel
 import io.edugma.features.schedule.scheduleInfo.teacherInfo.TeacherInfoScreen
 import io.edugma.features.schedule.scheduleInfo.teacherInfo.TeacherInfoViewModel
+import io.edugma.navigation.core.graph.screenModule
+import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module
 
@@ -22,28 +22,28 @@ object ScheduleInfoFeatureModule {
         viewModelOf(::PlaceInfoViewModel)
     }
 
-    val screens = screens {
-        addScreen<ScheduleInfoScreens.LessonInfo> {
+    val screens = screenModule {
+        screen(ScheduleInfoScreens.LessonInfo) {
             LessonInfoScreen(
-                lessonInfo = getArg(ScheduleInfoScreens.LessonInfo::lessonInfo.name),
+                lessonInfo = Json.decodeFromString(screen.lessonInfo.get()),
             )
         }
 
-        addScreen<ScheduleInfoScreens.TeacherInfo> {
+        screen(ScheduleInfoScreens.TeacherInfo) {
             TeacherInfoScreen(
-                id = getArg(ScheduleInfoScreens.TeacherInfo::id.name),
+                id = screen.id.get(),
             )
         }
 
-        addScreen<ScheduleInfoScreens.GroupInfo> {
+        screen(ScheduleInfoScreens.GroupInfo) {
             GroupInfoScreen(
-                id = getArg(ScheduleInfoScreens.GroupInfo::id.name),
+                id = screen.id.get(),
             )
         }
 
-        addScreen<ScheduleInfoScreens.PlaceInfo> {
+        screen(ScheduleInfoScreens.PlaceInfo) {
             PlaceInfoScreen(
-                id = getArg(ScheduleInfoScreens.PlaceInfo::id.name),
+                id = screen.id.get(),
             )
         }
     }

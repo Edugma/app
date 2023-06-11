@@ -1,22 +1,21 @@
 package io.edugma.features.base.core.navigation.core
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import io.edugma.navigation.core.screen.Screen
+import io.edugma.navigation.core.screen.ScreenBundle
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.launch
 
 class Router {
-    private val _commandBuffer = MutableSharedFlow<List<Command>>()
+    private val _commandBuffer = MutableSharedFlow<List<Command>>(
+        replay = 0,
+        extraBufferCapacity = Int.MAX_VALUE,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST,
+    )
     val commandBuffer: Flow<List<Command>> = _commandBuffer
 
-    private val scope = CoroutineScope(Job() + Dispatchers.Default)
-
     fun executeCommands(vararg commands: Command) {
-        scope.launch {
-            _commandBuffer.emit(commands.toList())
-        }
+        _commandBuffer.tryEmit(commands.toList())
     }
 
     /**
@@ -24,7 +23,7 @@ class Router {
      *
      * @param screen screen
      */
-    fun navigateTo(screen: Screen) {
+    fun navigateTo(screen: ScreenBundle) {
         executeCommands(Command.Forward(screen))
     }
 
@@ -33,7 +32,7 @@ class Router {
      *
      * @param screen screen
      */
-    fun newRootScreen(screen: Screen) {
+    fun newRootScreen(screen: ScreenBundle) {
         executeCommands(Command.BackTo(null), Command.Replace(screen))
     }
 
@@ -46,7 +45,7 @@ class Router {
      *
      * @param screen screen
      */
-    fun replaceScreen(screen: Screen) {
+    fun replaceScreen(screen: ScreenBundle) {
         executeCommands(Command.Replace(screen))
     }
 
@@ -67,7 +66,7 @@ class Router {
      *
      * @param screens
      */
-    fun newChain(vararg screens: Screen) {
+    fun newChain(vararg screens: ScreenBundle) {
         val commands = screens.map { Command.Forward(it) }
         executeCommands(*commands.toTypedArray())
     }
@@ -77,7 +76,7 @@ class Router {
      *
      * @param screens
      */
-    fun newRootChain(vararg screens: Screen) {
+    fun newRootChain(vararg screens: ScreenBundle) {
         val commands = screens.mapIndexed { index, screen ->
             if (index == 0) {
                 Command.Replace(screen)

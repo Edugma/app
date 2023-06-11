@@ -1,13 +1,11 @@
 package io.edugma.features.home
 
-import io.edugma.features.base.core.navigation.compose.addScreen
-import io.edugma.features.base.core.navigation.compose.groupScreen
-import io.edugma.features.base.core.navigation.compose.screens
-import io.edugma.features.base.navigation.HomeScreens
-import io.edugma.features.base.navigation.MainScreen
+import io.edugma.core.navigation.HomeScreens
+import io.edugma.core.navigation.MainScreen
+import io.edugma.navigation.core.graph.screenModule
 
-val homeScreens = screens {
-    groupScreen<MainScreen.Home, HomeScreens.Main> {
-        addScreen<HomeScreens.Main> { HomeScreen() }
+val homeScreens = screenModule {
+    groupScreen(MainScreen.Home, HomeScreens.Main) {
+        screen(HomeScreens.Main) { HomeScreen() }
     }
 }

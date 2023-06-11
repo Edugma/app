@@ -26,6 +26,7 @@ includeSubmodules(
     "domain",
     "features",
     "core",
+    "navigation",
 
     deep = 4,
 )

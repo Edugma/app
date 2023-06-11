@@ -9,7 +9,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.animation.with
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,6 +19,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -28,21 +28,25 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.currentBackStackEntryAsState
 import io.edugma.android.appScreens
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.organism.navigationBar.EdNavigationBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.LocalEdIconLoader
 import io.edugma.core.designSystem.utils.LocalEdImageLoader
-import io.edugma.features.base.core.navigation.compose.getFullRawRoute
-import io.edugma.features.base.core.navigation.compose.rememberNavController
-import io.edugma.features.base.navigation.MainScreen
-import io.edugma.features.base.navigation.nodes.NodesScreens
+import io.edugma.core.navigation.AccountScreens
+import io.edugma.core.navigation.HomeScreens
+import io.edugma.core.navigation.MainScreen
+import io.edugma.core.navigation.ScheduleScreens
+import io.edugma.core.navigation.misc.MiscMenuScreens
+import io.edugma.features.base.core.navigation.compose.rememberRouterNavigator
+import io.edugma.navigation.core.compose.EdugmaNavigation
+import io.edugma.navigation.core.compose.EdugmaTabNavigation
+import io.edugma.navigation.core.compose.rememberEdugmaNavigator
+import io.edugma.navigation.core.graph.screenModule
+import io.edugma.navigation.core.navigator.EdugmaNavigator
+import io.edugma.navigation.core.screen.ScreenBundle
+import io.edugma.navigation.core.screen.bundleOf
 import org.koin.androidx.compose.getViewModel
 
 val showNavBar = listOf(
@@ -50,21 +54,41 @@ val showNavBar = listOf(
     MainScreen.Schedule,
     MainScreen.Account,
     MainScreen.Misc,
-).map { it.route }
+).map { it.name }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainContent(
     viewModel: MainViewModel = getViewModel(),
 ) {
-    val navController = rememberNavController(viewModel.router)
+    val edugmaNavigator = rememberRouterNavigator(viewModel.router, listOf(appScreens))
+    val tabNavigator = rememberEdugmaNavigator(
+        remember {
+            listOf(
+                screenModule {
+                    screen(MainScreen.Home) {
+                        TabContent(edugmaNavigator, HomeScreens.Main())
+                    }
+                    screen(MainScreen.Schedule) {
+                        TabContent(edugmaNavigator, ScheduleScreens.Menu())
+                    }
+                    screen(MainScreen.Account) {
+                        TabContent(edugmaNavigator, AccountScreens.Menu())
+                    }
+                    screen(MainScreen.Misc) {
+                        TabContent(edugmaNavigator, MiscMenuScreens.Menu())
+                    }
+                },
+            )
+        },
+    )
 
     CompositionLocalProvider(
         LocalEdImageLoader provides viewModel.commonImageLoader,
         LocalEdIconLoader provides viewModel.iconImageLoader,
     ) {
         Scaffold(
-            bottomBar = { BottomNav(navController) },
+            bottomBar = { BottomNav(tabNavigator) },
             contentWindowInsets = WindowInsets(0.dp),
         ) { innerPadding ->
             Box(
@@ -72,29 +96,28 @@ fun MainContent(
                     .padding(innerPadding)
                     .fillMaxSize(),
             ) {
-                NavHost(
-                    navController = navController,
-                    startDestination = NodesScreens.Main.getFullRawRoute(),
-                ) {
-                    appScreens()
-                }
+                EdugmaTabNavigation(tabNavigator, MainScreen.Home.bundleOf())
             }
         }
     }
 }
 
 @Composable
-fun BottomNav(navController: NavHostController) {
+fun TabContent(edugmaNavigator: EdugmaNavigator, firstScreen: ScreenBundle) {
+    EdugmaNavigation(edugmaNavigator, firstScreen)
+}
+
+@Composable
+fun BottomNav(navController: EdugmaNavigator) {
     val items = listOf(
         MainScreen.Home,
         MainScreen.Schedule,
         MainScreen.Account,
         MainScreen.Misc,
     )
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
+    val currentDestination by navController.currentScreen.collectAsState()
     val isNavigationBarVisible = remember(currentDestination) {
-        currentDestination?.route in showNavBar
+        currentDestination?.screenBundle?.screen?.name in showNavBar
     }
     val density = LocalDensity.current
 
@@ -117,9 +140,7 @@ fun BottomNav(navController: NavHostController) {
             height = 80.dp,
         ) {
             items.forEach { screen ->
-                val selected = currentDestination?.hierarchy?.any {
-                    it.route == screen.route
-                } == true
+                val selected = currentDestination?.screenBundle?.screen?.name == screen.name
                 NavigationBarItem(
                     icon = {
                         Crossfade(
@@ -142,7 +163,7 @@ fun BottomNav(navController: NavHostController) {
                     selected = selected,
                     label = {
                         EdLabel(
-                            text = stringResource(screen.resourceId),
+                            text = stringResource(screen.tabNameId),
                             fontWeight = if (selected) {
                                 FontWeight.Bold
                             } else {
@@ -152,16 +173,7 @@ fun BottomNav(navController: NavHostController) {
                         )
                     },
                     onClick = {
-                        navController.navigate(screen.route) {
-                            // Pop up to the start destination of the graph to
-                            // avoid building up a large stack of destinations
-                            // on the back stack as users select items
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
+                        navController.navigateTo(screen.bundleOf(), singleTop = true)
                     },
                 )
             }

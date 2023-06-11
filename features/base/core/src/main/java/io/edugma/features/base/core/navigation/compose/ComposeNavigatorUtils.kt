@@ -2,20 +2,20 @@ package io.edugma.features.base.core.navigation.compose
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.navigation.NavDestination
-import androidx.navigation.NavHostController
-import androidx.navigation.Navigator
 import io.edugma.features.base.core.navigation.core.Router
+import io.edugma.navigation.core.compose.rememberEdugmaNavigator
+import io.edugma.navigation.core.graph.ScreenModule
+import io.edugma.navigation.core.navigator.EdugmaNavigator
 
 @Composable
-fun rememberNavController(
+fun rememberRouterNavigator(
     router: Router,
-    vararg navigators: Navigator<out NavDestination>,
-): NavHostController {
-    val navController = androidx.navigation.compose.rememberNavController(*navigators)
-    val navigator = remember(navController, router) {
-        ComposeNavigator(navController, router)
+    screens: List<ScreenModule>,
+): EdugmaNavigator {
+    val edugmaNavigator = rememberEdugmaNavigator(screens)
+    val navigator = remember(edugmaNavigator, router) {
+        ComposeNavigator(edugmaNavigator, router)
     }
 
-    return navigator.navController
+    return navigator.edugmaNavigator
 }

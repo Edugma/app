@@ -8,7 +8,7 @@ dependencies {
     implementation(projects.core.utils)
 
     implementation(projects.features.base.core)
-    implementation(projects.features.base.navigation)
+    implementation(projects.core.navigation)
     implementation(projects.features.base.elements)
     api(projects.features.schedule.domain)
 }

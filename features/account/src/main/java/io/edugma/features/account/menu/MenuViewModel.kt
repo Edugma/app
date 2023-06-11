@@ -1,6 +1,7 @@
 package io.edugma.features.account.menu
 
 import io.edugma.core.designSystem.organism.accountSelector.AccountSelectorVO
+import io.edugma.core.navigation.AccountScreens
 import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.domain.account.model.menu.Card
 import io.edugma.domain.account.model.menu.CardType
@@ -18,7 +19,6 @@ import io.edugma.domain.account.usecase.DataDto
 import io.edugma.domain.account.usecase.MenuDataConverterUseCase
 import io.edugma.domain.account.usecase.PersonalData
 import io.edugma.features.base.core.mvi.BaseViewModel
-import io.edugma.features.base.navigation.AccountScreens
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.withContext
@@ -126,16 +126,16 @@ class MenuViewModel(
     }
 
     fun openPersonal() {
-        router.navigateTo(AccountScreens.Personal)
+        router.navigateTo(AccountScreens.Personal())
     }
 
     fun cardClick(type: CardType, url: String?) {
         when (type) {
-            Students -> router.navigateTo(AccountScreens.Students)
-            Teachers -> router.navigateTo(AccountScreens.Teachers)
-            Classmates -> router.navigateTo(AccountScreens.Classmates)
-            Payments -> router.navigateTo(AccountScreens.Payments)
-            Marks -> router.navigateTo(AccountScreens.Marks)
+            Students -> router.navigateTo(AccountScreens.Students())
+            Teachers -> router.navigateTo(AccountScreens.Teachers())
+            Classmates -> router.navigateTo(AccountScreens.Classmates())
+            Payments -> router.navigateTo(AccountScreens.Payments())
+            Marks -> router.navigateTo(AccountScreens.Marks())
             Web -> router.navigateTo(AccountScreens.Web(url.orEmpty()))
         }
     }

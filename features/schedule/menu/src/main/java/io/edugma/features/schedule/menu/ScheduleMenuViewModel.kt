@@ -1,14 +1,14 @@
 package io.edugma.features.schedule.menu
 
 import io.edugma.core.designSystem.organism.accountSelector.AccountSelectorVO
+import io.edugma.core.navigation.ScheduleScreens
+import io.edugma.core.navigation.schedule.ScheduleHistoryScreens
 import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.domain.base.utils.nowLocalDate
 import io.edugma.domain.base.utils.nowLocalTime
 import io.edugma.domain.base.utils.untilMinutes
 import io.edugma.features.base.core.mvi.BaseMutator
 import io.edugma.features.base.core.mvi.BaseViewModelFull
-import io.edugma.features.base.navigation.ScheduleScreens
-import io.edugma.features.base.navigation.schedule.ScheduleHistoryScreens
 import io.edugma.features.schedule.domain.model.schedule.LessonsByTime
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
 import io.edugma.features.schedule.domain.usecase.GetClosestLessonsUseCase
@@ -79,26 +79,26 @@ class ScheduleMenuViewModel(
     }
 
     fun onLessonsReviewClick() {
-        router.navigateTo(ScheduleScreens.LessonsReview)
+        router.navigateTo(ScheduleScreens.LessonsReview())
     }
 
     fun onScheduleCalendarClick() {
-        router.navigateTo(ScheduleScreens.Calendar)
+        router.navigateTo(ScheduleScreens.Calendar())
     }
 
     fun onScheduleSourceClick() {
-        router.navigateTo(ScheduleScreens.Source)
+        router.navigateTo(ScheduleScreens.Source())
     }
 
     fun onFreePlaceClick() {
-        router.navigateTo(ScheduleScreens.FreePlace)
+        router.navigateTo(ScheduleScreens.FreePlace())
     }
 
     fun onAppWidgetClick() {
     }
 
     fun onHistoryClick() {
-        router.navigateTo(ScheduleHistoryScreens.Main)
+        router.navigateTo(ScheduleHistoryScreens.Main())
     }
 
     fun onSignOut() {

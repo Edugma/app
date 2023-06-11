@@ -1,5 +1,8 @@
 package io.edugma.features.base.core.navigation.core
 
+import io.edugma.navigation.core.screen.Screen
+import io.edugma.navigation.core.screen.ScreenBundle
+
 /**
  * Navigation command describes screens transition.
  */
@@ -8,12 +11,12 @@ sealed interface Command {
     /**
      * Opens new screen.
      */
-    data class Forward(val screen: Screen) : Command
+    data class Forward(val screen: ScreenBundle) : Command
 
     /**
      * Replaces the current screen.
      */
-    data class Replace(val screen: Screen) : Command
+    data class Replace(val screen: ScreenBundle) : Command
 
     /**
      * Rolls fragmentBack the last transition from the screens chain.

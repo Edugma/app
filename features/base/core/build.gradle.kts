@@ -5,6 +5,7 @@ plugins {
 dependencies {
     api(projects.domain.base)
     api(projects.data.base)
+    api(projects.navigation.core)
 
     api(platform(libs.compose.bom))
     api(libs.compose.activity)
@@ -22,8 +23,6 @@ dependencies {
 
     api(libs.koin.android)
     api(libs.koin.compose)
-
-    api(libs.navigation)
 
     api(libs.androidx.startup)
     implementation(libs.kermit)

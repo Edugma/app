@@ -8,8 +8,9 @@ android {
 
 dependencies {
     implementation(projects.core.designSystem)
+    implementation(projects.core.navigation)
     implementation(projects.features.base.core)
-    implementation(projects.features.base.navigation)
+    implementation(projects.core.navigation)
     implementation(projects.features.base.elements)
 
     implementation(projects.features.nodes)
@@ -42,11 +43,6 @@ dependencies {
     implementation(libs.compose.material3)
     implementation(libs.compose.uiToolingPreview)
     debugImplementation(libs.compose.uiTooling)
-
-    implementation(libs.voyager.navigator)
-    implementation(libs.voyager.koin)
-    implementation(libs.voyager.bottomSheetNavigator)
-    implementation(libs.voyager.tabNavigator)
 
     testImplementation(libs.test.junit)
     androidTestImplementation(libs.test.junit.ext)

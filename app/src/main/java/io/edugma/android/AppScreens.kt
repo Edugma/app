@@ -1,10 +1,8 @@
 package io.edugma.android
 
+import io.edugma.core.navigation.MainScreen
+import io.edugma.core.navigation.ScheduleScreens
 import io.edugma.features.account.accountScreens
-import io.edugma.features.base.core.navigation.compose.groupScreen
-import io.edugma.features.base.core.navigation.compose.screens
-import io.edugma.features.base.navigation.MainScreen
-import io.edugma.features.base.navigation.ScheduleScreens
 import io.edugma.features.home.homeScreens
 import io.edugma.features.misc.menu.miscMenuScreens
 import io.edugma.features.nodes.nodesScreens
@@ -16,11 +14,12 @@ import io.edugma.features.schedule.lessonsReview.ScheduleLessonsReviewFeatureMod
 import io.edugma.features.schedule.menu.ScheduleMenuFeatureModule
 import io.edugma.features.schedule.scheduleInfo.ScheduleInfoFeatureModule
 import io.edugma.features.schedule.sources.ScheduleSourcesFeatureModule
+import io.edugma.navigation.core.graph.screenModule
 
-val appScreens = screens {
+val appScreens = screenModule {
     nodesScreens()
     homeScreens()
-    groupScreen<MainScreen.Schedule, ScheduleScreens.Menu> {
+    groupScreen(MainScreen.Schedule, ScheduleScreens.Menu) {
         ScheduleMenuFeatureModule.screens(this)
         ScheduleDailyFeatureModule.screens(this)
         ScheduleInfoFeatureModule.screens(this)

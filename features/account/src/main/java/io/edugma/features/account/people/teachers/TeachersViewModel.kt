@@ -5,10 +5,10 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import io.edugma.core.navigation.schedule.ScheduleInfoScreens
 import io.edugma.domain.account.model.Teacher
 import io.edugma.domain.account.repository.PeoplesRepository
 import io.edugma.features.base.core.mvi.BaseViewModel
-import io.edugma.features.base.navigation.schedule.ScheduleInfoScreens
 import kotlinx.coroutines.flow.*
 
 class TeachersViewModel(private val repository: PeoplesRepository) :

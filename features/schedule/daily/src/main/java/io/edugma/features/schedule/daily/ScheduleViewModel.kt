@@ -1,5 +1,6 @@
 package io.edugma.features.schedule.daily
 
+import io.edugma.core.navigation.schedule.ScheduleInfoScreens
 import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.domain.base.utils.getOrDefault
 import io.edugma.domain.base.utils.isFinalFailure
@@ -7,7 +8,6 @@ import io.edugma.domain.base.utils.nowLocalDate
 import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.base.core.mvi.impl.SimpleMutator
 import io.edugma.features.base.core.mvi.prop
-import io.edugma.features.base.navigation.schedule.ScheduleInfoScreens
 import io.edugma.features.schedule.daily.model.WeekUiModel
 import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
@@ -22,6 +22,8 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 class ScheduleViewModel(
     private val useCase: ScheduleUseCase,
@@ -172,9 +174,11 @@ class ScheduleViewModel(
     fun onLessonClick(lesson: Lesson, dateTime: LessonDateTime) {
         router.navigateTo(
             ScheduleInfoScreens.LessonInfo(
-                lessonInfo = LessonInfo(
-                    lesson = lesson,
-                    dateTime = dateTime,
+                lessonInfo = Json.encodeToString(
+                    LessonInfo(
+                        lesson = lesson,
+                        dateTime = dateTime,
+                    ),
                 ),
             ),
         )

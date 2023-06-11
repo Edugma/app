@@ -1,15 +1,13 @@
 package io.edugma.features.misc.menu
 
-import io.edugma.features.base.core.navigation.compose.addScreen
-import io.edugma.features.base.core.navigation.compose.groupScreen
-import io.edugma.features.base.core.navigation.compose.screens
-import io.edugma.features.base.navigation.MainScreen
-import io.edugma.features.base.navigation.misc.MiscMenuScreens
+import io.edugma.core.navigation.MainScreen
+import io.edugma.core.navigation.misc.MiscMenuScreens
 import io.edugma.features.misc.settings.settingsScreens
+import io.edugma.navigation.core.graph.screenModule
 
-val miscMenuScreens = screens {
-    groupScreen<MainScreen.Misc, MiscMenuScreens.Menu> {
-        addScreen<MiscMenuScreens.Menu> { MiscMenuScreen() }
+val miscMenuScreens = screenModule {
+    groupScreen(MainScreen.Misc, MiscMenuScreens.Menu) {
+        screen(MiscMenuScreens.Menu) { MiscMenuScreen() }
         settingsScreens()
     }
 }
