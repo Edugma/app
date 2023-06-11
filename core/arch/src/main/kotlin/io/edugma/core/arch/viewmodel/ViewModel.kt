@@ -1,6 +1,8 @@
 package io.edugma.core.arch.viewmodel
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -14,6 +16,7 @@ open class ViewModel {
 
     fun clear() {
         viewModelScope.cancel()
+        onCleared()
     }
 
     open fun onCleared() {
@@ -22,5 +25,11 @@ open class ViewModel {
 
 @Composable
 inline fun <reified T : ViewModel> getViewModel(): T {
-    return koinInject<T>()
+    val viewModel = koinInject<T>()
+    DisposableEffect(key1 = viewModel) {
+        onDispose {
+            viewModel.clear()
+        }
+    }
+    return viewModel
 }
