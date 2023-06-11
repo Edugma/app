@@ -1,10 +1,10 @@
 package io.edugma.features.schedule.scheduleInfo.teacherInfo
 
+import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
+import io.edugma.core.arch.mvi.viewmodel.prop
 import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.domain.base.utils.onFailure
 import io.edugma.domain.base.utils.onSuccess
-import io.edugma.features.base.core.mvi.BaseViewModel
-import io.edugma.features.base.core.mvi.prop
 import io.edugma.features.schedule.domain.model.source.ScheduleSource
 import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import io.edugma.features.schedule.domain.model.teacher.TeacherInfo

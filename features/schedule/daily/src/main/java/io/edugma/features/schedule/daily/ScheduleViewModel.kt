@@ -1,13 +1,13 @@
 package io.edugma.features.schedule.daily
 
+import io.edugma.core.arch.mvi.impl.SimpleMutator
+import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
+import io.edugma.core.arch.mvi.viewmodel.prop
 import io.edugma.core.navigation.schedule.ScheduleInfoScreens
 import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.domain.base.utils.getOrDefault
 import io.edugma.domain.base.utils.isFinalFailure
 import io.edugma.domain.base.utils.nowLocalDate
-import io.edugma.features.base.core.mvi.BaseViewModel
-import io.edugma.features.base.core.mvi.impl.SimpleMutator
-import io.edugma.features.base.core.mvi.prop
 import io.edugma.features.schedule.daily.model.WeekUiModel
 import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
@@ -16,7 +16,6 @@ import io.edugma.features.schedule.domain.model.lesson.LessonInfo
 import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
 import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
 import io.edugma.features.schedule.elements.utils.toUiModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first

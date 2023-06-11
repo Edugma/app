@@ -25,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.spacer.NavigationBarSpacer
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.surface.EdSurface
@@ -45,7 +46,6 @@ import io.edugma.features.schedule.domain.model.review.LessonTimesReview
 import io.edugma.features.schedule.domain.model.review.LessonTimesReviewByType
 import io.edugma.features.schedule.lessons_review.R
 import kotlinx.datetime.DayOfWeek
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun LessonsReviewScreen(

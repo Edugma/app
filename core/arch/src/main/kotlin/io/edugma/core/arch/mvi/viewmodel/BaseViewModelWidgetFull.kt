@@ -1,13 +1,12 @@
-package io.edugma.features.base.core.mvi.viewmodel
+package io.edugma.core.arch.mvi.viewmodel
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
-import io.edugma.features.base.core.mvi.ActionProducer
-import io.edugma.features.base.core.mvi.BaseMutator
-import io.edugma.features.base.core.mvi.StateStore
-import io.edugma.features.base.core.mvi.impl.SimpleActionProducer
-import io.edugma.features.base.core.mvi.impl.SimpleStateStore
+import io.edugma.core.arch.mvi.ActionProducer
+import io.edugma.core.arch.mvi.BaseMutator
+import io.edugma.core.arch.mvi.StateStore
+import io.edugma.core.arch.mvi.impl.SimpleActionProducer
+import io.edugma.core.arch.mvi.impl.SimpleStateStore
+import io.edugma.core.arch.viewmodel.ViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.ui.screen.FeatureScreen
@@ -22,7 +23,6 @@ import io.edugma.features.base.core.utils.Typed1Listener
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun ScheduleHistoryScreen(viewModel: ScheduleHistoryViewModel = getViewModel()) {

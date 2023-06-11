@@ -1,6 +1,4 @@
-package io.edugma.features.base.core.mvi
-
-import io.edugma.features.base.core.utils.Typed1Listener
+package io.edugma.core.arch.mvi
 
 abstract class BaseMutator<TState> {
     private var _state: TState? = null
@@ -33,7 +31,7 @@ abstract class BaseMutator<TState> {
         return this
     }
 
-    val onStateChanged: MutableList<Typed1Listener<TState>> = mutableListOf()
+    val onStateChanged: MutableList<(TState) -> Unit> = mutableListOf()
 
     fun mutationScope(mutate: () -> Unit) {
         val oldState = state

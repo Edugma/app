@@ -1,6 +1,6 @@
 package io.edugma.features.misc.settings.appearance
 
-import io.edugma.features.base.core.mvi.BaseViewModel
+import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 
 class SettingsAppearanceViewModel :
     BaseViewModel<SettingsAppearanceState>(SettingsAppearanceState()) {

@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.theme.EdTheme
@@ -22,7 +23,6 @@ import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.schedule.domain.model.teacher.description
 import io.edugma.features.schedule.elements.verticalSchedule.VerticalScheduleComponent
 import io.edugma.features.schedule.scheduleInfo.groupInfo.InfoScaffold
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun TeacherInfoScreen(viewModel: TeacherInfoViewModel = getViewModel(), id: String) {

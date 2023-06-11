@@ -1,7 +1,7 @@
 package io.edugma.features.schedule.lessonsReview
 
+import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.utils.viewmodel.launchCoroutine
-import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.schedule.domain.model.review.LessonTimesReview
 import io.edugma.features.schedule.domain.usecase.LessonsReviewUseCase
 

@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
 import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
@@ -23,7 +24,6 @@ import io.edugma.features.account.people.common.items.PeopleItemPlaceholder
 import io.edugma.features.account.people.common.utlis.convertAndShare
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.isNull
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun ClassmatesScreen(viewModel: ClassmatesViewModel = getViewModel()) {

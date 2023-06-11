@@ -1,11 +1,11 @@
 package io.edugma.features.schedule.freePlace
 
+import io.edugma.core.arch.mvi.BaseMutator
+import io.edugma.core.arch.mvi.viewmodel.BaseViewModelFull
 import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.domain.base.utils.MAX
 import io.edugma.domain.base.utils.MIN
 import io.edugma.domain.base.utils.nowLocalDate
-import io.edugma.features.base.core.mvi.BaseMutator
-import io.edugma.features.base.core.mvi.BaseViewModelFull
 import io.edugma.features.schedule.domain.model.place.Place
 import io.edugma.features.schedule.domain.model.place.PlaceFilters
 import io.edugma.features.schedule.domain.model.place.PlaceInfo
@@ -13,7 +13,6 @@ import io.edugma.features.schedule.domain.model.place.PlaceType
 import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import io.edugma.features.schedule.domain.repository.FreePlaceRepository
 import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
-import kotlinx.coroutines.flow.collect
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime

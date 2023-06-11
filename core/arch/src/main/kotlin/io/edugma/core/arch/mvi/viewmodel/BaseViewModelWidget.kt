@@ -1,6 +1,6 @@
-package io.edugma.features.base.core.mvi.viewmodel
+package io.edugma.core.arch.mvi.viewmodel
 
-import io.edugma.features.base.core.mvi.impl.SimpleMutator
+import io.edugma.core.arch.mvi.impl.SimpleMutator
 
 // Without state and actions
 abstract class SimpleViewModelWidget() : BaseViewModelWidgetFull<Unit, SimpleMutator<Unit>, Nothing>(

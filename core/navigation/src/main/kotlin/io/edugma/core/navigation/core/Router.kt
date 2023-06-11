@@ -1,4 +1,4 @@
-package io.edugma.features.base.core.navigation.core
+package io.edugma.core.navigation.core
 
 import io.edugma.navigation.core.screen.Screen
 import io.edugma.navigation.core.screen.ScreenBundle
@@ -7,14 +7,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 
 class Router {
-    private val _commandBuffer = MutableSharedFlow<List<Command>>(
+    private val _commandBuffer = MutableSharedFlow<List<io.edugma.core.navigation.core.Command>>(
         replay = 0,
         extraBufferCapacity = Int.MAX_VALUE,
         onBufferOverflow = BufferOverflow.DROP_OLDEST,
     )
-    val commandBuffer: Flow<List<Command>> = _commandBuffer
+    val commandBuffer: Flow<List<io.edugma.core.navigation.core.Command>> = _commandBuffer
 
-    fun executeCommands(vararg commands: Command) {
+    fun executeCommands(vararg commands: io.edugma.core.navigation.core.Command) {
         _commandBuffer.tryEmit(commands.toList())
     }
 

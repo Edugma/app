@@ -1,13 +1,12 @@
 package io.edugma.features.account.people.students
 
-import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.domain.account.model.student.Student
 import io.edugma.domain.account.repository.PeoplesRepository
-import io.edugma.features.base.core.mvi.BaseViewModel
 import kotlinx.coroutines.flow.Flow
 
 class StudentsViewModel(private val repository: PeoplesRepository) :

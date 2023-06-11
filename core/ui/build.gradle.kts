@@ -9,7 +9,4 @@ android {
 
 dependencies {
     implementation(projects.core.designSystem)
-
-    implementation(libs.koin.android)
-    implementation(libs.koin.compose)
 }

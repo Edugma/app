@@ -29,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.edugma.android.appScreens
+import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.organism.navigationBar.EdNavigationBar
 import io.edugma.core.designSystem.theme.EdTheme
@@ -38,8 +39,8 @@ import io.edugma.core.navigation.AccountScreens
 import io.edugma.core.navigation.HomeScreens
 import io.edugma.core.navigation.MainScreen
 import io.edugma.core.navigation.ScheduleScreens
+import io.edugma.core.navigation.core.rememberRouterNavigator
 import io.edugma.core.navigation.misc.MiscMenuScreens
-import io.edugma.features.base.core.navigation.compose.rememberRouterNavigator
 import io.edugma.navigation.core.compose.EdugmaNavigation
 import io.edugma.navigation.core.compose.EdugmaTabNavigation
 import io.edugma.navigation.core.compose.rememberEdugmaNavigator
@@ -47,7 +48,6 @@ import io.edugma.navigation.core.graph.screenModule
 import io.edugma.navigation.core.navigator.EdugmaNavigator
 import io.edugma.navigation.core.screen.ScreenBundle
 import io.edugma.navigation.core.screen.bundleOf
-import org.koin.androidx.compose.getViewModel
 
 val showNavBar = listOf(
     MainScreen.Home,

@@ -1,9 +1,9 @@
 package io.edugma.features.schedule.sources
 
+import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.domain.base.utils.onFailure
 import io.edugma.domain.base.utils.onSuccess
-import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
 import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import io.edugma.features.schedule.domain.model.source.ScheduleSourcesTabs

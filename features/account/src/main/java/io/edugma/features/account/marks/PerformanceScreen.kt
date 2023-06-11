@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
 import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
@@ -40,7 +41,6 @@ import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.base.core.utils.isNull
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

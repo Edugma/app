@@ -1,7 +1,7 @@
 package io.edugma.features.schedule.history.changes
 
+import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.utils.viewmodel.launchCoroutine
-import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.schedule.domain.usecase.ScheduleDayChange
 import io.edugma.features.schedule.domain.usecase.ScheduleHistoryUseCase
 

@@ -1,5 +1,6 @@
-package io.edugma.features.base.core.mvi
+package io.edugma.core.arch.mvi.viewmodel
 
+import io.edugma.core.arch.mvi.BaseMutator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter

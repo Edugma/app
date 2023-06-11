@@ -3,16 +3,13 @@ plugins {
 }
 
 android {
-    namespace = "io.edugma.core.ui"
-    resourcePrefix("core_ui_")
+    namespace = "io.edugma.core.navigation"
+    resourcePrefix("core_nav_")
 }
 
 dependencies {
     implementation(projects.core.designSystem)
     api(projects.navigation.core)
-
-    implementation(libs.koin.android)
-    implementation(libs.koin.compose)
 
     implementation(libs.kotlinx.dateTime)
 }

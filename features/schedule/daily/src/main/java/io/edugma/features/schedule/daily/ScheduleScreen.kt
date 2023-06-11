@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.loader.EdLoader
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.surface.EdSurface
@@ -51,7 +52,6 @@ import io.edugma.features.base.core.utils.onPageChanged
 import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
 import kotlinx.datetime.LocalDate
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun ScheduleScreen(

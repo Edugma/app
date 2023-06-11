@@ -21,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.molecules.button.EdButton
@@ -38,7 +39,6 @@ import io.edugma.features.schedule.menu.cards.ScheduleAppWidgetCard
 import io.edugma.features.schedule.menu.cards.ScheduleCard
 import io.edugma.features.schedule.menu.cards.ScheduleSourcesCard
 import io.edugma.features.schedule.menu.model.MenuItem
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun ScheduleMenuScreen(viewModel: ScheduleMenuViewModel = getViewModel()) {

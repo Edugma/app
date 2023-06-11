@@ -24,6 +24,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.divider.EdDivider
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.loader.EdLoader
@@ -52,7 +53,6 @@ import io.edugma.features.account.people.common.utlis.convertAndShare
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.*
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

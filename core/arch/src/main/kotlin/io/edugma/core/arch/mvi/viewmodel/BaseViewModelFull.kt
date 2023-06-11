@@ -1,12 +1,13 @@
-package io.edugma.features.base.core.mvi
+package io.edugma.core.arch.mvi.viewmodel
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
-import io.edugma.features.base.core.mvi.impl.SimpleActionProducer
-import io.edugma.features.base.core.mvi.impl.SimpleStateStore
-import io.edugma.features.base.core.navigation.core.Router
-import io.edugma.features.base.core.utils.ScreenResultProvider
+import io.edugma.core.arch.mvi.ActionProducer
+import io.edugma.core.arch.mvi.BaseMutator
+import io.edugma.core.arch.mvi.StateStore
+import io.edugma.core.arch.mvi.impl.SimpleActionProducer
+import io.edugma.core.arch.mvi.impl.SimpleStateStore
+import io.edugma.core.arch.viewmodel.ViewModel
+import io.edugma.core.navigation.core.Router
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent

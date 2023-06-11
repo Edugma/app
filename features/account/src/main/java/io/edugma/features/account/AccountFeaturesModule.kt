@@ -8,16 +8,16 @@ import io.edugma.features.account.people.students.StudentsViewModel
 import io.edugma.features.account.people.teachers.TeachersViewModel
 import io.edugma.features.account.personal.PersonalViewModel
 import io.edugma.features.account.web.WebViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 val accountFeaturesModule = module {
-    viewModel { MenuViewModel(get(), get(), get()) }
-    viewModel { ClassmatesViewModel(get()) }
-    viewModel { PaymentsViewModel(get()) }
-    viewModel { StudentsViewModel(get()) }
-    viewModel { PerformanceViewModel(get()) }
-    viewModel { PersonalViewModel(get(), get()) }
-    viewModel { TeachersViewModel(get()) }
-    viewModel { WebViewModel(get()) }
+    factoryOf(::MenuViewModel)
+    factoryOf(::ClassmatesViewModel)
+    factoryOf(::PaymentsViewModel)
+    factoryOf(::StudentsViewModel)
+    factoryOf(::PerformanceViewModel)
+    factoryOf(::PersonalViewModel)
+    factoryOf(::TeachersViewModel)
+    factoryOf(::WebViewModel)
 }

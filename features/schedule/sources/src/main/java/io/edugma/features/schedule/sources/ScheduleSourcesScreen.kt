@@ -34,6 +34,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.card.EdCardDefaults
 import io.edugma.core.designSystem.atoms.label.EdLabel
@@ -55,7 +56,6 @@ import io.edugma.features.base.core.utils.WithContentAlpha
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
 import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import io.edugma.features.schedule.domain.model.source.ScheduleSourcesTabs
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun ScheduleSourcesScreen(viewModel: ScheduleSourcesViewModel = getViewModel()) {

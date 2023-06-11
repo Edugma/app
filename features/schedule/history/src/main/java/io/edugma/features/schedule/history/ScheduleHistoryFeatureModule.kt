@@ -6,13 +6,13 @@ import io.edugma.features.schedule.history.changes.ScheduleChangesViewModel
 import io.edugma.features.schedule.history.main.ScheduleHistoryScreen
 import io.edugma.features.schedule.history.main.ScheduleHistoryViewModel
 import io.edugma.navigation.core.graph.screenModule
-import org.koin.androidx.viewmodel.dsl.viewModelOf
+import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 object ScheduleHistoryFeatureModule {
     val deps = module {
-        viewModelOf(::ScheduleHistoryViewModel)
-        viewModelOf(::ScheduleChangesViewModel)
+        factoryOf(::ScheduleHistoryViewModel)
+        factoryOf(::ScheduleChangesViewModel)
     }
 
     val screens = screenModule {

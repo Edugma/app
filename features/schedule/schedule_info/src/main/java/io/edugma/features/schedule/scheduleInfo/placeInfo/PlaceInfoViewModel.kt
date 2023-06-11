@@ -1,10 +1,10 @@
 package io.edugma.features.schedule.scheduleInfo.placeInfo
 
+import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
+import io.edugma.core.arch.mvi.viewmodel.prop
 import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.domain.base.utils.onFailure
 import io.edugma.domain.base.utils.onSuccess
-import io.edugma.features.base.core.mvi.BaseViewModel
-import io.edugma.features.base.core.mvi.prop
 import io.edugma.features.schedule.domain.model.place.PlaceDailyOccupancy
 import io.edugma.features.schedule.domain.model.place.PlaceInfo
 import io.edugma.features.schedule.domain.model.source.ScheduleSource

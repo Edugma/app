@@ -1,4 +1,4 @@
-package io.edugma.features.base.core.mvi
+package io.edugma.core.arch.mvi
 
 class MutatorObserver<TState, TMutator : BaseMutator<TState>> {
     private var prevState: TState? = null

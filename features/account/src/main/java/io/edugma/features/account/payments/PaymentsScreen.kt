@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
@@ -42,7 +43,6 @@ import io.edugma.features.account.payments.bottomSheet.PaymentBottomSheet
 import io.edugma.features.base.core.utils.*
 import io.edugma.features.base.elements.*
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

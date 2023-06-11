@@ -6,6 +6,7 @@ dependencies {
     implementation(projects.core.designSystem)
     implementation(projects.core.ui)
     implementation(projects.core.utils)
+    implementation(projects.core.arch)
 
     implementation(projects.features.base.core)
     implementation(projects.core.navigation)

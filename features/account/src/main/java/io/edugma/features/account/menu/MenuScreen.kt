@@ -3,11 +3,11 @@ package io.edugma.features.account.menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.features.account.menu.screens.AuthorizationScreen
 import io.edugma.features.account.menu.screens.LoadingScreen
 import io.edugma.features.account.menu.screens.MainScreen
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun MenuScreen(viewModel: MenuViewModel = getViewModel()) {

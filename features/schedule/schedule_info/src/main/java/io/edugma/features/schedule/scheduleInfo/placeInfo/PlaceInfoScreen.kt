@@ -25,6 +25,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
@@ -38,7 +39,6 @@ import io.edugma.features.schedule.domain.model.place.description
 import io.edugma.features.schedule.elements.verticalSchedule.VerticalScheduleComponent
 import io.edugma.features.schedule.scheduleInfo.R
 import io.edugma.features.schedule.scheduleInfo.groupInfo.InfoScaffold
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun PlaceInfoScreen(viewModel: PlaceInfoViewModel = getViewModel(), id: String) {

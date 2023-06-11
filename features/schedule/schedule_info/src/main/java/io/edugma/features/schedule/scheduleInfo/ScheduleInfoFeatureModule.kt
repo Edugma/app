@@ -11,15 +11,15 @@ import io.edugma.features.schedule.scheduleInfo.teacherInfo.TeacherInfoScreen
 import io.edugma.features.schedule.scheduleInfo.teacherInfo.TeacherInfoViewModel
 import io.edugma.navigation.core.graph.screenModule
 import kotlinx.serialization.json.Json
-import org.koin.androidx.viewmodel.dsl.viewModelOf
+import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 object ScheduleInfoFeatureModule {
     val deps = module {
-        viewModelOf(::LessonInfoViewModel)
-        viewModelOf(::TeacherInfoViewModel)
-        viewModelOf(::GroupInfoViewModel)
-        viewModelOf(::PlaceInfoViewModel)
+        factoryOf(::LessonInfoViewModel)
+        factoryOf(::TeacherInfoViewModel)
+        factoryOf(::GroupInfoViewModel)
+        factoryOf(::PlaceInfoViewModel)
     }
 
     val screens = screenModule {

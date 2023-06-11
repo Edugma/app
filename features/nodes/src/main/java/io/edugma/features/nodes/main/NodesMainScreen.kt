@@ -20,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.card.EdCardDefaults
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
@@ -31,7 +32,6 @@ import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.domain.nodes.model.Node
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.Typed1Listener
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun NodesMainScreen(viewModel: NodesMainViewModel = getViewModel()) {

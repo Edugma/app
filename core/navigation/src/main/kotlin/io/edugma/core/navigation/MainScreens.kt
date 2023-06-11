@@ -3,7 +3,6 @@ package io.edugma.core.navigation
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import io.edugma.core.designSystem.tokens.icons.EdIcons
-import io.edugma.core.ui.R
 import io.edugma.navigation.core.screen.Screen
 
 sealed class MainScreen(

@@ -1,10 +1,10 @@
 package io.edugma.features.schedule.appwidget.currentLessons
 
 import com.benasher44.uuid.uuid4
+import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.domain.base.utils.nowLocalDate
 import io.edugma.domain.base.utils.nowLocalTime
 import io.edugma.domain.base.utils.untilSeconds
-import io.edugma.features.base.core.mvi.BaseViewModel
 import io.edugma.features.schedule.domain.model.group.Group
 import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonTime

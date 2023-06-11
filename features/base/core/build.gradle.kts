@@ -6,6 +6,7 @@ dependencies {
     api(projects.domain.base)
     api(projects.data.base)
     api(projects.navigation.core)
+    api(projects.core.arch)
 
     api(platform(libs.compose.bom))
     api(libs.compose.activity)
@@ -21,7 +22,6 @@ dependencies {
 
     api(libs.material3)
 
-    api(libs.koin.android)
     api(libs.koin.compose)
 
     api(libs.androidx.startup)

@@ -1,4 +1,4 @@
-package io.edugma.features.base.core.mvi
+package io.edugma.core.arch.mvi
 
 import kotlinx.coroutines.flow.StateFlow
 

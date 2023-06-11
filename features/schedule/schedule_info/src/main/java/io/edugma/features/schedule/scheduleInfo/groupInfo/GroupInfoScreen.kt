@@ -29,6 +29,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.theme.EdTheme
@@ -38,7 +39,6 @@ import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.base.core.utils.pxToDp
 import io.edugma.features.schedule.domain.model.group.description
 import io.edugma.features.schedule.elements.verticalSchedule.VerticalScheduleComponent
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun GroupInfoScreen(viewModel: GroupInfoViewModel = getViewModel(), id: String) {

@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.spacer.SpacerFill
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
@@ -44,7 +45,6 @@ import io.edugma.features.schedule.domain.model.place.description
 import io.edugma.features.schedule.free_place.R
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun FreePlaceScreen(viewModel: FreePlaceViewModel = getViewModel()) {

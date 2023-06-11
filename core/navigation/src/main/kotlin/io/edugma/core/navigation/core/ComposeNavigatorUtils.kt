@@ -1,8 +1,7 @@
-package io.edugma.features.base.core.navigation.compose
+package io.edugma.core.navigation.core
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import io.edugma.features.base.core.navigation.core.Router
 import io.edugma.navigation.core.compose.rememberEdugmaNavigator
 import io.edugma.navigation.core.graph.ScreenModule
 import io.edugma.navigation.core.navigator.EdugmaNavigator

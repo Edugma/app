@@ -1,8 +1,6 @@
-package io.edugma.features.base.core.navigation.compose
+package io.edugma.core.navigation.core
 
 import co.touchlab.kermit.Logger
-import io.edugma.features.base.core.navigation.core.Command
-import io.edugma.features.base.core.navigation.core.Router
 import io.edugma.navigation.core.navigator.EdugmaNavigator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

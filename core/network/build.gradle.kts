@@ -25,5 +25,5 @@ dependencies {
     implementation(libs.kermit)
 }
 android {
-    namespace = "io.edugma.data.base"
+    namespace = "io.edugma.core.network"
 }

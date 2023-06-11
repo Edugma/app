@@ -1,8 +1,8 @@
-package io.edugma.features.base.core.mvi.impl
+package io.edugma.core.arch.mvi.impl
 
-import io.edugma.features.base.core.mvi.BaseMutator
-import io.edugma.features.base.core.mvi.MutatorObserver
-import io.edugma.features.base.core.mvi.StateStore
+import io.edugma.core.arch.mvi.BaseMutator
+import io.edugma.core.arch.mvi.MutatorObserver
+import io.edugma.core.arch.mvi.StateStore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 

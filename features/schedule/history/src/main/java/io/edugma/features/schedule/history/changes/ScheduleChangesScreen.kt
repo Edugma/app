@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.ui.screen.FeatureScreen
@@ -35,7 +36,6 @@ import io.edugma.features.schedule.domain.model.place.Place
 import io.edugma.features.schedule.domain.model.teacher.Teacher
 import io.edugma.features.schedule.domain.usecase.LessonChange
 import kotlinx.datetime.Instant
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun ScheduleChangesScreen(

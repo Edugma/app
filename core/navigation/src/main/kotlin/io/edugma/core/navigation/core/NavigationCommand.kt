@@ -1,4 +1,4 @@
-package io.edugma.features.base.core.navigation.core
+package io.edugma.core.navigation.core
 
 import io.edugma.navigation.core.screen.Screen
 import io.edugma.navigation.core.screen.ScreenBundle

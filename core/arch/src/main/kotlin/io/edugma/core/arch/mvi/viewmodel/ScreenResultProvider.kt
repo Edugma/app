@@ -1,4 +1,4 @@
-package io.edugma.features.base.core.utils
+package io.edugma.core.arch.mvi.viewmodel
 
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow

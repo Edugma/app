@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.domain.base.utils.capitalized
@@ -35,7 +36,6 @@ import io.edugma.features.schedule.elements.lesson.model.ScheduleItem
 import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun VerticalScheduleComponent(

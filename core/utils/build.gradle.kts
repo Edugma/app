@@ -9,7 +9,7 @@ android {
 
 dependencies {
     implementation(libs.androidx.coreKtx)
-    implementation(libs.androidx.lifecycleViewModel)
     implementation(libs.kotlinx.coroutines.core)
+    implementation(projects.core.arch)
     implementation(libs.kermit)
 }

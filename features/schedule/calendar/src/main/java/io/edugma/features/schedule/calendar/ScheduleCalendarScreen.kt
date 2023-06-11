@@ -52,6 +52,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
@@ -74,7 +75,6 @@ import io.edugma.features.schedule.calendar.model.CalendarDayVO
 import io.edugma.features.schedule.calendar.model.CalendarScheduleVO
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun ScheduleCalendarScreen(viewModel: ScheduleCalendarViewModel = getViewModel()) {

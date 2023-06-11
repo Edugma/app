@@ -11,13 +11,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.misc.settings.R
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun SettingsAppearanceScreen(viewModel: SettingsAppearanceViewModel = getViewModel()) {

@@ -1,6 +1,6 @@
-package io.edugma.features.base.core.mvi.impl
+package io.edugma.core.arch.mvi.impl
 
-import io.edugma.features.base.core.mvi.ActionProducer
+import io.edugma.core.arch.mvi.ActionProducer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
