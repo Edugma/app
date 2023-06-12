@@ -8,7 +8,7 @@ import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.navigation.schedule.ScheduleInfoScreens
 import io.edugma.domain.account.model.Teacher
 import io.edugma.domain.account.repository.PeoplesRepository
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
 
 class TeachersViewModel(private val repository: PeoplesRepository) :
     BaseViewModel<TeachersState>(TeachersState()) {

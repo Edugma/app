@@ -1,8 +1,8 @@
 package io.edugma.features.account.personal
 
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,18 +17,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
@@ -79,16 +74,10 @@ fun PersonalContent(
 ) {
     Column {
         val scrollState = rememberLazyListState()
-        val offset = remember { derivedStateOf { scrollState.firstVisibleItemScrollOffset / 600f + scrollState.firstVisibleItemIndex } }
-        val scrollOffset: Float = min(
-            1f,
-            1 - offset.value,
-        )
         EdSurface(shape = EdTheme.shapes.large.bottom()) {
             CollapsingToolbar(
                 state.personal,
                 state.personalPlaceholders,
-                scrollOffset,
                 backListener,
             )
         }
@@ -178,60 +167,42 @@ fun PersonalContent(
 private fun CollapsingToolbar(
     personal: Personal?,
     placeholders: Boolean,
-    scrollOffset: Float,
     onBack: ClickListener,
 ) {
-    ConstraintLayout(
+    Row(
         Modifier
             .fillMaxWidth()
             .statusBarsPadding()
             .padding(top = 16.dp, end = 16.dp, bottom = 10.dp),
     ) {
-        val imageSize by animateDpAsState(targetValue = max(55.dp, 80.dp * scrollOffset))
-        val (image, name, info, icon) = createRefs()
         IconButton(
             onClick = onBack,
-            modifier = Modifier.constrainAs(icon) {
-                start.linkTo(parent.start)
-                linkTo(parent.top, info.bottom)
-            },
+            modifier = Modifier,
         ) {
             Icon(
                 painter = painterResource(EdIcons.ic_fluent_chevron_left_20_filled),
                 contentDescription = null,
             )
         }
-        EdLabel(
-            text = personal?.getNameSurname() ?: "О вас",
-            style = EdTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-            modifier = Modifier
-                .padding(bottom = 5.dp)
-                .constrainAs(name) {
-                    linkTo(start = icon.end, end = image.start, endMargin = 8.dp)
-                    top.linkTo(parent.top)
-                    width = Dimension.fillToConstraints
-                }
-                .edPlaceholder(placeholders),
-        )
-        EdLabel(
-            text = "${personal?.degreeLevel} ${personal?.course} курса группы ${personal?.group}",
-            style = EdTheme.typography.bodySmall,
-            modifier = Modifier
-                .constrainAs(info) {
-                    linkTo(start = icon.end, end = image.start, endMargin = 8.dp)
-                    top.linkTo(name.bottom)
-                    width = Dimension.fillToConstraints
-                }
-                .edPlaceholder(placeholders),
-        )
+        Column(Modifier.weight(1f)) {
+            EdLabel(
+                text = personal?.getNameSurname() ?: "О вас",
+                style = EdTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                modifier = Modifier
+                    .padding(bottom = 5.dp)
+                    .edPlaceholder(placeholders),
+            )
+            EdLabel(
+                text = "${personal?.degreeLevel} ${personal?.course} курса группы ${personal?.group}",
+                style = EdTheme.typography.bodySmall,
+                modifier = Modifier
+                    .edPlaceholder(placeholders),
+            )
+        }
         EdAvatar(
             url = personal?.avatar,
             modifier = Modifier
-                .size(imageSize)
-                .constrainAs(image) {
-                    end.linkTo(parent.end)
-                    top.linkTo(parent.top)
-                }
+                .size(55.dp)
                 .edPlaceholder(placeholders),
             initials = personal?.initials,
         )

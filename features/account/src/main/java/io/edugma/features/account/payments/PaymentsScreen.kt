@@ -2,17 +2,32 @@ package io.edugma.features.account.payments
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,12 +51,18 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.designSystem.utils.edPlaceholder
 import io.edugma.core.ui.screen.FeatureScreen
-import io.edugma.domain.account.model.*
+import io.edugma.domain.account.model.Payment
+import io.edugma.domain.account.model.PaymentType
+import io.edugma.domain.account.model.Payments
+import io.edugma.domain.account.model.toLabel
 import io.edugma.domain.base.utils.format
 import io.edugma.features.account.R
 import io.edugma.features.account.payments.bottomSheet.PaymentBottomSheet
-import io.edugma.features.base.core.utils.*
-import io.edugma.features.base.elements.*
+import io.edugma.features.base.core.utils.ClickListener
+import io.edugma.features.base.core.utils.Typed1Listener
+import io.edugma.features.base.core.utils.bindTo
+import io.edugma.features.base.core.utils.isNull
+import io.edugma.features.base.core.utils.onPageChanged
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)

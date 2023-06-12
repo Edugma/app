@@ -1,6 +1,13 @@
 package io.edugma.features.account.people.teachers
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
@@ -24,7 +31,8 @@ import androidx.compose.ui.unit.sp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.divider.EdDivider
 import io.edugma.core.designSystem.atoms.label.EdLabel
@@ -229,7 +237,12 @@ fun TeachersList(
     teacherClick: Typed1Listener<Teacher>,
 ) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(teacherListItems) { item ->
+        items(
+            count = teacherListItems.itemCount,
+            key = teacherListItems.itemKey { it.id },
+            contentType = teacherListItems.itemContentType { "teacher" },
+        ) {
+            val item = teacherListItems[it]
             item?.let { teacher ->
                 PeopleItem(
                     title = teacher.name,

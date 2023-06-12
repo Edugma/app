@@ -45,6 +45,9 @@ dependencies {
     debugImplementation(libs.compose.uiTooling)
 
     implementation(libs.koin.android)
+    implementation(libs.androidx.splashScreen)
+    implementation(libs.androidx.coreKtx)
+    implementation(libs.androidx.appCompat)
 
     testImplementation(libs.test.junit)
     androidTestImplementation(libs.test.junit.ext)

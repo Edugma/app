@@ -1,7 +1,15 @@
 package io.edugma.features.account.people.students
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,7 +31,8 @@ import androidx.compose.ui.unit.sp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
+import androidx.paging.compose.itemContentType
+import app.cash.paging.compose.itemKey
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.divider.EdDivider
 import io.edugma.core.designSystem.atoms.label.EdLabel
@@ -50,8 +59,8 @@ import io.edugma.features.account.people.common.bottomSheets.SearchBottomSheet
 import io.edugma.features.account.people.common.items.PeopleItem
 import io.edugma.features.account.people.common.items.PeopleItemPlaceholder
 import io.edugma.features.account.people.common.utlis.convertAndShare
-import io.edugma.features.base.core.utils.*
-import io.edugma.features.base.elements.*
+import io.edugma.features.base.core.utils.ClickListener
+import io.edugma.features.base.core.utils.Typed1Listener
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -318,7 +327,12 @@ fun StudentsList(
     studentClick: Typed1Listener<Student>,
 ) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(studentListItems) { item ->
+        items(
+            count = studentListItems.itemCount,
+            key = studentListItems.itemKey { it.id },
+            contentType = studentListItems.itemContentType { "student" },
+        ) {
+            val item = studentListItems[it]
             item?.let {
                 PeopleItem(it.getFullName(), it.getInfo(), it.avatar) { studentClick.invoke(it) }
             }

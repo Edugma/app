@@ -11,12 +11,7 @@ dependencies {
     api(platform(libs.compose.bom))
     api(libs.compose.activity)
     api(libs.compose.material)
-    api(libs.androidx.splashScreen)
 
-
-    api(libs.androidx.coreKtx)
-    api(libs.androidx.appCompat)
-    api(libs.androidx.constraintLayout)
     api(libs.lottie)
     api(libs.fluentIcons) { artifact { type = "aar" } }
 
