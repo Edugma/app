@@ -1,5 +1,6 @@
 package io.edugma.navigation.core.compose
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -21,8 +22,10 @@ fun EdugmaNavigation(
         navigator.navigateTo(firstScreen)
     }
 
-    currentScreen?.let {
-        it.ui(it.screenBundle)
+    Crossfade(targetState = currentScreen) {
+        it?.let {
+            it.ui(it.screenBundle)
+        }
     }
 }
 
@@ -37,8 +40,10 @@ fun EdugmaTabNavigation(
         navigator.navigateTo(firstScreen)
     }
 
-    currentScreen?.let {
-        it.ui(it.screenBundle)
+    Crossfade(targetState = currentScreen) {
+        it?.let {
+            it.ui(it.screenBundle)
+        }
     }
 }
 
