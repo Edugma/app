@@ -9,8 +9,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import io.edugma.core.designSystem.molecules.chip.EdChip
 import io.edugma.core.designSystem.molecules.chip.EdChipForm
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.utils.Typed1Listener
 import io.edugma.features.account.marks.Filter
-import io.edugma.features.base.core.utils.Typed1Listener
 
 @Composable
 fun FiltersRow(

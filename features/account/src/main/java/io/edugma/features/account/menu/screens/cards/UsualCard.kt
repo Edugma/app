@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.features.base.core.utils.ClickListener
+import io.edugma.core.utils.ClickListener
 
 @Composable
 fun UsualCard(

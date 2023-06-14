@@ -21,16 +21,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
-import com.airbnb.lottie.compose.rememberLottieComposition
+import io.edugma.core.designSystem.atoms.lottie.EdLottie
+import io.edugma.core.designSystem.atoms.lottie.LottieSource
+import io.edugma.core.designSystem.atoms.lottie.rememberLottiePainter
 import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.utils.ClickListener
+import io.edugma.core.utils.Typed2Listener
 import io.edugma.domain.base.utils.nowLocalTime
-import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.Typed2Listener
 import io.edugma.features.schedule.domain.model.group.Group
 import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
@@ -100,18 +98,17 @@ fun NoLessonsDay(
     @RawRes animation: Int,
     modifier: Modifier = Modifier,
 ) {
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(animation))
-    val progress by animateLottieCompositionAsState(
-        composition,
-        iterations = LottieConstants.IterateForever,
-    )
     Column(modifier = modifier) {
         Spacer(modifier = Modifier.weight(1f))
-        LottieAnimation(
-            composition,
-            progress,
+        val painter = rememberLottiePainter(
+            source = LottieSource.RawRes(animation),
+            alternativeUrl = "https://raw.githubusercontent.com/Edugma/resources/main/42410-sleeping-polar-bear.gif",
+        )
+        EdLottie(
+            lottiePainter = painter,
             modifier = Modifier
-                .weight(5f),
+                .weight(5f)
+                .fillMaxWidth(),
         )
         Text(
             text = stringResource(R.string.sch_no_lessons_today),

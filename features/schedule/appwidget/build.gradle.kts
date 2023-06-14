@@ -1,14 +1,15 @@
 plugins {
-    id("compose-android-lib")
+    id("feature-lib")
 }
 
 dependencies {
-    implementation(projects.features.base.core)
+    implementation(projects.core.androidResources)
     implementation(projects.core.navigation)
     implementation(projects.features.base.elements)
     api(projects.features.schedule.domain)
 
     implementation(libs.androidx.appWidget)
+    implementation(libs.material3)
 }
 android {
     namespace = "io.edugma.features.schedule.appwidget"

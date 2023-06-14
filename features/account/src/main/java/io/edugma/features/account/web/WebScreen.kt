@@ -17,7 +17,7 @@ import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.ui.screen.FeatureScreen
-import io.edugma.features.base.core.utils.isNotNull
+import io.edugma.core.utils.isNotNull
 
 @Composable
 fun WebScreen(

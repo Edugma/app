@@ -22,9 +22,9 @@ import io.edugma.core.designSystem.molecules.chip.EdChip
 import io.edugma.core.designSystem.molecules.chip.EdChipForm
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.edPlaceholder
+import io.edugma.core.utils.ClickListener
 import io.edugma.domain.account.model.Performance
 import io.edugma.domain.base.utils.format
-import io.edugma.features.base.core.utils.ClickListener
 
 @Composable
 fun PerformanceItem(

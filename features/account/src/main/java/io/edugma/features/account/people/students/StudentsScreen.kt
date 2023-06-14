@@ -52,6 +52,8 @@ import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.designSystem.utils.rememberAsyncImagePainter
 import io.edugma.core.ui.screen.BottomSheet
 import io.edugma.core.ui.screen.FeatureScreen
+import io.edugma.core.utils.ClickListener
+import io.edugma.core.utils.Typed1Listener
 import io.edugma.domain.account.model.student.Student
 import io.edugma.domain.base.utils.format
 import io.edugma.features.account.R
@@ -59,8 +61,6 @@ import io.edugma.features.account.people.common.bottomSheets.SearchBottomSheet
 import io.edugma.features.account.people.common.items.PeopleItem
 import io.edugma.features.account.people.common.items.PeopleItemPlaceholder
 import io.edugma.features.account.people.common.utlis.convertAndShare
-import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.Typed1Listener
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)

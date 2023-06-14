@@ -20,9 +20,9 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.textField.EdTextField
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.utils.ClickListener
+import io.edugma.core.utils.Typed1Listener
 import io.edugma.features.account.menu.MenuState
-import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.Typed1Listener
 
 @Composable
 fun AuthorizationScreen(

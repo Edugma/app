@@ -1,23 +1,20 @@
 package io.edugma.features.schedule.menu.cards
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
-import com.airbnb.lottie.compose.rememberLottieComposition
+import io.edugma.core.designSystem.atoms.lottie.EdLottie
+import io.edugma.core.designSystem.atoms.lottie.LottieSource
+import io.edugma.core.designSystem.atoms.lottie.rememberLottiePainter
 import io.edugma.core.designSystem.organism.actionCard.EdActionCard
 import io.edugma.core.designSystem.organism.actionCard.EdActionCardWidth
-import io.edugma.features.base.core.utils.ClickListener
+import io.edugma.core.utils.ClickListener
 import io.edugma.features.schedule.menu.R
 import io.edugma.features.schedule.menu.ScheduleMenuState
 
@@ -35,18 +32,14 @@ fun ScheduleCard(
         modifier = modifier,
     ) {
         Column(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
-            val composition by rememberLottieComposition(
-                LottieCompositionSpec.RawRes(R.raw.sch_relax_2),
+            val painter = rememberLottiePainter(
+                source = LottieSource.RawRes(R.raw.sch_relax_2),
+                alternativeUrl = "https://raw.githubusercontent.com/Edugma/resources/main/42410-sleeping-polar-bear.gif",
             )
-            val progress by animateLottieCompositionAsState(
-                composition,
-                iterations = LottieConstants.IterateForever,
-            )
-            LottieAnimation(
-                composition,
-                progress,
+            EdLottie(
+                lottiePainter = painter,
                 modifier = Modifier
-                    .fillMaxHeight()
+                    .fillMaxWidth()
                     .width(100.dp),
                 contentScale = ContentScale.FillWidth,
             )

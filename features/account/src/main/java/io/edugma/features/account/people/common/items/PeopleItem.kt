@@ -9,7 +9,7 @@ import io.edugma.core.designSystem.atoms.divider.EdDivider
 import io.edugma.core.designSystem.organism.accountSelector.AccountSelectorVO
 import io.edugma.core.designSystem.organism.accountSelector.EdAccountSelector
 import io.edugma.core.designSystem.organism.accountSelector.EdAccountSelectorPlaceholder
-import io.edugma.features.base.core.utils.ClickListener
+import io.edugma.core.utils.ClickListener
 
 @Composable
 fun PeopleItem(title: String, description: String, avatar: String?, onClick: ClickListener? = null) {

@@ -15,8 +15,8 @@ import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.ui.screen.FeatureScreen
-import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.Typed1Listener
+import io.edugma.core.utils.ClickListener
+import io.edugma.core.utils.Typed1Listener
 import io.edugma.features.misc.settings.R
 
 @Composable
@@ -36,8 +36,8 @@ fun SettingsAppearanceScreen(viewModel: SettingsAppearanceViewModel = getViewMod
 @Composable
 private fun SettingsAppearanceContent(
     state: SettingsAppearanceState,
-    onBackClick: ClickListener,
-    onNightModeCheckedChange: Typed1Listener<NightMode>,
+    onBackClick: io.edugma.core.utils.ClickListener,
+    onNightModeCheckedChange: io.edugma.core.utils.Typed1Listener<NightMode>,
 ) {
     Column(Modifier.fillMaxSize()) {
         EdTopAppBar(
@@ -56,7 +56,7 @@ private fun SettingsAppearanceContent(
 @Composable
 private fun CheckboxItem(
     checked: Boolean,
-    onCheckedChange: Typed1Listener<Boolean>,
+    onCheckedChange: io.edugma.core.utils.Typed1Listener<Boolean>,
 ) {
     Row {
         Checkbox(

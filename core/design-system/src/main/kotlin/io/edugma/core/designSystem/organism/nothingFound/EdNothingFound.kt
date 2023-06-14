@@ -13,31 +13,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
-import com.airbnb.lottie.compose.rememberLottieComposition
 import io.edugma.core.designSystem.R
+import io.edugma.core.designSystem.atoms.lottie.EdLottie
+import io.edugma.core.designSystem.atoms.lottie.LottieSource
+import io.edugma.core.designSystem.atoms.lottie.rememberLottiePainter
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
 
 @Composable
 fun EdNothingFound(modifier: Modifier = Modifier, message: String = "К сожалению, ничего не найдено.") {
     val anim = remember { R.raw.emptylist }
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(anim))
-    val progress by animateLottieCompositionAsState(
-        composition,
-        iterations = LottieConstants.IterateForever,
-    )
     Column(
         modifier = modifier.padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        LottieAnimation(
-            composition = composition,
-            progress = { progress },
+        val painter = rememberLottiePainter(
+            source = LottieSource.RawRes(anim),
+            alternativeUrl = "https://raw.githubusercontent.com/Edugma/resources/main/42410-sleeping-polar-bear.gif",
+        )
+        EdLottie(
+            lottiePainter = painter,
             modifier = Modifier
                 .fillMaxWidth(),
         )

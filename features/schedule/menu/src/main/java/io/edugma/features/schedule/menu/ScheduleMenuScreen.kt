@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -30,7 +29,7 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.ui.screen.FeatureScreen
-import io.edugma.features.base.core.utils.ClickListener
+import io.edugma.core.utils.ClickListener
 import io.edugma.features.schedule.menu.cards.CalendarCard
 import io.edugma.features.schedule.menu.cards.ChangeHistoryCard
 import io.edugma.features.schedule.menu.cards.FindFreePlaceCard

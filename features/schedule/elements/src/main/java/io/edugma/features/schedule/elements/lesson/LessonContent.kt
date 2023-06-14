@@ -22,12 +22,12 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
 import io.edugma.core.designSystem.tokens.icons.EdIcons
+import io.edugma.core.designSystem.utils.ContentAlpha
+import io.edugma.core.designSystem.utils.WithContentAlpha
 import io.edugma.core.designSystem.utils.edPlaceholder
 import io.edugma.core.designSystem.utils.rememberAsyncImagePainter
+import io.edugma.core.utils.Typed1Listener
 import io.edugma.domain.base.utils.format
-import io.edugma.features.base.core.utils.ContentAlpha
-import io.edugma.features.base.core.utils.Typed1Listener
-import io.edugma.features.base.core.utils.WithContentAlpha
 import io.edugma.features.schedule.domain.model.group.Group
 import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings

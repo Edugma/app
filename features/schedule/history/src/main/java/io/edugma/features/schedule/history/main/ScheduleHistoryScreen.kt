@@ -17,9 +17,9 @@ import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.ui.screen.FeatureScreen
+import io.edugma.core.utils.ClickListener
+import io.edugma.core.utils.Typed1Listener
 import io.edugma.domain.base.utils.format
-import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.Typed1Listener
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime

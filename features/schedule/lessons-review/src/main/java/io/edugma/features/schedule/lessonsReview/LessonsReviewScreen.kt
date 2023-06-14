@@ -36,9 +36,9 @@ import io.edugma.core.designSystem.tokens.elevation.EdElevation
 import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.designSystem.tokens.shapes.top
 import io.edugma.core.ui.screen.FeatureScreen
+import io.edugma.core.utils.ClickListener
 import io.edugma.domain.base.utils.capitalized
 import io.edugma.domain.base.utils.format
-import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.schedule.domain.model.lesson.LessonTime
 import io.edugma.features.schedule.domain.model.lessonType.LessonType
 import io.edugma.features.schedule.domain.model.review.LessonDates

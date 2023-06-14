@@ -13,12 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
-import com.airbnb.lottie.compose.rememberLottieComposition
 import io.edugma.core.designSystem.R
+import io.edugma.core.designSystem.atoms.lottie.EdLottie
+import io.edugma.core.designSystem.atoms.lottie.LottieSource
+import io.edugma.core.designSystem.atoms.lottie.rememberLottiePainter
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.theme.EdTheme
@@ -27,11 +25,6 @@ import io.edugma.core.designSystem.tokens.icons.EdIcons
 @Composable
 fun ErrorWithRetry(modifier: Modifier = Modifier, message: String = "Упс... Что-то пошло не так", retryAction: () -> Unit = {}) {
     val anim = remember { R.raw.error }
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(anim))
-    val progress by animateLottieCompositionAsState(
-        composition,
-        iterations = LottieConstants.IterateForever,
-    )
     Column(
         modifier = modifier.padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -42,11 +35,14 @@ fun ErrorWithRetry(modifier: Modifier = Modifier, message: String = "Упс... �
             style = EdTheme.typography.headlineSmall,
         )
         SpacerHeight(height = 30.dp)
-        LottieAnimation(
+        val painter = rememberLottiePainter(
+            source = LottieSource.RawRes(anim),
+            alternativeUrl = "https://raw.githubusercontent.com/Edugma/resources/main/42410-sleeping-polar-bear.gif",
+        )
+        EdLottie(
+            lottiePainter = painter,
             modifier = Modifier
                 .fillMaxWidth(),
-            composition = composition,
-            progress = { progress },
         )
         SpacerHeight(height = 30.dp)
         EdButton(

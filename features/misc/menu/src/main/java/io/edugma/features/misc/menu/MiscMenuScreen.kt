@@ -15,7 +15,7 @@ import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.ui.screen.FeatureScreen
-import io.edugma.features.base.core.utils.ClickListener
+import io.edugma.core.utils.ClickListener
 
 @Composable
 fun MiscMenuScreen(viewModel: MiscMenuViewModel = getViewModel()) {
@@ -30,7 +30,7 @@ fun MiscMenuScreen(viewModel: MiscMenuViewModel = getViewModel()) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MiscMenuContent(
-    onSettingsClick: ClickListener,
+    onSettingsClick: io.edugma.core.utils.ClickListener,
 ) {
     Column(
         Modifier

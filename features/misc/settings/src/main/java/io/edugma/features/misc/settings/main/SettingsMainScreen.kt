@@ -17,7 +17,7 @@ import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.ui.screen.FeatureScreen
-import io.edugma.features.base.core.utils.ClickListener
+import io.edugma.core.utils.ClickListener
 import io.edugma.features.misc.settings.R
 
 @Composable
@@ -34,8 +34,8 @@ fun SettingsMainScreen(viewModel: SettingsMainViewModel = getViewModel()) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsMainContent(
-    onBackClick: ClickListener,
-    onAppearanceClick: ClickListener,
+    onBackClick: io.edugma.core.utils.ClickListener,
+    onAppearanceClick: io.edugma.core.utils.ClickListener,
 ) {
     Column(Modifier.fillMaxSize()) {
         EdTopAppBar(

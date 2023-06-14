@@ -38,6 +38,9 @@ import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.designSystem.utils.edPlaceholder
 import io.edugma.core.ui.screen.FeatureScreen
+import io.edugma.core.utils.ClickListener
+import io.edugma.core.utils.Typed1Listener
+import io.edugma.core.utils.isNull
 import io.edugma.domain.account.model.Application
 import io.edugma.domain.account.model.Order
 import io.edugma.domain.account.model.Personal
@@ -46,10 +49,6 @@ import io.edugma.features.account.R
 import io.edugma.features.account.personal.Columns.Applications
 import io.edugma.features.account.personal.Columns.Orders
 import io.edugma.features.account.personal.Columns.values
-import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.Typed1Listener
-import io.edugma.features.base.core.utils.isNull
-import kotlin.math.min
 
 @Composable
 fun PersonalScreen(viewModel: PersonalViewModel = getViewModel()) {

@@ -31,9 +31,9 @@ import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
+import io.edugma.core.utils.ClickListener
+import io.edugma.core.utils.Typed1Listener
 import io.edugma.domain.base.utils.format
-import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.Typed1Listener
 import io.edugma.features.schedule.domain.model.place.PlaceInfo
 import io.edugma.features.schedule.domain.model.place.description
 import io.edugma.features.schedule.elements.verticalSchedule.VerticalScheduleComponent

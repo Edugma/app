@@ -34,9 +34,9 @@ import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
-import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.Typed1Listener
-import io.edugma.features.base.core.utils.pxToDp
+import io.edugma.core.utils.ClickListener
+import io.edugma.core.utils.Typed1Listener
+import io.edugma.core.utils.ui.pxToDp
 import io.edugma.features.schedule.domain.model.group.description
 import io.edugma.features.schedule.elements.verticalSchedule.VerticalScheduleComponent
 

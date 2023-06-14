@@ -6,7 +6,7 @@ import androidx.compose.ui.res.stringResource
 import io.edugma.core.designSystem.organism.actionCard.EdActionCardWidth
 import io.edugma.core.designSystem.organism.iconCard.EdIconCard
 import io.edugma.core.designSystem.utils.rememberCachedIconPainter
-import io.edugma.features.base.core.utils.ClickListener
+import io.edugma.core.utils.ClickListener
 import io.edugma.features.schedule.menu.R
 
 @Composable

@@ -23,10 +23,10 @@ import androidx.compose.ui.unit.dp
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.utils.withAlpha
 import io.edugma.core.ui.screen.FeatureScreen
+import io.edugma.core.utils.ClickListener
 import io.edugma.domain.base.utils.format
-import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.withAlpha
 import io.edugma.features.schedule.domain.model.group.Group
 import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonTime

@@ -27,10 +27,10 @@ import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.designSystem.utils.edPlaceholder
 import io.edugma.core.designSystem.utils.rememberCachedIconPainter
+import io.edugma.core.utils.ClickListener
+import io.edugma.core.utils.Typed2Listener
 import io.edugma.domain.account.model.menu.CardType
 import io.edugma.features.account.menu.MenuState
-import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.Typed2Listener
 
 @Composable
 fun MainScreen(

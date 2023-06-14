@@ -4,8 +4,9 @@ plugins {
 }
 
 dependencies {
-    api(projects.features.base.core)
     implementation(projects.core.designSystem)
+    implementation(projects.domain.base)
+    implementation(libs.compose.material)
     implementation(libs.kotlinx.atomic)
 }
 android {

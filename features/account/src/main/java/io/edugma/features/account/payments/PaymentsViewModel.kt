@@ -1,14 +1,14 @@
 package io.edugma.features.account.payments
 
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
+import io.edugma.core.utils.isNotNull
+import io.edugma.core.utils.isNull
 import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.domain.account.model.PaymentType
 import io.edugma.domain.account.model.Payments
 import io.edugma.domain.account.repository.PaymentsRepository
 import io.edugma.domain.base.utils.onFailure
 import io.edugma.domain.base.utils.onSuccess
-import io.edugma.features.base.core.utils.isNotNull
-import io.edugma.features.base.core.utils.isNull
 import kotlinx.coroutines.flow.collect
 
 class PaymentsViewModel(private val repository: PaymentsRepository) :

@@ -1,11 +1,11 @@
 package io.edugma.features.account.people.classmates
 
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
+import io.edugma.core.utils.isNotNull
+import io.edugma.core.utils.isNull
 import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.domain.account.model.student.Student
 import io.edugma.domain.account.repository.PeoplesRepository
-import io.edugma.features.base.core.utils.isNotNull
-import io.edugma.features.base.core.utils.isNull
 import kotlinx.coroutines.async
 
 class ClassmatesViewModel(private val repository: PeoplesRepository) :

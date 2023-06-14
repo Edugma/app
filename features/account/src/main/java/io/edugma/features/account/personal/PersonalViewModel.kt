@@ -1,13 +1,13 @@
 package io.edugma.features.account.personal
 
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
+import io.edugma.core.utils.isNotNull
+import io.edugma.core.utils.isNull
 import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.domain.account.model.Application
 import io.edugma.domain.account.model.Personal
 import io.edugma.domain.account.repository.ApplicationsRepository
 import io.edugma.domain.account.repository.PersonalRepository
-import io.edugma.features.base.core.utils.isNotNull
-import io.edugma.features.base.core.utils.isNull
 import kotlinx.coroutines.async
 
 class PersonalViewModel(

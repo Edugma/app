@@ -18,10 +18,10 @@ import io.edugma.core.designSystem.molecules.chip.EdSelectableChip
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.edPlaceholder
 import io.edugma.core.ui.screen.BottomSheet
+import io.edugma.core.utils.ClickListener
+import io.edugma.core.utils.Typed1Listener
 import io.edugma.features.account.marks.Filter
 import io.edugma.features.account.marks.MarksState
-import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.Typed1Listener
 
 @Composable
 fun FiltersBottomSheetContent(

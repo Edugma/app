@@ -5,9 +5,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import io.edugma.core.designSystem.organism.iconCard.EdIconCard
 import io.edugma.core.designSystem.utils.rememberCachedIconPainter
+import io.edugma.core.utils.ClickListener
 import io.edugma.domain.base.utils.capitalized
 import io.edugma.domain.base.utils.format
-import io.edugma.features.base.core.utils.ClickListener
 import io.edugma.features.schedule.menu.R
 import kotlinx.datetime.LocalDate
 

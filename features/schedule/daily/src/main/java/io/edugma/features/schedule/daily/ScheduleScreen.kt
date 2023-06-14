@@ -43,12 +43,12 @@ import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.designSystem.tokens.shapes.top
 import io.edugma.core.ui.screen.FeatureScreen
+import io.edugma.core.utils.ClickListener
+import io.edugma.core.utils.Typed1Listener
+import io.edugma.core.utils.Typed2Listener
+import io.edugma.core.utils.ui.bindTo
+import io.edugma.core.utils.ui.onPageChanged
 import io.edugma.domain.base.utils.format
-import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.Typed1Listener
-import io.edugma.features.base.core.utils.Typed2Listener
-import io.edugma.features.base.core.utils.bindTo
-import io.edugma.features.base.core.utils.onPageChanged
 import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
 import kotlinx.datetime.LocalDate

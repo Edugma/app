@@ -51,6 +51,11 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.designSystem.utils.edPlaceholder
 import io.edugma.core.ui.screen.FeatureScreen
+import io.edugma.core.utils.ClickListener
+import io.edugma.core.utils.Typed1Listener
+import io.edugma.core.utils.isNull
+import io.edugma.core.utils.ui.bindTo
+import io.edugma.core.utils.ui.onPageChanged
 import io.edugma.domain.account.model.Payment
 import io.edugma.domain.account.model.PaymentType
 import io.edugma.domain.account.model.Payments
@@ -58,11 +63,6 @@ import io.edugma.domain.account.model.toLabel
 import io.edugma.domain.base.utils.format
 import io.edugma.features.account.R
 import io.edugma.features.account.payments.bottomSheet.PaymentBottomSheet
-import io.edugma.features.base.core.utils.ClickListener
-import io.edugma.features.base.core.utils.Typed1Listener
-import io.edugma.features.base.core.utils.bindTo
-import io.edugma.features.base.core.utils.isNull
-import io.edugma.features.base.core.utils.onPageChanged
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
