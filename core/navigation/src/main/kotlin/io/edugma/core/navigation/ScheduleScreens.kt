@@ -17,11 +17,11 @@ object ScheduleScreens {
         ) = bundleOf(this.date set date)
     }
 
-    object Source : NoArgScreen("scheduleMenu")
+    object Source : NoArgScreen("scheduleSource")
 
-    object Calendar : NoArgScreen("scheduleMenu")
+    object Calendar : NoArgScreen("scheduleCalendar")
 
-    object LessonsReview : NoArgScreen("scheduleMenu")
+    object LessonsReview : NoArgScreen("scheduleLessonsReview")
 
-    object FreePlace : NoArgScreen("scheduleMenu")
+    object FreePlace : NoArgScreen("scheduleFreePlace")
 }

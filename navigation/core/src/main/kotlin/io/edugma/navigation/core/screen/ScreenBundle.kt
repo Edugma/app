@@ -1,6 +1,6 @@
 package io.edugma.navigation.core.screen
 
-class ScreenBundle(
+data class ScreenBundle(
     val screen: Screen,
     val args: Map<ScreenArg<*>, Any>,
 )

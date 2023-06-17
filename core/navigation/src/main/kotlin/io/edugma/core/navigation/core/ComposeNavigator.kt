@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 class ComposeNavigator(
     val edugmaNavigator: EdugmaNavigator,
     private val router: Router,
+    private val isActive: () -> Boolean,
 ) {
     companion object {
         private const val TAG = "ComposeNavigator"
@@ -37,7 +38,9 @@ class ComposeNavigator(
 
     private fun processCommand(commands: List<Command>) {
         for (command in commands) {
-            applyCommand(command)
+            if (isActive()) {
+                applyCommand(command)
+            }
         }
     }
 

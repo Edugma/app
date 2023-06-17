@@ -9,6 +9,7 @@ class ScreenGraphBuilder {
     val map = mutableMapOf<Screen, @Composable (ScreenBundle) -> Unit>()
 
     fun <T : Screen> screen(screen: T, content: @Composable ScreenArgHolder<T>.() -> Unit) {
+        check(screen !in map) { "Screen with name ${screen.name} already in graph" }
         map[screen] = {
             content(ScreenArgHolder(it))
         }

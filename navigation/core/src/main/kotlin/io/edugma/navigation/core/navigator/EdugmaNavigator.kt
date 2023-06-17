@@ -9,17 +9,29 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class EdugmaNavigator(
     screenGraphBuilder: ScreenGraphBuilder,
+    firstScreen: ScreenBundle,
 ) {
-    private val _currentScreen = MutableStateFlow<ScreenUiState?>(null)
-    val currentScreen = _currentScreen.asStateFlow()
-
     val backStack: MutableList<ScreenUiState> = mutableListOf<ScreenUiState>()
 
     private val screenToUI: Map<Screen, @Composable (ScreenBundle) -> Unit>
 
+    private val _firstScreen: ScreenUiState
+
     init {
         screenToUI = screenGraphBuilder.map
+        val ui = checkNotNull(screenToUI[firstScreen.screen])
+        val state = ScreenUiState(
+            screenBundle = firstScreen,
+            ui = ui,
+        )
+
+        backStack += state
+
+        _firstScreen = state
     }
+
+    private val _currentScreen = MutableStateFlow<ScreenUiState>(_firstScreen)
+    val currentScreen = _currentScreen.asStateFlow()
 
     fun navigateTo(screenBundle: ScreenBundle, singleTop: Boolean = false) {
         val ui = checkNotNull(screenToUI[screenBundle.screen])
@@ -43,9 +55,14 @@ class EdugmaNavigator(
         }
     }
 
-    fun back() {
-        backStack.removeLast()
-        updateCurrentScreen()
+    fun back(): Boolean {
+        return if (backStack.size <= 1) {
+            false
+        } else {
+            backStack.removeLast()
+            updateCurrentScreen()
+            true
+        }
     }
 
     fun backTo(screen: Screen?) {
@@ -75,6 +92,6 @@ class EdugmaNavigator(
     }
 
     private fun updateCurrentScreen() {
-        _currentScreen.value = backStack.lastOrNull()
+        _currentScreen.value = backStack.last()
     }
 }
