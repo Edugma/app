@@ -1,6 +1,7 @@
 package io.edugma.features.account.payments
 
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
+import io.edugma.core.navigation.core.router.external.ExternalRouter
 import io.edugma.core.utils.isNotNull
 import io.edugma.core.utils.isNull
 import io.edugma.core.utils.viewmodel.launchCoroutine
@@ -11,8 +12,10 @@ import io.edugma.domain.base.utils.onFailure
 import io.edugma.domain.base.utils.onSuccess
 import kotlinx.coroutines.flow.collect
 
-class PaymentsViewModel(private val repository: PaymentsRepository) :
-    BaseViewModel<PaymentsState>(PaymentsState()) {
+class PaymentsViewModel(
+    private val repository: PaymentsRepository,
+    private val externalRouter: ExternalRouter,
+) : BaseViewModel<PaymentsState>(PaymentsState()) {
 
     init {
         load()
@@ -48,6 +51,16 @@ class PaymentsViewModel(private val repository: PaymentsRepository) :
                 isLoading = isLoading,
                 isError = !isLoading && state.isError,
             )
+        }
+    }
+
+    fun onOpenUri() {
+        val uri = state.value.selectedType?.let {
+            state.value.data?.get(it)?.qrCurrent
+        }
+
+        uri?.let {
+            externalRouter.openUri(uri)
         }
     }
 

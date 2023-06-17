@@ -23,7 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -60,13 +59,18 @@ import io.edugma.features.account.R
 import io.edugma.features.account.people.common.bottomSheets.SearchBottomSheet
 import io.edugma.features.account.people.common.items.PeopleItem
 import io.edugma.features.account.people.common.items.PeopleItemPlaceholder
-import io.edugma.features.account.people.common.utlis.convertAndShare
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun StudentsScreen(viewModel: StudentsViewModel = getViewModel()) {
     val state by viewModel.state.collectAsState()
+
+    val studentListItems = remember {
+        viewModel.state.map { it.pagingData }.filterNotNull()
+    }.collectAsLazyPagingItems()
 
     val bottomState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
@@ -98,6 +102,7 @@ fun StudentsScreen(viewModel: StudentsViewModel = getViewModel()) {
         ) {
             StudentsListContent(
                 state,
+                studentListItems = studentListItems,
                 backListener = viewModel::exit,
                 openBottomSheetListener = {
                     viewModel.selectFilter()
@@ -107,6 +112,7 @@ fun StudentsScreen(viewModel: StudentsViewModel = getViewModel()) {
                     viewModel.selectStudent(it)
                     scope.launch { bottomState.show() }
                 },
+                onShare = viewModel::onShare,
             )
         }
     }
@@ -274,21 +280,21 @@ fun StudentSheetContent(
 @Composable
 fun StudentsListContent(
     state: StudentsState,
+    studentListItems: LazyPagingItems<Student>,
     backListener: ClickListener,
     openBottomSheetListener: ClickListener,
     studentClick: Typed1Listener<Student>,
+    onShare: ClickListener,
 ) {
-    val studentListItems = state.pagingData?.collectAsLazyPagingItems()
     Column(Modifier.navigationBarsPadding()) {
         EdTopAppBar(
             title = "Студенты",
             onNavigationClick = backListener,
             actions = {
-                val students = studentListItems?.itemSnapshotList?.items
-                val context = LocalContext.current
+                val students = studentListItems.itemSnapshotList?.items
 
                 IconButton(
-                    onClick = { students?.convertAndShare(context) },
+                    onClick = { onShare() },
                     enabled = !students.isNullOrEmpty(),
                 ) {
                     Icon(

@@ -36,7 +36,7 @@ class ComposeNavigator(
 //        }
     }
 
-    private fun processCommand(commands: List<Command>) {
+    private fun processCommand(commands: List<NavigationCommand>) {
         for (command in commands) {
             if (isActive()) {
                 applyCommand(command)
@@ -44,21 +44,21 @@ class ComposeNavigator(
         }
     }
 
-    private fun applyCommand(command: Command) {
+    private fun applyCommand(command: NavigationCommand) {
         Logger.d("applyCommand: $command", tag = TAG)
         when (command) {
-            is Command.Forward -> forward(command)
-            is Command.Replace -> replace(command)
-            is Command.BackTo -> backTo(command)
-            is Command.Back -> back()
+            is NavigationCommand.Forward -> forward(command)
+            is NavigationCommand.Replace -> replace(command)
+            is NavigationCommand.BackTo -> backTo(command)
+            is NavigationCommand.Back -> back()
         }
     }
 
-    private fun forward(command: Command.Forward) {
+    private fun forward(command: NavigationCommand.Forward) {
         edugmaNavigator.navigateTo(command.screen)
     }
 
-    private fun replace(command: Command.Replace) {
+    private fun replace(command: NavigationCommand.Replace) {
         edugmaNavigator.back()
         edugmaNavigator.navigateTo(command.screen)
     }
@@ -67,7 +67,7 @@ class ComposeNavigator(
         edugmaNavigator.back()
     }
 
-    private fun backTo(command: Command.BackTo) {
+    private fun backTo(command: NavigationCommand.BackTo) {
         if (command.screen == null) {
             edugmaNavigator.backTo(null)
         } else {

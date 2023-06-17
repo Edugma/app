@@ -7,9 +7,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 
 @Composable
-fun getContext() = LocalContext.current
-
-@Composable
 fun TextUnit.dp() =
     with(LocalDensity.current) {
         this@dp.toDp()

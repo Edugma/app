@@ -5,12 +5,16 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
+import io.edugma.core.navigation.core.router.external.ExternalRouter
+import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.domain.account.model.student.Student
 import io.edugma.domain.account.repository.PeoplesRepository
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 
-class StudentsViewModel(private val repository: PeoplesRepository) :
-    BaseViewModel<StudentsState>(StudentsState()) {
+class StudentsViewModel(
+    private val repository: PeoplesRepository,
+    private val externalRouter: ExternalRouter,
+) : BaseViewModel<StudentsState>(StudentsState()) {
 
     companion object {
         private const val PAGE_SIZE = 10
@@ -25,11 +29,15 @@ class StudentsViewModel(private val repository: PeoplesRepository) :
     }
 
     fun load(name: String = "") {
-        val flow = requestPagingData(name)
-            .flow
-            .cachedIn(viewModelScope)
-        mutateState {
-            state = state.copy(pagingData = flow)
+        launchCoroutine {
+            requestPagingData(name)
+                .flow
+                .cachedIn(viewModelScope)
+                .collect {
+                    mutateState {
+                        state = state.copy(pagingData = it)
+                    }
+                }
         }
     }
 
@@ -37,6 +45,17 @@ class StudentsViewModel(private val repository: PeoplesRepository) :
         mutateState {
             state = state.copy(name = name)
         }
+    }
+
+    fun onShare() {
+//        viewModelScope.launch {
+//            val students = state.value.pagingData
+//            students?.let { students ->
+//                externalRouter.share(
+//                    students.convertAndShare()
+//                )
+//            }
+//        }
     }
 
     fun selectFilter() {
@@ -53,7 +72,7 @@ class StudentsViewModel(private val repository: PeoplesRepository) :
 }
 
 data class StudentsState(
-    val pagingData: Flow<PagingData<Student>>? = null,
+    val pagingData: PagingData<Student>? = null,
     val name: String = "",
     val bottomType: BottomSheetType = BottomSheetType.Filter,
     val selectedStudent: Student? = null,

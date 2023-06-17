@@ -1,14 +1,11 @@
 package io.edugma.features.account.payments.bottomSheet
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.label.EdLabel
@@ -17,16 +14,17 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.designSystem.utils.rememberAsyncImagePainter
 import io.edugma.core.ui.screen.BottomSheet
+import io.edugma.core.utils.ClickListener
 
 @Composable
 fun PaymentBottomSheet(
     qrUrl: String,
+    openUri: ClickListener,
 ) {
     BottomSheet(
         header = "QR код",
         verticalContentPadding = 15.dp,
     ) {
-        val context = LocalContext.current
         val painter = rememberAsyncImagePainter(model = qrUrl)
         Image(
             painter = painter,
@@ -35,7 +33,7 @@ fun PaymentBottomSheet(
                 .fillMaxWidth()
                 .aspectRatio(1f)
                 .clickable {
-                    Intent(Intent.ACTION_VIEW, Uri.parse(qrUrl)).apply(context::startActivity)
+                    openUri()
                 },
         )
         SpacerHeight(height = 20.dp)

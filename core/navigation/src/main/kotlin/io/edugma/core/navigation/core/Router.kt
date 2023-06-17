@@ -7,14 +7,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 
 class Router {
-    private val _commandBuffer = MutableSharedFlow<List<io.edugma.core.navigation.core.Command>>(
+    private val _commandBuffer = MutableSharedFlow<List<NavigationCommand>>(
         replay = 0,
         extraBufferCapacity = Int.MAX_VALUE,
         onBufferOverflow = BufferOverflow.DROP_OLDEST,
     )
-    val commandBuffer: Flow<List<io.edugma.core.navigation.core.Command>> = _commandBuffer
+    val commandBuffer: Flow<List<NavigationCommand>> = _commandBuffer
 
-    fun executeCommands(vararg commands: io.edugma.core.navigation.core.Command) {
+    fun executeCommands(vararg commands: NavigationCommand) {
         _commandBuffer.tryEmit(commands.toList())
     }
 
@@ -24,7 +24,7 @@ class Router {
      * @param screen screen
      */
     fun navigateTo(screen: ScreenBundle) {
-        executeCommands(Command.Forward(screen))
+        executeCommands(NavigationCommand.Forward(screen))
     }
 
     /**
@@ -33,7 +33,7 @@ class Router {
      * @param screen screen
      */
     fun newRootScreen(screen: ScreenBundle) {
-        executeCommands(Command.BackTo(null), Command.Replace(screen))
+        executeCommands(NavigationCommand.BackTo(null), NavigationCommand.Replace(screen))
     }
 
     /**
@@ -46,19 +46,19 @@ class Router {
      * @param screen screen
      */
     fun replaceScreen(screen: ScreenBundle) {
-        executeCommands(Command.Replace(screen))
+        executeCommands(NavigationCommand.Replace(screen))
     }
 
     /**
      * Return fragmentBack to the needed screen from the chain.
      *
      * Behavior in the case when no needed screens found depends on
-     * the processing of the [Command.BackTo] command in a [Navigator] implementation.
+     * the processing of the [NavigationCommand.BackTo] command in a [Navigator] implementation.
      *
      * @param screen screen
      */
     fun backTo(screen: Screen?) {
-        executeCommands(Command.BackTo(screen))
+        executeCommands(NavigationCommand.BackTo(screen))
     }
 
     /**
@@ -67,7 +67,7 @@ class Router {
      * @param screens
      */
     fun newChain(vararg screens: ScreenBundle) {
-        val commands = screens.map { Command.Forward(it) }
+        val commands = screens.map { NavigationCommand.Forward(it) }
         executeCommands(*commands.toTypedArray())
     }
 
@@ -79,12 +79,12 @@ class Router {
     fun newRootChain(vararg screens: ScreenBundle) {
         val commands = screens.mapIndexed { index, screen ->
             if (index == 0) {
-                Command.Replace(screen)
+                NavigationCommand.Replace(screen)
             } else {
-                Command.Forward(screen)
+                NavigationCommand.Forward(screen)
             }
         }
-        executeCommands(Command.BackTo(null), *commands.toTypedArray())
+        executeCommands(NavigationCommand.BackTo(null), *commands.toTypedArray())
     }
 
     /**
@@ -93,16 +93,16 @@ class Router {
      * It's mostly used to finish the application or close a supplementary navigation chain.
      */
     fun finishChain() {
-        executeCommands(Command.BackTo(null), Command.Back)
+        executeCommands(NavigationCommand.BackTo(null), NavigationCommand.Back)
     }
 
     /**
      * Return to the previous screen in the chain.
      *
      * Behavior in the case when the current screen is the root depends on
-     * the processing of the [Command.Back] command in a [Navigator] implementation.
+     * the processing of the [NavigationCommand.Back] command in a [Navigator] implementation.
      */
     fun exit() {
-        executeCommands(Command.Back)
+        executeCommands(NavigationCommand.Back)
     }
 }

@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
@@ -23,7 +22,6 @@ import io.edugma.core.utils.isNull
 import io.edugma.domain.account.model.student.Student
 import io.edugma.features.account.people.common.items.PeopleItem
 import io.edugma.features.account.people.common.items.PeopleItemPlaceholder
-import io.edugma.features.account.people.common.utlis.convertAndShare
 
 @Composable
 fun ClassmatesScreen(viewModel: ClassmatesViewModel = getViewModel()) {
@@ -34,6 +32,7 @@ fun ClassmatesScreen(viewModel: ClassmatesViewModel = getViewModel()) {
             state,
             retryListener = viewModel::updateClassmates,
             backListener = viewModel::exit,
+            onShare = viewModel::onShare,
         )
     }
 }
@@ -43,6 +42,7 @@ fun ClassmatesContent(
     state: ClassmatesState,
     retryListener: ClickListener,
     backListener: ClickListener,
+    onShare: ClickListener,
 ) {
     Column {
         EdTopAppBar(
@@ -50,10 +50,9 @@ fun ClassmatesContent(
             onNavigationClick = backListener,
             actions = {
                 val students = state.data
-                val context = LocalContext.current
 
                 IconButton(
-                    onClick = { students?.convertAndShare(context) },
+                    onClick = { onShare() },
                     enabled = !students.isNullOrEmpty(),
                 ) {
                     Icon(

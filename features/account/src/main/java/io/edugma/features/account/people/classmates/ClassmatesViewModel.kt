@@ -1,15 +1,19 @@
 package io.edugma.features.account.people.classmates
 
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
+import io.edugma.core.navigation.core.router.external.ExternalRouter
 import io.edugma.core.utils.isNotNull
 import io.edugma.core.utils.isNull
 import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.domain.account.model.student.Student
 import io.edugma.domain.account.repository.PeoplesRepository
+import io.edugma.features.account.people.common.utlis.convertAndShare
 import kotlinx.coroutines.async
 
-class ClassmatesViewModel(private val repository: PeoplesRepository) :
-    BaseViewModel<ClassmatesState>(ClassmatesState()) {
+class ClassmatesViewModel(
+    private val repository: PeoplesRepository,
+    private val externalRouter: ExternalRouter,
+) : BaseViewModel<ClassmatesState>(ClassmatesState()) {
 
     init {
         loadClassmates()
@@ -40,6 +44,14 @@ class ClassmatesViewModel(private val repository: PeoplesRepository) :
                 .onSuccess(::setData)
                 .onFailure { setError(true) }
             setLoading(false)
+        }
+    }
+
+    fun onShare() {
+        state.value.data?.let { students ->
+            externalRouter.share(
+                students.convertAndShare(),
+            )
         }
     }
 
