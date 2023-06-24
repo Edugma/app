@@ -26,8 +26,8 @@ android {
         resources.srcDirs("src/commonMain/resources")
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_19
+        targetCompatibility = JavaVersion.VERSION_19
     }
     packaging {
         resources.excludes.add("META-INF/**")
