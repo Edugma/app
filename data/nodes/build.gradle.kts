@@ -1,5 +1,5 @@
 plugins {
-    id("android-lib")
+    id("mp-common-lib")
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.ktorfit)
@@ -9,13 +9,21 @@ configure<de.jensklingenberg.ktorfit.gradle.KtorfitGradleConfiguration> {
     version = libs.versions.ktorfit.get()
 }
 
-dependencies {
-    api(projects.data.base)
-    api(projects.domain.nodes)
+kotlin {
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                api(projects.data.base)
+                api(projects.domain.nodes)
 
-    ksp(libs.ktorfit.ksp)
-    implementation(libs.ktorfit)
+                implementation(libs.ktorfit)
+            }
+        }
+    }
 }
-android {
-    namespace = "io.edugma.data.nodes"
+
+dependencies {
+    kspAllPlatforms(libs.ktorfit.ksp)
 }
+
+android.namespace = "io.edugma.data.nodes"
