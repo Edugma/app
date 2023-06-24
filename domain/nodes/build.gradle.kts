@@ -1,8 +1,17 @@
 plugins {
-    id("kotlin-lib")
+    id("mp-common-lib")
     alias(libs.plugins.kotlin.serialization)
 }
 
-dependencies {
-    api(projects.domain.base)
+
+kotlin {
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                api(projects.domain.base)
+            }
+        }
+    }
 }
+
+android.namespace = "io.edugma.domain.nodes"
