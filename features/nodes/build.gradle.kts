@@ -1,20 +1,27 @@
 plugins {
-    id("feature-lib")
+    id("mp-feature-lib")
 }
 
-dependencies {
-    implementation(projects.core.designSystem)
-    implementation(projects.core.ui)
-    implementation(projects.core.utils)
+kotlin {
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(projects.core.designSystem)
+                implementation(projects.core.ui)
+                implementation(projects.core.utils)
 
-    implementation(projects.core.navigation)
-    implementation(projects.features.base.elements)
-    implementation(projects.core.arch)
-    implementation(projects.core.utils)
-    implementation(libs.koin.core)
+                implementation(projects.core.navigation)
+                implementation(projects.features.base.elements)
+                implementation(projects.core.arch)
+                implementation(projects.core.utils)
+                implementation(libs.koin.core)
 
-    api(projects.domain.nodes)
+                api(projects.domain.nodes)
+            }
+        }
+    }
 }
+
 android {
     namespace = "io.edugma.features.nodes"
 }

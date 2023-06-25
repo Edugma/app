@@ -10,6 +10,7 @@ dependencies {
     implementation(projects.features.app)
     implementation(projects.core.androidResources)
     implementation(projects.core.navigation)
+    implementation(projects.features.schedule.appwidget)
 
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)
