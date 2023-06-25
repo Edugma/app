@@ -13,12 +13,14 @@ kotlin {
         version = "1.0.0"
         summary = "Compose application framework"
         homepage = "empty"
-        ios.deploymentTarget = "11.0"
+        ios.deploymentTarget = "15.0"
         podfile = project.file("../iosApp/Podfile")
         framework {
             baseName = "ComposeApp"
             isStatic = true
         }
+        extraSpecAttributes["resources"] =
+            "['src/commonMain/resources/**', 'src/iosMain/resources/**']"
     }
 
 }

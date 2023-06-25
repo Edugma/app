@@ -29,7 +29,6 @@ val baseDataModule = module {
     accountClient()
     otherClient()
 
-    singleOf(::PathRepositoryImpl) { bind<PathRepository>() }
     single { EventRepository() }
     factoryOf(::PreferenceRepositoryImpl) { bind<PreferenceRepository>() }
     singleOf(::SettingsRepositoryImpl) { bind<SettingsRepository>() }

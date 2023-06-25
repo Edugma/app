@@ -10,6 +10,7 @@ android {
 dependencies {
     implementation(projects.domain.base)
     implementation(projects.data.base)
+    api(projects.core.icons)
 
     implementation(libs.androidx.lifecycleRuntime)
 
