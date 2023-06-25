@@ -1,15 +1,20 @@
 plugins {
-    id("compose-android-lib")
+    id("mp-compose-lib")
+}
+
+kotlin {
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(libs.kotlinx.coroutines.core)
+                implementation(projects.core.arch)
+                implementation(libs.kermit)
+            }
+        }
+    }
 }
 
 android {
     namespace = "io.edugma.core.utils"
     resourcePrefix("core_utils_")
-}
-
-dependencies {
-    implementation(libs.androidx.coreKtx)
-    implementation(libs.kotlinx.coroutines.core)
-    implementation(projects.core.arch)
-    implementation(libs.kermit)
 }

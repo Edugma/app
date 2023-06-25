@@ -48,7 +48,7 @@ iconsDir.walkTopDown().filter { it.extension == "xml" }
         val newFile = File(resourceFolder, it.name)
         val newText = it.readText().replace("@color/fluent_default_icon_tint", "#212121")
         newFile.writeText(newText)
-        writer.appendLine("\tval ${it.name.removeSuffix(".xml")} = \"${it.name}\"")
+        writer.appendLine("\tpublic const val ${it.name.removeSuffix(".xml")}: String = \"${it.name}\"")
     }
 writer.appendLine("}")
 writer.close()

@@ -3,6 +3,7 @@ package io.edugma.core.designSystem.atoms.lottie
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.remember
+import kotlin.jvm.JvmInline
 
 @Immutable
 class LottiePainter(
@@ -28,9 +29,6 @@ fun rememberLottiePainter(
 
 @Immutable
 sealed interface LottieSource {
-    @JvmInline
-    value class RawRes(@androidx.annotation.RawRes val resId: Int) : LottieSource
-
     /**
      * Load an animation from the internet. Lottie has a default network stack that will use
      * standard Android networking APIs to attempt to load your animation. You may want to

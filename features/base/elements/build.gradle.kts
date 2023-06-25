@@ -1,14 +1,21 @@
 plugins {
-    id("compose-android-lib")
+    id("mp-compose-lib")
     alias(libs.plugins.kotlinx.atomic)
 }
 
-dependencies {
-    implementation(projects.core.designSystem)
-    implementation(projects.domain.base)
-    implementation(libs.compose.material)
-    implementation(libs.kotlinx.atomic)
+kotlin {
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(projects.core.designSystem)
+                implementation(projects.domain.base)
+                implementation(libs.kotlinx.atomic)
+            }
+        }
+    }
 }
+
 android {
     namespace = "io.edugma.features.elements"
 }
+
