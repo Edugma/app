@@ -11,18 +11,19 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.core.designSystem.tokens.icons.EdIcons
+import io.edugma.core.icons.EdIcons
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.features.schedule.domain.model.teacher.description
 import io.edugma.features.schedule.elements.verticalSchedule.VerticalScheduleComponent
 import io.edugma.features.schedule.scheduleInfo.groupInfo.InfoScaffold
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun TeacherInfoScreen(viewModel: TeacherInfoViewModel = getViewModel(), id: String) {
@@ -39,7 +40,7 @@ fun TeacherInfoScreen(viewModel: TeacherInfoViewModel = getViewModel(), id: Stri
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalResourceApi::class)
 @Composable
 private fun TeacherInfoContent(
     state: TeacherInfoState,

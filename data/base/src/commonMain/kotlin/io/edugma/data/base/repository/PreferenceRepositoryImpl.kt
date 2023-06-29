@@ -12,6 +12,7 @@ import io.edugma.domain.base.repository.PathRepository
 import io.edugma.domain.base.repository.PreferenceRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map

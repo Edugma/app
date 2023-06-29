@@ -46,7 +46,6 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight.Companion.W400
 import androidx.compose.ui.text.font.FontWeight.Companion.W600
@@ -60,11 +59,14 @@ import io.edugma.features.base.elements.dialogs.core.MaterialDialogScope
 import io.edugma.features.base.elements.dialogs.util.getFullLocalName
 import io.edugma.features.base.elements.dialogs.util.getShortLocalName
 import io.edugma.features.base.elements.dialogs.util.isSmallDevice
-import io.edugma.features.elements.R
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.Month
+import kotlinx.datetime.isoDayNumber
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
 /**
  * @brief A date picker body layout
@@ -213,7 +215,7 @@ private fun YearPickerItem(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalResourceApi::class)
 @Composable
 private fun CalendarViewHeader(
     viewDate: LocalDate,
@@ -222,8 +224,8 @@ private fun CalendarViewHeader(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val month = remember { viewDate.month.getFullLocalName() }
-    val arrowDropUp = painterResource(id = R.drawable.baseline_arrow_drop_up_24)
-    val arrowDropDown = painterResource(id = R.drawable.baseline_arrow_drop_down_24)
+    val arrowDropUp = painterResource("baseline_arrow_drop_up_24")
+    val arrowDropDown = painterResource("baseline_arrow_drop_down_24")
 
     Box(
         Modifier
@@ -267,15 +269,17 @@ private fun CalendarViewHeader(
                 modifier = Modifier
                     .testTag("dialog_date_prev_month")
                     .size(24.dp)
-                    .clickable(onClick = {
-                        coroutineScope.launch {
-                            if (pagerState.currentPage - 1 >= 0) {
-                                pagerState.animateScrollToPage(
-                                    pagerState.currentPage - 1,
-                                )
+                    .clickable(
+                        onClick = {
+                            coroutineScope.launch {
+                                if (pagerState.currentPage - 1 >= 0) {
+                                    pagerState.animateScrollToPage(
+                                        pagerState.currentPage - 1,
+                                    )
+                                }
                             }
-                        }
-                    }),
+                        },
+                    ),
                 tint = state.colors.calendarHeaderTextColor,
             )
 
@@ -287,15 +291,17 @@ private fun CalendarViewHeader(
                 modifier = Modifier
                     .testTag("dialog_date_next_month")
                     .size(24.dp)
-                    .clickable(onClick = {
-                        coroutineScope.launch {
-                            if (pagerState.canScrollForward) {
-                                pagerState.animateScrollToPage(
-                                    pagerState.currentPage + 1,
-                                )
+                    .clickable(
+                        onClick = {
+                            coroutineScope.launch {
+                                if (pagerState.canScrollForward) {
+                                    pagerState.animateScrollToPage(
+                                        pagerState.currentPage + 1,
+                                    )
+                                }
                             }
-                        }
-                    }),
+                        },
+                    ),
                 tint = state.colors.calendarHeaderTextColor,
             )
         }
@@ -386,7 +392,7 @@ private fun DayOfWeekHeader(state: DatePickerState) {
     val firstDayOfWeek = DayOfWeek.MONDAY
     val dayHeaders = firstDayOfWeek.let { firstDayOfWeek ->
         (0L until 7L).map {
-            firstDayOfWeek.plus(it).format("EE")
+            DayOfWeek(firstDayOfWeek.ordinal.plus(it).toInt()).format("EE")
         }
     }
 
@@ -462,7 +468,15 @@ private fun getDates(date: LocalDate): Pair<Int, Int> {
         monthNumber = date.monthNumber,
         dayOfMonth = 1,
     )
-    val firstDay = firstDayOfMoth.dayOfWeek.value - firstDayOfWeek.value % 7
+    val firstDay = firstDayOfMoth.dayOfWeek.isoDayNumber - firstDayOfWeek.isoDayNumber % 7
 
     return Pair(firstDay, numDays)
+}
+
+fun Month.length(leapYear: Boolean): Int {
+    return when (this) {
+        Month.FEBRUARY -> if (leapYear) 29 else 28
+        Month.APRIL, Month.JUNE, Month.SEPTEMBER, Month.NOVEMBER -> 30
+        else -> 31
+    }
 }

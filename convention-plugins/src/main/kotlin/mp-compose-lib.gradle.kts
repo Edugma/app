@@ -3,6 +3,7 @@ import org.gradle.accessors.dm.LibrariesForLibs
 plugins {
     id("mp-common-lib")
     id("org.jetbrains.compose")
+    id("dev.icerock.mobile.multiplatform-resources")
 }
 
 // https://github.com/gradle/gradle/issues/15383
@@ -21,6 +22,9 @@ kotlin {
                 implementation(compose.material3)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
+                implementation(libs.moko.resources)
+                implementation(libs.moko.resourcesCompose)
+                implementation(libs.insetsx)
                 //implementation(compose.preview)
             }
         }
@@ -47,6 +51,21 @@ kotlin {
             dependencies {
             }
         }
+    }
+}
+
+multiplatformResources {
+    val regex = """-(.)""".toRegex()
+    val projectName = project.path
+        .replace('\\', '.') //for windows
+        .replace('/', '.') //for mac
+        .replace(':', '.')
+
+    var resPath = projectName
+    regex.findAll(path).forEach { match ->
+        resPath = resPath.replace("-${match.groups[1]!!.value}", match.groups[1]!!.value.uppercase())
 
     }
+
+    multiplatformResourcesPackage = "io.edugma.${resPath}.resources"
 }

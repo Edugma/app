@@ -7,11 +7,9 @@ import io.edugma.core.network.interceptors.TokenInterceptor
 import io.edugma.data.base.consts.DiConst
 import io.edugma.data.base.repository.CacheRepositoryImpl
 import io.edugma.data.base.repository.EventRepository
-import io.edugma.data.base.repository.PathRepositoryImpl
 import io.edugma.data.base.repository.PreferenceRepositoryImpl
 import io.edugma.data.base.repository.SettingsRepositoryImpl
 import io.edugma.domain.base.repository.CacheRepository
-import io.edugma.domain.base.repository.PathRepository
 import io.edugma.domain.base.repository.PreferenceRepository
 import io.edugma.domain.base.repository.SettingsRepository
 import org.koin.core.module.Module
@@ -33,7 +31,7 @@ val baseDataModule = module {
     factoryOf(::PreferenceRepositoryImpl) { bind<PreferenceRepository>() }
     singleOf(::SettingsRepositoryImpl) { bind<SettingsRepository>() }
     singleOf(::CacheRepositoryImpl) { bind<CacheRepository>() }
-}
+} + baseDataModulePlatform
 
 private fun Module.otherClient() {
     single(named(DiConst.OtherClient)) {

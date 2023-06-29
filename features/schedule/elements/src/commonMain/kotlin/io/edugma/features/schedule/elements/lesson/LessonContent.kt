@@ -13,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.card.EdCard
@@ -21,11 +20,11 @@ import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
-import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.designSystem.utils.ContentAlpha
 import io.edugma.core.designSystem.utils.WithContentAlpha
 import io.edugma.core.designSystem.utils.edPlaceholder
 import io.edugma.core.designSystem.utils.rememberAsyncImagePainter
+import io.edugma.core.icons.EdIcons
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.domain.base.utils.format
 import io.edugma.features.schedule.domain.model.group.Group
@@ -37,6 +36,8 @@ import io.edugma.features.schedule.domain.model.place.Place
 import io.edugma.features.schedule.domain.model.teacher.Teacher
 import io.edugma.features.schedule.domain.usecase.getShortName
 import io.edugma.features.schedule.elements.lesson.model.ScheduleItem
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun LessonContent(
@@ -116,6 +117,7 @@ fun LessonTitle(subject: LessonSubject, isLoading: Boolean = false) {
     )
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun TeachersContent(teachers: List<Teacher>, isLoading: Boolean = false) {
     val teachersText = remember(teachers) {
@@ -127,7 +129,7 @@ fun TeachersContent(teachers: List<Teacher>, isLoading: Boolean = false) {
     }
     EdLabel(
         text = teachersText,
-        iconPainter = painterResource(id = EdIcons.ic_fluent_hat_graduation_16_filled),
+        iconPainter = painterResource(EdIcons.ic_fluent_hat_graduation_16_filled),
         style = EdTheme.typography.bodyMedium,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
@@ -137,12 +139,13 @@ fun TeachersContent(teachers: List<Teacher>, isLoading: Boolean = false) {
     )
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun GroupsContent(groups: List<Group>, isLoading: Boolean = false) {
     val groupsText = remember(groups) { groups.joinToString { it.title } }
     EdLabel(
         text = groupsText,
-        iconPainter = painterResource(id = EdIcons.ic_fluent_people_16_filled),
+        iconPainter = painterResource(EdIcons.ic_fluent_people_16_filled),
         style = EdTheme.typography.bodyMedium,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
@@ -152,12 +155,13 @@ fun GroupsContent(groups: List<Group>, isLoading: Boolean = false) {
     )
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun PlacesContent(places: List<Place>, isLoading: Boolean = false) {
     val placesText = remember(places) { places.joinToString { it.title } }
     EdLabel(
         text = placesText,
-        iconPainter = painterResource(id = EdIcons.ic_fluent_location_16_filled),
+        iconPainter = painterResource(EdIcons.ic_fluent_location_16_filled),
         style = EdTheme.typography.bodyMedium,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,

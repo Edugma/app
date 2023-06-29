@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
@@ -24,15 +23,16 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.paging.LoadState
-import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemContentType
-import androidx.paging.compose.itemKey
+import app.cash.paging.LoadStateError
+import app.cash.paging.LoadStateLoading
+import app.cash.paging.compose.LazyPagingItems
+import app.cash.paging.compose.collectAsLazyPagingItems
+import app.cash.paging.compose.itemContentType
+import app.cash.paging.compose.itemKey
+import com.moriatsushi.insetsx.navigationBarsPadding
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.divider.EdDivider
 import io.edugma.core.designSystem.atoms.label.EdLabel
@@ -49,7 +49,7 @@ import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
 import io.edugma.core.designSystem.organism.refresher.Refresher
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.core.designSystem.tokens.icons.EdIcons
+import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.BottomSheet
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
@@ -58,12 +58,13 @@ import io.edugma.core.utils.isNotNull
 import io.edugma.domain.account.model.Teacher
 import io.edugma.domain.account.model.departments
 import io.edugma.domain.account.model.description
-import io.edugma.features.account.R
 import io.edugma.features.account.people.common.bottomSheets.SearchBottomSheet
 import io.edugma.features.account.people.common.items.PeopleItem
 import io.edugma.features.account.people.common.items.PeopleItemPlaceholder
 import io.edugma.features.base.elements.*
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -119,6 +120,7 @@ fun TeachersScreen(viewModel: TeachersViewModel = getViewModel()) {
     }
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun TeacherBottomSheet(teacher: Teacher, openSchedule: ClickListener) {
     BottomSheet {
@@ -155,7 +157,7 @@ fun TeacherBottomSheet(teacher: Teacher, openSchedule: ClickListener) {
         teacher.stuffType?.let {
             EdLabel(
                 text = it,
-                iconPainter = painterResource(id = EdIcons.ic_fluent_book_24_regular),
+                iconPainter = painterResource(EdIcons.ic_fluent_book_24_regular),
                 style = EdTheme.typography.bodyMedium,
             )
             SpacerHeight(height = 7.dp)
@@ -163,7 +165,7 @@ fun TeacherBottomSheet(teacher: Teacher, openSchedule: ClickListener) {
         teacher.grade?.let {
             EdLabel(
                 text = it,
-                iconPainter = painterResource(id = R.drawable.acc_ic_teacher_24),
+                iconPainter = painterResource("acc_ic_teacher_24"),
                 style = EdTheme.typography.bodyMedium,
             )
             SpacerHeight(height = 7.dp)
@@ -171,7 +173,7 @@ fun TeacherBottomSheet(teacher: Teacher, openSchedule: ClickListener) {
         teacher.sex?.let {
             EdLabel(
                 text = "Пол: $it",
-                iconPainter = painterResource(id = EdIcons.ic_fluent_people_24_regular),
+                iconPainter = painterResource(EdIcons.ic_fluent_people_24_regular),
                 style = EdTheme.typography.bodyMedium,
             )
             SpacerHeight(height = 7.dp)
@@ -180,7 +182,7 @@ fun TeacherBottomSheet(teacher: Teacher, openSchedule: ClickListener) {
             SelectionContainer {
                 EdLabel(
                     text = teacher.email!!,
-                    iconPainter = painterResource(id = EdIcons.ic_fluent_mail_24_regular),
+                    iconPainter = painterResource(EdIcons.ic_fluent_mail_24_regular),
                     style = EdTheme.typography.bodyMedium,
                 )
             }
@@ -195,6 +197,7 @@ fun TeacherBottomSheet(teacher: Teacher, openSchedule: ClickListener) {
     }
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun TeachersListContent(
     state: TeachersState,
@@ -210,7 +213,7 @@ fun TeachersListContent(
             actions = {
                 IconButton(onClick = openBottomSheetListener) {
                     Icon(
-                        painterResource(id = EdIcons.ic_fluent_search_24_regular),
+                        painterResource(EdIcons.ic_fluent_search_24_regular),
                         contentDescription = "Фильтр",
                     )
                 }
@@ -218,7 +221,7 @@ fun TeachersListContent(
         )
         studentListItems?.let {
             when {
-                studentListItems.loadState.refresh is LoadState.Error -> {
+                studentListItems.loadState.refresh is LoadStateError -> {
                     ErrorWithRetry(
                         modifier = Modifier.fillMaxSize(),
                         retryAction = studentListItems::refresh,
@@ -256,12 +259,12 @@ fun TeachersList(
             }
         }
         when {
-            teacherListItems.loadState.refresh is LoadState.Loading -> {
+            teacherListItems.loadState.refresh is LoadStateLoading -> {
                 items(3) {
                     PeopleItemPlaceholder()
                 }
             }
-            teacherListItems.loadState.append is LoadState.Loading -> {
+            teacherListItems.loadState.append is LoadStateLoading -> {
                 item {
                     Box(
                         modifier = Modifier
@@ -276,7 +279,7 @@ fun TeachersList(
                     }
                 }
             }
-            teacherListItems.loadState.append is LoadState.Error -> {
+            teacherListItems.loadState.append is LoadStateError -> {
                 item { Refresher(onClick = teacherListItems::retry) }
             }
         }

@@ -1,7 +1,11 @@
 package io.edugma.features.account.people.students
 
-import androidx.paging.PagingSource
-import androidx.paging.PagingState
+import app.cash.paging.PagingSource
+import app.cash.paging.PagingSourceLoadParams
+import app.cash.paging.PagingSourceLoadResult
+import app.cash.paging.PagingSourceLoadResultError
+import app.cash.paging.PagingSourceLoadResultPage
+import app.cash.paging.PagingState
 import io.edugma.domain.account.model.student.Student
 import io.edugma.domain.account.repository.PeoplesRepository
 
@@ -15,7 +19,7 @@ class StudentsPagingSource(
         return state.anchorPosition
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Student> {
+    override suspend fun load(params: PagingSourceLoadParams<Int>): PagingSourceLoadResult<Int, Student> {
         val page = params.key ?: 1
         return try {
             studentsRepository.getStudents(name, page, pageSize).let {
@@ -24,14 +28,14 @@ class StudentsPagingSource(
                     it.data.size < pageSize -> null
                     else -> it.nextPage
                 }
-                LoadResult.Page(
+                PagingSourceLoadResultPage(
                     data = it.data,
                     prevKey = it.previousPage,
                     nextKey = nextPage,
                 )
             }
         } catch (e: Throwable) {
-            LoadResult.Error(e)
+            PagingSourceLoadResultError(e)
         }
     }
 }

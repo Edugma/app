@@ -23,10 +23,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -48,10 +46,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.moriatsushi.insetsx.navigationBarsPadding
+import com.moriatsushi.insetsx.statusBars
+import dev.icerock.moko.resources.compose.stringResource
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
@@ -61,19 +60,22 @@ import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
-import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.designSystem.utils.ContentAlpha
 import io.edugma.core.designSystem.utils.LocalContentAlpha
 import io.edugma.core.designSystem.utils.WithContentAlpha
 import io.edugma.core.designSystem.utils.ifThen
+import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.ui.isItemFullyVisible
 import io.edugma.features.schedule.calendar.model.CalendarDayVO
 import io.edugma.features.schedule.calendar.model.CalendarScheduleVO
+import io.edugma.features.schedule.calendar.resources.MR
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun ScheduleCalendarScreen(viewModel: ScheduleCalendarViewModel = getViewModel()) {
@@ -117,7 +119,7 @@ private fun ScheduleCalendarContent(
             elevatedAlpha = 0.9f,
         ) {
             EdTopAppBar(
-                title = stringResource(R.string.schedule_cal_calendar),
+                title = stringResource(MR.strings.schedule_cal_calendar),
                 onNavigationClick = onBackClick,
                 windowInsets = WindowInsets.statusBars,
                 colors = EdTopAppBarDefaults.colors(
@@ -206,7 +208,7 @@ private fun LazyListState.isItemVisible(itemIndex: Int): Boolean {
     }.value
 }
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalResourceApi::class)
 @Composable
 private fun BoxScope.Fab(scrollState: LazyListState, currentWeekIndex: Int, onClick: () -> Unit) {
     AnimatedVisibility(

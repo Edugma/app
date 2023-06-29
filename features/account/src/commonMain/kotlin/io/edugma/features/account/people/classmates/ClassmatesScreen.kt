@@ -10,18 +10,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
 import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
-import io.edugma.core.designSystem.tokens.icons.EdIcons
+import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.isNull
 import io.edugma.domain.account.model.student.Student
 import io.edugma.features.account.people.common.items.PeopleItem
 import io.edugma.features.account.people.common.items.PeopleItemPlaceholder
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun ClassmatesScreen(viewModel: ClassmatesViewModel = getViewModel()) {
@@ -37,6 +38,7 @@ fun ClassmatesScreen(viewModel: ClassmatesViewModel = getViewModel()) {
     }
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun ClassmatesContent(
     state: ClassmatesState,
@@ -56,7 +58,7 @@ fun ClassmatesContent(
                     enabled = !students.isNullOrEmpty(),
                 ) {
                     Icon(
-                        painterResource(id = EdIcons.ic_fluent_share_24_regular),
+                        painterResource(EdIcons.ic_fluent_share_24_regular),
                         contentDescription = "Поделиться",
                     )
                 }

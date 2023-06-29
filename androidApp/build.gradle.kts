@@ -4,6 +4,10 @@ plugins {
 
 android {
     namespace = "io.edugma.android"
+
+    packaging {
+        resources.pickFirsts.add("MR/**")
+    }
 }
 
 dependencies {

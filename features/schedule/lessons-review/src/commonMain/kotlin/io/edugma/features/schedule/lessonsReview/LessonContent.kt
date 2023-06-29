@@ -9,18 +9,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.designSystem.utils.edPlaceholder
+import io.edugma.core.icons.EdIcons
 import io.edugma.features.schedule.domain.model.group.Group
 import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubject
 import io.edugma.features.schedule.domain.model.place.Place
 import io.edugma.features.schedule.domain.model.teacher.Teacher
 import io.edugma.features.schedule.domain.usecase.getShortName
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun LessonTitle(subject: LessonSubject, isLoading: Boolean = false) {
@@ -33,13 +34,14 @@ fun LessonTitle(subject: LessonSubject, isLoading: Boolean = false) {
     )
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun TeachersContent(teachers: List<Teacher>, isLoading: Boolean = false) {
     Row(
         modifier = Modifier.edPlaceholder(visible = isLoading),
     ) {
         Icon(
-            painter = painterResource(id = EdIcons.ic_fluent_hat_graduation_16_regular),
+            painter = painterResource(EdIcons.ic_fluent_hat_graduation_16_regular),
             contentDescription = null,
             modifier = Modifier
                 .size(17.dp)
@@ -65,13 +67,14 @@ fun TeachersContent(teachers: List<Teacher>, isLoading: Boolean = false) {
     }
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun GroupsContent(groups: List<Group>, isLoading: Boolean = false) {
     Row(
         modifier = Modifier.edPlaceholder(visible = isLoading),
     ) {
         Icon(
-            painter = painterResource(id = EdIcons.ic_fluent_people_16_regular),
+            painter = painterResource(EdIcons.ic_fluent_people_16_regular),
             contentDescription = null,
             modifier = Modifier
                 .size(17.dp)
@@ -91,13 +94,14 @@ fun GroupsContent(groups: List<Group>, isLoading: Boolean = false) {
     }
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun PlacesContent(places: List<Place>, isLoading: Boolean = false) {
     Row(
         modifier = Modifier.edPlaceholder(visible = isLoading),
     ) {
         Icon(
-            painter = painterResource(id = EdIcons.ic_fluent_location_16_regular),
+            painter = painterResource(EdIcons.ic_fluent_location_16_regular),
             contentDescription = null,
             modifier = Modifier
                 .size(17.dp)

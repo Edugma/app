@@ -11,25 +11,24 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.edugma.core.designSystem.R
 import io.edugma.core.designSystem.atoms.lottie.EdLottie
 import io.edugma.core.designSystem.atoms.lottie.LottieSource
 import io.edugma.core.designSystem.atoms.lottie.rememberLottiePainter
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
+import io.edugma.core.designSystem.resources.MR
 import io.edugma.core.designSystem.theme.EdTheme
 
 @Composable
 fun EdNothingFound(modifier: Modifier = Modifier, message: String = "К сожалению, ничего не найдено.") {
-    val anim = remember { R.raw.emptylist }
+    val anim = remember { MR.assets.emptylist }
     Column(
         modifier = modifier.padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
         val painter = rememberLottiePainter(
-            source = LottieSource.RawRes(anim),
+            source = LottieSource.Asset(anim),
             alternativeUrl = "https://raw.githubusercontent.com/Edugma/resources/main/42410-sleeping-polar-bear.gif",
         )
         EdLottie(
@@ -43,13 +42,5 @@ fun EdNothingFound(modifier: Modifier = Modifier, message: String = "К сожа
             style = EdTheme.typography.headlineSmall,
             textAlign = TextAlign.Center,
         )
-    }
-}
-
-@Preview
-@Composable
-internal fun EdNothingFoundPreview() {
-    EdTheme {
-        EdNothingFound()
     }
 }

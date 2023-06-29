@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -30,10 +29,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.moriatsushi.insetsx.statusBars
+import dev.icerock.moko.resources.compose.stringResource
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.card.EdCardDefaults
@@ -47,15 +47,18 @@ import io.edugma.core.designSystem.molecules.searchField.EdSearchField
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
-import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.designSystem.utils.ContentAlpha
 import io.edugma.core.designSystem.utils.WithContentAlpha
+import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
 import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import io.edugma.features.schedule.domain.model.source.ScheduleSourcesTabs
+import io.edugma.features.schedule.sources.resources.MR
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun ScheduleSourcesScreen(viewModel: ScheduleSourcesViewModel = getViewModel()) {
@@ -99,7 +102,7 @@ fun ScheduleSourcesContent(
         ) {
             Column(Modifier.fillMaxWidth()) {
                 EdTopAppBar(
-                    title = stringResource(R.string.schedule_sou_schedule_selection),
+                    title = stringResource(MR.strings.schedule_sou_schedule_selection),
                     onNavigationClick = onBackClick,
                     windowInsets = WindowInsets.statusBars,
                 )
@@ -114,7 +117,7 @@ fun ScheduleSourcesContent(
                     modifier = Modifier
                         .padding(horizontal = EdTheme.paddings.smallSecondary)
                         .fillMaxWidth(),
-                    placeholder = stringResource(R.string.schedule_sou_search),
+                    placeholder = stringResource(MR.strings.schedule_sou_search),
                 )
                 SpacerHeight(height = EdTheme.paddings.smallSecondary)
             }
@@ -208,7 +211,7 @@ private fun FiltersSelector(
             modifier = Modifier
                 .padding(start = 16.dp, end = 16.dp)
                 .fillMaxWidth(),
-            placeholder = stringResource(R.string.schedule_sou_search),
+            placeholder = stringResource(MR.strings.schedule_sou_search),
         )
         LazyColumn(Modifier.fillMaxWidth()) {
             items(filters) {
@@ -305,7 +308,7 @@ private fun ComplexSearch(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalResourceApi::class)
 @Composable
 private fun Filter(
     title: String,
@@ -400,6 +403,7 @@ private fun SourceTypeTab(
     }
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun SourceItem(
     source: ScheduleSourceUiModel,

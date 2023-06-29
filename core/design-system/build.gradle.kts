@@ -6,6 +6,9 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(compose.animation)
+                implementation(libs.composeMP.utils)
+
                 implementation(projects.domain.base)
                 implementation(projects.data.base)
                 api(projects.core.icons)

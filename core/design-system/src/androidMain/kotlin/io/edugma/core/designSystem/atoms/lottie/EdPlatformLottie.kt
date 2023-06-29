@@ -34,7 +34,7 @@ internal actual fun EdPlatformLottie(
 
 private fun LottieSource.toLottie(): LottieCompositionSpec {
     return when (this) {
-        is LottieSource.Asset -> LottieCompositionSpec.Asset(this.assetName)
+        is LottieSource.Asset -> LottieCompositionSpec.Asset(this.asset.originalPath)
         is LottieSource.File -> LottieCompositionSpec.File(this.fileName)
         is LottieSource.JsonString -> LottieCompositionSpec.JsonString(this.jsonString)
         is LottieSource.Url -> LottieCompositionSpec.Url(this.url)

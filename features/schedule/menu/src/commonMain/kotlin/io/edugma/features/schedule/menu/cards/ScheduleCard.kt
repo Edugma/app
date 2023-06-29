@@ -7,16 +7,16 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.resources.compose.stringResource
 import io.edugma.core.designSystem.atoms.lottie.EdLottie
 import io.edugma.core.designSystem.atoms.lottie.LottieSource
 import io.edugma.core.designSystem.atoms.lottie.rememberLottiePainter
 import io.edugma.core.designSystem.organism.actionCard.EdActionCard
 import io.edugma.core.designSystem.organism.actionCard.EdActionCardWidth
 import io.edugma.core.utils.ClickListener
-import io.edugma.features.schedule.menu.R
 import io.edugma.features.schedule.menu.ScheduleMenuState
+import io.edugma.features.schedule.menu.resources.MR
 
 @Composable
 fun ScheduleCard(
@@ -25,15 +25,15 @@ fun ScheduleCard(
     modifier: Modifier = Modifier,
 ) {
     EdActionCard(
-        title = stringResource(R.string.sch_schedule),
-        subtitle = "Сегодня нет занятий",
+        title = stringResource(MR.strings.sch_schedule),
+        subtitle = "Сегодня 1нет занятий",
         onClick = onScheduleClick,
         width = EdActionCardWidth.large,
         modifier = modifier,
     ) {
         Column(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
             val painter = rememberLottiePainter(
-                source = LottieSource.RawRes(R.raw.sch_relax_2),
+                source = LottieSource.Asset(MR.assets.sch_relax_2),
                 alternativeUrl = "https://raw.githubusercontent.com/Edugma/resources/main/42410-sleeping-polar-bear.gif",
             )
             EdLottie(

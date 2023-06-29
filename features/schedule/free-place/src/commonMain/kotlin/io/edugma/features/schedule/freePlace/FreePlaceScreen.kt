@@ -22,8 +22,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.resources.compose.stringResource
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.spacer.SpacerFill
@@ -42,7 +42,7 @@ import io.edugma.features.base.elements.dialogs.core.rememberMaterialDialogState
 import io.edugma.features.base.elements.dialogs.date.datepicker
 import io.edugma.features.base.elements.dialogs.time.timepicker
 import io.edugma.features.schedule.domain.model.place.description
-import io.edugma.features.schedule.free_place.R
+import io.edugma.features.schedule.freePlace.resources.MR
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 
@@ -86,7 +86,7 @@ fun FreePlaceContent(
 
         Column(Modifier.fillMaxSize()) {
             EdTopAppBar(
-                title = stringResource(R.string.schedule_fre_pla_find_free_place),
+                title = stringResource(MR.strings.schedule_fre_pla_find_free_place),
                 onNavigationClick = onBackClick,
             )
             Column(Modifier.padding(start = 8.dp, end = 8.dp)) {

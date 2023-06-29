@@ -2,7 +2,6 @@ package io.edugma.features.account.marks
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,8 +19,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.moriatsushi.insetsx.navigationBarsPadding
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
@@ -29,7 +28,7 @@ import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
 import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.core.designSystem.tokens.icons.EdIcons
+import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
@@ -41,6 +40,8 @@ import io.edugma.features.account.marks.item.FiltersRow
 import io.edugma.features.account.marks.item.PerformanceItem
 import io.edugma.features.account.marks.item.PerformancePlaceholder
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -83,6 +84,7 @@ fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
     }
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun PerformanceContent(
     state: MarksState,
@@ -101,7 +103,7 @@ fun PerformanceContent(
                     enabled = !state.isLoading,
                 ) {
                     Icon(
-                        painterResource(id = EdIcons.ic_fluent_filter_24_regular),
+                        painterResource(EdIcons.ic_fluent_filter_24_regular),
                         contentDescription = "Фильтр",
                     )
                 }

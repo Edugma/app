@@ -31,5 +31,6 @@ android {
     }
     packaging {
         resources.excludes.add("META-INF/**")
+        resources.pickFirsts.add("MR/**")
     }
 }

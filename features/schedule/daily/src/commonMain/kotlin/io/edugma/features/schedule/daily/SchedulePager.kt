@@ -1,13 +1,11 @@
 package io.edugma.features.schedule.daily
 
-import androidx.annotation.RawRes
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
@@ -18,9 +16,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.moriatsushi.insetsx.navigationBarsPadding
+import dev.icerock.moko.resources.AssetResource
+import dev.icerock.moko.resources.compose.stringResource
 import io.edugma.core.designSystem.atoms.lottie.EdLottie
 import io.edugma.core.designSystem.atoms.lottie.LottieSource
 import io.edugma.core.designSystem.atoms.lottie.rememberLottiePainter
@@ -29,6 +29,7 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed2Listener
 import io.edugma.domain.base.utils.nowLocalTime
+import io.edugma.features.schedule.daily.resources.MR
 import io.edugma.features.schedule.domain.model.group.Group
 import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
@@ -49,9 +50,9 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 
 private val relaxAnims = listOf(
-    R.raw.sch_relax_0,
-    R.raw.sch_relax_1,
-    R.raw.sch_relax_2,
+    MR.assets.sch_relax_0,
+    MR.assets.sch_relax_1,
+    MR.assets.sch_relax_2,
 )
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -95,13 +96,13 @@ fun SchedulePager(
 
 @Composable
 fun NoLessonsDay(
-    @RawRes animation: Int,
+    animation: AssetResource,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
         Spacer(modifier = Modifier.weight(1f))
         val painter = rememberLottiePainter(
-            source = LottieSource.RawRes(animation),
+            source = LottieSource.Asset(animation),
             alternativeUrl = "https://raw.githubusercontent.com/Edugma/resources/main/42410-sleeping-polar-bear.gif",
         )
         EdLottie(
@@ -111,7 +112,7 @@ fun NoLessonsDay(
                 .fillMaxWidth(),
         )
         Text(
-            text = stringResource(R.string.sch_no_lessons_today),
+            text = stringResource(MR.strings.sch_no_lessons_today),
             style = EdTheme.typography.titleLarge,
             modifier = Modifier
                 .weight(4f)

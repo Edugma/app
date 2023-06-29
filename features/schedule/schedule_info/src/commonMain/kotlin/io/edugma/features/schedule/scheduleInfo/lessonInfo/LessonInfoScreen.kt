@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
@@ -21,9 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.moriatsushi.insetsx.statusBars
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.divider.EdDivider
 import io.edugma.core.designSystem.atoms.label.EdLabel
@@ -35,11 +34,11 @@ import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
-import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.designSystem.utils.ContentAlpha
 import io.edugma.core.designSystem.utils.HighAlpha
 import io.edugma.core.designSystem.utils.WithContentAlpha
 import io.edugma.core.designSystem.utils.rememberAsyncImagePainter
+import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
@@ -50,6 +49,8 @@ import io.edugma.features.schedule.domain.model.lesson.LessonInfo
 import io.edugma.features.schedule.domain.model.place.Place
 import io.edugma.features.schedule.domain.model.teacher.TeacherInfo
 import io.edugma.features.schedule.domain.model.teacher.description
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun LessonInfoScreen(
@@ -157,6 +158,7 @@ private fun LessonTitle(title: String) {
     )
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun LessonDateTime(lessonDateTime: LessonDateTime) {
     Row(
@@ -185,6 +187,7 @@ private fun LessonDateTime(lessonDateTime: LessonDateTime) {
     }
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun LessonTeachers(
     teachers: List<TeacherInfo>,
@@ -227,6 +230,7 @@ private fun LessonTeachers(
     }
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun LessonPlaces(
     places: List<Place>,
@@ -282,6 +286,7 @@ private fun LessonPlaces(
     }
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun LessonGroups(
     groups: List<Group>,

@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -20,10 +19,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.moriatsushi.insetsx.statusBarsPadding
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
@@ -34,9 +33,9 @@ import io.edugma.core.designSystem.organism.chipRow.EdSelectableChipRowPlacehold
 import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
 import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.designSystem.utils.edPlaceholder
+import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
@@ -45,10 +44,11 @@ import io.edugma.domain.account.model.Application
 import io.edugma.domain.account.model.Order
 import io.edugma.domain.account.model.Personal
 import io.edugma.domain.base.utils.format
-import io.edugma.features.account.R
 import io.edugma.features.account.personal.Columns.Applications
 import io.edugma.features.account.personal.Columns.Orders
 import io.edugma.features.account.personal.Columns.values
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun PersonalScreen(viewModel: PersonalViewModel = getViewModel()) {
@@ -162,6 +162,7 @@ fun PersonalContent(
     }
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun CollapsingToolbar(
     personal: Personal?,
@@ -208,103 +209,105 @@ private fun CollapsingToolbar(
     }
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun Personal(personal: Personal) {
     Column(Modifier.padding(8.dp)) {
         EdLabel(
             text = personal.faculty,
-            iconPainter = painterResource(id = EdIcons.ic_fluent_building_24_regular),
+            iconPainter = painterResource(EdIcons.ic_fluent_building_24_regular),
             style = EdTheme.typography.bodyMedium,
         )
         SpacerHeight(height = 8.dp)
         EdLabel(
             text = personal.specialty,
-            iconPainter = painterResource(id = R.drawable.acc_ic_teacher_24),
+            iconPainter = painterResource("acc_ic_teacher_24"),
             style = EdTheme.typography.bodyMedium,
         )
         SpacerHeight(height = 8.dp)
         personal.specialization?.let {
             EdLabel(
                 text = it,
-                iconPainter = painterResource(id = EdIcons.ic_fluent_book_24_regular),
+                iconPainter = painterResource(EdIcons.ic_fluent_book_24_regular),
                 style = EdTheme.typography.bodyMedium,
             )
             SpacerHeight(height = 8.dp)
         }
         EdLabel(
             text = "Номер зачетной книжки: ${personal.code}",
-            iconPainter = painterResource(id = EdIcons.ic_fluent_album_24_regular),
+            iconPainter = painterResource(EdIcons.ic_fluent_album_24_regular),
             style = EdTheme.typography.bodyMedium,
         )
         SpacerHeight(height = 8.dp)
         EdLabel(
             text = "${personal.finance} ${personal.educationForm.lowercase()} основа обучения",
-            iconPainter = painterResource(id = EdIcons.ic_fluent_money_24_regular),
+            iconPainter = painterResource(EdIcons.ic_fluent_money_24_regular),
             style = EdTheme.typography.bodyMedium,
         )
         SpacerHeight(height = 8.dp)
         EdLabel(
             text = "Год поступления ${personal.enterYear}",
-            iconPainter = painterResource(id = EdIcons.ic_fluent_calendar_ltr_24_regular),
+            iconPainter = painterResource(EdIcons.ic_fluent_calendar_ltr_24_regular),
             style = EdTheme.typography.bodyMedium,
         )
         SpacerHeight(height = 8.dp)
         EdLabel(
             text = "Лет обучения ${personal.degreeLength}",
-            iconPainter = painterResource(id = EdIcons.ic_fluent_timer_24_regular),
+            iconPainter = painterResource(EdIcons.ic_fluent_timer_24_regular),
             style = EdTheme.typography.bodyMedium,
         )
     }
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun PersonalPlaceholder() {
     Column(Modifier.padding(8.dp)) {
         EdLabel(
             text = "",
-            iconPainter = painterResource(id = EdIcons.ic_fluent_building_24_regular),
+            iconPainter = painterResource(EdIcons.ic_fluent_building_24_regular),
             modifier = Modifier
                 .widthIn(min = 100.dp)
                 .edPlaceholder(),
         )
         EdLabel(
             text = "",
-            iconPainter = painterResource(id = R.drawable.acc_ic_teacher_24),
+            iconPainter = painterResource("acc_ic_teacher_24"),
             modifier = Modifier
                 .widthIn(min = 100.dp)
                 .edPlaceholder(),
         )
         EdLabel(
             text = "",
-            iconPainter = painterResource(id = EdIcons.ic_fluent_book_24_regular),
+            iconPainter = painterResource(EdIcons.ic_fluent_book_24_regular),
             modifier = Modifier
                 .widthIn(min = 100.dp)
                 .edPlaceholder(),
         )
         EdLabel(
             text = "",
-            iconPainter = painterResource(id = EdIcons.ic_fluent_album_24_regular),
+            iconPainter = painterResource(EdIcons.ic_fluent_album_24_regular),
             modifier = Modifier
                 .widthIn(min = 100.dp)
                 .edPlaceholder(),
         )
         EdLabel(
             text = "",
-            iconPainter = painterResource(id = EdIcons.ic_fluent_money_24_regular),
+            iconPainter = painterResource(EdIcons.ic_fluent_money_24_regular),
             modifier = Modifier
                 .widthIn(min = 100.dp)
                 .edPlaceholder(),
         )
         EdLabel(
             text = "",
-            iconPainter = painterResource(id = EdIcons.ic_fluent_calendar_ltr_24_regular),
+            iconPainter = painterResource(EdIcons.ic_fluent_calendar_ltr_24_regular),
             modifier = Modifier
                 .widthIn(min = 100.dp)
                 .edPlaceholder(),
         )
         EdLabel(
             text = "",
-            iconPainter = painterResource(id = EdIcons.ic_fluent_timer_24_regular),
+            iconPainter = painterResource(EdIcons.ic_fluent_timer_24_regular),
             modifier = Modifier
                 .widthIn(min = 100.dp)
                 .edPlaceholder(),

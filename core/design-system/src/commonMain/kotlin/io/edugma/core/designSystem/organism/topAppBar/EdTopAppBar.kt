@@ -15,16 +15,16 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.label.EdLabel
-import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.designSystem.utils.ifNotNull
+import io.edugma.core.icons.EdIcons
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun EdTopAppBar(
     title: String,
@@ -114,21 +114,4 @@ fun EdTopAppBar(
         titleTextStyle = EdTheme.typography.titleLarge,
         centeredTitle = true,
     )
-}
-
-@Preview
-@Composable
-internal fun EdTopAppBarPreview() {
-    EdTheme {
-        Column {
-            EdTopAppBar(
-                title = "Sample text",
-            )
-            SpacerHeight(height = 16.dp)
-            EdTopAppBar(
-                title = "Sample text",
-                subtitle = "Sample text2",
-            )
-        }
-    }
 }

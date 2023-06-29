@@ -20,10 +20,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.resources.compose.stringResource
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.organism.navigationBar.EdNavigationBar
 import io.edugma.core.designSystem.theme.EdTheme
@@ -41,6 +40,8 @@ import io.edugma.navigation.core.navigator.EdugmaNavigator
 import io.edugma.navigation.core.navigator.ScreenUiState
 import io.edugma.navigation.core.screen.bundleOf
 import kotlinx.coroutines.flow.combine
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
 val showNavBar = listOf(
     HomeScreens.Main,
@@ -186,6 +187,7 @@ val items = listOf(
     MainScreen.Misc,
 )
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun BottomNav(navController: EdugmaNavigator, isVisible: State<Boolean>) {
     val currentDestination by navController.currentScreen.collectAsState()

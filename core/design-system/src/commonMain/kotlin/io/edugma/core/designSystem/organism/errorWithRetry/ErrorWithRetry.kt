@@ -10,21 +10,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.edugma.core.designSystem.R
 import io.edugma.core.designSystem.atoms.lottie.EdLottie
 import io.edugma.core.designSystem.atoms.lottie.LottieSource
 import io.edugma.core.designSystem.atoms.lottie.rememberLottiePainter
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.molecules.button.EdButton
+import io.edugma.core.designSystem.resources.MR
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.core.designSystem.tokens.icons.EdIcons
+import io.edugma.core.icons.EdIcons
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun ErrorWithRetry(modifier: Modifier = Modifier, message: String = "Упс... Что-то пошло не так", retryAction: () -> Unit = {}) {
-    val anim = remember { R.raw.error }
+    val anim = remember { MR.assets.error }
     Column(
         modifier = modifier.padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -36,7 +37,7 @@ fun ErrorWithRetry(modifier: Modifier = Modifier, message: String = "Упс... �
         )
         SpacerHeight(height = 30.dp)
         val painter = rememberLottiePainter(
-            source = LottieSource.RawRes(anim),
+            source = LottieSource.Asset(anim),
             alternativeUrl = "https://raw.githubusercontent.com/Edugma/resources/main/42410-sleeping-polar-bear.gif",
         )
         EdLottie(
@@ -51,13 +52,5 @@ fun ErrorWithRetry(modifier: Modifier = Modifier, message: String = "Упс... �
             text = "Повторить",
             iconPainter = painterResource(EdIcons.ic_fluent_arrow_clockwise_16_regular),
         )
-    }
-}
-
-@Preview
-@Composable
-fun ErrorWithRetryPreview() {
-    EdTheme {
-        ErrorWithRetry()
     }
 }

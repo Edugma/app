@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "io.edugma.core.designSystem"
+    namespace = "io.edugma.core.androidResources"
     resourcePrefix("core_ed_")
 }
 

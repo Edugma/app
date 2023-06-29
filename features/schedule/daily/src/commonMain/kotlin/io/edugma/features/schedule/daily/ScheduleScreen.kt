@@ -15,10 +15,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -29,9 +27,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.moriatsushi.insetsx.navigationBarsPadding
+import com.moriatsushi.insetsx.statusBars
+import dev.icerock.moko.resources.compose.stringResource
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.loader.EdLoader
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
@@ -39,9 +38,9 @@ import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.designSystem.tokens.shapes.top
+import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
@@ -49,9 +48,12 @@ import io.edugma.core.utils.Typed2Listener
 import io.edugma.core.utils.ui.bindTo
 import io.edugma.core.utils.ui.onPageChanged
 import io.edugma.domain.base.utils.format
+import io.edugma.features.schedule.daily.resources.MR
 import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
 import kotlinx.datetime.LocalDate
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun ScheduleScreen(
@@ -107,7 +109,7 @@ fun ScheduleContent(
             ) {
                 Column(Modifier.fillMaxWidth()) {
                     EdTopAppBar(
-                        title = stringResource(R.string.sch_schedule),
+                        title = stringResource(MR.strings.sch_schedule),
                         subtitle = state.selectedDate.format("d MMMM, yyyy"),
                         onNavigationClick = onBackClick,
                         actions = {
@@ -154,7 +156,7 @@ fun ScheduleContent(
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalResourceApi::class)
 @Composable
 fun BoxScope.Fab(isVisible: Boolean, onClick: () -> Unit) {
     AnimatedVisibility(
@@ -170,7 +172,7 @@ fun BoxScope.Fab(isVisible: Boolean, onClick: () -> Unit) {
             onClick = onClick,
             containerColor = EdTheme.colorScheme.primary,
             text = {
-                Text(text = stringResource(R.string.sch_to_today))
+                Text(text = stringResource(MR.strings.sch_to_today))
             },
             icon = {
                 Icon(

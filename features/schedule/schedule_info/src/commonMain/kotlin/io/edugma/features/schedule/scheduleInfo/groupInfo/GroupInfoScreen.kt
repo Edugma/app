@@ -27,18 +27,19 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.core.designSystem.tokens.icons.EdIcons
+import io.edugma.core.icons.EdIcons
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.ui.pxToDp
 import io.edugma.features.schedule.domain.model.group.description
 import io.edugma.features.schedule.elements.verticalSchedule.VerticalScheduleComponent
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun GroupInfoScreen(viewModel: GroupInfoViewModel = getViewModel(), id: String) {
@@ -55,6 +56,7 @@ fun GroupInfoScreen(viewModel: GroupInfoViewModel = getViewModel(), id: String) 
     )
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun GroupInfoContent(
     state: GroupInfoState,

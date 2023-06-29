@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -16,18 +15,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.moriatsushi.insetsx.statusBarsPadding
+import dev.icerock.moko.resources.compose.stringResource
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.button.EdButtonSize
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.designSystem.tokens.shapes.bottom
+import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.features.schedule.menu.cards.CalendarCard
@@ -38,6 +36,9 @@ import io.edugma.features.schedule.menu.cards.ScheduleAppWidgetCard
 import io.edugma.features.schedule.menu.cards.ScheduleCard
 import io.edugma.features.schedule.menu.cards.ScheduleSourcesCard
 import io.edugma.features.schedule.menu.model.MenuItem
+import io.edugma.features.schedule.menu.resources.MR
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun ScheduleMenuScreen(viewModel: ScheduleMenuViewModel = getViewModel()) {
@@ -60,6 +61,7 @@ fun ScheduleMenuScreen(viewModel: ScheduleMenuViewModel = getViewModel()) {
     }
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun ScheduleMenuContent(
     state: ScheduleMenuState,
@@ -86,7 +88,7 @@ fun ScheduleMenuContent(
             ) {
                 Row(Modifier.fillMaxWidth()) {
                     Text(
-                        text = stringResource(R.string.sch_schedule),
+                        text = stringResource(MR.strings.sch_schedule),
                         style = EdTheme.typography.headlineMedium,
                         modifier = Modifier
                             .padding(start = 16.dp)
@@ -151,7 +153,7 @@ private fun NeedSelectScheduleSource(
             .fillMaxWidth()
             .padding(horizontal = 8.dp),
     ) {
-        Text(text = stringResource(R.string.schedule_menu_need_select_source))
+        Text(text = stringResource(MR.strings.schedule_menu_need_select_source))
         SpacerHeight(height = 10.dp)
         EdButton(
             text = "Выбрать расписание",
@@ -219,7 +221,7 @@ private fun RowScope.MenuCard(
     }
 }
 
-@Preview
+// @Preview
 @Composable
 internal fun NeedSelectScheduleSourcePreview() {
     EdTheme {

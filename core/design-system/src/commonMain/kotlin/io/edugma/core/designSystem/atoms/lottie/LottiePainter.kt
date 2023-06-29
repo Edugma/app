@@ -3,6 +3,7 @@ package io.edugma.core.designSystem.atoms.lottie
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.remember
+import dev.icerock.moko.resources.AssetResource
 import kotlin.jvm.JvmInline
 
 @Immutable
@@ -55,7 +56,7 @@ sealed interface LottieSource {
      * so make sure that the path to your animation is correct this will fail.
      */
     @JvmInline
-    value class Asset(val assetName: String) : LottieSource
+    value class Asset(val asset: AssetResource) : LottieSource
 
     /**
      * Load an animation from its json string.

@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
@@ -33,10 +32,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.moriatsushi.insetsx.navigationBarsPadding
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
@@ -48,8 +47,8 @@ import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
 import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.core.designSystem.tokens.icons.EdIcons
 import io.edugma.core.designSystem.utils.edPlaceholder
+import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
@@ -61,9 +60,10 @@ import io.edugma.domain.account.model.PaymentType
 import io.edugma.domain.account.model.Payments
 import io.edugma.domain.account.model.toLabel
 import io.edugma.domain.base.utils.format
-import io.edugma.features.account.R
 import io.edugma.features.account.payments.bottomSheet.PaymentBottomSheet
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -99,7 +99,7 @@ fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalResourceApi::class)
 @Composable
 fun PaymentsContent(
     state: PaymentsState,
@@ -121,7 +121,7 @@ fun PaymentsContent(
                         onClick = { onQrClickListener() },
                     ) {
                         Icon(
-                            painterResource(id = EdIcons.ic_fluent_qr_code_24_regular),
+                            painterResource(EdIcons.ic_fluent_qr_code_24_regular),
                             contentDescription = "qr code",
                         )
                     }
@@ -175,6 +175,7 @@ fun PaymentScreen(
     }
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun Payments(payments: Payments) {
     val expanded = rememberSaveable { mutableStateOf(false) }
@@ -190,7 +191,7 @@ fun Payments(payments: Payments) {
                 payments.level?.let {
                     EdLabel(
                         text = "Степень образования: ${payments.level}",
-                        iconPainter = painterResource(id = R.drawable.acc_ic_teacher_24),
+                        iconPainter = painterResource("acc_ic_teacher_24"),
                         modifier = Modifier,
                     )
                     SpacerHeight(height = 8.dp)
@@ -199,20 +200,20 @@ fun Payments(payments: Payments) {
                     EdLabel(
                         text = payments.dormNum?.let { "Общежитие №$it, " }
                             .orEmpty() + "комната $it",
-                        iconPainter = painterResource(id = EdIcons.ic_fluent_building_24_regular),
+                        iconPainter = painterResource(EdIcons.ic_fluent_building_24_regular),
                     )
                     SpacerHeight(height = 8.dp)
                 }
                 EdLabel(
                     text = "Срок договора: ${payments.startDate.format()} - ${payments.endDate.format()}",
-                    iconPainter = painterResource(id = EdIcons.ic_fluent_calendar_ltr_24_regular),
+                    iconPainter = painterResource(EdIcons.ic_fluent_calendar_ltr_24_regular),
                     modifier = Modifier,
                 )
                 SpacerHeight(height = 8.dp)
                 if (payments.balance != "0") {
                     EdLabel(
                         text = "Осталось выплатить: ${payments.balance}",
-                        iconPainter = painterResource(id = EdIcons.ic_fluent_money_24_regular),
+                        iconPainter = painterResource(EdIcons.ic_fluent_money_24_regular),
                     )
                     SpacerHeight(height = 8.dp)
                 }
@@ -238,6 +239,7 @@ fun Payments(payments: Payments) {
     }
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun PaymentsPlaceholder() {
     Column(
@@ -247,12 +249,12 @@ fun PaymentsPlaceholder() {
     ) {
         EdLabel(
             text = "",
-            iconPainter = painterResource(id = EdIcons.ic_fluent_calendar_ltr_24_regular),
+            iconPainter = painterResource(EdIcons.ic_fluent_calendar_ltr_24_regular),
             modifier = Modifier.edPlaceholder(true),
         )
         EdLabel(
             text = "",
-            iconPainter = painterResource(id = EdIcons.ic_fluent_money_24_regular),
+            iconPainter = painterResource(EdIcons.ic_fluent_money_24_regular),
             modifier = Modifier.edPlaceholder(true),
         )
         Column(modifier = Modifier.padding(horizontal = 10.dp)) {
@@ -351,6 +353,7 @@ fun PaymentPlaceholder() {
     }
 }
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun Expander(onClickListener: ClickListener) {
     Box(
@@ -366,7 +369,11 @@ fun Expander(onClickListener: ClickListener) {
                 style = EdTheme.typography.bodyLarge,
             )
             SpacerWidth(width = 20.dp)
-            Icon(painterResource(id = EdIcons.ic_fluent_ios_arrow_rtl_24_filled), contentDescription = null, modifier = Modifier.rotate(90f))
+            Icon(
+                painterResource(EdIcons.ic_fluent_ios_arrow_rtl_24_filled),
+                contentDescription = null,
+                modifier = Modifier.rotate(90f),
+            )
         }
     }
 }

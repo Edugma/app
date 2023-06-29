@@ -1,6 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-import gradle.kotlin.dsl.accessors._57618a08d650a348a6cb68284300ad53.sourceSets
 import org.gradle.accessors.dm.LibrariesForLibs
 
 plugins {

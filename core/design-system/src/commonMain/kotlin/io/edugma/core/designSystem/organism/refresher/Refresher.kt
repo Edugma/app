@@ -8,13 +8,14 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.core.designSystem.tokens.icons.EdIcons
+import io.edugma.core.icons.EdIcons
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun Refresher(text: String = "Произошла ошибка", onClick: () -> Unit) {
     Box(
@@ -32,15 +33,6 @@ fun Refresher(text: String = "Произошла ошибка", onClick: () -> U
                 iconStart = false,
                 style = EdTheme.typography.bodyLarge,
             )
-        }
-    }
-}
-
-@Preview
-@Composable
-fun RefresherPreview() {
-    EdTheme {
-        Refresher() {
         }
     }
 }
