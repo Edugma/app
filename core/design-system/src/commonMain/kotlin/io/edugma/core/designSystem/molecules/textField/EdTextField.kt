@@ -1,7 +1,6 @@
 package io.edugma.core.designSystem.molecules.textField
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -18,10 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.label.EdLabel
-import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -99,29 +95,4 @@ object EdTextFieldDefaults {
         unfocusedIndicatorColor = Color.Transparent,
         disabledIndicatorColor = Color.Transparent,
     )
-}
-
-@Preview
-@Composable
-fun EdTextFieldPreview() {
-    EdTheme {
-        Column {
-            EdTextField(
-                value = "My search text",
-                onValueChange = { },
-            )
-            SpacerHeight(height = 10.dp)
-            EdTextField(
-                value = "",
-                placeholder = "Enter search text",
-                onValueChange = { },
-            )
-            SpacerHeight(height = 10.dp)
-            EdTextField(
-                value = "error text",
-                isError = true,
-                onValueChange = { },
-            )
-        }
-    }
 }

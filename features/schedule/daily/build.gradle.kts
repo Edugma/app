@@ -11,7 +11,6 @@ kotlin {
                 implementation(projects.core.utils)
 
                 implementation(projects.core.navigation)
-                implementation(projects.features.base.elements)
                 api(projects.features.schedule.domain)
                 api(projects.features.schedule.elements)
             }

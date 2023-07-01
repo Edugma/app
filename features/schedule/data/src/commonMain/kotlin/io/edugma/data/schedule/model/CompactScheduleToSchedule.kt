@@ -47,17 +47,17 @@ private fun buildSchedule(
     dateFrom: LocalDate,
     dateTo: LocalDate,
 ): List<ScheduleDay> {
-    val resMap: MutableMap<LocalDate, MutableMap<LessonTime, MutableList<Lesson>>> = sortedMapOf()
+    val resMap: MutableMap<LocalDate, MutableMap<LessonTime, MutableList<Lesson>>> = mutableMapOf()
 
     var currentDay = dateFrom
     do {
-        resMap[currentDay] = sortedMapOf<LessonTime, MutableList<Lesson>>()
+        resMap[currentDay] = mutableMapOf<LessonTime, MutableList<Lesson>>()
         currentDay = currentDay.plus(1, DateTimeUnit.DAY)
     } while (currentDay <= dateTo)
 
     for (lessonDateTimes in lessons) {
         for (dateTime in lessonDateTimes.time.getLessonDates()) {
-            val timeToLessonsMap = resMap.getOrPut(dateTime.date) { sortedMapOf<LessonTime, MutableList<Lesson>>() }
+            val timeToLessonsMap = resMap.getOrPut(dateTime.date) { mutableMapOf<LessonTime, MutableList<Lesson>>() }
             val lessonList = timeToLessonsMap.getOrPut(dateTime.time) { mutableListOf() }
             lessonList.add(lessonDateTimes.lesson)
         }
@@ -75,7 +75,7 @@ private fun buildSchedule(
             date = key,
             lessons = l1,
         )
-    }
+    }.sortedBy { it.date }
 
     return lessons
 }

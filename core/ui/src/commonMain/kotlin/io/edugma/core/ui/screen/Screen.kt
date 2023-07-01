@@ -2,10 +2,10 @@ package io.edugma.core.ui.screen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.moriatsushi.insetsx.navigationBarsPadding
+import com.moriatsushi.insetsx.statusBarsPadding
 import io.edugma.core.designSystem.utils.ifThen
 
 @Composable

@@ -1,7 +1,6 @@
 package io.edugma.features.schedule.menu.cards
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
@@ -26,7 +25,7 @@ fun ScheduleCard(
 ) {
     EdActionCard(
         title = stringResource(MR.strings.sch_schedule),
-        subtitle = "Сегодня 1нет занятий",
+        subtitle = "Сегодня нет занятий",
         onClick = onScheduleClick,
         width = EdActionCardWidth.large,
         modifier = modifier,
@@ -39,7 +38,6 @@ fun ScheduleCard(
             EdLottie(
                 lottiePainter = painter,
                 modifier = Modifier
-                    .fillMaxWidth()
                     .width(100.dp),
                 contentScale = ContentScale.FillWidth,
             )

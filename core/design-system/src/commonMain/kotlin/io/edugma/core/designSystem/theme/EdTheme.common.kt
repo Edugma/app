@@ -1,18 +1,12 @@
 package io.edugma.core.designSystem.theme
 
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
-import androidx.compose.ui.platform.LocalContext
 import io.edugma.core.designSystem.tokens.colors.CustomColorScheme
-import io.edugma.core.designSystem.tokens.colors.EdDarkColors
-import io.edugma.core.designSystem.tokens.colors.EdLightColors
 import io.edugma.core.designSystem.tokens.paddings.EdPaddings
 import io.edugma.core.designSystem.tokens.shapes.EdShapes
 import io.edugma.core.designSystem.tokens.typography.EdTypography
@@ -24,19 +18,7 @@ fun EdTheme(
     useDynamicColors: Boolean = false,
     content: @Composable () -> Unit,
 ) {
-    val colors = if (useDynamicColors && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        if (useDarkTheme) {
-            dynamicDarkColorScheme(LocalContext.current)
-        } else {
-            dynamicLightColorScheme(LocalContext.current)
-        }
-    } else {
-        if (useDarkTheme) {
-            EdDarkColors
-        } else {
-            EdLightColors
-        }
-    }
+    val colors = getColorScheme(useDarkTheme, useDynamicColors)
 
     MaterialTheme(
         colorScheme = colors,
@@ -45,6 +27,12 @@ fun EdTheme(
         content = content,
     )
 }
+
+@Composable
+expect fun getColorScheme(
+    useDarkTheme: Boolean,
+    useDynamicColors: Boolean,
+): ColorScheme
 
 object EdTheme {
     /**

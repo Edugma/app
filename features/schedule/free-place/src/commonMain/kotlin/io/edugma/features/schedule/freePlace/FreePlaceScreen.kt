@@ -37,10 +37,6 @@ import io.edugma.core.designSystem.utils.WithContentAlpha
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.domain.base.utils.format
-import io.edugma.features.base.elements.dialogs.core.MaterialDialog
-import io.edugma.features.base.elements.dialogs.core.rememberMaterialDialogState
-import io.edugma.features.base.elements.dialogs.date.datepicker
-import io.edugma.features.base.elements.dialogs.time.timepicker
 import io.edugma.features.schedule.domain.model.place.description
 import io.edugma.features.schedule.freePlace.resources.MR
 import kotlinx.datetime.LocalDate
@@ -80,9 +76,9 @@ fun FreePlaceContent(
         Modifier
             .fillMaxSize(),
     ) {
-        val dialogDatePickerState = rememberMaterialDialogState()
-        val dialogTimePickerFromState = rememberMaterialDialogState()
-        val dialogTimePickerToState = rememberMaterialDialogState()
+//        val dialogDatePickerState = rememberMaterialDialogState()
+//        val dialogTimePickerFromState = rememberMaterialDialogState()
+//        val dialogTimePickerToState = rememberMaterialDialogState()
 
         Column(Modifier.fillMaxSize()) {
             EdTopAppBar(
@@ -118,7 +114,7 @@ fun FreePlaceContent(
                                 )
                                 SpacerFill()
                                 EdButton(
-                                    onClick = { dialogDatePickerState.show() },
+                                    onClick = { },
                                     text = state.date.format("d MMMM yyyy"),
                                 )
                             }
@@ -133,7 +129,7 @@ fun FreePlaceContent(
                                 )
                                 SpacerFill()
                                 EdButton(
-                                    onClick = { dialogTimePickerFromState.show() },
+                                    onClick = { },
                                     text = state.timeFrom.format("HH:mm"),
                                 )
                             }
@@ -148,7 +144,7 @@ fun FreePlaceContent(
                                 )
                                 SpacerFill()
                                 EdButton(
-                                    onClick = { dialogTimePickerToState.show() },
+                                    onClick = { },
                                     text = state.timeTo.format("HH:mm"),
                                 )
                             }
@@ -231,41 +227,41 @@ fun FreePlaceContent(
                 }
             }
 
-            MaterialDialog(
-                dialogState = dialogDatePickerState,
-                buttons = {
-                    positiveButton("Ок")
-                    negativeButton("Отмена")
-                },
-            ) {
-                datepicker(title = "Выберите день") { date ->
-                    onDateSelect(date)
-                }
-            }
-
-            MaterialDialog(
-                dialogState = dialogTimePickerFromState,
-                buttons = {
-                    positiveButton("Ок")
-                    negativeButton("Отмена")
-                },
-            ) {
-                timepicker(title = "Выберите начальное время", is24HourClock = true) { time ->
-                    onTimeFromSelect(time)
-                }
-            }
-
-            MaterialDialog(
-                dialogState = dialogTimePickerToState,
-                buttons = {
-                    positiveButton("Ок")
-                    negativeButton("Отмена")
-                },
-            ) {
-                timepicker(title = "Выбрать конечное время", is24HourClock = true) { time ->
-                    onTimeToSelect(time)
-                }
-            }
+//            MaterialDialog(
+//                dialogState = dialogDatePickerState,
+//                buttons = {
+//                    positiveButton("Ок")
+//                    negativeButton("Отмена")
+//                },
+//            ) {
+//                datepicker(title = "Выберите день") { date ->
+//                    onDateSelect(date)
+//                }
+//            }
+//
+//            MaterialDialog(
+//                dialogState = dialogTimePickerFromState,
+//                buttons = {
+//                    positiveButton("Ок")
+//                    negativeButton("Отмена")
+//                },
+//            ) {
+//                timepicker(title = "Выберите начальное время", is24HourClock = true) { time ->
+//                    onTimeFromSelect(time)
+//                }
+//            }
+//
+//            MaterialDialog(
+//                dialogState = dialogTimePickerToState,
+//                buttons = {
+//                    positiveButton("Ок")
+//                    negativeButton("Отмена")
+//                },
+//            ) {
+//                timepicker(title = "Выбрать конечное время", is24HourClock = true) { time ->
+//                    onTimeToSelect(time)
+//                }
+//            }
         }
     }
 }

@@ -11,7 +11,6 @@ kotlin {
                 implementation(projects.core.utils)
 
                 implementation(projects.core.navigation)
-                implementation(projects.features.base.elements)
                 implementation(projects.core.arch)
                 implementation(projects.core.utils)
                 implementation(libs.koin.core)

@@ -86,7 +86,8 @@ class LessonsReviewRepositoryImpl(
     private fun getLessonDates(dates: List<LessonDates>): List<LessonDates> {
         val sortedDates = dates
             .flatMap { generateDatesFromRange(startDate = it.start, endDate = it.end) }
-            .toSortedSet()
+            .toSet()
+            .sorted()
 
         val resList = mutableListOf<LessonDates>()
 

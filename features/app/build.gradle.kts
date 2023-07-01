@@ -9,7 +9,6 @@ kotlin {
                 implementation(projects.core.designSystem)
                 implementation(projects.core.navigation)
                 implementation(projects.core.arch)
-                implementation(projects.features.base.elements)
 
                 implementation(projects.features.nodes)
 

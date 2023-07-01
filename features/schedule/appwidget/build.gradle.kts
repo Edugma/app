@@ -5,7 +5,6 @@ plugins {
 dependencies {
     implementation(projects.core.androidResources)
     implementation(projects.core.navigation)
-    implementation(projects.features.base.elements)
     api(projects.features.schedule.domain)
 
     implementation(libs.androidx.appWidget)

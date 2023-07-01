@@ -2,7 +2,6 @@ package io.edugma.core.designSystem.molecules.avatar
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -15,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.rememberAsyncImagePainter
@@ -63,29 +61,5 @@ fun EdAvatar(
                 .size(size.size)
                 .clip(CircleShape),
         )
-    }
-}
-
-@Preview
-@Composable
-fun EdAvatarPreview() {
-    EdTheme {
-        Column {
-            EdAvatar(
-                url = null,
-                initials = "АБ",
-                size = EdAvatarSize.small,
-            )
-            EdAvatar(
-                url = null,
-                initials = "АБ",
-                size = EdAvatarSize.medium,
-            )
-            EdAvatar(
-                url = null,
-                initials = "АБ",
-                size = EdAvatarSize.large,
-            )
-        }
     }
 }

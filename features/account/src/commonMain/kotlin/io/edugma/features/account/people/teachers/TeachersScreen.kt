@@ -61,7 +61,6 @@ import io.edugma.domain.account.model.description
 import io.edugma.features.account.people.common.bottomSheets.SearchBottomSheet
 import io.edugma.features.account.people.common.items.PeopleItem
 import io.edugma.features.account.people.common.items.PeopleItemPlaceholder
-import io.edugma.features.base.elements.*
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
