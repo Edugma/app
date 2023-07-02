@@ -3,7 +3,7 @@ package io.edugma.data.base.repository
 import android.content.Context
 import io.edugma.domain.base.repository.PathRepository
 
-actual class PathRepositoryImpl(
+class PathRepositoryImpl(
     private val appContext: Context,
 ) : PathRepository {
     override fun getDatastorePath(dataStoreFileName: String): String {

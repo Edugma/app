@@ -39,7 +39,7 @@ import io.edugma.features.schedule.elements.verticalSchedule.VerticalScheduleCom
 import io.edugma.features.schedule.scheduleInfo.groupInfo.InfoScaffold
 import io.edugma.features.schedule.schedule_info.resources.MR
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
+import dev.icerock.moko.resources.compose.painterResource
 
 @Composable
 fun PlaceInfoScreen(viewModel: PlaceInfoViewModel = getViewModel(), id: String) {

@@ -31,7 +31,7 @@ import io.edugma.core.utils.Typed2Listener
 import io.edugma.domain.account.model.menu.CardType
 import io.edugma.features.account.menu.MenuState
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
+import dev.icerock.moko.resources.compose.painterResource
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable

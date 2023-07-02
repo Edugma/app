@@ -7,6 +7,7 @@ import io.edugma.features.schedule.domain.model.schedule.LessonsByTime
 import io.edugma.features.schedule.domain.model.schedule.ScheduleDay
 import io.edugma.features.schedule.elements.lesson.model.ScheduleItem
 import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
+import kotlin.jvm.JvmName
 
 @JvmName("toUiModelScheduleDay")
 fun List<ScheduleDay>.toUiModel(): List<ScheduleDayUiModel> {

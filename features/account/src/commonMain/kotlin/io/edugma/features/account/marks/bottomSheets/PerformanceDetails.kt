@@ -14,7 +14,7 @@ import io.edugma.core.ui.screen.BottomSheet
 import io.edugma.domain.account.model.Performance
 import io.edugma.domain.base.utils.format
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
+import dev.icerock.moko.resources.compose.painterResource
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
@@ -40,7 +40,7 @@ fun PerformanceBottomSheetContent(performance: Performance) {
         }
         EdLabel(
             text = "${performance.course} курс ${performance.semester} семестр",
-            iconPainter = painterResource("acc_ic_teacher_24"),
+            iconPainter = painterResource(EdIcons.ic_fluent_hat_graduation_24_filled),
             style = EdTheme.typography.bodyMedium,
         )
         SpacerHeight(height = 7.dp)

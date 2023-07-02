@@ -1,6 +1,6 @@
 @file:Suppress("UnstableApiUsage")
 
-import org.gradle.accessors.dm.LibrariesForLibs
+//import org.gradle.accessors.dm.LibrariesForLibs
 
 plugins {
     id("com.android.application")
@@ -9,7 +9,7 @@ plugins {
 }
 
 // https://github.com/gradle/gradle/issues/15383
-val libs = the<LibrariesForLibs>()
+//val libs = the<LibrariesForLibs>()
 
 android {
     compileSdk = Config.compileSdk
@@ -35,20 +35,20 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_19
-        targetCompatibility = JavaVersion.VERSION_19
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "19"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
+        kotlinCompilerExtensionVersion = "1.4.6"//libs.versions.composeCompiler.get()
     }
-    packagingOptions {
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }

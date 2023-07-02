@@ -48,7 +48,7 @@ import io.edugma.features.account.personal.Columns.Applications
 import io.edugma.features.account.personal.Columns.Orders
 import io.edugma.features.account.personal.Columns.values
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
+import dev.icerock.moko.resources.compose.painterResource
 
 @Composable
 fun PersonalScreen(viewModel: PersonalViewModel = getViewModel()) {
@@ -221,7 +221,7 @@ fun Personal(personal: Personal) {
         SpacerHeight(height = 8.dp)
         EdLabel(
             text = personal.specialty,
-            iconPainter = painterResource("acc_ic_teacher_24"),
+            iconPainter = painterResource(EdIcons.ic_fluent_hat_graduation_24_filled),
             style = EdTheme.typography.bodyMedium,
         )
         SpacerHeight(height = 8.dp)
@@ -272,7 +272,7 @@ fun PersonalPlaceholder() {
         )
         EdLabel(
             text = "",
-            iconPainter = painterResource("acc_ic_teacher_24"),
+            iconPainter = painterResource(EdIcons.ic_fluent_hat_graduation_24_filled),
             modifier = Modifier
                 .widthIn(min = 100.dp)
                 .edPlaceholder(),

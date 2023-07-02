@@ -1,6 +1,6 @@
 package io.edugma.navigation.core.screen
 
-public open abstract class Screen(val name: String) {
+public abstract class Screen(val name: String) {
     private val arguments = mutableListOf<ScreenArg<*>>()
 
     protected inline fun <reified T : Any> reqArg(name: String): ScreenRequiredArg<T> {
@@ -30,7 +30,7 @@ public open abstract class Screen(val name: String) {
     }
 }
 
-public open abstract class NoArgScreen(name: String) : Screen(name) {
+public abstract class NoArgScreen(name: String) : Screen(name) {
     public operator fun invoke(): ScreenBundle = bundleOf()
 }
 

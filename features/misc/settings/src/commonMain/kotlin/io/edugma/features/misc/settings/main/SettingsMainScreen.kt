@@ -11,14 +11,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.resources.compose.stringResource
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.ui.screen.FeatureScreen
-import io.edugma.core.utils.ClickListener
-import io.edugma.features.misc.settings.R
+import io.edugma.features.misc.settings.resources.MR
 
 @Composable
 fun SettingsMainScreen(viewModel: SettingsMainViewModel = getViewModel()) {
@@ -51,7 +50,7 @@ fun SettingsMainContent(
         ) {
             Box(Modifier.fillMaxSize()) {
                 Text(
-                    text = stringResource(R.string.misc_set_appearance),
+                    text = stringResource(MR.strings.misc_set_appearance),
                     modifier = Modifier.align(Alignment.CenterStart),
                 )
             }

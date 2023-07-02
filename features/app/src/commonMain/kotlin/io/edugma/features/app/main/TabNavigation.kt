@@ -41,7 +41,7 @@ import io.edugma.navigation.core.navigator.ScreenUiState
 import io.edugma.navigation.core.screen.bundleOf
 import kotlinx.coroutines.flow.combine
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
+import dev.icerock.moko.resources.compose.painterResource
 
 val showNavBar = listOf(
     HomeScreens.Main,

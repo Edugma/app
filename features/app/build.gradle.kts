@@ -1,6 +1,5 @@
 plugins {
     id("mp-compose-lib")
-    id("org.jetbrains.kotlin.native.cocoapods")
 }
 
 kotlin {
@@ -36,20 +35,6 @@ kotlin {
                 implementation(projects.data.account)
             }
         }
-    }
-
-    cocoapods {
-        version = "1.0.0"
-        summary = "Compose application framework"
-        homepage = "empty"
-        ios.deploymentTarget = "15.0"
-        podfile = project.file("../iosApp/Podfile")
-        framework {
-            baseName = "sharedApp"
-            isStatic = true
-        }
-        extraSpecAttributes["resources"] =
-            "['src/commonMain/resources/**', 'src/iosMain/resources/**']"
     }
 }
 

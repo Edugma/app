@@ -1,6 +1,6 @@
 import UIKit
 import SwiftUI
-import sharedApp
+import shared
 
 let gradient = LinearGradient(
         colors: [
@@ -16,7 +16,7 @@ let gradient = LinearGradient(
 struct ComposeView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
         let controller = Main_iosKt.MainViewController()
-        // controller.overrideUserInterfaceStyle = .light
+         controller.overrideUserInterfaceStyle = .light
         return controller
     }
 

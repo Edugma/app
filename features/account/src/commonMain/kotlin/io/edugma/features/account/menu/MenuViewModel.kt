@@ -20,6 +20,7 @@ import io.edugma.domain.account.usecase.DataDto
 import io.edugma.domain.account.usecase.MenuDataConverterUseCase
 import io.edugma.domain.account.usecase.PersonalData
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.withContext
 

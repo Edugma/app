@@ -37,7 +37,7 @@ import io.edugma.features.schedule.domain.model.teacher.Teacher
 import io.edugma.features.schedule.domain.usecase.getShortName
 import io.edugma.features.schedule.elements.lesson.model.ScheduleItem
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
+import dev.icerock.moko.resources.compose.painterResource
 
 @Composable
 fun LessonContent(

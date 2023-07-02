@@ -38,7 +38,7 @@ import io.edugma.features.schedule.menu.cards.ScheduleSourcesCard
 import io.edugma.features.schedule.menu.model.MenuItem
 import io.edugma.features.schedule.menu.resources.MR
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
+import dev.icerock.moko.resources.compose.painterResource
 
 @Composable
 fun ScheduleMenuScreen(viewModel: ScheduleMenuViewModel = getViewModel()) {

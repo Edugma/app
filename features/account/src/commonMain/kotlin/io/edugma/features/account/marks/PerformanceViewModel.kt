@@ -153,7 +153,10 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
     private fun<T> Set<Filter<T>>.addOrDeleteFilter(newFilter: Filter<T>): Set<Filter<T>> {
         val newSet = toMutableList()
         if (newFilter.isChecked) {
-            if (newFilter is Name) newSet.removeIf { it is Name }
+            if (newFilter is Name) {
+                // TODO Поправить
+                // newSet.removeIf { it is Name }
+            }
             newSet.remove(newFilter)
         } else {
             val filter = when (newFilter) {
@@ -161,7 +164,8 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
                 is Semester -> (newFilter as Semester).copy(isChecked = !newFilter.isChecked)
                 is Type -> (newFilter as Type).copy(isChecked = !newFilter.isChecked)
                 is Name -> {
-                    newSet.removeIf { it is Name }
+                    // TODO Поправить
+                    // newSet.removeIf { it is Name }
                     (newFilter as Name).copy(isChecked = !newFilter.isChecked)
                 }
             }

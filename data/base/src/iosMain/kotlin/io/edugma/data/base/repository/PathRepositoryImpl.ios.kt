@@ -1,9 +1,12 @@
 package io.edugma.data.base.repository
 
 import io.edugma.domain.base.repository.PathRepository
-import platform.Foundation.FileSystem.FileManager.NSSearchPathForDirectoriesInDomains
-import platform.Foundation.FileSystem.NSFileManager.NSSearchPathDirectory.NSCachesDirectory
-import platform.Foundation.FileSystem.NSFileManager.NSSearchPathDomainMask.NSUserDomainMask
+import platform.Foundation.NSCachesDirectory
+import platform.Foundation.NSDocumentDirectory
+import platform.Foundation.NSFileManager
+import platform.Foundation.NSSearchPathForDirectoriesInDomains
+import platform.Foundation.NSURL
+import platform.Foundation.NSUserDomainMask
 
 class PathRepositoryImpl() : PathRepository {
     override fun getDatastorePath(dataStoreFileName: String): String {

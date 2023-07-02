@@ -41,7 +41,7 @@ import io.edugma.features.account.marks.item.PerformanceItem
 import io.edugma.features.account.marks.item.PerformancePlaceholder
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
+import dev.icerock.moko.resources.compose.painterResource
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

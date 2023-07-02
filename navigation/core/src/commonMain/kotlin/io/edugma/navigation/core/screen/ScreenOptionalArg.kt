@@ -19,7 +19,7 @@ class ScreenRequiredArg<T : Any>(
     defaultValue = null,
 )
 
-open abstract class ScreenArg<T : Any>(
+abstract class ScreenArg<T : Any>(
     val name: String,
     val type: ArgumentType,
     val defaultValue: T?,

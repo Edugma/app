@@ -5,6 +5,22 @@ import org.eclipse.jgit.api.Git
 import java.io.File
 
 println("Start")
+println("Scan Project")
+val iconsInProject = mutableSetOf<String>()
+
+val regex = """EdIcons\.(ic_fluent_[_0-9a-zA-Z]*)""".toRegex()
+val projectFolder = File("../..")
+projectFolder.walkTopDown().filter { it.extension == "kt" }.forEach {  kotlinFile ->
+    val fileText = kotlinFile.readText()
+    regex.findAll(fileText).forEach {
+        iconsInProject += it.groups[1]!!.value + ".svg"
+    }
+}
+
+println("Found ${iconsInProject.size} icons")
+iconsInProject.forEach {
+    println(it)
+}
 
 fun File.makeDirs() = apply { mkdirs() }
 
@@ -21,35 +37,37 @@ val git = Git.cloneRepository()
     .call()
 git.checkout().setName("refs/tags/$version").call()
 
-val iconsDir = File(repoCloneDir, "android/library/src/main/res/drawable")
+val iconsDir = File(repoCloneDir, "assets")
 
-val srcDir = File("src/commonMain/kotlin").apply { mkdirs() }
-srcDir.deleteRecursively()
-srcDir.mkdirs()
+//val srcDir = File("src/commonMain/kotlin").apply { mkdirs() }
+//srcDir.deleteRecursively()
+//srcDir.mkdirs()
 
-val resourceFolder = File("src/commonMain/resources")
+val resourceFolder = File("src/commonMain/resources/MR/images")
 resourceFolder.deleteRecursively()
 resourceFolder.mkdirs()
 
-val resourceFileFolder = File(srcDir, "io/edugma/core/icons/")
-resourceFileFolder.deleteRecursively()
-resourceFileFolder.mkdirs()
+//val resourceFileFolder = File(srcDir, "io/edugma/core/icons/")
+//resourceFileFolder.deleteRecursively()
+//resourceFileFolder.mkdirs()
 
-val resourcesFile = File(resourceFileFolder, "EdIcons.kt")
-resourcesFile.createNewFile()
+//val resourcesFile = File(resourceFileFolder, "EdIcons.kt")
+//resourcesFile.createNewFile()
 
 println("Copying")
-val writer = resourcesFile.bufferedWriter()
-writer.appendLine("package io.edugma.core.icons")
-writer.appendLine()
-writer.appendLine("public object EdIcons {")
-iconsDir.walkTopDown().filter { it.extension == "xml" }
+//val writer = resourcesFile.bufferedWriter()
+//writer.appendLine("package io.edugma.core.icons")
+//writer.appendLine()
+//writer.appendLine("public object EdIcons {")
+iconsDir.walkTopDown().filter { it.extension == "svg" }
     .forEach {
+        if (it.name !in iconsInProject) return@forEach
+
         val newFile = File(resourceFolder, it.name)
-        val newText = it.readText().replace("@color/fluent_default_icon_tint", "#212121")
+        val newText = it.readText()//.replace("@color/fluent_default_icon_tint", "#212121")
         newFile.writeText(newText)
-        writer.appendLine("\tpublic const val ${it.name.removeSuffix(".xml")}: String = \"${it.name}\"")
+        //writer.appendLine("\tpublic const val ${it.name.removeSuffix(".xml")}: String = \"${it.name}\"")
     }
-writer.appendLine("}")
-writer.close()
+//writer.appendLine("}")
+//writer.close()
 println("Finish")

@@ -63,7 +63,7 @@ import io.edugma.domain.base.utils.format
 import io.edugma.features.account.payments.bottomSheet.PaymentBottomSheet
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
+import dev.icerock.moko.resources.compose.painterResource
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -191,7 +191,7 @@ fun Payments(payments: Payments) {
                 payments.level?.let {
                     EdLabel(
                         text = "Степень образования: ${payments.level}",
-                        iconPainter = painterResource("acc_ic_teacher_24"),
+                        iconPainter = painterResource(EdIcons.ic_fluent_hat_graduation_24_filled),
                         modifier = Modifier,
                     )
                     SpacerHeight(height = 8.dp)

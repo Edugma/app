@@ -13,7 +13,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(projects.domain.base)
+                implementation(projects.domain.baseDomain)
                 implementation(projects.core.network)
 
                 implementation(libs.ktorfit)
@@ -34,5 +34,7 @@ kotlin {
 dependencies {
     kspAllPlatforms(libs.ktorfit.ksp)
 }
+
+group = "$group-data"
 
 android.namespace = "io.edugma.data.base"

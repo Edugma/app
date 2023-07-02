@@ -5,7 +5,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.icons.EdIcons
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
+import dev.icerock.moko.resources.compose.painterResource
 
 @OptIn(ExperimentalResourceApi::class)
 @Preview

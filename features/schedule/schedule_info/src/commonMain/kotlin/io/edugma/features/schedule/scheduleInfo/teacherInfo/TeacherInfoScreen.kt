@@ -23,7 +23,7 @@ import io.edugma.features.schedule.domain.model.teacher.description
 import io.edugma.features.schedule.elements.verticalSchedule.VerticalScheduleComponent
 import io.edugma.features.schedule.scheduleInfo.groupInfo.InfoScaffold
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
+import dev.icerock.moko.resources.compose.painterResource
 
 @Composable
 fun TeacherInfoScreen(viewModel: TeacherInfoViewModel = getViewModel(), id: String) {

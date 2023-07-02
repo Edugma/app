@@ -62,7 +62,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
+import dev.icerock.moko.resources.compose.painterResource
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -227,7 +227,7 @@ fun StudentSheetContent(
         )
         EdLabel(
             text = student.educationType,
-            iconPainter = painterResource("acc_ic_teacher_24"),
+            iconPainter = painterResource(EdIcons.ic_fluent_hat_graduation_24_filled),
         )
         EdLabel(
             text = student.payment,

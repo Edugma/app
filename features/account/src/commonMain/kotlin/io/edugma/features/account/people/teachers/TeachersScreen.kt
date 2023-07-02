@@ -63,7 +63,7 @@ import io.edugma.features.account.people.common.items.PeopleItem
 import io.edugma.features.account.people.common.items.PeopleItemPlaceholder
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
+import dev.icerock.moko.resources.compose.painterResource
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -164,7 +164,7 @@ fun TeacherBottomSheet(teacher: Teacher, openSchedule: ClickListener) {
         teacher.grade?.let {
             EdLabel(
                 text = it,
-                iconPainter = painterResource("acc_ic_teacher_24"),
+                iconPainter = painterResource(EdIcons.ic_fluent_hat_graduation_24_filled),
                 style = EdTheme.typography.bodyMedium,
             )
             SpacerHeight(height = 7.dp)

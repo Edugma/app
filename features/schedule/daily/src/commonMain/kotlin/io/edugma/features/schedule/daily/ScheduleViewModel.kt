@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.isoDayNumber
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -230,7 +231,7 @@ private fun ScheduleState.getWeeksPos(date: LocalDate): Int {
 }
 
 private fun ScheduleState.getDayOfWeekPos(date: LocalDate): Int {
-    return date.dayOfWeek.value - 1
+    return date.dayOfWeek.isoDayNumber - 1
 }
 
 private fun List<ScheduleDayUiModel>.fixSelectedDate(date: LocalDate): LocalDate {

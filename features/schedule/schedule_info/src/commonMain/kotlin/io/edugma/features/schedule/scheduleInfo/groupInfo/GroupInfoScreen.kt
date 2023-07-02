@@ -39,7 +39,7 @@ import io.edugma.core.utils.ui.pxToDp
 import io.edugma.features.schedule.domain.model.group.description
 import io.edugma.features.schedule.elements.verticalSchedule.VerticalScheduleComponent
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
+import dev.icerock.moko.resources.compose.painterResource
 
 @Composable
 fun GroupInfoScreen(viewModel: GroupInfoViewModel = getViewModel(), id: String) {

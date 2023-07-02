@@ -51,8 +51,8 @@ class ScheduleMenuViewModel(
                 val (notStarted, current) = closestLessons
                     .groupBy { it.timeToStart.isNegative() }
                     .run {
-                        getOrDefault(false, emptyList()) to
-                            getOrDefault(true, emptyList())
+                        getOrElse(false) { emptyList() } to
+                            getOrElse(true) { emptyList() }
                     }
             }
         }

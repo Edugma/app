@@ -15,7 +15,7 @@ import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.BottomSheet
 import io.edugma.core.utils.ClickListener
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.painterResource
+import dev.icerock.moko.resources.compose.painterResource
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
