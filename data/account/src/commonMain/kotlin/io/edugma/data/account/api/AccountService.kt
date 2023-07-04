@@ -5,6 +5,7 @@ import de.jensklingenberg.ktorfit.http.GET
 import de.jensklingenberg.ktorfit.http.Headers
 import de.jensklingenberg.ktorfit.http.POST
 import de.jensklingenberg.ktorfit.http.Path
+import io.edugma.core.api.model.PagingDTO
 import io.edugma.domain.account.model.Application
 import io.edugma.domain.account.model.Contracts
 import io.edugma.domain.account.model.Login
@@ -15,7 +16,6 @@ import io.edugma.domain.account.model.SemestersWithCourse
 import io.edugma.domain.account.model.Teacher
 import io.edugma.domain.account.model.Token
 import io.edugma.domain.account.model.student.Student
-import io.edugma.domain.base.model.PagingDTO
 
 interface AccountService {
 

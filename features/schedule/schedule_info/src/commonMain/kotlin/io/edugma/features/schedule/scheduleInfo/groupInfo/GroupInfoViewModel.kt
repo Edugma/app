@@ -1,10 +1,10 @@
 package io.edugma.features.schedule.scheduleInfo.groupInfo
 
+import io.edugma.core.api.utils.onFailure
+import io.edugma.core.api.utils.onSuccess
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.arch.mvi.viewmodel.prop
 import io.edugma.core.utils.viewmodel.launchCoroutine
-import io.edugma.domain.base.utils.onFailure
-import io.edugma.domain.base.utils.onSuccess
 import io.edugma.features.schedule.domain.model.group.GroupInfo
 import io.edugma.features.schedule.domain.model.source.ScheduleSource
 import io.edugma.features.schedule.domain.model.source.ScheduleSources

@@ -30,7 +30,6 @@ kotlin {
                 implementation(projects.features.misc.settings)
 
 
-                implementation(projects.data.nodes)
                 implementation(projects.features.schedule.data)
                 implementation(projects.data.account)
             }

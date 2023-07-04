@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
+import io.edugma.core.api.utils.format
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.spacer.SpacerFill
@@ -36,7 +37,6 @@ import io.edugma.core.designSystem.utils.MediumAlpha
 import io.edugma.core.designSystem.utils.WithContentAlpha
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
-import io.edugma.domain.base.utils.format
 import io.edugma.features.schedule.domain.model.place.description
 import io.edugma.features.schedule.freePlace.resources.MR
 import kotlinx.datetime.LocalDate

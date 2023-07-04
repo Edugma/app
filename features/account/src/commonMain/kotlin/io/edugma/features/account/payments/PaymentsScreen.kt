@@ -36,6 +36,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.moriatsushi.insetsx.navigationBarsPadding
+import dev.icerock.moko.resources.compose.painterResource
+import io.edugma.core.api.utils.format
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
@@ -59,11 +61,9 @@ import io.edugma.domain.account.model.Payment
 import io.edugma.domain.account.model.PaymentType
 import io.edugma.domain.account.model.Payments
 import io.edugma.domain.account.model.toLabel
-import io.edugma.domain.base.utils.format
 import io.edugma.features.account.payments.bottomSheet.PaymentBottomSheet
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import dev.icerock.moko.resources.compose.painterResource
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

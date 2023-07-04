@@ -7,9 +7,9 @@ import androidx.datastore.preferences.core.byteArrayPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import io.edugma.core.api.repository.PathRepository
+import io.edugma.core.api.repository.PreferenceRepository
 import io.edugma.data.base.utils.DataStoreFactory
-import io.edugma.domain.base.repository.PathRepository
-import io.edugma.domain.base.repository.PreferenceRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO

@@ -1,7 +1,7 @@
 package io.edugma.features.schedule.elements.utils
 
-import io.edugma.domain.base.utils.insertSeparators
-import io.edugma.domain.base.utils.untilMinutes
+import io.edugma.core.api.utils.insertSeparators
+import io.edugma.core.api.utils.untilMinutes
 import io.edugma.features.schedule.domain.model.lesson.LessonTime
 import io.edugma.features.schedule.domain.model.schedule.LessonsByTime
 import io.edugma.features.schedule.domain.model.schedule.ScheduleDay

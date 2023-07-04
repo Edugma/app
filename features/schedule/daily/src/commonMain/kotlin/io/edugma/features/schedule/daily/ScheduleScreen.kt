@@ -30,7 +30,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.moriatsushi.insetsx.navigationBarsPadding
 import com.moriatsushi.insetsx.statusBars
+import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
+import io.edugma.core.api.utils.format
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.loader.EdLoader
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
@@ -47,13 +49,11 @@ import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.Typed2Listener
 import io.edugma.core.utils.ui.bindTo
 import io.edugma.core.utils.ui.onPageChanged
-import io.edugma.domain.base.utils.format
 import io.edugma.features.schedule.daily.resources.MR
 import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import dev.icerock.moko.resources.compose.painterResource
 
 @Composable
 fun ScheduleScreen(

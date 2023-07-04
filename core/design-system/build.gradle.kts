@@ -9,7 +9,7 @@ kotlin {
                 implementation(compose.animation)
                 implementation(libs.composeMP.utils)
 
-                implementation(projects.domain.baseDomain)
+                implementation(projects.core.api)
                 implementation(projects.data.base)
                 api(projects.core.icons)
                 implementation(libs.imageLoader)

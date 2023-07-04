@@ -1,5 +1,8 @@
 package io.edugma.data.base
 
+import io.edugma.core.api.repository.CacheRepository
+import io.edugma.core.api.repository.PreferenceRepository
+import io.edugma.core.api.repository.SettingsRepository
 import io.edugma.core.network.buildKtorClient
 import io.edugma.core.network.buildKtorfit
 import io.edugma.core.network.interceptors.ApiVersionInterceptor
@@ -9,9 +12,6 @@ import io.edugma.data.base.repository.CacheRepositoryImpl
 import io.edugma.data.base.repository.EventRepository
 import io.edugma.data.base.repository.PreferenceRepositoryImpl
 import io.edugma.data.base.repository.SettingsRepositoryImpl
-import io.edugma.domain.base.repository.CacheRepository
-import io.edugma.domain.base.repository.PreferenceRepository
-import io.edugma.domain.base.repository.SettingsRepository
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf

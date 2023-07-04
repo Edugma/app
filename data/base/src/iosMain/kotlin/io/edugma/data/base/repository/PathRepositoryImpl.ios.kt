@@ -1,6 +1,6 @@
 package io.edugma.data.base.repository
 
-import io.edugma.domain.base.repository.PathRepository
+import io.edugma.core.api.repository.PathRepository
 import platform.Foundation.NSCachesDirectory
 import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSFileManager

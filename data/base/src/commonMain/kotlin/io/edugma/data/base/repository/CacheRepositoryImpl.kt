@@ -1,8 +1,8 @@
 package io.edugma.data.base.repository
 
-import io.edugma.domain.base.repository.CacheRepository
-import io.edugma.domain.base.repository.PreferenceRepository
-import io.edugma.domain.base.utils.InternalApi
+import io.edugma.core.api.repository.CacheRepository
+import io.edugma.core.api.repository.PreferenceRepository
+import io.edugma.core.api.utils.InternalApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map

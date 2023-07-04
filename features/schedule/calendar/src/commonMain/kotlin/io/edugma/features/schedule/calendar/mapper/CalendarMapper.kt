@@ -1,9 +1,9 @@
 package io.edugma.features.schedule.calendar.mapper
 
 import androidx.compose.ui.text.buildAnnotatedString
-import io.edugma.domain.base.utils.format
-import io.edugma.domain.base.utils.getCeilSunday
-import io.edugma.domain.base.utils.getFloorMonday
+import io.edugma.core.api.utils.format
+import io.edugma.core.api.utils.getCeilSunday
+import io.edugma.core.api.utils.getFloorMonday
 import io.edugma.features.schedule.calendar.model.CalendarDayVO
 import io.edugma.features.schedule.calendar.model.CalendarLessonPlaceVO
 import io.edugma.features.schedule.calendar.model.CalendarLessonVO

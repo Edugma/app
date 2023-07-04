@@ -1,7 +1,7 @@
 package io.edugma.core.network.interceptors
 
+import io.edugma.core.api.repository.SettingsRepository
 import io.edugma.core.network.KtorInterceptor
-import io.edugma.domain.base.repository.SettingsRepository
 import io.ktor.client.call.HttpClientCall
 import io.ktor.client.plugins.Sender
 import io.ktor.client.request.HttpRequestBuilder

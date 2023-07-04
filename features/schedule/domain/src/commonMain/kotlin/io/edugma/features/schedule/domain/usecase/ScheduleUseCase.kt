@@ -1,6 +1,6 @@
 package io.edugma.features.schedule.domain.usecase
 
-import io.edugma.domain.base.utils.Lce
+import io.edugma.core.api.utils.Lce
 import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
 import io.edugma.features.schedule.domain.model.schedule.LessonsByTime
 import io.edugma.features.schedule.domain.model.schedule.ScheduleDay

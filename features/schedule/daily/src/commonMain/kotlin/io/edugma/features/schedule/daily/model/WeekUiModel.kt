@@ -1,9 +1,9 @@
 package io.edugma.features.schedule.daily.model
 
-import io.edugma.domain.base.utils.WeekIterator
-import io.edugma.domain.base.utils.getCeilSunday
-import io.edugma.domain.base.utils.getFloorMonday
-import io.edugma.domain.base.utils.nowLocalDate
+import io.edugma.core.api.utils.WeekIterator
+import io.edugma.core.api.utils.getCeilSunday
+import io.edugma.core.api.utils.getFloorMonday
+import io.edugma.core.api.utils.nowLocalDate
 import io.edugma.features.schedule.elements.lesson.model.ScheduleItem
 import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
 import kotlinx.datetime.Clock

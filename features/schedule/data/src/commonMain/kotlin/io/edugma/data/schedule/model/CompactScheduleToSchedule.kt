@@ -1,6 +1,6 @@
 package io.edugma.data.schedule.model
 
-import io.edugma.domain.base.utils.nowLocalDate
+import io.edugma.core.api.utils.nowLocalDate
 import io.edugma.features.schedule.domain.model.compact.CompactLessonFeatures
 import io.edugma.features.schedule.domain.model.compact.CompactSchedule
 import io.edugma.features.schedule.domain.model.compact.ScheduleInfo

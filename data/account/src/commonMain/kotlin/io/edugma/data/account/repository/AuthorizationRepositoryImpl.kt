@@ -1,5 +1,9 @@
 package io.edugma.data.account.repository
 
+import io.edugma.core.api.repository.CacheRepository
+import io.edugma.core.api.repository.SettingsRepository
+import io.edugma.core.api.utils.mapResult
+import io.edugma.core.api.utils.onSuccess
 import io.edugma.data.account.api.AccountService
 import io.edugma.data.base.consts.CacheConst.ApplicationsKey
 import io.edugma.data.base.consts.CacheConst.ClassmatesKey
@@ -12,10 +16,6 @@ import io.edugma.data.base.consts.CacheConst.SemesterKey
 import io.edugma.data.base.consts.CacheConst.TokenKey
 import io.edugma.domain.account.model.Login
 import io.edugma.domain.account.repository.AuthorizationRepository
-import io.edugma.domain.base.repository.CacheRepository
-import io.edugma.domain.base.repository.SettingsRepository
-import io.edugma.domain.base.utils.mapResult
-import io.edugma.domain.base.utils.onSuccess
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow

@@ -1,6 +1,6 @@
 package io.edugma.features.schedule.calendar.usecase
 
-import io.edugma.domain.base.utils.nowLocalDate
+import io.edugma.core.api.utils.nowLocalDate
 import io.edugma.features.schedule.calendar.model.CalendarScheduleVO
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate

@@ -1,13 +1,13 @@
 package io.edugma.features.schedule.daily
 
+import io.edugma.core.api.utils.getOrDefault
+import io.edugma.core.api.utils.isFinalFailure
+import io.edugma.core.api.utils.nowLocalDate
 import io.edugma.core.arch.mvi.impl.SimpleMutator
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.arch.mvi.viewmodel.prop
 import io.edugma.core.navigation.schedule.ScheduleInfoScreens
 import io.edugma.core.utils.viewmodel.launchCoroutine
-import io.edugma.domain.base.utils.getOrDefault
-import io.edugma.domain.base.utils.isFinalFailure
-import io.edugma.domain.base.utils.nowLocalDate
 import io.edugma.features.schedule.daily.model.WeekUiModel
 import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonDateTime

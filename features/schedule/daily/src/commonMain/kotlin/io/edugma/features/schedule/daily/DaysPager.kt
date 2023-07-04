@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import io.edugma.core.api.utils.format
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.card.EdCardDefaults
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
@@ -41,7 +42,6 @@ import io.edugma.core.designSystem.utils.WithContentAlpha
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.ui.isItemFullyVisible
 import io.edugma.core.utils.ui.sp
-import io.edugma.domain.base.utils.format
 import io.edugma.features.schedule.daily.model.DayUiModel
 import io.edugma.features.schedule.daily.model.WeekUiModel
 import kotlinx.datetime.LocalDate

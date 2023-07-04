@@ -1,6 +1,6 @@
 package io.edugma.data.base.store
 
-import io.edugma.domain.base.utils.Lce
+import io.edugma.core.api.utils.Lce
 import kotlinx.coroutines.flow.Flow
 import kotlin.time.Duration
 

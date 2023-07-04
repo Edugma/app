@@ -1,6 +1,6 @@
 package io.edugma.features.schedule.domain.model.place
 
-import io.edugma.domain.base.model.Location
+import io.edugma.core.api.model.Location
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient

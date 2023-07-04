@@ -3,8 +3,8 @@ package io.edugma.features.nodes.main
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.navigation.HomeScreens
 import io.edugma.core.utils.viewmodel.launchCoroutine
-import io.edugma.domain.nodes.model.Node
-import io.edugma.domain.nodes.repository.NodesRepository
+import io.edugma.features.nodes.domain.NodesRepository
+import io.edugma.features.nodes.domain.model.Node
 
 class NodesMainViewModel(
     private val nodesRepository: NodesRepository,

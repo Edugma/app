@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.moriatsushi.insetsx.navigationBarsPadding
 import dev.icerock.moko.resources.AssetResource
 import dev.icerock.moko.resources.compose.stringResource
+import io.edugma.core.api.utils.nowLocalTime
 import io.edugma.core.designSystem.atoms.lottie.EdLottie
 import io.edugma.core.designSystem.atoms.lottie.LottieSource
 import io.edugma.core.designSystem.atoms.lottie.rememberLottiePainter
@@ -28,7 +29,6 @@ import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed2Listener
-import io.edugma.domain.base.utils.nowLocalTime
 import io.edugma.features.schedule.daily.resources.MR
 import io.edugma.features.schedule.domain.model.group.Group
 import io.edugma.features.schedule.domain.model.lesson.Lesson

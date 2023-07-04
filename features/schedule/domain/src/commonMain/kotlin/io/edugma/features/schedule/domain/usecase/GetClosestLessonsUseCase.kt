@@ -1,8 +1,8 @@
 package io.edugma.features.schedule.domain.usecase
 
-import io.edugma.domain.base.utils.TimeZones
-import io.edugma.domain.base.utils.nowLocalTime
-import io.edugma.domain.base.utils.plus
+import io.edugma.core.api.utils.TimeZones
+import io.edugma.core.api.utils.nowLocalTime
+import io.edugma.core.api.utils.plus
 import io.edugma.features.schedule.domain.model.schedule.LessonsByTime
 import kotlinx.datetime.Clock
 import kotlin.time.Duration

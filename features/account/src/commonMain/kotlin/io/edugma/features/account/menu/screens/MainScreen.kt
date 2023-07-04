@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.moriatsushi.insetsx.statusBarsPadding
+import dev.icerock.moko.resources.compose.painterResource
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.organism.accountSelector.EdAccountSelector
@@ -31,7 +32,6 @@ import io.edugma.core.utils.Typed2Listener
 import io.edugma.domain.account.model.menu.CardType
 import io.edugma.features.account.menu.MenuState
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import dev.icerock.moko.resources.compose.painterResource
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable

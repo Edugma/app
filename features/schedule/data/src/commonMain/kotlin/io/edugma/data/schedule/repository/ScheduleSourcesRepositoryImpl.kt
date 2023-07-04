@@ -1,14 +1,14 @@
 package io.edugma.data.schedule.repository
 
+import io.edugma.core.api.repository.CacheRepository
+import io.edugma.core.api.repository.SettingsRepository
+import io.edugma.core.api.repository.get
+import io.edugma.core.api.repository.getFlow
+import io.edugma.core.api.repository.save
+import io.edugma.core.api.repository.saveOrRemove
 import io.edugma.data.base.consts.CacheConst
 import io.edugma.data.base.consts.PrefConst
 import io.edugma.data.schedule.api.ScheduleSourcesService
-import io.edugma.domain.base.repository.CacheRepository
-import io.edugma.domain.base.repository.SettingsRepository
-import io.edugma.domain.base.repository.get
-import io.edugma.domain.base.repository.getFlow
-import io.edugma.domain.base.repository.save
-import io.edugma.domain.base.repository.saveOrRemove
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
 import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import io.edugma.features.schedule.domain.repository.ScheduleSourcesRepository

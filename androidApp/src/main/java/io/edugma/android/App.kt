@@ -2,7 +2,7 @@ package io.edugma.android
 
 import android.app.Application
 import io.edugma.features.app.di.appModules
-//import io.edugma.features.schedule.appwidget.ScheduleAppwidgetFeatureModule
+// import io.edugma.features.schedule.appwidget.ScheduleAppwidgetFeatureModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -15,7 +15,7 @@ class App : Application() {
         startKoin {
             androidLogger(Level.ERROR)
             androidContext(this@App)
-            modules(appModules + androidModule)// + ScheduleAppwidgetFeatureModule.deps)
+            modules(appModules + androidModule) // + ScheduleAppwidgetFeatureModule.deps)
         }
     }
 }

@@ -1,10 +1,10 @@
 package io.edugma.data.base.store
 
 import co.touchlab.kermit.Logger
-import io.edugma.domain.base.utils.Lce
-import io.edugma.domain.base.utils.TAG
-import io.edugma.domain.base.utils.onFailure
-import io.edugma.domain.base.utils.onSuccess
+import io.edugma.core.api.utils.Lce
+import io.edugma.core.api.utils.TAG
+import io.edugma.core.api.utils.onFailure
+import io.edugma.core.api.utils.onSuccess
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow

@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.edugma.core.api.utils.format
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.molecules.chip.EdChip
 import io.edugma.core.designSystem.molecules.chip.EdChipForm
@@ -24,7 +25,6 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.edPlaceholder
 import io.edugma.core.utils.ClickListener
 import io.edugma.domain.account.model.Performance
-import io.edugma.domain.base.utils.format
 
 @Composable
 fun PerformanceItem(

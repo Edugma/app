@@ -8,7 +8,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(projects.domain.baseDomain)
+                api(projects.core.api)
             }
         }
     }

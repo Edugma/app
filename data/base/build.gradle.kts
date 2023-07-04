@@ -13,7 +13,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(projects.domain.baseDomain)
+                implementation(projects.core.api)
                 implementation(projects.core.network)
 
                 implementation(libs.ktorfit)
