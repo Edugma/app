@@ -16,8 +16,8 @@ kotlin {
             dependencies {
                 //implementation(libs.koin.core)
                 implementation("io.insert-koin:koin-core:3.4.0")
-                implementation(project(":core:arch"))
-                implementation(project(":core:utils"))
+                implementation(project(":shared:core:arch"))
+                implementation(project(":shared:core:utils"))
             }
         }
     }

@@ -64,15 +64,13 @@ includeBuild("convention-plugins")
 //include(":features:schedule:sources")
 
 includeSubmodules(
-    "data",
-    "domain",
-    "features",
-    "core",
-    "navigation",
+    "libs",
+    "shared",
+    "android",
 
     deep = 4,
 )
-include(":shared")
+include(":shared-ios")
 include(":androidApp")
 
 fun includeSubmodules(vararg projectPaths: String, deep: Int = 1) {
