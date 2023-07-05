@@ -71,7 +71,6 @@ includeSubmodules(
     deep = 4,
 )
 include(":shared-ios")
-include(":androidApp")
 
 fun includeSubmodules(vararg projectPaths: String, deep: Int = 1) {
     require(deep >= 1)

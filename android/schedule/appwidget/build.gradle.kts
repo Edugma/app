@@ -3,7 +3,7 @@
 //}
 //
 //dependencies {
-//    implementation(projects.shared.core.androidResources)
+//    implementation(projects.android.resources)
 //    implementation(projects.shared.core.navigation)
 //    api(projects.shared.schedule.domain)
 //

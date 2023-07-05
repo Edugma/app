@@ -12,9 +12,9 @@ android {
 
 dependencies {
     implementation(project(":shared:app"))
-    implementation(project(":shared:core:android-resources"))
+    implementation(project(":android:resources"))
     implementation(project(":shared:core:navigation"))
-    //implementation(projects.shared.schedule.appwidget)
+    //implementation(projects.android.schedule.appwidget)
 
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)
