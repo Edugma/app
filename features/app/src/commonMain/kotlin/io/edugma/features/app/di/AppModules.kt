@@ -1,10 +1,8 @@
 package io.edugma.features.app.di
 
 import io.edugma.core.api.baseDomainModule
-import io.edugma.data.account.accountDataModule
 import io.edugma.data.base.baseDataModule
 import io.edugma.data.schedule.ScheduleDataModule
-import io.edugma.domain.account.accountDomainModule
 import io.edugma.features.account.accountFeaturesModule
 import io.edugma.features.app.main.mainModule
 import io.edugma.features.misc.menu.miscMenuFeaturesModule
@@ -35,12 +33,10 @@ val appModules: List<Module> = buildList {
     // Data modules
     +baseDataModule
     +ScheduleDataModule.deps
-    +accountDataModule
 
     // Domain modules
     +baseDomainModule
     +ScheduleDomainModule.deps
-    +accountDomainModule
 
     // Features modules
     +nodesFeaturesModule

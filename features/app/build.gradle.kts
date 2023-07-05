@@ -31,7 +31,6 @@ kotlin {
 
 
                 implementation(projects.features.schedule.data)
-                implementation(projects.data.account)
             }
         }
     }

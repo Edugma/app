@@ -5,7 +5,7 @@ import io.edugma.core.utils.isNotNull
 import io.edugma.core.utils.isNull
 import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.domain.account.model.Performance
-import io.edugma.domain.account.repository.PerformanceRepository
+import io.edugma.features.account.domain.repository.PerformanceRepository
 import io.edugma.features.account.marks.Filter.Course
 import io.edugma.features.account.marks.Filter.Name
 import io.edugma.features.account.marks.Filter.Semester

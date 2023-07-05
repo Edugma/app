@@ -7,7 +7,7 @@ import app.cash.paging.PagingSourceLoadResultError
 import app.cash.paging.PagingSourceLoadResultPage
 import app.cash.paging.PagingState
 import io.edugma.domain.account.model.Teacher
-import io.edugma.domain.account.repository.PeoplesRepository
+import io.edugma.features.account.domain.repository.PeoplesRepository
 
 class TeachersPagingSource(
     private val teachersRepository: PeoplesRepository,

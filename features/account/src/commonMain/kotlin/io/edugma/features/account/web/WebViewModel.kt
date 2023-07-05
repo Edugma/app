@@ -2,7 +2,7 @@ package io.edugma.features.account.web
 
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.utils.viewmodel.launchCoroutine
-import io.edugma.domain.account.repository.AuthorizationRepository
+import io.edugma.features.account.domain.repository.AuthorizationRepository
 
 class WebViewModel(
     private val authorizationRepository: AuthorizationRepository,

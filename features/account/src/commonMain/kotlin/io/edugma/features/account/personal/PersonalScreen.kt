@@ -42,9 +42,9 @@ import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.isNull
-import io.edugma.domain.account.model.Application
 import io.edugma.domain.account.model.Order
 import io.edugma.domain.account.model.Personal
+import io.edugma.features.account.domain.model.Application
 import io.edugma.features.account.personal.Columns.Applications
 import io.edugma.features.account.personal.Columns.Orders
 import io.edugma.features.account.personal.Columns.values
@@ -384,7 +384,7 @@ fun OrderPlaceholder() {
 }
 
 @Composable
-fun Application(application: Application) {
+fun Application(application: io.edugma.features.account.domain.model.Application) {
     Column(
         modifier = Modifier
             .padding(horizontal = 10.dp, vertical = 5.dp)

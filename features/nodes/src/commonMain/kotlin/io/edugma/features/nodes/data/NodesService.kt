@@ -2,8 +2,8 @@ package io.edugma.features.nodes.data
 
 import de.jensklingenberg.ktorfit.http.GET
 import de.jensklingenberg.ktorfit.http.Url
-import io.edugma.domain.nodes.model.Node
-import io.edugma.domain.nodes.model.NodeContract
+import io.edugma.features.nodes.domain.model.Node
+import io.edugma.features.nodes.domain.model.NodeContract
 
 interface NodesService {
     companion object {

@@ -8,9 +8,9 @@ import io.edugma.core.api.utils.Lce
 import io.edugma.data.base.consts.CacheConst
 import io.edugma.data.base.consts.PrefConst
 import io.edugma.data.base.store.store
-import io.edugma.domain.nodes.model.Node
-import io.edugma.domain.nodes.model.NodeContract
-import io.edugma.domain.nodes.repository.NodesRepository
+import io.edugma.features.nodes.domain.NodesRepository
+import io.edugma.features.nodes.domain.model.Node
+import io.edugma.features.nodes.domain.model.NodeContract
 import kotlinx.coroutines.flow.Flow
 import kotlin.time.Duration.Companion.days
 

@@ -7,9 +7,9 @@ import io.edugma.core.navigation.core.router.external.ExternalRouter
 import io.edugma.core.utils.isNotNull
 import io.edugma.core.utils.isNull
 import io.edugma.core.utils.viewmodel.launchCoroutine
-import io.edugma.domain.account.model.PaymentType
 import io.edugma.domain.account.model.Payments
-import io.edugma.domain.account.repository.PaymentsRepository
+import io.edugma.features.account.domain.model.PaymentType
+import io.edugma.features.account.domain.repository.PaymentsRepository
 import kotlinx.coroutines.flow.collect
 
 class PaymentsViewModel(
@@ -39,7 +39,7 @@ class PaymentsViewModel(
         }
     }
 
-    fun setData(data: Map<PaymentType, Payments>) {
+    fun setData(data: Map<io.edugma.features.account.domain.model.PaymentType, Payments>) {
         mutateState {
             state = state.copy(data = data)
         }
@@ -78,7 +78,7 @@ class PaymentsViewModel(
 }
 
 data class PaymentsState(
-    val data: Map<PaymentType, Payments>? = null,
+    val data: Map<io.edugma.features.account.domain.model.PaymentType, Payments>? = null,
     val isLoading: Boolean = false,
     val isError: Boolean = false,
     val selectedIndex: Int = 0,

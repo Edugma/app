@@ -4,10 +4,10 @@ import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.utils.isNotNull
 import io.edugma.core.utils.isNull
 import io.edugma.core.utils.viewmodel.launchCoroutine
-import io.edugma.domain.account.model.Application
 import io.edugma.domain.account.model.Personal
-import io.edugma.domain.account.repository.ApplicationsRepository
-import io.edugma.domain.account.repository.PersonalRepository
+import io.edugma.features.account.domain.model.Application
+import io.edugma.features.account.domain.repository.ApplicationsRepository
+import io.edugma.features.account.domain.repository.PersonalRepository
 import kotlinx.coroutines.async
 
 class PersonalViewModel(
@@ -94,7 +94,7 @@ class PersonalViewModel(
         }
     }
 
-    private fun setApplications(applications: List<Application>, fromCache: Boolean) {
+    private fun setApplications(applications: List<io.edugma.features.account.domain.model.Application>, fromCache: Boolean) {
         mutateState {
             state = state.copy(applications = applications, applicationsFromCache = fromCache)
         }
@@ -103,7 +103,7 @@ class PersonalViewModel(
 
 data class PersonalState(
     val personal: Personal? = null,
-    val applications: List<Application>? = emptyList(),
+    val applications: List<io.edugma.features.account.domain.model.Application>? = emptyList(),
     val applicationsFromCache: Boolean? = true,
     val selectedColumn: Columns = Columns.Orders,
     val isLoading: Boolean = false,

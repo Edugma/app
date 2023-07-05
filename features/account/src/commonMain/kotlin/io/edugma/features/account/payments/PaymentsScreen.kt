@@ -57,10 +57,10 @@ import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.isNull
 import io.edugma.core.utils.ui.bindTo
 import io.edugma.core.utils.ui.onPageChanged
-import io.edugma.domain.account.model.Payment
-import io.edugma.domain.account.model.PaymentType
 import io.edugma.domain.account.model.Payments
-import io.edugma.domain.account.model.toLabel
+import io.edugma.features.account.domain.model.Payment
+import io.edugma.features.account.domain.model.PaymentType
+import io.edugma.features.account.domain.model.toLabel
 import io.edugma.features.account.payments.bottomSheet.PaymentBottomSheet
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -166,7 +166,7 @@ fun PaymentScreen(
         HorizontalPager(
             pageCount = state.data?.size ?: 0,
             state = paymentsPagerState,
-            key = { state.getTypeByIndex(it) ?: PaymentType.Dormitory },
+            key = { state.getTypeByIndex(it) ?: io.edugma.features.account.domain.model.PaymentType.Dormitory },
         ) { page ->
             state.getPaymentsByIndex(page)?.let { payment ->
                 Payments(payment)
@@ -326,7 +326,7 @@ fun HorizontalText(modifier: Modifier = Modifier, label: String, text: String) {
 }
 
 @Composable
-fun Payment(payment: Payment) {
+fun Payment(payment: io.edugma.features.account.domain.model.Payment) {
     EdCard(shape = EdTheme.shapes.extraSmall) {
         Box(
             modifier = Modifier
