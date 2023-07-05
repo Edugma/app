@@ -24,7 +24,7 @@ kotlin {
         summary = "Edugma shared code"
         homepage = "https://github.com/Edugma/app"
         ios.deploymentTarget = "15.5"
-        podfile = project.file("../iosApp/Podfile")
+        podfile = project.file("../app/Podfile")
         framework {
             baseName = "shared"
             isStatic = true
@@ -37,5 +37,5 @@ kotlin {
 }
 
 android {
-    namespace = "io.edugma.shared.ios"
+    namespace = "io.edugma.ios.shared"
 }
