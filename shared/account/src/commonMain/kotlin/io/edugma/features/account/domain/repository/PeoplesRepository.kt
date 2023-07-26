@@ -1,8 +1,8 @@
 package io.edugma.features.account.domain.repository
 
 import io.edugma.core.api.model.PagingDTO
-import io.edugma.domain.account.model.Teacher
-import io.edugma.domain.account.model.student.Student
+import io.edugma.features.account.domain.model.Teacher
+import io.edugma.features.account.domain.model.student.Student
 import kotlinx.coroutines.flow.Flow
 
 interface PeoplesRepository {

@@ -1,6 +1,6 @@
 package io.edugma.features.account.people.common.utlis
 
-import io.edugma.domain.account.model.student.Student
+import io.edugma.features.account.domain.model.student.Student
 
 fun Collection<Student>.convertAndShare(): String {
     return share { index, student -> "${index + 1}. ${student.getFullName()}" }

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -56,7 +57,7 @@ import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.isNull
 import io.edugma.core.utils.ui.bindTo
 import io.edugma.core.utils.ui.onPageChanged
-import io.edugma.domain.account.model.Payments
+import io.edugma.features.account.domain.model.Payments
 import io.edugma.features.account.domain.model.toLabel
 import io.edugma.features.account.payments.bottomSheet.PaymentBottomSheet
 import kotlinx.coroutines.launch

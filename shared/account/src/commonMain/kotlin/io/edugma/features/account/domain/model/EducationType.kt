@@ -18,9 +18,9 @@ enum class EducationType {
     College,
 }
 
-fun io.edugma.features.account.domain.model.EducationType.print() = when (this) {
-    io.edugma.features.account.domain.model.EducationType.Bachelor -> "Бакалавр"
-    io.edugma.features.account.domain.model.EducationType.Magistrate -> "Магистр"
-    io.edugma.features.account.domain.model.EducationType.Aspirant -> "Аспирант"
-    io.edugma.features.account.domain.model.EducationType.College -> "Студент колледжа"
+fun EducationType.print() = when (this) {
+    EducationType.Bachelor -> "Бакалавр"
+    EducationType.Magistrate -> "Магистр"
+    EducationType.Aspirant -> "Аспирант"
+    EducationType.College -> "Студент колледжа"
 }

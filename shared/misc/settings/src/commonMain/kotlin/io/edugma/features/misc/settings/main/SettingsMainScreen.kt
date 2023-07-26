@@ -16,8 +16,8 @@ import dev.icerock.moko.resources.compose.stringResource
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
+import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen
-import io.edugma.features.misc.settings.resources.MR
 
 @Composable
 fun SettingsMainScreen(viewModel: SettingsMainViewModel = getViewModel()) {

@@ -27,9 +27,9 @@ import io.edugma.core.designSystem.atoms.lottie.LottieSource
 import io.edugma.core.designSystem.atoms.lottie.rememberLottiePainter
 import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.resources.MR
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed2Listener
-import io.edugma.features.schedule.daily.resources.MR
 import io.edugma.features.schedule.domain.model.group.Group
 import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonDateTime

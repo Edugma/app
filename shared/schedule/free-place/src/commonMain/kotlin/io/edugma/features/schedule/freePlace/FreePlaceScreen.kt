@@ -35,10 +35,10 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.ContentAlpha
 import io.edugma.core.designSystem.utils.MediumAlpha
 import io.edugma.core.designSystem.utils.WithContentAlpha
+import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.features.schedule.domain.model.place.description
-import io.edugma.features.schedule.freePlace.resources.MR
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 

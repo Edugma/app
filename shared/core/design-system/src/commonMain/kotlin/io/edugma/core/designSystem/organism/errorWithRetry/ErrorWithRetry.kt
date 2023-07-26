@@ -16,7 +16,7 @@ import io.edugma.core.designSystem.atoms.lottie.LottieSource
 import io.edugma.core.designSystem.atoms.lottie.rememberLottiePainter
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.molecules.button.EdButton
-import io.edugma.core.designSystem.resources.MR
+import io.edugma.core.designSystem.MR
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.icons.EdIcons
 import org.jetbrains.compose.resources.ExperimentalResourceApi

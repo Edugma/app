@@ -32,6 +32,7 @@ import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.icons.EdIcons
+import io.edugma.core.resources.MR
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.features.schedule.domain.model.place.PlaceInfo

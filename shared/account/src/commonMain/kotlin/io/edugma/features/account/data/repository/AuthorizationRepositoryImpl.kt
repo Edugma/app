@@ -14,6 +14,7 @@ import io.edugma.data.base.consts.CacheConst.PersonalKey
 import io.edugma.data.base.consts.CacheConst.SemesterKey
 import io.edugma.data.base.consts.CacheConst.TokenKey
 import io.edugma.features.account.data.api.AccountService
+import io.edugma.features.account.domain.model.Login
 import io.edugma.features.account.domain.repository.AuthorizationRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -29,14 +30,14 @@ class AuthorizationRepositoryImpl(
 ) : AuthorizationRepository {
 
     override fun authorization(login: String, password: String): Flow<Result<String>> {
-        return flow { emit(api.login(io.edugma.features.account.domain.model.Login(login, password))) }
+        return flow { emit(api.login(Login(login, password))) }
             .mapResult { it.getBearer() }
             .onSuccess(::saveToken)
             .flowOn(Dispatchers.IO)
     }
 
     override suspend fun authorizationSuspend(login: String, password: String): Result<String> {
-        return api.loginSuspend(io.edugma.features.account.domain.model.Login(login, password))
+        return api.loginSuspend(Login(login, password))
             .map { it.getBearer() }
             .onSuccess {
                 withContext(Dispatchers.IO) {

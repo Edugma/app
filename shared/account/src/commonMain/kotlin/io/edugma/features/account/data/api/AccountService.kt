@@ -6,22 +6,26 @@ import de.jensklingenberg.ktorfit.http.Headers
 import de.jensklingenberg.ktorfit.http.POST
 import de.jensklingenberg.ktorfit.http.Path
 import io.edugma.core.api.model.PagingDTO
-import io.edugma.domain.account.model.Performance
-import io.edugma.domain.account.model.Personal
-import io.edugma.domain.account.model.SemestersWithCourse
-import io.edugma.domain.account.model.Teacher
-import io.edugma.domain.account.model.Token
-import io.edugma.domain.account.model.student.Student
+import io.edugma.features.account.domain.model.Application
+import io.edugma.features.account.domain.model.Contracts
+import io.edugma.features.account.domain.model.Login
+import io.edugma.features.account.domain.model.PaymentType
+import io.edugma.features.account.domain.model.Performance
+import io.edugma.features.account.domain.model.Personal
+import io.edugma.features.account.domain.model.SemestersWithCourse
+import io.edugma.features.account.domain.model.Teacher
+import io.edugma.features.account.domain.model.Token
+import io.edugma.features.account.domain.model.student.Student
 
 interface AccountService {
 
     @Headers("Content-Type: application/json")
     @POST("login")
-    suspend fun login(@Body login: io.edugma.features.account.domain.model.Login): Result<Token>
+    suspend fun login(@Body login: Login): Result<Token>
 
     @Headers("Content-Type: application/json")
     @POST("login")
-    suspend fun loginSuspend(@Body login: io.edugma.features.account.domain.model.Login): Result<Token>
+    suspend fun loginSuspend(@Body login: Login): Result<Token>
 
     @GET("peoples/classmates/")
     suspend fun getClassmates(): Result<List<Student>>
@@ -44,7 +48,7 @@ interface AccountService {
     ): Result<PagingDTO<Teacher>>
 
     @GET("applications")
-    suspend fun getApplications(): Result<List<io.edugma.features.account.domain.model.Application>>
+    suspend fun getApplications(): Result<List<Application>>
 
     @GET("performance/semesters")
     suspend fun getSemesters(): Result<List<Int>>
@@ -75,13 +79,13 @@ interface AccountService {
     suspend fun getPersonalInfoSuspend(): Result<Personal>
 
     @GET("payments/{type}")
-    suspend fun getPayments(@Path("type") type: String): Result<io.edugma.features.account.domain.model.Contracts>
+    suspend fun getPayments(@Path("type") type: String): Result<Contracts>
 
     @GET("payments/{type}")
-    suspend fun getPaymentsSuspend(@Path("type") type: String): Result<io.edugma.features.account.domain.model.Contracts>
+    suspend fun getPaymentsSuspend(@Path("type") type: String): Result<Contracts>
 
     @GET("payments/types/")
-    suspend fun getPaymentsTypes(): Result<List<io.edugma.features.account.domain.model.PaymentType>>
+    suspend fun getPaymentsTypes(): Result<List<PaymentType>>
 
     @GET("getLkToken")
     suspend fun getLkToken(): Result<Token>

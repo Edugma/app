@@ -13,10 +13,10 @@ import dev.icerock.moko.resources.compose.stringResource
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
+import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
-import io.edugma.features.misc.settings.resources.MR
 
 @Composable
 fun SettingsAppearanceScreen(viewModel: SettingsAppearanceViewModel = getViewModel()) {

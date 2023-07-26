@@ -6,7 +6,7 @@ import app.cash.paging.PagingSourceLoadResult
 import app.cash.paging.PagingSourceLoadResultError
 import app.cash.paging.PagingSourceLoadResultPage
 import app.cash.paging.PagingState
-import io.edugma.domain.account.model.student.Student
+import io.edugma.features.account.domain.model.student.Student
 import io.edugma.features.account.domain.repository.PeoplesRepository
 
 class StudentsPagingSource(

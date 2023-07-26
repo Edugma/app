@@ -50,13 +50,13 @@ import io.edugma.core.designSystem.tokens.elevation.EdElevation
 import io.edugma.core.designSystem.utils.ContentAlpha
 import io.edugma.core.designSystem.utils.WithContentAlpha
 import io.edugma.core.icons.EdIcons
+import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
 import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import io.edugma.features.schedule.domain.model.source.ScheduleSourcesTabs
-import io.edugma.features.schedule.sources.resources.MR
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @Composable

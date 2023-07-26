@@ -56,9 +56,9 @@ import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.isNotNull
-import io.edugma.domain.account.model.Teacher
-import io.edugma.domain.account.model.departments
-import io.edugma.domain.account.model.description
+import io.edugma.features.account.domain.model.Teacher
+import io.edugma.features.account.domain.model.departments
+import io.edugma.features.account.domain.model.description
 import io.edugma.features.account.people.common.bottomSheets.SearchBottomSheet
 import io.edugma.features.account.people.common.items.PeopleItem
 import io.edugma.features.account.people.common.items.PeopleItemPlaceholder

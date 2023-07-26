@@ -72,5 +72,10 @@ multiplatformResources {
         resPath = ".$resPath"
     }
 
-    multiplatformResourcesPackage = "io.edugma${resPath}.resources"
+    resPath = resPath.replace("shared", "")
+        .replace("libs", "")
+        .replace("..", ".")
+
+
+    multiplatformResourcesPackage = "io.edugma${resPath}"
 }

@@ -7,7 +7,7 @@ import app.cash.paging.cachedIn
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.navigation.core.router.external.ExternalRouter
 import io.edugma.core.utils.viewmodel.launchCoroutine
-import io.edugma.domain.account.model.student.Student
+import io.edugma.features.account.domain.model.student.Student
 import io.edugma.features.account.domain.repository.PeoplesRepository
 import kotlinx.coroutines.flow.collect
 

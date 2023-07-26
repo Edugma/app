@@ -15,7 +15,7 @@ import io.edugma.core.designSystem.atoms.lottie.EdLottie
 import io.edugma.core.designSystem.atoms.lottie.LottieSource
 import io.edugma.core.designSystem.atoms.lottie.rememberLottiePainter
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
-import io.edugma.core.designSystem.resources.MR
+import io.edugma.core.designSystem.MR
 import io.edugma.core.designSystem.theme.EdTheme
 
 @Composable

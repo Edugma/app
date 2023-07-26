@@ -1,7 +1,7 @@
 package io.edugma.features.account.data.repository
 
-import io.edugma.domain.account.model.menu.Card
-import io.edugma.domain.account.model.menu.CardType
+import io.edugma.features.account.domain.model.menu.Card
+import io.edugma.features.account.domain.model.menu.CardType
 import io.edugma.features.account.domain.repository.CardsRepository
 
 class CardsRepositoryImpl : CardsRepository {

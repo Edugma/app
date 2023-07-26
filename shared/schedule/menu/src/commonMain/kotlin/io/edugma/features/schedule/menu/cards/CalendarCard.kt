@@ -7,8 +7,8 @@ import io.edugma.core.api.utils.capitalized
 import io.edugma.core.api.utils.format
 import io.edugma.core.designSystem.organism.iconCard.EdIconCard
 import io.edugma.core.designSystem.utils.rememberCachedIconPainter
+import io.edugma.core.resources.MR
 import io.edugma.core.utils.ClickListener
-import io.edugma.features.schedule.menu.resources.MR
 import kotlinx.datetime.LocalDate
 
 @Composable

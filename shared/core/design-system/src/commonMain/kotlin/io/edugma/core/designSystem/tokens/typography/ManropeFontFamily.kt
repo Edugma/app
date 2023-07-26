@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import dev.icerock.moko.resources.compose.asFont
-import io.edugma.core.designSystem.resources.MR
+import io.edugma.core.designSystem.MR
 
 val manropeFontFamily
     @Composable get() = FontFamily(

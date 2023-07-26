@@ -1,9 +1,9 @@
 package io.edugma.features.account.domain.usecase
 
-import io.edugma.domain.account.model.Performance
-import io.edugma.domain.account.model.Personal
 import io.edugma.features.account.domain.model.Contracts
 import io.edugma.features.account.domain.model.PaymentType
+import io.edugma.features.account.domain.model.Performance
+import io.edugma.features.account.domain.model.Personal
 import kotlin.math.roundToInt
 
 class MenuDataConverterUseCase {
@@ -12,7 +12,7 @@ class MenuDataConverterUseCase {
         return personal.toPersonalData()
     }
 
-    fun convert(contracts: io.edugma.features.account.domain.model.Contracts): CurrentPayments? {
+    fun convert(contracts: Contracts): CurrentPayments? {
         return contracts.getCurrent()
     }
 
@@ -29,7 +29,7 @@ class MenuDataConverterUseCase {
         )
     }
 
-    private fun io.edugma.features.account.domain.model.Contracts.getCurrent(): CurrentPayments? {
+    private fun Contracts.getCurrent(): CurrentPayments? {
         return contracts.entries.firstOrNull()?.let {
             val sum = it.value.sum.toIntOrNull() ?: return null
             val current = sum - (it.value.balance.toIntOrNull() ?: return null)

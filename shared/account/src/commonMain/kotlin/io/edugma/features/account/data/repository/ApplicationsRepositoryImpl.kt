@@ -6,6 +6,7 @@ import io.edugma.core.api.repository.save
 import io.edugma.core.api.utils.onSuccess
 import io.edugma.data.base.consts.CacheConst.ApplicationsKey
 import io.edugma.features.account.data.api.AccountService
+import io.edugma.features.account.domain.model.Application
 import io.edugma.features.account.domain.repository.ApplicationsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -22,11 +23,11 @@ class ApplicationsRepositoryImpl(
             .onSuccess(::saveApplications)
             .flowOn(Dispatchers.IO)
 
-    override suspend fun saveApplications(applications: List<io.edugma.features.account.domain.model.Application>) {
+    override suspend fun saveApplications(applications: List<Application>) {
         cacheRepository.save(ApplicationsKey, applications)
     }
 
-    override suspend fun loadApplications(): List<io.edugma.features.account.domain.model.Application>? {
+    override suspend fun loadApplications(): List<Application>? {
         return cacheRepository.get(ApplicationsKey)
     }
 }

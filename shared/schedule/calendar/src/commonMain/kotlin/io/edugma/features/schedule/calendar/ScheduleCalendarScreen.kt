@@ -66,13 +66,13 @@ import io.edugma.core.designSystem.utils.LocalContentAlpha
 import io.edugma.core.designSystem.utils.WithContentAlpha
 import io.edugma.core.designSystem.utils.ifThen
 import io.edugma.core.icons.EdIcons
+import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.ui.isItemFullyVisible
 import io.edugma.features.schedule.calendar.model.CalendarDayVO
 import io.edugma.features.schedule.calendar.model.CalendarScheduleVO
-import io.edugma.features.schedule.calendar.resources.MR
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.ExperimentalResourceApi

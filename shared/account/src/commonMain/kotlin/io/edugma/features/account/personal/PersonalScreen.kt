@@ -42,8 +42,8 @@ import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.isNull
-import io.edugma.domain.account.model.Order
-import io.edugma.domain.account.model.Personal
+import io.edugma.features.account.domain.model.Order
+import io.edugma.features.account.domain.model.Personal
 import io.edugma.features.account.personal.Columns.Applications
 import io.edugma.features.account.personal.Columns.Orders
 import io.edugma.features.account.personal.Columns.values

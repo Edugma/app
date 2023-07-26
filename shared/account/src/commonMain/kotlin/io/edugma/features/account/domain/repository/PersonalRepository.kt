@@ -1,6 +1,6 @@
 package io.edugma.features.account.domain.repository
 
-import io.edugma.domain.account.model.Personal
+import io.edugma.features.account.domain.model.Personal
 import kotlinx.coroutines.flow.Flow
 
 interface PersonalRepository {

@@ -3,7 +3,7 @@ package io.edugma.core.navigation
 import dev.icerock.moko.resources.ImageResource
 import dev.icerock.moko.resources.StringResource
 import io.edugma.core.icons.EdIcons
-import io.edugma.core.navigation.resources.MR
+import io.edugma.core.navigation.MR
 import io.edugma.navigation.core.screen.Screen
 
 sealed class MainScreen(

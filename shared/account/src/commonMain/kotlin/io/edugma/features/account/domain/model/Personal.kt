@@ -1,6 +1,6 @@
 package io.edugma.features.account.domain.model
 
-import io.edugma.domain.account.model.ui.Label
+import io.edugma.features.account.domain.model.ui.Label
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 
@@ -28,7 +28,7 @@ data class Personal(
     val enterYear: String,
     val orders: List<Order>,
     val subdivisions: List<Subdivision>? = null,
-    val applications: List<io.edugma.features.account.domain.model.Application> = emptyList(),
+    val applications: List<Application> = emptyList(),
     val labels: List<Label> = emptyList(),
 ) {
     fun getFullName() = "$surname $name $patronymic"

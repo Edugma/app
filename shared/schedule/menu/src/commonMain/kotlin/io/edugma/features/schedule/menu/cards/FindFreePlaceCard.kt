@@ -6,8 +6,8 @@ import dev.icerock.moko.resources.compose.stringResource
 import io.edugma.core.designSystem.organism.actionCard.EdActionCardWidth
 import io.edugma.core.designSystem.organism.iconCard.EdIconCard
 import io.edugma.core.designSystem.utils.rememberCachedIconPainter
+import io.edugma.core.resources.MR
 import io.edugma.core.utils.ClickListener
-import io.edugma.features.schedule.menu.resources.MR
 
 @Composable
 fun FindFreePlaceCard(

@@ -29,7 +29,7 @@ import io.edugma.core.designSystem.utils.rememberCachedIconPainter
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed2Listener
-import io.edugma.domain.account.model.menu.CardType
+import io.edugma.features.account.domain.model.menu.CardType
 import io.edugma.features.account.menu.MenuState
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 

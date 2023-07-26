@@ -3,6 +3,7 @@ package io.edugma.features.account.people.classmates
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -18,7 +19,7 @@ import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.isNull
-import io.edugma.domain.account.model.student.Student
+import io.edugma.features.account.domain.model.student.Student
 import io.edugma.features.account.people.common.items.PeopleItem
 import io.edugma.features.account.people.common.items.PeopleItemPlaceholder
 import org.jetbrains.compose.resources.ExperimentalResourceApi

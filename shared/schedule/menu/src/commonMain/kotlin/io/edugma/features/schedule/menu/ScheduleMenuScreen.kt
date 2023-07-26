@@ -27,6 +27,7 @@ import io.edugma.core.designSystem.molecules.button.EdButtonSize
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.icons.EdIcons
+import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.features.schedule.menu.cards.CalendarCard
@@ -37,7 +38,6 @@ import io.edugma.features.schedule.menu.cards.ScheduleAppWidgetCard
 import io.edugma.features.schedule.menu.cards.ScheduleCard
 import io.edugma.features.schedule.menu.cards.ScheduleSourcesCard
 import io.edugma.features.schedule.menu.model.MenuItem
-import io.edugma.features.schedule.menu.resources.MR
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @Composable

@@ -1,8 +1,8 @@
 package io.edugma.features.account.domain.usecase
 
-import io.edugma.domain.account.model.Performance
-import io.edugma.domain.account.model.Personal
 import io.edugma.features.account.domain.model.Contracts
+import io.edugma.features.account.domain.model.Performance
+import io.edugma.features.account.domain.model.Personal
 import io.edugma.features.account.domain.repository.AuthorizationRepository
 import io.edugma.features.account.domain.repository.PaymentsRepository
 import io.edugma.features.account.domain.repository.PerformanceRepository
@@ -49,6 +49,6 @@ class AuthWithCachingDataUseCase(
 
 data class DataDto(
     val personal: Personal?,
-    val contracts: io.edugma.features.account.domain.model.Contracts?,
+    val contracts: Contracts?,
     val performance: List<Performance>?,
 )

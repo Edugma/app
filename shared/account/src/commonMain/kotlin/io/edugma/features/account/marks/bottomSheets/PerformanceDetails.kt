@@ -13,7 +13,7 @@ import io.edugma.core.designSystem.organism.accountSelector.EdAccountSelector
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.BottomSheet
-import io.edugma.domain.account.model.Performance
+import io.edugma.features.account.domain.model.Performance
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @OptIn(ExperimentalResourceApi::class)

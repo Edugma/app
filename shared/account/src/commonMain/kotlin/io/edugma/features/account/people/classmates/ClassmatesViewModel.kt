@@ -5,7 +5,7 @@ import io.edugma.core.navigation.core.router.external.ExternalRouter
 import io.edugma.core.utils.isNotNull
 import io.edugma.core.utils.isNull
 import io.edugma.core.utils.viewmodel.launchCoroutine
-import io.edugma.domain.account.model.student.Student
+import io.edugma.features.account.domain.model.student.Student
 import io.edugma.features.account.domain.repository.PeoplesRepository
 import io.edugma.features.account.people.common.utlis.convertAndShare
 import kotlinx.coroutines.async

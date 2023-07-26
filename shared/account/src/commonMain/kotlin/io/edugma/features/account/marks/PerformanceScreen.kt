@@ -34,7 +34,7 @@ import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.isNull
-import io.edugma.domain.account.model.Performance
+import io.edugma.features.account.domain.model.Performance
 import io.edugma.features.account.marks.bottomSheets.FiltersBottomSheetContent
 import io.edugma.features.account.marks.bottomSheets.PerformanceBottomSheetContent
 import io.edugma.features.account.marks.item.FiltersRow

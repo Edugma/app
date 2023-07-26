@@ -5,8 +5,8 @@ import io.edugma.core.api.repository.get
 import io.edugma.core.api.repository.save
 import io.edugma.core.api.utils.onSuccess
 import io.edugma.data.base.consts.CacheConst.ClassmatesKey
-import io.edugma.domain.account.model.student.Student
 import io.edugma.features.account.data.api.AccountService
+import io.edugma.features.account.domain.model.student.Student
 import io.edugma.features.account.domain.repository.PeoplesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO

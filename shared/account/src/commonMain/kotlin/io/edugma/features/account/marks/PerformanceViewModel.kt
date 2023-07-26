@@ -4,7 +4,7 @@ import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.utils.isNotNull
 import io.edugma.core.utils.isNull
 import io.edugma.core.utils.viewmodel.launchCoroutine
-import io.edugma.domain.account.model.Performance
+import io.edugma.features.account.domain.model.Performance
 import io.edugma.features.account.domain.repository.PerformanceRepository
 import io.edugma.features.account.marks.Filter.Course
 import io.edugma.features.account.marks.Filter.Name

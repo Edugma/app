@@ -12,6 +12,7 @@ kotlin {
                 implementation(projects.shared.core.api)
                 implementation(projects.shared.core.storage)
                 api(projects.shared.core.icons)
+                api(projects.shared.core.resources)
                 implementation(libs.imageLoader)
                 implementation(libs.androidx.annotations)
             }
