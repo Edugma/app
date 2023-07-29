@@ -30,12 +30,15 @@ class ScheduleRepositoryImpl(
     private val scheduleService: ScheduleService,
     private val cacheRepository: CacheRepository,
 ) : ScheduleRepository {
+
+    private val scheduleMockRepository = ScheduleMockRepository()
     override fun getRawSchedule(source: ScheduleSource): Flow<Lce<CompactSchedule?>> {
         return scheduleStore0.get(source, false)
     }
 
     private val scheduleStore0 = store<ScheduleSource, CompactSchedule> {
-        fetcher { key -> scheduleService.getCompactSchedule(key).getOrThrow() }
+        //fetcher { key -> scheduleService.getCompactSchedule(key).getOrThrow() }
+        fetcher { key -> scheduleMockRepository.getSuspendMockSchedule().getOrThrow() }
         cache {
             reader { key ->
                 cacheRepository.getFlow<CompactSchedule>(CacheConst.Schedule + key.id)

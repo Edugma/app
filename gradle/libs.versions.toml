@@ -13,7 +13,8 @@ androidxAnnotations = "1.7.0-alpha03"
 androidxDatastore = "1.1.0-alpha04"
 androidxCollections = "1.3.0-alpha04"
 
-composeBom = "2023.06.01"
+# Don't update until material 3 in compose mp will be updated
+composeBom = "2023.05.00"
 composeMaterial2 = "1.4.3"
 composeCompiler = "1.4.8"
 
