@@ -1,6 +1,6 @@
 @file:Suppress("UnstableApiUsage")
 
-//import org.gradle.accessors.dm.LibrariesForLibs
+import org.gradle.accessors.dm.LibrariesForLibs
 
 plugins {
     id("com.android.application")
@@ -9,7 +9,7 @@ plugins {
 }
 
 // https://github.com/gradle/gradle/issues/15383
-//val libs = the<LibrariesForLibs>()
+val libs = the<LibrariesForLibs>()
 
 android {
     compileSdk = Config.compileSdk
@@ -46,7 +46,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.6"//libs.versions.composeCompiler.get()
+        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
     packaging {
         resources {

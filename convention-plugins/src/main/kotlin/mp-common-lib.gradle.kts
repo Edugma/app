@@ -1,6 +1,6 @@
 @file:Suppress("UNUSED_VARIABLE")
 
-//import org.gradle.accessors.dm.LibrariesForLibs
+import org.gradle.accessors.dm.LibrariesForLibs
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -10,7 +10,7 @@ plugins {
 }
 
 // https://github.com/gradle/gradle/issues/15383
-//val libs = the<LibrariesForLibs>()
+val libs = the<LibrariesForLibs>()
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
@@ -19,10 +19,10 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-//                implementation(libs.uuid)
-//                implementation(libs.kermit)
-                implementation("com.benasher44:uuid:0.7.0")
-                implementation("co.touchlab:kermit:2.0.0-RC4")
+                implementation(libs.uuid)
+                implementation(libs.kermit)
+//                implementation("com.benasher44:uuid:0.7.0")
+//                implementation("co.touchlab:kermit:2.0.0-RC4")
             }
         }
 
