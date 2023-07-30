@@ -3,8 +3,8 @@ package io.edugma.features.schedule.menu
 import io.edugma.core.api.utils.nowLocalDate
 import io.edugma.core.api.utils.nowLocalTime
 import io.edugma.core.api.utils.untilMinutes
-import io.edugma.core.arch.mvi.BaseMutator
-import io.edugma.core.arch.mvi.viewmodel.BaseViewModelFull
+import io.edugma.core.arch.mvi.updateState
+import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.designSystem.organism.accountSelector.AccountSelectorVO
 import io.edugma.core.navigation.ScheduleScreens
 import io.edugma.core.navigation.schedule.ScheduleHistoryScreens
@@ -27,9 +27,8 @@ class ScheduleMenuViewModel(
     private val getClosestLessonsUseCase: GetClosestLessonsUseCase,
     private val getScheduleMenuItems: GetScheduleMenuItems,
     private val removeSelectedScheduleSourceUseCase: RemoveSelectedScheduleSourceUseCase,
-) : BaseViewModelFull<ScheduleMenuState, ScheduleMenuMutator, Nothing>(
+) : BaseViewModel<ScheduleMenuState>(
     ScheduleMenuState(),
-    ::ScheduleMenuMutator,
 ) {
     init {
         launchCoroutine {
@@ -58,8 +57,21 @@ class ScheduleMenuViewModel(
         }
 
         launchCoroutine {
-            useCase.getSelectedSource().collect {
-                mutateState { setSelectedSource(it) }
+            useCase.getSelectedSource().collect { selectedSource ->
+                updateState {
+                    copy(
+                        source = source.copy(
+                            selectedSource = selectedSource,
+                            accountSelectorVO = selectedSource?.let {
+                                AccountSelectorVO(
+                                    title = selectedSource.title,
+                                    subtitle = selectedSource.description,
+                                    avatar = selectedSource.avatarUrl,
+                                )
+                            },
+                        ),
+                    )
+                }
                 setMenuItems()
             }
         }
@@ -71,7 +83,7 @@ class ScheduleMenuViewModel(
 
     private suspend fun setMenuItems() {
         val menuItems = getScheduleMenuItems.invoke()
-        mutateState { state = state.copy(menuItems = menuItems) }
+        updateState { copy(menuItems = menuItems) }
     }
 
     fun onScheduleClick() {
@@ -124,24 +136,6 @@ data class ScheduleMenuState(
         val selectedSource: ScheduleSourceFull? = null,
         val accountSelectorVO: AccountSelectorVO? = null,
     )
-}
-
-class ScheduleMenuMutator : BaseMutator<ScheduleMenuState>() {
-    fun setSelectedSource(selectedSource: ScheduleSourceFull?) =
-        set(state.source.selectedSource, selectedSource) {
-            copy(
-                source = source.copy(
-                    selectedSource = it,
-                    accountSelectorVO = selectedSource?.let {
-                        AccountSelectorVO(
-                            title = selectedSource.title,
-                            subtitle = selectedSource.description,
-                            avatar = selectedSource.avatarUrl,
-                        )
-                    },
-                ),
-            )
-        }
 }
 
 class ClosestLessons(

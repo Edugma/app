@@ -1,4 +1,4 @@
-package io.edugma.features.schedule.daily
+package io.edugma.features.schedule.daily.presentation
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column

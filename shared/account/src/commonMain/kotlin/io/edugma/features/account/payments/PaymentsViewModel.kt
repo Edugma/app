@@ -2,6 +2,7 @@ package io.edugma.features.account.payments
 
 import io.edugma.core.api.utils.onFailure
 import io.edugma.core.api.utils.onSuccess
+import io.edugma.core.arch.mvi.updateState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.navigation.core.router.external.ExternalRouter
 import io.edugma.core.utils.isNotNull
@@ -39,16 +40,16 @@ class PaymentsViewModel(
     }
 
     fun setData(data: Map<io.edugma.features.account.domain.model.PaymentType, Payments>) {
-        mutateState {
-            state = state.copy(data = data)
+        updateState {
+            copy(data = data)
         }
     }
 
     fun setLoading(isLoading: Boolean) {
-        mutateState {
-            state = state.copy(
+        updateState {
+            copy(
                 isLoading = isLoading,
-                isError = !isLoading && state.isError,
+                isError = !isLoading && isError,
             )
         }
     }
@@ -64,14 +65,14 @@ class PaymentsViewModel(
     }
 
     fun setError(isError: Boolean) {
-        mutateState {
-            state = state.copy(isError = isError, isLoading = false)
+        updateState {
+            copy(isError = isError, isLoading = false)
         }
     }
 
     fun typeChange(newIndex: Int) {
-        mutateState {
-            state = state.copy(selectedIndex = newIndex)
+        updateState {
+            copy(selectedIndex = newIndex)
         }
     }
 }

@@ -1,5 +1,6 @@
 package io.edugma.features.account.marks
 
+import io.edugma.core.arch.mvi.updateState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.utils.isNotNull
 import io.edugma.core.utils.isNull
@@ -59,26 +60,26 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
     }
 
     fun openBottomSheetClick(performance: Performance?) {
-        mutateState {
-            state = state.copy(selectedPerformance = performance)
+        updateState {
+            copy(selectedPerformance = performance)
         }
     }
 
     private fun setPerformanceData(data: List<Performance>) {
-        mutateState {
-            state = state.copy(data = data)
+        updateState {
+            copy(data = data)
         }
     }
 
     private fun setLoading(isLoading: Boolean) {
-        mutateState {
-            state = state.copy(isLoading = isLoading)
+        updateState {
+            copy(isLoading = isLoading)
         }
     }
 
     private fun setError(isError: Boolean) {
-        mutateState {
-            state = state.copy(isError = isError)
+        updateState {
+            copy(isError = isError)
         }
     }
 
@@ -87,47 +88,49 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
         semesters: Set<Int>? = null,
         types: Set<String>? = null,
     ) {
-        mutateState {
-            state = state.copy(
-                courses = courses?.map { Course(it) }?.toSet() ?: state.courses,
-                semesters = semesters?.map { Semester(it) }?.toSet() ?: state.semesters,
-                types = types?.map { Type(it) }?.toSet() ?: state.types,
+        updateState {
+            copy(
+                courses = courses?.map { Course(it) }?.toSet() ?: this.courses,
+                semesters = semesters?.map { Semester(it) }?.toSet() ?: this.semesters,
+                types = types?.map { Type(it) }?.toSet() ?: this.types,
             )
         }
     }
 
     fun updateFilter(filter: Filter<*>) {
-        mutateState {
-            if (!state.isLoading) {
-                state = when (filter) {
-                    is Course -> state.copy(
-                        courses = state.courses.updateFilter(filter) as Set<Course>,
-                        currentFilters = state.currentFilters.addOrDeleteFilter(filter),
+        updateState {
+            if (!isLoading) {
+                when (filter) {
+                    is Course -> copy(
+                        courses = courses.updateFilter(filter) as Set<Course>,
+                        currentFilters = currentFilters.addOrDeleteFilter(filter),
                     )
-                    is Semester -> state.copy(
-                        semesters = state.semesters.updateFilter(filter) as Set<Semester>,
-                        currentFilters = state.currentFilters.addOrDeleteFilter(filter),
+                    is Semester -> copy(
+                        semesters = semesters.updateFilter(filter) as Set<Semester>,
+                        currentFilters = currentFilters.addOrDeleteFilter(filter),
                     )
-                    is Type -> state.copy(
-                        types = state.types.updateFilter(filter) as Set<Type>,
-                        currentFilters = state.currentFilters.addOrDeleteFilter(filter),
+                    is Type -> copy(
+                        types = types.updateFilter(filter) as Set<Type>,
+                        currentFilters = currentFilters.addOrDeleteFilter(filter),
                     )
-                    is Name -> state.copy(
+                    is Name -> copy(
                         name = filter.copy(isChecked = !filter.isChecked),
-                        currentFilters = state.currentFilters.addOrDeleteFilter(filter),
+                        currentFilters = currentFilters.addOrDeleteFilter(filter),
                     )
                 }
+            } else {
+                this
             }
         }
     }
 
     fun resetFilters() {
-        mutateState {
-            state = state.copy(
+        updateState {
+            copy(
                 currentFilters = emptySet(),
-                courses = state.courses.map { it.copy(isChecked = false) }.toSet(),
-                semesters = state.semesters.map { it.copy(isChecked = false) }.toSet(),
-                types = state.types.map { it.copy(isChecked = false) }.toSet(),
+                courses = courses.map { it.copy(isChecked = false) }.toSet(),
+                semesters = semesters.map { it.copy(isChecked = false) }.toSet(),
+                types = types.map { it.copy(isChecked = false) }.toSet(),
             )
         }
     }

@@ -1,5 +1,6 @@
 package io.edugma.features.account.menu
 
+import io.edugma.core.arch.mvi.updateState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.designSystem.organism.accountSelector.AccountSelectorVO
 import io.edugma.core.navigation.AccountScreens
@@ -168,20 +169,20 @@ class MenuViewModel(
     }
 
     private fun setAuthorizedState() {
-        mutateState {
-            state = MenuState.Menu(cards = cardsRepository.getCards())
+        updateState {
+            MenuState.Menu(cards = cardsRepository.getCards())
         }
     }
 
     private fun setNotAuthorizedState() {
-        mutateState {
-            state = MenuState.Authorization()
+        updateState {
+            MenuState.Authorization()
         }
     }
 
     private inline fun <reified TState : MenuState> mutateStateWithCheck(noinline mutate: (TState) -> TState) {
-        mutateState {
-            state = (state as? TState)?.let(mutate::invoke) ?: state
+        updateState {
+            (this as? TState)?.let(mutate::invoke) ?: this
         }
     }
 }

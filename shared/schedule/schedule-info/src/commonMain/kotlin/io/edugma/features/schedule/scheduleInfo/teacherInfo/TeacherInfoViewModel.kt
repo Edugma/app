@@ -2,6 +2,7 @@ package io.edugma.features.schedule.scheduleInfo.teacherInfo
 
 import io.edugma.core.api.utils.onFailure
 import io.edugma.core.api.utils.onSuccess
+import io.edugma.core.arch.mvi.updateState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.arch.mvi.viewmodel.prop
 import io.edugma.core.utils.viewmodel.launchCoroutine
@@ -20,8 +21,8 @@ class TeacherInfoViewModel(
             state.prop { id }.filterNotNull().collect {
                 repository.getTeacherInfo(it)
                     .onSuccess {
-                        mutateState {
-                            state = state.copy(
+                        updateState {
+                            copy(
                                 teacherInfo = it,
                                 scheduleSource = ScheduleSource(
                                     type = ScheduleSources.Teacher,
@@ -36,14 +37,14 @@ class TeacherInfoViewModel(
     }
 
     fun setId(id: String) {
-        mutateState {
-            state = state.copy(id = id)
+        updateState {
+            copy(id = id)
         }
     }
 
     fun onTabSelected(tab: TeacherInfoTabs) {
-        mutateState {
-            state = state.copy(selectedTab = tab)
+        updateState {
+            copy(selectedTab = tab)
         }
     }
 }

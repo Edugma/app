@@ -111,9 +111,9 @@ fun EdSurface(
     }
 }
 
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Suppress("ModifierInspectorInfo")
-//internal fun Modifier.minimumTouchTargetSize(): Modifier = composed(
+// @OptIn(ExperimentalMaterial3Api::class)
+// @Suppress("ModifierInspectorInfo")
+// internal fun Modifier.minimumTouchTargetSize(): Modifier = composed(
 //    inspectorInfo = debugInspectorInfo {
 //        name = "minimumTouchTargetSize"
 //        // TODO: b/214589635 - surface this information through the layout inspector in a better way
@@ -121,7 +121,7 @@ fun EdSurface(
 //        properties["README"] = "Adds outer padding to measure at least 48.dp (default) in " +
 //            "size to disambiguate touch interactions if the element would measure smaller"
 //    },
-//) {
+// ) {
 //    if (LocalMinimumTouchTargetEnforcement.current) {
 //        // TODO: consider using a hardcoded value of 48.dp instead to avoid inconsistent UI if the
 //        // LocalViewConfiguration changes across devices / during runtime.
@@ -130,9 +130,9 @@ fun EdSurface(
 //    } else {
 //        Modifier
 //    }
-//}
+// }
 
-//private class MinimumTouchTargetModifier(val size: DpSize) : LayoutModifier {
+// private class MinimumTouchTargetModifier(val size: DpSize) : LayoutModifier {
 //    override fun MeasureScope.measure(
 //        measurable: Measurable,
 //        constraints: Constraints,
@@ -160,7 +160,7 @@ fun EdSurface(
 //    override fun hashCode(): Int {
 //        return size.hashCode()
 //    }
-//}
+// }
 
 private fun Modifier.surface(
     shape: Shape,

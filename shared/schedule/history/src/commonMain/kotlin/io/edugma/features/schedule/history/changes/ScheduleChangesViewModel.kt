@@ -1,5 +1,6 @@
 package io.edugma.features.schedule.history.changes
 
+import io.edugma.core.arch.mvi.updateState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.features.schedule.domain.usecase.ScheduleDayChange
@@ -12,8 +13,8 @@ class ScheduleChangesViewModel(
     init {
         launchCoroutine {
             val changes = useCase.getChanges2()
-            mutateState {
-                state = state.copy(changes = changes)
+            updateState {
+                copy(changes = changes)
             }
         }
     }

@@ -1,5 +1,5 @@
 plugins {
-    id("mp-compose-lib")
+    id("mp-ios-lib")
     id("org.jetbrains.kotlin.native.cocoapods")
 }
 
@@ -36,6 +36,6 @@ kotlin {
     }
 }
 
-android {
-    namespace = "io.edugma.ios.shared"
-}
+//android {
+//    namespace = "io.edugma.ios.shared"
+//}

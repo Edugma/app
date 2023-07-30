@@ -9,7 +9,6 @@ import io.edugma.core.api.utils.map
 import io.edugma.data.base.consts.CacheConst
 import io.edugma.data.base.store.store
 import io.edugma.data.schedule.api.ScheduleService
-import io.edugma.data.schedule.api.getCompactSchedule
 import io.edugma.data.schedule.model.toModel
 import io.edugma.features.schedule.domain.model.ScheduleComplexFilter
 import io.edugma.features.schedule.domain.model.compact.CompactSchedule
@@ -37,7 +36,7 @@ class ScheduleRepositoryImpl(
     }
 
     private val scheduleStore0 = store<ScheduleSource, CompactSchedule> {
-        //fetcher { key -> scheduleService.getCompactSchedule(key).getOrThrow() }
+        // fetcher { key -> scheduleService.getCompactSchedule(key).getOrThrow() }
         fetcher { key -> scheduleMockRepository.getSuspendMockSchedule().getOrThrow() }
         cache {
             reader { key ->

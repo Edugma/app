@@ -2,6 +2,7 @@ package io.edugma.features.schedule.sources
 
 import io.edugma.core.api.utils.onFailure
 import io.edugma.core.api.utils.onSuccess
+import io.edugma.core.arch.mvi.updateState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
@@ -21,36 +22,18 @@ class ScheduleSourcesViewModel(
     private val useCase: ScheduleSourcesUseCase,
 ) : BaseViewModel<ScheduleSourceState>(ScheduleSourceState()) {
     init {
-        setupMutator {
-            forProp { tabs }.onChanged {
-                if (state.selectedTab !in state.tabs) {
-                    state.tabs.firstOrNull()?.let {
-                        state = state.copy(selectedTab = it)
-                    }
-                }
-            }
-
-            forProps { listOf(sources, query) }.onChanged {
-                val filteredSources = state.sources
-                    .filter {
-                        state.query.isEmpty() ||
-                            it.source.title.contains(state.query, ignoreCase = true)
-                    }
-
-                state = state.copy(filteredSources = filteredSources)
-            }
-        }
-
         launchCoroutine {
             useCase.getSourceTypes()
-                .onSuccess { mutateState { state = state.copy(tabs = it) } }
-                .onFailure { mutateState { state = state.copy(tabs = emptyList()) } }
+                .onSuccess { updateState { setTabs(tabs = it) } }
+                .onFailure { updateState { setTabs(tabs = emptyList()) } }
                 .collect()
         }
 
         launchCoroutine(
             onError = {
-                mutateState { state = state.copy(sources = emptyList()) }
+                updateState {
+                    copy(sources = emptyList())
+                }
             },
         ) {
             state.map { it.selectedTab }
@@ -67,24 +50,24 @@ class ScheduleSourcesViewModel(
                                 isFavorite = it in favoriteSources,
                             )
                         }
-                        mutateState { state = state.copy(sources = uiModel) }
+                        updateState { setSources(sources = uiModel) }
                     }
                 }.catch {
-                    mutateState { state = state.copy(sources = emptyList()) }
+                    updateState { setSources(sources = emptyList()) }
                 }.collect()
         }
     }
 
     fun onSelectTab(sourceType: ScheduleSourcesTabs) {
-        mutateState {
-            state = state.copy(selectedTab = sourceType)
+        updateState {
+            copy(selectedTab = sourceType)
         }
     }
 
     fun onSelectSource(source: ScheduleSourceFull) {
         launchCoroutine {
             useCase.setSelectedSource(source)
-            router.exit()
+            router.back()
         }
     }
 
@@ -101,8 +84,8 @@ class ScheduleSourcesViewModel(
     }
 
     fun onQueryChange(query: String) {
-        mutateState {
-            state = state.copy(query = query)
+        updateState {
+            setQuery(query = query)
         }
     }
 
@@ -117,7 +100,7 @@ class ScheduleSourcesViewModel(
                     avatarUrl = null,
                 ),
             )
-            router.exit()
+            router.back()
         }
     }
 }
@@ -128,7 +111,38 @@ data class ScheduleSourceState(
     val query: String = "",
     val sources: List<ScheduleSourceUiModel> = emptyList(),
     val filteredSources: List<ScheduleSourceUiModel> = emptyList(),
-)
+) {
+    fun setTabs(tabs: List<ScheduleSourcesTabs>) =
+        copy(tabs = tabs).updateSelectedTab()
+
+    fun setQuery(query: String) =
+        copy(query = query)
+            .updateFilteredSources()
+
+    fun setSources(sources: List<ScheduleSourceUiModel>) =
+        copy(sources = sources)
+            .updateFilteredSources()
+
+    fun updateFilteredSources(): ScheduleSourceState {
+        val filteredSources = sources
+            .filter {
+                query.isEmpty() ||
+                    it.source.title.contains(query, ignoreCase = true)
+            }
+
+        return copy(filteredSources = filteredSources)
+    }
+
+    fun updateSelectedTab(): ScheduleSourceState {
+        return if (selectedTab !in tabs) {
+            tabs.firstOrNull()?.let {
+                copy(selectedTab = it)
+            } ?: this
+        } else {
+            this
+        }
+    }
+}
 
 data class ScheduleSourceUiModel(
     val isFavorite: Boolean,

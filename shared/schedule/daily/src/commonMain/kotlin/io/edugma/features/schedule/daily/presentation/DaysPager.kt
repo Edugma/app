@@ -1,4 +1,4 @@
-package io.edugma.features.schedule.daily
+package io.edugma.features.schedule.daily.presentation
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween

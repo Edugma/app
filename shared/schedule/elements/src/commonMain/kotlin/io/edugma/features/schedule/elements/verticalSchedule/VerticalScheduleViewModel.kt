@@ -3,6 +3,7 @@ package io.edugma.features.schedule.elements.verticalSchedule
 import io.edugma.core.api.utils.getOrDefault
 import io.edugma.core.api.utils.isFinalFailure
 import io.edugma.core.api.utils.nowLocalDate
+import io.edugma.core.arch.mvi.updateState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.arch.mvi.viewmodel.prop
 import io.edugma.core.navigation.schedule.ScheduleInfoScreens
@@ -26,26 +27,13 @@ class VerticalScheduleViewModel(
     private val useCase: ScheduleUseCase,
 ) : BaseViewModel<VerticalScheduleState>(VerticalScheduleState()) {
     init {
-        setupMutator {
-            forProp { schedule }.onChanged {
-                state.schedule?.let {
-                    if (it.isNotEmpty()) {
-                        val index = calculateTodayIndex(it)
-                        state = state.copy(
-                            currentDayIndex = index,
-                        )
-                    }
-                }
-            }
-        }
-
         launchCoroutine {
             state.prop { scheduleSource }.collect {
                 val lessonDisplaySettings = it?.let {
                     useCase.getLessonDisplaySettings(it.type)
                 } ?: LessonDisplaySettings.Default
-                mutateState {
-                    state = state.copy(
+                updateState {
+                    copy(
                         lessonDisplaySettings = lessonDisplaySettings,
                     )
                 }
@@ -59,8 +47,8 @@ class VerticalScheduleViewModel(
                         val schedule = it.getOrDefault(emptyList())
                         if (schedule.isEmpty() && it.isLoading) return@collect
 
-                        mutateState {
-                            state = state.copy(
+                        updateState {
+                            setSchedule(
                                 schedule = schedule.toUiModel(),
                             )
                         }
@@ -68,6 +56,51 @@ class VerticalScheduleViewModel(
                 }
             }
         }
+    }
+
+    fun setScheduleSource(scheduleSource: ScheduleSource) {
+        updateState {
+            copy(scheduleSource = scheduleSource)
+        }
+    }
+
+    fun onLessonClick(lesson: Lesson, dateTime: LessonDateTime) {
+        router.navigateTo(
+            ScheduleInfoScreens.LessonInfo(
+                lessonInfo = Json.encodeToString(
+                    LessonInfo(
+                        lesson = lesson,
+                        dateTime = dateTime,
+                    ),
+                ),
+            ),
+        )
+    }
+}
+
+data class VerticalScheduleState(
+    val scheduleSource: ScheduleSource? = null,
+    val schedule: List<ScheduleDayUiModel>? = null,
+    val lessonDisplaySettings: LessonDisplaySettings = LessonDisplaySettings.Default,
+    val currentDayIndex: Int = 0,
+) {
+    fun setSchedule(schedule: List<ScheduleDayUiModel>?) =
+        copy(schedule = schedule)
+            .updateCurrentDayIndex()
+
+    fun updateCurrentDayIndex(): VerticalScheduleState {
+        schedule?.let {
+            if (it.isNotEmpty()) {
+                val index = calculateTodayIndex(it)
+                return copy(
+                    currentDayIndex = index,
+                )
+            } else {
+                return this
+            }
+        }
+
+        return this
     }
 
     private fun calculateTodayIndex(scheduleDays: List<ScheduleDayUiModel>): Int {
@@ -93,30 +126,4 @@ class VerticalScheduleViewModel(
             }
         return index
     }
-
-    fun setScheduleSource(scheduleSource: ScheduleSource) {
-        mutateState {
-            state = state.copy(scheduleSource = scheduleSource)
-        }
-    }
-
-    fun onLessonClick(lesson: Lesson, dateTime: LessonDateTime) {
-        router.navigateTo(
-            ScheduleInfoScreens.LessonInfo(
-                lessonInfo = Json.encodeToString(
-                    LessonInfo(
-                        lesson = lesson,
-                        dateTime = dateTime,
-                    ),
-                ),
-            ),
-        )
-    }
 }
-
-data class VerticalScheduleState(
-    val scheduleSource: ScheduleSource? = null,
-    val schedule: List<ScheduleDayUiModel>? = null,
-    val lessonDisplaySettings: LessonDisplaySettings = LessonDisplaySettings.Default,
-    val currentDayIndex: Int = 0,
-)

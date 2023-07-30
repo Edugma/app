@@ -102,7 +102,7 @@ class Router {
      * Behavior in the case when the current screen is the root depends on
      * the processing of the [NavigationCommand.Back] command in a [Navigator] implementation.
      */
-    fun exit() {
+    fun back() {
         executeCommands(NavigationCommand.Back)
     }
 }

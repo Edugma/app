@@ -6,7 +6,7 @@ plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("mp-android-lib")
     id("mp-ios-lib")
-    id("lint")
+    id("mp-lint")
 }
 
 // https://github.com/gradle/gradle/issues/15383

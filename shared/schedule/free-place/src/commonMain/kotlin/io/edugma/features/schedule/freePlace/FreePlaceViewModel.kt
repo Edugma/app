@@ -3,8 +3,8 @@ package io.edugma.features.schedule.freePlace
 import io.edugma.core.api.utils.MAX
 import io.edugma.core.api.utils.MIN
 import io.edugma.core.api.utils.nowLocalDate
-import io.edugma.core.arch.mvi.BaseMutator
-import io.edugma.core.arch.mvi.viewmodel.BaseViewModelFull
+import io.edugma.core.arch.mvi.updateState
+import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.features.schedule.domain.model.place.Place
 import io.edugma.features.schedule.domain.model.place.PlaceFilters
@@ -21,10 +21,7 @@ import kotlinx.datetime.LocalTime
 class FreePlaceViewModel(
     private val repository: FreePlaceRepository,
     private val useCase: ScheduleUseCase,
-) : BaseViewModelFull<FreePlaceState, FreePlaceMutator, Nothing>(
-    FreePlaceState(),
-    ::FreePlaceMutator,
-) {
+) : BaseViewModel<FreePlaceState>(FreePlaceState()) {
 //    fun onDateRangeChange(dateRange: ClosedFloatingPointRange<Float>) {
 //        mutateState {
 //            setDateRange(dateRange)
@@ -40,36 +37,41 @@ class FreePlaceViewModel(
     init {
         launchCoroutine(
             onError = {
-                mutateState { setPlaces(emptyList()) }
+                updateState {
+                    setPlaces(emptyList())
+                }
             },
         ) {
             val it = useCase.getSources(ScheduleSources.Place)
-            mutateState {
-                setPlaces(it.map { Place(it.key, it.title, PlaceType.Undefined, it.description) }.sortedBy { it.title })
+            updateState {
+                setPlaces(
+                    it.map { Place(it.key, it.title, PlaceType.Undefined, it.description) }
+                        .sortedBy { it.title },
+                )
             }
         }
     }
 
     fun onDateSelect(date: LocalDate) {
-        mutateState {
-            setDate(date)
+        updateState {
+            copy(date = date)
         }
     }
 
     fun onTimeFromSelect(timeFrom: LocalTime) {
-        mutateState {
-            setTimeFrom(timeFrom)
+        updateState {
+            copy(timeFrom = timeFrom)
         }
     }
 
     fun onTimeToSelect(timeTo: LocalTime) {
-        mutateState {
-            setTimeTo(timeTo)
+        updateState {
+            copy(timeTo = timeTo)
         }
     }
 
     fun onEnterFilterQuery(query: String) {
-        mutateState {
+        updateState {
             setFilterQuery(query)
         }
     }
@@ -77,7 +79,9 @@ class FreePlaceViewModel(
     fun onFindFreePlaces() {
         launchCoroutine(
             onError = {
-                mutateState { setFreePlaces(emptyMap()) }
+                updateState {
+                    copy(freePlaces = emptyMap())
+                }
             },
         ) {
             repository.findFreePlaces(
@@ -86,14 +90,18 @@ class FreePlaceViewModel(
                     dateTimeFrom = LocalDateTime(state.value.date, state.value.timeFrom),
                     dateTimeTo = LocalDateTime(state.value.date, state.value.timeTo),
                 ),
-            ).collect { mutateState { setFreePlaces(it.getOrThrow()) } }
+            ).collect {
+                updateState {
+                    copy(freePlaces = it.getOrThrow())
+                }
+            }
         }
     }
 
     fun onShowFilters() {
-        mutateState {
-            state = state.copy(
-                showFilters = !state.showFilters,
+        updateState {
+            copy(
+                showFilters = !showFilters,
             )
         }
     }
@@ -119,75 +127,20 @@ data class FreePlaceState(
         val minPerDay = LocalTime.MAX.toSecondOfDay() / 60
         val totalDays = 100L
     }
+
+    fun setFilterQuery(filterQuery: String) =
+        copy(filterQuery = filterQuery)
+            .setFilteredPlaces(places.filter { it.title.contains(filterQuery, ignoreCase = true) })
+
+    fun setPlaces(places: List<Place>) =
+        copy(places = places)
+            .setFilteredPlaces(places.filter { it.title.contains(filterQuery, ignoreCase = true) })
+
+    fun setFilteredPlaces(filteredPlaces: List<Place>) =
+        copy(filteredPlaces = filteredPlaces)
 }
 
 // private fun initState() : FreePlaceState {
 //    val dateTo = LocalDate.now().plusDays(FreePlaceState.totalDays)
 //    return FreePlaceState(dateTo = dateTo)
 // }
-
-class FreePlaceMutator : BaseMutator<FreePlaceState>() {
-    fun setDate(date: LocalDate) =
-        set(state.date, date) {
-            copy(date = it)
-        }
-//    fun setDateFrom(dateFrom: LocalDate) =
-//        set(state.dateFrom, dateFrom) {
-//            copy(dateFrom = it)
-//        }
-//
-//    fun setDateTo(dateTo: LocalDate) =
-//        set(state.dateTo, dateTo) {
-//            copy(dateTo = it)
-//        }
-//
-//    fun setDateRange(datesPositionRange: ClosedFloatingPointRange<Float>) =
-//        set(state.datesPositionRange, datesPositionRange) {
-//            copy(datesPositionRange = it)
-//        }.then {
-//            setDateFrom(LocalDate.now().plusDays((FreePlaceState.totalDays * datesPositionRange.start).roundToLong()))
-//            setDateTo(LocalDate.now().plusDays((FreePlaceState.totalDays * datesPositionRange.endInclusive).roundToLong()))
-//        }
-
-    fun setTimeFrom(timeFrom: LocalTime) =
-        set(state.timeFrom, timeFrom) {
-            copy(timeFrom = it)
-        }
-
-    fun setTimeTo(timeTo: LocalTime) =
-        set(state.timeTo, timeTo) {
-            copy(timeTo = it)
-        }
-
-    fun setFilterQuery(filterQuery: String) =
-        set(state.filterQuery, filterQuery) {
-            copy(filterQuery = it)
-        }.then {
-            setFilteredPlaces(state.places.filter { it.title.contains(state.filterQuery, ignoreCase = true) })
-        }
-
-    fun setPlaces(places: List<Place>) =
-        set(state.places, places) {
-            copy(places = it)
-        }.then {
-            setFilteredPlaces(state.places.filter { it.title.contains(state.filterQuery, ignoreCase = true) })
-        }
-
-    fun setFilteredPlaces(filteredPlaces: List<Place>) =
-        set(state.filteredPlaces, filteredPlaces) {
-            copy(filteredPlaces = it)
-        }
-
-    fun setFreePlaces(freePlaces: Map<PlaceInfo, Int>) =
-        set(state.freePlaces, freePlaces) {
-            copy(freePlaces = it)
-        }
-
-//    fun setTimeRange(timesPositionRange: ClosedFloatingPointRange<Float>) =
-//        set(state.timesPositionRange, timesPositionRange) {
-//            copy(timesPositionRange = it)
-//        }.then {
-//            setTimeFrom(LocalTime.MIN.plusMinutes((FreePlaceState.minPerDay * timesPositionRange.start).roundToLong()))
-//            setTimeTo(LocalTime.MIN.plusMinutes((FreePlaceState.minPerDay * timesPositionRange.endInclusive).roundToLong()))
-//        }
-}

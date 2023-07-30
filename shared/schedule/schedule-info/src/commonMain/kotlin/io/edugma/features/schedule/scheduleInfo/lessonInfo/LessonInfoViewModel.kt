@@ -1,5 +1,6 @@
 package io.edugma.features.schedule.scheduleInfo.lessonInfo
 
+import io.edugma.core.arch.mvi.updateState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.arch.mvi.viewmodel.prop
 import io.edugma.core.navigation.schedule.ScheduleInfoScreens
@@ -22,8 +23,8 @@ class LessonInfoViewModel(
                         scheduleUseCase.getTeacher(it.id).first()
                     }?.filterNotNull() ?: emptyList()
 
-                    mutateState {
-                        state = state.copy(
+                    updateState {
+                        copy(
                             teachers = teachers,
                         )
                     }
@@ -32,8 +33,8 @@ class LessonInfoViewModel(
     }
 
     fun onLessonInfo(lessonInfo: LessonInfo?) {
-        mutateState {
-            state = state.copy(lessonInfo = lessonInfo)
+        updateState {
+            copy(lessonInfo = lessonInfo)
         }
     }
 

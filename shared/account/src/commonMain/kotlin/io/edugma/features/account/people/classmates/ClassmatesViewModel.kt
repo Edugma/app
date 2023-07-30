@@ -1,5 +1,6 @@
 package io.edugma.features.account.people.classmates
 
+import io.edugma.core.arch.mvi.updateState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.navigation.core.router.external.ExternalRouter
 import io.edugma.core.utils.isNotNull
@@ -56,20 +57,20 @@ class ClassmatesViewModel(
     }
 
     private fun setData(data: List<Student>) {
-        mutateState {
-            state = state.copy(data = data)
+        updateState {
+            copy(data = data)
         }
     }
 
     private fun setLoading(isLoading: Boolean) {
-        mutateState {
-            state = state.copy(isLoading = isLoading)
+        updateState {
+            copy(isLoading = isLoading)
         }
     }
 
     private fun setError(isError: Boolean) {
-        mutateState {
-            state = state.copy(isError = isError)
+        updateState {
+            copy(isError = isError)
         }
     }
 }

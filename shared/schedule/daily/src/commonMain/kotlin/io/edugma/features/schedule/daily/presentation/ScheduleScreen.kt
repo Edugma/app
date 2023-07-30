@@ -1,4 +1,4 @@
-package io.edugma.features.schedule.daily
+package io.edugma.features.schedule.daily.presentation
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -33,6 +33,7 @@ import com.moriatsushi.insetsx.statusBars
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import io.edugma.core.api.utils.format
+import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.loader.EdLoader
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
@@ -45,13 +46,8 @@ import io.edugma.core.designSystem.tokens.shapes.top
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen
-import io.edugma.core.utils.ClickListener
-import io.edugma.core.utils.Typed1Listener
-import io.edugma.core.utils.Typed2Listener
 import io.edugma.core.utils.ui.bindTo
 import io.edugma.core.utils.ui.onPageChanged
-import io.edugma.features.schedule.domain.model.lesson.Lesson
-import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
@@ -66,20 +62,14 @@ fun ScheduleScreen(
         viewModel.initDate(date)
     }
 
-    if (!state.schedule.isNullOrEmpty() || state.isPreloading) {
+    if (!state.schedule.isNullOrEmpty()) {
         FeatureScreen(
             statusBarPadding = false,
             navigationBarPadding = false,
         ) {
             ScheduleContent(
-                state,
-                viewModel::exit,
-                viewModel::onFabClick,
-                viewModel::onSchedulePosChanged,
-                viewModel::onWeeksPosChanged,
-                onDayClick = viewModel::onDayClick,
-                onLessonClick = viewModel::onLessonClick,
-                onRefreshing = viewModel::onRefreshing,
+                state = state,
+                onAction = viewModel.rememberOnAction(),
             )
         }
     }
@@ -88,20 +78,14 @@ fun ScheduleScreen(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ScheduleContent(
-    state: ScheduleState,
-    onBackClick: ClickListener,
-    onFabClick: ClickListener,
-    onSchedulePosChanged: Typed1Listener<Int>,
-    onWeeksPosChanged: Typed1Listener<Int>,
-    onDayClick: Typed1Listener<LocalDate>,
-    onLessonClick: Typed2Listener<Lesson, LessonDateTime>,
-    onRefreshing: ClickListener,
+    state: ScheduleDailyUiState,
+    onAction: (ScheduleDailyAction) -> Unit,
 ) {
     Box {
         Column(Modifier.fillMaxSize()) {
             val weekPagerState = rememberPagerState(state.weeksPos)
             weekPagerState.bindTo(state.weeksPos)
-            weekPagerState.onPageChanged { onWeeksPosChanged(it) }
+            weekPagerState.onPageChanged { onAction(ScheduleDailyAction.OnWeeksPosChanged(it)) }
 
             EdSurface(
                 modifier = Modifier.fillMaxWidth(),
@@ -111,9 +95,9 @@ fun ScheduleContent(
                     EdTopAppBar(
                         title = stringResource(MR.strings.sch_schedule),
                         subtitle = state.selectedDate.format("d MMMM, yyyy"),
-                        onNavigationClick = onBackClick,
+                        onNavigationClick = { onAction(ScheduleDailyAction.OnBack) },
                         actions = {
-                            if (state.isLoading) {
+                            if (state.isLoading && state.schedule != null) {
                                 EdLoader()
                             }
                         },
@@ -124,7 +108,9 @@ fun ScheduleContent(
                         weeks = state.weeks,
                         dayOfWeekPos = state.dayOfWeekPos,
                         pagerState = weekPagerState,
-                        onDayClick = onDayClick,
+                        onDayClick = {
+                            onAction(ScheduleDailyAction.OnDayClick(it))
+                        },
                         modifier = Modifier.padding(bottom = 3.dp),
                     )
                 }
@@ -134,25 +120,33 @@ fun ScheduleContent(
                 modifier = Modifier.fillMaxWidth(),
                 shape = EdTheme.shapes.large.top(),
             ) {
-                if (state.isPreloading) {
+                if (state.isLoading && state.schedule == null) {
                     ScheduleDayPlaceHolder()
                 } else {
                     val schedulePagerState = rememberPagerState(state.schedulePos)
                     schedulePagerState.bindTo(state.schedulePos)
-                    schedulePagerState.onPageChanged { onSchedulePosChanged(it) }
+                    schedulePagerState.onPageChanged {
+                        onAction(ScheduleDailyAction.OnSchedulePosChanged(it))
+                    }
 
                     SchedulePager(
                         scheduleDays = state.schedule ?: emptyList(),
                         lessonDisplaySettings = state.lessonDisplaySettings,
                         isRefreshing = state.isRefreshing,
                         pagerState = schedulePagerState,
-                        onLessonClick = onLessonClick,
-                        onRefreshing = onRefreshing,
+                        onLessonClick = { lesson, dateTime ->
+                            onAction(ScheduleDailyAction.OnLessonClick(lesson, dateTime))
+                        },
+                        onRefreshing = {
+                            onAction(ScheduleDailyAction.OnRefreshing)
+                        },
                     )
                 }
             }
         }
-        Fab(state.showBackToTodayFab, onFabClick)
+        Fab(state.showBackToTodayFab) {
+            onAction(ScheduleDailyAction.OnFabClick)
+        }
     }
 }
 

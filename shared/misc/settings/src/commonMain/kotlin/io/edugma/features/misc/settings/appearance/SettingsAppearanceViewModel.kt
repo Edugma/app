@@ -1,12 +1,13 @@
 package io.edugma.features.misc.settings.appearance
 
+import io.edugma.core.arch.mvi.updateState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 
 class SettingsAppearanceViewModel :
     BaseViewModel<SettingsAppearanceState>(SettingsAppearanceState()) {
     fun onNightModeCheckedChange(nightMode: NightMode) {
-        mutateState {
-            state = state.copy(nightMode = nightMode)
+        updateState {
+            copy(nightMode = nightMode)
         }
     }
 }

@@ -4,6 +4,7 @@ import app.cash.paging.Pager
 import app.cash.paging.PagingConfig
 import app.cash.paging.PagingData
 import app.cash.paging.cachedIn
+import io.edugma.core.arch.mvi.updateState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.navigation.schedule.ScheduleInfoScreens
 import io.edugma.features.account.domain.model.Teacher
@@ -29,26 +30,26 @@ class TeachersViewModel(private val repository: PeoplesRepository) :
         val flow = requestPagingData(name)
             .flow
             .cachedIn(viewModelScope)
-        mutateState {
-            state = state.copy(pagingData = flow)
+        updateState {
+            copy(pagingData = flow)
         }
     }
 
     fun setName(name: String) {
-        mutateState {
-            state = state.copy(name = name)
+        updateState {
+            copy(name = name)
         }
     }
 
     fun openSearch() {
-        mutateState {
-            state = state.copy(bottomType = BottomType.Search, selectedEntity = null)
+        updateState {
+            copy(bottomType = BottomType.Search, selectedEntity = null)
         }
     }
 
     fun openTeacher(teacher: Teacher) {
-        mutateState {
-            state = state.copy(bottomType = BottomType.Teacher, selectedEntity = teacher)
+        updateState {
+            copy(bottomType = BottomType.Teacher, selectedEntity = teacher)
         }
     }
 

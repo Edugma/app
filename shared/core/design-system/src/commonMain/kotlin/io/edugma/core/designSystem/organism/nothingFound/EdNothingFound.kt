@@ -11,11 +11,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import io.edugma.core.designSystem.MR
 import io.edugma.core.designSystem.atoms.lottie.EdLottie
 import io.edugma.core.designSystem.atoms.lottie.LottieSource
 import io.edugma.core.designSystem.atoms.lottie.rememberLottiePainter
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
-import io.edugma.core.designSystem.MR
 import io.edugma.core.designSystem.theme.EdTheme
 
 @Composable

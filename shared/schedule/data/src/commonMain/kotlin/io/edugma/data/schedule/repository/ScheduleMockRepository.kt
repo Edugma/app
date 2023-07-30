@@ -58,7 +58,7 @@ class ScheduleMockRepository {
                     start = LocalTime(10, 40, 0, 0),
                     end = LocalTime(12, 10, 0, 0),
                 ),
-            )
+            ),
         ),
     )
 
@@ -110,7 +110,6 @@ class ScheduleMockRepository {
         ),
     )
 
-
     private fun getSubjects() = listOf(
         LessonSubjectInfo(
             id = "1",
@@ -125,15 +124,15 @@ class ScheduleMockRepository {
                 title = "Лекция",
                 shortTitle = "Лекция",
                 description = "",
-                isImportant = false
+                isImportant = false,
             ),
             LessonTypeInfo(
                 id = "2",
                 title = "Экзамен",
                 shortTitle = "Экзамен",
                 description = "",
-                isImportant = true
-            )
+                isImportant = true,
+            ),
         )
     }
 }

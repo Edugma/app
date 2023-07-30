@@ -66,8 +66,12 @@ class StoreImpl<TKey, TData>(
             return if (data != null) {
                 Result.success(data)
             } else {
-                Result.failure(IllegalStateException("Concurrent store error: " +
-                    "current job finished with success, but last cached value return null."))
+                Result.failure(
+                    IllegalStateException(
+                        "Concurrent store error: " +
+                            "current job finished with success, but last cached value return null.",
+                    ),
+                )
             }
         }
     }
