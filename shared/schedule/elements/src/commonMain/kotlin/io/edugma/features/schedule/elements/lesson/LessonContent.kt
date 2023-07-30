@@ -1,9 +1,11 @@
 package io.edugma.features.schedule.elements.lesson
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
@@ -43,7 +45,6 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 fun LessonContent(
     lesson: Lesson,
     displaySettings: LessonDisplaySettings,
-    isLoading: Boolean = false,
     onLessonClick: Typed1Listener<Lesson>,
 ) {
     EdCard(
@@ -56,27 +57,27 @@ fun LessonContent(
     ) {
         Column(Modifier.padding(start = 24.dp, end = 24.dp, top = 13.dp, bottom = 16.dp)) {
             WithContentAlpha(ContentAlpha.medium) {
-                LessonHeader(lesson.type, isLoading)
+                LessonHeader(lesson.type)
             }
             SpacerHeight(3.dp)
             WithContentAlpha(ContentAlpha.high) {
-                LessonTitle(lesson.subject, isLoading)
+                LessonTitle(lesson.subject)
             }
             SpacerHeight(4.dp)
             WithContentAlpha(ContentAlpha.medium) {
                 if (displaySettings.showTeachers && lesson.teachers.isNotEmpty()) {
                     SpacerHeight(2.dp)
-                    TeachersContent(lesson.teachers, isLoading)
+                    TeachersContent(lesson.teachers)
                     SpacerHeight(2.dp)
                 }
                 if (displaySettings.showGroups && lesson.groups.isNotEmpty()) {
                     SpacerHeight(2.dp)
-                    GroupsContent(lesson.groups, isLoading)
+                    GroupsContent(lesson.groups)
                     SpacerHeight(2.dp)
                 }
                 if (displaySettings.showPlaces && lesson.places.isNotEmpty()) {
                     SpacerHeight(2.dp)
-                    PlacesContent(lesson.places, isLoading)
+                    PlacesContent(lesson.places)
                     SpacerHeight(2.dp)
                 }
             }
@@ -254,4 +255,48 @@ private fun getTimeText(totalMinutes: Long): String {
     }
 
     return resTime
+}
+
+@Composable
+fun LessonPlaceholder() {
+    EdCard(
+        modifier = Modifier
+            .padding(horizontal = 8.dp, vertical = 6.dp)
+            .fillMaxWidth(),
+        elevation = EdElevation.Level2,
+        onClick = { },
+        shape = EdTheme.shapes.large,
+    ) {
+        Column(Modifier.padding(start = 24.dp, end = 24.dp, top = 13.dp, bottom = 16.dp)) {
+            Box(
+                Modifier.size(100.dp, 10.dp)
+                    .edPlaceholder(),
+            )
+            SpacerHeight(3.dp)
+            Box(
+                Modifier.height(10.dp)
+                    .fillMaxWidth()
+                    .edPlaceholder(),
+            )
+            SpacerHeight(6.dp)
+            Box(
+                Modifier.height(10.dp)
+                    .fillMaxWidth()
+                    .edPlaceholder(),
+            )
+            SpacerHeight(4.dp)
+            Box(
+                Modifier.height(10.dp)
+                    .fillMaxWidth()
+                    .edPlaceholder(),
+            )
+            SpacerHeight(4.dp)
+            Box(
+                Modifier.height(10.dp)
+                    .fillMaxWidth()
+                    .edPlaceholder(),
+            )
+            SpacerHeight(2.dp)
+        }
+    }
 }

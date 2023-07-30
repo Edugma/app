@@ -40,13 +40,9 @@ class Lce<out T>(
     fun exceptionOrNull(): Throwable? =
         result.exceptionOrNull()
 
-    /**
-     * Returns a string `Success(v)` if this instance represents [success][Result.isSuccess]
-     * where `v` is a string representation of the value or a string `Failure(x)` if
-     * it is [failure][isFailure] where `x` is a string representation of the exception.
-     */
-    override fun toString(): String =
-        result.toString()
+    override fun toString(): String {
+        return "Lce(result=$result, isLoading=$isLoading)"
+    }
 
     // companion with constructors
 

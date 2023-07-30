@@ -1,7 +1,7 @@
 package io.edugma.features.account.data.repository
 
 import io.edugma.core.api.repository.CacheRepository
-import io.edugma.core.api.repository.get
+import io.edugma.core.api.repository.getData
 import io.edugma.core.api.repository.save
 import io.edugma.core.api.utils.onSuccess
 import io.edugma.data.base.consts.CacheConst.PaymentsKey
@@ -47,6 +47,6 @@ class PaymentsRepositoryImpl(
     }
 
     override suspend fun getPaymentsLocal(): Contracts? {
-        return cacheRepository.get(PaymentsKey)
+        return cacheRepository.getData(PaymentsKey)
     }
 }

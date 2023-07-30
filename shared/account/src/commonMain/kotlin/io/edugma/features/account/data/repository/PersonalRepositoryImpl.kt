@@ -1,7 +1,7 @@
 package io.edugma.features.account.data.repository
 
 import io.edugma.core.api.repository.CacheRepository
-import io.edugma.core.api.repository.get
+import io.edugma.core.api.repository.getData
 import io.edugma.core.api.repository.save
 import io.edugma.core.api.utils.onSuccess
 import io.edugma.data.base.consts.CacheConst.PersonalKey
@@ -37,6 +37,6 @@ class PersonalRepositoryImpl(
     }
 
     override suspend fun getLocalPersonalInfo(): Personal? {
-        return cacheRepository.get(PersonalKey)
+        return cacheRepository.getData(PersonalKey)
     }
 }

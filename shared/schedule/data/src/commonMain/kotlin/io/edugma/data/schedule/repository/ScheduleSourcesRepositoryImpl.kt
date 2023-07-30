@@ -3,6 +3,7 @@ package io.edugma.data.schedule.repository
 import io.edugma.core.api.repository.CacheRepository
 import io.edugma.core.api.repository.SettingsRepository
 import io.edugma.core.api.repository.get
+import io.edugma.core.api.repository.getDataFlow
 import io.edugma.core.api.repository.getFlow
 import io.edugma.core.api.repository.save
 import io.edugma.core.api.repository.saveOrRemove
@@ -34,7 +35,7 @@ class ScheduleSourcesRepositoryImpl(
         scheduleSourcesService.getSources(type.name.lowercase()).getOrThrow()
 
     override suspend fun getFavoriteSources(): Flow<List<ScheduleSourceFull>> =
-        cacheRepository.getFlow<List<ScheduleSourceFull>>(CacheConst.FavoriteScheduleSources)
+        cacheRepository.getDataFlow<List<ScheduleSourceFull>>(CacheConst.FavoriteScheduleSources)
             .map { it ?: emptyList() }
 
     override suspend fun setFavoriteSources(sources: List<ScheduleSourceFull>) {

@@ -21,32 +21,24 @@ import androidx.compose.ui.unit.dp
 import com.moriatsushi.insetsx.navigationBarsPadding
 import dev.icerock.moko.resources.AssetResource
 import dev.icerock.moko.resources.compose.stringResource
-import io.edugma.core.api.utils.nowLocalTime
 import io.edugma.core.designSystem.atoms.lottie.EdLottie
 import io.edugma.core.designSystem.atoms.lottie.LottieSource
 import io.edugma.core.designSystem.atoms.lottie.rememberLottiePainter
+import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.resources.MR
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed2Listener
-import io.edugma.features.schedule.domain.model.group.Group
 import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
 import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
 import io.edugma.features.schedule.domain.model.lesson.LessonTime
-import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubject
-import io.edugma.features.schedule.domain.model.lessonType.LessonType
-import io.edugma.features.schedule.domain.model.place.Place
-import io.edugma.features.schedule.domain.model.place.PlaceType
-import io.edugma.features.schedule.domain.model.schedule.LessonsByTime
-import io.edugma.features.schedule.domain.model.teacher.Teacher
 import io.edugma.features.schedule.elements.lesson.LessonPlace
+import io.edugma.features.schedule.elements.lesson.LessonPlaceholder
 import io.edugma.features.schedule.elements.lesson.LessonWindow
 import io.edugma.features.schedule.elements.lesson.model.ScheduleItem
 import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
-import io.edugma.features.schedule.elements.utils.toUiModel
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 
 private val relaxAnims = listOf(
@@ -135,7 +127,6 @@ fun LessonList(
     lessonDisplaySettings: LessonDisplaySettings,
     onLessonClick: Typed2Listener<Lesson, LessonTime>,
     modifier: Modifier = Modifier,
-    isLoading: Boolean = false,
 ) {
     LazyColumn(modifier = modifier.fillMaxSize()) {
         for (item in lessons) {
@@ -144,7 +135,6 @@ fun LessonList(
                     LessonPlace(
                         lessonsByTime = item.lesson,
                         lessonDisplaySettings = lessonDisplaySettings,
-                        isLoading = isLoading,
                         onLessonClick = { lesson, lessonTime ->
                             onLessonClick(lesson, lessonTime)
                         },
@@ -165,28 +155,13 @@ fun LessonList(
     }
 }
 
+@OptIn(ExperimentalStdlibApi::class)
 @Composable
-fun ScheduleDayPlaceHolder() {
-    val lessons = List(3) {
-        LessonsByTime(
-            time = LessonTime(Clock.System.nowLocalTime(), Clock.System.nowLocalTime()),
-            lessons = listOf(
-                Lesson(
-                    LessonSubject("", ""),
-                    LessonType("", "Qwerty qwerty", false),
-                    listOf(Teacher("", "", "")),
-                    listOf(Group("", "", "")),
-                    listOf(Place("", "", PlaceType.Undefined, "")),
-                ),
-            ),
-        )
+fun ScheduleDayPlaceholder(size: Int) {
+    Column(Modifier.fillMaxSize()) {
+        (0..<size).forEach {
+            LessonPlaceholder()
+            SpacerHeight(8.dp)
+        }
     }
-
-    LessonList(
-        lessons = lessons.toUiModel()
-            .filterIsInstance<ScheduleItem.LessonByTime>(),
-        lessonDisplaySettings = LessonDisplaySettings.Default,
-        isLoading = true,
-        onLessonClick = { _, _ -> },
-    )
 }

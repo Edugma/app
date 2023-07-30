@@ -6,8 +6,9 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(libs.kotlinx.coroutines.core)
                 implementation(projects.shared.core.arch)
+
+                implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.kermit)
             }
         }

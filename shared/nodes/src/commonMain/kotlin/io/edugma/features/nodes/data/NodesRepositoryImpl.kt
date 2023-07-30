@@ -23,7 +23,7 @@ class NodesRepositoryImpl(
         fetcher { key -> service.getNodeContract(key).getOrThrow() }
         cache {
             reader { key ->
-                cacheRepository.getFlow<NodeContract>(CacheConst.SelectNode, expiresIn)
+                cacheRepository.getFlow<NodeContract>(CacheConst.SelectNode)
             }
             writer { key, data ->
                 cacheRepository.save(CacheConst.SelectNode, data)

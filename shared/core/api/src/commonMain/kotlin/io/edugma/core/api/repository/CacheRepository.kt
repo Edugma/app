@@ -1,18 +1,22 @@
 package io.edugma.core.api.repository
 
+import io.edugma.core.api.model.CachedResult
 import io.edugma.core.api.utils.InternalApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Instant
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
-import kotlin.time.Duration
 
 interface CacheRepository {
     @InternalApi
-    suspend fun <T : Any> getInternal(key: String, type: KType, expiresIn: Duration): T?
+    suspend fun <T : Any> getInternal(key: String, type: KType): CachedResult<T>?
 
     @InternalApi
-    suspend fun <T : Any> getFlowInternal(key: String, type: KType, expiresIn: Duration): Flow<T?>
+    suspend fun <T : Any> getFlowInternal(
+        key: String,
+        type: KType,
+    ): Flow<CachedResult<T>?>
 
     @InternalApi
     suspend fun <T : Any> saveInternal(key: String, value: T, type: KType)
@@ -21,13 +25,27 @@ interface CacheRepository {
 }
 
 @OptIn(InternalApi::class)
-suspend inline fun <reified T : Any> CacheRepository.get(key: String, expiresIn: Duration = Duration.INFINITE): T? {
-    return this.getInternal<T>(key, typeOf<T>(), expiresIn)
+suspend inline fun <reified T : Any> CacheRepository.get(key: String): CachedResult<T>? {
+    return this.getInternal<T>(key, typeOf<T>())
 }
 
 @OptIn(InternalApi::class)
-suspend inline fun <reified T : Any> CacheRepository.getFlow(key: String, expiresIn: Duration = Duration.INFINITE): Flow<T?> {
-    return this.getFlowInternal<T>(key, typeOf<T>(), expiresIn)
+suspend inline fun <reified T : Any> CacheRepository.getData(key: String): T? {
+    return this.getInternal<T>(key, typeOf<T>())?.data
+}
+
+@OptIn(InternalApi::class)
+suspend inline fun <reified T : Any> CacheRepository.getFlow(
+    key: String,
+): Flow<CachedResult<T>?> {
+    return this.getFlowInternal<T>(key, typeOf<T>())
+}
+
+@OptIn(InternalApi::class)
+suspend inline fun <reified T : Any> CacheRepository.getDataFlow(
+    key: String,
+): Flow<T?> {
+    return this.getFlowInternal<T>(key, typeOf<T>()).map { it?.data }
 }
 
 @OptIn(InternalApi::class)

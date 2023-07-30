@@ -1,7 +1,7 @@
 package io.edugma.features.account.data.repository
 
 import io.edugma.core.api.repository.CacheRepository
-import io.edugma.core.api.repository.get
+import io.edugma.core.api.repository.getData
 import io.edugma.core.api.repository.save
 import io.edugma.core.api.utils.onSuccess
 import io.edugma.data.base.consts.CacheConst.CourseKey
@@ -70,15 +70,15 @@ class PerformanceRepositoryImpl(
     }
 
     override suspend fun getLocalMarks(): List<Performance>? {
-        return cacheRepository.get<List<Performance>>(PerformanceKey)
+        return cacheRepository.getData<List<Performance>>(PerformanceKey)
     }
 
     override suspend fun getLocalSemesters(): List<Int>? {
-        return cacheRepository.get<List<Int>>(SemesterKey)
+        return cacheRepository.getData<List<Int>>(SemesterKey)
     }
 
     override suspend fun getLocalCourses(): List<Int>? {
-        return cacheRepository.get<List<Int>>(CourseKey)
+        return cacheRepository.getData<List<Int>>(CourseKey)
     }
 
     override suspend fun setLocalMarks(data: List<Performance>) {

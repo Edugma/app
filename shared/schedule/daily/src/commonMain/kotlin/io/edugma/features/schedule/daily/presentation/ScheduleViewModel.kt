@@ -1,7 +1,6 @@
 package io.edugma.features.schedule.daily.presentation
 
-import io.edugma.core.api.utils.getOrDefault
-import io.edugma.core.api.utils.isFinalFailure
+import io.edugma.core.api.utils.getOrThrow
 import io.edugma.core.api.utils.nowLocalDate
 import io.edugma.core.arch.mvi.updateState
 import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
@@ -28,18 +27,7 @@ class ScheduleViewModel(
 
     init {
         launchCoroutine() {
-            useCase.getSchedule().collect {
-                if (!it.isFinalFailure) {
-                    val schedule = it.getOrDefault(emptyList())
-                    if (schedule.isEmpty() && it.isLoading) return@collect
-                    val isLoading = it.isLoading // && !state.isPreloading
-
-                    updateState {
-                        setSchedule(schedule.toUiModel())
-                            .setIsLoading(isLoading)
-                    }
-                }
-            }
+            getSchedule(true)
         }
 
         launchCoroutine(
@@ -60,6 +48,32 @@ class ScheduleViewModel(
                         lessonDisplaySettings = lessonDisplaySettings,
                     )
                 }
+            }
+        }
+    }
+
+    private suspend fun getSchedule(forceUpdate: Boolean = false) {
+        useCase.getSchedule(forceUpdate = forceUpdate).collect {
+            if (it.isLoading) {
+                if (it.isSuccess) {
+                    val schedule = it.getOrThrow()
+                    updateState {
+                        setSchedule(schedule.toUiModel())
+                            .setIsLoading(it.isLoading)
+                    }
+                } else {
+                    updateState {
+                        setIsLoading(it.isLoading)
+                    }
+                }
+            } else if (it.isSuccess) {
+                val schedule = it.getOrThrow()
+                updateState {
+                    setSchedule(schedule.toUiModel())
+                        .setIsLoading(it.isLoading)
+                }
+            } else {
+                // TODO on failure
             }
         }
     }
@@ -92,18 +106,7 @@ class ScheduleViewModel(
             copy(isRefreshing = !isLoading)
         }
         launchCoroutine {
-            useCase.getSchedule(forceUpdate = true).collect {
-                if (!it.isFinalFailure) {
-                    val schedule = it.getOrDefault(emptyList())
-                    if (schedule.isEmpty() && it.isLoading) return@collect
-                    val isLoading = it.isLoading
-
-                    updateState {
-                        setSchedule(schedule.toUiModel())
-                            .setIsLoading(isLoading)
-                    }
-                }
-            }
+            getSchedule(forceUpdate = true)
         }
     }
 

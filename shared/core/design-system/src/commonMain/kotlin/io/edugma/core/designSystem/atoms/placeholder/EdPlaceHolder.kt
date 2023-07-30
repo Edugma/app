@@ -228,7 +228,7 @@ object PlaceholderDefaults {
     fun color(
         backgroundColor: Color = EdTheme.colorScheme.surface,
         contentColor: Color = contentColorFor(backgroundColor),
-        contentAlpha: Float = 0.1f,
+        contentAlpha: Float = 0.4f,
     ): Color = contentColor.copy(contentAlpha).compositeOver(backgroundColor)
 }
 

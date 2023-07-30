@@ -1,7 +1,7 @@
 package io.edugma.features.account.data.repository
 
 import io.edugma.core.api.repository.CacheRepository
-import io.edugma.core.api.repository.get
+import io.edugma.core.api.repository.getData
 import io.edugma.core.api.repository.save
 import io.edugma.core.api.utils.onSuccess
 import io.edugma.data.base.consts.CacheConst.ClassmatesKey
@@ -44,6 +44,6 @@ class PeoplesRepositoryImpl(
     }
 
     override suspend fun loadClassmates(): List<Student>? {
-        return cacheRepository.get(ClassmatesKey)
+        return cacheRepository.getData(ClassmatesKey)
     }
 }

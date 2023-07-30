@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.seconds
 
 class ScheduleRepositoryImpl(
     private val scheduleService: ScheduleService,
@@ -45,8 +45,10 @@ class ScheduleRepositoryImpl(
             writer { key, data ->
                 cacheRepository.save(CacheConst.Schedule + key.id, data)
             }
-            expiresIn(1.days)
+            // expiresIn(1.days)
+            expiresIn(10.seconds)
         }
+        coroutineScope()
     }
 
     override fun getHistory(source: ScheduleSource) =

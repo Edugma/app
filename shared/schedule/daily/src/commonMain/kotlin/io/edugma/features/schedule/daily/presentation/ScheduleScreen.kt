@@ -36,7 +36,9 @@ import io.edugma.core.api.utils.format
 import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.loader.EdLoader
+import io.edugma.core.designSystem.atoms.loader.EdLoaderSize
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
+import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
@@ -62,16 +64,14 @@ fun ScheduleScreen(
         viewModel.initDate(date)
     }
 
-    if (!state.schedule.isNullOrEmpty()) {
-        FeatureScreen(
-            statusBarPadding = false,
-            navigationBarPadding = false,
-        ) {
-            ScheduleContent(
-                state = state,
-                onAction = viewModel.rememberOnAction(),
-            )
-        }
+    FeatureScreen(
+        statusBarPadding = false,
+        navigationBarPadding = false,
+    ) {
+        ScheduleContent(
+            state = state,
+            onAction = viewModel.rememberOnAction(),
+        )
     }
 }
 
@@ -98,7 +98,10 @@ fun ScheduleContent(
                         onNavigationClick = { onAction(ScheduleDailyAction.OnBack) },
                         actions = {
                             if (state.isLoading && state.schedule != null) {
-                                EdLoader()
+                                EdLoader(
+                                    size = EdLoaderSize.medium,
+                                )
+                                SpacerWidth(16.dp)
                             }
                         },
                         colors = EdTopAppBarDefaults.transparent(),
@@ -121,7 +124,7 @@ fun ScheduleContent(
                 shape = EdTheme.shapes.large.top(),
             ) {
                 if (state.isLoading && state.schedule == null) {
-                    ScheduleDayPlaceHolder()
+                    ScheduleDayPlaceholder(4)
                 } else {
                     val schedulePagerState = rememberPagerState(state.schedulePos)
                     schedulePagerState.bindTo(state.schedulePos)
