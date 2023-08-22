@@ -5,10 +5,12 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.byteArrayPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import io.edugma.core.api.repository.PathRepository
 import io.edugma.core.api.repository.PreferenceRepository
+import io.edugma.core.api.utils.InternalApi
 import io.edugma.data.base.utils.DataStoreFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,6 +18,11 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.cbor.Cbor
+import kotlinx.serialization.serializer
+import kotlin.reflect.KType
 
 class PreferenceRepositoryImpl(
     private val pathRepository: PathRepository,
@@ -36,9 +43,24 @@ class PreferenceRepositoryImpl(
     override suspend fun getByteArray(key: String): ByteArray? {
         return dataStore.data.first()[byteArrayPreferencesKey(key)]
     }
+
+    @InternalApi
+    @OptIn(ExperimentalSerializationApi::class)
+    @Suppress("UNCHECKED_CAST")
+    override suspend fun <T> getObjectInternal(key: String, type: KType): T? {
+        val serializer = Cbor.serializersModule.serializer(type) as KSerializer<T>
+        val byteArray = getByteArray(key) ?: return null
+        return Cbor.decodeFromByteArray(serializer, byteArray)
+    }
+
     override suspend fun getBoolean(key: String): Boolean? {
         return dataStore.data.first()[booleanPreferencesKey(key)]
     }
+
+    override suspend fun getInt(key: String): Int? {
+        return dataStore.data.first()[intPreferencesKey(key)]
+    }
+
     override suspend fun getLong(key: String): Long? {
         return dataStore.data.first()[longPreferencesKey(key)]
     }
@@ -49,9 +71,26 @@ class PreferenceRepositoryImpl(
     override fun getByteArrayFlow(key: String): Flow<ByteArray?> {
         return dataStore.data.map { it[byteArrayPreferencesKey(key)] }
     }
+
+    @InternalApi
+    @OptIn(ExperimentalSerializationApi::class)
+    @Suppress("UNCHECKED_CAST")
+    override fun <T> getObjectFlowInternal(key: String, type: KType): Flow<T?> {
+        val serializer = Cbor.serializersModule.serializer(type) as KSerializer<T>
+        val byteArrayFlow = getByteArrayFlow(key)
+        return byteArrayFlow.map { byteArray ->
+            byteArray?.let { Cbor.decodeFromByteArray(serializer, byteArray) }
+        }
+    }
+
     override fun getBooleanFlow(key: String): Flow<Boolean?> {
         return dataStore.data.map { it[booleanPreferencesKey(key)] }
     }
+
+    override fun getIntFlow(key: String): Flow<Int?> {
+        return dataStore.data.map { it[intPreferencesKey(key)] }
+    }
+
     override fun getLongFlow(key: String): Flow<Long?> {
         return dataStore.data.map { it[longPreferencesKey(key)] }
     }
@@ -66,6 +105,13 @@ class PreferenceRepositoryImpl(
             settings[booleanPreferencesKey(key)] = value
         }
     }
+
+    override suspend fun saveInt(key: String, value: Int) {
+        dataStore.edit { settings ->
+            settings[intPreferencesKey(key)] = value
+        }
+    }
+
     override suspend fun saveLong(key: String, value: Long) {
         dataStore.edit { settings ->
             settings[longPreferencesKey(key)] = value
@@ -77,6 +123,15 @@ class PreferenceRepositoryImpl(
         }
     }
 
+    @InternalApi
+    @OptIn(ExperimentalSerializationApi::class)
+    @Suppress("UNCHECKED_CAST")
+    override suspend fun <T> saveObjectInternal(key: String, value: T, type: KType) {
+        val serializer = Cbor.serializersModule.serializer(type) as KSerializer<T>
+        val byteArray = Cbor.encodeToByteArray(serializer, value)
+        saveByteArray(key, byteArray)
+    }
+
     override suspend fun removeString(key: String) {
         dataStore.edit { settings ->
             settings.remove(stringPreferencesKey(key))
@@ -84,15 +139,28 @@ class PreferenceRepositoryImpl(
     }
     override suspend fun removeBoolean(key: String) {
         dataStore.edit { settings ->
-            settings.remove(longPreferencesKey(key))
-        }
-    }
-    override suspend fun removeLong(key: String) {
-        dataStore.edit { settings ->
             settings.remove(booleanPreferencesKey(key))
         }
     }
+
+    override suspend fun removeInt(key: String) {
+        dataStore.edit { settings ->
+            settings.remove(intPreferencesKey(key))
+        }
+    }
+
+    override suspend fun removeLong(key: String) {
+        dataStore.edit { settings ->
+            settings.remove(longPreferencesKey(key))
+        }
+    }
     override suspend fun removeByteArray(key: String) {
+        dataStore.edit { settings ->
+            settings.remove(byteArrayPreferencesKey(key))
+        }
+    }
+
+    override suspend fun removeObject(key: String) {
         dataStore.edit { settings ->
             settings.remove(byteArrayPreferencesKey(key))
         }

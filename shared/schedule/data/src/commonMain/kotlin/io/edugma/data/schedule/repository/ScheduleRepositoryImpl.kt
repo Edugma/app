@@ -1,12 +1,8 @@
 package io.edugma.data.schedule.repository
 
-import io.edugma.core.api.repository.CacheRepository
-import io.edugma.core.api.repository.getFlow
-import io.edugma.core.api.repository.save
 import io.edugma.core.api.utils.Lce
 import io.edugma.core.api.utils.loading
 import io.edugma.core.api.utils.map
-import io.edugma.data.base.consts.CacheConst
 import io.edugma.data.base.store.store
 import io.edugma.data.schedule.api.ScheduleService
 import io.edugma.data.schedule.model.toModel
@@ -27,7 +23,7 @@ import kotlin.time.Duration.Companion.seconds
 
 class ScheduleRepositoryImpl(
     private val scheduleService: ScheduleService,
-    private val cacheRepository: CacheRepository,
+    private val scheduleCacheRepository: ScheduleCacheRepository,
 ) : ScheduleRepository {
 
     private val scheduleMockRepository = ScheduleMockRepository()
@@ -40,10 +36,10 @@ class ScheduleRepositoryImpl(
         fetcher { key -> scheduleMockRepository.getSuspendMockSchedule().getOrThrow() }
         cache {
             reader { key ->
-                cacheRepository.getFlow<CompactSchedule>(CacheConst.Schedule + key.id)
+                scheduleCacheRepository.getSchedule(key.id)
             }
             writer { key, data ->
-                cacheRepository.save(CacheConst.Schedule + key.id, data)
+                scheduleCacheRepository.saveSchedule(key.id, data)
             }
             // expiresIn(1.days)
             expiresIn(10.seconds)

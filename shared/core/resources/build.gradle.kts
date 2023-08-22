@@ -1,5 +1,6 @@
 plugins {
     id("mp-compose-lib")
+    id("mp-resource-lib")
 }
 
 kotlin {

@@ -4,113 +4,122 @@ import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
+
+/**
+ * For other font
+ * lineHeight = 1.2 for heading and 1.4 for body
+ * letterSpacing = -0.01 for heading and 0 for body
+ */
+@Composable
+private inline fun headingTextStyle(
+    fontWeight: FontWeight,
+    fontSize: TextUnit,
+    lineHeight: TextUnit = fontSize * 1.2,
+    letterSpacing: TextUnit = fontSize * -0.01,
+): TextStyle {
+    return TextStyle(
+        fontFamily = manropeFontFamily,
+        fontWeight = fontWeight,
+        fontSize = fontSize,
+        lineHeight = lineHeight,
+        letterSpacing = letterSpacing,
+    )
+}
+
+@Composable
+private inline fun bodyTextStyle(
+    fontWeight: FontWeight,
+    fontSize: TextUnit,
+    lineHeight: TextUnit = fontSize * 1.4,
+    letterSpacing: TextUnit = fontSize * 0.01,
+): TextStyle {
+    return TextStyle(
+        fontFamily = manropeFontFamily,
+        fontWeight = fontWeight,
+        fontSize = fontSize,
+        lineHeight = lineHeight,
+        letterSpacing = letterSpacing,
+    )
+}
+
+@Composable
+private inline fun labelTextStyle(
+    fontWeight: FontWeight,
+    fontSize: TextUnit,
+    lineHeight: TextUnit = fontSize * 1.4,
+    letterSpacing: TextUnit = fontSize * 0.06,
+): TextStyle {
+    return TextStyle(
+        fontFamily = manropeFontFamily,
+        fontWeight = fontWeight,
+        fontSize = fontSize,
+        lineHeight = lineHeight,
+        letterSpacing = letterSpacing,
+    )
+}
 
 val EdTypography
     @Composable get() = Typography(
-        displayLarge = TextStyle(
-            fontFamily = manropeFontFamily,
+        displayLarge = headingTextStyle(
             fontWeight = FontWeight.Light,
             fontSize = 57.sp,
-            // lineHeight = 64.sp,
-            letterSpacing = 0.sp,
         ),
-        displayMedium = TextStyle(
-            fontFamily = manropeFontFamily,
+        displayMedium = headingTextStyle(
             fontWeight = FontWeight.Light,
             fontSize = 45.sp,
-            // lineHeight = 52.sp,
-            letterSpacing = 0.sp,
         ),
-        displaySmall = TextStyle(
-            fontFamily = manropeFontFamily,
+        displaySmall = headingTextStyle(
             fontWeight = FontWeight.Normal,
             fontSize = 36.sp,
-            // lineHeight = 44.sp,
-            letterSpacing = 0.sp,
         ),
-        headlineLarge = TextStyle(
-            fontFamily = manropeFontFamily,
+        headlineLarge = headingTextStyle(
             fontWeight = FontWeight.Medium,
             fontSize = 32.sp,
-            // lineHeight = 40.sp,
-            letterSpacing = 0.sp,
         ),
-        headlineMedium = TextStyle(
-            fontFamily = manropeFontFamily,
+        headlineMedium = headingTextStyle(
             fontWeight = FontWeight.Medium,
             fontSize = 28.sp,
-            // lineHeight = 36.sp,
-            letterSpacing = 0.sp,
         ),
-        headlineSmall = TextStyle(
-            fontFamily = manropeFontFamily,
+        headlineSmall = headingTextStyle(
             fontWeight = FontWeight.SemiBold,
             fontSize = 24.sp,
-            // lineHeight = 32.sp,
-            letterSpacing = 0.sp,
         ),
-        titleLarge = TextStyle(
-            fontFamily = manropeFontFamily,
+        titleLarge = bodyTextStyle(
             fontWeight = FontWeight.Medium,
             fontSize = 20.sp,
-            // lineHeight = 28.sp,
-            letterSpacing = 0.sp,
         ),
-        titleMedium = TextStyle(
-            fontFamily = manropeFontFamily,
+        titleMedium = bodyTextStyle(
             fontWeight = FontWeight.Medium,
             fontSize = 16.sp,
-            // lineHeight = 24.sp,
-            letterSpacing = 0.15.sp,
         ),
-        titleSmall = TextStyle(
-            fontFamily = manropeFontFamily,
+        titleSmall = bodyTextStyle(
             fontWeight = FontWeight.SemiBold,
             fontSize = 14.sp,
-            // lineHeight = 20.sp,
-            letterSpacing = 0.1.sp,
         ),
-        bodyLarge = TextStyle(
-            fontFamily = manropeFontFamily,
+        bodyLarge = bodyTextStyle(
             fontWeight = FontWeight.Medium,
             fontSize = 16.sp,
-            // lineHeight = 24.sp,
-            letterSpacing = 0.15.sp,
         ),
-        bodyMedium = TextStyle(
-            fontFamily = manropeFontFamily,
+        bodyMedium = bodyTextStyle(
             fontWeight = FontWeight.Medium,
             fontSize = 14.sp,
-            // lineHeight = 20.sp,
-            letterSpacing = 0.25.sp,
         ),
-        bodySmall = TextStyle(
-            fontFamily = manropeFontFamily,
+        bodySmall = bodyTextStyle(
             fontWeight = FontWeight.Medium,
             fontSize = 12.sp,
-            // lineHeight = 16.sp,
-            letterSpacing = 0.4.sp,
         ),
-        labelLarge = TextStyle(
-            fontFamily = manropeFontFamily,
+        labelLarge = labelTextStyle(
             fontWeight = FontWeight.SemiBold,
             fontSize = 14.sp,
-            // lineHeight = 20.sp,
-            letterSpacing = 0.7.sp,
         ),
-        labelMedium = TextStyle(
-            fontFamily = manropeFontFamily,
+        labelMedium = labelTextStyle(
             fontWeight = FontWeight.SemiBold,
             fontSize = 11.5.sp,
-            // lineHeight = 16.sp,
-            letterSpacing = 0.7.sp,
         ),
-        labelSmall = TextStyle(
-            fontFamily = manropeFontFamily,
+        labelSmall = labelTextStyle(
             fontWeight = FontWeight.SemiBold,
             fontSize = 9.5.sp,
-            // lineHeight = 16.sp,
-            letterSpacing = 0.7.sp,
         ),
     )

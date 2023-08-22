@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.remember
 import dev.icerock.moko.resources.AssetResource
+import dev.icerock.moko.resources.FileResource
 import kotlin.jvm.JvmInline
 
 @Immutable
@@ -50,6 +51,13 @@ sealed interface LottieSource {
      */
     @JvmInline
     value class File(val fileName: String) : LottieSource
+
+    /**
+     * Load an animation from an arbitrary file. Make sure that your app has permissions to read it
+     * or else this may fail.
+     */
+    @JvmInline
+    value class FileRes(val file: FileResource) : LottieSource
 
     /**
      * Load an animation from the assets directory of your app. This isn't type safe like [RawRes]

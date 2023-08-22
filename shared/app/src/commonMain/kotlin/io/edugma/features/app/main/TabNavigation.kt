@@ -41,7 +41,6 @@ import io.edugma.navigation.core.navigator.EdugmaNavigator
 import io.edugma.navigation.core.navigator.ScreenUiState
 import io.edugma.navigation.core.screen.bundleOf
 import kotlinx.coroutines.flow.combine
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 val showNavBar = listOf(
     HomeScreens.Main,
@@ -187,7 +186,6 @@ val items = listOf(
     MainScreen.Misc,
 )
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun BottomNav(navController: EdugmaNavigator, isVisible: State<Boolean>) {
     val currentDestination by navController.currentScreen.collectAsState()

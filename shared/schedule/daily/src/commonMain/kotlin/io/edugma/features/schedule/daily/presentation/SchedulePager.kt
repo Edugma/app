@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.moriatsushi.insetsx.navigationBarsPadding
-import dev.icerock.moko.resources.AssetResource
+import dev.icerock.moko.resources.FileResource
 import dev.icerock.moko.resources.compose.stringResource
 import io.edugma.core.designSystem.atoms.lottie.EdLottie
 import io.edugma.core.designSystem.atoms.lottie.LottieSource
@@ -42,9 +42,9 @@ import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
 import kotlinx.datetime.LocalDate
 
 private val relaxAnims = listOf(
-    MR.assets.sch_relax_0,
-    MR.assets.sch_relax_1,
-    MR.assets.sch_relax_2,
+    MR.files.sch_relax_0,
+    MR.files.sch_relax_1,
+    MR.files.sch_relax_2,
 )
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -88,13 +88,13 @@ fun SchedulePager(
 
 @Composable
 fun NoLessonsDay(
-    animation: AssetResource,
+    animation: FileResource,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
         Spacer(modifier = Modifier.weight(1f))
         val painter = rememberLottiePainter(
-            source = LottieSource.Asset(animation),
+            source = LottieSource.FileRes(animation),
             alternativeUrl = "https://raw.githubusercontent.com/Edugma/resources/main/42410-sleeping-polar-bear.gif",
         )
         EdLottie(

@@ -11,23 +11,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import io.edugma.core.designSystem.MR
 import io.edugma.core.designSystem.atoms.lottie.EdLottie
 import io.edugma.core.designSystem.atoms.lottie.LottieSource
 import io.edugma.core.designSystem.atoms.lottie.rememberLottiePainter
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.resources.MR
 
 @Composable
 fun EdNothingFound(modifier: Modifier = Modifier, message: String = "К сожалению, ничего не найдено.") {
-    val anim = remember { MR.assets.emptylist }
+    val anim = remember { MR.files.emptylist }
     Column(
         modifier = modifier.padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
         val painter = rememberLottiePainter(
-            source = LottieSource.Asset(anim),
+            source = LottieSource.FileRes(anim),
             alternativeUrl = "https://raw.githubusercontent.com/Edugma/resources/main/42410-sleeping-polar-bear.gif",
         )
         EdLottie(

@@ -32,7 +32,7 @@ fun ScheduleCard(
     ) {
         Column(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
             val painter = rememberLottiePainter(
-                source = LottieSource.Asset(MR.assets.sch_relax_2),
+                source = LottieSource.FileRes(MR.files.sch_relax_2),
                 alternativeUrl = "https://raw.githubusercontent.com/Edugma/resources/main/42410-sleeping-polar-bear.gif",
             )
             EdLottie(

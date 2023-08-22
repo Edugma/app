@@ -8,6 +8,7 @@ import io.edugma.data.schedule.api.ScheduleService
 import io.edugma.data.schedule.api.ScheduleSourcesService
 import io.edugma.data.schedule.repository.FreePlaceRepositoryImpl
 import io.edugma.data.schedule.repository.LessonsReviewRepositoryImpl
+import io.edugma.data.schedule.repository.ScheduleCacheRepository
 import io.edugma.data.schedule.repository.ScheduleInfoRepositoryImpl
 import io.edugma.data.schedule.repository.ScheduleRepositoryImpl
 import io.edugma.data.schedule.repository.ScheduleSourcesRepositoryImpl
@@ -28,6 +29,7 @@ object ScheduleDataModule {
         single { get<Ktorfit>(named(DiConst.Schedule)).create<ScheduleSourcesService>() }
         single { get<Ktorfit>(named(DiConst.Schedule)).create<FreePlacesService>() }
         singleOf(::ScheduleRepositoryImpl) { bind<ScheduleRepository>() }
+        singleOf(::ScheduleCacheRepository)
         single<ScheduleInfoRepository> { ScheduleInfoRepositoryImpl(get(), get()) }
         single<FreePlaceRepository> { FreePlaceRepositoryImpl(get()) }
         single<ScheduleSourcesRepository> { ScheduleSourcesRepositoryImpl(get(), get(), get()) }

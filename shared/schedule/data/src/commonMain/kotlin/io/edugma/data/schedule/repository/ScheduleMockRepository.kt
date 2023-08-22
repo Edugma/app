@@ -1,5 +1,6 @@
 package io.edugma.data.schedule.repository
 
+import com.benasher44.uuid.uuid4
 import io.edugma.core.api.utils.nowLocalDate
 import io.edugma.features.schedule.domain.model.StudentDirection
 import io.edugma.features.schedule.domain.model.StudentFaculty
@@ -113,7 +114,8 @@ class ScheduleMockRepository {
     private fun getSubjects() = listOf(
         LessonSubjectInfo(
             id = "1",
-            title = "Мультиплатформенная разработка мобильных приложений",
+            title = "Мультиплатформенная разработка мобильных приложений " +
+                uuid4().toString().take(5),
         ),
     )
 

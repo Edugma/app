@@ -25,4 +25,10 @@
     <string name="sch_find_free_place">Найти свободную аудиторию</string>
     <string name="sch_no_lessons_today">Сегодня нет занятий</string>
     <string name="schedule_cal_calendar">Календарь</string>
+
+
+    <string name="menu_home">Главная</string>
+    <string name="menu_schedule">Расписание</string>
+    <string name="menu_account">Сервисы</string>
+    <string name="menu_misc">Прочее</string>
 </resources>
