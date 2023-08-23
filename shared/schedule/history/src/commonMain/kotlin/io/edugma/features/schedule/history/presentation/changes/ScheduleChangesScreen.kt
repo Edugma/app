@@ -1,4 +1,4 @@
-package io.edugma.features.schedule.history.changes
+package io.edugma.features.schedule.history.presentation.changes
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
@@ -21,10 +21,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import io.edugma.core.api.utils.format
+import io.edugma.core.arch.viewmodel.bind
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.withAlpha
+import io.edugma.core.navigation.schedule.ScheduleHistoryScreens
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.features.schedule.domain.model.group.Group
@@ -35,15 +37,21 @@ import io.edugma.features.schedule.domain.model.lessonType.LessonType
 import io.edugma.features.schedule.domain.model.place.Place
 import io.edugma.features.schedule.domain.model.teacher.Teacher
 import io.edugma.features.schedule.domain.usecase.LessonChange
-import kotlinx.datetime.Instant
+import io.edugma.navigation.core.screen.NavArgs
 
 @Composable
 fun ScheduleChangesScreen(
     viewModel: ScheduleChangesViewModel = getViewModel(),
-    first: Instant,
-    second: Instant,
+    args: NavArgs<ScheduleHistoryScreens.Changes>,
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.stateFlow.collectAsState()
+    viewModel.bind {
+        viewModel.onAction(
+            ScheduleChangesAction.OnArguments(
+                args = args,
+            ),
+        )
+    }
 
     FeatureScreen {
         ScheduleChangesContent(
@@ -53,7 +61,7 @@ fun ScheduleChangesScreen(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ScheduleChangesContent(
     state: ScheduleChangesState,

@@ -1,6 +1,6 @@
 package io.edugma.features.schedule.lessonsReview
 
-import io.edugma.core.arch.mvi.updateState
+import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.features.schedule.domain.model.review.LessonTimesReview
@@ -13,7 +13,7 @@ class LessonsReviewViewModel(
     init {
         launchCoroutine {
             useCase.getLessonsReview().collect {
-                updateState {
+                newState {
                     copy(
                         lessons = it,
                     )

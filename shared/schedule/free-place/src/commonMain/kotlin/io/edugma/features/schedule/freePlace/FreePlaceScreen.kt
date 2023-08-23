@@ -33,7 +33,7 @@ import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.ContentAlpha
-import io.edugma.core.designSystem.utils.MediumAlpha
+import io.edugma.core.designSystem.utils.SecondaryContent
 import io.edugma.core.designSystem.utils.WithContentAlpha
 import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen
@@ -44,7 +44,7 @@ import kotlinx.datetime.LocalTime
 
 @Composable
 fun FreePlaceScreen(viewModel: FreePlaceViewModel = getViewModel()) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.stateFlow.collectAsState()
 
     FeatureScreen {
         FreePlaceContent(
@@ -208,7 +208,7 @@ fun FreePlaceContent(
                                     text = item.first.title,
                                     style = EdTheme.typography.titleSmall,
                                 )
-                                MediumAlpha {
+                                SecondaryContent {
                                     Text(
                                         text = item.first.description,
                                         style = EdTheme.typography.titleSmall,

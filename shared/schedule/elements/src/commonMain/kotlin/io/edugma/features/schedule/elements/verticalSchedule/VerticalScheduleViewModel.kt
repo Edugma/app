@@ -3,7 +3,7 @@ package io.edugma.features.schedule.elements.verticalSchedule
 import io.edugma.core.api.utils.getOrDefault
 import io.edugma.core.api.utils.isFinalFailure
 import io.edugma.core.api.utils.nowLocalDate
-import io.edugma.core.arch.mvi.updateState
+import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.arch.mvi.viewmodel.prop
 import io.edugma.core.navigation.schedule.ScheduleInfoScreens
@@ -28,11 +28,11 @@ class VerticalScheduleViewModel(
 ) : BaseViewModel<VerticalScheduleState>(VerticalScheduleState()) {
     init {
         launchCoroutine {
-            state.prop { scheduleSource }.collect {
+            stateFlow.prop { scheduleSource }.collect {
                 val lessonDisplaySettings = it?.let {
                     useCase.getLessonDisplaySettings(it.type)
                 } ?: LessonDisplaySettings.Default
-                updateState {
+                newState {
                     copy(
                         lessonDisplaySettings = lessonDisplaySettings,
                     )
@@ -41,13 +41,13 @@ class VerticalScheduleViewModel(
         }
 
         launchCoroutine {
-            state.prop { scheduleSource }.filterNotNull().collectLatest {
+            stateFlow.prop { scheduleSource }.filterNotNull().collectLatest {
                 useCase.getSchedule(it).collect {
                     if (!it.isFinalFailure) {
                         val schedule = it.getOrDefault(emptyList())
                         if (schedule.isEmpty() && it.isLoading) return@collect
 
-                        updateState {
+                        newState {
                             setSchedule(
                                 schedule = schedule.toUiModel(),
                             )
@@ -59,7 +59,7 @@ class VerticalScheduleViewModel(
     }
 
     fun setScheduleSource(scheduleSource: ScheduleSource) {
-        updateState {
+        newState {
             copy(scheduleSource = scheduleSource)
         }
     }

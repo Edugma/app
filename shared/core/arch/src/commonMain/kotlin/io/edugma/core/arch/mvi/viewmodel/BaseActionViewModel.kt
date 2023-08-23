@@ -25,7 +25,7 @@ abstract class BaseActionViewModel<TState, TAction>(
 
     init {
         viewModelScope.launch(Dispatchers.Default) {
-            state.collect {
+            stateFlow.collect {
                 Logger.d(it.toString(), tag = "STATE")
             }
         }

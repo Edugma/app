@@ -3,7 +3,7 @@ package io.edugma.features.schedule.menu
 import io.edugma.core.api.utils.nowLocalDate
 import io.edugma.core.api.utils.nowLocalTime
 import io.edugma.core.api.utils.untilMinutes
-import io.edugma.core.arch.mvi.updateState
+import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.designSystem.organism.accountSelector.AccountSelectorVO
 import io.edugma.core.navigation.ScheduleScreens
@@ -58,7 +58,7 @@ class ScheduleMenuViewModel(
 
         launchCoroutine {
             useCase.getSelectedSource().collect { selectedSource ->
-                updateState {
+                newState {
                     copy(
                         source = source.copy(
                             selectedSource = selectedSource,
@@ -83,7 +83,7 @@ class ScheduleMenuViewModel(
 
     private suspend fun setMenuItems() {
         val menuItems = getScheduleMenuItems.invoke()
-        updateState { copy(menuItems = menuItems) }
+        newState { copy(menuItems = menuItems) }
     }
 
     fun onScheduleClick() {

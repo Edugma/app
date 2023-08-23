@@ -1,6 +1,6 @@
 package io.edugma.features.account.marks
 
-import io.edugma.core.arch.mvi.updateState
+import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.utils.isNotNull
 import io.edugma.core.utils.isNull
@@ -60,25 +60,25 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
     }
 
     fun openBottomSheetClick(performance: Performance?) {
-        updateState {
+        newState {
             copy(selectedPerformance = performance)
         }
     }
 
     private fun setPerformanceData(data: List<Performance>) {
-        updateState {
+        newState {
             copy(data = data)
         }
     }
 
     private fun setLoading(isLoading: Boolean) {
-        updateState {
+        newState {
             copy(isLoading = isLoading)
         }
     }
 
     private fun setError(isError: Boolean) {
-        updateState {
+        newState {
             copy(isError = isError)
         }
     }
@@ -88,7 +88,7 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
         semesters: Set<Int>? = null,
         types: Set<String>? = null,
     ) {
-        updateState {
+        newState {
             copy(
                 courses = courses?.map { Course(it) }?.toSet() ?: this.courses,
                 semesters = semesters?.map { Semester(it) }?.toSet() ?: this.semesters,
@@ -98,7 +98,7 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
     }
 
     fun updateFilter(filter: Filter<*>) {
-        updateState {
+        newState {
             if (!isLoading) {
                 when (filter) {
                     is Course -> copy(
@@ -125,7 +125,7 @@ class PerformanceViewModel(private val repository: PerformanceRepository) :
     }
 
     fun resetFilters() {
-        updateState {
+        newState {
             copy(
                 currentFilters = emptySet(),
                 courses = courses.map { it.copy(isChecked = false) }.toSet(),

@@ -4,7 +4,7 @@ import app.cash.paging.Pager
 import app.cash.paging.PagingConfig
 import app.cash.paging.PagingData
 import app.cash.paging.cachedIn
-import io.edugma.core.arch.mvi.updateState
+import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.navigation.core.router.external.ExternalRouter
 import io.edugma.core.utils.viewmodel.launchCoroutine
@@ -35,7 +35,7 @@ class StudentsViewModel(
                 .flow
                 .cachedIn(viewModelScope)
                 .collect {
-                    updateState {
+                    newState {
                         copy(pagingData = it)
                     }
                 }
@@ -43,7 +43,7 @@ class StudentsViewModel(
     }
 
     fun setName(name: String) {
-        updateState {
+        newState {
             copy(name = name)
         }
     }
@@ -60,13 +60,13 @@ class StudentsViewModel(
     }
 
     fun selectFilter() {
-        updateState {
+        newState {
             copy(bottomType = BottomSheetType.Filter)
         }
     }
 
     fun selectStudent(student: Student) {
-        updateState {
+        newState {
             copy(selectedStudent = student, bottomType = BottomSheetType.Student)
         }
     }

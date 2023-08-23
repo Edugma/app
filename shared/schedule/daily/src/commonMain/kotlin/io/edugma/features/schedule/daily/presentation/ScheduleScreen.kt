@@ -58,7 +58,7 @@ fun ScheduleScreen(
     viewModel: ScheduleViewModel = getViewModel(),
     date: LocalDate? = null,
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.stateFlow.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.initDate(date)

@@ -2,7 +2,7 @@ package io.edugma.features.schedule.scheduleInfo.groupInfo
 
 import io.edugma.core.api.utils.onFailure
 import io.edugma.core.api.utils.onSuccess
-import io.edugma.core.arch.mvi.updateState
+import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.arch.mvi.viewmodel.prop
 import io.edugma.core.utils.viewmodel.launchCoroutine
@@ -18,10 +18,10 @@ class GroupInfoViewModel(
 ) : BaseViewModel<GroupInfoState>(GroupInfoState()) {
     init {
         launchCoroutine {
-            state.prop { id }.filterNotNull().collect {
+            stateFlow.prop { id }.filterNotNull().collect {
                 repository.getGroupInfo(it)
                     .onSuccess {
-                        updateState {
+                        newState {
                             copy(
                                 groupInfo = it,
                                 scheduleSource = ScheduleSource(
@@ -37,13 +37,13 @@ class GroupInfoViewModel(
     }
 
     fun setId(id: String) {
-        updateState {
+        newState {
             copy(id = id)
         }
     }
 
     fun onTabSelected(tab: GroupInfoTabs) {
-        updateState {
+        newState {
             copy(selectedTab = tab)
         }
     }

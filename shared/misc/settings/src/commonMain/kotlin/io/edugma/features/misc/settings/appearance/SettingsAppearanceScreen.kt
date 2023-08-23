@@ -20,7 +20,7 @@ import io.edugma.core.utils.Typed1Listener
 
 @Composable
 fun SettingsAppearanceScreen(viewModel: SettingsAppearanceViewModel = getViewModel()) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.stateFlow.collectAsState()
 
     FeatureScreen {
         SettingsAppearanceContent(

@@ -1,6 +1,6 @@
 package io.edugma.features.account.web
 
-import io.edugma.core.arch.mvi.updateState
+import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.features.account.domain.repository.AuthorizationRepository
@@ -21,7 +21,7 @@ class WebViewModel(
     }
 
     fun init(url: String, isFullScreen: Boolean) {
-        updateState {
+        newState {
             copy(isFullScreen = isFullScreen, url = url, errorCode = null)
         }
     }
@@ -31,7 +31,7 @@ class WebViewModel(
     }
 
     fun loadingError(code: Int) {
-        updateState {
+        newState {
             copy(errorCode = code, url = null)
         }
         setTokenLoading(false)
@@ -39,19 +39,19 @@ class WebViewModel(
     }
 
     private fun setTokenLoading(isLoading: Boolean) {
-        updateState {
+        newState {
             copy(isLoading = isLoading)
         }
     }
 
     private fun setWebLoading(isLoading: Boolean) {
-        updateState {
+        newState {
             copy(isWebViewLoading = isLoading)
         }
     }
 
     private fun setToken(token: String) {
-        updateState {
+        newState {
             copy(authToken = token)
         }
     }

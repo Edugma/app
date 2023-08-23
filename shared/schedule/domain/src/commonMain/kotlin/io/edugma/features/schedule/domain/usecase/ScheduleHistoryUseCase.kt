@@ -6,37 +6,50 @@ import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubject
 import io.edugma.features.schedule.domain.model.schedule.LessonsByTime
 import io.edugma.features.schedule.domain.model.schedule.ScheduleDay
 import io.edugma.features.schedule.domain.model.source.ScheduleSource
-import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import io.edugma.features.schedule.domain.repository.ScheduleRepository
 import io.edugma.features.schedule.domain.repository.ScheduleSourcesRepository
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.transformLatest
+import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlin.math.max
 
 class ScheduleHistoryUseCase(
     private val repository: ScheduleRepository,
     private val scheduleSourcesRepository: ScheduleSourcesRepository,
+    private val scheduleRepository: ScheduleRepository,
 ) {
     fun getHistory() =
         scheduleSourcesRepository.getSelectedSource()
             .transformLatest { source ->
                 if (source == null) {
-                    emit(Result.failure(Exception()))
+                    error("")
                 } else {
                     emitAll(repository.getHistory(ScheduleSource(source.type, source.key)))
                 }
-            }
+            }.map { it.asReversed() }
 
-    suspend fun getChanges2(): List<ScheduleDayChange> {
-        val new = getHistory().first().getOrNull()
-        val old = repository.getHistory(ScheduleSource(ScheduleSources.Group, "a17b0ee7-f595-11ea-80d1-bfb80b42a394")).first().getOrNull()
+    suspend fun getChanges(
+        firstScheduleTimestamp: Instant,
+        secondScheduleTimestamp: Instant,
+    ): List<ScheduleDayChange> {
+        val source = scheduleSourcesRepository.getSelectedSource().first() ?: return emptyList()
+        val scheduleSource = ScheduleSource(source.type, source.key)
+        val firstSchedule = scheduleRepository.getHistoryRecord(
+            source = scheduleSource,
+            timestamp = firstScheduleTimestamp,
+        ) ?: return emptyList()
+        val secondSchedule = scheduleRepository.getHistoryRecord(
+            source = scheduleSource,
+            timestamp = secondScheduleTimestamp,
+        ) ?: return emptyList()
 
-        return getChanges(old!!.toList().first().second, new!!.toList().first().second)
+        return calculateChanges(firstSchedule.schedule, secondSchedule.schedule)
     }
 
-    private fun getChanges(
+    private fun calculateChanges(
         oldSchedule: List<ScheduleDay>,
         newSchedule: List<ScheduleDay>,
     ): List<ScheduleDayChange> {

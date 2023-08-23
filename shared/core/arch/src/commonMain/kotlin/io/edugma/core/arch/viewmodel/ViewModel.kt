@@ -32,3 +32,12 @@ inline fun <reified T : ViewModel> getViewModel(): T {
     }
     return viewModel
 }
+
+@Composable
+inline fun <reified T : ViewModel> T.bind(crossinline onBind: () -> Unit) {
+    DisposableEffect(key1 = this) {
+        onBind()
+        onDispose {
+        }
+    }
+}

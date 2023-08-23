@@ -51,7 +51,7 @@ import kotlinx.datetime.DayOfWeek
 fun LessonsReviewScreen(
     viewModel: LessonsReviewViewModel = getViewModel(),
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.stateFlow.collectAsState()
 
     FeatureScreen(
         statusBarPadding = false,

@@ -68,7 +68,7 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TeachersScreen(viewModel: TeachersViewModel = getViewModel()) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.stateFlow.collectAsState()
     val bottomState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
     )

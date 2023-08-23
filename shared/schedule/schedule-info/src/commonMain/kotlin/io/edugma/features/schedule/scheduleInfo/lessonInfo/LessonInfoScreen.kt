@@ -37,7 +37,7 @@ import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
 import io.edugma.core.designSystem.utils.ContentAlpha
-import io.edugma.core.designSystem.utils.HighAlpha
+import io.edugma.core.designSystem.utils.PrimaryContent
 import io.edugma.core.designSystem.utils.WithContentAlpha
 import io.edugma.core.designSystem.utils.rememberAsyncImagePainter
 import io.edugma.core.icons.EdIcons
@@ -57,7 +57,7 @@ fun LessonInfoScreen(
     viewModel: LessonInfoViewModel = getViewModel(),
     lessonInfo: LessonInfo?,
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.stateFlow.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.onLessonInfo(lessonInfo)
@@ -103,7 +103,7 @@ private fun LessonInfoContent(
                 LessonType(
                     type = state.lessonInfo?.lesson?.type?.title ?: "",
                 )
-                HighAlpha {
+                PrimaryContent {
                     LessonTitle(
                         title = state.lessonInfo?.lesson?.subject?.title ?: "",
                     )

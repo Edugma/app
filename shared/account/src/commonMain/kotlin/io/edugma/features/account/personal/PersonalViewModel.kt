@@ -1,6 +1,6 @@
 package io.edugma.features.account.personal
 
-import io.edugma.core.arch.mvi.updateState
+import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.utils.isNotNull
 import io.edugma.core.utils.isNull
@@ -52,11 +52,11 @@ class PersonalViewModel(
     }
 
     fun setColumn(column: Columns) {
-        updateState {
+        newState {
             copy(selectedColumn = column)
         }
         if (column == Columns.Applications &&
-            (state.value.applications.isNull() || state.value.applicationsFromCache == true)
+            (stateFlow.value.applications.isNull() || stateFlow.value.applicationsFromCache == true)
         ) {
             loadApplications()
         }
@@ -78,25 +78,25 @@ class PersonalViewModel(
     }
 
     private fun setLoading(loading: Boolean) {
-        updateState {
+        newState {
             copy(isLoading = loading)
         }
     }
 
     private fun setError(error: Boolean = true) {
-        updateState {
+        newState {
             copy(isError = error)
         }
     }
 
     private fun setData(personal: Personal) {
-        updateState {
+        newState {
             copy(personal = personal)
         }
     }
 
     private fun setApplications(applications: List<Application>, fromCache: Boolean) {
-        updateState {
+        newState {
             copy(applications = applications, applicationsFromCache = fromCache)
         }
     }

@@ -48,6 +48,38 @@ fun EdCard(
 @Composable
 @NonRestartableComposable
 fun EdCard(
+    onClick: () -> Unit,
+    selected: Boolean,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    shape: Shape = CardDefaults.shape,
+    colors: EdCardColors = EdCardDefaults.cardColors(
+        containerColor = EdTheme.colorScheme.surface,
+    ),
+    elevation: EdElevation = EdElevation.Level1,
+    border: BorderStroke? = null,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    EdSurface(
+        onClick = onClick,
+        selected = selected,
+        modifier = modifier,
+        enabled = enabled,
+        shape = shape,
+        color = colors.containerColor(enabled).value,
+        contentColor = colors.contentColor(enabled).value,
+        elevation = elevation,
+        border = border,
+        interactionSource = interactionSource,
+    ) {
+        Column(content = content)
+    }
+}
+
+@Composable
+@NonRestartableComposable
+fun EdCard(
     modifier: Modifier = Modifier,
     shape: Shape = CardDefaults.shape,
     colors: EdCardColors = EdCardDefaults.cardColors(

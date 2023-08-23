@@ -42,7 +42,7 @@ fun VerticalScheduleComponent(
     viewModel: VerticalScheduleViewModel = getViewModel(),
     scheduleSource: ScheduleSource,
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.stateFlow.collectAsState()
 
     LaunchedEffect(scheduleSource) {
         viewModel.setScheduleSource(scheduleSource)

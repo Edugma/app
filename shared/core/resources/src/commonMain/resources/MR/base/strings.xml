@@ -16,6 +16,7 @@
     <string name="sch_no_lessons_today">Сегодня нет занятий</string>
     <string name="schedule_menu_need_select_source">Для того чтобы пользоваться возможностями расписания, Вам необходимо выбрать, откуда нам его загружать.</string>
     <string name="schedule_les_rev_lessons_review">Обзор предметов</string>
+    <string name="schedule_history">История изменений</string>
     <string name="schedule_fre_pla_find_free_place">Найти свободную аудиторию</string>
     <string name="sch_to_today">На сегодня</string>
     <string name="sch_schedule">Расписание</string>

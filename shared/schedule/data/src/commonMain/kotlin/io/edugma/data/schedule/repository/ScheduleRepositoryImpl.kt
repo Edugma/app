@@ -7,6 +7,7 @@ import io.edugma.data.base.store.store
 import io.edugma.data.schedule.api.ScheduleService
 import io.edugma.data.schedule.model.toModel
 import io.edugma.features.schedule.domain.model.ScheduleComplexFilter
+import io.edugma.features.schedule.domain.model.ScheduleRecord
 import io.edugma.features.schedule.domain.model.compact.CompactSchedule
 import io.edugma.features.schedule.domain.model.schedule.ScheduleDay
 import io.edugma.features.schedule.domain.model.source.ScheduleSource
@@ -16,9 +17,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.datetime.Instant
 import kotlin.time.Duration.Companion.seconds
 
 class ScheduleRepositoryImpl(
@@ -47,14 +48,24 @@ class ScheduleRepositoryImpl(
         coroutineScope()
     }
 
-    override fun getHistory(source: ScheduleSource) =
-        flowOf(
-            kotlin.runCatching {
-//                localDS.getAll(source)
-//                    .associate { it.date to (it.days?.toModel() ?: emptyList()) }
-                null!!
-            },
-        )
+    override fun getHistory(source: ScheduleSource): Flow<List<ScheduleRecord>> {
+        return scheduleCacheRepository.getScheduleHistory(source.id).map {
+            it?.map { ScheduleRecord(it.data.toModel(), it.timestamp) } ?: emptyList()
+        }
+    }
+
+    override suspend fun getHistoryRecord(
+        source: ScheduleSource,
+        timestamp: Instant,
+    ): ScheduleRecord? {
+        val cacheRecord = scheduleCacheRepository.getScheduleHistoryRecord(source.id, timestamp)
+        return cacheRecord?.let {
+            ScheduleRecord(
+                schedule = cacheRecord.data.toModel(),
+                timestamp = cacheRecord.timestamp,
+            )
+        }
+    }
 
     override fun getTeacher(source: ScheduleSource, id: String) =
         scheduleStore0.get(source)

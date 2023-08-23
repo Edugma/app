@@ -12,7 +12,7 @@ import io.edugma.features.account.menu.screens.MainScreen
 @Composable
 fun MenuScreen(viewModel: MenuViewModel = getViewModel()) {
 
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.stateFlow.collectAsState()
 
     FeatureScreen(statusBarPadding = false) {
         when (state) {

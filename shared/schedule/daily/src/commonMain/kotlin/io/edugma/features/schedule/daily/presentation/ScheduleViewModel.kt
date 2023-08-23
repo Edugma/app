@@ -2,7 +2,7 @@ package io.edugma.features.schedule.daily.presentation
 
 import io.edugma.core.api.utils.getOrThrow
 import io.edugma.core.api.utils.nowLocalDate
-import io.edugma.core.arch.mvi.updateState
+import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
 import io.edugma.core.arch.mvi.viewmodel.prop
 import io.edugma.core.navigation.schedule.ScheduleInfoScreens
@@ -32,7 +32,7 @@ class ScheduleViewModel(
 
         launchCoroutine(
             onError = {
-                updateState {
+                newState {
                     copy(
                         lessonDisplaySettings = LessonDisplaySettings.Default,
                     )
@@ -43,7 +43,7 @@ class ScheduleViewModel(
                 val lessonDisplaySettings = it?.let {
                     useCase.getLessonDisplaySettings(it.type)
                 } ?: LessonDisplaySettings.Default
-                updateState {
+                newState {
                     copy(
                         lessonDisplaySettings = lessonDisplaySettings,
                     )
@@ -57,18 +57,18 @@ class ScheduleViewModel(
             if (it.isLoading) {
                 if (it.isSuccess) {
                     val schedule = it.getOrThrow()
-                    updateState {
+                    newState {
                         setSchedule(schedule.toUiModel())
                             .setIsLoading(it.isLoading)
                     }
                 } else {
-                    updateState {
+                    newState {
                         setIsLoading(it.isLoading)
                     }
                 }
             } else if (it.isSuccess) {
                 val schedule = it.getOrThrow()
-                updateState {
+                newState {
                     setSchedule(schedule.toUiModel())
                         .setIsLoading(it.isLoading)
                 }
@@ -81,28 +81,28 @@ class ScheduleViewModel(
     override fun onAction(action: ScheduleDailyAction) {
         when (action) {
             ScheduleDailyAction.OnBack -> router.back()
-            ScheduleDailyAction.OnFabClick -> updateState {
+            ScheduleDailyAction.OnFabClick -> newState {
                 setSelectedDate(selectedDate = Clock.System.nowLocalDate())
             }
             ScheduleDailyAction.OnRefreshing -> onRefreshing()
-            is ScheduleDailyAction.OnDayClick -> updateState {
+            is ScheduleDailyAction.OnDayClick -> newState {
                 setSelectedDate(selectedDate = action.date)
             }
             is ScheduleDailyAction.OnLessonClick -> onLessonClick(
                 lesson = action.lesson,
                 dateTime = action.dateTime,
             )
-            is ScheduleDailyAction.OnWeeksPosChanged -> updateState {
+            is ScheduleDailyAction.OnWeeksPosChanged -> newState {
                 copy(weeksPos = action.weeksPos)
             }
-            is ScheduleDailyAction.OnSchedulePosChanged -> updateState {
+            is ScheduleDailyAction.OnSchedulePosChanged -> newState {
                 setSchedulePos(action.schedulePos)
             }
         }
     }
 
     private fun onRefreshing() {
-        updateState {
+        newState {
             copy(isRefreshing = !isLoading)
         }
         launchCoroutine {
@@ -125,10 +125,10 @@ class ScheduleViewModel(
 
     fun initDate(date: LocalDate?) {
         if (date != null) {
-            val schedule = state.value.schedule
+            val schedule = stateFlow.value.schedule
             if (schedule == null) {
                 launchCoroutine {
-                    val newSchedule = state.prop { this.schedule }
+                    val newSchedule = stateFlow.prop { this.schedule }
                         .filterNotNull()
                         .first()
                     fixAndSetDate(date, newSchedule)
@@ -140,7 +140,7 @@ class ScheduleViewModel(
     }
 
     private fun fixAndSetDate(date: LocalDate, schedule: List<ScheduleDayUiModel>) {
-        updateState {
+        newState {
             var fixedDate = date
             val firstDate = schedule.first().date
             val lastDate = schedule.last().date

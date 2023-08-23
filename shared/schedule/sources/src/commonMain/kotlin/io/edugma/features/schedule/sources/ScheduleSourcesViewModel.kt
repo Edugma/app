@@ -2,7 +2,7 @@ package io.edugma.features.schedule.sources
 
 import io.edugma.core.api.utils.onFailure
 import io.edugma.core.api.utils.onSuccess
-import io.edugma.core.arch.mvi.updateState
+import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
@@ -24,19 +24,19 @@ class ScheduleSourcesViewModel(
     init {
         launchCoroutine {
             useCase.getSourceTypes()
-                .onSuccess { updateState { setTabs(tabs = it) } }
-                .onFailure { updateState { setTabs(tabs = emptyList()) } }
+                .onSuccess { newState { setTabs(tabs = it) } }
+                .onFailure { newState { setTabs(tabs = emptyList()) } }
                 .collect()
         }
 
         launchCoroutine(
             onError = {
-                updateState {
+                newState {
                     copy(sources = emptyList())
                 }
             },
         ) {
-            state.map { it.selectedTab }
+            stateFlow.map { it.selectedTab }
                 .filterNotNull()
                 .filter { it != ScheduleSourcesTabs.Complex }
                 .distinctUntilChanged()
@@ -50,16 +50,16 @@ class ScheduleSourcesViewModel(
                                 isFavorite = it in favoriteSources,
                             )
                         }
-                        updateState { setSources(sources = uiModel) }
+                        newState { setSources(sources = uiModel) }
                     }
                 }.catch {
-                    updateState { setSources(sources = emptyList()) }
+                    newState { setSources(sources = emptyList()) }
                 }.collect()
         }
     }
 
     fun onSelectTab(sourceType: ScheduleSourcesTabs) {
-        updateState {
+        newState {
             copy(selectedTab = sourceType)
         }
     }
@@ -84,7 +84,7 @@ class ScheduleSourcesViewModel(
     }
 
     fun onQueryChange(query: String) {
-        updateState {
+        newState {
             setQuery(query = query)
         }
     }

@@ -1,6 +1,6 @@
 package io.edugma.features.nodes.main
 
-import io.edugma.core.arch.mvi.updateState
+import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.navigation.HomeScreens
 import io.edugma.core.utils.viewmodel.launchCoroutine
@@ -13,7 +13,7 @@ class NodesMainViewModel(
     init {
         launchCoroutine {
             val nodeList = nodesRepository.getNodeList()
-            updateState {
+            newState {
                 copy(
                     nodes = nodeList,
                 )
@@ -22,7 +22,7 @@ class NodesMainViewModel(
     }
 
     fun onNodeUrl(nodeUrl: String) {
-        updateState {
+        newState {
             copy(
                 nodeUrl = nodeUrl,
             )
@@ -31,13 +31,13 @@ class NodesMainViewModel(
 
     fun onEnterNodeUrl() {
         launchCoroutine {
-            nodesRepository.selectNode(state.value.nodeUrl)
+            nodesRepository.selectNode(stateFlow.value.nodeUrl)
             router.navigateTo(HomeScreens.Main())
         }
     }
 
     fun onTabClick(tab: NodeTabs) {
-        updateState {
+        newState {
             copy(
                 selectedTab = tab,
             )
@@ -46,7 +46,7 @@ class NodesMainViewModel(
 
     fun onNodeItemClick(node: Node) {
         launchCoroutine {
-            nodesRepository.selectNode(state.value.nodeUrl)
+            nodesRepository.selectNode(stateFlow.value.nodeUrl)
             router.navigateTo(HomeScreens.Main())
         }
     }

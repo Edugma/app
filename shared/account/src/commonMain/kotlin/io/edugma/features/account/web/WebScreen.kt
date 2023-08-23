@@ -22,7 +22,7 @@ fun WebScreen(
     isFullScreen: Boolean,
     viewModel: WebViewModel = getViewModel(),
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.stateFlow.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.init(url, isFullScreen)

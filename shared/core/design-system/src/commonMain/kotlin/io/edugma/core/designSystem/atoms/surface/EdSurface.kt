@@ -69,6 +69,58 @@ fun EdSurface(
 @NonRestartableComposable
 fun EdSurface(
     onClick: () -> Unit,
+    selected: Boolean,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    shape: Shape = RectangleShape,
+    color: Color = EdTheme.colorScheme.surface,
+    selectedColor: Color = EdTheme.colorScheme.surfaceVariant,
+    contentColor: Color = contentColorFor(color),
+    elevation: EdElevation = EdElevation.Level1,
+    elevatedAlpha: Float = 1f,
+    border: BorderStroke? = null,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    content: @Composable () -> Unit,
+) {
+    val absoluteElevation = LocalAbsoluteTonalElevation.current + elevation.defaultElevation
+    CompositionLocalProvider(
+        LocalContentColor provides contentColor,
+        LocalAbsoluteTonalElevation provides absoluteElevation,
+    ) {
+        Box(
+            modifier = modifier
+                .minimumInteractiveComponentSize()
+                .surface(
+                    shape = shape,
+                    backgroundColor = if (selected) {
+                        selectedColor
+                    } else {
+                        surfaceColorAtElevation(
+                            color = color,
+                            elevation = absoluteElevation,
+                            elevatedAlpha = elevatedAlpha,
+                        )
+                    },
+                    border = border,
+                )
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = rememberRipple(),
+                    enabled = enabled,
+                    role = Role.Button,
+                    onClick = onClick,
+                ),
+            propagateMinConstraints = true,
+        ) {
+            content()
+        }
+    }
+}
+
+@Composable
+@NonRestartableComposable
+fun EdSurface(
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     shape: Shape = RectangleShape,

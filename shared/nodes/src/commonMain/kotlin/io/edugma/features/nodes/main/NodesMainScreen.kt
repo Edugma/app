@@ -35,7 +35,7 @@ import io.edugma.features.nodes.domain.model.Node
 
 @Composable
 fun NodesMainScreen(viewModel: NodesMainViewModel = getViewModel()) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.stateFlow.collectAsState()
 
     FeatureScreen {
         NodesMainContent(

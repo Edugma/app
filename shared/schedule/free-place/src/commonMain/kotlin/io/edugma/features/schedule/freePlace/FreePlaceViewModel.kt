@@ -3,7 +3,7 @@ package io.edugma.features.schedule.freePlace
 import io.edugma.core.api.utils.MAX
 import io.edugma.core.api.utils.MIN
 import io.edugma.core.api.utils.nowLocalDate
-import io.edugma.core.arch.mvi.updateState
+import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.features.schedule.domain.model.place.Place
@@ -37,13 +37,13 @@ class FreePlaceViewModel(
     init {
         launchCoroutine(
             onError = {
-                updateState {
+                newState {
                     setPlaces(emptyList())
                 }
             },
         ) {
             val it = useCase.getSources(ScheduleSources.Place)
-            updateState {
+            newState {
                 setPlaces(
                     it.map { Place(it.key, it.title, PlaceType.Undefined, it.description) }
                         .sortedBy { it.title },
@@ -53,25 +53,25 @@ class FreePlaceViewModel(
     }
 
     fun onDateSelect(date: LocalDate) {
-        updateState {
+        newState {
             copy(date = date)
         }
     }
 
     fun onTimeFromSelect(timeFrom: LocalTime) {
-        updateState {
+        newState {
             copy(timeFrom = timeFrom)
         }
     }
 
     fun onTimeToSelect(timeTo: LocalTime) {
-        updateState {
+        newState {
             copy(timeTo = timeTo)
         }
     }
 
     fun onEnterFilterQuery(query: String) {
-        updateState {
+        newState {
             setFilterQuery(query)
         }
     }
@@ -79,19 +79,19 @@ class FreePlaceViewModel(
     fun onFindFreePlaces() {
         launchCoroutine(
             onError = {
-                updateState {
+                newState {
                     copy(freePlaces = emptyMap())
                 }
             },
         ) {
             repository.findFreePlaces(
                 PlaceFilters(
-                    ids = state.value.places.map { it.id },
-                    dateTimeFrom = LocalDateTime(state.value.date, state.value.timeFrom),
-                    dateTimeTo = LocalDateTime(state.value.date, state.value.timeTo),
+                    ids = stateFlow.value.places.map { it.id },
+                    dateTimeFrom = LocalDateTime(stateFlow.value.date, stateFlow.value.timeFrom),
+                    dateTimeTo = LocalDateTime(stateFlow.value.date, stateFlow.value.timeTo),
                 ),
             ).collect {
-                updateState {
+                newState {
                     copy(freePlaces = it.getOrThrow())
                 }
             }
@@ -99,7 +99,7 @@ class FreePlaceViewModel(
     }
 
     fun onShowFilters() {
-        updateState {
+        newState {
             copy(
                 showFilters = !showFilters,
             )

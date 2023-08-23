@@ -79,7 +79,7 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @Composable
 fun ScheduleCalendarScreen(viewModel: ScheduleCalendarViewModel = getViewModel()) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.stateFlow.collectAsState()
 
     FeatureScreen(
         statusBarPadding = false,

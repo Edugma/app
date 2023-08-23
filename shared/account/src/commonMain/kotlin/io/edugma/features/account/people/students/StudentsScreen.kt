@@ -67,10 +67,10 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun StudentsScreen(viewModel: StudentsViewModel = getViewModel()) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.stateFlow.collectAsState()
 
     val studentListItems = remember {
-        viewModel.state.map { it.pagingData }.filterNotNull()
+        viewModel.stateFlow.map { it.pagingData }.filterNotNull()
     }.collectAsLazyPagingItems()
 
     val bottomState = rememberModalBottomSheetState(

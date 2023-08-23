@@ -1,6 +1,6 @@
 package io.edugma.features.account.menu
 
-import io.edugma.core.arch.mvi.updateState
+import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.designSystem.organism.accountSelector.AccountSelectorVO
 import io.edugma.core.navigation.AccountScreens
@@ -65,7 +65,7 @@ class MenuViewModel(
         launchCoroutine {
             lateinit var login: String
             lateinit var password: String
-            (state.value as? MenuState.Authorization)
+            (stateFlow.value as? MenuState.Authorization)
                 ?.let {
                     login = it.login
                     password = it.password
@@ -155,7 +155,7 @@ class MenuViewModel(
 
     // todo подумать как лучше
     private fun setLoading(isLoading: Boolean) {
-        when (state.value) {
+        when (stateFlow.value) {
             is MenuState.Authorization ->
                 mutateStateWithCheck<MenuState.Authorization> {
                     it.copy(isLoading = isLoading)
@@ -169,19 +169,19 @@ class MenuViewModel(
     }
 
     private fun setAuthorizedState() {
-        updateState {
+        newState {
             MenuState.Menu(cards = cardsRepository.getCards())
         }
     }
 
     private fun setNotAuthorizedState() {
-        updateState {
+        newState {
             MenuState.Authorization()
         }
     }
 
     private inline fun <reified TState : MenuState> mutateStateWithCheck(noinline mutate: (TState) -> TState) {
-        updateState {
+        newState {
             (this as? TState)?.let(mutate::invoke) ?: this
         }
     }

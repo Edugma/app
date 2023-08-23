@@ -26,7 +26,7 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @Composable
 fun ClassmatesScreen(viewModel: ClassmatesViewModel = getViewModel()) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.stateFlow.collectAsState()
 
     FeatureScreen {
         ClassmatesContent(

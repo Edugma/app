@@ -1,6 +1,6 @@
 package io.edugma.navigation.core.screen
 
-class ScreenArgHolder<T : Screen>(
+class NavArgs<T : Screen>(
     @PublishedApi
     internal val screenBundle: ScreenBundle,
 ) {
@@ -9,5 +9,9 @@ class ScreenArgHolder<T : Screen>(
 
     fun <TArg : Any> ScreenArg<TArg>.get(): TArg {
         return screenBundle.args[this] as TArg
+    }
+
+    inline operator fun <TArg : Any> invoke(action: NavArgs<T>.() -> TArg): TArg {
+        return action(this)
     }
 }

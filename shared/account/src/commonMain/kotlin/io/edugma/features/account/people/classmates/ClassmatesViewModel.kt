@@ -1,6 +1,6 @@
 package io.edugma.features.account.people.classmates
 
-import io.edugma.core.arch.mvi.updateState
+import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.navigation.core.router.external.ExternalRouter
 import io.edugma.core.utils.isNotNull
@@ -49,7 +49,7 @@ class ClassmatesViewModel(
     }
 
     fun onShare() {
-        state.value.data?.let { students ->
+        stateFlow.value.data?.let { students ->
             externalRouter.share(
                 students.convertAndShare(),
             )
@@ -57,19 +57,19 @@ class ClassmatesViewModel(
     }
 
     private fun setData(data: List<Student>) {
-        updateState {
+        newState {
             copy(data = data)
         }
     }
 
     private fun setLoading(isLoading: Boolean) {
-        updateState {
+        newState {
             copy(isLoading = isLoading)
         }
     }
 
     private fun setError(isError: Boolean) {
-        updateState {
+        newState {
             copy(isError = isError)
         }
     }

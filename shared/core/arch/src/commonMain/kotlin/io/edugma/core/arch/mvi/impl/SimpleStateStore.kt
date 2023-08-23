@@ -5,10 +5,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class SimpleStateStore<TState>(initialState: TState) : StateStore<TState> {
-    private val _state = MutableStateFlow(initialState)
-    override val state = _state.asStateFlow()
+    private val _stateFlow = MutableStateFlow(initialState)
+    override val stateFlow = _stateFlow.asStateFlow()
+
+    override val state: TState
+        get() = _stateFlow.value
 
     override fun setState(state: TState) {
-        _state.value = state
+        _stateFlow.value = state
     }
 }

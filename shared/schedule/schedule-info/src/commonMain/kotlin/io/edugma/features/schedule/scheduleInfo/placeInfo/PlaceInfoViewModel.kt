@@ -2,7 +2,7 @@ package io.edugma.features.schedule.scheduleInfo.placeInfo
 
 import io.edugma.core.api.utils.onFailure
 import io.edugma.core.api.utils.onSuccess
-import io.edugma.core.arch.mvi.updateState
+import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.arch.mvi.viewmodel.prop
 import io.edugma.core.utils.viewmodel.launchCoroutine
@@ -21,10 +21,10 @@ class PlaceInfoViewModel(
 ) : BaseViewModel<PlaceInfoState>(PlaceInfoState()) {
     init {
         launchCoroutine {
-            state.prop { id }.filterNotNull().collect {
+            stateFlow.prop { id }.filterNotNull().collect {
                 repository.getPlaceInfo(it)
                     .onSuccess {
-                        updateState {
+                        newState {
                             copy(
                                 placeInfo = it,
                                 scheduleSource = ScheduleSource(
@@ -39,10 +39,10 @@ class PlaceInfoViewModel(
         }
 
         launchCoroutine {
-            state.prop { id }.filterNotNull().collect {
+            stateFlow.prop { id }.filterNotNull().collect {
                 freePlaceRepository.getPlaceOccupancy(it)
                     .onSuccess {
-                        updateState {
+                        newState {
                             copy(placeOccupancy = it)
                         }
                     }.onFailure {
@@ -52,13 +52,13 @@ class PlaceInfoViewModel(
     }
 
     fun onTabSelected(tab: PlaceInfoTabs) {
-        updateState {
+        newState {
             copy(selectedTab = tab)
         }
     }
 
     fun setId(id: String) {
-        updateState {
+        newState {
             copy(
                 id = id,
             )
