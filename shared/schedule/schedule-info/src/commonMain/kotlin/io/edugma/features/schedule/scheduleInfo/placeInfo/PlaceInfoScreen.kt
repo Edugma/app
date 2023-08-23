@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -126,7 +127,7 @@ private fun OccupancyTab(
     state: PlaceInfoState,
 ) {
     HorizontalPager(
-        pageCount = state.placeOccupancy.size,
+        state = rememberPagerState { state.placeOccupancy.size },
         modifier = Modifier.fillMaxSize(),
     ) {
         val currentDay = state.placeOccupancy[it]

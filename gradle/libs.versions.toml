@@ -5,17 +5,17 @@ androidGradlePlugin = "8.1.0"
 kotlinter = "3.14.0"
 ktorfitGradle = "1.0.0"
 kotlinxAtomic = "0.21.0"
-composeMultiplatform = "1.4.3"
+composeMultiplatform = "1.5.0-rc04"
 
 # common
 androidxLifecycle = "2.6.1"
-androidxAnnotations = "1.7.0-alpha02"
+androidxAnnotations = "1.7.0-beta01"
 androidxDatastore = "1.1.0-alpha04"
-androidxCollections = "1.3.0-alpha04"
+androidxCollections = "1.3.0-beta01"
 
 # Don't update until material 3 in compose mp will be updated
-composeBom = "2023.05.00"
-composeMaterial2 = "1.4.3"
+composeBom = "2023.08.00"
+composeMaterial2 = "1.5.0"
 composeCompiler = "1.4.8"
 
 kotlinxDateTime = "0.4.0"

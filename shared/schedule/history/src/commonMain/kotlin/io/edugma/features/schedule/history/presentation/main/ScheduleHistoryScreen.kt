@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -98,35 +100,40 @@ private fun ScheduleHistoryContent(
                 SpacerHeight(8.dp)
             }
         }
-        state.history.forEach { (schedule, timestamp) ->
-            Row(Modifier.fillMaxWidth().padding(vertical = 10.dp, horizontal = 16.dp)) {
-                val interactionSource = remember { MutableInteractionSource() }
+        Column(
+            Modifier.fillMaxSize()
+                .verticalScroll(rememberScrollState())
+        ) {
+            state.history.forEach { (schedule, timestamp) ->
+                Row(Modifier.fillMaxWidth().padding(vertical = 10.dp, horizontal = 16.dp)) {
+                    val interactionSource = remember { MutableInteractionSource() }
 
-                val isSelected = state.firstSelected == timestamp ||
-                    state.secondSelected == timestamp
+                    val isSelected = state.firstSelected == timestamp ||
+                        state.secondSelected == timestamp
 
-                RadioButton(
-                    selected = isSelected,
-                    onClick = null,
-                    interactionSource = interactionSource,
-                )
-                SpacerWidth(8.dp)
-                EdCard(
-                    onClick = { onAction(ScheduleHistoryAction.OnScheduleSelected(timestamp)) },
-                    selected = isSelected,
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    interactionSource = interactionSource,
-                ) {
-                    Column(
-                        Modifier
-                            .padding(vertical = 10.dp, horizontal = 16.dp)
+                    RadioButton(
+                        selected = isSelected,
+                        onClick = null,
+                        interactionSource = interactionSource,
+                    )
+                    SpacerWidth(8.dp)
+                    EdCard(
+                        onClick = { onAction(ScheduleHistoryAction.OnScheduleSelected(timestamp)) },
+                        selected = isSelected,
+                        modifier = Modifier
                             .fillMaxWidth(),
+                        interactionSource = interactionSource,
                     ) {
-                        val date = remember(timestamp) {
-                            timestamp.toLocalDateTime(TimeZone.currentSystemDefault())
+                        Column(
+                            Modifier
+                                .padding(vertical = 10.dp, horizontal = 16.dp)
+                                .fillMaxWidth(),
+                        ) {
+                            val date = remember(timestamp) {
+                                timestamp.toLocalDateTime(TimeZone.currentSystemDefault())
+                            }
+                            Text(text = date.format("dd MMMM yyyy, HH:mm"))
                         }
-                        Text(text = date.format("dd MMMM yyyy, HH:mm"))
                     }
                 }
             }

@@ -83,7 +83,7 @@ fun ScheduleContent(
 ) {
     Box {
         Column(Modifier.fillMaxSize()) {
-            val weekPagerState = rememberPagerState(state.weeksPos)
+            val weekPagerState = rememberPagerState(state.weeksPos) { state.weeks.size }
             weekPagerState.bindTo(state.weeksPos)
             weekPagerState.onPageChanged { onAction(ScheduleDailyAction.OnWeeksPosChanged(it)) }
 
@@ -126,7 +126,9 @@ fun ScheduleContent(
                 if (state.isLoading && state.schedule == null) {
                     ScheduleDayPlaceholder(4)
                 } else {
-                    val schedulePagerState = rememberPagerState(state.schedulePos)
+                    val schedulePagerState = rememberPagerState(state.schedulePos) {
+                        state.schedule?.size ?: 0
+                    }
                     schedulePagerState.bindTo(state.schedulePos)
                     schedulePagerState.onPageChanged {
                         onAction(ScheduleDailyAction.OnSchedulePosChanged(it))

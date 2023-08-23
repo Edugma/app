@@ -107,7 +107,7 @@ fun PaymentsContent(
     backListener: ClickListener,
 ) {
     Column(Modifier.navigationBarsPadding()) {
-        val paymentsPagerState = rememberPagerState(state.selectedIndex)
+        val paymentsPagerState = rememberPagerState(state.selectedIndex) { state.data?.size ?: 0 }
         paymentsPagerState.bindTo(state.selectedIndex)
         paymentsPagerState.onPageChanged(onPaymentChange::invoke)
         EdTopAppBar(
@@ -162,7 +162,6 @@ fun PaymentScreen(
             state.data?.keys?.indexOf(it)?.let(onPaymentChange::invoke)
         }
         HorizontalPager(
-            pageCount = state.data?.size ?: 0,
             state = paymentsPagerState,
             key = { state.getTypeByIndex(it) ?: io.edugma.features.account.domain.model.PaymentType.Dormitory },
         ) { page ->

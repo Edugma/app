@@ -86,11 +86,14 @@ fun EdTextField(
 }
 
 object EdTextFieldDefaults {
-    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun textFieldColors() = TextFieldDefaults.textFieldColors(
-        textColor = LocalContentColor.current,
-        containerColor = Color.Transparent,
+    fun textFieldColors() = TextFieldDefaults.colors(
+        focusedTextColor = LocalContentColor.current,
+        unfocusedTextColor = LocalContentColor.current,
+
+        focusedContainerColor = Color.Transparent,
+        unfocusedContainerColor = Color.Transparent,
+
         focusedIndicatorColor = Color.Transparent,
         unfocusedIndicatorColor = Color.Transparent,
         disabledIndicatorColor = Color.Transparent,

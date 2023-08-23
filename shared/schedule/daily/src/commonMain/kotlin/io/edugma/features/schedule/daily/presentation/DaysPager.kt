@@ -56,7 +56,6 @@ fun DaysPager(
     modifier: Modifier = Modifier,
 ) {
     HorizontalPager(
-        pageCount = weeks.size,
         state = pagerState,
         modifier = modifier
             .fillMaxWidth()

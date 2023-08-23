@@ -62,7 +62,6 @@ fun SchedulePager(
         onRefresh = onRefreshing,
     ) {
         HorizontalPager(
-            pageCount = scheduleDays.size,
             state = pagerState,
             modifier = Modifier.fillMaxSize(),
         ) { page ->
