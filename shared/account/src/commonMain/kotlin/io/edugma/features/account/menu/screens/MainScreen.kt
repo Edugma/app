@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.moriatsushi.insetsx.statusBarsPadding
 import dev.icerock.moko.resources.compose.painterResource
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.surface.EdSurface
@@ -26,14 +25,13 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.designSystem.utils.edPlaceholder
 import io.edugma.core.designSystem.utils.rememberCachedIconPainter
+import io.edugma.core.designSystem.utils.statusBarsPadding
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed2Listener
 import io.edugma.features.account.domain.model.menu.CardType
 import io.edugma.features.account.menu.MenuState
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun MainScreen(
     state: MenuState.Menu,

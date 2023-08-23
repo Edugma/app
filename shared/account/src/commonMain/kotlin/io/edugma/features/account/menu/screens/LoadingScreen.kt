@@ -10,10 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.moriatsushi.insetsx.statusBarsPadding
 import io.edugma.core.designSystem.atoms.loader.EdLoader
 import io.edugma.core.designSystem.atoms.loader.EdLoaderSize
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.utils.statusBarsPadding
 
 @Composable
 fun LoadingScreen() {

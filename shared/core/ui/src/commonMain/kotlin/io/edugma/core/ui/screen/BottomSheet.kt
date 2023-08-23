@@ -10,13 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.moriatsushi.insetsx.imePadding
-import com.moriatsushi.insetsx.navigationBarsPadding
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.molecules.dragger.Dragger
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.ifThen
+import io.edugma.core.designSystem.utils.imePadding
+import io.edugma.core.designSystem.utils.navigationBarsPadding
 
 @Composable
 fun BottomSheet(

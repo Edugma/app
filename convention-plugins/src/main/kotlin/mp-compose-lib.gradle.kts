@@ -24,10 +24,8 @@ kotlin {
                 implementation(compose.components.resources)
 //                implementation("dev.icerock.moko:resources:0.23.0")
 //                implementation("dev.icerock.moko:resources-compose:0.23.0")
-//                implementation("com.moriatsushi.insetsx:insetsx:0.1.0-alpha10")
                 implementation(libs.moko.resources)
                 implementation(libs.moko.resourcesCompose)
-                implementation(libs.insetsx)
                 //implementation(compose.preview)
             }
         }

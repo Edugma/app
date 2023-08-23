@@ -9,7 +9,7 @@ import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
-import com.moriatsushi.insetsx.navigationBarsPadding
+import io.edugma.core.designSystem.utils.navigationBarsPadding
 
 @Composable
 fun ColumnScope.SpacerHeight(height: Dp) {

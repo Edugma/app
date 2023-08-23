@@ -32,7 +32,6 @@ ktor = "2.3.2"
 mokoResourcesVersion = "0.23.0"
 
 imageLoader = "1.6.0"
-insetsx = "0.1.0-alpha10"
 
 uuid = "0.7.0"
 kermit = "2.0.0-RC4"
@@ -85,7 +84,6 @@ compose-uiToolingPreview = { group = "androidx.compose.ui", name = "ui-tooling-p
 compose-uiUtil = { group = "androidx.compose.ui", name = "ui-util" }
 
 imageLoader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "imageLoader" }
-insetsx = { module = "com.moriatsushi.insetsx:insetsx", version.ref = "insetsx" }
 
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 

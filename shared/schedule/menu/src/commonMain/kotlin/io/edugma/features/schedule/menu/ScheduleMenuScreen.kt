@@ -16,7 +16,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.moriatsushi.insetsx.statusBarsPadding
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import io.edugma.core.arch.viewmodel.getViewModel
@@ -26,6 +25,7 @@ import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.button.EdButtonSize
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.shapes.bottom
+import io.edugma.core.designSystem.utils.statusBarsPadding
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen

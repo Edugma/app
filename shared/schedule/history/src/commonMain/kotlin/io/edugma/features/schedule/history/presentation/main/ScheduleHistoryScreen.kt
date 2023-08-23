@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.RadioButton
@@ -18,8 +19,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.moriatsushi.insetsx.statusBars
-import com.moriatsushi.insetsx.statusBarsPadding
 import dev.icerock.moko.resources.compose.stringResource
 import io.edugma.core.api.utils.format
 import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
@@ -36,6 +35,7 @@ import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.designSystem.utils.SecondaryContent
+import io.edugma.core.designSystem.utils.statusBarsPadding
 import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen
 import kotlinx.datetime.TimeZone
@@ -102,7 +102,7 @@ private fun ScheduleHistoryContent(
         }
         Column(
             Modifier.fillMaxSize()
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(rememberScrollState()),
         ) {
             state.history.forEach { (schedule, timestamp) ->
                 Row(Modifier.fillMaxWidth().padding(vertical = 10.dp, horizontal = 16.dp)) {

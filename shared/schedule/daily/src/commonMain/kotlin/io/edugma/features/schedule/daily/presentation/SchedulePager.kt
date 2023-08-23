@@ -18,7 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.moriatsushi.insetsx.navigationBarsPadding
 import dev.icerock.moko.resources.FileResource
 import dev.icerock.moko.resources.compose.stringResource
 import io.edugma.core.designSystem.atoms.lottie.EdLottie
@@ -27,6 +26,7 @@ import io.edugma.core.designSystem.atoms.lottie.rememberLottiePainter
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.utils.navigationBarsPadding
 import io.edugma.core.resources.MR
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed2Listener

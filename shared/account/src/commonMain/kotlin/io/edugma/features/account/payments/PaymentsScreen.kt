@@ -35,7 +35,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.moriatsushi.insetsx.navigationBarsPadding
 import dev.icerock.moko.resources.compose.painterResource
 import io.edugma.core.api.utils.format
 import io.edugma.core.arch.viewmodel.getViewModel
@@ -50,6 +49,7 @@ import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.edPlaceholder
+import io.edugma.core.designSystem.utils.navigationBarsPadding
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener

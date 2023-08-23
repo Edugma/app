@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -48,8 +49,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.moriatsushi.insetsx.navigationBarsPadding
-import com.moriatsushi.insetsx.statusBars
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import io.edugma.core.arch.viewmodel.getViewModel
@@ -65,6 +64,7 @@ import io.edugma.core.designSystem.utils.ContentAlpha
 import io.edugma.core.designSystem.utils.LocalContentAlpha
 import io.edugma.core.designSystem.utils.WithContentAlpha
 import io.edugma.core.designSystem.utils.ifThen
+import io.edugma.core.designSystem.utils.navigationBarsPadding
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen

@@ -14,12 +14,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import com.moriatsushi.insetsx.statusBarsPadding
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.textField.EdTextField
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.utils.statusBarsPadding
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.features.account.menu.MenuState

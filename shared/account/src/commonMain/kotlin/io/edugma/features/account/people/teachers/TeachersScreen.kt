@@ -32,7 +32,6 @@ import app.cash.paging.compose.LazyPagingItems
 import app.cash.paging.compose.collectAsLazyPagingItems
 import app.cash.paging.compose.itemContentType
 import app.cash.paging.compose.itemKey
-import com.moriatsushi.insetsx.navigationBarsPadding
 import dev.icerock.moko.resources.compose.painterResource
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.divider.EdDivider
@@ -50,6 +49,7 @@ import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
 import io.edugma.core.designSystem.organism.refresher.Refresher
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.utils.navigationBarsPadding
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.BottomSheet
 import io.edugma.core.ui.screen.FeatureScreen
