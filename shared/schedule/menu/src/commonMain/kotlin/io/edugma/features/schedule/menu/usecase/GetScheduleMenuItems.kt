@@ -15,15 +15,13 @@ class GetScheduleMenuItems(
                 ),
                 listOf(
                     MenuItem.LessonsReview,
-//                    MenuItem.Empty.forItem(MenuItem.LessonsReview),
-//                    MenuItem.Empty.forItem(MenuItem.LessonsReview),
                     MenuItem.ChaneHistory,
-                    MenuItem.AppWidget,
+//                    MenuItem.AppWidget,
                 ),
-                listOf(
-                    MenuItem.FindFreePlace,
-                    MenuItem.Empty.forItem(MenuItem.FindFreePlace),
-                ),
+//                listOf(
+//                    MenuItem.FindFreePlace,
+//                    MenuItem.Empty.forItem(MenuItem.FindFreePlace),
+//                ),
             )
         } else {
             listOf(

@@ -15,7 +15,7 @@ class ScheduleHistoryViewModel(
         launchCoroutine {
             useCase.getHistory().collect {
                 newState {
-                    onHistory(history = it)
+                    toHistory(history = it)
                 }
             }
         }
@@ -24,8 +24,8 @@ class ScheduleHistoryViewModel(
     override fun onAction(action: ScheduleHistoryAction) {
         when (action) {
             ScheduleHistoryAction.OnCompareClicked -> {
-                val firstSelected = state.firstSelected
-                val secondSelected = state.secondSelected
+                val firstSelected = state.previousSelected
+                val secondSelected = state.nextSelected
                 if (firstSelected != null && secondSelected != null) {
                     router.navigateTo(
                         ScheduleHistoryScreens.Changes(
@@ -48,62 +48,64 @@ class ScheduleHistoryViewModel(
 
 data class ScheduleHistoryState(
     val history: List<ScheduleRecord> = emptyList(),
-    val firstSelected: Instant? = null,
-    val secondSelected: Instant? = null,
+    val previousSelected: Instant? = null,
+    val nextSelected: Instant? = null,
     val isCheckButtonEnabled: Boolean = false,
 ) {
-    fun onHistory(history: List<ScheduleRecord>): ScheduleHistoryState {
-        return if (firstSelected != null) {
-            if (secondSelected != null) {
+    fun toHistory(history: List<ScheduleRecord>): ScheduleHistoryState {
+        val firstIsExist = history.find { it.timestamp == previousSelected }
+        return if (firstIsExist != null) {
+            val secondIsExist = history.find { it.timestamp == nextSelected }
+            if (secondIsExist != null) {
                 copy(
                     history = history,
                 )
             } else {
                 copy(
                     history = history,
-                    secondSelected = history
-                        .firstOrNull { it.timestamp != firstSelected }?.timestamp,
+                    nextSelected = history
+                        .firstOrNull { it.timestamp != previousSelected }?.timestamp,
                 )
             }
         } else {
             copy(
                 history = history,
-                firstSelected = history.getOrNull(0)?.timestamp,
-                secondSelected = history.getOrNull(1)?.timestamp,
+                previousSelected = history.getOrNull(1)?.timestamp,
+                nextSelected = history.getOrNull(0)?.timestamp,
             )
         }.updateIsCheckButtonEnabled()
     }
 
     fun toSelected(timestamp: Instant): ScheduleHistoryState {
         return when {
-            timestamp == firstSelected -> copy(
-                firstSelected = secondSelected,
-                secondSelected = null,
+            timestamp == previousSelected -> copy(
+                previousSelected = nextSelected,
+                nextSelected = null,
             )
 
-            timestamp == secondSelected -> copy(
-                secondSelected = null,
+            timestamp == nextSelected -> copy(
+                nextSelected = null,
             )
 
-            firstSelected != null -> if (secondSelected != null) {
+            previousSelected != null -> if (nextSelected != null) {
                 copy(
-                    secondSelected = firstSelected,
-                    firstSelected = timestamp,
+                    nextSelected = previousSelected,
+                    previousSelected = timestamp,
                 )
             } else {
                 copy(
-                    secondSelected = timestamp,
+                    nextSelected = timestamp,
                 )
             }
 
             else -> copy(
-                firstSelected = timestamp,
+                previousSelected = timestamp,
             )
         }.updateIsCheckButtonEnabled()
     }
 
     private fun updateIsCheckButtonEnabled(): ScheduleHistoryState {
-        return if (firstSelected != null && secondSelected != null) {
+        return if (previousSelected != null && nextSelected != null) {
             copy(isCheckButtonEnabled = true)
         } else {
             copy(isCheckButtonEnabled = false)

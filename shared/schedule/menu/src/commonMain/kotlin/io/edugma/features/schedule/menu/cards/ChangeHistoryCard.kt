@@ -12,7 +12,7 @@ fun ChangeHistoryCard(
     modifier: Modifier = Modifier,
 ) {
     EdIconCard(
-        title = "История изменений",
+        title = "История\nизменений",
         onClick = onLessonsReviewClick,
         modifier = modifier,
         icon = rememberCachedIconPainter("https://img.icons8.com/fluency/48/time-machine.png"),

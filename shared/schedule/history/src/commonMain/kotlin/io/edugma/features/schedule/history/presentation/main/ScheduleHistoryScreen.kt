@@ -8,17 +8,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import io.edugma.core.api.utils.format
 import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
@@ -36,6 +38,7 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.designSystem.utils.SecondaryContent
 import io.edugma.core.designSystem.utils.statusBarsPadding
+import io.edugma.core.icons.EdIcons
 import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen
 import kotlinx.datetime.TimeZone
@@ -73,7 +76,7 @@ private fun ScheduleHistoryContent(
                     windowInsets = WindowInsets.statusBars,
                     colors = EdTopAppBarDefaults.transparent(),
                 )
-                SpacerHeight(4.dp)
+                SpacerHeight(2.dp)
                 Row(
                     Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -104,35 +107,76 @@ private fun ScheduleHistoryContent(
             Modifier.fillMaxSize()
                 .verticalScroll(rememberScrollState()),
         ) {
-            state.history.forEach { (schedule, timestamp) ->
-                Row(Modifier.fillMaxWidth().padding(vertical = 10.dp, horizontal = 16.dp)) {
-                    val interactionSource = remember { MutableInteractionSource() }
-
-                    val isSelected = state.firstSelected == timestamp ||
-                        state.secondSelected == timestamp
-
-                    RadioButton(
-                        selected = isSelected,
-                        onClick = null,
-                        interactionSource = interactionSource,
-                    )
-                    SpacerWidth(8.dp)
-                    EdCard(
-                        onClick = { onAction(ScheduleHistoryAction.OnScheduleSelected(timestamp)) },
-                        selected = isSelected,
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        interactionSource = interactionSource,
+            state.history.forEach { (_, timestamp) ->
+                key(timestamp) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
+                            .padding(top = 10.dp, end = 16.dp),
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
+                        val interactionSource = remember { MutableInteractionSource() }
+
+                        val isSelectedPrevious = state.previousSelected == timestamp
+                        val isSelectedNext = state.nextSelected == timestamp
+                        val isSelected = isSelectedPrevious || isSelectedNext
+
                         Column(
-                            Modifier
-                                .padding(vertical = 10.dp, horizontal = 16.dp)
-                                .fillMaxWidth(),
+                            Modifier.width(60.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
                         ) {
-                            val date = remember(timestamp) {
-                                timestamp.toLocalDateTime(TimeZone.currentSystemDefault())
+                            RadioButton(
+                                selected = isSelected,
+                                onClick = null,
+                                interactionSource = interactionSource,
+                            )
+                            if (isSelected) {
+                                val text = if (isSelectedNext) {
+                                    "след."
+                                } else {
+                                    "пред."
+                                }
+                                EdLabel(
+                                    text = text,
+                                    style = EdTheme.typography.labelMedium,
+                                )
                             }
-                            Text(text = date.format("dd MMMM yyyy, HH:mm"))
+                        }
+                        EdCard(
+                            onClick = { onAction(ScheduleHistoryAction.OnScheduleSelected(timestamp)) },
+                            selected = isSelected,
+                            modifier = Modifier.fillMaxWidth(),
+                            interactionSource = interactionSource,
+                        ) {
+                            Column(
+                                Modifier
+                                    .padding(vertical = 10.dp, horizontal = 16.dp)
+                                    .fillMaxWidth(),
+                            ) {
+                                val date = remember(timestamp) {
+                                    timestamp.toLocalDateTime(TimeZone.currentSystemDefault())
+                                }
+                                EdLabel(
+                                    text = "Расписание",
+                                    style = EdTheme.typography.titleMedium,
+                                )
+                                SpacerHeight(4.dp)
+                                SecondaryContent {
+                                    EdLabel(
+                                        text = date.format("dd MMMM yyyy"),
+                                        iconPainter = painterResource(
+                                            EdIcons.ic_fluent_calendar_ltr_16_regular,
+                                        ),
+                                        style = EdTheme.typography.bodySmall,
+                                    )
+                                    EdLabel(
+                                        text = date.format("HH:mm"),
+                                        iconPainter = painterResource(
+                                            EdIcons.ic_fluent_clock_16_regular,
+                                        ),
+                                        style = EdTheme.typography.bodySmall,
+                                    )
+                                }
+                            }
                         }
                     }
                 }

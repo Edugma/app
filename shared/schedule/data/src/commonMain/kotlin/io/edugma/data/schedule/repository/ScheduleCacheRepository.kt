@@ -76,7 +76,7 @@ class ScheduleCacheRepository(
             val resList = scheduleHistoryList.toMutableList()
             if (resList.size >= SCHEDULE_HISTORY_MAX_SIZE) {
                 repeat(resList.size - SCHEDULE_HISTORY_MAX_SIZE + 1) {
-                    resList.removeAt(SCHEDULE_HISTORY_MAX_SIZE - 1)
+                    resList.removeFirstOrNull()
                 }
             }
             resList.add(CachedResult(data, timestamp))
