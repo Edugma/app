@@ -49,7 +49,7 @@ play-service-maps = "18.1.0"
 koinAndroid = "3.4.2"
 androidxViewmodel = "2.6.1"
 
-composeActivity = "1.7.2"
+composeActivity = "1.8.0-alpha06"
 coreKtx = "1.10.1"
 appcompat = "1.6.1"
 startup = "1.1.1"

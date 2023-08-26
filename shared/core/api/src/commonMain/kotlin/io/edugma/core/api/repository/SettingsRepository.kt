@@ -8,21 +8,25 @@ import kotlin.reflect.typeOf
 interface SettingsRepository {
     suspend fun getString(key: String): String?
     suspend fun getBoolean(key: String): Boolean?
+    suspend fun getInt(key: String): Int?
 
     @InternalApi
     suspend fun <T : Any> getInternal(key: String, type: KType): T?
 
     fun getStringFlow(key: String): Flow<String?>
     fun getBooleanFlow(key: String): Flow<Boolean?>
+    fun getIntFlow(key: String): Flow<Int?>
 
     @InternalApi
     fun <T : Any> getFlowInternal(key: String, type: KType): Flow<T?>
 
     suspend fun saveString(key: String, value: String)
     suspend fun saveBoolean(key: String, value: Boolean)
+    suspend fun saveInt(key: String, value: Int)
 
     suspend fun removeString(key: String)
     suspend fun removeBoolean(key: String)
+    suspend fun removeInt(key: String)
 
     @InternalApi
     suspend fun <T : Any> saveInternal(key: String, value: T, type: KType)

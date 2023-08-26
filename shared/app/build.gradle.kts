@@ -9,6 +9,8 @@ kotlin {
                 implementation(projects.shared.core.designSystem)
                 implementation(projects.shared.core.navigation)
                 implementation(projects.shared.core.arch)
+                implementation(projects.shared.core.utils)
+                implementation(projects.shared.core.system)
 
                 implementation(projects.shared.nodes)
 

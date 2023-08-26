@@ -17,12 +17,6 @@ actual inline fun <reified T : ViewModel> getViewModel(): T {
         defaultViewModel.viewModels[T::class.qualifiedName ?: ""] = viewModel
     }
 
-
-    DisposableEffect(key1 = viewModel) {
-        onDispose {
-            viewModel.clear()
-        }
-    }
     return viewModel
 }
 
@@ -34,5 +28,6 @@ class DefaultViewModel : AndroidxViewModel() {
         viewModels.forEach { (_, viewModel) ->
             viewModel.clear()
         }
+        viewModels.clear()
     }
 }

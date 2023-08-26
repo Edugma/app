@@ -10,6 +10,7 @@ kotlin {
                 implementation(projects.shared.core.ui)
 
                 implementation(projects.shared.core.navigation)
+                implementation(projects.shared.core.api)
             }
         }
     }

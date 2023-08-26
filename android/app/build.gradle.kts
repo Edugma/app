@@ -14,6 +14,7 @@ dependencies {
     implementation(project(":shared:app"))
     implementation(project(":android:resources"))
     implementation(project(":shared:core:navigation"))
+    implementation(projects.shared.core.api)
     //implementation(projects.android.schedule.appwidget)
 
     implementation(platform(libs.compose.bom))

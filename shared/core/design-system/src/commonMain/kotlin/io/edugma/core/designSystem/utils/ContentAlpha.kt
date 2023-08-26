@@ -32,13 +32,33 @@ fun WithContentAlpha(alpha: Float, content: @Composable () -> Unit) {
 }
 
 @Composable
-fun PrimaryContent(content: @Composable () -> Unit) {
-    WithContentAlpha(alpha = ContentAlpha.high, content = content)
+fun PrimaryContent(
+    enabled: Boolean = true,
+    content: @Composable () -> Unit,
+) {
+    WithContentAlpha(
+        alpha = if (enabled) {
+            ContentAlpha.high
+        } else {
+            ContentAlpha.disabled
+        },
+        content = content,
+    )
 }
 
 @Composable
-fun SecondaryContent(content: @Composable () -> Unit) {
-    WithContentAlpha(alpha = ContentAlpha.medium, content = content)
+fun SecondaryContent(
+    enabled: Boolean = true,
+    content: @Composable () -> Unit,
+) {
+    WithContentAlpha(
+        alpha = if (enabled) {
+            ContentAlpha.medium
+        } else {
+            ContentAlpha.disabled
+        },
+        content = content,
+    )
 }
 
 @Composable

@@ -27,6 +27,10 @@ class SettingsRepositoryImpl(
         return preferenceRepository.getBoolean(key)
     }
 
+    override suspend fun getInt(key: String): Int? {
+        return preferenceRepository.getInt(key)
+    }
+
     @InternalApi
     @OptIn(ExperimentalSerializationApi::class)
     @Suppress("UNCHECKED_CAST")
@@ -41,6 +45,10 @@ class SettingsRepositoryImpl(
     }
     override fun getBooleanFlow(key: String): Flow<Boolean?> {
         return preferenceRepository.getBooleanFlow(key)
+    }
+
+    override fun getIntFlow(key: String): Flow<Int?> {
+        return preferenceRepository.getIntFlow(key)
     }
 
     @InternalApi
@@ -59,17 +67,21 @@ class SettingsRepositoryImpl(
     override suspend fun saveString(key: String, value: String) {
         preferenceRepository.saveString(key, value)
     }
-
     override suspend fun saveBoolean(key: String, value: Boolean) {
         preferenceRepository.saveBoolean(key, value)
+    }
+    override suspend fun saveInt(key: String, value: Int) {
+        preferenceRepository.saveInt(key, value)
     }
 
     override suspend fun removeBoolean(key: String) {
         preferenceRepository.removeBoolean(key)
     }
-
     override suspend fun removeString(key: String) {
         preferenceRepository.removeString(key)
+    }
+    override suspend fun removeInt(key: String) {
+        preferenceRepository.removeInt(key)
     }
 
     @InternalApi
