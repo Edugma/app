@@ -74,17 +74,25 @@ includeSubmodules(
 
 fun includeSubmodules(vararg projectPaths: String, deep: Int = 1) {
     require(deep >= 1)
+
     projectPaths.forEach { path ->
-        val childFiles = File(path).listFiles() ?: return@forEach
+        val file = File(rootDir, path)
+        val childFiles = file.listFiles() ?: return@forEach
         childFiles.forEach { subproject ->
-            if (subproject.isDirectory && File(subproject, "build.gradle.kts").exists()) {
-                val projectName = subproject.path
-                    .replace('\\', ':') //for windows
-                    .replace('/', ':') //for mac
-                include(projectName)
-            }
-            if (deep != 1) {
-                includeSubmodules(subproject.path, deep = deep - 1)
+            if (subproject.isDirectory) {
+                if (File(subproject, "build.gradle.kts").exists()) {
+                    val projectName = subproject.absolutePath
+                        .removePrefix(rootDir.absolutePath)
+                        .replace(File.separator, ":")
+                    include(projectName)
+                }
+                if (deep != 1) {
+                    includeSubmodules(
+                        subproject.absolutePath
+                            .removePrefix(rootDir.absolutePath),
+                        deep = deep - 1
+                    )
+                }
             }
         }
     }

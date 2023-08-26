@@ -14,6 +14,11 @@ kotlin {
                 implementation(libs.kotlinx.dateTime)
             }
         }
+        val androidMain by getting {
+            dependencies {
+                implementation(libs.androidx.viewmodel.compose)
+            }
+        }
     }
 }
 

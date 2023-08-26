@@ -6,7 +6,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
-import org.koin.compose.koinInject
 
 open class ViewModel {
 
@@ -23,15 +22,7 @@ open class ViewModel {
 }
 
 @Composable
-inline fun <reified T : ViewModel> getViewModel(): T {
-    val viewModel = koinInject<T>()
-    DisposableEffect(key1 = viewModel) {
-        onDispose {
-            viewModel.clear()
-        }
-    }
-    return viewModel
-}
+expect inline fun <reified T : ViewModel> getViewModel(): T
 
 @Composable
 inline fun <reified T : ViewModel> T.bind(crossinline onBind: () -> Unit) {
