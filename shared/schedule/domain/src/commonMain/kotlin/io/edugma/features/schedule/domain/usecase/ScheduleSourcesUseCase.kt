@@ -51,7 +51,7 @@ class ScheduleSourcesUseCase(
     }
 
     fun getSourceTypes() =
-        flowOf(Result.success(ScheduleSourcesTabs.values().toList()))
+        flowOf(Result.success(ScheduleSourcesTabs.getAllTabs()))
     // scheduleSourcesRepository.getSourceTypes()
 
     suspend fun getSources(type: ScheduleSources) =

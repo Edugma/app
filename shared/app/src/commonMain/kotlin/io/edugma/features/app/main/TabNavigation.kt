@@ -9,8 +9,8 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -19,6 +19,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -92,9 +93,9 @@ internal fun rememberTabNavigator(viewModel: MainViewModel): Pair<EdugmaNavigato
         screens = remember {
             listOf(
                 screenModule {
-                    screen(MainScreen.Home) {
-                        TabContent(homeNavigator)
-                    }
+//                    screen(MainScreen.Home) {
+//                        TabContent(homeNavigator)
+//                    }
                     screen(MainScreen.Schedule) {
                         TabContent(scheduleNavigator)
                     }
@@ -107,7 +108,7 @@ internal fun rememberTabNavigator(viewModel: MainViewModel): Pair<EdugmaNavigato
                 },
             )
         },
-        firstScreen = MainScreen.Home.bundleOf(),
+        firstScreen = MainScreen.Schedule.bundleOf(),
     )
 
     val isNavigationBarVisible = remember {
@@ -180,7 +181,7 @@ fun TabContent(edugmaNavigator: EdugmaNavigator) {
 }
 
 val items = listOf(
-    MainScreen.Home,
+    // MainScreen.Home,
     MainScreen.Schedule,
     MainScreen.Account,
     MainScreen.Misc,
@@ -207,11 +208,11 @@ fun BottomNav(navController: EdugmaNavigator, isVisible: State<Boolean>) {
     ) {
         EdNavigationBar(
             tonalElevation = 3.dp,
-            height = 80.dp,
+            height = 64.dp,
         ) {
             items.forEach { screen ->
                 val selected = currentDestination.screenBundle.screen.name == screen.name
-                NavigationBarItem(
+                EdNavigationBarItem(
                     icon = {
                         Crossfade(
                             targetState = selected,
@@ -221,11 +222,13 @@ fun BottomNav(navController: EdugmaNavigator, isVisible: State<Boolean>) {
                                 Icon(
                                     painter = painterResource(screen.getIcon(true)),
                                     contentDescription = null,
+                                    modifier = Modifier.size(26.dp),
                                 )
                             } else {
                                 Icon(
                                     painter = painterResource(screen.getIcon(false)),
                                     contentDescription = null,
+                                    modifier = Modifier.size(26.dp),
                                 )
                             }
                         }
@@ -239,7 +242,7 @@ fun BottomNav(navController: EdugmaNavigator, isVisible: State<Boolean>) {
                             } else {
                                 FontWeight.Medium
                             },
-                            style = EdTheme.typography.labelMedium,
+                            style = EdTheme.typography.labelSmall,
                         )
                     },
                     onClick = {

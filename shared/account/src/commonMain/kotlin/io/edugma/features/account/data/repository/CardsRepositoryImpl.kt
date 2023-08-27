@@ -51,17 +51,17 @@ class CardsRepositoryImpl : CardsRepository {
                     weight = 0.3f,
                 ),
             ),
-            listOf(
-                Card(
-                    id = "pd",
-                    name = "Проектная деятельность",
-                    label = null,
-                    icon = "",
-                    type = CardType.Web,
-                    weight = 0.5f,
-                    url = "https://e.mospolytech.ru/#/project-activity",
-                ),
-            ),
+//            listOf(
+//                Card(
+//                    id = "pd",
+//                    name = "Проектная деятельность",
+//                    label = null,
+//                    icon = "",
+//                    type = CardType.Web,
+//                    weight = 0.5f,
+//                    url = "https://e.mospolytech.ru/#/project-activity",
+//                ),
+//            ),
         )
     }
 }

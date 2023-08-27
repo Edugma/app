@@ -2,7 +2,7 @@ package io.edugma.features.nodes.main
 
 import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
-import io.edugma.core.navigation.HomeScreens
+import io.edugma.core.navigation.ScheduleScreens
 import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.features.nodes.domain.NodesRepository
 import io.edugma.features.nodes.domain.model.Node
@@ -32,7 +32,8 @@ class NodesMainViewModel(
     fun onEnterNodeUrl() {
         launchCoroutine {
             nodesRepository.selectNode(stateFlow.value.nodeUrl)
-            router.navigateTo(HomeScreens.Main())
+            // router.navigateTo(HomeScreens.Main())
+            router.navigateTo(ScheduleScreens.Menu())
         }
     }
 
@@ -47,7 +48,8 @@ class NodesMainViewModel(
     fun onNodeItemClick(node: Node) {
         launchCoroutine {
             nodesRepository.selectNode(stateFlow.value.nodeUrl)
-            router.navigateTo(HomeScreens.Main())
+            router.navigateTo(ScheduleScreens.Menu())
+            // router.navigateTo(HomeScreens.Main())
         }
     }
 }

@@ -21,4 +21,15 @@ enum class ScheduleSourcesTabs {
             Complex -> ScheduleSources.Complex
         }
     }
+    companion object {
+        // TODO fix Complex
+        fun getAllTabs() = listOf(
+            Favorite,
+            Group,
+            Teacher,
+            Student,
+            Place,
+            Subject,
+        )
+    }
 }

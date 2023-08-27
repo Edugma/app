@@ -106,7 +106,7 @@ class ScheduleSourcesViewModel(
 }
 
 data class ScheduleSourceState(
-    val tabs: List<ScheduleSourcesTabs> = ScheduleSourcesTabs.values().toList(),
+    val tabs: List<ScheduleSourcesTabs> = ScheduleSourcesTabs.getAllTabs(),
     val selectedTab: ScheduleSourcesTabs? = ScheduleSourcesTabs.Favorite,
     val query: String = "",
     val sources: List<ScheduleSourceUiModel> = emptyList(),

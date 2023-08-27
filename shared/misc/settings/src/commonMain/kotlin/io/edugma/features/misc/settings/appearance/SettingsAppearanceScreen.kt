@@ -14,8 +14,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.PopupProperties
+import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import io.edugma.core.api.model.ThemeMode
 import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
@@ -23,11 +26,12 @@ import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.surface.EdSurface
-import io.edugma.core.designSystem.molecules.button.EdButton
+import io.edugma.core.designSystem.molecules.settings.selector.EdSettingsSelector
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.shapes.bottom
+import io.edugma.core.icons.EdIcons
 import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
@@ -75,6 +79,14 @@ private fun SettingsAppearanceContent(
     }
 }
 
+private fun ThemeMode.getText(): String {
+    return when (this) {
+        ThemeMode.Light -> "Светлая"
+        ThemeMode.Dark -> "Тёмная"
+        ThemeMode.System -> "Как в системе"
+    }
+}
+
 @Composable
 private fun Dropdown(
     mode: ThemeMode,
@@ -83,20 +95,26 @@ private fun Dropdown(
     val options = remember { ThemeMode.values().toList() }
     var expanded by remember { mutableStateOf(false) }
 
-    Box {
-        EdButton(
-            text = mode.name,
+    Box(
+        contentAlignment = Alignment.BottomEnd,
+    ) {
+        EdSettingsSelector(
+            text = "Тема",
             onClick = {
                 expanded = !expanded
             },
+            icon = painterResource(EdIcons.ic_fluent_dark_theme_24_filled),
+            selectedText = mode.getText(),
         )
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
+            modifier = Modifier,
+            properties = PopupProperties(),
         ) {
             options.forEach { selectionOption ->
                 DropdownMenuItem(
-                    text = { EdLabel(selectionOption.name) },
+                    text = { EdLabel(selectionOption.getText()) },
                     onClick = {
                         onThemeModeSelected(selectionOption)
                         expanded = false
