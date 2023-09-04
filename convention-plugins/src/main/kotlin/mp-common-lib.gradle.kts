@@ -33,9 +33,13 @@ kotlin {
         }
 
         val androidMain by getting {
+            // TODO due to moko resource crash
+            dependsOn(commonMain)
         }
 
         val iosMain by getting {
+            // TODO due to moko resource crash
+            dependsOn(commonMain)
         }
 
     }

@@ -471,10 +471,10 @@ private const val LabelLayoutIdTag: String = "label"
 private const val ItemAnimationDurationMillis: Int = 100
 
 internal val NavigationBarItemHorizontalPadding: Dp = 8.dp
-internal val NavigationBarItemVerticalPadding: Dp = 10.dp
+internal val NavigationBarItemVerticalPadding: Dp = 9.dp
 
 private val IndicatorHorizontalPadding: Dp = 16.dp
-private val IndicatorVerticalPadding: Dp = 2.dp
+private val IndicatorVerticalPadding: Dp = 1.5.dp
 private val IndicatorVerticalOffset: Dp = 12.dp
 
 internal class MappedInteractionSource(

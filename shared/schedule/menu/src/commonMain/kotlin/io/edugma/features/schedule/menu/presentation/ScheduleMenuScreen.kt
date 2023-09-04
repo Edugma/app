@@ -1,4 +1,4 @@
-package io.edugma.features.schedule.menu
+package io.edugma.features.schedule.menu.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
+import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.surface.EdSurface
@@ -49,14 +50,7 @@ fun ScheduleMenuScreen(viewModel: ScheduleMenuViewModel = getViewModel()) {
     ) {
         ScheduleMenuContent(
             state = state,
-            onScheduleClick = viewModel::onScheduleClick,
-            onLessonsReviewClick = viewModel::onLessonsReviewClick,
-            onScheduleCalendarClick = viewModel::onScheduleCalendarClick,
-            onScheduleSourceClick = viewModel::onScheduleSourceClick,
-            onFreePlaceClick = viewModel::onFreePlaceClick,
-            onAppWidgetClick = viewModel::onAppWidgetClick,
-            onHistoryClick = viewModel::onHistoryClick,
-            onSignOut = viewModel::onSignOut,
+            onAction = viewModel.rememberOnAction(),
         )
     }
 }
@@ -64,15 +58,8 @@ fun ScheduleMenuScreen(viewModel: ScheduleMenuViewModel = getViewModel()) {
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 fun ScheduleMenuContent(
-    state: ScheduleMenuState,
-    onScheduleClick: ClickListener,
-    onLessonsReviewClick: ClickListener,
-    onScheduleCalendarClick: ClickListener,
-    onScheduleSourceClick: ClickListener,
-    onFreePlaceClick: ClickListener,
-    onAppWidgetClick: ClickListener,
-    onHistoryClick: ClickListener,
-    onSignOut: ClickListener,
+    state: ScheduleMenuUiState,
+    onAction: (ScheduleMenuAction) -> Unit,
 ) {
     Column(
         Modifier.fillMaxSize(),
@@ -95,7 +82,9 @@ fun ScheduleMenuContent(
                             .weight(1f),
                     )
                     if (state.source.accountSelectorVO != null) {
-                        IconButton(onClick = onSignOut) {
+                        IconButton(onClick = {
+                            onAction(ScheduleMenuAction.OnSignOut)
+                        }) {
                             Icon(
                                 painter = painterResource(EdIcons.ic_fluent_sign_out_24_filled),
                                 contentDescription = null,
@@ -106,13 +95,17 @@ fun ScheduleMenuContent(
                 SpacerHeight(height = 14.dp)
                 if (state.source.accountSelectorVO == null) {
                     NeedSelectScheduleSource(
-                        onClick = onScheduleSourceClick,
+                        onClick = {
+                            onAction(ScheduleMenuAction.OnScheduleSourceClick)
+                        },
                     )
                     SpacerHeight(height = 10.dp)
                 } else {
                     ScheduleSourcesCard(
                         accountSelectorVO = state.source.accountSelectorVO,
-                        onScheduleSourceClick = onScheduleSourceClick,
+                        onScheduleSourceClick = {
+                            onAction(ScheduleMenuAction.OnScheduleSourceClick)
+                        },
                     )
                     SpacerHeight(height = 14.dp)
                 }
@@ -130,12 +123,24 @@ fun ScheduleMenuContent(
                 MenuCard(
                     menuItems = menuRow,
                     state = state,
-                    onScheduleClick = onScheduleClick,
-                    onLessonsReviewClick = onLessonsReviewClick,
-                    onScheduleCalendarClick = onScheduleCalendarClick,
-                    onFreePlaceClick = onFreePlaceClick,
-                    onAppWidgetClick = onAppWidgetClick,
-                    onHistoryClick = onHistoryClick,
+                    onScheduleClick = {
+                        onAction(ScheduleMenuAction.OnScheduleClick)
+                    },
+                    onLessonsReviewClick = {
+                        onAction(ScheduleMenuAction.OnLessonsReviewClick)
+                    },
+                    onScheduleCalendarClick = {
+                        onAction(ScheduleMenuAction.OnScheduleCalendarClick)
+                    },
+                    onFreePlaceClick = {
+                        onAction(ScheduleMenuAction.OnFreePlaceClick)
+                    },
+                    onAppWidgetClick = {
+                        onAction(ScheduleMenuAction.OnAppWidgetClick)
+                    },
+                    onHistoryClick = {
+                        onAction(ScheduleMenuAction.OnHistoryClick)
+                    },
                 )
             }
             SpacerHeight(height = 8.dp)
@@ -166,7 +171,7 @@ private fun NeedSelectScheduleSource(
 @Composable
 private fun RowScope.MenuCard(
     menuItems: List<MenuItem>,
-    state: ScheduleMenuState,
+    state: ScheduleMenuUiState,
     onScheduleClick: ClickListener,
     onLessonsReviewClick: ClickListener,
     onScheduleCalendarClick: ClickListener,

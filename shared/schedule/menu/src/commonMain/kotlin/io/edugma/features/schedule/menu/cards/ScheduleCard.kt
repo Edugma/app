@@ -15,11 +15,11 @@ import io.edugma.core.designSystem.organism.actionCard.EdActionCard
 import io.edugma.core.designSystem.organism.actionCard.EdActionCardWidth
 import io.edugma.core.resources.MR
 import io.edugma.core.utils.ClickListener
-import io.edugma.features.schedule.menu.ScheduleMenuState
+import io.edugma.features.schedule.menu.presentation.ScheduleMenuUiState
 
 @Composable
 fun ScheduleCard(
-    state: ScheduleMenuState.MainState,
+    state: ScheduleMenuUiState.MainUiState,
     onScheduleClick: ClickListener,
     modifier: Modifier = Modifier,
 ) {

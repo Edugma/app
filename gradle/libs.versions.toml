@@ -1,34 +1,33 @@
 [versions]
-ksp = "1.8.22-1.0.11"
-kotlin = "1.8.22"
-androidGradlePlugin = "8.1.0"
+ksp = "1.9.0-1.0.13"
+kotlin = "1.9.0"
+androidGradlePlugin = "8.2.0-beta01"
 kotlinter = "3.14.0"
 ktorfitGradle = "1.0.0"
-kotlinxAtomic = "0.21.0"
-composeMultiplatform = "1.5.0-rc04"
+kotlinxAtomic = "0.22.0"
+composeMultiplatform = "1.5.0"
 
 # common
 androidxLifecycle = "2.6.1"
-androidxAnnotations = "1.7.0-beta01"
+androidxAnnotations = "1.7.0-rc01"
 androidxDatastore = "1.1.0-alpha04"
 androidxCollections = "1.3.0-beta01"
 
 # Don't update until material 3 in compose mp will be updated
 composeBom = "2023.08.00"
-composeMaterial2 = "1.5.0"
-composeCompiler = "1.4.8"
+composeCompiler = "1.5.2"
 
 kotlinxDateTime = "0.4.0"
 kotlinCoroutines = "1.7.3"
 kotlinxSerialization = "1.5.1"
 
-koin = "3.4.2"
-koinCompose = "1.0.3"
+koin = "3.4.3"
+koinCompose = "1.0.4"
 koinKsp = "1.2.2"
 
 ktorfit = "1.4.3"
 ktor = "2.3.2"
-ktorUtils = "2.3.1"
+ktorUtils = "2.3.2"
 
 mokoResourcesVersion = "0.23.0"
 
@@ -46,10 +45,10 @@ splashScreen = "1.0.1"
 glance = "1.0.0-rc01"
 google-maps-compose = "2.11.1"
 play-service-maps = "18.1.0"
-koinAndroid = "3.4.2"
+koinAndroid = "3.4.3"
 androidxViewmodel = "2.6.1"
 
-composeActivity = "1.8.0-alpha06"
+composeActivity = "1.8.0-alpha07"
 coreKtx = "1.10.1"
 appcompat = "1.6.1"
 startup = "1.1.1"
@@ -73,14 +72,10 @@ androidx-annotations = { module = "androidx.annotation:annotation", version.ref 
 composeMP-utils = { module = "org.jetbrains.compose.ui:ui-util", version.ref = "composeMultiplatform" }
 
 compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "composeCompiler" }
-compose-material = { module = "androidx.compose.material:material", version.ref = "composeMaterial2" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3" }
-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
-compose-test = { group = "androidx.compose.ui", name = "ui-test" }
 compose-ui = { group = "androidx.compose.ui", name = "ui" }
 compose-uiTest = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-compose-uiTestManifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 compose-uiTooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-uiToolingPreview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-uiUtil = { group = "androidx.compose.ui", name = "ui-util" }
@@ -95,7 +90,6 @@ koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-ksp = { module = "io.insert-koin:koin-ksp-compiler", version.ref = "koinKsp" }
 
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }
-kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinCoroutines" }
 kotlinx-dateTime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDateTime" }
 kotlinx-serializationCbor = { module = "org.jetbrains.kotlinx:kotlinx-serialization-cbor", version.ref = "kotlinxSerialization" }
 kotlinx-serializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
@@ -137,21 +131,15 @@ koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndr
 
 material3 = { module = "com.google.android.material:material", version.ref = "materialView" }
 
-fluentIcons = { module = "com.microsoft.design:fluent-system-icons", version.ref = "fluentIcons" }
 lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }
 
 
-test-core = { module = "androidx.test:core", version = "1.5.0" }
-test-rules = { module = "androidx.test:rules", version = "1.5.0" }
 test-junit = { module = "junit:junit", version = "4.13.2" }
 test-junit-ext = { module = "androidx.test.ext:junit-ktx", version = "1.1.5" }
 test-espressoCore = { module = "androidx.test.espresso:espresso-core", version = "3.5.1" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
-android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
-android-test = { id = "com.android.test", version.ref = "androidGradlePlugin" }
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 ktorfit = { id = "de.jensklingenberg.ktorfit", version.ref = "ktorfitGradle" }

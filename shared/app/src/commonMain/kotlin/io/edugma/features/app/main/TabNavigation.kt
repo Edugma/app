@@ -208,7 +208,7 @@ fun BottomNav(navController: EdugmaNavigator, isVisible: State<Boolean>) {
     ) {
         EdNavigationBar(
             tonalElevation = 3.dp,
-            height = 64.dp,
+            height = 62.dp,
         ) {
             items.forEach { screen ->
                 val selected = currentDestination.screenBundle.screen.name == screen.name
