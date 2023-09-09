@@ -1,6 +1,7 @@
 package io.edugma.data.base.repository
 
 import io.edugma.core.api.repository.PathRepository
+import kotlinx.cinterop.ExperimentalForeignApi
 import platform.Foundation.NSCachesDirectory
 import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSFileManager
@@ -9,6 +10,7 @@ import platform.Foundation.NSURL
 import platform.Foundation.NSUserDomainMask
 
 class PathRepositoryImpl() : PathRepository {
+    @OptIn(ExperimentalForeignApi::class)
     override fun getDatastorePath(dataStoreFileName: String): String {
         val documentDirectory: NSURL? = NSFileManager.defaultManager.URLForDirectory(
             directory = NSDocumentDirectory,
