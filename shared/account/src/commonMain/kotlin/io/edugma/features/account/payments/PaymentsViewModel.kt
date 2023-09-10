@@ -6,6 +6,7 @@ import io.edugma.core.navigation.core.router.external.ExternalRouter
 import io.edugma.core.utils.isNotNull
 import io.edugma.core.utils.isNull
 import io.edugma.core.utils.viewmodel.launchCoroutine
+import io.edugma.features.account.common.LOCAL_DATA_SHOWN_ERROR
 import io.edugma.features.account.domain.model.Payments
 import io.edugma.features.account.domain.repository.PaymentsRepository
 import kotlinx.coroutines.async
@@ -16,21 +17,26 @@ class PaymentsViewModel(
 ) : BaseViewModel<PaymentsState>(PaymentsState()) {
 
     init {
-        load()
+        load(isUpdate = false)
     }
 
-    fun load() {
+    fun load(isUpdate: Boolean = true) {
         launchCoroutine {
             setLoading(true)
-            val local = async { repository.getPaymentsLocal() }
             val remote = async { repository.getPaymentsSuspend() }
-            local.await()?.contracts?.let(::setData)
+            if (!isUpdate) {
+                val local = async { repository.getPaymentsLocal() }
+                local.await()?.contracts?.let(::setData)
+            }
             remote.await()
                 .onSuccess {
                     setLoading(false)
                     setData(it.contracts)
                 }
-                .onFailure { setError(true) }
+                .onFailure {
+                    setError(true)
+                    if (state.data.isNotNull()) externalRouter.showMessage(LOCAL_DATA_SHOWN_ERROR)
+                }
         }
     }
 
@@ -96,6 +102,10 @@ data class PaymentsState(
     val types = data?.keys?.toList()
     val selectedType = types?.getOrNull(selectedIndex)
     val selectedPayment = data?.values?.toList()?.getOrNull(selectedIndex)
+    val isNothingToShow
+        get() = data?.isEmpty() == true && !isLoading
+    val showError
+        get() = isError && data.isNull()
     val currentQr
         get() = if (showCurrent) selectedPayment?.qrCurrent else selectedPayment?.qrTotal
 }

@@ -22,9 +22,7 @@ import io.edugma.core.designSystem.utils.rememberAsyncImagePainter
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.BottomSheet
 import io.edugma.core.utils.ClickListener
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun PaymentBottomSheet(
     qrUrl: String,

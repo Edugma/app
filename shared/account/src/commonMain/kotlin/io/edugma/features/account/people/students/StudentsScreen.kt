@@ -1,43 +1,32 @@
 package io.edugma.features.account.people.students
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import app.cash.paging.LoadStateError
-import app.cash.paging.LoadStateLoading
-import app.cash.paging.compose.LazyPagingItems
-import app.cash.paging.compose.collectAsLazyPagingItems
-import app.cash.paging.compose.itemContentType
-import app.cash.paging.compose.itemKey
 import dev.icerock.moko.resources.compose.painterResource
-import io.edugma.core.api.utils.format
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.divider.EdDivider
 import io.edugma.core.designSystem.atoms.label.EdLabel
-import io.edugma.core.designSystem.atoms.loader.EdLoader
-import io.edugma.core.designSystem.atoms.loader.EdLoaderSize
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.molecules.avatar.EdAvatar
@@ -45,26 +34,20 @@ import io.edugma.core.designSystem.molecules.avatar.EdAvatarSize
 import io.edugma.core.designSystem.molecules.avatar.toAvatarInitials
 import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
 import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
-import io.edugma.core.designSystem.organism.refresher.Refresher
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.navigationBarsPadding
-import io.edugma.core.designSystem.utils.rememberAsyncImagePainter
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.BottomSheet
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.features.account.domain.model.student.Student
-import io.edugma.features.account.domain.usecase.PaginationState
 import io.edugma.features.account.people.common.bottomSheets.SearchBottomSheet
 import io.edugma.features.account.people.common.items.PeopleItem
 import io.edugma.features.account.people.common.items.PeopleItemPlaceholder
 import io.edugma.features.account.people.common.paging.PagingFooter
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -123,7 +106,7 @@ fun StudentBottomSheet(student: Student) {
         Row(
             Modifier
                 .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             EdLabel(
@@ -145,134 +128,60 @@ fun StudentBottomSheet(student: Student) {
         }
         SpacerHeight(height = 20.dp)
         EdLabel(
-            iconPainter = painterResource(EdIcons.ic_fluent_building_24_regular),
             text = student.branch.title,
-            style = EdTheme.typography.bodyLarge,
-        )
-        SpacerHeight(height = 12.dp)
-        EdLabel(
             iconPainter = painterResource(EdIcons.ic_fluent_building_24_regular),
-            text = "${student.course} курс, ${student.educationType.lowercase()}",
-            style = EdTheme.typography.bodyLarge,
-        )
-        SpacerHeight(height = 12.dp)
-        EdLabel(
-            iconPainter = painterResource(EdIcons.ic_fluent_people_24_regular),
-            text = "Пол: ${student.sex}",
-            style = EdTheme.typography.bodyLarge,
-        )
-        SpacerHeight(height = 10.dp)
-        EdDivider(thickness = 1.dp)
-        SpacerHeight(height = 10.dp)
-        EdLabel(
-            text = "Группа",
-            style = EdTheme.typography.bodyLarge,
-        )
-        EdLabel(text = student.toString())
-    }
-}
-
-@Composable
-fun StudentSheetContent(
-    student: Student,
-) {
-    Column(
-        modifier = Modifier
-            .padding(horizontal = 15.dp),
-    ) {
-        SpacerHeight(height = 15.dp)
-        Row(modifier = Modifier.fillMaxWidth()) {
-            Text(
-                text = student.getFullName(),
-                style = EdTheme.typography.headlineSmall,
-                modifier = Modifier
-                    .padding(horizontal = 8.dp)
-                    .fillMaxWidth(0.8f),
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-            )
-            student.avatar?.let { avatarUrl ->
-                val painter = rememberAsyncImagePainter(model = avatarUrl)
-                Image(
-                    painter = painter,
-                    contentDescription = "avatar",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(CircleShape),
-                )
-            }
-        }
-        SpacerHeight(height = 3.dp)
-        Text(
-            text = student.getInfo(),
             style = EdTheme.typography.bodyMedium,
-            color = EdTheme.colorScheme.secondary,
-            modifier = Modifier
-                .padding(horizontal = 8.dp),
         )
-        SpacerHeight(height = 10.dp)
-        student.sex?.let {
+        SpacerHeight(height = 7.dp)
+        student.group?.let {
             EdLabel(
-                text = it,
-                iconPainter = painterResource(EdIcons.ic_fluent_people_24_regular),
+                text = it.faculty.title,
+                iconPainter = painterResource(EdIcons.ic_fluent_hat_graduation_24_filled),
+                style = EdTheme.typography.bodyMedium,
             )
+            SpacerHeight(height = 7.dp)
         }
         EdLabel(
-            text = student.branch.title,
-            iconPainter = painterResource(EdIcons.ic_fluent_building_24_regular),
+            text = "${student.course} курс, ${student.educationType.lowercase()}",
+            iconPainter = painterResource(EdIcons.ic_fluent_book_24_regular),
+            style = EdTheme.typography.bodyMedium,
         )
+        SpacerHeight(height = 7.dp)
         EdLabel(
-            text = student.educationType,
-            iconPainter = painterResource(EdIcons.ic_fluent_hat_graduation_24_filled),
-        )
-        EdLabel(
-            text = student.payment,
+            text = "${student.educationForm} форма, ${student.payment.lowercase()}",
             iconPainter = painterResource(EdIcons.ic_fluent_money_24_regular),
+            style = EdTheme.typography.bodyMedium,
         )
-        student.getFaculty()?.let {
-            EdLabel(
-                text = it,
-                iconPainter = painterResource(EdIcons.ic_fluent_book_24_regular),
-            )
-        }
-        student.group?.direction?.let {
-            EdLabel(
-                text = it.title,
-                iconPainter = painterResource(EdIcons.ic_fluent_contact_card_group_24_regular),
-            )
-        }
-        student.specialization?.let {
-            if (it.title != student.group?.direction?.title) {
-                EdLabel(
-                    text = it.title,
-                    iconPainter = painterResource(EdIcons.ic_fluent_data_treemap_24_regular),
-                )
-            }
-        }
+        SpacerHeight(height = 7.dp)
         EdLabel(
             text = "Года обучения: ${student.years}",
             iconPainter = painterResource(EdIcons.ic_fluent_timer_24_regular),
+            style = EdTheme.typography.bodyMedium,
         )
-        student.dormitory?.let {
-            EdLabel(
-                text = "Общежитие №$it",
-                iconPainter = painterResource(EdIcons.ic_fluent_building_home_24_regular),
-            )
-        }
-        student.dormitoryRoom?.let {
-            EdLabel(
-                text = "Комната №$it",
-                iconPainter = painterResource(EdIcons.ic_fluent_conference_room_24_regular),
-            )
-        }
-        student.birthday?.let {
-            EdLabel(
-                text = "Дата рождения: ${it.format()}",
-                iconPainter = painterResource(EdIcons.ic_fluent_calendar_ltr_24_regular),
-            )
-        }
-//        Text(text = student.toString())
         SpacerHeight(height = 10.dp)
+        student.group?.let { group ->
+            EdDivider(thickness = 1.dp)
+            SpacerHeight(height = 10.dp)
+            EdLabel(
+                text = "Группа ${group.title}",
+                style = EdTheme.typography.titleLarge
+            )
+            SpacerHeight(height = 7.dp)
+            EdLabel(
+                text = "${group.direction.code} ${group.direction.title}",
+                iconPainter = painterResource(EdIcons.ic_fluent_contact_card_group_24_regular),
+                style = EdTheme.typography.bodyMedium,
+            )
+            SpacerHeight(height = 7.dp)
+            student.specialization?.let {
+                EdLabel(
+                    text = it.title,
+                    iconPainter = painterResource(EdIcons.ic_fluent_data_treemap_24_regular),
+                    style = EdTheme.typography.bodyMedium,
+                )
+                SpacerHeight(height = 7.dp)
+            }
+        }
     }
 }
 

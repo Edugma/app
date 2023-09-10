@@ -1,27 +1,18 @@
 package io.edugma.features.account.people.students
 
-import app.cash.paging.Pager
-import app.cash.paging.PagingConfig
-import app.cash.paging.PagingData
-import app.cash.paging.cachedIn
 import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.navigation.core.router.external.ExternalRouter
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.Typed2Listener
-import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.features.account.domain.model.student.Student
 import io.edugma.features.account.domain.repository.PeoplesRepository
 import io.edugma.features.account.domain.usecase.PaginationState
 import io.edugma.features.account.domain.usecase.PagingUseCase
 import io.edugma.features.account.domain.usecase.PagingViewModel
+import io.edugma.features.account.people.common.utlis.convertAndShare
 import io.edugma.features.account.people.students.StudentsViewModel.Companion.INIT_NAME
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class StudentsViewModel(
@@ -56,8 +47,7 @@ class StudentsViewModel(
     fun onShare() {
         viewModelScope.launch {
             state.students
-                ?.mapIndexed { index, student -> "${index + 1}. ${student.getFullName()}" }
-                ?.joinToString("\n") { it }
+                ?.convertAndShare()
                 ?.let(externalRouter::share)
         }
     }

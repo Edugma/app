@@ -1,7 +1,6 @@
 package io.edugma.features.account.domain.usecase
 
 import io.edugma.features.account.domain.model.Contracts
-import io.edugma.features.account.domain.model.PaymentType
 import io.edugma.features.account.domain.model.Performance
 import io.edugma.features.account.domain.model.Personal
 import kotlin.math.roundToInt

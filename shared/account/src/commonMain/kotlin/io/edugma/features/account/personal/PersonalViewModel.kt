@@ -2,9 +2,11 @@ package io.edugma.features.account.personal
 
 import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
+import io.edugma.core.navigation.core.router.external.ExternalRouter
 import io.edugma.core.utils.isNotNull
 import io.edugma.core.utils.isNull
 import io.edugma.core.utils.viewmodel.launchCoroutine
+import io.edugma.features.account.common.LOCAL_DATA_SHOWN_ERROR
 import io.edugma.features.account.domain.model.Application
 import io.edugma.features.account.domain.model.Personal
 import io.edugma.features.account.domain.repository.ApplicationsRepository
@@ -14,6 +16,7 @@ import kotlinx.coroutines.async
 class PersonalViewModel(
     private val repository: PersonalRepository,
     private val applicationsRepository: ApplicationsRepository,
+    private val externalRouter: ExternalRouter,
 ) : BaseViewModel<PersonalState>(PersonalState()) {
     init {
         load()
@@ -27,7 +30,10 @@ class PersonalViewModel(
             local.await()?.also(::setData)
             remote.await()
                 .onSuccess(::setData)
-                .onFailure { setError(true) }
+                .onFailure {
+                    setError(true)
+                    externalRouter.showMessage(LOCAL_DATA_SHOWN_ERROR)
+                }
             setLoading(false)
             // не доделано api со стороны политеха
 //            applicationsRepository.loadApplications()?.let { setApplications(it, true) }
@@ -46,7 +52,10 @@ class PersonalViewModel(
             setError(false)
             repository.getPersonalInfoSuspend()
                 .onSuccess(::setData)
-                .onFailure { setError(true) }
+                .onFailure {
+                    setError(true)
+                    externalRouter.showMessage(LOCAL_DATA_SHOWN_ERROR)
+                }
             setLoading(false)
         }
     }

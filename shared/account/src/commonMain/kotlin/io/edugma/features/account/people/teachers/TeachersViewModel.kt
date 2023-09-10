@@ -1,23 +1,17 @@
 package io.edugma.features.account.people.teachers
 
-import app.cash.paging.Pager
-import app.cash.paging.PagingConfig
-import app.cash.paging.PagingData
-import app.cash.paging.cachedIn
 import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.navigation.schedule.ScheduleInfoScreens
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.Typed2Listener
 import io.edugma.features.account.domain.model.Teacher
-import io.edugma.features.account.domain.model.student.Student
 import io.edugma.features.account.domain.repository.PeoplesRepository
 import io.edugma.features.account.domain.usecase.PaginationState
 import io.edugma.features.account.domain.usecase.PagingUseCase
 import io.edugma.features.account.domain.usecase.PagingViewModel
 import io.edugma.features.account.people.teachers.TeachersViewModel.Companion.INIT_NAME
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.Flow
 
 class TeachersViewModel(private val repository: PeoplesRepository) :
     BaseViewModel<TeachersState>(TeachersState()), PagingViewModel<Teacher> {

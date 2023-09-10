@@ -112,10 +112,10 @@ fun PerformanceContent(
         FiltersRow(state.currentFilters, filterClickListener)
         EdPullRefresh(refreshing = state.isRefreshing, onRefresh = retryListener) {
             when {
-                state.isError && state.data.isNull() -> {
+                state.showError -> {
                     ErrorWithRetry(modifier = Modifier.fillMaxSize(), retryAction = retryListener)
                 }
-                state.filteredData?.isEmpty() == true -> {
+                state.showNothingFound -> {
                     EdNothingFound(modifier = Modifier.fillMaxSize())
                 }
                 else -> PerformanceList(state, showBottomSheet)
@@ -148,7 +148,7 @@ fun PerformanceList(
                 var showCourse = true
                 if (it > 0) {
                     showCourse =
-                        state.filteredData!![it].course != state.filteredData[it - 1].course
+                        state.filteredData!![it].course != state.filteredData?.get(it - 1)?.course
                 }
                 if (!showCourse && it > 0) {
                     Divider()
@@ -165,7 +165,7 @@ fun PerformanceList(
                 }
                 PerformanceItem(
                     state.filteredData!![it],
-                ) { showBottomSheet(state.filteredData[it]) }
+                ) { showBottomSheet(state.filteredData?.get(it)) }
                 SpacerHeight(height = 3.dp)
             }
         }
