@@ -1,11 +1,18 @@
 package io.edugma.navigation.core.navigator
 
 import androidx.compose.runtime.Composable
+import com.arkivanov.essenty.lifecycle.LifecycleRegistry
+import com.arkivanov.essenty.lifecycle.create
+import com.arkivanov.essenty.lifecycle.destroy
 import io.edugma.navigation.core.graph.ScreenGraphBuilder
 import io.edugma.navigation.core.screen.Screen
 import io.edugma.navigation.core.screen.ScreenBundle
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 class EdugmaNavigator(
     screenGraphBuilder: ScreenGraphBuilder,
@@ -15,7 +22,9 @@ class EdugmaNavigator(
 
     private val screenToUI: Map<Screen, @Composable (ScreenBundle) -> Unit>
 
-    private val _firstScreen: ScreenUiState
+    private val scope = CoroutineScope(Dispatchers.IO)
+
+    private val _currentScreen: MutableStateFlow<ScreenUiState>
 
     init {
         screenToUI = screenGraphBuilder.map
@@ -27,10 +36,10 @@ class EdugmaNavigator(
 
         backStack += state
 
-        _firstScreen = state
+        _currentScreen = MutableStateFlow<ScreenUiState>(state)
+        onCreateScreen(state)
     }
 
-    private val _currentScreen = MutableStateFlow<ScreenUiState>(_firstScreen)
     val currentScreen = _currentScreen.asStateFlow()
 
     fun navigateTo(screenBundle: ScreenBundle, singleTop: Boolean = false) {
@@ -51,7 +60,10 @@ class EdugmaNavigator(
     private fun remove(screen: Screen) {
         val index = backStack.indexOfFirst { it.screenBundle.screen == screen }
         if (index != -1) {
-            backStack.removeAt(index)
+            val removedScreen = backStack.removeAt(index)
+            if (_currentScreen.value != removedScreen) {
+                removedScreen.instanceKeeperDispatcher.destroy()
+            }
         }
     }
 
@@ -59,7 +71,7 @@ class EdugmaNavigator(
         return if (backStack.size <= 1) {
             false
         } else {
-            backStack.removeLast()
+            removeLastBackStack()
             updateCurrentScreen()
             true
         }
@@ -86,12 +98,39 @@ class EdugmaNavigator(
         }
 
         for (index in lastIndex downTo indexOfScreen) {
-            backStack.removeLast()
+            removeLastBackStack()
         }
         updateCurrentScreen()
     }
 
     private fun updateCurrentScreen() {
-        _currentScreen.value = backStack.last()
+        onDestroyScreen(_currentScreen.value)
+        _currentScreen.value = backStack.last().copy(
+            lifecycleRegistry = LifecycleRegistry(),
+        )
+        onCreateScreen(_currentScreen.value)
+    }
+
+    private fun onCreateScreen(screen: ScreenUiState) {
+        screen.lifecycleRegistry.create()
+    }
+
+    private fun onDestroyScreen(screen: ScreenUiState) {
+        screen.lifecycleRegistry.destroy()
+    }
+
+    private fun removeLastBackStack() {
+        val screen = backStack.removeLast()
+        if (_currentScreen.value != screen) {
+            screen.instanceKeeperDispatcher.destroy()
+        }
+    }
+
+    fun onScreenChanged(screen: ScreenUiState) {
+        scope.launch {
+            if (screen !in backStack) {
+                screen.instanceKeeperDispatcher.destroy()
+            }
+        }
     }
 }

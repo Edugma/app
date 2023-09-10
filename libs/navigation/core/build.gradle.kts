@@ -7,17 +7,15 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(libs.essenty.lifecycle)
+                implementation(libs.essenty.instanceKeeper)
+                implementation(libs.kotlinx.coroutines.core)
             }
         }
 
         val androidMain by getting {
             dependencies {
                 implementation(libs.compose.activity)
-            }
-        }
-
-        val iosMain by getting {
-            dependencies {
             }
         }
     }

@@ -3,11 +3,14 @@ package io.edugma.navigation.core.compose
 import androidx.compose.animation.Crossfade
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import io.edugma.navigation.core.graph.ScreenGraphBuilder
 import io.edugma.navigation.core.graph.ScreenModule
+import io.edugma.navigation.core.instanceKeeper.LocalInstanceKeeperOwner
+import io.edugma.navigation.core.lifecycle.LocalScreenLifecycleOwner
 import io.edugma.navigation.core.navigator.EdugmaNavigator
 import io.edugma.navigation.core.screen.ScreenBundle
 
@@ -24,9 +27,13 @@ fun EdugmaNavigation(
             navigationBackHandler.onCantBack()
         }
     }
-
     Crossfade(targetState = currentScreen) { screenUiState ->
-        screenUiState.ui(screenUiState.screenBundle)
+        CompositionLocalProvider(
+            LocalScreenLifecycleOwner provides screenUiState,
+            LocalInstanceKeeperOwner provides screenUiState,
+        ) {
+            screenUiState.ui(screenUiState.screenBundle)
+        }
     }
 }
 
@@ -47,6 +54,11 @@ fun EdugmaTabNavigation(
     CompositionLocalProvider(LocalNavigationBackHandler provides navigationBackHandler) {
         Crossfade(targetState = currentScreen) { screenUiState ->
             screenUiState.ui(screenUiState.screenBundle)
+            DisposableEffect(screenUiState) {
+                onDispose {
+                    navigator.onScreenChanged(screenUiState)
+                }
+            }
         }
     }
 }

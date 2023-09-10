@@ -6,20 +6,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import io.edugma.core.api.model.ThemeMode
 import io.edugma.core.api.repository.ThemeRepository
 import io.edugma.core.navigation.core.router.external.ExternalNavigator
 import io.edugma.features.app.MainApp
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
@@ -71,8 +66,9 @@ class MainActivity : ComponentActivity() {
                 )
                 onDispose {  }
             }
-
-            MainApp()
+            ProvideActivityInstanceKeeperOwner {
+                MainApp()
+            }
         }
 
         externalNavigator = inject<ExternalNavigator> { parametersOf(this) }.value

@@ -20,15 +20,15 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)
     implementation(libs.compose.activity)
-    implementation(libs.compose.material3)
-    implementation(libs.compose.uiToolingPreview)
-    debugImplementation(libs.compose.uiTooling)
 
     implementation(libs.koin.android)
     implementation(libs.androidx.splashScreen)
     implementation(libs.androidx.coreKtx)
     implementation(libs.androidx.appCompat)
     implementation(libs.androidx.startup)
+    implementation(libs.androidx.viewmodel.compose)
+    implementation(libs.essenty.instanceKeeper)
+    //implementation("androidx.compose.runtime:runtime-tracing:1.0.0-alpha03")
 
     testImplementation(libs.test.junit)
     androidTestImplementation(libs.test.junit.ext)

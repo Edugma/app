@@ -64,6 +64,8 @@ internal fun rememberTabNavigator(viewModel: MainViewModel): Pair<EdugmaNavigato
     val scheduleNavigatorIsActive = remember {
         mutableStateOf(false)
     }
+
+    // TODO: Save with LocalInstanceKeeperOwner
     val scheduleNavigator = rememberRouterNavigator(
         router = viewModel.router,
         screens = listOf(appScreens),
