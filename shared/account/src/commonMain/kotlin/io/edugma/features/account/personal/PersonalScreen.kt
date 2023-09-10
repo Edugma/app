@@ -33,6 +33,7 @@ import io.edugma.core.designSystem.organism.chipRow.EdSelectableChipRow
 import io.edugma.core.designSystem.organism.chipRow.EdSelectableChipRowPlaceholders
 import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
 import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
+import io.edugma.core.designSystem.organism.workingProgress.EdWorkingProgress
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.designSystem.utils.edPlaceholder
@@ -140,17 +141,18 @@ fun PersonalContent(
                                         ApplicationPlaceholder()
                                     }
                                 } else {
-                                    state.applications?.let { applications ->
-                                        items(
-                                            count = applications.size,
-                                            key = { it },
-                                            itemContent = { index ->
-                                                SpacerHeight(height = 3.dp)
-                                                Application(application = applications[index])
-                                                Divider()
-                                            },
-                                        )
-                                    }
+//                                    state.applications?.let { applications ->
+//                                        items(
+//                                            count = applications.size,
+//                                            key = { it },
+//                                            itemContent = { index ->
+//                                                SpacerHeight(height = 3.dp)
+//                                                Application(application = applications[index])
+//                                                Divider()
+//                                            },
+//                                        )
+//                                    }
+                                    item { EdWorkingProgress() }
                                 }
                             }
                         }
