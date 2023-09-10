@@ -62,6 +62,8 @@ import io.edugma.features.account.domain.model.description
 import io.edugma.features.account.people.common.bottomSheets.SearchBottomSheet
 import io.edugma.features.account.people.common.items.PeopleItem
 import io.edugma.features.account.people.common.items.PeopleItemPlaceholder
+import io.edugma.features.account.people.common.paging.PagingFooter
+import io.edugma.features.account.people.students.StudentsList
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
@@ -96,7 +98,7 @@ fun TeachersScreen(viewModel: TeachersViewModel = getViewModel()) {
                             searchValue = state.name,
                             onSearchValueChanged = viewModel::setName,
                         ) {
-                            viewModel.load(state.name)
+                            viewModel.load()
                             scope.launch { bottomState.hide() }
                         }
                     }
@@ -110,16 +112,18 @@ fun TeachersScreen(viewModel: TeachersViewModel = getViewModel()) {
                     viewModel.openSearch()
                     scope.launch { bottomState.show() }
                 },
-                teacherClick = {
-                    viewModel.openTeacher(it)
-                    scope.launch { bottomState.show() }
+                teacherClick = { teacher ->
+                    if (teacher.avatar.isNotNull() || teacher.sex.isNotNull() || teacher.description.isNotEmpty()) {
+                        viewModel.openTeacher(teacher)
+                        scope.launch { bottomState.show() }
+                    }
                 },
+                loadListener = viewModel::nextPage,
             )
         }
     }
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun TeacherBottomSheet(teacher: Teacher, openSchedule: ClickListener) {
     BottomSheet {
@@ -180,7 +184,7 @@ fun TeacherBottomSheet(teacher: Teacher, openSchedule: ClickListener) {
         if (!teacher.email.isNullOrEmpty()) {
             SelectionContainer {
                 EdLabel(
-                    text = teacher.email!!,
+                    text = teacher.email,
                     iconPainter = painterResource(EdIcons.ic_fluent_mail_24_regular),
                     style = EdTheme.typography.bodyMedium,
                 )
@@ -196,15 +200,14 @@ fun TeacherBottomSheet(teacher: Teacher, openSchedule: ClickListener) {
     }
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun TeachersListContent(
     state: TeachersState,
     backListener: ClickListener,
     openBottomSheetListener: ClickListener,
     teacherClick: Typed1Listener<Teacher>,
+    loadListener: ClickListener,
 ) {
-    val studentListItems = state.pagingData?.collectAsLazyPagingItems()
     Column(Modifier.navigationBarsPadding()) {
         EdTopAppBar(
             title = "Преподаватели",
@@ -218,18 +221,18 @@ fun TeachersListContent(
                 }
             },
         )
-        studentListItems?.let {
-            when {
-                studentListItems.loadState.refresh is LoadStateError -> {
-                    ErrorWithRetry(
-                        modifier = Modifier.fillMaxSize(),
-                        retryAction = studentListItems::refresh,
-                    )
-                }
-                studentListItems.itemCount == 0 && studentListItems.loadState.append.endOfPaginationReached -> {
-                    EdNothingFound(modifier = Modifier.fillMaxSize())
-                }
-                else -> { TeachersList(studentListItems, teacherClick) }
+        when {
+            state.isFullscreenError -> {
+                ErrorWithRetry(
+                    modifier = Modifier.fillMaxSize(),
+                    retryAction = loadListener,
+                )
+            }
+            state.isNothingFound -> {
+                EdNothingFound(modifier = Modifier.fillMaxSize())
+            }
+            else -> {
+                TeachersList(state, teacherClick, loadListener)
             }
         }
     }
@@ -237,50 +240,32 @@ fun TeachersListContent(
 
 @Composable
 fun TeachersList(
-    teacherListItems: LazyPagingItems<Teacher>,
+    state: TeachersState,
     teacherClick: Typed1Listener<Teacher>,
+    loadListener: ClickListener,
 ) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(
-            count = teacherListItems.itemCount,
-            key = teacherListItems.itemKey { it.id },
-            contentType = teacherListItems.itemContentType { "teacher" },
-        ) {
-            val item = teacherListItems[it]
-            item?.let { teacher ->
-                PeopleItem(
-                    title = teacher.name,
-                    description = teacher.description,
-                    avatar = teacher.avatar,
-                    onClick = { teacherClick.invoke(teacher) }
-                        .takeIf { teacher.avatar.isNotNull() || teacher.sex.isNotNull() || teacher.description.isNotEmpty() },
-                )
+        if (state.placeholders) {
+            items(3) {
+                PeopleItemPlaceholder()
             }
-        }
-        when {
-            teacherListItems.loadState.refresh is LoadStateLoading -> {
-                items(3) {
-                    PeopleItemPlaceholder()
+        } else {
+            if (!state.teachers.isNullOrEmpty()) {
+                items(
+                    count = state.teachers.size,
+                    key = { it },
+                    contentType = { "student" },
+                ) {
+                    val teacher = state.teachers[it]
+                    PeopleItem(
+                        title = teacher.name,
+                        description = teacher.description,
+                        avatar = teacher.avatar,
+                        onClick = { teacherClick.invoke(teacher) },
+                    )
                 }
             }
-            teacherListItems.loadState.append is LoadStateLoading -> {
-                item {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .heightIn(min = 70.dp),
-                    ) {
-                        EdLoader(
-                            modifier = Modifier
-                                .align(Alignment.Center),
-                            size = EdLoaderSize.medium,
-                        )
-                    }
-                }
-            }
-            teacherListItems.loadState.append is LoadStateError -> {
-                item { Refresher(onClick = teacherListItems::retry) }
-            }
+            item { PagingFooter(state.loadingState, loadListener) }
         }
     }
 }

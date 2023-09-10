@@ -56,9 +56,11 @@ import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.features.account.domain.model.student.Student
+import io.edugma.features.account.domain.usecase.PaginationState
 import io.edugma.features.account.people.common.bottomSheets.SearchBottomSheet
 import io.edugma.features.account.people.common.items.PeopleItem
 import io.edugma.features.account.people.common.items.PeopleItemPlaceholder
+import io.edugma.features.account.people.common.paging.PagingFooter
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -68,10 +70,6 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 @Composable
 fun StudentsScreen(viewModel: StudentsViewModel = getViewModel()) {
     val state by viewModel.stateFlow.collectAsState()
-
-    val studentListItems = remember {
-        viewModel.stateFlow.map { it.pagingData }.filterNotNull()
-    }.collectAsLazyPagingItems()
 
     val bottomState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
@@ -91,7 +89,7 @@ fun StudentsScreen(viewModel: StudentsViewModel = getViewModel()) {
                             searchValue = state.name,
                             onSearchValueChanged = viewModel::setName,
                         ) {
-                            viewModel.load(state.name)
+                            viewModel.searchRequest()
                             scope.launch { bottomState.hide() }
                         }
                     }
@@ -103,7 +101,6 @@ fun StudentsScreen(viewModel: StudentsViewModel = getViewModel()) {
         ) {
             StudentsListContent(
                 state,
-                studentListItems = studentListItems,
                 backListener = viewModel::exit,
                 openBottomSheetListener = {
                     viewModel.selectFilter()
@@ -114,12 +111,12 @@ fun StudentsScreen(viewModel: StudentsViewModel = getViewModel()) {
                     scope.launch { bottomState.show() }
                 },
                 onShare = viewModel::onShare,
+                onLoad = viewModel::loadNextPage
             )
         }
     }
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun StudentBottomSheet(student: Student) {
     BottomSheet {
@@ -175,7 +172,6 @@ fun StudentBottomSheet(student: Student) {
     }
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun StudentSheetContent(
     student: Student,
@@ -280,14 +276,13 @@ fun StudentSheetContent(
     }
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun StudentsListContent(
     state: StudentsState,
-    studentListItems: LazyPagingItems<Student>,
     backListener: ClickListener,
     openBottomSheetListener: ClickListener,
     studentClick: Typed1Listener<Student>,
+    onLoad: ClickListener,
     onShare: ClickListener,
 ) {
     Column(Modifier.navigationBarsPadding()) {
@@ -295,7 +290,7 @@ fun StudentsListContent(
             title = "Студенты",
             onNavigationClick = backListener,
             actions = {
-                val students = studentListItems.itemSnapshotList?.items
+                val students = state.students
 
                 IconButton(
                     onClick = { onShare() },
@@ -314,18 +309,18 @@ fun StudentsListContent(
                 }
             },
         )
-        studentListItems?.let {
-            when {
-                studentListItems.loadState.refresh is LoadStateError -> {
-                    ErrorWithRetry(
-                        modifier = Modifier.fillMaxSize(),
-                        retryAction = studentListItems::refresh,
-                    )
-                }
-                studentListItems.itemCount == 0 && studentListItems.loadState.append.endOfPaginationReached -> {
-                    EdNothingFound(modifier = Modifier.fillMaxSize())
-                }
-                else -> { StudentsList(studentListItems, studentClick) }
+        when {
+            state.isFullscreenError -> {
+                ErrorWithRetry(
+                    modifier = Modifier.fillMaxSize(),
+                    retryAction = onLoad,
+                )
+            }
+            state.isNothingFound -> {
+                EdNothingFound(modifier = Modifier.fillMaxSize())
+            }
+            else -> {
+                StudentsList(state, studentClick, onLoad)
             }
         }
     }
@@ -333,44 +328,30 @@ fun StudentsListContent(
 
 @Composable
 fun StudentsList(
-    studentListItems: LazyPagingItems<Student>,
+    state: StudentsState,
     studentClick: Typed1Listener<Student>,
+    loadListener: ClickListener,
 ) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(
-            count = studentListItems.itemCount,
-            key = studentListItems.itemKey { it.id },
-            contentType = studentListItems.itemContentType { "student" },
-        ) {
-            val item = studentListItems[it]
-            item?.let {
-                PeopleItem(it.getFullName(), it.getInfo(), it.avatar) { studentClick.invoke(it) }
+        if (state.placeholders) {
+            items(3) {
+                PeopleItemPlaceholder()
             }
-        }
-        when {
-            studentListItems.loadState.refresh is LoadStateLoading -> {
-                items(3) {
-                    PeopleItemPlaceholder()
-                }
-            }
-            studentListItems.loadState.append is LoadStateLoading -> {
-                item {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .heightIn(min = 70.dp),
-                    ) {
-                        EdLoader(
-                            modifier = Modifier
-                                .align(Alignment.Center),
-                            size = EdLoaderSize.medium,
-                        )
+        } else {
+            if (!state.students.isNullOrEmpty()) {
+                items(
+                    count = state.students.size,
+                    key = { state.students[it].id },
+                    contentType = { "student" },
+                ) {
+                    val item = state.students[it]
+                    item.let {
+                        PeopleItem(it.getFullName(), it.getInfo(), it.avatar) { studentClick.invoke(it) }
                     }
                 }
             }
-            studentListItems.loadState.append is LoadStateError -> {
-                item { Refresher(onClick = studentListItems::retry) }
-            }
+            item { PagingFooter(state.loadingState, loadListener) }
         }
+
     }
 }
