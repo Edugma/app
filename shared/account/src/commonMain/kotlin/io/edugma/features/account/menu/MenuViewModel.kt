@@ -61,6 +61,18 @@ class MenuViewModel(
         }
     }
 
+    fun setPasswordVisible() {
+        mutateStateWithCheck<MenuState.Authorization> {
+            it.copy(passwordVisible = true)
+        }
+    }
+
+    fun setPasswordInvisible() {
+        mutateStateWithCheck<MenuState.Authorization> {
+            it.copy(passwordVisible = false)
+        }
+    }
+
     fun authorize() {
         launchCoroutine {
             lateinit var login: String
@@ -79,6 +91,7 @@ class MenuViewModel(
                         setError("Заполните все поля")
                         return@launchCoroutine
                     }
+                    if (it.isLoading) return@launchCoroutine
                 } ?: return@launchCoroutine
             setLoading(true)
             setError(null)
@@ -197,6 +210,7 @@ sealed class MenuState {
         val passwordError: Boolean = false,
         val error: String = "",
         val isLoading: Boolean = false,
+        val passwordVisible: Boolean = false,
     ) : MenuState()
 
     data class Menu(
