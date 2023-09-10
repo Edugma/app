@@ -11,7 +11,6 @@ data class Student(
     val middleName: String? = null,
     val sex: String? = null,
     val avatar: String? = null,
-    val birthday: LocalDate? = null,
     val group: Group? = null,
     val specialization: StudentSpecialization? = null,
     val educationType: String,
@@ -20,14 +19,11 @@ data class Student(
     val course: Int? = null,
     val years: String,
     var code: String,
-    var dormitory: String? = null,
-    var dormitoryRoom: String? = null,
+    var status: String,
     var branch: StudentBranch,
 ) {
     fun getFullName() = "$lastName $firstName $middleName"
 
-    fun getInfo() = "Студент $course курса" + group?.let { " ${it.title} группы" }.orEmpty() +
-        ", ${educationForm.lowercase()} форма обучения"
-
-    fun getFaculty() = group?.let { "${it.faculty.titleShort}, (${it.faculty.title})" }
+    fun getInfo() = (if (sex == "Женский") "Студентка" else "Студент") +
+        " $course курса" + group?.let { " ${it.title} группы" }.orEmpty()
 }

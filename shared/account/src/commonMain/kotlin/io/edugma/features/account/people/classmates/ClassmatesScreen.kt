@@ -18,7 +18,6 @@ import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
-import io.edugma.core.utils.isNull
 import io.edugma.features.account.domain.model.student.Student
 import io.edugma.features.account.people.common.items.PeopleItem
 import io.edugma.features.account.people.common.items.PeopleItemPlaceholder
@@ -65,7 +64,7 @@ fun ClassmatesContent(
             },
         )
         EdPullRefresh(refreshing = state.isRefreshing, onRefresh = retryListener) {
-            if (state.isError && state.data.isNull()) {
+            if (state.showError) {
                 ErrorWithRetry(modifier = Modifier.fillMaxSize(), retryAction = retryListener)
             } else {
                 ClassmatesList(state.data.orEmpty(), state.placeholders)

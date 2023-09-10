@@ -3,6 +3,7 @@ package io.edugma.core.navigation.core.router.external
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import co.touchlab.kermit.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,6 +43,7 @@ class ExternalNavigator(
         when (command) {
             is ExternalNavigationCommand.Share -> share(command)
             is ExternalNavigationCommand.OpenUri -> openUri(command)
+            is ExternalNavigationCommand.Message -> showMessage(command)
         }
     }
 
@@ -63,5 +65,9 @@ class ExternalNavigator(
         }
 
         context.startActivity(intent)
+    }
+
+    private fun showMessage(command: ExternalNavigationCommand.Message) {
+        Toast.makeText(context, command.text, Toast.LENGTH_SHORT).show()
     }
 }

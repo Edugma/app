@@ -45,6 +45,7 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.organism.chipRow.EdSelectableChipRow
 import io.edugma.core.designSystem.organism.chipRow.EdSelectableChipRowPlaceholders
 import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
+import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
 import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
@@ -81,23 +82,58 @@ fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
             sheetBackgroundColor = EdTheme.colorScheme.surface,
             sheetContent = {
                 PaymentBottomSheet(
-                    qrUrl = state.selectedPayment?.qrCurrent.orEmpty(),
+                    qrUrl = state.currentQr.orEmpty(),
+                    showCurrent = state.showCurrent,
                     openUri = viewModel::onOpenUri,
+                    showCurrentListener = viewModel::showCurrentQr,
+                    showTotalListener = viewModel::showTotalQr,
                 )
             },
         ) {
-            PaymentsContent(
-                state,
-                retryListener = viewModel::load,
-                onPaymentChange = viewModel::typeChange,
-                onQrClickListener = { scope.launch { bottomState.show() } },
-                backListener = viewModel::exit,
-            )
+            when {
+                state.showError -> {
+                    PaymentsError(viewModel::exit, viewModel::load)
+                }
+                state.isNothingToShow -> {
+                    NoPayments(viewModel::exit)
+                }
+                else -> {
+                    PaymentsContent(
+                        state,
+                        retryListener = viewModel::load,
+                        onPaymentChange = viewModel::typeChange,
+                        onQrClickListener = { scope.launch { bottomState.show() } },
+                        backListener = viewModel::exit,
+                    )
+                }
+            }
         }
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalResourceApi::class)
+@Composable
+fun NoPayments(backListener: ClickListener) {
+    Column(Modifier.navigationBarsPadding()) {
+        EdTopAppBar(
+            title = "Оплаты",
+            onNavigationClick = backListener,
+        )
+        EdNothingFound(Modifier.fillMaxSize(), message = "Оплат нет :)")
+    }
+}
+
+@Composable
+fun PaymentsError(backListener: ClickListener, retryListener: ClickListener) {
+    Column(Modifier.navigationBarsPadding()) {
+        EdTopAppBar(
+            title = "Оплаты",
+            onNavigationClick = backListener,
+        )
+        ErrorWithRetry(Modifier.fillMaxSize(), retryAction = retryListener)
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PaymentsContent(
     state: PaymentsState,
@@ -236,7 +272,6 @@ fun Payments(payments: Payments) {
     }
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun PaymentsPlaceholder() {
     Column(
@@ -350,7 +385,6 @@ fun PaymentPlaceholder() {
     }
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun Expander(onClickListener: ClickListener) {
     Box(

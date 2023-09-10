@@ -8,18 +8,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.resources.compose.painterResource
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.textField.EdTextField
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.statusBarsPadding
+import io.edugma.core.icons.EdIcons
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.features.account.menu.MenuState
@@ -30,6 +35,8 @@ fun AuthorizationScreen(
     onLoginClick: ClickListener,
     onPasswordChange: Typed1Listener<String>,
     onLoginChange: Typed1Listener<String>,
+    setPasswordVisible: ClickListener,
+    setPasswordInvisible: ClickListener
 ) {
     Column(
         Modifier
@@ -65,7 +72,24 @@ fun AuthorizationScreen(
                 placeholder = "Пароль",
                 onValueChange = onPasswordChange,
                 isError = state.passwordError,
-                visualTransformation = PasswordVisualTransformation(),
+                visualTransformation = if (state.passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                trailingIcon = {
+                    if (state.passwordVisible) {
+                        IconButton(setPasswordInvisible) {
+                            Icon(
+                                painter = painterResource(EdIcons.ic_fluent_eye_off_16_regular),
+                                contentDescription = null,
+                            )
+                        }
+                    } else {
+                        IconButton(setPasswordVisible) {
+                            Icon(
+                                painter = painterResource(EdIcons.ic_fluent_eye_16_regular),
+                                contentDescription = null,
+                            )
+                        }
+                    }
+                },
                 modifier = Modifier
                     .widthIn(max = 500.dp)
                     .fillMaxWidth(0.9f),
@@ -86,7 +110,6 @@ fun AuthorizationScreen(
                     .fillMaxWidth(0.8f),
                 onClick = onLoginClick,
                 isLoading = state.isLoading,
-//                enabled = !state.isLoading,
                 text = "Войти",
             )
         }

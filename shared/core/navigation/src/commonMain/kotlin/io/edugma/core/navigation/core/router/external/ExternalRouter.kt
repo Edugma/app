@@ -31,4 +31,12 @@ class ExternalRouter {
             ),
         )
     }
+
+    fun showMessage(text: String) {
+        executeCommands(
+            ExternalNavigationCommand.Message(
+                text = text,
+            ),
+        )
+    }
 }
