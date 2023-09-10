@@ -33,7 +33,7 @@ class PaymentsRepositoryImpl(
         emit(getPaymentsLocal())
     }
 
-    override suspend fun getPaymentsSuspend(type: PaymentType?): Result<Contracts?> {
+    override suspend fun getPaymentsSuspend(type: PaymentType?): Result<Contracts> {
         return api.getPaymentsSuspend(type?.name?.lowercase().orEmpty())
             .onSuccess {
                 withContext(Dispatchers.IO) {

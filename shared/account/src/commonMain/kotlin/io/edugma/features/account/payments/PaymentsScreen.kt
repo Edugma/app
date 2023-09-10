@@ -81,8 +81,11 @@ fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
             sheetBackgroundColor = EdTheme.colorScheme.surface,
             sheetContent = {
                 PaymentBottomSheet(
-                    qrUrl = state.selectedPayment?.qrCurrent.orEmpty(),
+                    qrUrl = state.currentQr.orEmpty(),
+                    showCurrent = state.showCurrent,
                     openUri = viewModel::onOpenUri,
+                    showCurrentListener = viewModel::showCurrentQr,
+                    showTotalListener = viewModel::showTotalQr,
                 )
             },
         ) {
