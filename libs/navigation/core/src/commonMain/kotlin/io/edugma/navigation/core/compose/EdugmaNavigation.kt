@@ -3,7 +3,6 @@ package io.edugma.navigation.core.compose
 import androidx.compose.animation.Crossfade
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -54,11 +53,6 @@ fun EdugmaTabNavigation(
     CompositionLocalProvider(LocalNavigationBackHandler provides navigationBackHandler) {
         Crossfade(targetState = currentScreen) { screenUiState ->
             screenUiState.ui(screenUiState.screenBundle)
-            DisposableEffect(screenUiState) {
-                onDispose {
-                    navigator.onScreenChanged(screenUiState)
-                }
-            }
         }
     }
 }

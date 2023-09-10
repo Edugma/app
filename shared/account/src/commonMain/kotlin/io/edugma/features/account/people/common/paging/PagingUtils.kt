@@ -15,10 +15,9 @@ import io.edugma.core.designSystem.organism.refresher.Refresher
 import io.edugma.core.utils.ClickListener
 import io.edugma.features.account.domain.usecase.PaginationState
 
-
 @Composable
 fun PagingFooter(pagingState: PaginationState, loadTrigger: ClickListener) {
-    when(pagingState) {
+    when (pagingState) {
         PaginationState.Loaded -> {
             Spacer(Modifier.height(70.dp))
             loadTrigger()

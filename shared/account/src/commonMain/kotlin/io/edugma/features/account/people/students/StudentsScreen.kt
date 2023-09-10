@@ -94,7 +94,7 @@ fun StudentsScreen(viewModel: StudentsViewModel = getViewModel()) {
                     scope.launch { bottomState.show() }
                 },
                 onShare = viewModel::onShare,
-                onLoad = viewModel::loadNextPage
+                onLoad = viewModel::loadNextPage,
             )
         }
     }
@@ -164,7 +164,7 @@ fun StudentBottomSheet(student: Student) {
             SpacerHeight(height = 10.dp)
             EdLabel(
                 text = "Группа ${group.title}",
-                style = EdTheme.typography.titleLarge
+                style = EdTheme.typography.titleLarge,
             )
             SpacerHeight(height = 7.dp)
             EdLabel(
@@ -261,6 +261,5 @@ fun StudentsList(
             }
             item { PagingFooter(state.loadingState, loadListener) }
         }
-
     }
 }

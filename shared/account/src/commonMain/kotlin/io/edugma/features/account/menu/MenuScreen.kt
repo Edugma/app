@@ -23,7 +23,7 @@ fun MenuScreen(viewModel: MenuViewModel = getViewModel()) {
                     onLoginChange = viewModel::loginInput,
                     onPasswordChange = viewModel::passwordInput,
                     setPasswordVisible = viewModel::setPasswordVisible,
-                    setPasswordInvisible = viewModel::setPasswordInvisible
+                    setPasswordInvisible = viewModel::setPasswordInvisible,
                 )
             }
             MenuState.Loading -> LoadingScreen()

@@ -36,7 +36,7 @@ fun AuthorizationScreen(
     onPasswordChange: Typed1Listener<String>,
     onLoginChange: Typed1Listener<String>,
     setPasswordVisible: ClickListener,
-    setPasswordInvisible: ClickListener
+    setPasswordInvisible: ClickListener,
 ) {
     Column(
         Modifier

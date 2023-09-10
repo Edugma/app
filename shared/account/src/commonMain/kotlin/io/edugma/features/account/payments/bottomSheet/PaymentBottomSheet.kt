@@ -29,7 +29,7 @@ fun PaymentBottomSheet(
     showCurrent: Boolean,
     openUri: ClickListener,
     showCurrentListener: ClickListener,
-    showTotalListener: ClickListener
+    showTotalListener: ClickListener,
 ) {
     BottomSheet(
         header = "QR код",

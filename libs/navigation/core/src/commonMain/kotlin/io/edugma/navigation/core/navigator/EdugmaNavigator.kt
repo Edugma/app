@@ -12,7 +12,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 
 class EdugmaNavigator(
     screenGraphBuilder: ScreenGraphBuilder,
@@ -44,27 +43,29 @@ class EdugmaNavigator(
 
     fun navigateTo(screenBundle: ScreenBundle, singleTop: Boolean = false) {
         val ui = checkNotNull(screenToUI[screenBundle.screen])
-        val state = ScreenUiState(
-            screenBundle = screenBundle,
-            ui = ui,
-        )
 
-        if (singleTop) {
-            remove(screenBundle.screen)
+        val state = if (singleTop) {
+            remove(screenBundle.screen) ?: ScreenUiState(
+                screenBundle = screenBundle,
+                ui = ui,
+            )
+        } else {
+            ScreenUiState(
+                screenBundle = screenBundle,
+                ui = ui,
+            )
         }
 
         backStack += state
         updateCurrentScreen()
     }
 
-    private fun remove(screen: Screen) {
+    private fun remove(screen: Screen): ScreenUiState? {
         val index = backStack.indexOfFirst { it.screenBundle.screen == screen }
         if (index != -1) {
-            val removedScreen = backStack.removeAt(index)
-            if (_currentScreen.value != removedScreen) {
-                removedScreen.instanceKeeperDispatcher.destroy()
-            }
+            return backStack.removeAt(index)
         }
+        return null
     }
 
     fun back(): Boolean {
@@ -121,16 +122,6 @@ class EdugmaNavigator(
 
     private fun removeLastBackStack() {
         val screen = backStack.removeLast()
-        if (_currentScreen.value != screen) {
-            screen.instanceKeeperDispatcher.destroy()
-        }
-    }
-
-    fun onScreenChanged(screen: ScreenUiState) {
-        scope.launch {
-            if (screen !in backStack) {
-                screen.instanceKeeperDispatcher.destroy()
-            }
-        }
+        screen.instanceKeeperDispatcher.destroy()
     }
 }

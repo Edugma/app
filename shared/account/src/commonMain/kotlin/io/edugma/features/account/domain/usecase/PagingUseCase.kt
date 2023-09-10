@@ -20,10 +20,10 @@ class PagingUseCase<T>(
     private val paginationStateFlow = MutableStateFlow(PaginationState.NotLoading)
 
     var page = firstPage
-    private set
+        private set
 
     var isEnded: Boolean = false
-    private set
+        private set
 
     val paginationState
         get() = paginationStateFlow.asStateFlow()
@@ -90,5 +90,4 @@ interface PagingViewModel<T> {
                 .onFailure { onError?.invoke(it) }
         }
     }
-
 }

@@ -1,6 +1,5 @@
 package io.edugma.features.account.domain.model.student
 
-import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 
 @Serializable
