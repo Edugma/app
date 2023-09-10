@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -33,6 +32,7 @@ import io.edugma.core.designSystem.organism.chipRow.EdSelectableChipRow
 import io.edugma.core.designSystem.organism.chipRow.EdSelectableChipRowPlaceholders
 import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
 import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
+import io.edugma.core.designSystem.organism.workingProgress.EdWorkingProgress
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.designSystem.utils.edPlaceholder
@@ -46,8 +46,6 @@ import io.edugma.features.account.domain.model.Order
 import io.edugma.features.account.domain.model.Personal
 import io.edugma.features.account.personal.Columns.Applications
 import io.edugma.features.account.personal.Columns.Orders
-import io.edugma.features.account.personal.Columns.values
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @Composable
 fun PersonalScreen(viewModel: PersonalViewModel = getViewModel()) {
@@ -71,9 +69,8 @@ fun PersonalContent(
     typeListener: Typed1Listener<Columns>,
 ) {
     Column {
-        val scrollState = rememberLazyListState()
         EdSurface(shape = EdTheme.shapes.large.bottom()) {
-            CollapsingToolbar(
+            Toolbar(
                 state.personal,
                 state.personalPlaceholders,
                 backListener,
@@ -87,17 +84,16 @@ fun PersonalContent(
                 Modifier
                     .padding(horizontal = 8.dp)
                     .fillMaxSize(),
-                state = scrollState,
             ) {
                 when {
                     state.isError && state.personal.isNull() -> {
                         item { ErrorWithRetry(retryAction = refreshListener) }
                     }
                     state.personalPlaceholders -> {
-                        item(key = "header") {
+                        item {
                             PersonalPlaceholder()
                         }
-                        item(key = "selector") {
+                        item {
                             EdSelectableChipRowPlaceholders()
                         }
                         items(3) {
@@ -108,13 +104,13 @@ fun PersonalContent(
                     }
                     else -> {
                         state.personal?.let {
-                            item(key = "header") {
+                            item() {
                                 Personal(state.personal)
                             }
                         }
-                        item(key = "selector") {
+                        item() {
                             EdSelectableChipRow(
-                                types = values().toList(),
+                                types = Columns.entries,
                                 selectedType = state.selectedColumn,
                                 nameMapper = { it.label },
                                 clickListener = typeListener,
@@ -140,17 +136,18 @@ fun PersonalContent(
                                         ApplicationPlaceholder()
                                     }
                                 } else {
-                                    state.applications?.let { applications ->
-                                        items(
-                                            count = applications.size,
-                                            key = { it },
-                                            itemContent = { index ->
-                                                SpacerHeight(height = 3.dp)
-                                                Application(application = applications[index])
-                                                Divider()
-                                            },
-                                        )
-                                    }
+//                                    state.applications?.let { applications ->
+//                                        items(
+//                                            count = applications.size,
+//                                            key = { it },
+//                                            itemContent = { index ->
+//                                                SpacerHeight(height = 3.dp)
+//                                                Application(application = applications[index])
+//                                                Divider()
+//                                            },
+//                                        )
+//                                    }
+                                    item { EdWorkingProgress() }
                                 }
                             }
                         }
@@ -161,9 +158,8 @@ fun PersonalContent(
     }
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
-private fun CollapsingToolbar(
+private fun Toolbar(
     personal: Personal?,
     placeholders: Boolean,
     onBack: ClickListener,
@@ -208,7 +204,6 @@ private fun CollapsingToolbar(
     }
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun Personal(personal: Personal) {
     Column(Modifier.padding(8.dp)) {
@@ -258,7 +253,6 @@ fun Personal(personal: Personal) {
     }
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun PersonalPlaceholder() {
     Column(Modifier.padding(8.dp)) {

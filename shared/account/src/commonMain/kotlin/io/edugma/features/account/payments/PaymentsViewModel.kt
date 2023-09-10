@@ -1,16 +1,15 @@
 package io.edugma.features.account.payments
 
-import io.edugma.core.api.utils.onFailure
-import io.edugma.core.api.utils.onSuccess
 import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.navigation.core.router.external.ExternalRouter
 import io.edugma.core.utils.isNotNull
 import io.edugma.core.utils.isNull
 import io.edugma.core.utils.viewmodel.launchCoroutine
+import io.edugma.features.account.common.LOCAL_DATA_SHOWN_ERROR
 import io.edugma.features.account.domain.model.Payments
 import io.edugma.features.account.domain.repository.PaymentsRepository
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.async
 
 class PaymentsViewModel(
     private val repository: PaymentsRepository,
@@ -18,24 +17,26 @@ class PaymentsViewModel(
 ) : BaseViewModel<PaymentsState>(PaymentsState()) {
 
     init {
-        load()
+        load(isUpdate = false)
     }
 
-    fun load() {
+    fun load(isUpdate: Boolean = true) {
         launchCoroutine {
             setLoading(true)
-            repository.getPaymentsLocal()?.let {
-                setData(it.contracts)
+            val remote = async { repository.getPaymentsSuspend() }
+            if (!isUpdate) {
+                val local = async { repository.getPaymentsLocal() }
+                local.await()?.contracts?.let(::setData)
             }
-            repository.getPayment()
+            remote.await()
                 .onSuccess {
-                    setData(it.contracts)
                     setLoading(false)
+                    setData(it.contracts)
                 }
                 .onFailure {
                     setError(true)
+                    if (state.data.isNotNull()) externalRouter.showMessage(LOCAL_DATA_SHOWN_ERROR)
                 }
-                .collect()
         }
     }
 
@@ -64,7 +65,7 @@ class PaymentsViewModel(
         }
     }
 
-    fun setError(isError: Boolean) {
+    private fun setError(isError: Boolean) {
         newState {
             copy(isError = isError, isLoading = false)
         }
@@ -75,12 +76,25 @@ class PaymentsViewModel(
             copy(selectedIndex = newIndex)
         }
     }
+
+    fun showCurrentQr() {
+        newState {
+            copy(showCurrent = true)
+        }
+    }
+
+    fun showTotalQr() {
+        newState {
+            copy(showCurrent = false)
+        }
+    }
 }
 
 data class PaymentsState(
     val data: Map<io.edugma.features.account.domain.model.PaymentType, Payments>? = null,
     val isLoading: Boolean = false,
     val isError: Boolean = false,
+    val showCurrent: Boolean = true,
     val selectedIndex: Int = 0,
 ) {
     val isRefreshing = data.isNotNull() && isLoading && !isError
@@ -88,6 +102,12 @@ data class PaymentsState(
     val types = data?.keys?.toList()
     val selectedType = types?.getOrNull(selectedIndex)
     val selectedPayment = data?.values?.toList()?.getOrNull(selectedIndex)
+    val isNothingToShow
+        get() = data?.isEmpty() == true && !isLoading
+    val showError
+        get() = isError && data.isNull()
+    val currentQr
+        get() = if (showCurrent) selectedPayment?.qrCurrent else selectedPayment?.qrTotal
 }
 
 fun PaymentsState.getTypeByIndex(index: Int) = types?.getOrNull(index)

@@ -21,5 +21,5 @@ data class Payments(
     val balance: String,
     val balanceCurrent: String,
     val lastPaymentDate: LocalDate? = null,
-    val payments: List<io.edugma.features.account.domain.model.Payment>,
+    val payments: List<Payment>,
 )

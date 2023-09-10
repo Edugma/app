@@ -6,6 +6,7 @@ import io.edugma.core.navigation.core.router.external.ExternalRouter
 import io.edugma.core.utils.isNotNull
 import io.edugma.core.utils.isNull
 import io.edugma.core.utils.viewmodel.launchCoroutine
+import io.edugma.features.account.common.LOCAL_DATA_SHOWN_ERROR
 import io.edugma.features.account.domain.model.student.Student
 import io.edugma.features.account.domain.repository.PeoplesRepository
 import io.edugma.features.account.people.common.utlis.convertAndShare
@@ -32,6 +33,7 @@ class ClassmatesViewModel(
                 .onSuccess(::setData)
                 .onFailure {
                     setError(true)
+                    if (state.data.isNotNull()) externalRouter.showMessage(LOCAL_DATA_SHOWN_ERROR)
                 }
             setLoading(false)
         }
@@ -43,7 +45,10 @@ class ClassmatesViewModel(
             setLoading(true)
             repository.getClassmatesSuspend()
                 .onSuccess(::setData)
-                .onFailure { setError(true) }
+                .onFailure {
+                    setError(true)
+                    externalRouter.showMessage(LOCAL_DATA_SHOWN_ERROR)
+                }
             setLoading(false)
         }
     }
@@ -82,4 +87,5 @@ data class ClassmatesState(
 ) {
     val placeholders = data.isNull() && isLoading && !isError
     val isRefreshing = data.isNotNull() && isLoading && !isError
+    val showError = data.isNull() && isError
 }

@@ -48,7 +48,7 @@ fun SearchBottomSheet(
         SpacerHeight(height = 20.dp)
         EdButton(
             modifier = Modifier.fillMaxWidth(),
-            text = "Применить",
+            text = "Найти",
             onClick = searchClickListener,
         )
     }
