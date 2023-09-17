@@ -8,6 +8,6 @@ import io.edugma.core.designSystem.theme.EdTheme
 @Composable
 fun DraggerPreview() {
     EdTheme {
-        Dragger()
+        EdDragHandle()
     }
 }

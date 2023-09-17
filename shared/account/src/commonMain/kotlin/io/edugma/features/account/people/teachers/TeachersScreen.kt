@@ -2,6 +2,7 @@ package io.edugma.features.account.people.teachers
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,7 +28,6 @@ import io.edugma.core.designSystem.molecules.avatar.EdAvatar
 import io.edugma.core.designSystem.molecules.avatar.EdAvatarSize
 import io.edugma.core.designSystem.molecules.avatar.toAvatarInitials
 import io.edugma.core.designSystem.molecules.button.EdButton
-import io.edugma.core.designSystem.organism.bottomSheet.EdModalBottomSheet
 import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetValue
 import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
 import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
@@ -37,7 +37,7 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.navigationBarsPadding
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.BottomSheet
-import io.edugma.core.ui.screen.FeatureScreen
+import io.edugma.core.ui.screen.FeatureBottomSheetScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.isNotNull
@@ -59,53 +59,52 @@ fun TeachersScreen(viewModel: TeachersViewModel = getViewModel()) {
     )
     val scope = rememberCoroutineScope()
 
-    FeatureScreen(navigationBarPadding = false) {
-        EdModalBottomSheet(
-            sheetState = bottomState,
-            sheetContent = {
-                when (state.bottomType) {
-                    BottomType.Teacher -> {
-                        state.selectedEntity?.let {
-                            TeacherBottomSheet(
-                                teacher = it,
-                                openSchedule = viewModel::openTeacherSchedule,
-                            )
-                        }
-                    }
-                    BottomType.Search -> {
-                        SearchBottomSheet(
-                            hint = "ФИО преподавателя",
-                            searchValue = state.name,
-                            onSearchValueChanged = viewModel::setName,
-                        ) {
-                            viewModel.load()
-                            scope.launch { bottomState.hide() }
-                        }
+    FeatureBottomSheetScreen(
+        navigationBarPadding = false,
+        sheetState = bottomState,
+        sheetContent = {
+            when (state.bottomType) {
+                BottomType.Teacher -> {
+                    state.selectedEntity?.let {
+                        TeacherBottomSheet(
+                            teacher = it,
+                            openSchedule = viewModel::openTeacherSchedule,
+                        )
                     }
                 }
-            },
-        ) {
-            TeachersListContent(
-                state,
-                backListener = viewModel::exit,
-                openBottomSheetListener = {
-                    viewModel.openSearch()
-                    scope.launch { bottomState.show() }
-                },
-                teacherClick = { teacher ->
-                    if (teacher.avatar.isNotNull() || teacher.sex.isNotNull() || teacher.description.isNotEmpty()) {
-                        viewModel.openTeacher(teacher)
-                        scope.launch { bottomState.show() }
+                BottomType.Search -> {
+                    SearchBottomSheet(
+                        hint = "ФИО преподавателя",
+                        searchValue = state.name,
+                        onSearchValueChanged = viewModel::setName,
+                    ) {
+                        viewModel.load()
+                        scope.launch { bottomState.hide() }
                     }
-                },
-                loadListener = viewModel::nextPage,
-            )
-        }
+                }
+            }
+        },
+    ) {
+        TeachersListContent(
+            state,
+            backListener = viewModel::exit,
+            openBottomSheetListener = {
+                viewModel.openSearch()
+                scope.launch { bottomState.show() }
+            },
+            teacherClick = { teacher ->
+                if (teacher.avatar.isNotNull() || teacher.sex.isNotNull() || teacher.description.isNotEmpty()) {
+                    viewModel.openTeacher(teacher)
+                    scope.launch { bottomState.show() }
+                }
+            },
+            loadListener = viewModel::nextPage,
+        )
     }
 }
 
 @Composable
-fun TeacherBottomSheet(teacher: Teacher, openSchedule: ClickListener) {
+fun ColumnScope.TeacherBottomSheet(teacher: Teacher, openSchedule: ClickListener) {
     BottomSheet {
         Row(
             Modifier

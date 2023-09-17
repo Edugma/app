@@ -1,5 +1,6 @@
 package io.edugma.features.account.marks.bottomSheets
 
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyRow
@@ -24,7 +25,7 @@ import io.edugma.features.account.marks.Filter
 import io.edugma.features.account.marks.MarksState
 
 @Composable
-fun FiltersBottomSheetContent(
+fun ColumnScope.FiltersBottomSheetContent(
     state: MarksState,
     filterUpdateListener: Typed1Listener<Filter<*>>,
     resetFilterListener: ClickListener,
@@ -32,8 +33,6 @@ fun FiltersBottomSheetContent(
     BottomSheet(
         header = "Фильтры",
         headerStyle = EdTheme.typography.headlineSmall,
-        horizontalContentPadding = 15.dp,
-        verticalContentPadding = 15.dp,
     ) {
         SelectableChipsRow(
             "Курс",

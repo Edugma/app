@@ -2,6 +2,7 @@ package io.edugma.features.account.people.students
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,7 +27,6 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.molecules.avatar.EdAvatar
 import io.edugma.core.designSystem.molecules.avatar.EdAvatarSize
 import io.edugma.core.designSystem.molecules.avatar.toAvatarInitials
-import io.edugma.core.designSystem.organism.bottomSheet.EdModalBottomSheet
 import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetValue
 import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
 import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
@@ -36,7 +36,7 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.navigationBarsPadding
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.BottomSheet
-import io.edugma.core.ui.screen.FeatureScreen
+import io.edugma.core.ui.screen.FeatureBottomSheetScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.features.account.domain.model.student.Student
@@ -54,47 +54,46 @@ fun StudentsScreen(viewModel: StudentsViewModel = getViewModel()) {
         initialValue = ModalBottomSheetValue.Hidden,
     )
     val scope = rememberCoroutineScope()
-    FeatureScreen(navigationBarPadding = false) {
-        EdModalBottomSheet(
-            sheetState = bottomState,
-            sheetContent = {
-                when (state.bottomType) {
-                    BottomSheetType.Filter -> {
-                        SearchBottomSheet(
-                            hint = "Введите фамилию или группу",
-                            searchValue = state.name,
-                            onSearchValueChanged = viewModel::setName,
-                        ) {
-                            viewModel.searchRequest()
-                            scope.launch { bottomState.hide() }
-                        }
-                    }
-                    BottomSheetType.Student -> {
-                        state.selectedStudent?.let { StudentBottomSheet(it) }
+    FeatureBottomSheetScreen(
+        navigationBarPadding = false,
+        sheetState = bottomState,
+        sheetContent = {
+            when (state.bottomType) {
+                BottomSheetType.Filter -> {
+                    SearchBottomSheet(
+                        hint = "Введите фамилию или группу",
+                        searchValue = state.name,
+                        onSearchValueChanged = viewModel::setName,
+                    ) {
+                        viewModel.searchRequest()
+                        scope.launch { bottomState.hide() }
                     }
                 }
+                BottomSheetType.Student -> {
+                    state.selectedStudent?.let { StudentBottomSheet(it) }
+                }
+            }
+        },
+    ) {
+        StudentsListContent(
+            state,
+            backListener = viewModel::exit,
+            openBottomSheetListener = {
+                viewModel.selectFilter()
+                scope.launch { bottomState.show() }
             },
-        ) {
-            StudentsListContent(
-                state,
-                backListener = viewModel::exit,
-                openBottomSheetListener = {
-                    viewModel.selectFilter()
-                    scope.launch { bottomState.show() }
-                },
-                studentClick = {
-                    viewModel.selectStudent(it)
-                    scope.launch { bottomState.show() }
-                },
-                onShare = viewModel::onShare,
-                onLoad = viewModel::loadNextPage,
-            )
-        }
+            studentClick = {
+                viewModel.selectStudent(it)
+                scope.launch { bottomState.show() }
+            },
+            onShare = viewModel::onShare,
+            onLoad = viewModel::loadNextPage,
+        )
     }
 }
 
 @Composable
-fun StudentBottomSheet(student: Student) {
+fun ColumnScope.StudentBottomSheet(student: Student) {
     BottomSheet {
         Row(
             Modifier

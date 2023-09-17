@@ -37,7 +37,6 @@ import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
-import io.edugma.core.designSystem.organism.bottomSheet.EdModalBottomSheet
 import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetValue
 import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
 import io.edugma.core.designSystem.organism.chipRow.EdSelectableChipRow
@@ -50,7 +49,7 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.edPlaceholder
 import io.edugma.core.designSystem.utils.navigationBarsPadding
 import io.edugma.core.icons.EdIcons
-import io.edugma.core.ui.screen.FeatureScreen
+import io.edugma.core.ui.screen.FeatureBottomSheetScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.isNull
@@ -71,35 +70,36 @@ fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
     )
     val scope = rememberCoroutineScope()
 
-    FeatureScreen(navigationBarPadding = false) {
-        EdModalBottomSheet(
-            sheetState = bottomState,
-            sheetContent = {
-                PaymentBottomSheet(
-                    qrUrl = state.currentQr.orEmpty(),
-                    showCurrent = state.showCurrent,
-                    openUri = viewModel::onOpenUri,
-                    showCurrentListener = viewModel::showCurrentQr,
-                    showTotalListener = viewModel::showTotalQr,
+    FeatureBottomSheetScreen(
+        navigationBarPadding = false,
+        sheetState = bottomState,
+        sheetContent = {
+            PaymentBottomSheet(
+                qrUrl = state.currentQr.orEmpty(),
+                showCurrent = state.showCurrent,
+                openUri = viewModel::onOpenUri,
+                showCurrentListener = viewModel::showCurrentQr,
+                showTotalListener = viewModel::showTotalQr,
+            )
+        },
+    ) {
+        when {
+            state.showError -> {
+                PaymentsError(viewModel::exit, viewModel::load)
+            }
+
+            state.isNothingToShow -> {
+                NoPayments(viewModel::exit)
+            }
+
+            else -> {
+                PaymentsContent(
+                    state,
+                    retryListener = viewModel::load,
+                    onPaymentChange = viewModel::typeChange,
+                    onQrClickListener = { scope.launch { bottomState.show() } },
+                    backListener = viewModel::exit,
                 )
-            },
-        ) {
-            when {
-                state.showError -> {
-                    PaymentsError(viewModel::exit, viewModel::load)
-                }
-                state.isNothingToShow -> {
-                    NoPayments(viewModel::exit)
-                }
-                else -> {
-                    PaymentsContent(
-                        state,
-                        retryListener = viewModel::load,
-                        onPaymentChange = viewModel::typeChange,
-                        onQrClickListener = { scope.launch { bottomState.show() } },
-                        backListener = viewModel::exit,
-                    )
-                }
             }
         }
     }

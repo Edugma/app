@@ -21,7 +21,6 @@ import io.edugma.core.utils.ClickListener
 import io.edugma.features.account.domain.model.student.Student
 import io.edugma.features.account.people.common.items.PeopleItem
 import io.edugma.features.account.people.common.items.PeopleItemPlaceholder
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @Composable
 fun ClassmatesScreen(viewModel: ClassmatesViewModel = getViewModel()) {
@@ -37,7 +36,6 @@ fun ClassmatesScreen(viewModel: ClassmatesViewModel = getViewModel()) {
     }
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun ClassmatesContent(
     state: ClassmatesState,
@@ -47,7 +45,7 @@ fun ClassmatesContent(
 ) {
     Column {
         EdTopAppBar(
-            title = "Однокурсники",
+            title = "Одногруппники",
             onNavigationClick = backListener,
             actions = {
                 val students = state.data

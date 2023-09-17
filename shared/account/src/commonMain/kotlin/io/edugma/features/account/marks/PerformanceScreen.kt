@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
-import io.edugma.core.designSystem.organism.bottomSheet.EdModalBottomSheet
 import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetValue
 import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
 import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
@@ -27,7 +26,7 @@ import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.navigationBarsPadding
 import io.edugma.core.icons.EdIcons
-import io.edugma.core.ui.screen.FeatureScreen
+import io.edugma.core.ui.screen.FeatureBottomSheetScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.isNull
@@ -48,32 +47,31 @@ fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
     )
     val scope = rememberCoroutineScope()
 
-    FeatureScreen(navigationBarPadding = false) {
-        EdModalBottomSheet(
-            sheetState = bottomState,
-            sheetContent = {
-                if (state.selectedPerformance.isNull()) {
-                    FiltersBottomSheetContent(
-                        state = state,
-                        filterUpdateListener = viewModel::updateFilter,
-                        resetFilterListener = viewModel::resetFilters,
-                    )
-                } else {
-                    PerformanceBottomSheetContent(performance = state.selectedPerformance!!)
-                }
+    FeatureBottomSheetScreen(
+        navigationBarPadding = false,
+        sheetState = bottomState,
+        sheetContent = {
+            if (state.selectedPerformance.isNull()) {
+                FiltersBottomSheetContent(
+                    state = state,
+                    filterUpdateListener = viewModel::updateFilter,
+                    resetFilterListener = viewModel::resetFilters,
+                )
+            } else {
+                PerformanceBottomSheetContent(performance = state.selectedPerformance!!)
+            }
+        },
+    ) {
+        PerformanceContent(
+            state,
+            showBottomSheet = {
+                viewModel.openBottomSheetClick(it)
+                scope.launch { bottomState.show() }
             },
-        ) {
-            PerformanceContent(
-                state,
-                showBottomSheet = {
-                    viewModel.openBottomSheetClick(it)
-                    scope.launch { bottomState.show() }
-                },
-                retryListener = viewModel::loadMarks,
-                filterClickListener = viewModel::updateFilter,
-                backListener = viewModel::exit,
-            )
-        }
+            retryListener = viewModel::loadMarks,
+            filterClickListener = viewModel::updateFilter,
+            backListener = viewModel::exit,
+        )
     }
 }
 

@@ -3,6 +3,7 @@ package io.edugma.features.account.payments.bottomSheet
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,7 +25,7 @@ import io.edugma.core.ui.screen.BottomSheet
 import io.edugma.core.utils.ClickListener
 
 @Composable
-fun PaymentBottomSheet(
+fun ColumnScope.PaymentBottomSheet(
     qrUrl: String,
     showCurrent: Boolean,
     openUri: ClickListener,
@@ -33,7 +34,6 @@ fun PaymentBottomSheet(
 ) {
     BottomSheet(
         header = "QR код",
-        verticalContentPadding = 5.dp,
     ) {
         Row(Modifier.horizontalScroll(rememberScrollState())) {
             EdSelectableChip(

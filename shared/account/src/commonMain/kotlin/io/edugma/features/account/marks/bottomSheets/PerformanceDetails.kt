@@ -1,5 +1,6 @@
 package io.edugma.features.account.marks.bottomSheets
 
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -16,11 +17,10 @@ import io.edugma.core.ui.screen.BottomSheet
 import io.edugma.features.account.domain.model.Performance
 
 @Composable
-fun PerformanceBottomSheetContent(performance: Performance) {
+fun ColumnScope.PerformanceBottomSheetContent(performance: Performance) {
     BottomSheet(
         header = performance.name,
         headerStyle = EdTheme.typography.headlineSmall,
-        verticalContentPadding = 5.dp,
     ) {
         EdLabel(
             text = "Номер ведомости: ${performance.billNum}",
