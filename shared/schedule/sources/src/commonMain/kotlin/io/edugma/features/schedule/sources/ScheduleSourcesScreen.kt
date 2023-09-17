@@ -17,9 +17,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -44,6 +41,8 @@ import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.molecules.avatar.EdAvatar
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.searchField.EdSearchField
+import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetValue
+import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
@@ -79,7 +78,6 @@ fun ScheduleSourcesScreen(viewModel: ScheduleSourcesViewModel = getViewModel()) 
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ScheduleSourcesContent(
     state: ScheduleSourceState,
@@ -146,7 +144,7 @@ fun ScheduleSourcesContent(
         }
     }
 
-//    ModalBottomSheetLayout(
+//    EdModalBottomSheet(
 //        sheetContent = {
 // //            FiltersSelector(
 // //                filters = TODO(),
@@ -156,7 +154,6 @@ fun ScheduleSourcesContent(
 // //            )
 //        },
 //        sheetState = q,
-//        sheetBackgroundColor = EdTheme.colorScheme.background
 //    ) {
 //        Column {
 //            PrimaryTopAppBar(

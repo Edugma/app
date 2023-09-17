@@ -12,14 +12,20 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.utils.ifThen
 
 @Composable
-fun EdChip(modifier: Modifier = Modifier, chipForm: EdChipForm = EdChipForm.circle, icon: ImageVector? = null, onClick: (() -> Unit)? = null, body: @Composable () -> Unit = {}) {
+fun EdChip(
+    modifier: Modifier = Modifier,
+    chipForm: EdChipForm = EdChipForm.circle,
+    iconPainter: Painter? = null,
+    onClick: (() -> Unit)? = null,
+    content: @Composable () -> Unit = {},
+) {
     EdCard(
         modifier = Modifier
             .padding(4.dp)
@@ -35,9 +41,9 @@ fun EdChip(modifier: Modifier = Modifier, chipForm: EdChipForm = EdChipForm.circ
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
             content = {
-                if (icon != null) {
+                if (iconPainter != null) {
                     Icon(
-                        imageVector = icon,
+                        painter = iconPainter,
                         contentDescription = null,
                         modifier = Modifier
                             .ifThen(onClick != null) { clickable(onClick = onClick!!) }
@@ -46,7 +52,7 @@ fun EdChip(modifier: Modifier = Modifier, chipForm: EdChipForm = EdChipForm.circ
                 } else {
                     SpacerWidth(width = 10.dp)
                 }
-                body()
+                content()
             },
         )
     }

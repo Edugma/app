@@ -8,6 +8,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(compose.animation)
+                implementation(compose.material)
                 implementation(libs.composeMP.utils)
 
                 implementation(projects.shared.core.api)

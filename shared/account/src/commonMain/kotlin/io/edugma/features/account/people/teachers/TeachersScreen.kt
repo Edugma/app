@@ -6,12 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -19,7 +14,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,6 +27,9 @@ import io.edugma.core.designSystem.molecules.avatar.EdAvatar
 import io.edugma.core.designSystem.molecules.avatar.EdAvatarSize
 import io.edugma.core.designSystem.molecules.avatar.toAvatarInitials
 import io.edugma.core.designSystem.molecules.button.EdButton
+import io.edugma.core.designSystem.organism.bottomSheet.EdModalBottomSheet
+import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetValue
+import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
 import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
 import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
@@ -53,21 +50,18 @@ import io.edugma.features.account.people.common.items.PeopleItemPlaceholder
 import io.edugma.features.account.people.common.paging.PagingFooter
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TeachersScreen(viewModel: TeachersViewModel = getViewModel()) {
     val state by viewModel.stateFlow.collectAsState()
     val bottomState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
+        skipHalfExpanded = true,
     )
     val scope = rememberCoroutineScope()
 
     FeatureScreen(navigationBarPadding = false) {
-        ModalBottomSheetLayout(
+        EdModalBottomSheet(
             sheetState = bottomState,
-            sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
-            scrimColor = Color.Black.copy(alpha = 0.5f),
-            sheetBackgroundColor = EdTheme.colorScheme.surface,
             sheetContent = {
                 when (state.bottomType) {
                     BottomType.Teacher -> {

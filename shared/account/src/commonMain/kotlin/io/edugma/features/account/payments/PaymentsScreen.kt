@@ -15,11 +15,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,6 +37,9 @@ import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
+import io.edugma.core.designSystem.organism.bottomSheet.EdModalBottomSheet
+import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetValue
+import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
 import io.edugma.core.designSystem.organism.chipRow.EdSelectableChipRow
 import io.edugma.core.designSystem.organism.chipRow.EdSelectableChipRowPlaceholders
 import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
@@ -64,7 +62,6 @@ import io.edugma.features.account.payments.bottomSheet.PaymentBottomSheet
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
     val state by viewModel.stateFlow.collectAsState()
@@ -75,11 +72,8 @@ fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
     val scope = rememberCoroutineScope()
 
     FeatureScreen(navigationBarPadding = false) {
-        ModalBottomSheetLayout(
+        EdModalBottomSheet(
             sheetState = bottomState,
-            sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
-            scrimColor = Color.Black.copy(alpha = 0.5f),
-            sheetBackgroundColor = EdTheme.colorScheme.surface,
             sheetContent = {
                 PaymentBottomSheet(
                     qrUrl = state.currentQr.orEmpty(),
