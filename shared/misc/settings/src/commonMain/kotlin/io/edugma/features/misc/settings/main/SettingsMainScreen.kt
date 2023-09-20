@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
-import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.molecules.settings.button.EdSettingsButton
@@ -20,6 +19,7 @@ import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen
+import io.edugma.core.utils.viewmodel.getViewModel
 
 @Composable
 fun SettingsMainScreen(viewModel: SettingsMainViewModel = getViewModel()) {

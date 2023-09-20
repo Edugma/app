@@ -1,6 +1,5 @@
 package io.edugma.features.schedule.appwidget.currentLessons
 
-import com.benasher44.uuid.uuid4
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.domain.base.utils.nowLocalDate
 import io.edugma.domain.base.utils.nowLocalTime
@@ -88,17 +87,17 @@ data class CurrentLessonState(
 
 val types = listOf(
     LessonType(
-        id = uuid4().toString(),
+        id = UUID.get(),
         title = "Лекция",
         isImportant = false,
     ),
     LessonType(
-        id = uuid4().toString(),
+        id = UUID.get(),
         title = "Лабораторная работа",
         isImportant = false,
     ),
     LessonType(
-        id = uuid4().toString(),
+        id = UUID.get(),
         title = "Экзамен",
         isImportant = true,
     ),
@@ -106,32 +105,32 @@ val types = listOf(
 
 val subjects = listOf(
     LessonSubject(
-        id = uuid4().toString(),
+        id = UUID.get(),
         title = "Физика",
     ),
     LessonSubject(
-        id = uuid4().toString(),
+        id = UUID.get(),
         title = "Управление информационными ресурсами обработки цифрового контента",
     ),
     LessonSubject(
-        id = uuid4().toString(),
+        id = UUID.get(),
         title = "Информационные технологии",
     ),
 )
 
 val teachers = listOf(
     Teacher(
-        id = uuid4().toString(),
+        id = UUID.get(),
         name = "Рудяк Юрий Владимирович",
         description = "",
     ),
     Teacher(
-        id = uuid4().toString(),
+        id = UUID.get(),
         name = "Винокур Алексей Иосифович",
         description = "",
     ),
     Teacher(
-        id = uuid4().toString(),
+        id = UUID.get(),
         name = "Меньшикова Наталия Павловна",
         description = "",
     ),
@@ -139,17 +138,17 @@ val teachers = listOf(
 
 val groups = listOf(
     Group(
-        id = uuid4().toString(),
+        id = UUID.get(),
         title = "181-721",
         description = "",
     ),
     Group(
-        id = uuid4().toString(),
+        id = UUID.get(),
         title = "181-722",
         description = "",
     ),
     Group(
-        id = uuid4().toString(),
+        id = UUID.get(),
         title = "181-723",
         description = "",
     ),
@@ -157,19 +156,19 @@ val groups = listOf(
 
 val places = listOf(
     Place(
-        id = uuid4().toString(),
+        id = UUID.get(),
         title = "Пр2303",
         type = PlaceType.Building,
         description = "",
     ),
     Place(
-        id = uuid4().toString(),
+        id = UUID.get(),
         title = "Пр Вц 3 (2553)",
         type = PlaceType.Building,
         description = "",
     ),
     Place(
-        id = uuid4().toString(),
+        id = UUID.get(),
         title = "Webinar",
         type = PlaceType.Online,
         description = "",

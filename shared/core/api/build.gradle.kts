@@ -7,6 +7,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(libs.uuid)
                 api(libs.kotlinx.coroutines.core)
                 api(libs.kotlinx.serializationJson)
                 api(libs.kotlinx.serializationCbor)

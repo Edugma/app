@@ -19,9 +19,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(libs.uuid)
                 implementation(libs.kermit)
-//                implementation("com.benasher44:uuid:0.7.0")
 //                implementation("co.touchlab:kermit:2.0.0-RC4")
             }
         }

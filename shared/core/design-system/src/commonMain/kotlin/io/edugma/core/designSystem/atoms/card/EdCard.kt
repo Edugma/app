@@ -4,6 +4,8 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
 import androidx.compose.runtime.Composable
@@ -58,6 +60,7 @@ fun EdCard(
     ),
     elevation: EdElevation = EdElevation.Level1,
     border: BorderStroke? = null,
+    contentPadding: PaddingValues = PaddingValues(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -73,7 +76,10 @@ fun EdCard(
         border = border,
         interactionSource = interactionSource,
     ) {
-        Column(content = content)
+        Column(
+            content = content,
+            modifier = Modifier.padding(contentPadding),
+        )
     }
 }
 
@@ -87,6 +93,7 @@ fun EdCard(
     ),
     elevation: EdElevation = EdElevation.Level1,
     border: BorderStroke? = null,
+    contentPadding: PaddingValues = PaddingValues(),
     content: @Composable ColumnScope.() -> Unit,
 ) {
     EdSurface(
@@ -97,7 +104,10 @@ fun EdCard(
         elevation = elevation,
         border = border,
     ) {
-        Column(content = content)
+        Column(
+            content = content,
+            modifier = Modifier.padding(contentPadding),
+        )
     }
 }
 

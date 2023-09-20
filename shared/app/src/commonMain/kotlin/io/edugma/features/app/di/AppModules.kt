@@ -2,6 +2,7 @@ package io.edugma.features.app.di
 
 import io.edugma.core.api.baseDomainModule
 import io.edugma.core.system.coreSystemModule
+import io.edugma.core.utils.coreUtilsModule
 import io.edugma.data.base.baseDataModule
 import io.edugma.data.schedule.ScheduleDataModule
 import io.edugma.features.account.accountFeaturesModule
@@ -57,4 +58,5 @@ val appModules: List<Module> = buildList {
     +settingsFeaturesModule
     +coreModule
     +coreSystemModule
+    +coreUtilsModule
 }

@@ -7,9 +7,12 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(projects.shared.core.arch)
+                implementation(projects.shared.core.api)
 
                 implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.kermit)
+                implementation(libs.koin.core)
+                implementation(libs.koin.compose)
             }
         }
     }

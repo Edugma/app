@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
-import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.molecules.button.EdButton
@@ -31,6 +30,7 @@ import io.edugma.core.icons.EdIcons
 import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
+import io.edugma.core.utils.viewmodel.getViewModel
 import io.edugma.features.schedule.menu.cards.CalendarCard
 import io.edugma.features.schedule.menu.cards.ChangeHistoryCard
 import io.edugma.features.schedule.menu.cards.FindFreePlaceCard

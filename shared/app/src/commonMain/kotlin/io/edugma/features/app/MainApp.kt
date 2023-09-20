@@ -5,10 +5,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import io.edugma.core.api.model.ThemeMode
-import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
+import io.edugma.core.utils.viewmodel.getViewModel
 import io.edugma.features.app.main.MainContent
 
 @Composable

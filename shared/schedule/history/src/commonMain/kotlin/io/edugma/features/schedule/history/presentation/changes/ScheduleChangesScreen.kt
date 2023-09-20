@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import io.edugma.core.api.utils.format
 import io.edugma.core.arch.viewmodel.bind
-import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
@@ -43,6 +42,7 @@ import io.edugma.core.icons.EdIcons
 import io.edugma.core.navigation.schedule.ScheduleHistoryScreens
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
+import io.edugma.core.utils.viewmodel.getViewModel
 import io.edugma.features.schedule.domain.model.group.Group
 import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonTime

@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.compose.painterResource
 import io.edugma.core.api.utils.format
-import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
@@ -55,6 +54,7 @@ import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.isNull
 import io.edugma.core.utils.ui.bindTo
 import io.edugma.core.utils.ui.onPageChanged
+import io.edugma.core.utils.viewmodel.getViewModel
 import io.edugma.features.account.domain.model.Payments
 import io.edugma.features.account.domain.model.toLabel
 import io.edugma.features.account.payments.bottomSheet.PaymentBottomSheet

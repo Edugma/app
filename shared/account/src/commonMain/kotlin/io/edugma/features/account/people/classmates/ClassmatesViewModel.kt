@@ -22,34 +22,45 @@ class ClassmatesViewModel(
     }
 
     private fun loadClassmates() {
-        launchCoroutine {
+        launchCoroutine(
+            onError = {
+                setError(true)
+                if (state.data.isNotNull()) externalRouter.showMessage(LOCAL_DATA_SHOWN_ERROR)
+                setLoading(false)
+            },
+        ) {
             setLoading(true)
 
             val localData = async { repository.loadClassmates() }
             val remoteData = async { repository.getClassmatesSuspend() }
 
-            localData.await()?.let(::setData)
-            remoteData.await()
-                .onSuccess(::setData)
-                .onFailure {
-                    setError(true)
-                    if (state.data.isNotNull()) externalRouter.showMessage(LOCAL_DATA_SHOWN_ERROR)
+            val classmatesLocal = localData.await()
+            classmatesLocal?.let {
+                newState {
+                    setContent(classmatesLocal, isLoading = true)
                 }
-            setLoading(false)
+            }
+            val classmates = remoteData.await().getOrThrow()
+            newState {
+                setContent(classmates)
+            }
         }
     }
 
     fun updateClassmates() {
-        launchCoroutine {
+        launchCoroutine(
+            onError = {
+                setError(true)
+                if (state.data.isNotNull()) externalRouter.showMessage(LOCAL_DATA_SHOWN_ERROR)
+                setLoading(false)
+            },
+        ) {
             setError(false)
             setLoading(true)
-            repository.getClassmatesSuspend()
-                .onSuccess(::setData)
-                .onFailure {
-                    setError(true)
-                    externalRouter.showMessage(LOCAL_DATA_SHOWN_ERROR)
-                }
-            setLoading(false)
+            val classmates = repository.getClassmatesSuspend().getOrThrow()
+            newState {
+                setContent(classmates)
+            }
         }
     }
 
@@ -58,12 +69,6 @@ class ClassmatesViewModel(
             externalRouter.share(
                 students.convertAndShare(),
             )
-        }
-    }
-
-    private fun setData(data: List<Student>) {
-        newState {
-            copy(data = data)
         }
     }
 
@@ -88,4 +93,10 @@ data class ClassmatesState(
     val placeholders = data.isNull() && isLoading && !isError
     val isRefreshing = data.isNotNull() && isLoading && !isError
     val showError = data.isNull() && isError
+
+    fun setContent(classmates: List<Student>, isLoading: Boolean = false) =
+        copy(
+            data = classmates,
+            isLoading = isLoading,
+        )
 }

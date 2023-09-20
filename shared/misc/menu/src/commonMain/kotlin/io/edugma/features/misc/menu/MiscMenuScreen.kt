@@ -12,7 +12,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.spacer.SpacerFill
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.surface.EdSurface
@@ -22,6 +21,7 @@ import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.designSystem.utils.rememberCachedIconPainter
 import io.edugma.core.designSystem.utils.statusBarsPadding
 import io.edugma.core.ui.screen.FeatureScreen
+import io.edugma.core.utils.viewmodel.getViewModel
 
 @Composable
 fun MiscMenuScreen(viewModel: MiscMenuViewModel = getViewModel()) {

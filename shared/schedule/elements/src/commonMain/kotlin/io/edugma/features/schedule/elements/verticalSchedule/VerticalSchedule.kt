@@ -21,11 +21,11 @@ import androidx.compose.ui.unit.dp
 import io.edugma.core.api.utils.capitalized
 import io.edugma.core.api.utils.format
 import io.edugma.core.api.utils.nowLocalDate
-import io.edugma.core.arch.viewmodel.getViewModel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.withAlpha
 import io.edugma.core.utils.Typed2Listener
+import io.edugma.core.utils.viewmodel.getViewModel
 import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
 import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings

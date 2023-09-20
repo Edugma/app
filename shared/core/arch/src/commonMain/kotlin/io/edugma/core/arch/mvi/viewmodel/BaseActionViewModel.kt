@@ -6,6 +6,7 @@ import io.edugma.core.arch.mvi.StateStore
 import io.edugma.core.arch.mvi.impl.SimpleStateStore
 import io.edugma.core.arch.viewmodel.ViewModel
 import io.edugma.core.navigation.core.Router
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -21,6 +22,10 @@ abstract class BaseActionViewModel<TState, TAction>(
 
     val router: Router by inject()
 
+    internal var _errorHandler: CoroutineExceptionHandler? = null
+    val errorHandler: CoroutineExceptionHandler?
+        get() = _errorHandler
+
     protected val screenResultProvider: ScreenResultProvider by inject()
 
     init {
@@ -29,10 +34,6 @@ abstract class BaseActionViewModel<TState, TAction>(
                 Logger.d(it.toString(), tag = "STATE")
             }
         }
-    }
-
-    override fun onAction(action: TAction) {
-        TODO("Not yet implemented")
     }
 
     open fun exit() {
