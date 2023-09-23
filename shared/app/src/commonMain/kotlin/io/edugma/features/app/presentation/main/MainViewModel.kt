@@ -1,4 +1,4 @@
-package io.edugma.features.app.main
+package io.edugma.features.app.presentation.main
 
 import io.edugma.core.api.model.SnackbarCommand
 import io.edugma.core.api.repository.MainSnackbarRepository

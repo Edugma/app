@@ -1,4 +1,4 @@
-package io.edugma.features.app.di
+package io.edugma.features.app.core
 
 import org.koin.core.module.Module
 

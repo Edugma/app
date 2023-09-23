@@ -6,5 +6,5 @@ import platform.UIKit.UIViewController
 @Suppress("FunctionName", "unused")
 fun MainViewController(): UIViewController =
     ComposeUIViewController {
-        MainApp()
+        MainScreen()
     }

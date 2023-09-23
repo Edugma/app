@@ -1,10 +1,11 @@
-package io.edugma.features.app.main
+package io.edugma.features.app.presentation.main
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.WindowInsets
@@ -22,13 +23,42 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.node.Ref
 import androidx.compose.ui.unit.dp
 import io.edugma.core.api.model.SnackbarCommand
+import io.edugma.core.api.model.ThemeMode
 import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
+import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.organism.snackbar.EdSnackbar
+import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.tokens.elevation.EdElevation
 import io.edugma.core.designSystem.utils.LocalEdIconLoader
 import io.edugma.core.designSystem.utils.LocalEdImageLoader
 import io.edugma.core.designSystem.utils.statusBarsPadding
 import io.edugma.core.utils.viewmodel.getViewModel
+import io.edugma.features.app.presentation.main.widgets.BottomNav
+import io.edugma.features.app.presentation.main.widgets.rememberTabNavigator
 import io.edugma.navigation.core.compose.EdugmaTabNavigation
+
+@Composable
+fun MainScreen(
+    viewModel: MainAppViewModel = getViewModel(),
+) {
+    val state by viewModel.stateFlow.collectAsState()
+
+    EdTheme(
+        useDynamicColors = true,
+        useDarkTheme = when (state.themeMode) {
+            ThemeMode.Light -> false
+            ThemeMode.Dark -> true
+            ThemeMode.System -> isSystemInDarkTheme()
+        },
+    ) {
+        EdSurface(
+            color = EdTheme.colorScheme.background,
+            elevation = EdElevation.Level0,
+        ) {
+            MainContent()
+        }
+    }
+}
 
 @Composable
 fun MainContent(

@@ -6,7 +6,7 @@ java="17"
 
 ksp = "1.9.10-1.0.13"
 kotlin = "1.9.10"
-androidGradlePlugin = "8.2.0-beta04"
+androidGradlePlugin = "8.2.0-beta05"
 kotlinter = "3.14.0"
 ktorfitGradle = "1.0.0"
 kotlinxAtomic = "0.22.0"
@@ -16,6 +16,8 @@ composeMultiplatform = "1.5.1"
 androidxAnnotations = "1.7.0"
 androidxDatastore = "1.1.0-alpha05"
 androidxCollections = "1.3.0-rc01"
+
+buildKonfig = "0.14.0"
 
 composeBom = "2023.08.00"
 composeCompiler = "1.5.3"
@@ -54,7 +56,7 @@ koinAndroid = "3.4.3"
 androidxViewmodel = "2.6.2"
 
 androidxLifecycle = "2.6.2"
-composeActivity = "1.8.0-beta01"
+composeActivity = "1.8.0-rc01"
 coreKtx = "1.12.0"
 appcompat = "1.6.1"
 startup = "1.1.1"
@@ -153,6 +155,7 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 ktorfit = { id = "de.jensklingenberg.ktorfit", version.ref = "ktorfitGradle" }
 kotlinx-atomic = { id = "org.jetbrains.kotlin.plugin.atomicfu", version.ref = "kotlin" }
+buildKonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildKonfig" }
 
 multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 cocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }

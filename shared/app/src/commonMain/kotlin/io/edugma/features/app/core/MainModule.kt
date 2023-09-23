@@ -1,6 +1,7 @@
-package io.edugma.features.app.main
+package io.edugma.features.app.core
 
-import io.edugma.features.app.MainAppViewModel
+import io.edugma.features.app.presentation.main.MainAppViewModel
+import io.edugma.features.app.presentation.main.MainViewModel
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 

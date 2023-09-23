@@ -1,12 +1,62 @@
+import com.android.build.api.dsl.ApplicationBuildType
+import org.gradle.accessors.dm.LibrariesForLibs
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
-    id("android-app")
+    id("io.edugma.android-app")
+    kotlin("android")
+    id("lint")
 }
+
+// https://github.com/gradle/gradle/issues/15383
+val libs = the<LibrariesForLibs>()
+
+val versionsProperties = Properties()
+versionsProperties.load(FileInputStream(rootProject.file("versions.properties")))
 
 android {
     namespace = "io.edugma.android"
 
-    packaging {
-        resources.pickFirsts.add("MR/**")
+    defaultConfig {
+        applicationId = "io.edugma.android"
+        targetSdk = libs.versions.targetSdk.get().toInt()
+        versionCode = versionsProperties.getProperty("versionCode").toInt()
+        versionName = versionsProperties.getProperty("versionName")
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        getByName("debug") {
+            applicationIdSuffix = ".debug"
+
+            isMinifyEnabled = false
+            isShrinkResources = false
+            isDebuggable = true
+        }
+        create("qa") {
+            initWith(getByName("release"))
+            applicationIdSuffix = ".qa"
+
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+        getByName("release") {
+            isMinifyEnabled = true
+            isShrinkResources = true
+
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+    }
+    kotlinOptions {
+        jvmTarget = libs.versions.java.get()
+    }
+    buildFeatures {
+        compose = true
+        buildConfig = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
 }
 

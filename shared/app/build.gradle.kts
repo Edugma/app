@@ -1,5 +1,12 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.BOOLEAN
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
+import com.codingfeline.buildkonfig.gradle.TargetConfigDsl
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("mp-compose-lib")
+    alias(libs.plugins.buildKonfig)
 }
 
 kotlin {
@@ -34,6 +41,72 @@ kotlin {
 
                 implementation(projects.shared.schedule.data)
             }
+        }
+    }
+}
+
+val versionsProperties = Properties()
+versionsProperties.load(FileInputStream(rootProject.file("versions.properties")))
+
+fun TargetConfigDsl.boolean(name: String, value: Boolean) {
+    buildConfigField(type = BOOLEAN, name = name, value = value.toString(), const = true)
+}
+
+fun TargetConfigDsl.string(name: String, value: String) {
+    buildConfigField(type = STRING, name = name, value = value, const = true)
+}
+
+fun TargetConfigDsl.buildConfigFields(
+    buildType: String,
+    isLogsEnabled: Boolean,
+    isNetworkLogsEnabled: Boolean,
+    isDebugPanelEnabled: Boolean,
+) {
+    string("BuildType", buildType)
+
+    boolean("IsLogsEnabled", isLogsEnabled)
+    boolean("IsNetworkLogsEnabled", isNetworkLogsEnabled)
+    boolean("IsDebugPanelEnabled", isDebugPanelEnabled)
+}
+
+buildkonfig {
+    packageName = "io.edugma.shared.app"
+    exposeObjectWithName = "BuildKonfig"
+
+    defaultConfigs("debug") {
+        buildConfigFields(
+            buildType = "debug",
+            isLogsEnabled = true,
+            isNetworkLogsEnabled = true,
+            isDebugPanelEnabled = true,
+        )
+    }
+    defaultConfigs("qa") {
+        buildConfigFields(
+            buildType = "qa",
+            isLogsEnabled = true,
+            isNetworkLogsEnabled = false,
+            isDebugPanelEnabled = true,
+        )
+    }
+    defaultConfigs("release") {
+        buildConfigFields(
+            buildType = "release",
+            isLogsEnabled = false,
+            isNetworkLogsEnabled = false,
+            isDebugPanelEnabled = false,
+        )
+    }
+    defaultConfigs {
+        string("Platform", "")
+        string("Version", versionsProperties.getProperty("versionName"))
+    }
+    targetConfigs {
+        create("android") {
+            string("Platform", "android")
+        }
+        create("ios") {
+            string("Platform", "ios")
         }
     }
 }

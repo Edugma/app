@@ -1,4 +1,4 @@
-package io.edugma.features.app.di
+package io.edugma.features.app.core
 
 import io.edugma.core.designSystem.utils.CommonImageLoader
 import io.edugma.core.designSystem.utils.IconImageLoader

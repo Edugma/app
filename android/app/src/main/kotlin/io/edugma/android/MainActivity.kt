@@ -13,7 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import io.edugma.core.api.model.ThemeMode
 import io.edugma.core.api.repository.ThemeRepository
 import io.edugma.core.navigation.core.router.external.ExternalNavigator
-import io.edugma.features.app.MainApp
+import io.edugma.features.app.presentation.main.MainScreen
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -67,7 +67,7 @@ class MainActivity : ComponentActivity() {
                 onDispose {  }
             }
             ProvideActivityInstanceKeeperOwner {
-                MainApp()
+                MainScreen()
             }
         }
 

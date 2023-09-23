@@ -1,5 +1,6 @@
 package io.edugma.data.base
 
+import io.edugma.core.api.repository.BuildConfigRepository
 import io.edugma.core.api.repository.CacheRepository
 import io.edugma.core.api.repository.PreferenceRepository
 import io.edugma.core.api.repository.SettingsRepository
@@ -35,8 +36,10 @@ val baseDataModule = module {
 
 private fun Module.otherClient() {
     single(named(DiConst.OtherClient)) {
+        val buildConfigRepository = get<BuildConfigRepository>()
         buildKtorClient(
-            listOf(),
+            interceptors = listOf(),
+            isLogsEnabled = buildConfigRepository.isNetworkLogsEnabled(),
         )
     }
     single(named(DiConst.OtherClient)) {
@@ -49,11 +52,13 @@ private fun Module.otherClient() {
 
 private fun Module.accountClient() {
     single(named(DiConst.Account)) {
+        val buildConfigRepository = get<BuildConfigRepository>()
         buildKtorClient(
-            listOf(
+            interceptors = listOf(
                 get<TokenInterceptor>(),
                 get<ApiVersionInterceptor>(),
             ),
+            isLogsEnabled = buildConfigRepository.isNetworkLogsEnabled(),
         )
     }
     single(named(DiConst.Account)) {
@@ -66,11 +71,13 @@ private fun Module.accountClient() {
 
 private fun Module.scheduleClient() {
     single(named(DiConst.Schedule)) {
+        val buildConfigRepository = get<BuildConfigRepository>()
         buildKtorClient(
-            listOf(
+            interceptors = listOf(
                 get<TokenInterceptor>(),
                 get<ApiVersionInterceptor>(),
             ),
+            isLogsEnabled = buildConfigRepository.isNetworkLogsEnabled(),
         )
     }
     single(named(DiConst.Schedule)) {

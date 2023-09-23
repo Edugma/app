@@ -1,4 +1,4 @@
-package io.edugma.features.app.di
+package io.edugma.features.app.core
 
 import io.edugma.core.api.baseDomainModule
 import io.edugma.core.system.coreSystemModule
@@ -6,7 +6,6 @@ import io.edugma.core.utils.coreUtilsModule
 import io.edugma.data.base.baseDataModule
 import io.edugma.data.schedule.ScheduleDataModule
 import io.edugma.features.account.accountFeaturesModule
-import io.edugma.features.app.main.mainModule
 import io.edugma.features.misc.menu.miscMenuFeaturesModule
 import io.edugma.features.misc.settings.settingsFeaturesModule
 import io.edugma.features.nodes.nodesFeaturesModule

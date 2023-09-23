@@ -27,6 +27,7 @@ fun buildKtorfit(client: HttpClient, baseUrl: String = ""): Ktorfit {
 
 fun buildKtorClient(
     interceptors: List<KtorInterceptor>,
+    isLogsEnabled: Boolean,
 ): HttpClient {
     val client = HttpClient {
         install(HttpTimeout) {
@@ -49,13 +50,15 @@ fun buildKtorClient(
                 ContentType.Text.Any,
             )
         }
-        install(Logging) {
-            logger = object : Logger {
-                override fun log(message: String) {
-                    co.touchlab.kermit.Logger.d(message, tag = "Network")
+        if (isLogsEnabled) {
+            install(Logging) {
+                logger = object : Logger {
+                    override fun log(message: String) {
+                        co.touchlab.kermit.Logger.d(message, tag = "Network")
+                    }
                 }
+                level = LogLevel.ALL
             }
-            level = LogLevel.ALL
         }
     }
     client.plugin(HttpSend).apply {

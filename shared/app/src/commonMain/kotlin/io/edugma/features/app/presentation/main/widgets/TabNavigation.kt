@@ -1,4 +1,4 @@
-package io.edugma.features.app.main
+package io.edugma.features.app.presentation.main.widgets
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
@@ -34,7 +34,8 @@ import io.edugma.core.navigation.MainScreen
 import io.edugma.core.navigation.ScheduleScreens
 import io.edugma.core.navigation.core.rememberRouterNavigator
 import io.edugma.core.navigation.misc.MiscMenuScreens
-import io.edugma.features.app.screens.appScreens
+import io.edugma.features.app.core.appScreens
+import io.edugma.features.app.presentation.main.MainViewModel
 import io.edugma.navigation.core.compose.EdugmaNavigation
 import io.edugma.navigation.core.compose.rememberEdugmaNavigator
 import io.edugma.navigation.core.graph.screenModule

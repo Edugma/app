@@ -1,4 +1,4 @@
-package io.edugma.features.app.main
+package io.edugma.features.app.presentation.main.widgets
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState

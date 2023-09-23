@@ -1,4 +1,4 @@
-package io.edugma.features.app.screens
+package io.edugma.features.app.core
 
 import io.edugma.core.navigation.MainScreen
 import io.edugma.core.navigation.ScheduleScreens

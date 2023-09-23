@@ -1,4 +1,4 @@
-package io.edugma.features.app
+package io.edugma.features.app.presentation.main
 
 import io.edugma.core.api.model.ThemeMode
 import io.edugma.core.api.repository.ThemeRepository

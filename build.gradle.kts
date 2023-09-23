@@ -13,10 +13,6 @@ plugins {
     // alias(libs.plugins.buildConfig).apply(false)
 }
 
-tasks.register("clean", Delete::class) {
-    delete(rootProject.buildDir)
-}
-
 subprojects {
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions.jvmTarget = libs.versions.java.get()
