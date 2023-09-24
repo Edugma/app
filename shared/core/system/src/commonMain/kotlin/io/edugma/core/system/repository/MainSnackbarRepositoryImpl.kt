@@ -25,4 +25,8 @@ class MainSnackbarRepositoryImpl : BaseCommandBus<SnackbarCommand>(), MainSnackb
 
         return deferredResult.await()
     }
+
+    override fun sendResult(result: SnackbarCommand.Result) {
+        sendCommand(result)
+    }
 }

@@ -2,17 +2,19 @@ package io.edugma.features.app.presentation.main
 
 import io.edugma.core.api.model.SnackbarCommand
 import io.edugma.core.api.repository.MainSnackbarRepository
+import io.edugma.core.api.utils.sendResult
 import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
 import io.edugma.core.designSystem.utils.CommonImageLoader
 import io.edugma.core.utils.viewmodel.launchCoroutine
-import kotlinx.coroutines.flow.collect
+import io.edugma.features.misc.other.inAppUpdate.domain.CheckUpdateUseCase
 import kotlinx.coroutines.flow.filterIsInstance
 
 class MainViewModel(
     val commonImageLoader: CommonImageLoader,
     val iconImageLoader: CommonImageLoader,
-    val mainSnackbarRepository: MainSnackbarRepository,
+    private val mainSnackbarRepository: MainSnackbarRepository,
+    private val checkUpdateUseCase: CheckUpdateUseCase,
 ) : BaseActionViewModel<MainUiState, MainAction>(MainUiState()) {
     init {
         launchCoroutine {
@@ -24,19 +26,42 @@ class MainViewModel(
                     }
                 }
         }
+
+        launchCoroutine {
+            checkUpdateUseCase()
+        }
     }
 
     override fun onAction(action: MainAction) {
         when (action) {
-            is MainAction.OnSnackbarDismissed -> newState {
-                dismissSnackbar(action.snackbar)
+            is MainAction.OnSnackbarDismissed -> {
+                newState {
+                    dismissSnackbar(action.message)
+                }
+                if (action.message.needResult) {
+                    mainSnackbarRepository.sendResult(
+                        message = action.message,
+                        result = false,
+                    )
+                }
+            }
+
+            is MainAction.OnSnackbarActionClicked -> {
+                newState {
+                    dismissSnackbar(action.message)
+                }
+                mainSnackbarRepository.sendResult(
+                    message = action.message,
+                    result = true,
+                )
             }
         }
     }
 }
 
 sealed interface MainAction {
-    data class OnSnackbarDismissed(val snackbar: SnackbarCommand.Message) : MainAction
+    data class OnSnackbarDismissed(val message: SnackbarCommand.Message) : MainAction
+    data class OnSnackbarActionClicked(val message: SnackbarCommand.Message) : MainAction
 }
 
 data class MainUiState(

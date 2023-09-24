@@ -27,6 +27,7 @@ import io.edugma.core.api.model.ThemeMode
 import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.organism.snackbar.EdSnackbar
+import io.edugma.core.designSystem.organism.snackbar.EdSnackbarStyle
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
 import io.edugma.core.designSystem.utils.LocalEdIconLoader
@@ -36,6 +37,7 @@ import io.edugma.core.utils.viewmodel.getViewModel
 import io.edugma.features.app.presentation.main.widgets.BottomNav
 import io.edugma.features.app.presentation.main.widgets.rememberTabNavigator
 import io.edugma.navigation.core.compose.EdugmaTabNavigation
+import kotlin.time.Duration.Companion.seconds
 
 @Composable
 fun MainScreen(
@@ -89,6 +91,9 @@ fun MainContent(
                     onDismissed = {
                         onAction(MainAction.OnSnackbarDismissed(it))
                     },
+                    onAction = {
+                        onAction(MainAction.OnSnackbarActionClicked(it))
+                    },
                 )
             }
         }
@@ -99,6 +104,7 @@ fun MainContent(
 private fun BoxScope.Snackbar(
     messageProvider: () -> SnackbarCommand.Message?,
     onDismissed: (SnackbarCommand.Message) -> Unit,
+    onAction: (SnackbarCommand.Message) -> Unit,
 ) {
     val message = messageProvider()
 
@@ -124,15 +130,29 @@ private fun BoxScope.Snackbar(
             }
         }
 
+        val style = when (message.type) {
+            SnackbarCommand.Message.Type.Info -> EdSnackbarStyle.default
+            SnackbarCommand.Message.Type.Warning -> EdSnackbarStyle.warning
+            SnackbarCommand.Message.Type.Error -> EdSnackbarStyle.error
+        }
+
         EdSnackbar(
             title = title,
             subtitle = message.subtitle,
+            action = message.action.takeIf { message.needResult },
+            timeToDismiss = message.timeToDismiss ?: 6.seconds,
             onDismissed = {
                 onDismissed(message)
             },
+            onActionClick = if (message.needResult) {
+                { onAction(message) }
+            } else {
+                null
+            },
+            style = style,
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .padding(horizontal = 16.dp, vertical = 32.dp)
+                .padding(horizontal = 8.dp, vertical = 32.dp)
                 .statusBarsPadding()
                 .fillMaxWidth(),
         )

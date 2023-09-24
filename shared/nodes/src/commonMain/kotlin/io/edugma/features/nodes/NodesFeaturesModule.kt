@@ -1,7 +1,7 @@
 package io.edugma.features.nodes
 
 import de.jensklingenberg.ktorfit.Ktorfit
-import io.edugma.data.base.consts.DiConst
+import io.edugma.core.api.consts.DiConst
 import io.edugma.features.nodes.data.NodesRepositoryImpl
 import io.edugma.features.nodes.data.NodesService
 import io.edugma.features.nodes.domain.NodesRepository

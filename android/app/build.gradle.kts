@@ -8,7 +8,7 @@ plugins {
     kotlin("android")
     id("lint")
 }
-
+// TODO signing
 // https://github.com/gradle/gradle/issues/15383
 val libs = the<LibrariesForLibs>()
 

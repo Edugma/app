@@ -1,7 +1,7 @@
 package io.edugma.data.schedule
 
 import de.jensklingenberg.ktorfit.Ktorfit
-import io.edugma.data.base.consts.DiConst
+import io.edugma.core.api.consts.DiConst
 import io.edugma.data.schedule.api.FreePlacesService
 import io.edugma.data.schedule.api.ScheduleInfoService
 import io.edugma.data.schedule.api.ScheduleService

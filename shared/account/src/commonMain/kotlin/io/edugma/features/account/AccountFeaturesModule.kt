@@ -1,7 +1,7 @@
 package io.edugma.features.account
 
 import de.jensklingenberg.ktorfit.Ktorfit
-import io.edugma.data.base.consts.DiConst
+import io.edugma.core.api.consts.DiConst
 import io.edugma.features.account.data.api.AccountService
 import io.edugma.features.account.data.repository.ApplicationsRepositoryImpl
 import io.edugma.features.account.data.repository.AuthorizationRepositoryImpl
