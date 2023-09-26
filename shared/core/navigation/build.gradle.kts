@@ -8,6 +8,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(projects.shared.core.designSystem)
+                implementation(projects.shared.core.api)
                 api(projects.libs.navigation.core)
 
                 implementation(libs.kotlinx.dateTime)

@@ -1,5 +1,6 @@
 package io.edugma.core.navigation.core.router.external
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -19,7 +20,7 @@ class ExternalNavigator(
 
     fun start() {
         scope.launch {
-            externalRouter.commandBuffer.collect {
+            externalRouter.messageFlow.collect {
                 try {
                     processCommand(it)
                 } catch (e: Exception) {
@@ -33,17 +34,12 @@ class ExternalNavigator(
         scope.cancel()
     }
 
-    private fun processCommand(commands: List<ExternalNavigationCommand>) {
-        for (command in commands) {
-            applyCommand(command)
-        }
-    }
-
-    private fun applyCommand(command: ExternalNavigationCommand) {
+    private fun processCommand(command: ExternalNavigationCommand) {
         when (command) {
             is ExternalNavigationCommand.Share -> share(command)
             is ExternalNavigationCommand.OpenUri -> openUri(command)
             is ExternalNavigationCommand.Message -> showMessage(command)
+            is ExternalNavigationCommand.OpenStore -> openStore(command)
         }
     }
 
@@ -69,5 +65,25 @@ class ExternalNavigator(
 
     private fun showMessage(command: ExternalNavigationCommand.Message) {
         Toast.makeText(context, command.text, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun openStore(command: ExternalNavigationCommand.OpenStore) {
+        val packageName = command.packageName ?: context.packageName
+        try {
+            context.startActivity(
+                Intent().apply {
+                    action = Intent.ACTION_VIEW
+                    data = Uri.parse("market://details?id=$packageName")
+                }
+            )
+        } catch (e: ActivityNotFoundException) {
+            context.startActivity(
+                Intent().apply {
+                    action = Intent.ACTION_VIEW
+                    data = Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+                }
+            )
+
+        }
     }
 }

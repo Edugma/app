@@ -152,7 +152,7 @@ private fun BoxScope.Snackbar(
             style = style,
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .padding(horizontal = 8.dp, vertical = 32.dp)
+                .padding(horizontal = 10.dp, vertical = 32.dp)
                 .statusBarsPadding()
                 .fillMaxWidth(),
         )

@@ -4,6 +4,7 @@ import io.edugma.core.api.repository.BuildConfigRepository
 import io.edugma.core.api.repository.MainSnackbarRepository
 import io.edugma.core.api.repository.SettingsRepository
 import io.edugma.core.api.utils.sendWarningWithResult
+import io.edugma.core.navigation.core.router.external.ExternalRouter
 import io.edugma.features.misc.other.inAppUpdate.data.InAppUpdateService
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
@@ -16,6 +17,7 @@ class CheckUpdateUseCase(
     private val buildConfigRepository: BuildConfigRepository,
     private val appSnackbarRepository: MainSnackbarRepository,
     private val settingsRepository: SettingsRepository,
+    private val router: ExternalRouter,
 ) {
     suspend operator fun invoke() {
         val version = inAppUpdateService.getLastVersion().getOrThrow()
@@ -32,10 +34,10 @@ class CheckUpdateUseCase(
 
         val now = Clock.System.now()
 
-        val timeToShow = 0.days
-
-        if (now - lastUpdate > timeToShow) {
-            if (appVersion < minVersion) {
+        if (appVersion < minVersion) {
+            // TODO Dont forget
+            val timeToShow = 0.days
+            if (now - lastUpdate > timeToShow) {
                 val actionResult = appSnackbarRepository.sendWarningWithResult(
                     title = "Срочно обновите приложение",
                     subtitle = "Версия приложения устарела и больше не поддерживается!",
@@ -43,7 +45,14 @@ class CheckUpdateUseCase(
                     timeToDismiss = INFINITE,
                 )
                 settingsRepository.saveString(LastUpdateKey, now.toString())
-            } else if (appVersion < lastVersion) {
+                if (actionResult) {
+                    router.openStore()
+                }
+            }
+        } else if (appVersion < lastVersion) {
+            // TODO Dont forget
+            val timeToShow = 0.days
+            if (now - lastUpdate > timeToShow) {
                 val actionResult = appSnackbarRepository.sendWarningWithResult(
                     title = "Обновите приложение",
                     subtitle = "Доступна новая версия приложения",
@@ -51,6 +60,9 @@ class CheckUpdateUseCase(
                     timeToDismiss = INFINITE,
                 )
                 settingsRepository.saveString(LastUpdateKey, now.toString())
+                if (actionResult) {
+                    router.openStore()
+                }
             }
         }
     }

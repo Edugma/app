@@ -1,23 +1,10 @@
 package io.edugma.core.navigation.core.router.external
 
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
+import io.edugma.core.api.repository.BaseCommandBus
 
-class ExternalRouter {
-    private val _commandBuffer = MutableSharedFlow<List<ExternalNavigationCommand>>(
-        replay = 0,
-        extraBufferCapacity = Int.MAX_VALUE,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST,
-    )
-    val commandBuffer: Flow<List<ExternalNavigationCommand>> = _commandBuffer
-
-    private fun executeCommands(vararg commands: ExternalNavigationCommand) {
-        _commandBuffer.tryEmit(commands.toList())
-    }
-
+class ExternalRouter : BaseCommandBus<ExternalNavigationCommand>() {
     fun share(text: String) {
-        executeCommands(
+        sendCommand(
             ExternalNavigationCommand.Share(
                 text = text,
             ),
@@ -25,7 +12,7 @@ class ExternalRouter {
     }
 
     fun openUri(uri: String) {
-        executeCommands(
+        sendCommand(
             ExternalNavigationCommand.OpenUri(
                 uri = uri,
             ),
@@ -33,9 +20,20 @@ class ExternalRouter {
     }
 
     fun showMessage(text: String) {
-        executeCommands(
+        sendCommand(
             ExternalNavigationCommand.Message(
                 text = text,
+            ),
+        )
+    }
+
+    /**
+     * @param packageName Package of app to open. Will open current app page in store if equal null.
+     */
+    fun openStore(packageName: String? = null) {
+        sendCommand(
+            ExternalNavigationCommand.OpenStore(
+                packageName = packageName,
             ),
         )
     }

@@ -112,11 +112,11 @@ fun ScheduleSourcesContent(
                     value = state.query,
                     onValueChange = onQueryChange,
                     modifier = Modifier
-                        .padding(horizontal = EdTheme.paddings.smallSecondary)
+                        .padding(horizontal = EdTheme.paddings.s)
                         .fillMaxWidth(),
                     placeholder = stringResource(MR.strings.schedule_sou_search),
                 )
-                SpacerHeight(height = EdTheme.paddings.smallSecondary)
+                SpacerHeight(height = EdTheme.paddings.s)
             }
         }
         if (state.selectedTab == ScheduleSourcesTabs.Complex) {
@@ -234,7 +234,7 @@ private fun SourceTypeTabs(
 ) {
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
-        contentPadding = PaddingValues(horizontal = EdTheme.paddings.extraSmallTertiary),
+        contentPadding = PaddingValues(horizontal = EdTheme.paddings.xxs),
     ) {
         items(tabs) { tab ->
             SourceTypeTab(
