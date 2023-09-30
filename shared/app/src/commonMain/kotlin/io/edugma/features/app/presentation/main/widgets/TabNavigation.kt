@@ -16,6 +16,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -124,8 +125,9 @@ internal fun rememberTabNavigator(viewModel: MainViewModel): Pair<EdugmaNavigato
     }
 
     LaunchedEffect(key1 = Unit) {
-        tabNavigator.currentScreen.collect {
-            when (it.screenBundle.screen) {
+        tabNavigator.state.collect {
+
+            when (it.currentScreen.screenBundle.screen) {
                 MainScreen.Home -> {
                     homeNavigatorIsActive.value = true
                     scheduleNavigatorIsActive.value = false
@@ -161,16 +163,16 @@ internal fun rememberTabNavigator(viewModel: MainViewModel): Pair<EdugmaNavigato
 
     LaunchedEffect(key1 = Unit) {
         combine(
-            tabNavigator.currentScreen,
-            homeNavigator.currentScreen,
-            scheduleNavigator.currentScreen,
-            accountNavigator.currentScreen,
-            miscNavigator.currentScreen,
+            tabNavigator.state,
+            homeNavigator.state,
+            scheduleNavigator.state,
+            accountNavigator.state,
+            miscNavigator.state,
         ) { tabScreen, homeScreen, scheduleScreen, accountScreen, miscScreen ->
-            homeScreen.navBarIsVisible(tabScreen, MainScreen.Home) ||
-                scheduleScreen.navBarIsVisible(tabScreen, MainScreen.Schedule) ||
-                accountScreen.navBarIsVisible(tabScreen, MainScreen.Account) ||
-                miscScreen.navBarIsVisible(tabScreen, MainScreen.Misc)
+            homeScreen.currentScreen.navBarIsVisible(tabScreen.currentScreen, MainScreen.Home) ||
+                scheduleScreen.currentScreen.navBarIsVisible(tabScreen.currentScreen, MainScreen.Schedule) ||
+                accountScreen.currentScreen.navBarIsVisible(tabScreen.currentScreen, MainScreen.Account) ||
+                miscScreen.currentScreen.navBarIsVisible(tabScreen.currentScreen, MainScreen.Misc)
         }.collect {
             isNavigationBarVisible.value = it
         }
@@ -192,7 +194,10 @@ val items = listOf(
 
 @Composable
 fun BottomNav(navController: EdugmaNavigator, isVisible: State<Boolean>) {
-    val currentDestination by navController.currentScreen.collectAsState()
+    val navigationState by navController.state.collectAsState()
+    val currentDestination by remember {
+        derivedStateOf { navigationState.currentScreen }
+    }
     val density = LocalDensity.current
 
     AnimatedVisibility(

@@ -1,6 +1,8 @@
 package io.edugma.core.utils.viewmodel
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.node.Ref
 import co.touchlab.kermit.Logger
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import io.edugma.core.arch.mvi.stateStore.StateStoreBuilder
@@ -20,9 +22,14 @@ import kotlin.coroutines.CoroutineContext
 inline fun <TState, TAction, reified T : BaseActionViewModel<TState, TAction>> getViewModel(): T {
     val instanceKeeperOwner = requireNotNull(LocalInstanceKeeperOwner.current)
 
-    val viewModel = instanceKeeperOwner.instanceKeeper.getOrCreate {
-        koinInject<T>()
+    val viewModelRef = remember(T::class) { Ref<T>() }
+
+    if (viewModelRef.value == null) {
+        viewModelRef.value = instanceKeeperOwner.instanceKeeper.getOrCreate {
+            koinInject<T>()
+        }
     }
+    val viewModel = viewModelRef.value!!
 
     val defaultErrorHandler = koinInject<DefaultErrorHandler>()
 

@@ -4,6 +4,7 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import io.edugma.navigation.core.graph.ScreenGraphBuilder
@@ -17,7 +18,12 @@ import io.edugma.navigation.core.screen.ScreenBundle
 fun EdugmaNavigation(
     navigator: EdugmaNavigator,
 ) {
-    val currentScreen by navigator.currentScreen.collectAsState()
+    val state by navigator.state.collectAsState()
+    val currentScreen by remember {
+        derivedStateOf {
+            state.currentScreen
+        }
+    }
     val navigationBackHandler = LocalNavigationBackHandler.current
 
     BackHandler {
@@ -40,7 +46,12 @@ fun EdugmaNavigation(
 fun EdugmaTabNavigation(
     navigator: EdugmaNavigator,
 ) {
-    val currentScreen by navigator.currentScreen.collectAsState()
+    val state by navigator.state.collectAsState()
+    val currentScreen by remember {
+        derivedStateOf {
+            state.currentScreen
+        }
+    }
 
     val navigationBackHandler = remember {
         NavigationBackHandler(
