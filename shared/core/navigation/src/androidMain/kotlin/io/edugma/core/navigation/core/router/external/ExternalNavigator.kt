@@ -1,6 +1,7 @@
 package io.edugma.core.navigation.core.router.external
 
 import android.content.ActivityNotFoundException
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -11,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+
 
 class ExternalNavigator(
     private val externalRouter: ExternalRouter,
@@ -74,16 +76,44 @@ class ExternalNavigator(
                 Intent().apply {
                     action = Intent.ACTION_VIEW
                     data = Uri.parse("market://details?id=$packageName")
-                }
+                    addGooglePlayComponent()
+                },
             )
         } catch (e: ActivityNotFoundException) {
-            context.startActivity(
-                Intent().apply {
-                    action = Intent.ACTION_VIEW
-                    data = Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
-                }
-            )
+            try {
+                context.startActivity(
+                    Intent().apply {
+                        action = Intent.ACTION_VIEW
+                        data = Uri.parse("market://details?id=$packageName")
+                    },
+                )
+            } catch (e: ActivityNotFoundException) {
+                context.startActivity(
+                    Intent().apply {
+                        action = Intent.ACTION_VIEW
+                        data = Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+                    },
+                )
+            }
+        }
+    }
 
+    private fun Intent.addGooglePlayComponent() {
+        // TODO Replace with installerPackage
+        val otherApps = context.packageManager.queryIntentActivities(this, 0)
+        for (otherApp in otherApps) {
+            if (otherApp.activityInfo.applicationInfo.packageName == "com.android.vending") {
+                val otherAppActivity = otherApp.activityInfo
+                val componentName = ComponentName(
+                    otherAppActivity.applicationInfo.packageName,
+                    otherAppActivity.name,
+                )
+
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                addFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED)
+                component = componentName
+            }
         }
     }
 }

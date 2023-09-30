@@ -8,6 +8,7 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -152,9 +153,9 @@ private fun BoxScope.Snackbar(
             style = style,
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .padding(horizontal = 10.dp, vertical = 32.dp)
                 .statusBarsPadding()
                 .fillMaxWidth(),
+            contentPadding = PaddingValues(horizontal = 10.dp, vertical = 32.dp),
         )
     }
 }

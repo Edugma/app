@@ -2,6 +2,7 @@ package io.edugma.core.designSystem.organism.snackbar
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -39,6 +40,7 @@ fun EdSnackbar(
     subtitle: String = "",
     action: String? = null,
     onActionClick: (() -> Unit)? = null,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
     style: EdSnackbarStyle = EdSnackbarStyle.default,
 ) {
     // TODO Sometimes it doesn't dismissed after swipe
@@ -69,6 +71,7 @@ fun EdSnackbar(
                 action = action,
                 onActionClick = onActionClick,
                 style = style,
+                modifier = Modifier.padding(contentPadding),
             )
         },
         background = {
@@ -89,7 +92,7 @@ private fun SnackbarContent(
         modifier = modifier.alpha(0.98f).fillMaxWidth(),
         contentPadding = PaddingValues(
             horizontal = 16.dp,
-            vertical = 8.dp,
+            vertical = 10.dp,
         ),
         elevation = EdElevation.Level3,
         colors = EdCardDefaults.cardColors(

@@ -8,6 +8,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(libs.uuid)
+                implementation(libs.ktor.client.core)
                 api(libs.kotlinx.coroutines.core)
                 api(libs.kotlinx.serializationJson)
                 api(libs.kotlinx.serializationCbor)

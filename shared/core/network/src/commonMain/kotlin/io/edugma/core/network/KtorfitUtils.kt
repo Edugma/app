@@ -21,7 +21,7 @@ fun buildKtorfit(client: HttpClient, baseUrl: String = ""): Ktorfit {
     return ktorfit {
         baseUrl(baseUrl)
         httpClient(client)
-        responseConverter(ResultConverter())
+        converterFactories(ResultConverterFactory())
     }
 }
 
