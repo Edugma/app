@@ -1,6 +1,7 @@
 package io.edugma.core.designSystem.utils
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.drawscope.DrawScope.Companion.DefaultFilterQuality
@@ -9,8 +10,9 @@ import androidx.compose.ui.layout.ContentScale
 import com.seiko.imageloader.ImageLoader
 import com.seiko.imageloader.component.ComponentRegistryBuilder
 import com.seiko.imageloader.model.ImageRequest
+import com.seiko.imageloader.option.toScale
+import com.seiko.imageloader.rememberImagePainter
 import okio.Path.Companion.toPath
-import com.seiko.imageloader.rememberImagePainter as rememberLibPainter2
 
 @Composable
 fun rememberCachedIconPainter(
@@ -46,49 +48,53 @@ fun rememberAsyncImagePainter(
     placeholderPainter: (@Composable () -> Painter)? = null,
     errorPainter: (@Composable () -> Painter)? = null,
 ): Painter {
-    return rememberLibPainter2(
-        url = model,
+    return rememberImagePainter(
+        request = remember(model, contentScale, placeholderPainter, errorPainter) {
+            ImageRequest {
+                data(model)
+                scale(contentScale.toScale())
+                placeholderPainter?.let { placeholderPainter(it) }
+                errorPainter?.let { errorPainter(it) }
+            }
+        },
         imageLoader = imageLoader.loader,
-        contentScale = contentScale,
         filterQuality = filterQuality,
-        placeholderPainter = placeholderPainter,
-        errorPainter = errorPainter,
     )
 }
 
-@Composable
-fun rememberAsyncImagePainter(
-    model: Int,
-    imageLoader: BaseImageLoader = LocalEdImageLoader.current,
-    contentScale: ContentScale = ContentScale.Fit,
-    filterQuality: FilterQuality = DefaultFilterQuality,
-    placeholderPainter: (@Composable () -> Painter)? = null,
-    errorPainter: (@Composable () -> Painter)? = null,
-): Painter {
-    return rememberLibPainter2(
-        resId = model,
-        imageLoader = imageLoader.loader,
-        contentScale = contentScale,
-        filterQuality = filterQuality,
-        placeholderPainter = placeholderPainter,
-        errorPainter = errorPainter,
-    )
-}
-
-@Composable
-fun rememberAsyncImagePainter(
-    model: ImageRequest,
-    imageLoader: BaseImageLoader = LocalEdImageLoader.current,
-    contentScale: ContentScale = ContentScale.Fit,
-    filterQuality: FilterQuality = DefaultFilterQuality,
-): Painter {
-    return rememberLibPainter2(
-        request = model,
-        imageLoader = imageLoader.loader,
-        contentScale = contentScale,
-        filterQuality = filterQuality,
-    )
-}
+// @Composable
+// fun rememberAsyncImagePainter(
+//    model: Int,
+//    imageLoader: BaseImageLoader = LocalEdImageLoader.current,
+//    contentScale: ContentScale = ContentScale.Fit,
+//    filterQuality: FilterQuality = DefaultFilterQuality,
+//    placeholderPainter: (@Composable () -> Painter)? = null,
+//    errorPainter: (@Composable () -> Painter)? = null,
+// ): Painter {
+//    return rememberLibPainter2(
+//        resId = model,
+//        imageLoader = imageLoader.loader,
+//        contentScale = contentScale,
+//        filterQuality = filterQuality,
+//        placeholderPainter = placeholderPainter,
+//        errorPainter = errorPainter,
+//    )
+// }
+//
+// @Composable
+// fun rememberAsyncImagePainter(
+//    model: ImageRequest,
+//    imageLoader: BaseImageLoader = LocalEdImageLoader.current,
+//    contentScale: ContentScale = ContentScale.Fit,
+//    filterQuality: FilterQuality = DefaultFilterQuality,
+// ): Painter {
+//    return rememberLibPainter2(
+//        request = model,
+//        imageLoader = imageLoader.loader,
+//        contentScale = contentScale,
+//        filterQuality = filterQuality,
+//    )
+// }
 
 expect class IconImageLoader : BaseImageLoader
 

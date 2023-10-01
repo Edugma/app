@@ -5,6 +5,7 @@ import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.navigation.core.router.external.ExternalRouter
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.Typed2Listener
+import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.features.account.domain.model.student.Student
 import io.edugma.features.account.domain.repository.PeoplesRepository
 import io.edugma.features.account.domain.usecase.PaginationState
@@ -13,7 +14,6 @@ import io.edugma.features.account.domain.usecase.PagingViewModel
 import io.edugma.features.account.people.common.utlis.convertAndShare
 import io.edugma.features.account.people.students.StudentsViewModel.Companion.INIT_NAME
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 
 class StudentsViewModel(
     private val repository: PeoplesRepository,
@@ -45,7 +45,7 @@ class StudentsViewModel(
     }
 
     fun onShare() {
-        viewModelScope.launch {
+        launchCoroutine {
             state.students
                 ?.convertAndShare()
                 ?.let(externalRouter::share)

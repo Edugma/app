@@ -8,8 +8,22 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 
+@RequiresOptIn(
+    level = RequiresOptIn.Level.ERROR,
+    message = "Don't use this api",
+)
+@Target(
+    AnnotationTarget.CLASS,
+    AnnotationTarget.FUNCTION,
+    AnnotationTarget.PROPERTY,
+    AnnotationTarget.PROPERTY_GETTER,
+)
+@Retention(AnnotationRetention.BINARY)
+annotation class RestrictedApi
+
 open class ViewModel : InstanceKeeper.Instance {
 
+    @RestrictedApi
     val viewModelScope: CoroutineScope =
         CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
@@ -17,6 +31,7 @@ open class ViewModel : InstanceKeeper.Instance {
     }
 
     override fun onDestroy() {
+        @OptIn(RestrictedApi::class)
         viewModelScope.cancel()
         onCleared()
     }

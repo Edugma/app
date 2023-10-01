@@ -7,12 +7,14 @@ import co.touchlab.kermit.Logger
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import io.edugma.core.arch.mvi.stateStore.StateStoreBuilder
 import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
+import io.edugma.core.arch.viewmodel.RestrictedApi
 import io.edugma.navigation.core.instanceKeeper.LocalInstanceKeeperOwner
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import kotlin.coroutines.AbstractCoroutineContextElement
@@ -46,8 +48,8 @@ inline fun BaseActionViewModel<*, *>.launchCoroutine(
     dispatcher: CoroutineDispatcher = Dispatchers.IO,
     crossinline onError: (Throwable) -> Unit = {},
     noinline block: suspend CoroutineScope.() -> Unit,
-) {
-    launchCoroutine(
+): Job {
+    return launchCoroutine(
         dispatcher = dispatcher,
         errorHandler = ErrorHandler { cont, it ->
             this.errorHandler?.handleException(cont, it)
@@ -63,7 +65,7 @@ internal fun BaseActionViewModel<*, *>.launchCoroutine(
     dispatcher: CoroutineDispatcher = Dispatchers.IO,
     errorHandler: CoroutineExceptionHandler? = null,
     block: suspend CoroutineScope.() -> Unit,
-) {
+): Job {
     val coroutineContext = if (errorHandler != null) {
         dispatcher + errorHandler
     } else {
@@ -71,7 +73,8 @@ internal fun BaseActionViewModel<*, *>.launchCoroutine(
             Logger.e("launchCoroutine: ", it, tag = "ViewModelCoroutine")
         }
     }
-    viewModelScope.launch(
+    @OptIn(RestrictedApi::class)
+    return viewModelScope.launch(
         context = coroutineContext,
         block = block,
     )

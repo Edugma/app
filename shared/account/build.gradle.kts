@@ -14,8 +14,6 @@ kotlin {
                 implementation(projects.shared.core.utils)
                 implementation(projects.shared.core.api)
                 implementation(projects.shared.core.navigation)
-                implementation(libs.paging)
-                implementation(libs.paging.compose)
 
                 api(projects.shared.core.storage)
 

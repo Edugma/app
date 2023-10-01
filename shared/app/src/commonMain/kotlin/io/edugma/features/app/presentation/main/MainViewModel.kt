@@ -6,13 +6,14 @@ import io.edugma.core.api.utils.sendResult
 import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
 import io.edugma.core.designSystem.utils.CommonImageLoader
+import io.edugma.core.designSystem.utils.IconImageLoader
 import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.features.misc.other.inAppUpdate.domain.CheckUpdateUseCase
 import kotlinx.coroutines.flow.filterIsInstance
 
 class MainViewModel(
     val commonImageLoader: CommonImageLoader,
-    val iconImageLoader: CommonImageLoader,
+    val iconImageLoader: IconImageLoader,
     private val mainSnackbarRepository: MainSnackbarRepository,
     private val checkUpdateUseCase: CheckUpdateUseCase,
 ) : BaseActionViewModel<MainUiState, MainAction>(MainUiState()) {

@@ -1,16 +1,16 @@
 package io.edugma.features.account.domain.usecase
 
 import io.edugma.core.api.model.PagingDTO
-import io.edugma.core.arch.viewmodel.ViewModel
+import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.Typed2Listener
 import io.edugma.core.utils.isNull
+import io.edugma.core.utils.viewmodel.launchCoroutine
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 class PagingUseCase<T>(
     firstPage: Int = 1,
@@ -66,23 +66,23 @@ interface PagingViewModel<T> {
     val onLoadingStateChange: Typed1Listener<PaginationState>?
     val onError: Typed1Listener<Throwable>?
 
-    fun ViewModel.updateUc(firstPage: Int = 1, request: suspend (page: Int) -> Result<PagingDTO<T>>) {
+    fun BaseActionViewModel<*, *>.updateUc(firstPage: Int = 1, request: suspend (page: Int) -> Result<PagingDTO<T>>) {
         pagingUC = PagingUseCase(firstPage, request)
         loadingJob?.cancel()
         pagingStateJob?.cancel()
-        pagingStateJob = viewModelScope.launch {
+        pagingStateJob = launchCoroutine {
             pagingUC.paginationState.onEach { onLoadingStateChange?.invoke(it) }.collect()
         }
-        loadingJob = viewModelScope.launch {
+        loadingJob = launchCoroutine {
             pagingUC.getData()
                 .onSuccess { onDataLoaded?.invoke(it, true) }
                 .onFailure { onError?.invoke(it) }
         }
     }
 
-    fun ViewModel.loadNext(fromBegin: Boolean = false) {
+    fun BaseActionViewModel<*, *>.loadNext(fromBegin: Boolean = false) {
         if (loadingJob?.isActive == true) return
-        loadingJob = viewModelScope.launch {
+        loadingJob = launchCoroutine {
             pagingUC.getData()
                 .onSuccess {
                     if (it.isNotEmpty()) onDataLoaded?.invoke(it, fromBegin)

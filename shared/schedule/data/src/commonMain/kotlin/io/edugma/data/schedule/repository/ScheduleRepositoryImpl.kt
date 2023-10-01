@@ -33,7 +33,12 @@ class ScheduleRepositoryImpl(
     }
 
     private val scheduleStore0 = store<ScheduleSource, CompactSchedule> {
-        // fetcher { key -> scheduleService.getCompactSchedule(key).getOrThrow() }
+//        fetcher { key ->
+//            scheduleService.getCompactSchedule(
+//                type = key.type.name.lowercase(),
+//                key = key.key,
+//            ).getOrThrow()
+//        }
         fetcher { key -> scheduleMockRepository.getSuspendMockSchedule().getOrThrow() }
         cache {
             reader { key ->
