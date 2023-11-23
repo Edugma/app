@@ -10,10 +10,6 @@ import io.edugma.features.account.data.api.AccountService
 import io.edugma.features.account.domain.model.Teacher
 import io.edugma.features.account.domain.model.student.Student
 import io.edugma.features.account.domain.repository.PeoplesRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 
 class PeoplesRepositoryImpl(
     private val api: AccountService,
@@ -43,13 +39,8 @@ class PeoplesRepositoryImpl(
         pageSize: Int,
     ): Result<PagingDTO<Student>> = api.getStudents(name, page, pageSize)
 
-    override fun getClassmates() =
-        flow { emit(api.getClassmates()) }
-            .onSuccess { saveClassmates(it) }
-            .flowOn(Dispatchers.IO)
-
-    override suspend fun getClassmatesSuspend(): Result<List<Student>> {
-        return api.getClassmatesSuspend()
+    override suspend fun getClassmates(): Result<List<Student>> {
+        return api.getClassmates()
             .onSuccess { saveClassmates(it) }
     }
 

@@ -3,6 +3,7 @@ package io.edugma.core.network
 import co.touchlab.kermit.Logger
 import de.jensklingenberg.ktorfit.Ktorfit
 import de.jensklingenberg.ktorfit.converter.Converter
+import de.jensklingenberg.ktorfit.converter.KtorfitResult
 import de.jensklingenberg.ktorfit.internal.TypeData
 import io.edugma.core.api.model.ResponseError
 import io.ktor.client.call.body
@@ -20,6 +21,30 @@ class ResultConverterFactory : Converter.Factory {
         if (typeData.typeInfo.type == Result::class) {
             return object : Converter.SuspendResponseConverter<HttpResponse, Any> {
                 override suspend fun convert(response: HttpResponse): Any {
+                    return convert(KtorfitResult.Success(response))
+                }
+
+                override suspend fun convert(result: KtorfitResult): Any {
+                    return when (result) {
+                        is KtorfitResult.Failure -> {
+                            convertFailure(result.throwable)
+                        }
+                        is KtorfitResult.Success -> {
+                            convertSuccess(result.response, typeData)
+                        }
+                    }
+                }
+
+                private fun convertFailure(error: Throwable) =
+                    when (error) {
+                        is IOException -> ResponseError.NetworkError(error)
+                        else -> ResponseError.UnknownResponseError(error)
+                    }
+
+                private suspend fun convertSuccess(
+                    response: HttpResponse,
+                    typeData: TypeData,
+                ): Result<Any> {
                     return try {
                         if (response.status.isSuccess()) {
                             val body = response.body<Any>(typeData.typeArgs.first().typeInfo)
@@ -34,7 +59,6 @@ class ResultConverterFactory : Converter.Factory {
                         }
                     } catch (e: Throwable) {
                         val error = when (e) {
-                            is IOException -> ResponseError.NetworkError(e)
                             is JsonConvertException -> ResponseError.SerializationError(e)
                             else -> ResponseError.UnknownResponseError(e)
                         }

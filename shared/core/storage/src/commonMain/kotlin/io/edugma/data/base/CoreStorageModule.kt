@@ -20,7 +20,7 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-val baseDataModule = module {
+val coreStorageModule = module {
     single { TokenInterceptor(get()) }
     single { ApiVersionInterceptor() }
 
@@ -33,7 +33,7 @@ val baseDataModule = module {
     factoryOf(::PreferenceRepositoryImpl) { bind<PreferenceRepository>() }
     singleOf(::SettingsRepositoryImpl) { bind<SettingsRepository>() }
     singleOf(::CacheRepositoryImpl) { bind<CacheRepository>() }
-} + baseDataModulePlatform
+} + coreStorageModulePlatform
 
 private fun Module.otherClient() {
     single(named(DiConst.OtherClient)) {
@@ -46,7 +46,6 @@ private fun Module.otherClient() {
     single(named(DiConst.OtherClient)) {
         buildKtorfit(
             client = get(named(DiConst.OtherClient)),
-            baseUrl = "http://devspare.mospolytech.ru:8003/",
         )
     }
 }
@@ -78,12 +77,6 @@ private fun Module.accountClient() {
             isLogsEnabled = buildConfigRepository.isNetworkLogsEnabled(),
         )
     }
-    single(named(DiConst.Account)) {
-        buildKtorfit(
-            client = get(named(DiConst.Account)),
-            baseUrl = "http://devspare.mospolytech.ru:8003/",
-        )
-    }
 }
 
 private fun Module.scheduleClient() {
@@ -95,12 +88,6 @@ private fun Module.scheduleClient() {
                 get<ApiVersionInterceptor>(),
             ),
             isLogsEnabled = buildConfigRepository.isNetworkLogsEnabled(),
-        )
-    }
-    single(named(DiConst.Schedule)) {
-        buildKtorfit(
-            client = get(named(DiConst.Schedule)),
-            baseUrl = "http://devspare.mospolytech.ru:8003/",
         )
     }
 }

@@ -2,6 +2,7 @@ package io.edugma.features.app.presentation.main
 
 import io.edugma.core.api.model.SnackbarCommand
 import io.edugma.core.api.repository.MainSnackbarRepository
+import io.edugma.core.api.repository.UrlTemplateRepository
 import io.edugma.core.api.utils.sendResult
 import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
@@ -16,6 +17,7 @@ class MainViewModel(
     val iconImageLoader: IconImageLoader,
     private val mainSnackbarRepository: MainSnackbarRepository,
     private val checkUpdateUseCase: CheckUpdateUseCase,
+    private val urlRepository: UrlTemplateRepository,
 ) : BaseActionViewModel<MainUiState, MainAction>(MainUiState()) {
     init {
         launchCoroutine {
@@ -30,6 +32,11 @@ class MainViewModel(
 
         launchCoroutine {
             checkUpdateUseCase()
+        }
+
+        launchCoroutine {
+            // TODO
+            urlRepository.init()
         }
     }
 

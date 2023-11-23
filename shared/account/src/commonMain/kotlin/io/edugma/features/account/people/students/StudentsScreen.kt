@@ -102,7 +102,7 @@ fun ColumnScope.StudentBottomSheet(student: Student) {
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             EdLabel(
-                text = student.getFullName(),
+                text = student.name,
                 style = EdTheme.typography.headlineSmall,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 3,
@@ -111,46 +111,22 @@ fun ColumnScope.StudentBottomSheet(student: Student) {
             SpacerWidth(width = 10.dp)
             EdAvatar(
                 url = student.avatar,
-                initials = student.getFullName().toAvatarInitials(),
+                initials = student.name.toAvatarInitials(),
                 size = EdAvatarSize(
                     size = 80.dp,
                     textSizes = listOf(21.sp, 25.sp, 25.sp, 23.sp, 22.sp, 21.sp),
                 ),
             )
         }
-        SpacerHeight(height = 20.dp)
-        EdLabel(
-            text = student.branch.title,
-            iconPainter = painterResource(EdIcons.ic_fluent_building_24_regular),
-            style = EdTheme.typography.bodyMedium,
-        )
         SpacerHeight(height = 7.dp)
-        student.group?.let {
+        if (student.faculty != null) {
             EdLabel(
-                text = it.faculty.title,
+                text = student.faculty,
                 iconPainter = painterResource(EdIcons.ic_fluent_hat_graduation_24_filled),
                 style = EdTheme.typography.bodyMedium,
             )
             SpacerHeight(height = 7.dp)
         }
-        EdLabel(
-            text = "${student.course} курс, ${student.educationType.lowercase()}",
-            iconPainter = painterResource(EdIcons.ic_fluent_book_24_regular),
-            style = EdTheme.typography.bodyMedium,
-        )
-        SpacerHeight(height = 7.dp)
-        EdLabel(
-            text = "${student.educationForm} форма, ${student.payment.lowercase()}",
-            iconPainter = painterResource(EdIcons.ic_fluent_money_24_regular),
-            style = EdTheme.typography.bodyMedium,
-        )
-        SpacerHeight(height = 7.dp)
-        EdLabel(
-            text = "Года обучения: ${student.years}",
-            iconPainter = painterResource(EdIcons.ic_fluent_timer_24_regular),
-            style = EdTheme.typography.bodyMedium,
-        )
-        SpacerHeight(height = 10.dp)
         student.group?.let { group ->
             EdDivider(thickness = 1.dp)
             SpacerHeight(height = 10.dp)
@@ -159,20 +135,6 @@ fun ColumnScope.StudentBottomSheet(student: Student) {
                 style = EdTheme.typography.titleLarge,
             )
             SpacerHeight(height = 7.dp)
-            EdLabel(
-                text = "${group.direction.code} ${group.direction.title}",
-                iconPainter = painterResource(EdIcons.ic_fluent_contact_card_group_24_regular),
-                style = EdTheme.typography.bodyMedium,
-            )
-            SpacerHeight(height = 7.dp)
-            student.specialization?.let {
-                EdLabel(
-                    text = it.title,
-                    iconPainter = painterResource(EdIcons.ic_fluent_data_treemap_24_regular),
-                    style = EdTheme.typography.bodyMedium,
-                )
-                SpacerHeight(height = 7.dp)
-            }
         }
     }
 }
@@ -247,7 +209,7 @@ fun StudentsList(
                 ) {
                     val item = state.students[it]
                     item.let {
-                        PeopleItem(it.getFullName(), it.getInfo(), it.avatar) { studentClick.invoke(it) }
+                        PeopleItem(it.name, it.getInfo(), it.avatar) { studentClick.invoke(it) }
                     }
                 }
             }

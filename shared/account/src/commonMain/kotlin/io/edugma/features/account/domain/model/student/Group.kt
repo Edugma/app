@@ -5,6 +5,5 @@ data class Group(
     val id: String,
     val title: String,
     val course: Int? = null,
-    val faculty: StudentFaculty,
-    val direction: StudentDirection,
+    val faculty: String?,
 )

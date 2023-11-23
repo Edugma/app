@@ -19,7 +19,9 @@ import kotlinx.serialization.json.Json
 
 fun buildKtorfit(client: HttpClient, baseUrl: String = ""): Ktorfit {
     return ktorfit {
-        baseUrl(baseUrl)
+        if (baseUrl.isNotEmpty()) {
+            baseUrl(baseUrl)
+        }
         httpClient(client)
         converterFactories(ResultConverterFactory())
     }

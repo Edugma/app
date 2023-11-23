@@ -9,7 +9,7 @@ import io.edugma.core.api.repository.save
 import io.edugma.core.api.repository.saveOrRemove
 import io.edugma.data.base.consts.CacheConst
 import io.edugma.data.base.consts.PrefConst
-import io.edugma.data.schedule.api.ScheduleSourcesService
+import io.edugma.data.schedule.api.ScheduleService
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
 import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import io.edugma.features.schedule.domain.repository.ScheduleSourcesRepository
@@ -21,18 +21,17 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
 class ScheduleSourcesRepositoryImpl(
-    private val scheduleSourcesService: ScheduleSourcesService,
     private val settingsRepository: SettingsRepository,
     private val cacheRepository: CacheRepository,
+    private val scheduleService: ScheduleService,
 ) : ScheduleSourcesRepository {
-    private val TAG = "ScheduleSourcesReposito"
 
     override fun getSourceTypes() =
-        flow { emit(scheduleSourcesService.getSourceTypes()) }
+        flow { emit(scheduleService.getSourceTypes()) }
             .flowOn(Dispatchers.IO)
 
     override suspend fun getSources(type: ScheduleSources) =
-        scheduleSourcesService.getSources(type.name.lowercase()).getOrThrow()
+        scheduleService.getSources(type = type.name.lowercase(), query = "", limit = 50, page = 1)
 
     override suspend fun getFavoriteSources(): Flow<List<ScheduleSourceFull>> =
         cacheRepository.getDataFlow<List<ScheduleSourceFull>>(CacheConst.FavoriteScheduleSources)

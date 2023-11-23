@@ -10,21 +10,15 @@ import io.edugma.features.account.domain.model.Personal
 import io.edugma.features.account.domain.repository.PersonalRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 
 class PersonalRepositoryImpl(
     private val api: AccountService,
     private val cacheRepository: CacheRepository,
 ) : PersonalRepository {
-    override fun getPersonalInfo() =
-        flow { emit(api.getPersonalInfo()) }
-            .onSuccess { setLocalPersonalInfo(it) }
-            .flowOn(Dispatchers.IO)
 
     override suspend fun getPersonalInfoSuspend(): Result<Personal> {
-        return api.getPersonalInfoSuspend()
+        return api.getPersonalInfo()
             .onSuccess {
                 withContext(Dispatchers.IO) {
                     setLocalPersonalInfo(it)

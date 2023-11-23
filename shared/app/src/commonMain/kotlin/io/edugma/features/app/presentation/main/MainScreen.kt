@@ -141,7 +141,9 @@ private fun BoxScope.Snackbar(
             title = title,
             subtitle = message.subtitle,
             action = message.action.takeIf { message.needResult },
-            timeToDismiss = message.timeToDismiss ?: 6.seconds,
+            // TODO
+            // timeToDismiss = message.timeToDismiss ?: 6.seconds,
+            timeToDismiss = 6.seconds,
             onDismissed = {
                 onDismissed(message)
             },

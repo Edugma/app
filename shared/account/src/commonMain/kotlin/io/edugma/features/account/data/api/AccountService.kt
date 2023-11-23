@@ -1,10 +1,10 @@
 package io.edugma.features.account.data.api
 
 import de.jensklingenberg.ktorfit.http.Body
-import de.jensklingenberg.ktorfit.http.GET
-import de.jensklingenberg.ktorfit.http.Headers
-import de.jensklingenberg.ktorfit.http.POST
-import de.jensklingenberg.ktorfit.http.Path
+import io.edugma.core.api.api.EdugmaHttpClient
+import io.edugma.core.api.api.get
+import io.edugma.core.api.api.getResult
+import io.edugma.core.api.api.postResult
 import io.edugma.core.api.model.PagingDTO
 import io.edugma.features.account.domain.model.Application
 import io.edugma.features.account.domain.model.Contracts
@@ -17,76 +17,72 @@ import io.edugma.features.account.domain.model.Teacher
 import io.edugma.features.account.domain.model.Token
 import io.edugma.features.account.domain.model.student.Student
 
-interface AccountService {
+class AccountService(
+    private val client: EdugmaHttpClient,
+) {
 
-    @Headers("Content-Type: application/json")
-    @POST("login")
-    suspend fun login(@Body login: Login): Result<Token>
+    suspend fun login(@Body login: Login): Result<Token> =
+        client.postResult("$PREFIX-login") {
+            body(login)
+        }
 
-    @Headers("Content-Type: application/json")
-    @POST("login")
-    suspend fun loginSuspend(@Body login: Login): Result<Token>
+    suspend fun getLkToken(): Result<Token> =
+        client.getResult("$PREFIX-lk-token")
 
-    @GET("peoples/classmates/")
-    suspend fun getClassmates(): Result<List<Student>>
+    suspend fun getClassmates(): Result<List<Student>> =
+        client.getResult("$PREFIX-peoples-classmates")
 
-    @GET("peoples/classmates/")
-    suspend fun getClassmatesSuspend(): Result<List<Student>>
-
-    @GET("peoples/students/{pageSize}/{page}/{name}")
     suspend fun getStudents(
-        @Path("name") name: String,
-        @Path("page") page: Int,
-        @Path("pageSize") pageSize: Int,
-    ): Result<PagingDTO<Student>>
+        query: String,
+        page: Int,
+        limit: Int,
+    ): Result<PagingDTO<Student>> =
+        client.getResult("$PREFIX-peoples-students") {
+            param("query", query)
+            param("page", page)
+            param("limit", limit)
+        }
 
-    @GET("peoples/teachers/{pageSize}/{page}/{name}")
     suspend fun getTeachers(
-        @Path("name") name: String,
-        @Path("page") page: Int,
-        @Path("pageSize") pageSize: Int,
-    ): Result<PagingDTO<Teacher>>
+        query: String,
+        page: Int,
+        limit: Int,
+    ): Result<PagingDTO<Teacher>> =
+        client.getResult("$PREFIX-peoples-teachers") {
+            param("query", query)
+            param("page", page)
+            param("limit", limit)
+        }
 
-    @GET("applications")
-    suspend fun getApplications(): Result<List<Application>>
+    suspend fun getApplications(): Result<List<Application>> =
+        client.getResult("$PREFIX-applications")
 
-    @GET("performance/semesters")
-    suspend fun getSemesters(): Result<List<Int>>
+    suspend fun getSemesters(): Result<List<Int>> =
+        client.getResult("$PREFIX-performance-semesters")
 
-    @GET("performance/courses_semesters")
-    suspend fun getCoursesWithSemesters(): Result<SemestersWithCourse>
+    suspend fun getCoursesWithSemesters(): Result<SemestersWithCourse> =
+        client.getResult("$PREFIX-performance-courses-semesters")
 
-    @GET("performance/courses_semesters")
-    suspend fun getCoursesWithSemestersSuspend(): Result<SemestersWithCourse>
+    suspend fun getMarks(semester: String): Result<List<Performance>> =
+        client.getResult("$PREFIX-performance-semester") {
+            param("semester", semester)
+        }
 
-    @GET("performance/semesters/{semester}")
-    suspend fun getMarks(
-        @Path("semester") semester: String,
-    ): Result<List<Performance>>
+    suspend fun getCourses(): Result<List<Int>> =
+        client.getResult("$PREFIX-performance-courses")
 
-    @GET("performance/semesters/{semester}")
-    suspend fun getMarksSuspend(
-        @Path("semester") semester: String,
-    ): Result<List<Performance>>
+    suspend fun getPersonalInfo(): Result<Personal> =
+        client.getResult("$PREFIX-personal")
 
-    @GET("performance/courses")
-    suspend fun getCourses(): Result<List<Int>>
+    suspend fun getPayments(type: String): Result<Contracts> =
+        client.getResult("$PREFIX-payments") {
+            param("type", type)
+        }
 
-    @GET("personal")
-    suspend fun getPersonalInfo(): Result<Personal>
+    suspend fun getPaymentsTypes(): Result<List<PaymentType>> =
+        client.getResult("$PREFIX-payments-types")
 
-    @GET("personal")
-    suspend fun getPersonalInfoSuspend(): Result<Personal>
-
-    @GET("payments/{type}")
-    suspend fun getPayments(@Path("type") type: String): Result<Contracts>
-
-    @GET("payments/{type}")
-    suspend fun getPaymentsSuspend(@Path("type") type: String): Result<Contracts>
-
-    @GET("payments/types/")
-    suspend fun getPaymentsTypes(): Result<List<PaymentType>>
-
-    @GET("getLkToken")
-    suspend fun getLkToken(): Result<Token>
+    companion object {
+        private const val PREFIX = "account"
+    }
 }

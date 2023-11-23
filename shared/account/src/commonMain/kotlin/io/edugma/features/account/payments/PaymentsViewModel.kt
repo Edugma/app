@@ -23,7 +23,7 @@ class PaymentsViewModel(
     fun load(isUpdate: Boolean = true) {
         launchCoroutine {
             setLoading(true)
-            val remote = async { repository.getPaymentsSuspend() }
+            val remote = async { repository.getPayments(type = null) }
             if (!isUpdate) {
                 val local = async { repository.getPaymentsLocal() }
                 local.await()?.contracts?.let(::setData)

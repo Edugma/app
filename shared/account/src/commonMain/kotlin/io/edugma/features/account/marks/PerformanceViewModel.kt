@@ -30,8 +30,8 @@ class PerformanceViewModel(
             setError(false)
 
             val localMarks = async { repository.getLocalMarks() }
-            val coursesAndSemesters = async { repository.getCoursesWithSemestersSuspend() }
-            val marks = async { repository.getMarksBySemesterSuspend() }
+            val coursesAndSemesters = async { repository.getCoursesWithSemesters() }
+            val marks = async { repository.getMarksBySemester() }
             if (!isUpdate) {
                 localMarks.await()?.let {
                     setFilters(

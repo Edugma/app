@@ -3,7 +3,6 @@ package io.edugma.features.account.data.repository
 import io.edugma.core.api.repository.CacheRepository
 import io.edugma.core.api.repository.getData
 import io.edugma.core.api.repository.save
-import io.edugma.core.api.utils.onSuccess
 import io.edugma.data.base.consts.CacheConst.PaymentsKey
 import io.edugma.features.account.data.api.AccountService
 import io.edugma.features.account.domain.model.Contracts
@@ -24,17 +23,8 @@ class PaymentsRepositoryImpl(
         flow { emit(api.getPaymentsTypes()) }
             .flowOn(Dispatchers.IO)
 
-    override fun getPayment(type: PaymentType?) =
-        flow { emit(api.getPayments(type?.name?.lowercase().orEmpty())) }
-            .onSuccess(::savePayments)
-            .flowOn(Dispatchers.IO)
-
-    override fun getPayments() = flow {
-        emit(getPaymentsLocal())
-    }
-
-    override suspend fun getPaymentsSuspend(type: PaymentType?): Result<Contracts> {
-        return api.getPaymentsSuspend(type?.name?.lowercase().orEmpty())
+    override suspend fun getPayments(type: PaymentType?): Result<Contracts> {
+        return api.getPayments(type?.name?.lowercase().orEmpty())
             .onSuccess {
                 withContext(Dispatchers.IO) {
                     savePayments(it)

@@ -33,33 +33,16 @@ class PerformanceRepositoryImpl(
             .onSuccess(::setLocalCourses)
             .flowOn(Dispatchers.IO)
 
-    override fun getCoursesWithSemesters() =
-        flow { emit(api.getCoursesWithSemesters()) }
-            .onSuccess {
-                setLocalSemesters(it.coursesWithSemesters.keys.toList())
-                setLocalCourses(it.coursesWithSemesters.values.toSet().toList())
-            }
-            .flowOn(Dispatchers.IO)
-
-    override suspend fun getCoursesWithSemestersSuspend(): Result<SemestersWithCourse> {
-        return api.getCoursesWithSemestersSuspend()
+    override suspend fun getCoursesWithSemesters(): Result<SemestersWithCourse> {
+        return api.getCoursesWithSemesters()
             .onSuccess {
                 setLocalSemesters(it.coursesWithSemesters.keys.toList())
                 setLocalCourses(it.coursesWithSemesters.values.toSet().toList())
             }
     }
 
-    override fun getMarksBySemester(semester: Int?) =
-        flow { emit(api.getMarks(semester?.toString().orEmpty())) }
-            .onSuccess {
-                if (semester == null) {
-                    setLocalMarks(it)
-                }
-            }
-            .flowOn(Dispatchers.IO)
-
-    override suspend fun getMarksBySemesterSuspend(semester: Int?): Result<List<Performance>> {
-        return api.getMarksSuspend(semester?.toString().orEmpty())
+    override suspend fun getMarksBySemester(semester: Int?): Result<List<Performance>> {
+        return api.getMarks(semester?.toString().orEmpty())
             .onSuccess {
                 withContext(Dispatchers.IO) {
                     if (semester == null) {

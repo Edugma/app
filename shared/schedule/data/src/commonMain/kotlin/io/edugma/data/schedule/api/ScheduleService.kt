@@ -1,46 +1,88 @@
 package io.edugma.data.schedule.api
 
-import de.jensklingenberg.ktorfit.http.Body
-import de.jensklingenberg.ktorfit.http.GET
-import de.jensklingenberg.ktorfit.http.Headers
-import de.jensklingenberg.ktorfit.http.POST
-import de.jensklingenberg.ktorfit.http.Path
-import io.edugma.data.schedule.model.LoginRequest
-import io.edugma.data.schedule.model.ScheduleComplexRequest
+import io.edugma.core.api.api.EdugmaHttpClient
+import io.edugma.core.api.api.get
+import io.edugma.core.api.api.getResult
+import io.edugma.core.api.api.postResult
 import io.edugma.features.schedule.domain.model.ScheduleComplexFilter
 import io.edugma.features.schedule.domain.model.compact.CompactSchedule
-import io.edugma.features.schedule.domain.model.source.ScheduleSource
+import io.edugma.features.schedule.domain.model.group.GroupInfo
+import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubjectInfo
+import io.edugma.features.schedule.domain.model.lessonType.LessonTypeInfo
+import io.edugma.features.schedule.domain.model.place.PlaceDailyOccupancy
+import io.edugma.features.schedule.domain.model.place.PlaceFilters
+import io.edugma.features.schedule.domain.model.place.PlaceInfo
+import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
+import io.edugma.features.schedule.domain.model.source.ScheduleSources
+import io.edugma.features.schedule.domain.model.teacher.TeacherInfo
 
-interface ScheduleService {
+class ScheduleService(
+    private val client: EdugmaHttpClient,
+) {
     // Compact
-    @GET("schedules/compact/{type}/{key}")
-    suspend fun getCompactSchedule(
-        @Path("type") type: String,
-        @Path("key") key: String,
-    ): Result<CompactSchedule>
+    suspend fun getCompactSchedule(type: String, key: String): Result<CompactSchedule> =
+        client.getResult("$PREFIX-compact-schedule") {
+            param("type", type)
+            param("key", key)
+        }
 
-    @Headers("Content-Type: application/json")
-    @POST("schedules/compact/complex")
-    suspend fun getComplexSchedule(
-        @Body filter: ScheduleComplexFilter,
-    ): Result<CompactSchedule>
+    suspend fun getComplexSchedule(filter: ScheduleComplexFilter): Result<CompactSchedule> =
+        client.postResult("$PREFIX-compact-complex") {
+            body(filter)
+        }
 
-    @Headers("Content-Type: application/json")
-    @POST("schedules/compact/complex")
-    suspend fun getFilteredCompactSchedule(
-        @Body filters: ScheduleComplexRequest,
-    ): Result<CompactSchedule>
+    suspend fun getSources(
+        type: String,
+        query: String,
+        page: Int,
+        limit: Int,
+    ): List<ScheduleSourceFull> =
+        client.get("$PREFIX-sources") {
+            param("type", type)
+            param("query", query)
+            param("page", page)
+            param("limit", limit)
+        }
 
-    // My
-    @GET("schedules/my")
-    suspend fun getMySchedule(): Result<CompactSchedule>
+    suspend fun getSourceTypes(): Result<List<ScheduleSources>> =
+        client.getResult("$PREFIX-sources-types")
 
-    @Headers("Content-Type: application/json")
-    @POST("login")
-    suspend fun login(
-        @Body loginRequest: LoginRequest,
-    ): Result<CompactSchedule>
+    suspend fun getGroupInfo(id: String): Result<GroupInfo> =
+        client.getResult("$PREFIX-info-group") {
+            param("id", id)
+        }
+
+    suspend fun getTeacherInfo(id: String): Result<TeacherInfo> =
+        client.getResult("$PREFIX-info-teacher") {
+            param("id", id)
+        }
+
+    suspend fun getPlaceInfo(id: String): Result<PlaceInfo> =
+        client.getResult("$PREFIX-info-place") {
+            param("id", id)
+        }
+
+    suspend fun getSubjectInfo(id: String): Result<LessonSubjectInfo> =
+        client.getResult("$PREFIX-info-subject") {
+            param("id", id)
+        }
+
+    suspend fun getLessonTypeInfo(id: String): Result<LessonTypeInfo> =
+        client.getResult("$PREFIX-info-lesson-type") {
+            param("id", id)
+        }
+
+    suspend fun findFreePlaces(filters: PlaceFilters): Result<Map<PlaceInfo, Int>> =
+        client.postResult("$PREFIX-places-free") {
+            body(filters)
+        }
+
+    suspend fun getPlaceOccupancy(placeId: String): Result<List<PlaceDailyOccupancy>> =
+        client.getResult("$PREFIX-places-occupancy") {
+            param("placeId", placeId)
+        }
+
+    companion object {
+        private const val PREFIX = "schedule"
+    }
 }
-
-suspend fun ScheduleService.getCompactSchedule(source: ScheduleSource) =
-    getCompactSchedule(source.type.name.lowercase(), source.key)

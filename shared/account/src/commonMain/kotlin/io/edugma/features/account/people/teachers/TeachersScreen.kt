@@ -42,7 +42,6 @@ import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.isNotNull
 import io.edugma.core.utils.viewmodel.getViewModel
 import io.edugma.features.account.domain.model.Teacher
-import io.edugma.features.account.domain.model.departments
 import io.edugma.features.account.domain.model.description
 import io.edugma.features.account.people.common.bottomSheets.SearchBottomSheet
 import io.edugma.features.account.people.common.items.PeopleItem
@@ -93,7 +92,7 @@ fun TeachersScreen(viewModel: TeachersViewModel = getViewModel()) {
                 scope.launch { bottomState.show() }
             },
             teacherClick = { teacher ->
-                if (teacher.avatar.isNotNull() || teacher.sex.isNotNull() || teacher.description.isNotEmpty()) {
+                if (teacher.avatar.isNotNull() || teacher.description.isNotEmpty()) {
                     viewModel.openTeacher(teacher)
                     scope.launch { bottomState.show() }
                 }
@@ -130,32 +129,16 @@ fun ColumnScope.TeacherBottomSheet(teacher: Teacher, openSchedule: ClickListener
         }
         SpacerHeight(height = 5.dp)
         EdLabel(
-            text = teacher.departments,
+            text = teacher.department.orEmpty(),
             style = EdTheme.typography.bodyMedium,
         )
         SpacerHeight(height = 10.dp)
         EdDivider(thickness = 1.dp)
         SpacerHeight(height = 10.dp)
-        teacher.stuffType?.let {
-            EdLabel(
-                text = it,
-                iconPainter = painterResource(EdIcons.ic_fluent_book_24_regular),
-                style = EdTheme.typography.bodyMedium,
-            )
-            SpacerHeight(height = 7.dp)
-        }
         teacher.grade?.let {
             EdLabel(
                 text = it,
                 iconPainter = painterResource(EdIcons.ic_fluent_hat_graduation_24_filled),
-                style = EdTheme.typography.bodyMedium,
-            )
-            SpacerHeight(height = 7.dp)
-        }
-        teacher.sex?.let {
-            EdLabel(
-                text = "Пол: $it",
-                iconPainter = painterResource(EdIcons.ic_fluent_people_24_regular),
                 style = EdTheme.typography.bodyMedium,
             )
             SpacerHeight(height = 7.dp)

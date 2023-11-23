@@ -1,7 +1,5 @@
 package io.edugma.features.account
 
-import de.jensklingenberg.ktorfit.Ktorfit
-import io.edugma.core.api.consts.DiConst
 import io.edugma.features.account.data.api.AccountService
 import io.edugma.features.account.data.repository.ApplicationsRepositoryImpl
 import io.edugma.features.account.data.repository.AuthorizationRepositoryImpl
@@ -30,11 +28,10 @@ import io.edugma.features.account.web.WebViewModel
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val accountFeaturesModule = module {
-    single { get<Ktorfit>(named(DiConst.Account)).create<AccountService>() }
+    single { AccountService(get()) }
     singleOf(::ApplicationsRepositoryImpl) { bind<ApplicationsRepository>() }
     singleOf(::PaymentsRepositoryImpl) { bind<PaymentsRepository>() }
     singleOf(::PeoplesRepositoryImpl) { bind<PeoplesRepository>() }

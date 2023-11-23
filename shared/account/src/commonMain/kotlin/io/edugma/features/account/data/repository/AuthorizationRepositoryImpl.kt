@@ -37,7 +37,7 @@ class AuthorizationRepositoryImpl(
     }
 
     override suspend fun authorizationSuspend(login: String, password: String): Result<String> {
-        return api.loginSuspend(Login(login, password))
+        return api.login(Login(login, password))
             .map { it.getBearer() }
             .onSuccess {
                 withContext(Dispatchers.IO) {

@@ -18,6 +18,7 @@ kotlin {
                 implementation(projects.shared.core.arch)
                 implementation(projects.shared.core.utils)
                 implementation(projects.shared.core.system)
+                implementation(projects.shared.core.network)
 
                 implementation(projects.shared.nodes)
 

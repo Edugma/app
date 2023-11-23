@@ -32,7 +32,7 @@ class ClassmatesViewModel(
             setLoading(true)
 
             val localData = async { repository.loadClassmates() }
-            val remoteData = async { repository.getClassmatesSuspend() }
+            val remoteData = async { repository.getClassmates() }
 
             val classmatesLocal = localData.await()
             classmatesLocal?.let {
@@ -57,7 +57,7 @@ class ClassmatesViewModel(
         ) {
             setError(false)
             setLoading(true)
-            val classmates = repository.getClassmatesSuspend().getOrThrow()
+            val classmates = repository.getClassmates().getOrThrow()
             newState {
                 setContent(classmates)
             }

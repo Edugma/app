@@ -80,7 +80,7 @@ fun ClassmatesList(students: List<Student>, placeholders: Boolean) {
             }
         } else {
             items(students) {
-                PeopleItem(title = it.getFullName(), description = it.getInfo(), avatar = it.avatar)
+                PeopleItem(title = it.name, description = it.getInfo(), avatar = it.avatar)
             }
         }
     }

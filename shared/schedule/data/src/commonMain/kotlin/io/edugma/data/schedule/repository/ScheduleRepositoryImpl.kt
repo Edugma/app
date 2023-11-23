@@ -23,8 +23,8 @@ import kotlinx.datetime.Instant
 import kotlin.time.Duration.Companion.seconds
 
 class ScheduleRepositoryImpl(
-    private val scheduleService: ScheduleService,
     private val scheduleCacheRepository: ScheduleCacheRepository,
+    private val scheduleService: ScheduleService,
 ) : ScheduleRepository {
 
     private val scheduleMockRepository = ScheduleMockRepository()
@@ -33,13 +33,13 @@ class ScheduleRepositoryImpl(
     }
 
     private val scheduleStore0 = store<ScheduleSource, CompactSchedule> {
-//        fetcher { key ->
-//            scheduleService.getCompactSchedule(
-//                type = key.type.name.lowercase(),
-//                key = key.key,
-//            ).getOrThrow()
-//        }
-        fetcher { key -> scheduleMockRepository.getSuspendMockSchedule().getOrThrow() }
+        fetcher { key ->
+            scheduleService.getCompactSchedule(
+                type = key.type.name.lowercase(),
+                key = key.key,
+            ).getOrThrow()
+        }
+        // fetcher { key -> scheduleMockRepository.getSuspendMockSchedule().getOrThrow() }
         cache {
             reader { key ->
                 scheduleCacheRepository.getSchedule(key.id)
