@@ -22,7 +22,12 @@ class ScheduleSourcesUseCase(
             else -> {
                 flowOf(
                     sourcesType.toSourceType()?.let {
-                        scheduleSourcesRepository.getSources(it)
+                        scheduleSourcesRepository.getSources(
+                            type = it,
+                            query = "",
+                            limit = 100,
+                            page = null,
+                        )
                     } ?: emptyList(),
                 )
             }
@@ -55,7 +60,12 @@ class ScheduleSourcesUseCase(
     // scheduleSourcesRepository.getSourceTypes()
 
     suspend fun getSources(type: ScheduleSources) =
-        scheduleSourcesRepository.getSources(type)
+        scheduleSourcesRepository.getSources(
+            type = type,
+            query = "",
+            limit = 100,
+            page = null,
+        )
 
     suspend fun setSelectedSource(source: ScheduleSourceFull) =
         scheduleSourcesRepository.setSelectedSource(source)

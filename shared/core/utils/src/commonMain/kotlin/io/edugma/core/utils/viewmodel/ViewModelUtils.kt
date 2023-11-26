@@ -3,22 +3,17 @@ package io.edugma.core.utils.viewmodel
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.node.Ref
-import co.touchlab.kermit.Logger
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import io.edugma.core.arch.mvi.stateStore.StateStoreBuilder
+import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
-import io.edugma.core.arch.viewmodel.RestrictedApi
 import io.edugma.navigation.core.instanceKeeper.LocalInstanceKeeperOwner
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
-import kotlin.coroutines.AbstractCoroutineContextElement
-import kotlin.coroutines.CoroutineContext
 
 @Composable
 inline fun <TState, TAction, reified T : BaseActionViewModel<TState, TAction>> getViewModel(): T {
@@ -51,38 +46,7 @@ inline fun BaseActionViewModel<*, *>.launchCoroutine(
 ): Job {
     return launchCoroutine(
         dispatcher = dispatcher,
-        errorHandler = ErrorHandler { cont, it ->
-            this.errorHandler?.handleException(cont, it)
-            onError(it)
-            Logger.e("ViewModel launchCoroutine error: ", it, tag = "launchCoroutine")
-        },
+        onError = onError,
         block = block,
     )
 }
-
-@PublishedApi
-internal fun BaseActionViewModel<*, *>.launchCoroutine(
-    dispatcher: CoroutineDispatcher = Dispatchers.IO,
-    errorHandler: CoroutineExceptionHandler? = null,
-    block: suspend CoroutineScope.() -> Unit,
-): Job {
-    val coroutineContext = if (errorHandler != null) {
-        dispatcher + errorHandler
-    } else {
-        dispatcher + ErrorHandler { _, it ->
-            Logger.e("launchCoroutine: ", it, tag = "ViewModelCoroutine")
-        }
-    }
-    @OptIn(RestrictedApi::class)
-    return viewModelScope.launch(
-        context = coroutineContext,
-        block = block,
-    )
-}
-
-@Suppress("FunctionName")
-inline fun ErrorHandler(crossinline handler: (CoroutineContext, Throwable) -> Unit): CoroutineExceptionHandler =
-    object : AbstractCoroutineContextElement(CoroutineExceptionHandler), CoroutineExceptionHandler {
-        override fun handleException(context: CoroutineContext, exception: Throwable) =
-            handler.invoke(context, exception)
-    }

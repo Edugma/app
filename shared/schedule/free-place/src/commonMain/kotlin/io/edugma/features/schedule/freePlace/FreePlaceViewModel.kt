@@ -4,13 +4,11 @@ import io.edugma.core.api.utils.MAX
 import io.edugma.core.api.utils.MIN
 import io.edugma.core.api.utils.nowLocalDate
 import io.edugma.core.arch.mvi.newState
+import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
-import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.features.schedule.domain.model.place.Place
 import io.edugma.features.schedule.domain.model.place.PlaceFilters
 import io.edugma.features.schedule.domain.model.place.PlaceInfo
-import io.edugma.features.schedule.domain.model.place.PlaceType
-import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import io.edugma.features.schedule.domain.repository.FreePlaceRepository
 import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
 import kotlinx.datetime.Clock
@@ -34,23 +32,23 @@ class FreePlaceViewModel(
 //        }
 //    }
 
-    init {
-        launchCoroutine(
-            onError = {
-                newState {
-                    setPlaces(emptyList())
-                }
-            },
-        ) {
-            val it = useCase.getSources(ScheduleSources.Place)
-            newState {
-                setPlaces(
-                    it.map { Place(it.key, it.title, PlaceType.Undefined, it.description) }
-                        .sortedBy { it.title },
-                )
-            }
-        }
-    }
+//    init {
+//        launchCoroutine(
+//            onError = {
+//                newState {
+//                    setPlaces(emptyList())
+//                }
+//            },
+//        ) {
+//            val it = useCase.getSources(ScheduleSources.Place)
+//            newState {
+//                setPlaces(
+//                    it.map { Place(it.key, it.title, PlaceType.Undefined, it.description) }
+//                        .sortedBy { it.title },
+//                )
+//            }
+//        }
+//    }
 
     fun onDateSelect(date: LocalDate) {
         newState {

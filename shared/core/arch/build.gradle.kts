@@ -6,6 +6,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                api(projects.shared.core.api)
                 api(projects.libs.navigation.core)
                 api(projects.shared.core.navigation)
                 api(libs.essenty.instanceKeeper)

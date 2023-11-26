@@ -1,11 +1,11 @@
 package io.edugma.features.account.people.classmates
 
 import io.edugma.core.arch.mvi.newState
+import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.navigation.core.router.external.ExternalRouter
 import io.edugma.core.utils.isNotNull
 import io.edugma.core.utils.isNull
-import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.features.account.common.LOCAL_DATA_SHOWN_ERROR
 import io.edugma.features.account.domain.model.student.Student
 import io.edugma.features.account.domain.repository.PeoplesRepository

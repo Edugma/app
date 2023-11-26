@@ -3,8 +3,8 @@ package io.edugma.features.misc.settings.appearance
 import io.edugma.core.api.model.ThemeMode
 import io.edugma.core.api.repository.ThemeRepository
 import io.edugma.core.arch.mvi.newState
+import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
-import io.edugma.core.utils.viewmodel.launchCoroutine
 import kotlinx.coroutines.flow.collect
 
 class SettingsAppearanceViewModel(

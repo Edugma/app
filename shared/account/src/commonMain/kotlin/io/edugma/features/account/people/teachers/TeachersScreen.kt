@@ -77,7 +77,7 @@ fun TeachersScreen(viewModel: TeachersViewModel = getViewModel()) {
                         searchValue = state.name,
                         onSearchValueChanged = viewModel::setName,
                     ) {
-                        viewModel.load()
+                        viewModel.onSearch()
                         scope.launch { bottomState.hide() }
                     }
                 }
@@ -97,7 +97,7 @@ fun TeachersScreen(viewModel: TeachersViewModel = getViewModel()) {
                     scope.launch { bottomState.show() }
                 }
             },
-            loadListener = viewModel::nextPage,
+            loadListener = viewModel::loadNextPage,
         )
     }
 }
@@ -212,13 +212,13 @@ fun TeachersList(
                 PeopleItemPlaceholder()
             }
         } else {
-            if (!state.teachers.isNullOrEmpty()) {
+            if (state.paginationState.items.isNotEmpty()) {
                 items(
-                    count = state.teachers.size,
+                    count = state.paginationState.items.size,
                     key = { it },
                     contentType = { "student" },
                 ) {
-                    val teacher = state.teachers[it]
+                    val teacher = state.paginationState.items[it]
                     PeopleItem(
                         title = teacher.name,
                         description = teacher.description,
@@ -227,7 +227,7 @@ fun TeachersList(
                     )
                 }
             }
-            item { PagingFooter(state.loadingState, loadListener) }
+            item { PagingFooter(state.paginationState, loadListener) }
         }
     }
 }

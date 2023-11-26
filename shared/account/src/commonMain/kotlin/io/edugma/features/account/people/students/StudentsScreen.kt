@@ -153,11 +153,11 @@ fun StudentsListContent(
             title = "Студенты",
             onNavigationClick = backListener,
             actions = {
-                val students = state.students
+                val students = state.paginationState.items
 
                 IconButton(
                     onClick = { onShare() },
-                    enabled = !students.isNullOrEmpty(),
+                    enabled = students.isNotEmpty(),
                 ) {
                     Icon(
                         painterResource(EdIcons.ic_fluent_share_24_regular),
@@ -201,19 +201,19 @@ fun StudentsList(
                 PeopleItemPlaceholder()
             }
         } else {
-            if (!state.students.isNullOrEmpty()) {
+            if (state.paginationState.items.isNotEmpty()) {
                 items(
-                    count = state.students.size,
-                    key = { state.students[it].id },
+                    count = state.paginationState.items.size,
+                    key = { state.paginationState.items[it].id },
                     contentType = { "student" },
                 ) {
-                    val item = state.students[it]
+                    val item = state.paginationState.items[it]
                     item.let {
                         PeopleItem(it.name, it.getInfo(), it.avatar) { studentClick.invoke(it) }
                     }
                 }
             }
-            item { PagingFooter(state.loadingState, loadListener) }
+            item { PagingFooter(state.paginationState, loadListener) }
         }
     }
 }

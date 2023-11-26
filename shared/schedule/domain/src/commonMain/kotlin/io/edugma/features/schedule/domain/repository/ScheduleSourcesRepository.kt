@@ -5,7 +5,12 @@ import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import kotlinx.coroutines.flow.Flow
 
 interface ScheduleSourcesRepository {
-    suspend fun getSources(type: ScheduleSources): List<ScheduleSourceFull>
+    suspend fun getSources(
+        type: ScheduleSources,
+        query: String,
+        limit: Int,
+        page: String?,
+    ): List<ScheduleSourceFull>
 
     suspend fun getFavoriteSources(): Flow<List<ScheduleSourceFull>>
     suspend fun setFavoriteSources(sources: List<ScheduleSourceFull>)

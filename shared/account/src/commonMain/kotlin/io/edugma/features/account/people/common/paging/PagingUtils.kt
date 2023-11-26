@@ -9,22 +9,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.edugma.core.arch.pagination.PaginationState
 import io.edugma.core.designSystem.atoms.loader.EdLoader
 import io.edugma.core.designSystem.atoms.loader.EdLoaderSize
 import io.edugma.core.designSystem.organism.refresher.Refresher
 import io.edugma.core.utils.ClickListener
-import io.edugma.features.account.domain.usecase.PaginationState
 
 @Composable
-fun PagingFooter(pagingState: PaginationState, loadTrigger: ClickListener) {
-    when (pagingState) {
-        PaginationState.Loaded -> {
+fun PagingFooter(pagingState: PaginationState<*>, loadTrigger: ClickListener) {
+    when {
+        pagingState.isContent() -> {
             Spacer(Modifier.height(70.dp))
             loadTrigger()
         }
-        PaginationState.Loading -> Loader()
-        PaginationState.Error -> Refresher(onClick = loadTrigger)
-        PaginationState.End, PaginationState.NotLoading -> {}
+        pagingState.isLoadingOrNeedLoading() -> Loader()
+        pagingState.isError() -> Refresher(onClick = loadTrigger)
+        else -> {}
     }
 }
 

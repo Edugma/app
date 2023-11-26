@@ -34,10 +34,10 @@ class AccountService(
 
     suspend fun getStudents(
         query: String,
-        page: Int,
+        page: String?,
         limit: Int,
-    ): Result<PagingDTO<Student>> =
-        client.getResult("$PREFIX-peoples-students") {
+    ): PagingDTO<Student> =
+        client.get("$PREFIX-peoples-students") {
             param("query", query)
             param("page", page)
             param("limit", limit)
@@ -45,10 +45,10 @@ class AccountService(
 
     suspend fun getTeachers(
         query: String,
-        page: Int,
+        page: String?,
         limit: Int,
-    ): Result<PagingDTO<Teacher>> =
-        client.getResult("$PREFIX-peoples-teachers") {
+    ): PagingDTO<Teacher> =
+        client.get("$PREFIX-peoples-teachers") {
             param("query", query)
             param("page", page)
             param("limit", limit)

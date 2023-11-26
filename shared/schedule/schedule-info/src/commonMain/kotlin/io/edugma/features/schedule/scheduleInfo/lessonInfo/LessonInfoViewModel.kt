@@ -1,10 +1,10 @@
 package io.edugma.features.schedule.scheduleInfo.lessonInfo
 
 import io.edugma.core.arch.mvi.newState
+import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.arch.mvi.viewmodel.prop
 import io.edugma.core.navigation.schedule.ScheduleInfoScreens
-import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.features.schedule.domain.model.lesson.LessonInfo
 import io.edugma.features.schedule.domain.model.teacher.TeacherInfo
 import io.edugma.features.schedule.domain.usecase.ScheduleUseCase

@@ -1,6 +1,7 @@
 package io.edugma.core.arch.mvi.impl
 
 import io.edugma.core.arch.mvi.StateStore
+import io.edugma.core.arch.viewmodel.RestrictedApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
@@ -11,6 +12,7 @@ class SimpleStateStore<TState>(initialState: TState) : StateStore<TState> {
     override val state: TState
         get() = _stateFlow.value
 
+    @RestrictedApi
     override fun setState(state: TState) {
         _stateFlow.value = state
     }

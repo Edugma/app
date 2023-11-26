@@ -34,7 +34,7 @@ class ScheduleService(
     suspend fun getSources(
         type: String,
         query: String,
-        page: Int,
+        page: String?,
         limit: Int,
     ): List<ScheduleSourceFull> =
         client.get("$PREFIX-sources") {

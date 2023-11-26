@@ -1,9 +1,9 @@
 package io.edugma.features.nodes.main
 
 import io.edugma.core.arch.mvi.newState
+import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.navigation.ScheduleScreens
-import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.features.nodes.domain.NodesRepository
 import io.edugma.features.nodes.domain.model.Node
 

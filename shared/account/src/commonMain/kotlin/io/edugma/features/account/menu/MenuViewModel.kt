@@ -1,10 +1,10 @@
 package io.edugma.features.account.menu
 
 import io.edugma.core.arch.mvi.newState
+import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.designSystem.organism.accountSelector.AccountSelectorVO
 import io.edugma.core.navigation.AccountScreens
-import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.features.account.domain.model.menu.Card
 import io.edugma.features.account.domain.model.menu.CardType
 import io.edugma.features.account.domain.model.menu.CardType.Classmates

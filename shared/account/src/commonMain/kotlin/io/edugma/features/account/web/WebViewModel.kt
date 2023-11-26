@@ -1,8 +1,8 @@
 package io.edugma.features.account.web
 
 import io.edugma.core.arch.mvi.newState
+import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
-import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.features.account.domain.repository.AuthorizationRepository
 
 class WebViewModel(

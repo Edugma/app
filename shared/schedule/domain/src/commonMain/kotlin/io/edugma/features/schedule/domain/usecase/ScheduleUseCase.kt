@@ -16,8 +16,6 @@ class ScheduleUseCase(
     private val repository: ScheduleRepository,
     private val scheduleSourcesRepository: ScheduleSourcesRepository,
 ) {
-    suspend fun getSources(type: ScheduleSources) =
-        scheduleSourcesRepository.getSources(type)
 
     fun getSelectedSource() =
         scheduleSourcesRepository.getSelectedSource()

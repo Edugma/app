@@ -30,8 +30,19 @@ class ScheduleSourcesRepositoryImpl(
         flow { emit(scheduleService.getSourceTypes()) }
             .flowOn(Dispatchers.IO)
 
-    override suspend fun getSources(type: ScheduleSources) =
-        scheduleService.getSources(type = type.name.lowercase(), query = "", limit = 50, page = 1)
+    override suspend fun getSources(
+        type: ScheduleSources,
+        query: String,
+        limit: Int,
+        page: String?,
+    ): List<ScheduleSourceFull> {
+        return scheduleService.getSources(
+            type = type.name.lowercase(),
+            query = query,
+            limit = limit,
+            page = page,
+        )
+    }
 
     override suspend fun getFavoriteSources(): Flow<List<ScheduleSourceFull>> =
         cacheRepository.getDataFlow<List<ScheduleSourceFull>>(CacheConst.FavoriteScheduleSources)

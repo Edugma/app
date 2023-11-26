@@ -1,41 +1,40 @@
 package io.edugma.features.account.people.teachers
 
+import androidx.compose.runtime.Immutable
 import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
+import io.edugma.core.arch.pagination.PaginationState
+import io.edugma.core.arch.pagination.PaginationStateEnum
+import io.edugma.core.arch.pagination.PagingViewModel
 import io.edugma.core.navigation.schedule.ScheduleInfoScreens
-import io.edugma.core.utils.Typed1Listener
-import io.edugma.core.utils.Typed2Listener
 import io.edugma.features.account.domain.model.Teacher
 import io.edugma.features.account.domain.repository.PeoplesRepository
-import io.edugma.features.account.domain.usecase.PaginationState
-import io.edugma.features.account.domain.usecase.PagingUseCase
-import io.edugma.features.account.domain.usecase.PagingViewModel
-import io.edugma.features.account.people.teachers.TeachersViewModel.Companion.INIT_NAME
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.map
 
-class TeachersViewModel(private val repository: PeoplesRepository) :
-    BaseViewModel<TeachersState>(TeachersState()), PagingViewModel<Teacher> {
-
-    companion object {
-        private const val PAGE_SIZE = 100
-        const val INIT_NAME = ""
-    }
-
-    override lateinit var pagingUC: PagingUseCase<Teacher>
-
-    override var pagingStateJob: Job? = null
-    override var loadingJob: Job? = null
-    override val onDataLoaded: Typed2Listener<List<Teacher>, Boolean> =
-        { teachers, fromBegin -> addTeachers(teachers, fromBegin) }
-    override val onLoadingStateChange: Typed1Listener<PaginationState> = ::setLoadingState
-    override val onError: Typed1Listener<Throwable>? = null
+class TeachersViewModel(
+    private val repository: PeoplesRepository,
+    private val pagingViewModel: PagingViewModel<Teacher>,
+) : BaseViewModel<TeachersState>(TeachersState()) {
 
     init {
-        load()
+        pagingViewModel.init(
+            parentViewModel = this,
+            initialState = state.paginationState,
+            stateFlow = stateFlow.map { it.paginationState },
+            setState = { newState { copy(paginationState = it) } },
+        )
+        pagingViewModel.request = {
+            repository.getTeachers(
+                query = state.name,
+                page = state.paginationState.nextPage,
+                limit = state.paginationState.pageSize,
+            )
+        }
+        pagingViewModel.initLoad()
     }
 
-    fun load(name: String = state.name) {
-        updateUc { repository.getTeachersResult(name, 1, PAGE_SIZE) }
+    fun loadNextPage() {
+        pagingViewModel.loadNextPage()
     }
 
     fun setName(name: String) {
@@ -62,39 +61,30 @@ class TeachersViewModel(private val repository: PeoplesRepository) :
         }
     }
 
-    fun nextPage() {
-        loadNext()
-    }
-
-    private fun addTeachers(teachers: List<Teacher>, fromBegin: Boolean = true) {
-        newState {
-            val newTeachers = if (fromBegin) teachers else this.teachers.orEmpty() + teachers
-            copy(teachers = newTeachers)
-        }
-    }
-
-    private fun setLoadingState(loadingState: PaginationState) {
-        newState {
-            copy(loadingState = loadingState)
-        }
+    fun onSearch() {
+        pagingViewModel.initLoad()
     }
 }
 
+@Immutable
 data class TeachersState(
-    val teachers: List<Teacher>? = null,
-    val loadingState: PaginationState = PaginationState.NotLoading,
-    val name: String = INIT_NAME,
+    val name: String = "",
     val bottomType: BottomType = BottomType.Search,
     val selectedEntity: Teacher? = null,
+    val paginationState: PaginationState<Teacher> = PaginationState.empty(),
 ) {
     val isNothingFound
-        get() = loadingState == PaginationState.End && teachers.isNullOrEmpty()
+        get() = paginationState.isEnd() && paginationState.items.isEmpty()
 
     val isFullscreenError
-        get() = teachers.isNullOrEmpty() && loadingState == PaginationState.Error
+        get() = paginationState.items.isEmpty() && paginationState.isError()
 
     val placeholders
-        get() = teachers.isNullOrEmpty() && (loadingState == PaginationState.NotLoading || loadingState == PaginationState.Loading)
+        get() = paginationState.items.isEmpty() &&
+            (
+                paginationState.enum == PaginationStateEnum.NotLoading ||
+                    paginationState.enum == PaginationStateEnum.Loading
+                )
 }
 
 enum class BottomType {

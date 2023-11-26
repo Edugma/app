@@ -1,9 +1,9 @@
 package io.edugma.features.schedule.history.presentation.main
 
 import io.edugma.core.arch.mvi.newState
+import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
 import io.edugma.core.navigation.schedule.ScheduleHistoryScreens
-import io.edugma.core.utils.viewmodel.launchCoroutine
 import io.edugma.features.schedule.domain.model.ScheduleRecord
 import io.edugma.features.schedule.domain.usecase.ScheduleHistoryUseCase
 import kotlinx.datetime.Instant
