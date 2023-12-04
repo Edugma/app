@@ -1,4 +1,4 @@
-package io.edugma.features.account.people.common.paging
+package io.edugma.core.ui.pagination
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -13,10 +13,9 @@ import io.edugma.core.arch.pagination.PaginationState
 import io.edugma.core.designSystem.atoms.loader.EdLoader
 import io.edugma.core.designSystem.atoms.loader.EdLoaderSize
 import io.edugma.core.designSystem.organism.refresher.Refresher
-import io.edugma.core.utils.ClickListener
 
 @Composable
-fun PagingFooter(pagingState: PaginationState<*>, loadTrigger: ClickListener) {
+fun PagingFooter(pagingState: PaginationState<*>, loadTrigger: () -> Unit) {
     when {
         pagingState.isContent() -> {
             Spacer(Modifier.height(70.dp))

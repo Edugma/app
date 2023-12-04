@@ -13,6 +13,6 @@ class LessonsReviewUseCase(
         scheduleSourcesRepository.getSelectedSource()
             .transformLatest { source ->
                 checkNotNull(source)
-                emit(repository.getLessonsReview(ScheduleSource(source.type, source.key)))
+                emit(repository.getLessonsReview(ScheduleSource(source.type, source.id)))
             }
 }

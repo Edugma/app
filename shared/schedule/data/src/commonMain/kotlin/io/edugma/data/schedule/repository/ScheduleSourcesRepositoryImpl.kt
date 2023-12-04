@@ -1,9 +1,10 @@
 package io.edugma.data.schedule.repository
 
+import io.edugma.core.api.model.PagingDto
 import io.edugma.core.api.repository.CacheRepository
 import io.edugma.core.api.repository.SettingsRepository
 import io.edugma.core.api.repository.get
-import io.edugma.core.api.repository.getDataFlow
+import io.edugma.core.api.repository.getData
 import io.edugma.core.api.repository.getFlow
 import io.edugma.core.api.repository.save
 import io.edugma.core.api.repository.saveOrRemove
@@ -11,14 +12,9 @@ import io.edugma.data.base.consts.CacheConst
 import io.edugma.data.base.consts.PrefConst
 import io.edugma.data.schedule.api.ScheduleService
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
-import io.edugma.features.schedule.domain.model.source.ScheduleSources
+import io.edugma.features.schedule.domain.model.source.ScheduleSourceType
 import io.edugma.features.schedule.domain.repository.ScheduleSourcesRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
 
 class ScheduleSourcesRepositoryImpl(
     private val settingsRepository: SettingsRepository,
@@ -26,27 +22,29 @@ class ScheduleSourcesRepositoryImpl(
     private val scheduleService: ScheduleService,
 ) : ScheduleSourcesRepository {
 
-    override fun getSourceTypes() =
-        flow { emit(scheduleService.getSourceTypes()) }
-            .flowOn(Dispatchers.IO)
+    override suspend fun getSourceTypes(): List<ScheduleSourceType> {
+        return scheduleService.getSourceTypes()
+    }
 
     override suspend fun getSources(
-        type: ScheduleSources,
+        type: ScheduleSourceType,
         query: String,
         limit: Int,
         page: String?,
-    ): List<ScheduleSourceFull> {
+    ): PagingDto<ScheduleSourceFull> {
         return scheduleService.getSources(
-            type = type.name.lowercase(),
+            type = type.id,
             query = query,
             limit = limit,
             page = page,
         )
     }
 
-    override suspend fun getFavoriteSources(): Flow<List<ScheduleSourceFull>> =
-        cacheRepository.getDataFlow<List<ScheduleSourceFull>>(CacheConst.FavoriteScheduleSources)
-            .map { it ?: emptyList() }
+    override suspend fun getFavoriteSources(): List<ScheduleSourceFull> {
+        return cacheRepository.getData<List<ScheduleSourceFull>>(
+            CacheConst.FavoriteScheduleSources,
+        ) ?: emptyList()
+    }
 
     override suspend fun setFavoriteSources(sources: List<ScheduleSourceFull>) {
         cacheRepository.save(CacheConst.FavoriteScheduleSources, sources)

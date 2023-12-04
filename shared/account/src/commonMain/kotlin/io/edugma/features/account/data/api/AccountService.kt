@@ -5,16 +5,16 @@ import io.edugma.core.api.api.EdugmaHttpClient
 import io.edugma.core.api.api.get
 import io.edugma.core.api.api.getResult
 import io.edugma.core.api.api.postResult
-import io.edugma.core.api.model.PagingDTO
-import io.edugma.features.account.domain.model.Application
-import io.edugma.features.account.domain.model.Contracts
-import io.edugma.features.account.domain.model.Login
-import io.edugma.features.account.domain.model.PaymentType
-import io.edugma.features.account.domain.model.Performance
+import io.edugma.core.api.model.PagingDto
 import io.edugma.features.account.domain.model.Personal
-import io.edugma.features.account.domain.model.SemestersWithCourse
 import io.edugma.features.account.domain.model.Teacher
-import io.edugma.features.account.domain.model.Token
+import io.edugma.features.account.domain.model.applications.Application
+import io.edugma.features.account.domain.model.auth.Login
+import io.edugma.features.account.domain.model.auth.Token
+import io.edugma.features.account.domain.model.payments.Contracts
+import io.edugma.features.account.domain.model.payments.PaymentType
+import io.edugma.features.account.domain.model.performance.Performance
+import io.edugma.features.account.domain.model.performance.SemestersWithCourse
 import io.edugma.features.account.domain.model.student.Student
 
 class AccountService(
@@ -36,7 +36,7 @@ class AccountService(
         query: String,
         page: String?,
         limit: Int,
-    ): PagingDTO<Student> =
+    ): PagingDto<Student> =
         client.get("$PREFIX-peoples-students") {
             param("query", query)
             param("page", page)
@@ -47,7 +47,7 @@ class AccountService(
         query: String,
         page: String?,
         limit: Int,
-    ): PagingDTO<Teacher> =
+    ): PagingDto<Teacher> =
         client.get("$PREFIX-peoples-teachers") {
             param("query", query)
             param("page", page)

@@ -30,7 +30,7 @@ class TeachersViewModel(
                 limit = state.paginationState.pageSize,
             )
         }
-        pagingViewModel.initLoad()
+        pagingViewModel.resetAndLoad()
     }
 
     fun loadNextPage() {
@@ -62,7 +62,7 @@ class TeachersViewModel(
     }
 
     fun onSearch() {
-        pagingViewModel.initLoad()
+        pagingViewModel.resetAndLoad()
     }
 }
 

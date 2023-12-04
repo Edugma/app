@@ -1,8 +1,8 @@
 package io.edugma.features.account.domain.usecase
 
-import io.edugma.features.account.domain.model.Contracts
-import io.edugma.features.account.domain.model.Performance
 import io.edugma.features.account.domain.model.Personal
+import io.edugma.features.account.domain.model.payments.Contracts
+import io.edugma.features.account.domain.model.performance.Performance
 import io.edugma.features.account.domain.repository.AuthorizationRepository
 import io.edugma.features.account.domain.repository.PaymentsRepository
 import io.edugma.features.account.domain.repository.PerformanceRepository

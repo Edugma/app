@@ -5,7 +5,7 @@ plugins {
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 implementation(libs.essenty.lifecycle)
                 implementation(libs.essenty.instanceKeeper)
@@ -13,7 +13,7 @@ kotlin {
             }
         }
 
-        val androidMain by getting {
+        androidMain {
             dependencies {
                 implementation(libs.compose.activity)
             }

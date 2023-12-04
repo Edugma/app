@@ -17,27 +17,27 @@ kotlin {
     targetHierarchy.default()
 
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 implementation(libs.kermit)
 //                implementation("co.touchlab:kermit:2.0.0-RC4")
             }
         }
 
-        val commonTest by getting {
+        commonTest {
             dependencies {
                 implementation(kotlin("test"))
             }
         }
 
-        val androidMain by getting {
+        androidMain {
             // TODO due to moko resource crash
-            dependsOn(commonMain)
+            dependsOn(commonMain.get())
         }
 
-        val iosMain by getting {
+        iosMain {
             // TODO due to moko resource crash
-            dependsOn(commonMain)
+            dependsOn(commonMain.get())
         }
 
     }

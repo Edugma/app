@@ -1,49 +1,29 @@
 package io.edugma.features.account.domain.model
 
-import io.edugma.features.account.domain.model.ui.Label
 import kotlinx.datetime.LocalDate
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Personal(
-    val id: Int,
-    val userStatus: String,
-    val status: String,
-    val course: String,
+    @SerialName("id")
+    val id: String,
+    @SerialName("name")
     val name: String,
-    val surname: String,
-    val patronymic: String,
-    val avatar: String,
-    val birthday: String,
-    val sex: String,
-    val code: String,
-    val faculty: String,
-    val group: String,
-    val specialty: String,
-    val specialization: String? = null,
-    val degreeLength: String,
-    val educationForm: String,
-    val finance: String,
-    val degreeLevel: String,
-    val enterYear: String,
-    val orders: List<Order>,
-    val subdivisions: List<Subdivision>? = null,
-    val applications: List<Application> = emptyList(),
-    val labels: List<Label> = emptyList(),
-) {
-    fun getFullName() = "$surname $name $patronymic"
-    fun getNameSurname() = "$name $surname"
-
-    val initials = "${name.firstOrNull() ?: ""}${surname.firstOrNull() ?: ""}"
-}
+    @SerialName("description")
+    val description: String,
+    @SerialName("avatar")
+    val avatar: String?,
+    @SerialName("data")
+    val data: List<PersonalData>,
+)
 
 @Serializable
-data class Subdivision(
-    val category: String,
-    val jobType: String? = null,
-    val status: String? = null,
-    val subdivision: String? = null,
-    val wage: String? = null,
+data class PersonalData(
+    @SerialName("title")
+    val title: String,
+    @SerialName("value")
+    val value: String,
 )
 
 @Serializable

@@ -7,7 +7,8 @@ import io.edugma.core.navigation.core.router.external.ExternalRouter
 import io.edugma.core.utils.isNotNull
 import io.edugma.core.utils.isNull
 import io.edugma.features.account.common.LOCAL_DATA_SHOWN_ERROR
-import io.edugma.features.account.domain.model.Payments
+import io.edugma.features.account.domain.model.payments.PaymentType
+import io.edugma.features.account.domain.model.payments.Payments
 import io.edugma.features.account.domain.repository.PaymentsRepository
 import kotlinx.coroutines.async
 
@@ -40,7 +41,7 @@ class PaymentsViewModel(
         }
     }
 
-    fun setData(data: Map<io.edugma.features.account.domain.model.PaymentType, Payments>) {
+    fun setData(data: Map<PaymentType, Payments>) {
         newState {
             copy(data = data)
         }
@@ -91,7 +92,7 @@ class PaymentsViewModel(
 }
 
 data class PaymentsState(
-    val data: Map<io.edugma.features.account.domain.model.PaymentType, Payments>? = null,
+    val data: Map<PaymentType, Payments>? = null,
     val isLoading: Boolean = false,
     val isError: Boolean = false,
     val showCurrent: Boolean = true,

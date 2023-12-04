@@ -14,7 +14,7 @@ import io.edugma.data.base.consts.CacheConst.PersonalKey
 import io.edugma.data.base.consts.CacheConst.SemesterKey
 import io.edugma.data.base.consts.CacheConst.TokenKey
 import io.edugma.features.account.data.api.AccountService
-import io.edugma.features.account.domain.model.Login
+import io.edugma.features.account.domain.model.auth.Login
 import io.edugma.features.account.domain.repository.AuthorizationRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO

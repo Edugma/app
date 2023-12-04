@@ -1,6 +1,6 @@
 package io.edugma.features.account.data.repository
 
-import io.edugma.core.api.model.PagingDTO
+import io.edugma.core.api.model.PagingDto
 import io.edugma.core.api.repository.CacheRepository
 import io.edugma.core.api.repository.getData
 import io.edugma.core.api.repository.save
@@ -19,13 +19,13 @@ class PeoplesRepositoryImpl(
         query: String,
         page: String?,
         limit: Int,
-    ): PagingDTO<Teacher> = api.getTeachers(query, page, limit)
+    ): PagingDto<Teacher> = api.getTeachers(query, page, limit)
 
     override suspend fun getStudents(
         query: String,
         page: String?,
         limit: Int,
-    ): PagingDTO<Student> = api.getStudents(query, page, limit)
+    ): PagingDto<Student> = api.getStudents(query, page, limit)
 
     override suspend fun getClassmates(): Result<List<Student>> {
         return api.getClassmates()

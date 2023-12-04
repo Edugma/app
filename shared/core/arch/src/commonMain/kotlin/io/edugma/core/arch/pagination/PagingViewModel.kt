@@ -1,6 +1,6 @@
 package io.edugma.core.arch.pagination
 
-import io.edugma.core.api.model.PagingDTO
+import io.edugma.core.api.model.PagingDto
 import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.ViewModelDelegate
 import io.edugma.core.arch.mvi.viewmodel.newState
@@ -10,10 +10,10 @@ import kotlin.properties.Delegates
 class PagingViewModel<T> : ViewModelDelegate<PaginationState<T>>() {
     private var loadJob: Job? = null
 
-    var request: (suspend () -> PagingDTO<T>) by Delegates.notNull()
+    var request: (suspend () -> PagingDto<T>) by Delegates.notNull()
 
     // TODO Если быстро скроллить, то загрузка и всё
-    fun initLoad() {
+    fun resetAndLoad() {
         newState {
             toReset()
         }

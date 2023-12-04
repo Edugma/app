@@ -4,15 +4,14 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ScheduleSourceFull(
+data class ScheduleSourceType(
     @SerialName("id")
     val id: String,
-    @SerialName("type")
-    val type: ScheduleSources,
     @SerialName("title")
     val title: String,
-    @SerialName("description")
-    val description: String,
-    @SerialName("avatar")
-    val avatar: String?,
-)
+) {
+    companion object {
+        const val FAVORITE = "_favorite"
+        const val COMPLEX = "_complex"
+    }
+}

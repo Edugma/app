@@ -5,7 +5,7 @@ plugins {
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 implementation(compose.animation)
                 implementation(compose.material)
@@ -19,7 +19,7 @@ kotlin {
                 implementation(libs.androidx.annotations)
             }
         }
-        val androidMain by getting {
+        androidMain {
             dependencies {
                 implementation(libs.lottie)
                 implementation(libs.compose.activity)

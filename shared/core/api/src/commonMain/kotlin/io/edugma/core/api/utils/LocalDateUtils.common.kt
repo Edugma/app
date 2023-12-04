@@ -12,6 +12,7 @@ import kotlinx.datetime.daysUntil
 import kotlinx.datetime.isoDayNumber
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.todayIn
 
 fun LocalDate.getFloorMonday(): LocalDate {
     val currentValue = this.dayOfWeek.isoDayNumber
@@ -79,7 +80,7 @@ fun Clock.System.nowLocalTime(timeZone: TimeZone = TimeZone.currentSystemDefault
 }
 
 fun Clock.System.nowLocalDate(timeZone: TimeZone = TimeZone.currentSystemDefault()): LocalDate {
-    return now().toLocalDateTime(timeZone).date
+    return todayIn(timeZone)
 }
 
 fun Clock.System.nowLocalDateTime(

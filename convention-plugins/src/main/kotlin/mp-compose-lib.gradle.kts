@@ -12,7 +12,7 @@ val libs = the<LibrariesForLibs>()
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 //implementation(platform(libs.compose.bom))
                 //implementation(compose.ui)
@@ -29,13 +29,13 @@ kotlin {
             }
         }
 
-        val commonTest by getting {
+        commonTest {
             dependencies {
                 implementation(kotlin("test"))
             }
         }
 
-        val androidMain by getting {
+        androidMain {
             dependencies {
                 // debugImplementation
                 implementation(libs.compose.uiTooling)
@@ -45,7 +45,7 @@ kotlin {
             }
         }
 
-        val iosMain by getting {
+        iosMain {
             dependencies {
             }
         }

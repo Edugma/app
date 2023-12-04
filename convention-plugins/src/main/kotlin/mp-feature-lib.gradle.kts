@@ -12,7 +12,7 @@ val libs = the<LibrariesForLibs>()
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 implementation(libs.koin.core)
                 //implementation("io.insert-koin:koin-core:3.4.0")

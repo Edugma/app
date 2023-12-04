@@ -103,8 +103,6 @@ class ScheduleMockRepository {
             avatar = null,
             stuffType = null,
             grade = null,
-            departmentParent = null,
-            department = null,
             email = null,
             sex = null,
             birthday = null,

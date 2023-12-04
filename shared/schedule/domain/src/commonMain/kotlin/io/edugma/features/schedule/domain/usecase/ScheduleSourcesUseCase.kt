@@ -1,34 +1,32 @@
 package io.edugma.features.schedule.domain.usecase
 
+import io.edugma.core.api.model.PagingDto
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
-import io.edugma.features.schedule.domain.model.source.ScheduleSources
-import io.edugma.features.schedule.domain.model.source.ScheduleSourcesTabs
+import io.edugma.features.schedule.domain.model.source.ScheduleSourceType
 import io.edugma.features.schedule.domain.repository.ScheduleSourcesRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flowOf
 
 class ScheduleSourcesUseCase(
     private val scheduleSourcesRepository: ScheduleSourcesRepository,
 ) {
-    fun getScheduleSources() =
-        flowOf(ScheduleSources.values().toList())
-
-    suspend fun getScheduleSources(sourcesType: ScheduleSourcesTabs): Flow<List<ScheduleSourceFull>> {
-        return when (sourcesType) {
-            ScheduleSourcesTabs.Favorite ->
-                scheduleSourcesRepository.getFavoriteSources()
-            ScheduleSourcesTabs.Complex -> error("Complex source type is not allowed")
+    suspend fun getScheduleSources(
+        type: ScheduleSourceType,
+        query: String,
+        page: String?,
+        limit: Int,
+    ): PagingDto<ScheduleSourceFull> {
+        return when (type.id) {
+            ScheduleSourceType.FAVORITE -> {
+                PagingDto.from(
+                    scheduleSourcesRepository.getFavoriteSources(),
+                )
+            }
+            ScheduleSourceType.COMPLEX -> error("Complex source type is not allowed")
             else -> {
-                flowOf(
-                    sourcesType.toSourceType()?.let {
-                        scheduleSourcesRepository.getSources(
-                            type = it,
-                            query = "",
-                            limit = 100,
-                            page = null,
-                        )
-                    } ?: emptyList(),
+                scheduleSourcesRepository.getSources(
+                    type = type,
+                    query = query,
+                    limit = limit,
+                    page = page,
                 )
             }
         }
@@ -42,7 +40,7 @@ class ScheduleSourcesUseCase(
         scheduleSourcesRepository.getFavoriteSources()
 
     suspend fun addFavoriteSource(source: ScheduleSourceFull) {
-        val favoriteSources = scheduleSourcesRepository.getFavoriteSources().first()
+        val favoriteSources = scheduleSourcesRepository.getFavoriteSources()
         if (source in favoriteSources) {
             scheduleSourcesRepository.setFavoriteSources(favoriteSources)
         } else {
@@ -51,25 +49,24 @@ class ScheduleSourcesUseCase(
     }
 
     suspend fun deleteFavoriteSource(source: ScheduleSourceFull) {
-        val favoriteSources = scheduleSourcesRepository.getFavoriteSources().first()
+        val favoriteSources = scheduleSourcesRepository.getFavoriteSources()
         scheduleSourcesRepository.setFavoriteSources(favoriteSources - source)
     }
 
-    fun getSourceTypes() =
-        flowOf(Result.success(ScheduleSourcesTabs.getAllTabs()))
-    // scheduleSourcesRepository.getSourceTypes()
-
-    suspend fun getSources(type: ScheduleSources) =
-        scheduleSourcesRepository.getSources(
-            type = type,
-            query = "",
-            limit = 100,
-            page = null,
+    // TODO скрывать избранное, если ничего не выбрано
+    suspend fun getSourceTypes(): List<ScheduleSourceType> {
+        val types = scheduleSourcesRepository.getSourceTypes()
+        val favoriteType = ScheduleSourceType(
+            id = ScheduleSourceType.FAVORITE,
+            title = "Избранное",
         )
+        val complexType = ScheduleSourceType(
+            id = ScheduleSourceType.COMPLEX,
+            title = "Продвинутый поиск",
+        )
+        return types + favoriteType
+    }
 
     suspend fun setSelectedSource(source: ScheduleSourceFull) =
         scheduleSourcesRepository.setSelectedSource(source)
-
-    fun getSelectedSource() =
-        scheduleSourcesRepository.getSelectedSource()
 }

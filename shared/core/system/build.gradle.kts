@@ -4,12 +4,12 @@ plugins {
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 implementation(projects.shared.core.api)
             }
         }
-        val androidMain by getting {
+        androidMain {
             dependencies {
                 implementation(libs.androidx.appCompat)
             }

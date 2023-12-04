@@ -5,8 +5,8 @@ import io.edugma.core.api.repository.getData
 import io.edugma.core.api.repository.save
 import io.edugma.data.base.consts.CacheConst.PaymentsKey
 import io.edugma.features.account.data.api.AccountService
-import io.edugma.features.account.domain.model.Contracts
-import io.edugma.features.account.domain.model.PaymentType
+import io.edugma.features.account.domain.model.payments.Contracts
+import io.edugma.features.account.domain.model.payments.PaymentType
 import io.edugma.features.account.domain.repository.PaymentsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO

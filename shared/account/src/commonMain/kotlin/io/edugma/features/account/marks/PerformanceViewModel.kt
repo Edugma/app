@@ -7,7 +7,7 @@ import io.edugma.core.navigation.core.router.external.ExternalRouter
 import io.edugma.core.utils.isNotNull
 import io.edugma.core.utils.isNull
 import io.edugma.features.account.common.LOCAL_DATA_SHOWN_ERROR
-import io.edugma.features.account.domain.model.Performance
+import io.edugma.features.account.domain.model.performance.Performance
 import io.edugma.features.account.domain.repository.PerformanceRepository
 import io.edugma.features.account.marks.Filter.Course
 import io.edugma.features.account.marks.Filter.Name

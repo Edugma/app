@@ -1,4 +1,4 @@
-package io.edugma.features.account.domain.model
+package io.edugma.features.account.domain.model.applications
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 

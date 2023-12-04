@@ -1,4 +1,4 @@
-package io.edugma.features.account.domain.model
+package io.edugma.features.account.domain.model.auth
 
 import kotlinx.serialization.Serializable
 @Serializable

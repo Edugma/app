@@ -121,7 +121,7 @@ data class ScheduleMenuUiState(
                 AccountSelectorVO(
                     title = selectedSource.title,
                     subtitle = selectedSource.description,
-                    avatar = selectedSource.avatarUrl,
+                    avatar = selectedSource.avatar,
                 )
             },
         ),

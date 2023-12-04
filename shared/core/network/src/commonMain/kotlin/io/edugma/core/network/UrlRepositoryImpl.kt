@@ -27,7 +27,8 @@ class UrlRepositoryImpl(
     }
 
     override fun url(name: String, params: Map<String, String>): String {
-        val template = checkNotNull(templates?.get(name)).url
+        val templates = checkNotNull(templates) { "Templates are null" }
+        val template = checkNotNull(templates[name]) { "Url $name not found" }.url
         val resultParams = predefinedVariables + params
 
         return replaceParams(template, resultParams)
@@ -170,7 +171,7 @@ private val edugmaApi = EdugmaApi(
             url = "{baseUrl}/schedule/places/occupancy/{placeId}",
         ),
 
-        "account-login-get" to Path(
+        "account-login-post" to Path(
             url = "{baseUrl}/login",
         ),
         "account-lk-token-get" to Path(

@@ -1,7 +1,10 @@
 package io.edugma.features.account.personal
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,8 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Divider
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -23,17 +26,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import io.edugma.core.api.utils.format
+import io.edugma.core.api.utils.getInitials
+import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.molecules.avatar.EdAvatar
-import io.edugma.core.designSystem.organism.chipRow.EdSelectableChipRow
-import io.edugma.core.designSystem.organism.chipRow.EdSelectableChipRowPlaceholders
 import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
 import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
-import io.edugma.core.designSystem.organism.workingProgress.EdWorkingProgress
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.shapes.bottom
+import io.edugma.core.designSystem.utils.SecondaryContent
 import io.edugma.core.designSystem.utils.edPlaceholder
 import io.edugma.core.designSystem.utils.statusBarsPadding
 import io.edugma.core.icons.EdIcons
@@ -44,8 +47,7 @@ import io.edugma.core.utils.isNull
 import io.edugma.core.utils.viewmodel.getViewModel
 import io.edugma.features.account.domain.model.Order
 import io.edugma.features.account.domain.model.Personal
-import io.edugma.features.account.personal.Columns.Applications
-import io.edugma.features.account.personal.Columns.Orders
+import io.edugma.features.account.domain.model.applications.Application
 
 @Composable
 fun PersonalScreen(viewModel: PersonalViewModel = getViewModel()) {
@@ -80,76 +82,22 @@ fun PersonalContent(
             refreshing = state.isRefreshing,
             onRefresh = refreshListener,
         ) {
-            LazyColumn(
+            Column(
                 Modifier
+                    .verticalScroll(rememberScrollState())
                     .padding(horizontal = 8.dp)
                     .fillMaxSize(),
             ) {
                 when {
                     state.isError && state.personal.isNull() -> {
-                        item { ErrorWithRetry(retryAction = refreshListener) }
+                        ErrorWithRetry(retryAction = refreshListener)
                     }
                     state.personalPlaceholders -> {
-                        item {
-                            PersonalPlaceholder()
-                        }
-                        item {
-                            EdSelectableChipRowPlaceholders()
-                        }
-                        items(3) {
-                            SpacerHeight(height = 3.dp)
-                            OrderPlaceholder()
-                            Divider()
-                        }
+                        PersonalPlaceholder()
                     }
                     else -> {
                         state.personal?.let {
-                            item() {
-                                Personal(state.personal)
-                            }
-                        }
-                        item() {
-                            EdSelectableChipRow(
-                                types = Columns.entries,
-                                selectedType = state.selectedColumn,
-                                nameMapper = { it.label },
-                                clickListener = typeListener,
-                            )
-                        }
-                        when (state.selectedColumn) {
-                            Orders -> {
-                                state.personal?.orders?.let { orders ->
-                                    items(
-                                        count = orders.size,
-                                        key = { orders[it].name },
-                                        itemContent = { index ->
-                                            SpacerHeight(height = 3.dp)
-                                            Order(orders[index])
-                                            Divider()
-                                        },
-                                    )
-                                }
-                            }
-                            Applications -> {
-                                if (state.applicationsPlaceholders) {
-                                    items(3) {
-                                        ApplicationPlaceholder()
-                                    }
-                                } else {
-//                                    state.applications?.let { applications ->
-//                                        items(
-//                                            count = applications.size,
-//                                            key = { it },
-//                                            itemContent = { index ->
-//                                                SpacerHeight(height = 3.dp)
-//                                                Application(application = applications[index])
-//                                                Divider()
-//                                            },
-//                                        )
-//                                    }
-                                    item { EdWorkingProgress() }
-                                }
-                            }
+                            Personal(state.personal)
                         }
                     }
                 }
@@ -181,14 +129,14 @@ private fun Toolbar(
         }
         Column(Modifier.weight(1f)) {
             EdLabel(
-                text = personal?.getNameSurname() ?: "О вас",
+                text = personal?.name ?: "О вас",
                 style = EdTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
                 modifier = Modifier
                     .padding(bottom = 5.dp)
                     .edPlaceholder(placeholders),
             )
             EdLabel(
-                text = "${personal?.degreeLevel} ${personal?.course} курса группы ${personal?.group}",
+                text = personal?.description.orEmpty(),
                 style = EdTheme.typography.bodySmall,
                 modifier = Modifier
                     .edPlaceholder(placeholders),
@@ -199,57 +147,42 @@ private fun Toolbar(
             modifier = Modifier
                 .size(55.dp)
                 .edPlaceholder(placeholders),
-            initials = personal?.initials,
+            initials = personal?.let { getInitials(it.name) },
         )
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun Personal(personal: Personal) {
-    Column(Modifier.padding(8.dp)) {
-        EdLabel(
-            text = personal.faculty,
-            iconPainter = painterResource(EdIcons.ic_fluent_building_24_regular),
-            style = EdTheme.typography.bodyMedium,
-        )
-        SpacerHeight(height = 8.dp)
-        EdLabel(
-            text = personal.specialty,
-            iconPainter = painterResource(EdIcons.ic_fluent_hat_graduation_24_filled),
-            style = EdTheme.typography.bodyMedium,
-        )
-        SpacerHeight(height = 8.dp)
-        personal.specialization?.let {
-            EdLabel(
-                text = it,
-                iconPainter = painterResource(EdIcons.ic_fluent_book_24_regular),
-                style = EdTheme.typography.bodyMedium,
-            )
-            SpacerHeight(height = 8.dp)
+    FlowRow(
+        modifier = Modifier.padding(vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        personal.data.forEach { (title, value) ->
+            EdCard(
+                modifier = Modifier,
+                shape = EdTheme.shapes.small,
+            ) {
+                Column(
+                    modifier = Modifier
+                        .padding(vertical = 4.dp, horizontal = 10.dp),
+                ) {
+                    SecondaryContent {
+                        EdLabel(
+                            text = title,
+                            style = EdTheme.typography.labelSmall,
+                        )
+                    }
+                    SpacerHeight(height = 1.dp)
+                    EdLabel(
+                        text = value,
+                        style = EdTheme.typography.bodyMedium,
+                    )
+                }
+            }
         }
-        EdLabel(
-            text = "Номер зачетной книжки: ${personal.code}",
-            iconPainter = painterResource(EdIcons.ic_fluent_album_24_regular),
-            style = EdTheme.typography.bodyMedium,
-        )
-        SpacerHeight(height = 8.dp)
-        EdLabel(
-            text = "${personal.finance} ${personal.educationForm.lowercase()} основа обучения",
-            iconPainter = painterResource(EdIcons.ic_fluent_money_24_regular),
-            style = EdTheme.typography.bodyMedium,
-        )
-        SpacerHeight(height = 8.dp)
-        EdLabel(
-            text = "Год поступления ${personal.enterYear}",
-            iconPainter = painterResource(EdIcons.ic_fluent_calendar_ltr_24_regular),
-            style = EdTheme.typography.bodyMedium,
-        )
-        SpacerHeight(height = 8.dp)
-        EdLabel(
-            text = "Лет обучения ${personal.degreeLength}",
-            iconPainter = painterResource(EdIcons.ic_fluent_timer_24_regular),
-            style = EdTheme.typography.bodyMedium,
-        )
     }
 }
 
@@ -377,7 +310,7 @@ fun OrderPlaceholder() {
 }
 
 @Composable
-fun Application(application: io.edugma.features.account.domain.model.Application) {
+fun Application(application: Application) {
     Column(
         modifier = Modifier
             .padding(horizontal = 10.dp, vertical = 5.dp)

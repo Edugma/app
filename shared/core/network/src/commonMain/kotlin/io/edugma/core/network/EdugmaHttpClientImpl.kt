@@ -5,8 +5,11 @@ import io.edugma.core.api.repository.UrlRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.headers
+import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 
 class EdugmaHttpClientImpl(
     private val urlRepository: UrlRepository,
@@ -42,7 +45,7 @@ class EdugmaHttpClientImpl(
         val name = "$name-post"
 
         val url = urlRepository.url(name, builder.paramsMap)
-        return httpClient.get(url) {
+        return httpClient.post(url) {
             val queryParams = urlRepository.queryParams(name, builder.paramsMap)
             for ((name, value) in queryParams) {
                 url {
@@ -58,6 +61,7 @@ class EdugmaHttpClientImpl(
                 }
             }
 
+            contentType(ContentType.Application.Json)
             setBody(builder.body, builder.typeInfo!!)
         }
     }

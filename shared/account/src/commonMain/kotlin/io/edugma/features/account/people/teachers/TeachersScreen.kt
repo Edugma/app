@@ -35,6 +35,7 @@ import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.navigationBarsPadding
 import io.edugma.core.icons.EdIcons
+import io.edugma.core.ui.pagination.PagingFooter
 import io.edugma.core.ui.screen.BottomSheet
 import io.edugma.core.ui.screen.FeatureBottomSheetScreen
 import io.edugma.core.utils.ClickListener
@@ -46,7 +47,6 @@ import io.edugma.features.account.domain.model.description
 import io.edugma.features.account.people.common.bottomSheets.SearchBottomSheet
 import io.edugma.features.account.people.common.items.PeopleItem
 import io.edugma.features.account.people.common.items.PeopleItemPlaceholder
-import io.edugma.features.account.people.common.paging.PagingFooter
 import kotlinx.coroutines.launch
 
 @Composable

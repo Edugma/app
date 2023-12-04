@@ -221,7 +221,7 @@ sealed class MenuState {
         val cards: List<List<Card>> = emptyList(),
     ) : MenuState() {
         val account: AccountSelectorVO? = personalData
-            ?.let { AccountSelectorVO(personalData.fullName, personalData.label, personalData.avatar) }
+            ?.let { AccountSelectorVO(personalData.name, personalData.description, personalData.avatar) }
     }
 }
 

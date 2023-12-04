@@ -5,7 +5,7 @@ plugins {
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 implementation(projects.shared.core.designSystem)
                 implementation(projects.shared.core.api)

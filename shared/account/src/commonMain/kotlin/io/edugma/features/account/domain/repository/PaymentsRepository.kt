@@ -1,7 +1,7 @@
 package io.edugma.features.account.domain.repository
 
-import io.edugma.features.account.domain.model.Contracts
-import io.edugma.features.account.domain.model.PaymentType
+import io.edugma.features.account.domain.model.payments.Contracts
+import io.edugma.features.account.domain.model.payments.PaymentType
 import kotlinx.coroutines.flow.Flow
 
 interface PaymentsRepository {

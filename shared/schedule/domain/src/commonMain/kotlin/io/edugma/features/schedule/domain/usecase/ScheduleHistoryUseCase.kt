@@ -27,7 +27,7 @@ class ScheduleHistoryUseCase(
                 if (source == null) {
                     error("")
                 } else {
-                    emitAll(repository.getHistory(ScheduleSource(source.type, source.key)))
+                    emitAll(repository.getHistory(ScheduleSource(source.type, source.id)))
                 }
             }.map { it.asReversed() }
 
@@ -36,7 +36,7 @@ class ScheduleHistoryUseCase(
         secondScheduleTimestamp: Instant,
     ): List<ScheduleDayChange> {
         val source = scheduleSourcesRepository.getSelectedSource().first() ?: return emptyList()
-        val scheduleSource = ScheduleSource(source.type, source.key)
+        val scheduleSource = ScheduleSource(source.type, source.id)
         val firstSchedule = scheduleRepository.getHistoryRecord(
             source = scheduleSource,
             timestamp = firstScheduleTimestamp,

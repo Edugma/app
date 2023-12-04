@@ -11,7 +11,7 @@ configure<de.jensklingenberg.ktorfit.gradle.KtorfitGradleConfiguration> {
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 api(projects.shared.core.api)
 

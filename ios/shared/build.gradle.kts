@@ -7,12 +7,12 @@ version = "1.0.0"
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 api(projects.shared.app)
             }
         }
-//        val iosMain by getting {
+//        iosMain {
 //            dependencies {
 //                api(projects.shared.core.icons)
 //            }

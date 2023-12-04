@@ -12,3 +12,14 @@ fun String.capitalized(): String {
         }
     }
 }
+
+fun getInitials(fullName: String): String {
+    val names = fullName.split(" ").filter { it.isNotEmpty() }
+
+    return buildString {
+        for (i in 0..names.lastIndex.coerceAtMost(1)) {
+            val name = names[i]
+            append((name.first()))
+        }
+    }
+}

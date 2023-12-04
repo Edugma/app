@@ -1,4 +1,4 @@
-package io.edugma.features.account.domain.model
+package io.edugma.features.account.domain.model.performance
 
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime

@@ -1,66 +1,78 @@
 package io.edugma.features.schedule.sources
 
-import io.edugma.core.api.utils.onFailure
-import io.edugma.core.api.utils.onSuccess
+import io.edugma.core.api.model.PagingDto
+import io.edugma.core.api.model.map
 import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.utils.launchCoroutine
-import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
+import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
+import io.edugma.core.arch.pagination.PaginationState
+import io.edugma.core.arch.pagination.PagingViewModel
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
+import io.edugma.features.schedule.domain.model.source.ScheduleSourceType
 import io.edugma.features.schedule.domain.model.source.ScheduleSources
-import io.edugma.features.schedule.domain.model.source.ScheduleSourcesTabs
 import io.edugma.features.schedule.domain.usecase.ScheduleSourcesUseCase
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 
 class ScheduleSourcesViewModel(
     private val useCase: ScheduleSourcesUseCase,
-) : BaseViewModel<ScheduleSourceState>(ScheduleSourceState()) {
+    private val pagingViewModel: PagingViewModel<ScheduleSourceUiModel>,
+) : BaseActionViewModel<ScheduleSourceState, ScheduleSourcesAction>(ScheduleSourceState()) {
     init {
-        launchCoroutine {
-            useCase.getSourceTypes()
-                .onSuccess { newState { setTabs(tabs = it) } }
-                .onFailure { newState { setTabs(tabs = emptyList()) } }
-                .collect()
+        pagingViewModel.init(
+            parentViewModel = this,
+            initialState = state.paginationState,
+            stateFlow = stateFlow.map { it.paginationState },
+            setState = { newState { copy(paginationState = it) } },
+        )
+        pagingViewModel.request = {
+            val selectedTab = state.selectedTab
+            if (selectedTab == null) {
+                PagingDto.empty()
+            } else {
+                val sources = useCase.getScheduleSources(
+                    type = selectedTab,
+                    query = state.query,
+                    page = state.paginationState.nextPage,
+                    limit = state.paginationState.pageSize,
+                )
+                // TODO для favorite и complex
+                val favoriteSources = useCase.getFavoriteSources()
+                sources.map {
+                    ScheduleSourceUiModel(
+                        source = it,
+                        isFavorite = it in favoriteSources,
+                    )
+                }
+            }
         }
 
         launchCoroutine(
             onError = {
-                newState {
-                    copy(sources = emptyList())
-                }
+                newState { setTabs(tabs = emptyList()) }
             },
         ) {
-            stateFlow.map { it.selectedTab }
-                .filterNotNull()
-                .filter { it != ScheduleSourcesTabs.Complex }
-                .distinctUntilChanged()
-                .flatMapLatest { tab ->
-                    val sources = useCase.getScheduleSources(tab)
-                    val favoriteSources = useCase.getFavoriteSources()
-                    combine(sources, favoriteSources) { sources, favoriteSources ->
-                        val uiModel = sources.map {
-                            ScheduleSourceUiModel(
-                                source = it,
-                                isFavorite = it in favoriteSources,
-                            )
-                        }
-                        newState { setSources(sources = uiModel) }
-                    }
-                }.catch {
-                    newState { setSources(sources = emptyList()) }
-                }.collect()
+            val tabs = useCase.getSourceTypes()
+            newState { setTabs(tabs = tabs) }
         }
     }
 
-    fun onSelectTab(sourceType: ScheduleSourcesTabs) {
+    override fun onAction(action: ScheduleSourcesAction) {
+        when (action) {
+            ScheduleSourcesAction.OnLoadPage -> {
+                pagingViewModel.loadNextPage()
+            }
+        }
+    }
+
+    fun onSelectTab(selectedTab: ScheduleSourceType) {
+        val previousTab = state.selectedTab
         newState {
-            copy(selectedTab = sourceType)
+            copy(selectedTab = selectedTab)
+        }
+        if (previousTab != selectedTab) {
+            if (selectedTab.id != ScheduleSourceType.COMPLEX) {
+                pagingViewModel.resetAndLoad()
+            }
         }
     }
 
@@ -75,18 +87,22 @@ class ScheduleSourcesViewModel(
         launchCoroutine {
             useCase.addFavoriteSource(source)
         }
+        pagingViewModel.resetAndLoad()
     }
 
     fun onDeleteFavorite(source: ScheduleSourceFull) {
         launchCoroutine {
             useCase.deleteFavoriteSource(source)
         }
+        pagingViewModel.resetAndLoad()
     }
 
     fun onQueryChange(query: String) {
         newState {
             setQuery(query = query)
         }
+        // TODO сделать таймер
+        pagingViewModel.resetAndLoad()
     }
 
     fun onApplyComplexSearch() {
@@ -94,10 +110,10 @@ class ScheduleSourcesViewModel(
             useCase.setSelectedSource(
                 ScheduleSourceFull(
                     type = ScheduleSources.Complex,
-                    key = "{}",
+                    id = "{}",
                     title = "Расширенный поиск",
                     description = "",
-                    avatarUrl = null,
+                    avatar = null,
                 ),
             )
             router.back()
@@ -106,32 +122,17 @@ class ScheduleSourcesViewModel(
 }
 
 data class ScheduleSourceState(
-    val tabs: List<ScheduleSourcesTabs> = ScheduleSourcesTabs.getAllTabs(),
-    val selectedTab: ScheduleSourcesTabs? = ScheduleSourcesTabs.Favorite,
+    val tabs: List<ScheduleSourceType> = emptyList(),
+    val selectedTab: ScheduleSourceType? = null,
     val query: String = "",
-    val sources: List<ScheduleSourceUiModel> = emptyList(),
     val filteredSources: List<ScheduleSourceUiModel> = emptyList(),
+    val paginationState: PaginationState<ScheduleSourceUiModel> = PaginationState.empty(),
 ) {
-    fun setTabs(tabs: List<ScheduleSourcesTabs>) =
+    fun setTabs(tabs: List<ScheduleSourceType>) =
         copy(tabs = tabs).updateSelectedTab()
 
     fun setQuery(query: String) =
         copy(query = query)
-            .updateFilteredSources()
-
-    fun setSources(sources: List<ScheduleSourceUiModel>) =
-        copy(sources = sources)
-            .updateFilteredSources()
-
-    fun updateFilteredSources(): ScheduleSourceState {
-        val filteredSources = sources
-            .filter {
-                query.isEmpty() ||
-                    it.source.title.contains(query, ignoreCase = true)
-            }
-
-        return copy(filteredSources = filteredSources)
-    }
 
     fun updateSelectedTab(): ScheduleSourceState {
         return if (selectedTab !in tabs) {

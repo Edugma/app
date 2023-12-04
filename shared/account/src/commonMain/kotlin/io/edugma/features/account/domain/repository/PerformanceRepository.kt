@@ -1,7 +1,7 @@
 package io.edugma.features.account.domain.repository
 
-import io.edugma.features.account.domain.model.Performance
-import io.edugma.features.account.domain.model.SemestersWithCourse
+import io.edugma.features.account.domain.model.performance.Performance
+import io.edugma.features.account.domain.model.performance.SemestersWithCourse
 import kotlinx.coroutines.flow.Flow
 
 interface PerformanceRepository {

@@ -8,8 +8,8 @@ import io.edugma.data.base.consts.CacheConst.CourseKey
 import io.edugma.data.base.consts.CacheConst.PerformanceKey
 import io.edugma.data.base.consts.CacheConst.SemesterKey
 import io.edugma.features.account.data.api.AccountService
-import io.edugma.features.account.domain.model.Performance
-import io.edugma.features.account.domain.model.SemestersWithCourse
+import io.edugma.features.account.domain.model.performance.Performance
+import io.edugma.features.account.domain.model.performance.SemestersWithCourse
 import io.edugma.features.account.domain.repository.PerformanceRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO

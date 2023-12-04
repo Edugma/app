@@ -4,7 +4,7 @@ plugins {
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 api(projects.shared.core.api)
                 api(projects.libs.navigation.core)
@@ -17,7 +17,7 @@ kotlin {
                 implementation(libs.kotlinx.dateTime)
             }
         }
-        val androidMain by getting {
+        androidMain {
             dependencies {
                 implementation(libs.androidx.viewmodel.compose)
             }

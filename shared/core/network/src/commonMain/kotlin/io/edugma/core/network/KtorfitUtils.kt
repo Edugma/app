@@ -15,6 +15,7 @@ import io.ktor.client.plugins.plugin
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.http.ContentType
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 
 fun buildKtorfit(client: HttpClient, baseUrl: String = ""): Ktorfit {
@@ -27,6 +28,7 @@ fun buildKtorfit(client: HttpClient, baseUrl: String = ""): Ktorfit {
     }
 }
 
+@OptIn(ExperimentalSerializationApi::class)
 fun buildKtorClient(
     interceptors: List<KtorInterceptor>,
     isLogsEnabled: Boolean,
@@ -42,12 +44,14 @@ fun buildKtorClient(
                 Json {
                     ignoreUnknownKeys = true
                     allowStructuredMapKeys = true
+                    explicitNulls = false
                 },
             )
             json(
                 Json {
                     ignoreUnknownKeys = true
                     allowStructuredMapKeys = true
+                    explicitNulls = false
                 },
                 ContentType.Text.Any,
             )

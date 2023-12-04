@@ -28,7 +28,7 @@ class ScheduleUseCase(
                 } else {
                     emitAll(
                         repository.getSchedule(
-                            ScheduleSource(source.type, source.key),
+                            ScheduleSource(source.type, source.id),
                             forceUpdate = forceUpdate,
                         ),
                     )
@@ -51,7 +51,7 @@ class ScheduleUseCase(
                 if (source == null) {
                     emit(null)
                 } else {
-                    emitAll(repository.getTeacher(ScheduleSource(source.type, source.key), id))
+                    emitAll(repository.getTeacher(ScheduleSource(source.type, source.id), id))
                 }
             }
 

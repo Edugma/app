@@ -31,6 +31,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
+import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
+import io.edugma.core.arch.pagination.PaginationState
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.card.EdCardDefaults
 import io.edugma.core.designSystem.atoms.label.EdLabel
@@ -49,13 +51,14 @@ import io.edugma.core.designSystem.utils.ContentAlpha
 import io.edugma.core.designSystem.utils.WithContentAlpha
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.resources.MR
+import io.edugma.core.ui.pagination.PagingFooter
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.viewmodel.getViewModel
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
+import io.edugma.features.schedule.domain.model.source.ScheduleSourceType
 import io.edugma.features.schedule.domain.model.source.ScheduleSources
-import io.edugma.features.schedule.domain.model.source.ScheduleSourcesTabs
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @Composable
@@ -74,6 +77,7 @@ fun ScheduleSourcesScreen(viewModel: ScheduleSourcesViewModel = getViewModel()) 
             onAddFavorite = viewModel::onAddFavorite,
             onDeleteFavorite = viewModel::onDeleteFavorite,
             onApplyComplexSearch = viewModel::onApplyComplexSearch,
+            onAction = viewModel.rememberOnAction(),
         )
     }
 }
@@ -83,11 +87,12 @@ fun ScheduleSourcesContent(
     state: ScheduleSourceState,
     onBackClick: ClickListener,
     onQueryChange: Typed1Listener<String>,
-    onTabSelected: Typed1Listener<ScheduleSourcesTabs>,
+    onTabSelected: Typed1Listener<ScheduleSourceType>,
     onSourceSelected: Typed1Listener<ScheduleSourceFull>,
     onAddFavorite: Typed1Listener<ScheduleSourceFull>,
     onDeleteFavorite: Typed1Listener<ScheduleSourceFull>,
     onApplyComplexSearch: ClickListener,
+    onAction: (ScheduleSourcesAction) -> Unit,
 ) {
 
     val q = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
@@ -119,7 +124,7 @@ fun ScheduleSourcesContent(
                 SpacerHeight(height = EdTheme.paddings.s)
             }
         }
-        if (state.selectedTab == ScheduleSourcesTabs.Complex) {
+        if (state.selectedTab?.id == ScheduleSourceType.COMPLEX) {
             ComplexSearch(
                 typesId = emptyList(),
                 subjectsId = emptyList(),
@@ -135,11 +140,13 @@ fun ScheduleSourcesContent(
             )
         } else {
             Search(
-                filteredSources = state.filteredSources,
-                selectedTab = state.selectedTab,
+                paging = state.paginationState,
                 onSourceSelected = onSourceSelected,
                 onAddFavorite = onAddFavorite,
                 onDeleteFavorite = onDeleteFavorite,
+                onLoadPage = {
+                    onAction(ScheduleSourcesAction.OnLoadPage)
+                },
             )
         }
     }
@@ -228,9 +235,9 @@ private fun FiltersSelector(
 
 @Composable
 private fun SourceTypeTabs(
-    tabs: List<ScheduleSourcesTabs>,
-    selectedTab: ScheduleSourcesTabs?,
-    onTabSelected: Typed1Listener<ScheduleSourcesTabs>,
+    tabs: List<ScheduleSourceType>,
+    selectedTab: ScheduleSourceType?,
+    onTabSelected: Typed1Listener<ScheduleSourceType>,
 ) {
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
@@ -341,17 +348,21 @@ private fun Filter(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ColumnScope.Search(
-    filteredSources: List<ScheduleSourceUiModel>,
-    selectedTab: ScheduleSourcesTabs?,
+    paging: PaginationState<ScheduleSourceUiModel>,
     onSourceSelected: Typed1Listener<ScheduleSourceFull>,
     onAddFavorite: Typed1Listener<ScheduleSourceFull>,
     onDeleteFavorite: Typed1Listener<ScheduleSourceFull>,
+    onLoadPage: () -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(top = 10.dp),
     ) {
-        items(filteredSources, key = { selectedTab to it.hashCode() }) { source ->
+        items(
+            items = paging.items,
+            key = { it.source.id to it.source.type },
+            contentType = { "source" },
+        ) { source ->
             SourceItem(
                 source = source,
                 onItemClick = onSourceSelected,
@@ -360,29 +371,20 @@ private fun ColumnScope.Search(
                 modifier = Modifier.animateItemPlacement(),
             )
         }
+        item { PagingFooter(paging, onLoadPage) }
     }
 }
 
 @Composable
 private fun SourceTypeTab(
-    tab: ScheduleSourcesTabs,
+    tab: ScheduleSourceType,
     isSelected: Boolean,
-    onTabSelected: Typed1Listener<ScheduleSourcesTabs>,
+    onTabSelected: Typed1Listener<ScheduleSourceType>,
 ) {
     val color = if (isSelected) {
         EdTheme.colorScheme.secondaryContainer
     } else {
         EdTheme.colorScheme.surface
-    }
-
-    val title = when (tab) {
-        ScheduleSourcesTabs.Favorite -> "Избранное"
-        ScheduleSourcesTabs.Group -> "Группы"
-        ScheduleSourcesTabs.Teacher -> "Преподаватели"
-        ScheduleSourcesTabs.Student -> "Студенты"
-        ScheduleSourcesTabs.Place -> "Места занятий"
-        ScheduleSourcesTabs.Subject -> "Предметы"
-        ScheduleSourcesTabs.Complex -> "Расширенный поиск"
     }
 
     EdCard(
@@ -392,7 +394,7 @@ private fun SourceTypeTab(
         shape = EdTheme.shapes.small,
     ) {
         EdLabel(
-            text = title,
+            text = tab.title,
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
             style = EdTheme.typography.bodyMedium,
         )
@@ -428,7 +430,7 @@ fun SourceItem(
                 ScheduleSources.Complex -> source.source.title.split(' ')
                     .joinToString(separator = "") { it.take(1) }
             }
-            EdAvatar(url = source.source.avatarUrl ?: "", initials = initials)
+            EdAvatar(url = source.source.avatar ?: "", initials = initials)
             SpacerWidth(8.dp)
             Column(Modifier.weight(1f)) {
                 EdLabel(

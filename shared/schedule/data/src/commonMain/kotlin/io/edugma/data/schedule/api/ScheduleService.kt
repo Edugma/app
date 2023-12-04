@@ -4,6 +4,7 @@ import io.edugma.core.api.api.EdugmaHttpClient
 import io.edugma.core.api.api.get
 import io.edugma.core.api.api.getResult
 import io.edugma.core.api.api.postResult
+import io.edugma.core.api.model.PagingDto
 import io.edugma.features.schedule.domain.model.ScheduleComplexFilter
 import io.edugma.features.schedule.domain.model.compact.CompactSchedule
 import io.edugma.features.schedule.domain.model.group.GroupInfo
@@ -13,7 +14,7 @@ import io.edugma.features.schedule.domain.model.place.PlaceDailyOccupancy
 import io.edugma.features.schedule.domain.model.place.PlaceFilters
 import io.edugma.features.schedule.domain.model.place.PlaceInfo
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
-import io.edugma.features.schedule.domain.model.source.ScheduleSources
+import io.edugma.features.schedule.domain.model.source.ScheduleSourceType
 import io.edugma.features.schedule.domain.model.teacher.TeacherInfo
 
 class ScheduleService(
@@ -36,7 +37,7 @@ class ScheduleService(
         query: String,
         page: String?,
         limit: Int,
-    ): List<ScheduleSourceFull> =
+    ): PagingDto<ScheduleSourceFull> =
         client.get("$PREFIX-sources") {
             param("type", type)
             param("query", query)
@@ -44,8 +45,8 @@ class ScheduleService(
             param("limit", limit)
         }
 
-    suspend fun getSourceTypes(): Result<List<ScheduleSources>> =
-        client.getResult("$PREFIX-sources-types")
+    suspend fun getSourceTypes(): List<ScheduleSourceType> =
+        client.get("$PREFIX-sources-types")
 
     suspend fun getGroupInfo(id: String): Result<GroupInfo> =
         client.getResult("$PREFIX-info-group") {
