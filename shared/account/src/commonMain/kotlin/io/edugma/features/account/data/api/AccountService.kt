@@ -7,15 +7,14 @@ import io.edugma.core.api.api.getResult
 import io.edugma.core.api.api.postResult
 import io.edugma.core.api.model.PagingDto
 import io.edugma.features.account.domain.model.Personal
-import io.edugma.features.account.domain.model.Teacher
 import io.edugma.features.account.domain.model.applications.Application
 import io.edugma.features.account.domain.model.auth.Login
 import io.edugma.features.account.domain.model.auth.Token
 import io.edugma.features.account.domain.model.payments.Contracts
 import io.edugma.features.account.domain.model.payments.PaymentType
+import io.edugma.features.account.domain.model.peoples.Person
 import io.edugma.features.account.domain.model.performance.Performance
 import io.edugma.features.account.domain.model.performance.SemestersWithCourse
-import io.edugma.features.account.domain.model.student.Student
 
 class AccountService(
     private val client: EdugmaHttpClient,
@@ -29,26 +28,13 @@ class AccountService(
     suspend fun getLkToken(): Result<Token> =
         client.getResult("$PREFIX-lk-token")
 
-    suspend fun getClassmates(): Result<List<Student>> =
-        client.getResult("$PREFIX-peoples-classmates")
-
-    suspend fun getStudents(
+    suspend fun getPeople(
+        url: String,
         query: String,
         page: String?,
         limit: Int,
-    ): PagingDto<Student> =
-        client.get("$PREFIX-peoples-students") {
-            param("query", query)
-            param("page", page)
-            param("limit", limit)
-        }
-
-    suspend fun getTeachers(
-        query: String,
-        page: String?,
-        limit: Int,
-    ): PagingDto<Teacher> =
-        client.get("$PREFIX-peoples-teachers") {
+    ): PagingDto<Person> =
+        client.get(url) {
             param("query", query)
             param("page", page)
             param("limit", limit)

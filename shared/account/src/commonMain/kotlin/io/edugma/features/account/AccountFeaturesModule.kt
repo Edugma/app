@@ -20,9 +20,7 @@ import io.edugma.features.account.domain.usecase.MenuDataConverterUseCase
 import io.edugma.features.account.marks.PerformanceViewModel
 import io.edugma.features.account.menu.MenuViewModel
 import io.edugma.features.account.payments.PaymentsViewModel
-import io.edugma.features.account.people.classmates.ClassmatesViewModel
-import io.edugma.features.account.people.students.StudentsViewModel
-import io.edugma.features.account.people.teachers.TeachersViewModel
+import io.edugma.features.account.people.presentation.PeopleViewModel
 import io.edugma.features.account.personal.PersonalViewModel
 import io.edugma.features.account.web.WebViewModel
 import org.koin.core.module.dsl.bind
@@ -44,11 +42,9 @@ val accountFeaturesModule = module {
     factoryOf(::MenuDataConverterUseCase)
 
     factoryOf(::MenuViewModel)
-    factoryOf(::ClassmatesViewModel)
     factoryOf(::PaymentsViewModel)
-    factoryOf(::StudentsViewModel)
+    factoryOf(::PeopleViewModel)
     factoryOf(::PerformanceViewModel)
     factoryOf(::PersonalViewModel)
-    factoryOf(::TeachersViewModel)
     factoryOf(::WebViewModel)
 }

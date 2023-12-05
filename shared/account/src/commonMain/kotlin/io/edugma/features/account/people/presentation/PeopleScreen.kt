@@ -1,15 +1,14 @@
-package io.edugma.features.account.people.students
+package io.edugma.features.account.people.presentation
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -17,21 +16,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.compose.painterResource
-import io.edugma.core.designSystem.atoms.divider.EdDivider
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
-import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.molecules.avatar.EdAvatar
 import io.edugma.core.designSystem.molecules.avatar.EdAvatarSize
 import io.edugma.core.designSystem.molecules.avatar.toAvatarInitials
+import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetValue
 import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
 import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
 import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.utils.SecondaryContent
 import io.edugma.core.designSystem.utils.navigationBarsPadding
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.pagination.PagingFooter
@@ -40,117 +38,128 @@ import io.edugma.core.ui.screen.FeatureBottomSheetScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.viewmodel.getViewModel
-import io.edugma.features.account.domain.model.student.Student
+import io.edugma.features.account.domain.model.peoples.Person
+import io.edugma.features.account.people.PeopleScreenType
 import io.edugma.features.account.people.common.bottomSheets.SearchBottomSheet
 import io.edugma.features.account.people.common.items.PeopleItem
 import io.edugma.features.account.people.common.items.PeopleItemPlaceholder
 import kotlinx.coroutines.launch
 
 @Composable
-fun StudentsScreen(viewModel: StudentsViewModel = getViewModel()) {
+fun PeopleScreen(
+    viewModel: PeopleViewModel = getViewModel(),
+    type: PeopleScreenType,
+) {
+    LaunchedEffect(type) {
+        viewModel.onArgs(type)
+    }
     val state by viewModel.stateFlow.collectAsState()
 
     val bottomState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
     )
     val scope = rememberCoroutineScope()
-    FeatureBottomSheetScreen(
-        navigationBarPadding = false,
-        sheetState = bottomState,
-        sheetContent = {
-            when (state.bottomType) {
-                BottomSheetType.Filter -> {
-                    SearchBottomSheet(
-                        hint = "Введите фамилию или группу",
-                        searchValue = state.name,
-                        onSearchValueChanged = viewModel::setName,
-                    ) {
-                        viewModel.searchRequest()
-                        scope.launch { bottomState.hide() }
+    if (state.type != null) {
+        FeatureBottomSheetScreen(
+            navigationBarPadding = false,
+            sheetState = bottomState,
+            sheetContent = {
+                when (state.bottomType) {
+                    BottomSheetType.Filter -> {
+                        SearchBottomSheet(
+                            hint = state.type!!.queryHint,
+                            searchValue = state.name,
+                            onSearchValueChanged = viewModel::setName,
+                        ) {
+                            viewModel.searchRequest()
+                            scope.launch { bottomState.hide() }
+                        }
+                    }
+                    BottomSheetType.Person -> {
+                        state.selectedPerson?.let {
+                            PersonBottomSheet(
+                                person = it,
+                                openSchedule = viewModel::openSchedule,
+                            )
+                        }
                     }
                 }
-                BottomSheetType.Student -> {
-                    state.selectedStudent?.let { StudentBottomSheet(it) }
-                }
-            }
-        },
-    ) {
-        StudentsListContent(
-            state,
-            backListener = viewModel::exit,
-            openBottomSheetListener = {
-                viewModel.selectFilter()
-                scope.launch { bottomState.show() }
             },
-            studentClick = {
-                viewModel.selectStudent(it)
-                scope.launch { bottomState.show() }
-            },
-            onShare = viewModel::onShare,
-            onLoad = viewModel::loadNextPage,
-        )
+        ) {
+            PeopleListContent(
+                state,
+                backListener = viewModel::exit,
+                openBottomSheetListener = {
+                    viewModel.selectFilter()
+                    scope.launch { bottomState.show() }
+                },
+                onPersonClick = {
+                    viewModel.selectPerson(it)
+                    scope.launch { bottomState.show() }
+                },
+                onShare = viewModel::onShare,
+                onLoad = viewModel::loadNextPage,
+            )
+        }
     }
 }
 
 @Composable
-fun ColumnScope.StudentBottomSheet(student: Student) {
+fun ColumnScope.PersonBottomSheet(
+    person: Person,
+    openSchedule: () -> Unit,
+) {
     BottomSheet {
-        Row(
+        Column(
             Modifier
                 .fillMaxWidth(),
-            verticalAlignment = Alignment.Top,
-            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            EdLabel(
-                text = student.name,
-                style = EdTheme.typography.headlineSmall,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 3,
-                modifier = Modifier.fillMaxWidth(0.7f),
-            )
-            SpacerWidth(width = 10.dp)
+            SpacerHeight(height = 10.dp)
             EdAvatar(
-                url = student.avatar,
-                initials = student.name.toAvatarInitials(),
-                size = EdAvatarSize(
-                    size = 80.dp,
-                    textSizes = listOf(21.sp, 25.sp, 25.sp, 23.sp, 22.sp, 21.sp),
-                ),
+                url = person.avatar,
+                initials = person.name.toAvatarInitials(),
+                size = EdAvatarSize.xxxl,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
             )
-        }
-        SpacerHeight(height = 7.dp)
-        if (student.faculty != null) {
-            EdLabel(
-                text = student.faculty,
-                iconPainter = painterResource(EdIcons.ic_fluent_hat_graduation_24_filled),
-                style = EdTheme.typography.bodyMedium,
-            )
-            SpacerHeight(height = 7.dp)
-        }
-        student.group?.let { group ->
-            EdDivider(thickness = 1.dp)
             SpacerHeight(height = 10.dp)
             EdLabel(
-                text = "Группа ${group.title}",
+                text = person.name,
                 style = EdTheme.typography.titleLarge,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 3,
+                modifier = Modifier.fillMaxWidth(),
             )
-            SpacerHeight(height = 7.dp)
+        }
+        person.description?.let {
+            SpacerHeight(height = 10.dp)
+            SecondaryContent {
+                EdLabel(
+                    text = person.description,
+                    style = EdTheme.typography.bodyMedium,
+                )
+            }
+            SpacerHeight(height = 16.dp)
+            EdButton(
+                text = "Посмотреть расписание",
+                onClick = openSchedule,
+                modifier = Modifier.fillMaxWidth(),
+            )
         }
     }
 }
 
 @Composable
-fun StudentsListContent(
+fun PeopleListContent(
     state: StudentsState,
     backListener: ClickListener,
     openBottomSheetListener: ClickListener,
-    studentClick: Typed1Listener<Student>,
+    onPersonClick: Typed1Listener<Person>,
     onLoad: ClickListener,
     onShare: ClickListener,
 ) {
     Column(Modifier.navigationBarsPadding()) {
         EdTopAppBar(
-            title = "Студенты",
+            title = state.type!!.title,
             onNavigationClick = backListener,
             actions = {
                 val students = state.paginationState.items
@@ -183,7 +192,7 @@ fun StudentsListContent(
                 EdNothingFound(modifier = Modifier.fillMaxSize())
             }
             else -> {
-                StudentsList(state, studentClick, onLoad)
+                StudentsList(state, onPersonClick, onLoad)
             }
         }
     }
@@ -192,7 +201,7 @@ fun StudentsListContent(
 @Composable
 fun StudentsList(
     state: StudentsState,
-    studentClick: Typed1Listener<Student>,
+    studentClick: Typed1Listener<Person>,
     loadListener: ClickListener,
 ) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
@@ -205,11 +214,15 @@ fun StudentsList(
                 items(
                     count = state.paginationState.items.size,
                     key = { state.paginationState.items[it].id },
-                    contentType = { "student" },
+                    contentType = { "people" },
                 ) {
                     val item = state.paginationState.items[it]
                     item.let {
-                        PeopleItem(it.name, it.getInfo(), it.avatar) { studentClick.invoke(it) }
+                        PeopleItem(
+                            title = it.name,
+                            description = it.description.orEmpty(),
+                            avatar = it.avatar,
+                        ) { studentClick.invoke(it) }
                     }
                 }
             }
