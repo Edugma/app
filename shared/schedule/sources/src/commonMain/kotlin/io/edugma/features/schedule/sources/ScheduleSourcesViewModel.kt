@@ -9,7 +9,6 @@ import io.edugma.core.arch.pagination.PaginationState
 import io.edugma.core.arch.pagination.PagingViewModel
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceType
-import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import io.edugma.features.schedule.domain.usecase.ScheduleSourcesUseCase
 import kotlinx.coroutines.flow.map
 
@@ -109,7 +108,7 @@ class ScheduleSourcesViewModel(
         launchCoroutine {
             useCase.setSelectedSource(
                 ScheduleSourceFull(
-                    type = ScheduleSources.Complex,
+                    type = ScheduleSourceType.COMPLEX,
                     id = "{}",
                     title = "Расширенный поиск",
                     description = "",

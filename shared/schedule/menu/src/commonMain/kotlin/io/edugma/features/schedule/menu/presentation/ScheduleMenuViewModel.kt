@@ -120,7 +120,7 @@ data class ScheduleMenuUiState(
             accountSelectorVO = selectedSource?.let {
                 AccountSelectorVO(
                     title = selectedSource.title,
-                    subtitle = selectedSource.description,
+                    subtitle = selectedSource.description.orEmpty(),
                     avatar = selectedSource.avatar,
                 )
             },

@@ -8,11 +8,11 @@ data class ScheduleSourceFull(
     @SerialName("id")
     val id: String,
     @SerialName("type")
-    val type: ScheduleSources,
+    val type: String,
     @SerialName("title")
     val title: String,
     @SerialName("description")
-    val description: String,
+    val description: String?,
     @SerialName("avatar")
     val avatar: String?,
 )

@@ -9,7 +9,6 @@ import io.edugma.core.arch.mvi.viewmodel.prop
 import io.edugma.features.schedule.domain.model.place.PlaceDailyOccupancy
 import io.edugma.features.schedule.domain.model.place.PlaceInfo
 import io.edugma.features.schedule.domain.model.source.ScheduleSource
-import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import io.edugma.features.schedule.domain.repository.FreePlaceRepository
 import io.edugma.features.schedule.domain.repository.ScheduleInfoRepository
 import kotlinx.coroutines.flow.collect
@@ -28,7 +27,7 @@ class PlaceInfoViewModel(
                             copy(
                                 placeInfo = it,
                                 scheduleSource = ScheduleSource(
-                                    type = ScheduleSources.Place,
+                                    type = "place",
                                     key = it.id,
                                 ),
                             )

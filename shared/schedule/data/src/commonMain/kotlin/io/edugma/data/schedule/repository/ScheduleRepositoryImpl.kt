@@ -11,7 +11,7 @@ import io.edugma.features.schedule.domain.model.ScheduleRecord
 import io.edugma.features.schedule.domain.model.compact.CompactSchedule
 import io.edugma.features.schedule.domain.model.schedule.ScheduleDay
 import io.edugma.features.schedule.domain.model.source.ScheduleSource
-import io.edugma.features.schedule.domain.model.source.ScheduleSources
+import io.edugma.features.schedule.domain.model.source.ScheduleSourceType
 import io.edugma.features.schedule.domain.repository.ScheduleRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -35,7 +35,7 @@ class ScheduleRepositoryImpl(
     private val scheduleStore0 = store<ScheduleSource, CompactSchedule> {
         fetcher { key ->
             scheduleService.getCompactSchedule(
-                type = key.type.name.lowercase(),
+                type = key.type,
                 key = key.key,
             ).getOrThrow()
         }
@@ -79,7 +79,7 @@ class ScheduleRepositoryImpl(
 
     override fun getSchedule(source: ScheduleSource, forceUpdate: Boolean):
         Flow<Lce<List<ScheduleDay>>> =
-        if (source.type == ScheduleSources.Complex) {
+        if (source.type == ScheduleSourceType.COMPLEX) {
             flow {
                 emit(
                     scheduleService.getComplexSchedule(

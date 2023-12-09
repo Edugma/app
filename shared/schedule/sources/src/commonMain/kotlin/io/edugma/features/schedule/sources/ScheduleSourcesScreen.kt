@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
+import io.edugma.core.api.utils.getInitials
 import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import io.edugma.core.arch.pagination.PaginationState
 import io.edugma.core.designSystem.atoms.card.EdCard
@@ -58,7 +59,6 @@ import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.viewmodel.getViewModel
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceType
-import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @Composable
@@ -417,20 +417,7 @@ fun SourceItem(
     ) {
         Row(Modifier.padding(vertical = 5.dp)) {
             SpacerWidth(16.dp)
-            val initials = when (source.source.type) {
-                ScheduleSources.Group -> source.source.title.split('-')
-                    .joinToString(separator = "") { it.take(1) }
-                ScheduleSources.Teacher -> source.source.title.split(' ')
-                    .joinToString(separator = "") { it.take(1) }
-                ScheduleSources.Student -> source.source.title.split(' ')
-                    .joinToString(separator = "") { it.take(1) }
-                ScheduleSources.Place -> source.source.title
-                ScheduleSources.Subject -> source.source.title.split(' ')
-                    .joinToString(separator = "") { it.take(1) }
-                ScheduleSources.Complex -> source.source.title.split(' ')
-                    .joinToString(separator = "") { it.take(1) }
-            }
-            EdAvatar(url = source.source.avatar ?: "", initials = initials)
+            EdAvatar(url = source.source.avatar ?: "", initials = getInitials(source.source.title))
             SpacerWidth(8.dp)
             Column(Modifier.weight(1f)) {
                 EdLabel(
@@ -441,7 +428,7 @@ fun SourceItem(
                 )
                 WithContentAlpha(alpha = ContentAlpha.medium) {
                     EdLabel(
-                        text = source.source.description,
+                        text = source.source.description ?: "",
                         style = EdTheme.typography.bodySmall,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,

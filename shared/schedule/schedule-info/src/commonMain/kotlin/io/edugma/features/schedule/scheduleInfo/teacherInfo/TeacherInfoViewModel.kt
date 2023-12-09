@@ -7,7 +7,6 @@ import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.arch.mvi.viewmodel.prop
 import io.edugma.features.schedule.domain.model.source.ScheduleSource
-import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import io.edugma.features.schedule.domain.model.teacher.TeacherInfo
 import io.edugma.features.schedule.domain.repository.ScheduleInfoRepository
 import kotlinx.coroutines.flow.collect
@@ -25,7 +24,7 @@ class TeacherInfoViewModel(
                             copy(
                                 teacherInfo = it,
                                 scheduleSource = ScheduleSource(
-                                    type = ScheduleSources.Teacher,
+                                    type = "teacher",
                                     key = it.id,
                                 ),
                             )

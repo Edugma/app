@@ -5,9 +5,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ScheduleSource(
     // val id: String,
-    val type: ScheduleSources,
+    val type: String,
     val key: String,
 ) {
     val id
-        get() = type.toString() + key
+        get() = type + key
 }

@@ -8,7 +8,6 @@ import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.arch.mvi.viewmodel.prop
 import io.edugma.features.schedule.domain.model.group.GroupInfo
 import io.edugma.features.schedule.domain.model.source.ScheduleSource
-import io.edugma.features.schedule.domain.model.source.ScheduleSources
 import io.edugma.features.schedule.domain.repository.ScheduleInfoRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
@@ -25,7 +24,7 @@ class GroupInfoViewModel(
                             copy(
                                 groupInfo = it,
                                 scheduleSource = ScheduleSource(
-                                    type = ScheduleSources.Group,
+                                    type = "group",
                                     key = it.id,
                                 ),
                             )

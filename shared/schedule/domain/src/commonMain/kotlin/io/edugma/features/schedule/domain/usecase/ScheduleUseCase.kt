@@ -5,7 +5,7 @@ import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
 import io.edugma.features.schedule.domain.model.schedule.LessonsByTime
 import io.edugma.features.schedule.domain.model.schedule.ScheduleDay
 import io.edugma.features.schedule.domain.model.source.ScheduleSource
-import io.edugma.features.schedule.domain.model.source.ScheduleSources
+import io.edugma.features.schedule.domain.model.source.ScheduleSourceType
 import io.edugma.features.schedule.domain.repository.ScheduleRepository
 import io.edugma.features.schedule.domain.repository.ScheduleSourcesRepository
 import kotlinx.coroutines.flow.emitAll
@@ -55,34 +55,39 @@ class ScheduleUseCase(
                 }
             }
 
-    fun getLessonDisplaySettings(scheduleSourceType: ScheduleSources): LessonDisplaySettings {
+    fun getLessonDisplaySettings(scheduleSourceType: String): LessonDisplaySettings {
         return when (scheduleSourceType) {
-            ScheduleSources.Group -> LessonDisplaySettings(
+            "group" -> LessonDisplaySettings(
                 showTeachers = true,
                 showGroups = false,
                 showPlaces = true,
             )
-            ScheduleSources.Teacher -> LessonDisplaySettings(
+            "teacher" -> LessonDisplaySettings(
                 showTeachers = false,
                 showGroups = true,
                 showPlaces = true,
             )
-            ScheduleSources.Student -> LessonDisplaySettings(
+            "student" -> LessonDisplaySettings(
                 showTeachers = true,
                 showGroups = false,
                 showPlaces = true,
             )
-            ScheduleSources.Place -> LessonDisplaySettings(
+            "place" -> LessonDisplaySettings(
                 showTeachers = true,
                 showGroups = true,
                 showPlaces = false,
             )
-            ScheduleSources.Subject -> LessonDisplaySettings(
+            "subject" -> LessonDisplaySettings(
                 showTeachers = true,
                 showGroups = true,
                 showPlaces = true,
             )
-            ScheduleSources.Complex -> LessonDisplaySettings(
+            ScheduleSourceType.COMPLEX -> LessonDisplaySettings(
+                showTeachers = true,
+                showGroups = true,
+                showPlaces = true,
+            )
+            else -> LessonDisplaySettings(
                 showTeachers = true,
                 showGroups = true,
                 showPlaces = true,
