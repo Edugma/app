@@ -5,38 +5,25 @@ import io.edugma.core.api.repository.getData
 import io.edugma.core.api.repository.save
 import io.edugma.data.base.consts.CacheConst.PaymentsKey
 import io.edugma.features.account.data.api.AccountService
-import io.edugma.features.account.domain.model.payments.Contracts
-import io.edugma.features.account.domain.model.payments.PaymentType
+import io.edugma.features.account.domain.model.payments.Contract
 import io.edugma.features.account.domain.repository.PaymentsRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.withContext
 
 class PaymentsRepositoryImpl(
     private val api: AccountService,
     private val cacheRepository: CacheRepository,
 ) : PaymentsRepository {
 
-    override fun getPaymentTypes() =
-        flow { emit(api.getPaymentsTypes()) }
-            .flowOn(Dispatchers.IO)
-
-    override suspend fun getPayments(type: PaymentType?): Result<Contracts> {
-        return api.getPayments(type?.name?.lowercase().orEmpty())
-            .onSuccess {
-                withContext(Dispatchers.IO) {
-                    savePayments(it)
-                }
-            }
+    override suspend fun getPayments(): List<Contract> {
+        val contracts = api.getPayments()
+        savePayments(contracts)
+        return contracts
     }
 
-    override suspend fun savePayments(contracts: Contracts) {
+    override suspend fun savePayments(contracts: List<Contract>) {
         cacheRepository.save(PaymentsKey, contracts)
     }
 
-    override suspend fun getPaymentsLocal(): Contracts? {
+    override suspend fun getPaymentsLocal(): List<Contract>? {
         return cacheRepository.getData(PaymentsKey)
     }
 }

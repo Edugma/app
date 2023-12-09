@@ -1,8 +1,7 @@
 package io.edugma.features.account.domain.usecase
 
 import io.edugma.features.account.domain.model.Personal
-import io.edugma.features.account.domain.model.payments.Contracts
-import io.edugma.features.account.domain.model.payments.PaymentType
+import io.edugma.features.account.domain.model.payments.Contract
 import io.edugma.features.account.domain.model.performance.Performance
 import kotlin.math.roundToInt
 
@@ -12,7 +11,7 @@ class MenuDataConverterUseCase {
         return personal.toPersonalData()
     }
 
-    fun convert(contracts: Contracts): CurrentPayments? {
+    fun convert(contracts: List<Contract>): CurrentPayments? {
         return contracts.getCurrent()
     }
 
@@ -28,13 +27,13 @@ class MenuDataConverterUseCase {
         )
     }
 
-    private fun Contracts.getCurrent(): CurrentPayments? {
-        return contracts.entries.firstOrNull()?.let {
-            val sum = it.value.sum.toIntOrNull() ?: return null
-            val current = sum - (it.value.balance.toIntOrNull() ?: return null)
-            val debt = (it.value.balanceCurrent.toIntOrNull() ?: return null) > 0
+    private fun List<Contract>.getCurrent(): CurrentPayments? {
+        return firstOrNull()?.let {
+            val sum = it.balance.toIntOrNull() ?: return null
+            val current = sum - (it.balance.toIntOrNull() ?: return null)
+            val debt = (it.balance.toIntOrNull() ?: return null) > 0
             CurrentPayments(
-                type = it.key,
+                type = it.title,
                 sum = sum,
                 current = current,
                 debt = debt,
@@ -82,7 +81,7 @@ data class CurrentPerformance(
 )
 
 data class CurrentPayments(
-    val type: PaymentType,
+    val type: String,
     val sum: Int,
     val current: Int,
     val debt: Boolean,

@@ -16,13 +16,16 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -36,6 +39,7 @@ import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
+import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetValue
 import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
 import io.edugma.core.designSystem.organism.chipRow.EdSelectableChipRow
@@ -45,6 +49,7 @@ import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
 import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.utils.SecondaryContent
 import io.edugma.core.designSystem.utils.edPlaceholder
 import io.edugma.core.designSystem.utils.navigationBarsPadding
 import io.edugma.core.icons.EdIcons
@@ -55,10 +60,9 @@ import io.edugma.core.utils.isNull
 import io.edugma.core.utils.ui.bindTo
 import io.edugma.core.utils.ui.onPageChanged
 import io.edugma.core.utils.viewmodel.getViewModel
+import io.edugma.features.account.domain.model.payments.Contract
 import io.edugma.features.account.domain.model.payments.Payment
-import io.edugma.features.account.domain.model.payments.PaymentType
-import io.edugma.features.account.domain.model.payments.Payments
-import io.edugma.features.account.domain.model.payments.toLabel
+import io.edugma.features.account.domain.model.payments.PaymentMethod
 import io.edugma.features.account.payments.bottomSheet.PaymentBottomSheet
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -72,17 +76,32 @@ fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
     )
     val scope = rememberCoroutineScope()
 
+    LaunchedEffect(state.selectedPaymentMethod) {
+        if (state.selectedPaymentMethod != null) {
+            scope.launch { bottomState.show() }
+        }
+    }
+
+    LaunchedEffect(bottomState) {
+        snapshotFlow {
+            bottomState.currentState
+        }.collect {
+            if (it == ModalBottomSheetValue.Hidden) {
+                viewModel.onBottomSheetClosed()
+            }
+        }
+    }
+
     FeatureBottomSheetScreen(
         navigationBarPadding = false,
         sheetState = bottomState,
         sheetContent = {
-            PaymentBottomSheet(
-                qrUrl = state.currentQr.orEmpty(),
-                showCurrent = state.showCurrent,
-                openUri = viewModel::onOpenUri,
-                showCurrentListener = viewModel::showCurrentQr,
-                showTotalListener = viewModel::showTotalQr,
-            )
+            state.selectedPaymentMethod?.let { selectedPaymentMethod ->
+                PaymentBottomSheet(
+                    paymentMethod = selectedPaymentMethod,
+                    openUri = viewModel::onOpenUri,
+                )
+            }
         },
     ) {
         when {
@@ -99,8 +118,8 @@ fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
                     state,
                     retryListener = viewModel::load,
                     onPaymentChange = viewModel::typeChange,
-                    onQrClickListener = { scope.launch { bottomState.show() } },
                     backListener = viewModel::exit,
+                    onPaymentMethodClick = viewModel::onPaymentMethodClick,
                 )
             }
         }
@@ -135,28 +154,16 @@ fun PaymentsContent(
     state: PaymentsState,
     retryListener: ClickListener,
     onPaymentChange: Typed1Listener<Int>,
-    onQrClickListener: ClickListener,
     backListener: ClickListener,
+    onPaymentMethodClick: (PaymentMethod) -> Unit,
 ) {
     Column(Modifier.navigationBarsPadding()) {
         val paymentsPagerState = rememberPagerState(state.selectedIndex) { state.data?.size ?: 0 }
         paymentsPagerState.bindTo(state.selectedIndex)
         paymentsPagerState.onPageChanged(onPaymentChange::invoke)
         EdTopAppBar(
-            title = state.selectedPayment?.let { "Договор №${it.number}" } ?: "Оплаты",
+            title = state.selectedPayment?.let { it.title } ?: "Оплаты",
             onNavigationClick = backListener,
-            actions = {
-                if (!state.selectedPayment?.qrCurrent.isNullOrEmpty()) {
-                    androidx.compose.material3.IconButton(
-                        onClick = { onQrClickListener() },
-                    ) {
-                        Icon(
-                            painterResource(EdIcons.ic_fluent_qr_code_24_regular),
-                            contentDescription = "qr code",
-                        )
-                    }
-                }
-            },
         )
         EdPullRefresh(refreshing = state.isRefreshing, onRefresh = retryListener) {
             when {
@@ -164,7 +171,12 @@ fun PaymentsContent(
                     ErrorWithRetry(modifier = Modifier.fillMaxSize(), retryAction = retryListener)
                 }
                 state.placeholders -> PaymentsScreenPlaceholder()
-                else -> PaymentScreen(state, paymentsPagerState, onPaymentChange)
+                else -> PaymentScreen(
+                    state = state,
+                    paymentsPagerState = paymentsPagerState,
+                    onPaymentChange = onPaymentChange,
+                    onPaymentMethodClick = onPaymentMethodClick,
+                )
             }
         }
     }
@@ -184,21 +196,25 @@ fun PaymentScreen(
     state: PaymentsState,
     paymentsPagerState: PagerState,
     onPaymentChange: Typed1Listener<Int>,
+    onPaymentMethodClick: (PaymentMethod) -> Unit,
 ) {
     Column(Modifier.fillMaxSize()) {
         EdSelectableChipRow(
-            state.types ?: emptyList(),
-            state.selectedType,
-            { it.toLabel() },
+            types = state.types ?: emptyList(),
+            selectedType = state.selectedType,
+            nameMapper = { it },
         ) {
             state.data?.keys?.indexOf(it)?.let(onPaymentChange::invoke)
         }
         HorizontalPager(
             state = paymentsPagerState,
-            key = { state.getTypeByIndex(it) ?: PaymentType.Dormitory },
+            key = { state.getTypeByIndex(it) ?: "" },
         ) { page ->
             state.getPaymentsByIndex(page)?.let { payment ->
-                Payments(payment)
+                Payments(
+                    contract = payment,
+                    onPaymentMethodClick = onPaymentMethodClick,
+                )
             }
         }
     }
@@ -206,9 +222,12 @@ fun PaymentScreen(
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun Payments(payments: Payments) {
+fun Payments(
+    contract: Contract,
+    onPaymentMethodClick: (PaymentMethod) -> Unit,
+) {
     val expanded = rememberSaveable { mutableStateOf(false) }
-    val elements = if (!expanded.value) payments.payments.take(3) else payments.payments
+    val elements = if (!expanded.value) contract.payments.take(3) else contract.payments
     LazyColumn(
         modifier = Modifier
             .padding(10.dp)
@@ -217,50 +236,41 @@ fun Payments(payments: Payments) {
         item {
             Column {
                 SpacerHeight(height = 8.dp)
-                payments.level?.let {
-                    EdLabel(
-                        text = "Степень образования: ${payments.level}",
-                        iconPainter = painterResource(EdIcons.ic_fluent_hat_graduation_24_filled),
-                        modifier = Modifier,
-                    )
-                    SpacerHeight(height = 8.dp)
-                }
-                payments.dormRoom?.let {
-                    EdLabel(
-                        text = payments.dormNum?.let { "Общежитие №$it, " }
-                            .orEmpty() + "комната $it",
-                        iconPainter = painterResource(EdIcons.ic_fluent_building_24_regular),
-                    )
-                    SpacerHeight(height = 8.dp)
-                }
                 EdLabel(
-                    text = "Срок договора: ${payments.startDate.format()} - ${payments.endDate.format()}",
+                    text = contract.description,
+                    iconPainter = painterResource(EdIcons.ic_fluent_building_24_regular),
+                )
+                SpacerHeight(height = 8.dp)
+                EdLabel(
+                    text = "Срок договора: ${contract.startDate.format()} - ${contract.endDate.format()}",
                     iconPainter = painterResource(EdIcons.ic_fluent_calendar_ltr_24_regular),
                     modifier = Modifier,
                 )
                 SpacerHeight(height = 8.dp)
-                if (payments.balance != "0") {
-                    EdLabel(
-                        text = "Осталось выплатить: ${payments.balance}",
-                        iconPainter = painterResource(EdIcons.ic_fluent_money_24_regular),
-                    )
-                    SpacerHeight(height = 8.dp)
+                val textColor = if (contract.isNegativeBalance) {
+                    EdTheme.colorScheme.error
+                } else {
+                    LocalContentColor.current
                 }
+                EdLabel(
+                    text = "Баланс: ${contract.balance}",
+                    color = textColor,
+                    iconPainter = painterResource(EdIcons.ic_fluent_money_24_regular),
+                )
+                SpacerHeight(height = 8.dp)
             }
         }
-        item {
-            Column(modifier = Modifier.padding(horizontal = 5.dp)) {
-                PaymentsLeftText(payments.balanceCurrent)
-                SpacerHeight(height = 10.dp)
-                HorizontalText(label = "Сумма договора: ", text = payments.sum)
-                SpacerHeight(height = 10.dp)
-            }
+        items(contract.paymentMethods) { paymentMethod ->
+            PaymentMethodItem(
+                paymentMethod = paymentMethod,
+                onClick = { onPaymentMethodClick(paymentMethod) },
+            )
         }
         items(elements) {
             Payment(it)
             SpacerHeight(height = 5.dp)
         }
-        if (!expanded.value && payments.payments.size > 3) {
+        if (!expanded.value && contract.payments.size > 3) {
             item {
                 Expander { expanded.value = !expanded.value }
             }
@@ -306,6 +316,19 @@ fun PaymentsPlaceholder() {
             )
         }
     }
+}
+
+@Composable
+private fun PaymentMethodItem(
+    paymentMethod: PaymentMethod,
+    onClick: () -> Unit,
+) {
+    EdButton(
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+            .fillMaxWidth(),
+        text = paymentMethod.title,
+        onClick = onClick,
+    )
 }
 
 @Composable
@@ -355,15 +378,38 @@ fun HorizontalText(modifier: Modifier = Modifier, label: String, text: String) {
 
 @Composable
 fun Payment(payment: Payment) {
-    EdCard(shape = EdTheme.shapes.extraSmall) {
-        Box(
+    EdCard(shape = EdTheme.shapes.small) {
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 10.dp)
-                .heightIn(min = 50.dp),
+                .padding(horizontal = 16.dp, vertical = 8.dp),
         ) {
-            Text(text = payment.date.format(), modifier = Modifier.align(Alignment.CenterStart))
-            Text(text = payment.value, modifier = Modifier.align(Alignment.CenterEnd))
+            Column(
+                modifier = Modifier.weight(1f),
+            ) {
+                EdLabel(
+                    text = payment.title,
+                    style = EdTheme.typography.bodyMedium,
+                    modifier = Modifier,
+                )
+                SecondaryContent {
+                    EdLabel(
+                        text = payment.description,
+                        style = EdTheme.typography.bodySmall,
+                        modifier = Modifier,
+                    )
+                }
+            }
+            val textColor = if (payment.isNegative) {
+                EdTheme.colorScheme.error
+            } else {
+                LocalContentColor.current
+            }
+            EdLabel(
+                text = payment.value,
+                color = textColor,
+                modifier = Modifier,
+            )
         }
     }
 }

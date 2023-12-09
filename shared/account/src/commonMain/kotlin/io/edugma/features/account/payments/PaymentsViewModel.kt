@@ -7,8 +7,8 @@ import io.edugma.core.navigation.core.router.external.ExternalRouter
 import io.edugma.core.utils.isNotNull
 import io.edugma.core.utils.isNull
 import io.edugma.features.account.common.LOCAL_DATA_SHOWN_ERROR
-import io.edugma.features.account.domain.model.payments.PaymentType
-import io.edugma.features.account.domain.model.payments.Payments
+import io.edugma.features.account.domain.model.payments.Contract
+import io.edugma.features.account.domain.model.payments.PaymentMethod
 import io.edugma.features.account.domain.repository.PaymentsRepository
 import kotlinx.coroutines.async
 
@@ -24,15 +24,18 @@ class PaymentsViewModel(
     fun load(isUpdate: Boolean = true) {
         launchCoroutine {
             setLoading(true)
-            val remote = async { repository.getPayments(type = null) }
+            val remote = async { repository.getPayments() }
             if (!isUpdate) {
                 val local = async { repository.getPaymentsLocal() }
-                local.await()?.contracts?.let(::setData)
+                val localContracts = local.await()
+                if (localContracts != null) {
+                    setData(localContracts.associateBy { it.title })
+                }
             }
-            remote.await()
+            runCatching { remote.await() }
                 .onSuccess {
                     setLoading(false)
-                    setData(it.contracts)
+                    setData(it.associateBy { it.title })
                 }
                 .onFailure {
                     setError(true)
@@ -41,7 +44,7 @@ class PaymentsViewModel(
         }
     }
 
-    fun setData(data: Map<PaymentType, Payments>) {
+    fun setData(data: Map<String, Contract>) {
         newState {
             copy(data = data)
         }
@@ -57,12 +60,22 @@ class PaymentsViewModel(
     }
 
     fun onOpenUri() {
-        val uri = stateFlow.value.selectedType?.let {
-            stateFlow.value.data?.get(it)?.qrCurrent
+        state.selectedPaymentMethod?.url?.let { url ->
+            externalRouter.openUri(url)
         }
+    }
 
-        uri?.let {
-            externalRouter.openUri(uri)
+    fun onPaymentMethodClick(paymentMethod: PaymentMethod) {
+        newState {
+            copy(
+                selectedPaymentMethod = paymentMethod,
+            )
+        }
+    }
+
+    fun onBottomSheetClosed() {
+        newState {
+            copy(selectedPaymentMethod = null)
         }
     }
 
@@ -77,26 +90,14 @@ class PaymentsViewModel(
             copy(selectedIndex = newIndex)
         }
     }
-
-    fun showCurrentQr() {
-        newState {
-            copy(showCurrent = true)
-        }
-    }
-
-    fun showTotalQr() {
-        newState {
-            copy(showCurrent = false)
-        }
-    }
 }
 
 data class PaymentsState(
-    val data: Map<PaymentType, Payments>? = null,
+    val data: Map<String, Contract>? = null,
     val isLoading: Boolean = false,
     val isError: Boolean = false,
-    val showCurrent: Boolean = true,
     val selectedIndex: Int = 0,
+    val selectedPaymentMethod: PaymentMethod? = null,
 ) {
     val isRefreshing = data.isNotNull() && isLoading && !isError
     val placeholders = data.isNull() && isLoading && !isError
@@ -107,8 +108,6 @@ data class PaymentsState(
         get() = data?.isEmpty() == true && !isLoading
     val showError
         get() = isError && data.isNull()
-    val currentQr
-        get() = if (showCurrent) selectedPayment?.qrCurrent else selectedPayment?.qrTotal
 }
 
 fun PaymentsState.getTypeByIndex(index: Int) = types?.getOrNull(index)

@@ -14,6 +14,7 @@ import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -151,6 +152,10 @@ internal constructor(
         get() = m2State.targetValue.toEdugma()
 
     @OptIn(ExperimentalMaterialApi::class)
+    val currentState: ModalBottomSheetValue
+        get() = m2State.currentValue.toEdugma()
+
+    @OptIn(ExperimentalMaterialApi::class)
     suspend fun show() {
         m2State.show()
     }
@@ -158,6 +163,21 @@ internal constructor(
     @OptIn(ExperimentalMaterialApi::class)
     suspend fun hide() {
         m2State.hide()
+    }
+
+    @OptIn(ExperimentalMaterialApi::class)
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+
+        other as ModalBottomSheetState
+
+        return m2State == other.m2State
+    }
+
+    @OptIn(ExperimentalMaterialApi::class)
+    override fun hashCode(): Int {
+        return m2State.hashCode()
     }
 }
 
@@ -176,5 +196,7 @@ fun rememberModalBottomSheetState(
         skipHalfExpanded = skipHalfExpanded,
     )
 
-    return ModalBottomSheetState(m2State)
+    return remember(m2State) {
+        ModalBottomSheetState(m2State)
+    }
 }
