@@ -3,90 +3,57 @@ package io.edugma.features.account.data.repository
 import io.edugma.core.api.repository.CacheRepository
 import io.edugma.core.api.repository.getData
 import io.edugma.core.api.repository.save
-import io.edugma.core.api.utils.onSuccess
-import io.edugma.data.base.consts.CacheConst.CourseKey
 import io.edugma.data.base.consts.CacheConst.PerformanceKey
-import io.edugma.data.base.consts.CacheConst.SemesterKey
+import io.edugma.data.base.consts.CacheConst.PerformancePeriodsKey
 import io.edugma.features.account.data.api.AccountService
 import io.edugma.features.account.domain.model.performance.Performance
-import io.edugma.features.account.domain.model.performance.SemestersWithCourse
+import io.edugma.features.account.domain.model.performance.PerformancePeriod
 import io.edugma.features.account.domain.repository.PerformanceRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 
 class PerformanceRepositoryImpl(
     private val api: AccountService,
     private val cacheRepository: CacheRepository,
 ) : PerformanceRepository {
-
-    override fun getCourses() =
-        flow { emit(api.getCourses()) }
-            .onSuccess(::setLocalCourses)
-            .flowOn(Dispatchers.IO)
-
-    override fun getSemesters() =
-        flow { emit(api.getSemesters()) }
-            .onSuccess(::setLocalCourses)
-            .flowOn(Dispatchers.IO)
-
-    override suspend fun getCoursesWithSemesters(): Result<SemestersWithCourse> {
-        return api.getCoursesWithSemesters()
-            .onSuccess {
-                setLocalSemesters(it.coursesWithSemesters.keys.toList())
-                setLocalCourses(it.coursesWithSemesters.values.toSet().toList())
-            }
+    override suspend fun getPerformancePeriods(): List<PerformancePeriod> {
+        val periods = api.getPerformancePeriods()
+        setLocalPeriods(periods)
+        return periods
     }
 
-    override suspend fun getMarksBySemester(semester: Int?): Result<List<Performance>> {
-        return api.getMarks(semester?.toString().orEmpty())
-            .onSuccess {
-                withContext(Dispatchers.IO) {
-                    if (semester == null) {
-                        setLocalMarks(it)
-                    }
-                }
+    override suspend fun getPerformance(periodId: String?): List<Performance> {
+        val performance = api.getPerformance(periodId.orEmpty())
+        withContext(Dispatchers.IO) {
+            if (periodId == null) {
+                setLocalMarks(performance)
             }
+        }
+        return performance
     }
 
     override suspend fun getLocalMarks(): List<Performance>? {
         return cacheRepository.getData<List<Performance>>(PerformanceKey)
     }
 
-    override suspend fun getLocalSemesters(): List<Int>? {
-        return cacheRepository.getData<List<Int>>(SemesterKey)
-    }
-
-    override suspend fun getLocalCourses(): List<Int>? {
-        return cacheRepository.getData<List<Int>>(CourseKey)
+    override suspend fun getLocalPerformancePeriods(): List<PerformancePeriod>? {
+        return cacheRepository.getData<List<PerformancePeriod>>(PerformancePeriodsKey)
     }
 
     override suspend fun setLocalMarks(data: List<Performance>) {
         cacheRepository.save(PerformanceKey, data)
     }
 
-    override suspend fun setLocalSemesters(data: List<Int>) {
-        cacheRepository.save(SemesterKey, data)
+    override suspend fun setLocalPeriods(periods: List<PerformancePeriod>) {
+        cacheRepository.save(PerformancePeriodsKey, periods)
     }
 
-    override suspend fun setLocalCourses(data: List<Int>) {
-        cacheRepository.save(CourseKey, data)
-    }
-
-    override fun getCoursesWithSemestersLocal(): Flow<Pair<List<Int>, List<Int>>?> =
-        flow {
-            getLocalCourses()?.let { courses ->
-                getLocalSemesters()?.let { semester ->
-                    emit(courses to semester)
-                }
-            } ?: emit(null)
-        }
-
-    override fun getMarksLocal(): Flow<List<Performance>?> =
-        flow {
+    override fun getMarksLocal(): Flow<List<Performance>?> {
+        return flow {
             emit(getLocalMarks())
         }
+    }
 }

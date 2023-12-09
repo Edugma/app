@@ -8,10 +8,10 @@ import io.edugma.core.utils.isNotNull
 import io.edugma.core.utils.isNull
 import io.edugma.features.account.common.LOCAL_DATA_SHOWN_ERROR
 import io.edugma.features.account.domain.model.performance.Performance
+import io.edugma.features.account.domain.model.performance.PerformancePeriod
 import io.edugma.features.account.domain.repository.PerformanceRepository
-import io.edugma.features.account.marks.Filter.Course
 import io.edugma.features.account.marks.Filter.Name
-import io.edugma.features.account.marks.Filter.Semester
+import io.edugma.features.account.marks.Filter.PerformancePeriodUiModel
 import io.edugma.features.account.marks.Filter.Type
 import kotlinx.coroutines.async
 
@@ -30,13 +30,13 @@ class PerformanceViewModel(
             setError(false)
 
             val localMarks = async { repository.getLocalMarks() }
-            val coursesAndSemesters = async { repository.getCoursesWithSemesters() }
-            val marks = async { repository.getMarksBySemester() }
+            val performancePeriods = async { repository.getPerformancePeriods() }
+            // TODO Fix
+            val marks = async { repository.getPerformance("2") }
             if (!isUpdate) {
                 localMarks.await()?.let {
                     setFilters(
-                        courses = repository.getLocalCourses()?.toSet() ?: emptySet(),
-                        semesters = repository.getLocalSemesters()?.toSet() ?: emptySet(),
+                        periods = repository.getLocalPerformancePeriods() ?: emptyList(),
                         types = it.getExamTypes(),
                     )
                     setPerformanceData(it)
@@ -44,23 +44,24 @@ class PerformanceViewModel(
             }
 
             kotlin.runCatching {
-                coursesAndSemesters.await().getOrThrow() to marks.await().getOrThrow()
+                performancePeriods.await() to marks.await()
             }
                 .onSuccess {
-                    val semestersWithCourses = it.first.coursesWithSemesters
+                    val performancePeriodsList = it.first
                     val performance = it.second
                     setPerformanceData(performance)
                     if (!isUpdate) {
                         setFilters(
-                            courses = semestersWithCourses.values.toSet(),
-                            semesters = semestersWithCourses.keys,
+                            periods = performancePeriodsList,
                             types = performance.getExamTypes(),
                         )
                     }
                 }
                 .onFailure {
                     setError(true)
-                    if (localMarks.await().isNotNull()) externalRouter.showMessage(LOCAL_DATA_SHOWN_ERROR)
+                    if (localMarks.await().isNotNull()) {
+                        externalRouter.showMessage(LOCAL_DATA_SHOWN_ERROR)
+                    }
                 }
 
             setLoading(false)
@@ -92,15 +93,13 @@ class PerformanceViewModel(
     }
 
     private fun setFilters(
-        courses: Set<Int>? = null,
-        semesters: Set<Int>? = null,
+        periods: List<PerformancePeriod>? = null,
         types: Set<String>? = null,
     ) {
         newState {
             copy(
-                courses = courses?.map { Course(it) }?.toSet() ?: this.courses,
-                semesters = semesters?.map { Semester(it) }?.toSet() ?: this.semesters,
-                types = types?.map { Type(it) }?.toSet() ?: this.types,
+                periods = periods?.map { PerformancePeriodUiModel(it) } ?: this.periods,
+                types = types?.map { Type(it) }?.toSet()?.toList() ?: this.types,
             )
         }
     }
@@ -109,16 +108,12 @@ class PerformanceViewModel(
         newState {
             if (!isLoading) {
                 when (filter) {
-                    is Course -> copy(
-                        courses = courses.updateFilter(filter) as Set<Course>,
-                        currentFilters = currentFilters.addOrDeleteFilter(filter),
-                    )
-                    is Semester -> copy(
-                        semesters = semesters.updateFilter(filter) as Set<Semester>,
+                    is PerformancePeriodUiModel -> copy(
+                        periods = periods.updateFilter(filter) as List<PerformancePeriodUiModel>,
                         currentFilters = currentFilters.addOrDeleteFilter(filter),
                     )
                     is Type -> copy(
-                        types = types.updateFilter(filter) as Set<Type>,
+                        types = types.updateFilter(filter) as List<Type>,
                         currentFilters = currentFilters.addOrDeleteFilter(filter),
                     )
                     is Name -> copy(
@@ -136,23 +131,21 @@ class PerformanceViewModel(
         newState {
             copy(
                 currentFilters = emptySet(),
-                courses = courses.map { it.copy(isChecked = false) }.toSet(),
-                semesters = semesters.map { it.copy(isChecked = false) }.toSet(),
-                types = types.map { it.copy(isChecked = false) }.toSet(),
+                periods = periods.map { it.copy(isChecked = false) },
+                types = types.map { it.copy(isChecked = false) },
             )
         }
     }
 
-    private fun List<Performance>.getExamTypes() = map { it.examType }.toSet()
+    private fun List<Performance>.getExamTypes() = map { it.type }.toSet()
 
     // todo рефакторить и вынести в usecase
-    private fun<T> Set<Filter<T>>.updateFilter(newFilter: Filter<T>): Set<Filter<T>> {
+    private fun<T> List<Filter<T>>.updateFilter(newFilter: Filter<T>): Set<Filter<T>> {
         val newSet = toMutableList()
         newSet.forEachIndexed { index, filter ->
             if (filter == newFilter) {
                 newSet[index] = when (newFilter) {
-                    is Course -> (newFilter as Course).copy(isChecked = !newFilter.isChecked)
-                    is Semester -> (newFilter as Semester).copy(isChecked = !newFilter.isChecked)
+                    is PerformancePeriodUiModel -> (newFilter as PerformancePeriodUiModel).copy(isChecked = !newFilter.isChecked)
                     is Type -> (newFilter as Type).copy(isChecked = !newFilter.isChecked)
                     is Name -> (newFilter as Name).copy(isChecked = !newFilter.isChecked)
                 } as Filter<T>
@@ -171,8 +164,7 @@ class PerformanceViewModel(
             newSet.remove(newFilter)
         } else {
             val filter = when (newFilter) {
-                is Course -> (newFilter as Course).copy(isChecked = !newFilter.isChecked)
-                is Semester -> (newFilter as Semester).copy(isChecked = !newFilter.isChecked)
+                is PerformancePeriodUiModel -> (newFilter as PerformancePeriodUiModel).copy(isChecked = !newFilter.isChecked)
                 is Type -> (newFilter as Type).copy(isChecked = !newFilter.isChecked)
                 is Name -> {
                     // TODO Поправить
@@ -188,9 +180,8 @@ class PerformanceViewModel(
 
 data class MarksState(
     val data: List<Performance>? = null,
-    val courses: Set<Course> = emptySet(),
-    val semesters: Set<Semester> = emptySet(),
-    val types: Set<Type> = emptySet(),
+    val periods: List<PerformancePeriodUiModel> = emptyList(),
+    val types: List<Type> = listOf(),
     val name: Name = Name(""),
     val currentFilters: Set<Filter<*>> = emptySet(),
     val isLoading: Boolean = false,
@@ -205,15 +196,14 @@ data class MarksState(
     val showNothingFound
         get() = filteredData?.isEmpty() == true
 
-    private val filteredCourses
-        get() = courses.filter { it.isChecked }.toSet()
-    private val filteredSemesters
-        get() = semesters.filter { it.isChecked }.toSet()
+    private val filteredPeriods
+        get() = periods.filter { it.isChecked }.toSet()
+
     private val filteredTypes
         get() = types.filter { it.isChecked }.toSet()
 
     private val enabledFilters
-        get() = (filteredCourses + filteredSemesters + filteredTypes).let {
+        get() = (filteredPeriods + filteredTypes).let {
             if (name.isChecked) it.plus(name) else it
         }
 
@@ -222,19 +212,11 @@ data class MarksState(
             when {
                 enabledFilters.isEmpty() -> true
                 else -> {
-                    val course = Course(performance.course, true)
-                    val semester = Semester(performance.semester, true)
-                    val type = Type(performance.examType, true)
-                    if (filteredCourses.isNotEmpty()) {
-                        if (!filteredCourses.contains(course)) return@filter false
-                    }
-                    if (filteredSemesters.isNotEmpty()) {
-                        if (!filteredSemesters.contains(semester)) return@filter false
-                    }
+                    val type = Type(performance.type, true)
                     if (filteredTypes.isNotEmpty()) {
                         if (!filteredTypes.contains(type)) return@filter false
                     }
-                    if (name.isChecked && !performance.name.contains(name.value, ignoreCase = true)) {
+                    if (name.isChecked && !performance.title.contains(name.value, ignoreCase = true)) {
                         return@filter false
                     }
                     true
@@ -247,17 +229,17 @@ sealed class Filter<out T>(open val value: T, open val isChecked: Boolean) {
 
     abstract val mappedValue: String
 
-    data class Course(
-        override val value: Int,
+    data class PerformancePeriodUiModel(
+        val id: String,
+        override val value: String,
         override val isChecked: Boolean = false,
         override val mappedValue: String = "$value курс",
-    ) : Filter<Int>(value, isChecked)
-
-    data class Semester(
-        override val value: Int,
-        override val isChecked: Boolean = false,
-        override val mappedValue: String = "$value семестр",
-    ) : Filter<Int>(value, isChecked)
+    ) : Filter<String>(value, isChecked) {
+        constructor(period: PerformancePeriod) : this(
+            id = period.id,
+            value = period.title,
+        )
+    }
 
     data class Type(
         override val value: String,

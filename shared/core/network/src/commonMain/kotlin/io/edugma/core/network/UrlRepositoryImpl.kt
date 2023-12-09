@@ -199,17 +199,11 @@ private val edugmaApi = EdugmaApi(
         "account-applications-get" to Path(
             url = "{baseUrl}/applications",
         ),
-        "account-performance-semesters-get" to Path(
-            url = "{baseUrl}/performance/semesters",
+        "account-performance-periods-get" to Path(
+            url = "{baseUrl}/performance/periods",
         ),
-        "account-performance-courses-semesters-get" to Path(
-            url = "{baseUrl}/performance/courses_semesters",
-        ),
-        "account-performance-semester-get" to Path(
-            url = "{baseUrl}/performance/semesters/{semester}",
-        ),
-        "account-performance-courses-get" to Path(
-            url = "{baseUrl}/performance/courses",
+        "account-performance-get" to Path(
+            url = "{baseUrl}/performance/{periodId}",
         ),
         "account-personal-get" to Path(
             url = "{baseUrl}/personal",

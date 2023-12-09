@@ -14,7 +14,7 @@ import io.edugma.features.account.domain.model.payments.Contracts
 import io.edugma.features.account.domain.model.payments.PaymentType
 import io.edugma.features.account.domain.model.peoples.Person
 import io.edugma.features.account.domain.model.performance.Performance
-import io.edugma.features.account.domain.model.performance.SemestersWithCourse
+import io.edugma.features.account.domain.model.performance.PerformancePeriod
 
 class AccountService(
     private val client: EdugmaHttpClient,
@@ -43,19 +43,13 @@ class AccountService(
     suspend fun getApplications(): Result<List<Application>> =
         client.getResult("$PREFIX-applications")
 
-    suspend fun getSemesters(): Result<List<Int>> =
-        client.getResult("$PREFIX-performance-semesters")
+    suspend fun getPerformancePeriods(): List<PerformancePeriod> =
+        client.get("$PREFIX-performance-periods")
 
-    suspend fun getCoursesWithSemesters(): Result<SemestersWithCourse> =
-        client.getResult("$PREFIX-performance-courses-semesters")
-
-    suspend fun getMarks(semester: String): Result<List<Performance>> =
-        client.getResult("$PREFIX-performance-semester") {
-            param("semester", semester)
+    suspend fun getPerformance(periodId: String): List<Performance> =
+        client.get("$PREFIX-performance") {
+            param("periodId", periodId)
         }
-
-    suspend fun getCourses(): Result<List<Int>> =
-        client.getResult("$PREFIX-performance-courses")
 
     suspend fun getPersonalInfo(): Result<Personal> =
         client.getResult("$PREFIX-personal")

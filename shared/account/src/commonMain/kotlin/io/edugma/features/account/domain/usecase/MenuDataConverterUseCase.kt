@@ -44,7 +44,7 @@ class MenuDataConverterUseCase {
 
     private fun List<Performance>.getCurrent(): CurrentPerformance? {
         fun getSortedMarks(marks: List<Performance>): Map<String, Int> {
-            val marksList = marks.map { it.grade }.filterNot { it == "Зачтено" || it == "Не зачтено" }.let { list ->
+            val marksList = marks.map { it.grade.title }.let { list ->
                 mutableMapOf<String, Int>().apply {
                     list.toSet().forEach { put(it, list.count { mark -> mark == it }) }
                     keys.forEach { this[it] = ((this[it] ?: 0).toDouble() / list.size * 100).roundToInt() }
@@ -62,8 +62,8 @@ class MenuDataConverterUseCase {
         }
         if (isEmpty()) return null
         return CurrentPerformance(
-            first().semester,
-            getSortedMarks(filter { it.semester == first().semester }),
+            0,
+            emptyMap(),
             getSortedMarks(this),
         )
     }

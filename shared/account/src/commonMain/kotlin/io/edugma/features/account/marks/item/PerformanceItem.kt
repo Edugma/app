@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -17,13 +18,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.edugma.core.api.utils.format
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.molecules.chip.EdChip
 import io.edugma.core.designSystem.molecules.chip.EdChipForm
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.edPlaceholder
 import io.edugma.core.utils.ClickListener
+import io.edugma.features.account.domain.model.performance.GradeValue
 import io.edugma.features.account.domain.model.performance.Performance
 
 @Composable
@@ -43,36 +44,35 @@ fun PerformanceItem(
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
         EdLabel(
-            text = performance.name,
+            text = performance.title,
             style = EdTheme.typography.titleMedium.copy(fontSize = 19.sp),
             modifier = Modifier.heightIn(30.dp),
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
         )
+
+        val gradeColor = when (performance.grade.value) {
+            GradeValue.VERY_GOOD -> EdTheme.customColorScheme.success
+            GradeValue.GOOD -> EdTheme.customColorScheme.success
+            GradeValue.NORMAL -> EdTheme.customColorScheme.warning
+            GradeValue.BAD -> EdTheme.customColorScheme.warning
+            GradeValue.VERY_BAD -> EdTheme.customColorScheme.warning
+            null -> LocalContentColor.current
+        }
         Text(
-            text = performance.grade,
+            text = performance.grade.title,
             style = EdTheme.typography.titleLarge,
+            color = gradeColor,
             modifier = Modifier
                 .align(Alignment.End)
                 .padding(vertical = 5.dp),
         )
         Row {
-            performance.date?.let {
-                EdChip(
-                    chipForm = EdChipForm.roundedSquare,
-                ) {
-                    Text(
-                        text = performance.date!!.format("dd.MM.yyyy"),
-                        style = EdTheme.typography.labelLarge,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                }
-            }
             EdChip(
                 chipForm = EdChipForm.roundedSquare,
             ) {
                 Text(
-                    text = performance.examType,
+                    text = performance.type,
                     style = EdTheme.typography.labelLarge,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,

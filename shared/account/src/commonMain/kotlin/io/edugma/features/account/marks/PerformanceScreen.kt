@@ -7,7 +7,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -22,7 +21,6 @@ import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
 import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
 import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
-import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.navigationBarsPadding
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureBottomSheetScreen
@@ -136,24 +134,6 @@ fun PerformanceList(
                 count = state.filteredData?.size ?: 0,
                 key = { state.filteredData!![it].id },
             ) {
-                var showCourse = true
-                if (it > 0) {
-                    showCourse =
-                        state.filteredData!![it].course != state.filteredData?.get(it - 1)?.course
-                }
-                if (!showCourse && it > 0) {
-                    Divider()
-                    SpacerHeight(height = 3.dp)
-                }
-                if (showCourse) {
-                    if (it > 0) SpacerHeight(height = 15.dp)
-                    Text(
-                        text = "${state.filteredData!![it].course} курс",
-                        style = EdTheme.typography.headlineSmall,
-                        color = EdTheme.colorScheme.primary,
-                    )
-                    SpacerHeight(height = 15.dp)
-                }
                 PerformanceItem(
                     state.filteredData!![it],
                 ) { showBottomSheet(state.filteredData?.get(it)) }

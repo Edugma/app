@@ -1,20 +1,15 @@
 package io.edugma.features.account.domain.repository
 
 import io.edugma.features.account.domain.model.performance.Performance
-import io.edugma.features.account.domain.model.performance.SemestersWithCourse
+import io.edugma.features.account.domain.model.performance.PerformancePeriod
 import kotlinx.coroutines.flow.Flow
 
 interface PerformanceRepository {
-    fun getCourses(): Flow<Result<List<Int>>>
-    fun getSemesters(): Flow<Result<List<Int>>>
-    suspend fun getCoursesWithSemesters(): Result<SemestersWithCourse>
-    suspend fun getMarksBySemester(semester: Int? = null): Result<List<Performance>>
+    suspend fun getPerformancePeriods(): List<PerformancePeriod>
+    suspend fun getPerformance(periodId: String? = null): List<Performance>
     suspend fun getLocalMarks(): List<Performance>?
-    suspend fun getLocalSemesters(): List<Int>?
-    suspend fun getLocalCourses(): List<Int>?
+    suspend fun getLocalPerformancePeriods(): List<PerformancePeriod>?
     suspend fun setLocalMarks(data: List<Performance>)
-    suspend fun setLocalSemesters(data: List<Int>)
-    suspend fun setLocalCourses(data: List<Int>)
-    fun getCoursesWithSemestersLocal(): Flow<Pair<List<Int>, List<Int>>?>
+    suspend fun setLocalPeriods(periods: List<PerformancePeriod>)
     fun getMarksLocal(): Flow<List<Performance>?>
 }

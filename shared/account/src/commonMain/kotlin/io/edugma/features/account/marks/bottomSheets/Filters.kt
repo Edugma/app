@@ -35,15 +35,8 @@ fun ColumnScope.FiltersBottomSheetContent(
         headerStyle = EdTheme.typography.headlineSmall,
     ) {
         SelectableChipsRow(
-            "Курс",
-            state.courses,
-            filterUpdateListener,
-            state.bottomSheetPlaceholders,
-        )
-        SpacerHeight(height = 15.dp)
-        SelectableChipsRow(
-            "Семестр",
-            state.semesters,
+            "Периоды",
+            state.periods,
             filterUpdateListener,
             state.bottomSheetPlaceholders,
         )
@@ -67,7 +60,7 @@ fun ColumnScope.FiltersBottomSheetContent(
 @Composable
 private fun<T> SelectableChipsRow(
     name: String,
-    items: Set<Filter<T>>,
+    items: List<Filter<T>>,
     onClick: Typed1Listener<Filter<T>>,
     placeholders: Boolean,
 ) {

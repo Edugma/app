@@ -10,8 +10,8 @@ import io.edugma.data.base.consts.CacheConst.CourseKey
 import io.edugma.data.base.consts.CacheConst.LkTokenKey
 import io.edugma.data.base.consts.CacheConst.PaymentsKey
 import io.edugma.data.base.consts.CacheConst.PerformanceKey
+import io.edugma.data.base.consts.CacheConst.PerformancePeriodsKey
 import io.edugma.data.base.consts.CacheConst.PersonalKey
-import io.edugma.data.base.consts.CacheConst.SemesterKey
 import io.edugma.data.base.consts.CacheConst.TokenKey
 import io.edugma.features.account.data.api.AccountService
 import io.edugma.features.account.domain.model.auth.Login
@@ -51,7 +51,7 @@ class AuthorizationRepositoryImpl(
         cacheRepository.remove(ApplicationsKey)
         cacheRepository.remove(PerformanceKey)
         cacheRepository.remove(CourseKey)
-        cacheRepository.remove(SemesterKey)
+        cacheRepository.remove(PerformancePeriodsKey)
         cacheRepository.remove(PaymentsKey)
         cacheRepository.remove(ClassmatesKey)
 

@@ -11,7 +11,7 @@ object CacheConst {
     const val ApplicationsKey = "applications"
     const val PerformanceKey = "Performance"
     const val CourseKey = "Courses"
-    const val SemesterKey = "Semesters"
+    const val PerformancePeriodsKey = "PerformancePeriods"
     const val PaymentsKey = "Payments"
     const val ClassmatesKey = "Classmates"
     const val PersonalKey = "Personal"

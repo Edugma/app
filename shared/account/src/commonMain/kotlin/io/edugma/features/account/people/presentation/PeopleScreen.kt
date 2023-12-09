@@ -119,7 +119,7 @@ fun ColumnScope.PersonBottomSheet(
                 url = person.avatar,
                 initials = person.name.toAvatarInitials(),
                 size = EdAvatarSize.xxxl,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+                modifier = Modifier.align(Alignment.CenterHorizontally),
             )
             SpacerHeight(height = 10.dp)
             EdLabel(
