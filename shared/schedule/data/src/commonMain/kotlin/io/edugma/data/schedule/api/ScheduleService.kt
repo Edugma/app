@@ -6,13 +6,11 @@ import io.edugma.core.api.api.getResult
 import io.edugma.core.api.api.postResult
 import io.edugma.core.api.model.PagingDto
 import io.edugma.features.schedule.domain.model.ScheduleComplexFilter
+import io.edugma.features.schedule.domain.model.compact.CompactPlaceInfo
 import io.edugma.features.schedule.domain.model.compact.CompactSchedule
 import io.edugma.features.schedule.domain.model.group.GroupInfo
-import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubjectInfo
-import io.edugma.features.schedule.domain.model.lessonType.LessonTypeInfo
 import io.edugma.features.schedule.domain.model.place.PlaceDailyOccupancy
 import io.edugma.features.schedule.domain.model.place.PlaceFilters
-import io.edugma.features.schedule.domain.model.place.PlaceInfo
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceType
 import io.edugma.features.schedule.domain.model.teacher.TeacherInfo
@@ -48,32 +46,22 @@ class ScheduleService(
     suspend fun getSourceTypes(): List<ScheduleSourceType> =
         client.get("$PREFIX-sources-types")
 
-    suspend fun getGroupInfo(id: String): Result<GroupInfo> =
-        client.getResult("$PREFIX-info-group") {
+    suspend fun getGroupInfo(id: String): GroupInfo =
+        client.get("$PREFIX-info-group") {
             param("id", id)
         }
 
-    suspend fun getTeacherInfo(id: String): Result<TeacherInfo> =
-        client.getResult("$PREFIX-info-teacher") {
+    suspend fun getTeacherInfo(id: String): TeacherInfo =
+        client.get("$PREFIX-info-teacher") {
             param("id", id)
         }
 
-    suspend fun getPlaceInfo(id: String): Result<PlaceInfo> =
-        client.getResult("$PREFIX-info-place") {
+    suspend fun getPlaceInfo(id: String): CompactPlaceInfo =
+        client.get("$PREFIX-info-place") {
             param("id", id)
         }
 
-    suspend fun getSubjectInfo(id: String): Result<LessonSubjectInfo> =
-        client.getResult("$PREFIX-info-subject") {
-            param("id", id)
-        }
-
-    suspend fun getLessonTypeInfo(id: String): Result<LessonTypeInfo> =
-        client.getResult("$PREFIX-info-lesson-type") {
-            param("id", id)
-        }
-
-    suspend fun findFreePlaces(filters: PlaceFilters): Result<Map<PlaceInfo, Int>> =
+    suspend fun findFreePlaces(filters: PlaceFilters): Result<Map<CompactPlaceInfo, Int>> =
         client.postResult("$PREFIX-places-free") {
             body(filters)
         }

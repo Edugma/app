@@ -1,9 +1,8 @@
 package io.edugma.features.schedule.domain.usecase
 
-import io.edugma.features.schedule.domain.model.lesson.Lesson
+import io.edugma.features.schedule.domain.model.lesson.LessonEvent
 import io.edugma.features.schedule.domain.model.lesson.LessonTime
 import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubject
-import io.edugma.features.schedule.domain.model.schedule.LessonsByTime
 import io.edugma.features.schedule.domain.model.schedule.ScheduleDay
 import io.edugma.features.schedule.domain.model.source.ScheduleSource
 import io.edugma.features.schedule.domain.repository.ScheduleRepository
@@ -53,7 +52,7 @@ class ScheduleHistoryUseCase(
         oldSchedule: List<ScheduleDay>,
         newSchedule: List<ScheduleDay>,
     ): List<ScheduleDayChange> {
-        val dateToLessons = mutableMapOf<LocalDate, MutableList<List<LessonsByTime>>>()
+        val dateToLessons = mutableMapOf<LocalDate, MutableList<List<LessonEvent>>>()
 
         oldSchedule.forEach {
             val list = dateToLessons.getOrPut(it.date) { ArrayList(2) }
@@ -84,21 +83,22 @@ class ScheduleHistoryUseCase(
         return lessons
     }
 
+    // TODO LessonsByTime -> LessonEvent
     private fun getDayChanges(
-        oldDay: List<LessonsByTime>,
-        newDay: List<LessonsByTime>,
+        oldDay: List<LessonEvent>,
+        newDay: List<LessonEvent>,
     ): List<LessonsByTimeChange> {
-        val timeToLessons = mutableMapOf<LessonTime, MutableList<List<Lesson>>>()
+        val timeToLessons = mutableMapOf<LessonTime, MutableList<List<LessonEvent>>>()
 
-        oldDay.forEach {
-            val list = timeToLessons.getOrPut(it.time) { ArrayList(2) }
-            list.add(it.lessons)
-        }
-
-        newDay.forEach {
-            val list = timeToLessons.getOrPut(it.time) { ArrayList(2) }
-            list.add(it.lessons)
-        }
+//        oldDay.forEach {
+//            val list = timeToLessons.getOrPut(it.) { ArrayList(2) }
+//            list.add(it)
+//        }
+//
+//        newDay.forEach {
+//            val list = timeToLessons.getOrPut(it.time) { ArrayList(2) }
+//            list.add(it.lessons)
+//        }
 
         val lessons = timeToLessons.map { (time, pair) ->
             val old = pair.getOrElse(0) { emptyList() }
@@ -115,10 +115,10 @@ class ScheduleHistoryUseCase(
     }
 
     private fun getPlaceChanges(
-        oldLessonsByTime: List<Lesson>,
-        newLessonsByTime: List<Lesson>,
+        oldLessonsByTime: List<LessonEvent>,
+        newLessonsByTime: List<LessonEvent>,
     ): List<LessonChange> {
-        val groupedBySubject = mutableMapOf<LessonSubject, MutableList<MutableList<Lesson>>>()
+        val groupedBySubject = mutableMapOf<LessonSubject, MutableList<MutableList<LessonEvent>>>()
 
         oldLessonsByTime.forEach { lesson ->
             val list = groupedBySubject.getOrPut(lesson.subject) { MutableList(2) { mutableListOf() } }
@@ -151,8 +151,8 @@ class ScheduleHistoryUseCase(
     }
 
     private fun getLessonChanges(
-        oldLesson: Lesson?,
-        newLesson: Lesson?,
+        oldLesson: LessonEvent?,
+        newLesson: LessonEvent?,
     ): LessonChange? {
         if (oldLesson == newLesson) return null
 
@@ -168,16 +168,16 @@ class ScheduleHistoryUseCase(
 
 sealed class LessonChange {
     data class Modified(
-        val old: Lesson,
-        val new: Lesson,
+        val old: LessonEvent,
+        val new: LessonEvent,
     ) : LessonChange()
 
     data class Added(
-        val new: Lesson,
+        val new: LessonEvent,
     ) : LessonChange()
 
     data class Removed(
-        val old: Lesson,
+        val old: LessonEvent,
     ) : LessonChange()
 }
 

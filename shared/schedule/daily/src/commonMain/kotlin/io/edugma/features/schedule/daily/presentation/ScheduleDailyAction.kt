@@ -1,7 +1,6 @@
 package io.edugma.features.schedule.daily.presentation
 
-import io.edugma.features.schedule.domain.model.lesson.Lesson
-import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
+import io.edugma.features.schedule.domain.model.lesson.LessonEvent
 import kotlinx.datetime.LocalDate
 
 sealed interface ScheduleDailyAction {
@@ -17,8 +16,7 @@ sealed interface ScheduleDailyAction {
         val date: LocalDate,
     ) : ScheduleDailyAction
     data class OnLessonClick(
-        val lesson: Lesson,
-        val dateTime: LessonDateTime,
+        val lesson: LessonEvent,
     ) : ScheduleDailyAction
     object OnRefreshing : ScheduleDailyAction
 }

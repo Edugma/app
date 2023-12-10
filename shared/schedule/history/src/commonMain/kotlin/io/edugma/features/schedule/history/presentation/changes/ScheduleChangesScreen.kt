@@ -43,13 +43,12 @@ import io.edugma.core.navigation.schedule.ScheduleHistoryScreens
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.viewmodel.getViewModel
-import io.edugma.features.schedule.domain.model.group.Group
-import io.edugma.features.schedule.domain.model.lesson.Lesson
+import io.edugma.features.schedule.domain.model.attentdee.AttendeeInfo
+import io.edugma.features.schedule.domain.model.lesson.LessonEvent
 import io.edugma.features.schedule.domain.model.lesson.LessonTime
 import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubject
 import io.edugma.features.schedule.domain.model.lessonType.LessonType
 import io.edugma.features.schedule.domain.model.place.Place
-import io.edugma.features.schedule.domain.model.teacher.Teacher
 import io.edugma.features.schedule.domain.usecase.LessonChange
 import io.edugma.navigation.core.screen.NavArgs
 import kotlinx.datetime.TimeZone
@@ -230,8 +229,8 @@ fun LessonChangeContent(change: LessonChange) {
         is LessonChange.Removed -> EdTheme.colorScheme.errorContainer
     }
 
-    var old: Lesson? = null
-    var new: Lesson? = null
+    var old: LessonEvent? = null
+    var new: LessonEvent? = null
 
     when (change) {
         is LessonChange.Added -> {
@@ -259,12 +258,13 @@ fun LessonChangeContent(change: LessonChange) {
         ) {
             when {
                 old != null && new != null -> {
-                    if (old.type != new.type) {
-                        ChangedLessonType(old.type, isNew = false)
-                        ChangedLessonType(new.type, isNew = true)
-                    } else {
-                        ChangedLessonType(new.type)
-                    }
+                    // TODO
+//                    if (old.type != new.type) {
+//                        ChangedLessonType(old.type, isNew = false)
+//                        ChangedLessonType(new.type, isNew = true)
+//                    } else {
+//                        ChangedLessonType(new.type)
+//                    }
 
                     if (old.subject != new.subject) {
                         ChangedLessonSubject(old.subject, isNew = false)
@@ -295,14 +295,16 @@ fun LessonChangeContent(change: LessonChange) {
                     }
                 }
                 old != null -> {
-                    ChangedLessonType(old.type)
+                    // TODO
+                    // ChangedLessonType(old.type)
                     ChangedLessonSubject(old.subject)
                     ChangedTeachers(old.teachers)
                     ChangedGroups(old.groups)
                     ChangedPlaces(old.places)
                 }
                 new != null -> {
-                    ChangedLessonType(new.type)
+                    // TODO
+                    // ChangedLessonType(new.type)
                     ChangedLessonSubject(new.subject)
                     ChangedTeachers(new.teachers)
                     ChangedGroups(new.groups)
@@ -336,7 +338,7 @@ private fun ChangedLessonSubject(subject: LessonSubject, isNew: Boolean? = null)
 }
 
 @Composable
-private fun ChangedTeachers(teachers: List<Teacher>, isNew: Boolean? = null) {
+private fun ChangedTeachers(teachers: List<AttendeeInfo>, isNew: Boolean? = null) {
     val containerColor = getColor(isNew)
 
     Surface(
@@ -347,13 +349,13 @@ private fun ChangedTeachers(teachers: List<Teacher>, isNew: Boolean? = null) {
 }
 
 @Composable
-private fun ChangedGroups(groups: List<Group>, isNew: Boolean? = null) {
+private fun ChangedGroups(groups: List<AttendeeInfo>, isNew: Boolean? = null) {
     val containerColor = getColor(isNew)
 
     Surface(
         color = containerColor,
     ) {
-        Text(groups.joinToString { it.title })
+        Text(groups.joinToString { it.name })
     }
 }
 

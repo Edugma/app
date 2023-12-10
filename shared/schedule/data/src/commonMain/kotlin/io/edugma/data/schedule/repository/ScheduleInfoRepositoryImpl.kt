@@ -1,32 +1,23 @@
 package io.edugma.data.schedule.repository
 
 import io.edugma.data.schedule.api.ScheduleService
+import io.edugma.features.schedule.domain.model.compact.CompactPlaceInfo
+import io.edugma.features.schedule.domain.model.group.GroupInfo
+import io.edugma.features.schedule.domain.model.teacher.TeacherInfo
 import io.edugma.features.schedule.domain.repository.ScheduleInfoRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 
 class ScheduleInfoRepositoryImpl(
     private val scheduleService: ScheduleService,
 ) : ScheduleInfoRepository {
-    override fun getTeacherInfo(id: String) =
-        flow { emit(scheduleService.getTeacherInfo(id)) }
-            .flowOn(Dispatchers.IO)
+    override suspend fun getTeacherInfo(id: String): TeacherInfo {
+        return scheduleService.getTeacherInfo(id)
+    }
 
-    override fun getGroupInfo(id: String) =
-        flow { emit(scheduleService.getGroupInfo(id)) }
-            .flowOn(Dispatchers.IO)
+    override suspend fun getGroupInfo(id: String): GroupInfo {
+        return scheduleService.getGroupInfo(id)
+    }
 
-    override fun getPlaceInfo(id: String) =
-        flow { emit(scheduleService.getPlaceInfo(id)) }
-            .flowOn(Dispatchers.IO)
-
-    override fun getLessonSubjectInfo(id: String) =
-        flow { emit(scheduleService.getSubjectInfo(id)) }
-            .flowOn(Dispatchers.IO)
-
-    override fun getLessonTypeInfo(id: String) =
-        flow { emit(scheduleService.getLessonTypeInfo(id)) }
-            .flowOn(Dispatchers.IO)
+    override suspend fun getPlaceInfo(id: String): CompactPlaceInfo {
+        return scheduleService.getPlaceInfo(id)
+    }
 }

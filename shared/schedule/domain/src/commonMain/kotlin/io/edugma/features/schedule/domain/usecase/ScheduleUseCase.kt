@@ -2,7 +2,7 @@ package io.edugma.features.schedule.domain.usecase
 
 import io.edugma.core.api.utils.Lce
 import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
-import io.edugma.features.schedule.domain.model.schedule.LessonsByTime
+import io.edugma.features.schedule.domain.model.lesson.LessonEvent
 import io.edugma.features.schedule.domain.model.schedule.ScheduleDay
 import io.edugma.features.schedule.domain.model.source.ScheduleSource
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceType
@@ -41,7 +41,7 @@ class ScheduleUseCase(
             forceUpdate = forceUpdate,
         )
 
-    fun getScheduleDay(schedule: List<ScheduleDay>, date: LocalDate): List<LessonsByTime> {
+    fun getScheduleDay(schedule: List<ScheduleDay>, date: LocalDate): List<LessonEvent> {
         return schedule.firstOrNull { it.date == date }?.lessons ?: emptyList()
     }
 

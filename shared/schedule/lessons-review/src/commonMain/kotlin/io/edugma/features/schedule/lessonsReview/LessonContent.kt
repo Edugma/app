@@ -12,15 +12,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
+import io.edugma.core.api.utils.getShortName
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.edPlaceholder
 import io.edugma.core.icons.EdIcons
-import io.edugma.features.schedule.domain.model.group.Group
+import io.edugma.features.schedule.domain.model.attentdee.AttendeeInfo
 import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubject
 import io.edugma.features.schedule.domain.model.place.Place
-import io.edugma.features.schedule.domain.model.teacher.Teacher
-import io.edugma.features.schedule.domain.usecase.getShortName
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @Composable
@@ -36,7 +35,7 @@ fun LessonTitle(subject: LessonSubject, isLoading: Boolean = false) {
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun TeachersContent(teachers: List<Teacher>, isLoading: Boolean = false) {
+fun TeachersContent(teachers: List<AttendeeInfo>, isLoading: Boolean = false) {
     Row(
         modifier = Modifier.edPlaceholder(visible = isLoading),
     ) {
@@ -52,7 +51,7 @@ fun TeachersContent(teachers: List<Teacher>, isLoading: Boolean = false) {
             if (teachers.size == 1) {
                 teachers.first().name
             } else {
-                teachers.joinToString { it.getShortName() }
+                teachers.joinToString { getShortName(it.name) }
             }
         }
         Text(
@@ -69,7 +68,7 @@ fun TeachersContent(teachers: List<Teacher>, isLoading: Boolean = false) {
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun GroupsContent(groups: List<Group>, isLoading: Boolean = false) {
+fun GroupsContent(groups: List<AttendeeInfo>, isLoading: Boolean = false) {
     Row(
         modifier = Modifier.edPlaceholder(visible = isLoading),
     ) {
@@ -81,7 +80,7 @@ fun GroupsContent(groups: List<Group>, isLoading: Boolean = false) {
                 .align(Alignment.CenterVertically),
         )
         SpacerWidth(width = 5.dp)
-        val groupsText = remember(groups) { groups.joinToString { it.title } }
+        val groupsText = remember(groups) { groups.joinToString { it.name } }
         Text(
             text = groupsText,
             style = EdTheme.typography.bodyMedium,

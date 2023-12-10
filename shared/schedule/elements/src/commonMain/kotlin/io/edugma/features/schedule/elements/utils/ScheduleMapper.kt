@@ -2,8 +2,8 @@ package io.edugma.features.schedule.elements.utils
 
 import io.edugma.core.api.utils.insertSeparators
 import io.edugma.core.api.utils.untilMinutes
+import io.edugma.features.schedule.domain.model.lesson.LessonEvent
 import io.edugma.features.schedule.domain.model.lesson.LessonTime
-import io.edugma.features.schedule.domain.model.schedule.LessonsByTime
 import io.edugma.features.schedule.domain.model.schedule.ScheduleDay
 import io.edugma.features.schedule.elements.lesson.model.ScheduleItem
 import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
@@ -20,12 +20,12 @@ fun List<ScheduleDay>.toUiModel(): List<ScheduleDayUiModel> {
 }
 
 @JvmName("toUiModelLessonsByTime")
-fun List<LessonsByTime>.toUiModel(): List<ScheduleItem> {
-    return map { ScheduleItem.LessonByTime(it) }
+fun List<LessonEvent>.toUiModel(): List<ScheduleItem> {
+    return map { ScheduleItem.LessonEventUiModel(it) }
         .insertSeparators { before, next ->
             when {
                 before == null || next == null -> null
-                else -> getWindowOrNull(before.lesson.time, next.lesson.time)
+                else -> getWindowOrNull(before.lesson2.time, next.lesson2.time)
             }
         }
 }

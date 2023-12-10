@@ -26,9 +26,9 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.withAlpha
 import io.edugma.core.utils.Typed2Listener
 import io.edugma.core.utils.viewmodel.getViewModel
-import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
 import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
+import io.edugma.features.schedule.domain.model.lesson.LessonEvent
 import io.edugma.features.schedule.domain.model.source.ScheduleSource
 import io.edugma.features.schedule.elements.lesson.LessonPlace
 import io.edugma.features.schedule.elements.lesson.LessonWindow
@@ -64,7 +64,7 @@ fun VerticalSchedule(
     scheduleDays: List<ScheduleDayUiModel>,
     lessonDisplaySettings: LessonDisplaySettings,
     currentDayIndex: Int,
-    onLessonClick: Typed2Listener<Lesson, LessonDateTime>,
+    onLessonClick: Typed2Listener<LessonEvent, LessonDateTime>,
 ) {
     val scrollState = rememberLazyListState()
 
@@ -87,9 +87,9 @@ fun VerticalSchedule(
             } else {
                 day.lessons.forEach { item ->
                     when (item) {
-                        is ScheduleItem.LessonByTime -> {
+                        is ScheduleItem.LessonEventUiModel -> {
                             LessonPlace(
-                                lessonsByTime = item.lesson,
+                                lessonEvent = item.lesson2,
                                 lessonDisplaySettings = lessonDisplaySettings,
                                 onLessonClick = { lesson, lessonTime ->
                                     onLessonClick(lesson, LessonDateTime(startDate = day.date, endDate = null, time = lessonTime))

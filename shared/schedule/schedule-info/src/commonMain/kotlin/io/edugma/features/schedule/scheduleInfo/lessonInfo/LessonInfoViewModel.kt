@@ -5,7 +5,7 @@ import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.arch.mvi.viewmodel.prop
 import io.edugma.core.navigation.schedule.ScheduleInfoScreens
-import io.edugma.features.schedule.domain.model.lesson.LessonInfo
+import io.edugma.features.schedule.domain.model.lesson.LessonEvent
 import io.edugma.features.schedule.domain.model.teacher.TeacherInfo
 import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
 import kotlinx.coroutines.flow.collectLatest
@@ -32,7 +32,7 @@ class LessonInfoViewModel(
         }
     }
 
-    fun onLessonInfo(lessonInfo: LessonInfo?) {
+    fun onLessonInfo(lessonInfo: LessonEvent?) {
         newState {
             copy(lessonInfo = lessonInfo)
         }
@@ -52,6 +52,6 @@ class LessonInfoViewModel(
 }
 
 data class LessonInfoState(
-    val lessonInfo: LessonInfo? = null,
+    val lessonInfo: LessonEvent? = null,
     val teachers: List<TeacherInfo> = emptyList(),
 )

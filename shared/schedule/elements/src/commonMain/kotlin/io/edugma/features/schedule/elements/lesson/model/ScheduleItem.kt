@@ -1,11 +1,11 @@
 package io.edugma.features.schedule.elements.lesson.model
 
-import io.edugma.features.schedule.domain.model.schedule.LessonsByTime
+import io.edugma.features.schedule.domain.model.lesson.LessonEvent
 import kotlinx.datetime.LocalTime
 
 sealed interface ScheduleItem {
-    data class LessonByTime(
-        val lesson: LessonsByTime,
+    data class LessonEventUiModel(
+        val lesson2: LessonEvent,
     ) : ScheduleItem
 
     data class Window(

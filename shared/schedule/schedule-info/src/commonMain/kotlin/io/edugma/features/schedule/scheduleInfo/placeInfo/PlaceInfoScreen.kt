@@ -12,7 +12,6 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,8 +35,7 @@ import io.edugma.core.resources.MR
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.viewmodel.getViewModel
-import io.edugma.features.schedule.domain.model.place.PlaceInfo
-import io.edugma.features.schedule.domain.model.place.description
+import io.edugma.features.schedule.domain.model.compact.CompactPlaceInfo
 import io.edugma.features.schedule.elements.verticalSchedule.VerticalScheduleComponent
 import io.edugma.features.schedule.scheduleInfo.groupInfo.InfoScaffold
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -57,7 +55,7 @@ fun PlaceInfoScreen(viewModel: PlaceInfoViewModel = getViewModel(), id: String) 
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalResourceApi::class)
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun PlaceInfoContent(
     state: PlaceInfoState,
@@ -70,7 +68,7 @@ private fun PlaceInfoContent(
         fields = {
             state.placeInfo?.let { groupInfo ->
                 EdLabel(
-                    text = groupInfo.description,
+                    text = groupInfo.description.orEmpty(),
                     iconPainter = painterResource(EdIcons.ic_fluent_text_description_20_regular),
                 )
 //                TextIcon(
@@ -154,40 +152,17 @@ private fun OccupancyTab(
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-private fun PlaceBuilding(place: PlaceInfo.Building) {
+private fun PlaceBuilding(place: CompactPlaceInfo.Building) {
     Column(
         Modifier
             .padding(start = 16.dp, end = 16.dp)
             .fillMaxWidth(),
     ) {
         Text(text = place.title)
-        if (place.street != null) {
+        if (!place.description.isNullOrEmpty()) {
             SpacerHeight(8.dp)
             EdLabel(
-                text = place.street!!,
-                iconPainter = painterResource(EdIcons.ic_fluent_location_20_regular),
-            )
-        }
-        var resStr = ""
-        if (place.building != null) {
-            resStr += stringResource(MR.strings.schedule_sch_inf_building, place.building!!)
-        }
-        if (place.floor != null) {
-            if (resStr.isNotEmpty()) {
-                resStr += ", "
-            }
-            resStr += stringResource(MR.strings.schedule_sch_inf_floor, place.floor!!)
-        }
-        if (place.auditorium != null) {
-            if (resStr.isNotEmpty()) {
-                resStr += ", "
-            }
-            resStr += stringResource(MR.strings.schedule_sch_inf_auditorium_number, place.auditorium!!)
-        }
-        if (resStr.isNotEmpty()) {
-            SpacerHeight(8.dp)
-            EdLabel(
-                text = resStr,
+                text = place.description.orEmpty(),
                 iconPainter = painterResource(EdIcons.ic_fluent_building_20_regular),
             )
         }
@@ -208,7 +183,7 @@ private fun PlaceBuilding(place: PlaceInfo.Building) {
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-private fun PlaceOnline(place: PlaceInfo.Online) {
+private fun PlaceOnline(place: CompactPlaceInfo.Online) {
     Column(Modifier.fillMaxWidth()) {
         Text(text = place.title)
         if (place.url != null) {
@@ -245,27 +220,7 @@ private fun PlaceOnline(place: PlaceInfo.Online) {
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-private fun PlaceOther(place: PlaceInfo.Other) {
-    Column(Modifier.fillMaxWidth()) {
-        Text(text = place.title)
-        if (place.description != null) {
-            SpacerHeight(8.dp)
-            val description = place.description!!
-            EdLabel(
-                text = stringResource(MR.strings.schedule_sch_inf_description),
-                iconPainter = painterResource(EdIcons.ic_fluent_text_description_20_regular),
-            )
-            SpacerHeight(4.dp)
-            Text(
-                text = description,
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalResourceApi::class)
-@Composable
-private fun PlaceUnclassified(place: PlaceInfo.Unclassified) {
+private fun PlaceOther(place: CompactPlaceInfo.Other) {
     Column(Modifier.fillMaxWidth()) {
         Text(text = place.title)
         if (place.description != null) {

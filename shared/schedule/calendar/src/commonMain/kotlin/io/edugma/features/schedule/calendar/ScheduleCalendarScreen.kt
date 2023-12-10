@@ -73,6 +73,7 @@ import io.edugma.core.utils.ui.isItemFullyVisible
 import io.edugma.core.utils.viewmodel.getViewModel
 import io.edugma.features.schedule.calendar.model.CalendarDayVO
 import io.edugma.features.schedule.calendar.model.CalendarScheduleVO
+import io.edugma.features.schedule.domain.model.compact.Importance
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -440,12 +441,12 @@ private fun CalendarItem(
             }
             WithContentAlpha(ContentAlpha.medium) {
                 lessonsByTime.lessons.forEach { lesson ->
-                    val containerColor = if (lesson.isImportant) {
+                    val containerColor = if (lesson.importance == Importance.High) {
                         EdTheme.colorScheme.error.copy(alpha = 0.8f)
                     } else {
                         EdTheme.colorScheme.secondaryContainer.copy(alpha = 0.8f)
                     }
-                    val textColor = if (lesson.isImportant) {
+                    val textColor = if (lesson.importance == Importance.High) {
                         EdTheme.colorScheme.onError.copy(alpha = LocalContentAlpha.current)
                     } else {
                         EdTheme.colorScheme.onSecondaryContainer.copy(alpha = LocalContentAlpha.current)

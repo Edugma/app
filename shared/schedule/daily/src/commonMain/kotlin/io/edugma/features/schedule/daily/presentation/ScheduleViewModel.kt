@@ -7,10 +7,9 @@ import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
 import io.edugma.core.arch.mvi.viewmodel.prop
 import io.edugma.core.navigation.schedule.ScheduleInfoScreens
-import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
 import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
-import io.edugma.features.schedule.domain.model.lesson.LessonInfo
+import io.edugma.features.schedule.domain.model.lesson.LessonEvent
 import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
 import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
 import io.edugma.features.schedule.elements.utils.toUiModel
@@ -110,14 +109,11 @@ class ScheduleViewModel(
         }
     }
 
-    private fun onLessonClick(lesson: Lesson, dateTime: LessonDateTime) {
+    private fun onLessonClick(lesson: LessonEvent, dateTime: LessonDateTime) {
         router.navigateTo(
             ScheduleInfoScreens.LessonInfo(
                 lessonInfo = Json.encodeToString(
-                    LessonInfo(
-                        lesson = lesson,
-                        dateTime = dateTime,
-                    ),
+                    lesson,
                 ),
             ),
         )

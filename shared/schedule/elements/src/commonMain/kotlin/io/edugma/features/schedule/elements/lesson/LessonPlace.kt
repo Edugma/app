@@ -2,31 +2,29 @@ package io.edugma.features.schedule.elements.lesson
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.utils.Typed2Listener
-import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
+import io.edugma.features.schedule.domain.model.lesson.LessonEvent
 import io.edugma.features.schedule.domain.model.lesson.LessonTime
-import io.edugma.features.schedule.domain.model.schedule.LessonsByTime
 
 fun LazyListScope.LessonPlace(
-    lessonsByTime: LessonsByTime,
+    lessonEvent: LessonEvent,
     lessonDisplaySettings: LessonDisplaySettings,
-    onLessonClick: Typed2Listener<Lesson, LessonTime>,
+    onLessonClick: Typed2Listener<LessonEvent, LessonTime>,
 ) {
     item {
-        LessonTimeContent(lessonsByTime.time)
+        LessonTimeContent(lessonEvent)
     }
-    items(lessonsByTime.lessons) { lesson ->
+    item {
         LessonContent(
-            lesson = lesson,
+            lesson = lessonEvent,
             displaySettings = lessonDisplaySettings,
-            onLessonClick = { onLessonClick(it, lessonsByTime.time) },
+            onLessonClick = { onLessonClick(it, lessonEvent) },
         )
     }
 }

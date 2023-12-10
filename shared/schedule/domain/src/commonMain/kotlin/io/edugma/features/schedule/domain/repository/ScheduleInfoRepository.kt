@@ -1,16 +1,11 @@
 package io.edugma.features.schedule.domain.repository
 
+import io.edugma.features.schedule.domain.model.compact.CompactPlaceInfo
 import io.edugma.features.schedule.domain.model.group.GroupInfo
-import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubjectInfo
-import io.edugma.features.schedule.domain.model.lessonType.LessonTypeInfo
-import io.edugma.features.schedule.domain.model.place.PlaceInfo
 import io.edugma.features.schedule.domain.model.teacher.TeacherInfo
-import kotlinx.coroutines.flow.Flow
 
 interface ScheduleInfoRepository {
-    fun getTeacherInfo(id: String): Flow<Result<TeacherInfo>>
-    fun getGroupInfo(id: String): Flow<Result<GroupInfo>>
-    fun getPlaceInfo(id: String): Flow<Result<PlaceInfo>>
-    fun getLessonSubjectInfo(id: String): Flow<Result<LessonSubjectInfo>>
-    fun getLessonTypeInfo(id: String): Flow<Result<LessonTypeInfo>>
+    suspend fun getTeacherInfo(id: String): TeacherInfo
+    suspend fun getGroupInfo(id: String): GroupInfo
+    suspend fun getPlaceInfo(id: String): CompactPlaceInfo
 }

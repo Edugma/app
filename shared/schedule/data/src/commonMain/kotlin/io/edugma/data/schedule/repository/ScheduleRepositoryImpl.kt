@@ -5,13 +5,13 @@ import io.edugma.core.api.utils.loading
 import io.edugma.core.api.utils.map
 import io.edugma.data.base.store.store
 import io.edugma.data.schedule.api.ScheduleService
-import io.edugma.data.schedule.model.toModel
 import io.edugma.features.schedule.domain.model.ScheduleComplexFilter
 import io.edugma.features.schedule.domain.model.ScheduleRecord
 import io.edugma.features.schedule.domain.model.compact.CompactSchedule
-import io.edugma.features.schedule.domain.model.schedule.ScheduleDay
+import io.edugma.features.schedule.domain.model.schedule.ScheduleCalendar
 import io.edugma.features.schedule.domain.model.source.ScheduleSource
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceType
+import io.edugma.features.schedule.domain.model.teacher.TeacherInfo
 import io.edugma.features.schedule.domain.repository.ScheduleRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -72,13 +72,14 @@ class ScheduleRepositoryImpl(
         }
     }
 
+    // TODO
     override fun getTeacher(source: ScheduleSource, id: String) =
         scheduleStore0.get(source)
-            .map { it.map { it?.info?.teachersInfo?.firstOrNull { it.id == id } }.getOrNull() }
+            .map { it.map { it?.attendees?.firstOrNull { it.id == id } as? TeacherInfo }.getOrNull() }
             .flowOn(Dispatchers.IO)
 
     override fun getSchedule(source: ScheduleSource, forceUpdate: Boolean):
-        Flow<Lce<List<ScheduleDay>>> =
+        Flow<Lce<ScheduleCalendar?>> =
         if (source.type == ScheduleSourceType.COMPLEX) {
             flow {
                 emit(
@@ -87,11 +88,11 @@ class ScheduleRepositoryImpl(
                     ),
                 )
             }
-                .map { it.loading(false).map { it.toModel() } }
+                .map { it.loading(false).map { ScheduleCalendar(it) } }
                 .flowOn(Dispatchers.IO)
         } else {
             scheduleStore0.get(source, forceUpdate)
-                .map { it.map { it?.toModel() ?: emptyList() } }
+                .map { it.map { it?.let { ScheduleCalendar(it) } } }
                 .flowOn(Dispatchers.IO)
         }
 }

@@ -28,7 +28,7 @@ data class WeekUiModel(
                             date,
                             date == today,
                             schedule.firstOrNull { it.date == date }?.lessons
-                                ?.filterIsInstance<ScheduleItem.LessonByTime>()
+                                ?.filterIsInstance<ScheduleItem.LessonEventUiModel>()
                                 ?.size ?: 0,
                         )
                     },

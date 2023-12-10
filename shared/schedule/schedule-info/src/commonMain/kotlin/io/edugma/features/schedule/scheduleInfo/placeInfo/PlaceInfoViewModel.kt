@@ -6,8 +6,8 @@ import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import io.edugma.core.arch.mvi.viewmodel.prop
+import io.edugma.features.schedule.domain.model.compact.CompactPlaceInfo
 import io.edugma.features.schedule.domain.model.place.PlaceDailyOccupancy
-import io.edugma.features.schedule.domain.model.place.PlaceInfo
 import io.edugma.features.schedule.domain.model.source.ScheduleSource
 import io.edugma.features.schedule.domain.repository.FreePlaceRepository
 import io.edugma.features.schedule.domain.repository.ScheduleInfoRepository
@@ -67,7 +67,7 @@ class PlaceInfoViewModel(
 
 data class PlaceInfoState(
     val id: String? = null,
-    val placeInfo: PlaceInfo? = null,
+    val placeInfo: CompactPlaceInfo? = null,
     val tabs: List<PlaceInfoTabs> = listOf(PlaceInfoTabs.Schedule),
     val selectedTab: PlaceInfoTabs = PlaceInfoTabs.Schedule,
     val placeOccupancy: List<PlaceDailyOccupancy> = emptyList(),

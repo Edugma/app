@@ -38,7 +38,6 @@ import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.viewmodel.getViewModel
-import io.edugma.features.schedule.domain.model.place.description
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 

@@ -2,24 +2,25 @@ package io.edugma.data.schedule.repository
 
 import io.edugma.core.api.utils.UUID
 import io.edugma.core.api.utils.nowLocalDate
-import io.edugma.features.schedule.domain.model.StudentDirection
-import io.edugma.features.schedule.domain.model.StudentFaculty
-import io.edugma.features.schedule.domain.model.compact.CompactLessonAndTimes
-import io.edugma.features.schedule.domain.model.compact.CompactLessonFeatures
+import io.edugma.features.schedule.domain.model.attentdee.AttendeeInfo
+import io.edugma.features.schedule.domain.model.attentdee.AttendeeType
+import io.edugma.features.schedule.domain.model.compact.CompactLessonEvent
+import io.edugma.features.schedule.domain.model.compact.CompactLessonSubjectInfo
+import io.edugma.features.schedule.domain.model.compact.CompactPlaceInfo
 import io.edugma.features.schedule.domain.model.compact.CompactSchedule
-import io.edugma.features.schedule.domain.model.compact.ScheduleInfo
-import io.edugma.features.schedule.domain.model.group.GroupInfo
-import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
-import io.edugma.features.schedule.domain.model.lesson.LessonTime
-import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubjectInfo
+import io.edugma.features.schedule.domain.model.compact.Importance
+import io.edugma.features.schedule.domain.model.compact.LessonDateTime
 import io.edugma.features.schedule.domain.model.lessonType.LessonTypeInfo
-import io.edugma.features.schedule.domain.model.place.PlaceInfo
-import io.edugma.features.schedule.domain.model.place.PlaceType
-import io.edugma.features.schedule.domain.model.teacher.TeacherInfo
+import io.edugma.features.schedule.domain.model.rrule.Frequency
+import io.edugma.features.schedule.domain.model.rrule.RRule
+import io.edugma.features.schedule.domain.model.rrule.Weekday
+import io.edugma.features.schedule.domain.model.rrule.WeekdayNum
 import kotlinx.coroutines.delay
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.LocalTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atTime
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import kotlin.time.Duration.Companion.seconds
@@ -33,87 +34,73 @@ class ScheduleMockRepository {
     fun getMockSchedule(): CompactSchedule {
         return CompactSchedule(
             lessons = listOf(getLessons()),
-            info = ScheduleInfo(
-                typesInfo = getTypes(),
-                subjectsInfo = getSubjects(),
-                teachersInfo = getTeachers(),
-                groupsInfo = getGroups(),
-                placesInfo = getPlaces(),
-            ),
+            subjects = getSubjects(),
+            attendees = getTeachers() + getGroups(),
+            places = getPlaces(),
         )
     }
 
-    private fun getLessons() = CompactLessonAndTimes(
-        lesson = CompactLessonFeatures(
-            typeId = "1",
-            subjectId = "1",
-            teachersId = listOf("1"),
-            groupsId = listOf("1"),
-            placesId = listOf("1"),
+    private fun getLessons() = CompactLessonEvent(
+        id = "",
+        tags = listOf("1"),
+        subjectId = "1",
+        attendeesId = listOf("t1", "g1"),
+        placesId = listOf("1"),
+        start = LessonDateTime(
+            dateTime = Clock.System.nowLocalDate().minus(DatePeriod(days = 50))
+                .atTime(LocalTime(10, 40, 0, 0)),
+            timeZone = TimeZone.currentSystemDefault(),
         ),
-        times = listOf(
-            LessonDateTime(
-                startDate = Clock.System.nowLocalDate().minus(DatePeriod(days = 50)),
-                endDate = Clock.System.nowLocalDate().plus(DatePeriod(days = 50)),
-                time = LessonTime(
-                    start = LocalTime(10, 40, 0, 0),
-                    end = LocalTime(12, 10, 0, 0),
-                ),
+        end = LessonDateTime(
+            dateTime = Clock.System.nowLocalDate().plus(DatePeriod(days = 50))
+                .atTime(LocalTime(12, 10, 0, 0)),
+            timeZone = TimeZone.currentSystemDefault(),
+        ),
+        importance = Importance.Normal,
+        recurrence = listOf(
+            RRule(
+                frequency = Frequency.Weekly,
+                byWeekday = listOf(WeekdayNum(0, Weekday.Wednesday)),
             ),
         ),
     )
 
     private fun getPlaces() = listOf(
-        PlaceInfo.Building(
+        CompactPlaceInfo.Building(
             id = "1",
             title = "Пр 2351",
-            type = PlaceType.Building,
-            areaAlias = "Пряники",
-            street = "",
-            building = "null",
-            floor = "null",
-            auditorium = "null",
-            location = null,
-            description = "null",
+            coordinates = null,
+            description = "Пряники",
         ),
     )
 
-    private fun getGroups() = listOf(
-        GroupInfo(
+    private fun getGroups(): List<AttendeeInfo> = listOf(
+        AttendeeInfo(
             id = "1",
-            title = "224-372",
-            course = 2,
-            faculty = StudentFaculty(
-                id = "1",
-                title = "Факультет информационных технологий",
-                titleShort = "ФИТ",
-            ),
-            direction = StudentDirection(
-                id = "1",
-                title = "Информационные системы и технологии",
-                code = "09.04.02",
-            ),
-        ),
-    )
-
-    private fun getTeachers() = listOf(
-        TeacherInfo(
-            id = "1",
-            name = "Арсентьев Дмитрий Андреевич",
+            type = AttendeeType.Group,
+            name = "224-372",
+            description = "Факультет информационных технологий",
             avatar = null,
-            stuffType = null,
-            grade = null,
-            email = null,
-            sex = null,
-            birthday = null,
+        ),
+    )
+
+    private fun getTeachers(): List<AttendeeInfo> = listOf(
+        AttendeeInfo(
+            id = "1",
+            type = AttendeeType.Teacher,
+            name = "Арсентьев Дмитрий Андреевич",
+            description = "Факультет информационных технологий",
+            avatar = null,
         ),
     )
 
     private fun getSubjects() = listOf(
-        LessonSubjectInfo(
+        CompactLessonSubjectInfo(
             id = "1",
             title = "Мультиплатформенная разработка мобильных приложений " +
                 UUID.get().take(5),
+            description = null,
+            type = null,
         ),
     )
 

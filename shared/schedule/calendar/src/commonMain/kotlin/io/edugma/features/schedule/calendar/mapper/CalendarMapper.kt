@@ -8,9 +8,7 @@ import io.edugma.features.schedule.calendar.model.CalendarDayVO
 import io.edugma.features.schedule.calendar.model.CalendarLessonPlaceVO
 import io.edugma.features.schedule.calendar.model.CalendarLessonVO
 import io.edugma.features.schedule.calendar.model.CalendarScheduleVO
-import io.edugma.features.schedule.domain.model.lesson.Lesson
-import io.edugma.features.schedule.domain.model.lesson.LessonTime
-import io.edugma.features.schedule.domain.model.schedule.LessonsByTime
+import io.edugma.features.schedule.domain.model.lesson.LessonEvent
 import io.edugma.features.schedule.domain.model.schedule.ScheduleDay
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.daysUntil
@@ -79,22 +77,22 @@ class CalendarMapper {
             }.toList()
     }
 
-    private fun mapToLessonPlace(lessonsByTime: LessonsByTime) =
+    private fun mapToLessonPlace(lesson: LessonEvent) =
         CalendarLessonPlaceVO(
-            time = lessonsByTime.time.mapTime(),
-            lessons = lessonsByTime.lessons.mapIndexed { index, lesson ->
+            time = lesson.mapTime(),
+            lessons = listOf(
                 CalendarLessonVO(
                     title = mapLesson(
                         lesson = lesson,
-                        isLast = index == lessonsByTime.lessons.lastIndex,
+                        isLast = true,
                     ),
-                    isImportant = lesson.type.isImportant,
-                )
-            },
+                    importance = lesson.importance,
+                ),
+            ),
         )
 
     private fun mapLesson(
-        lesson: Lesson,
+        lesson: LessonEvent,
         isLast: Boolean,
     ) = buildAnnotatedString {
         append(cutTitle(lesson.subject.title))
@@ -112,8 +110,9 @@ class CalendarMapper {
         }
     }.toString()
 
-    private fun LessonTime.mapTime(): String {
-        return "•$start - $end"
+    private fun LessonEvent.mapTime(): String {
+        // TODO TimeZone
+        return "•${start.dateTime.time} - ${end.dateTime.time}"
     }
 }
 

@@ -30,9 +30,9 @@ import io.edugma.core.designSystem.utils.navigationBarsPadding
 import io.edugma.core.resources.MR
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed2Listener
-import io.edugma.features.schedule.domain.model.lesson.Lesson
 import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
 import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
+import io.edugma.features.schedule.domain.model.lesson.LessonEvent
 import io.edugma.features.schedule.domain.model.lesson.LessonTime
 import io.edugma.features.schedule.elements.lesson.LessonPlace
 import io.edugma.features.schedule.elements.lesson.LessonPlaceholder
@@ -54,7 +54,7 @@ fun SchedulePager(
     lessonDisplaySettings: LessonDisplaySettings,
     isRefreshing: Boolean,
     pagerState: PagerState,
-    onLessonClick: Typed2Listener<Lesson, LessonDateTime>,
+    onLessonClick: (LessonEvent) -> Unit,
     onRefreshing: ClickListener,
 ) {
     EdPullRefresh(
@@ -124,15 +124,15 @@ fun DateContent(date: LocalDate) {
 fun LessonList(
     lessons: List<ScheduleItem>,
     lessonDisplaySettings: LessonDisplaySettings,
-    onLessonClick: Typed2Listener<Lesson, LessonTime>,
+    onLessonClick: Typed2Listener<LessonEvent, LessonTime>,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(modifier = modifier.fillMaxSize()) {
         for (item in lessons) {
             when (item) {
-                is ScheduleItem.LessonByTime -> {
+                is ScheduleItem.LessonEventUiModel -> {
                     LessonPlace(
-                        lessonsByTime = item.lesson,
+                        lessonEvent = item.lesson2,
                         lessonDisplaySettings = lessonDisplaySettings,
                         onLessonClick = { lesson, lessonTime ->
                             onLessonClick(lesson, lessonTime)

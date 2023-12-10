@@ -44,9 +44,9 @@ import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.viewmodel.getViewModel
-import io.edugma.features.schedule.domain.model.group.Group
+import io.edugma.features.schedule.domain.model.attentdee.AttendeeInfo
 import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
-import io.edugma.features.schedule.domain.model.lesson.LessonInfo
+import io.edugma.features.schedule.domain.model.lesson.LessonEvent
 import io.edugma.features.schedule.domain.model.place.Place
 import io.edugma.features.schedule.domain.model.teacher.TeacherInfo
 import io.edugma.features.schedule.domain.model.teacher.description
@@ -55,7 +55,7 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 @Composable
 fun LessonInfoScreen(
     viewModel: LessonInfoViewModel = getViewModel(),
-    lessonInfo: LessonInfo?,
+    lessonInfo: LessonEvent?,
 ) {
     val state by viewModel.stateFlow.collectAsState()
 
@@ -100,9 +100,11 @@ private fun LessonInfoContent(
                     windowInsets = WindowInsets.statusBars,
                 )
                 SpacerHeight(height = 32.dp)
-                LessonType(
-                    type = state.lessonInfo?.lesson?.type?.title ?: "",
-                )
+                state.lessonInfo?.lesson?.tags?.let { tags ->
+                    LessonTags(
+                        tags = tags,
+                    )
+                }
                 PrimaryContent {
                     LessonTitle(
                         title = state.lessonInfo?.lesson?.subject?.title ?: "",
@@ -139,13 +141,18 @@ private fun LessonInfoContent(
 }
 
 @Composable
-private fun LessonType(type: String) {
+private fun LessonTags(tags: List<String>) {
     WithContentAlpha(ContentAlpha.medium) {
-        Text(
-            text = type,
-            style = EdTheme.typography.titleSmall,
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp),
-        )
+        Row(Modifier.fillMaxWidth()) {
+            // TODO
+            tags.forEach { type ->
+                Text(
+                    text = type,
+                    style = EdTheme.typography.titleSmall,
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp),
+                )
+            }
+        }
     }
 }
 
@@ -289,7 +296,7 @@ private fun LessonPlaces(
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun LessonGroups(
-    groups: List<Group>,
+    groups: List<AttendeeInfo>,
     onItemClick: Typed1Listener<String>,
 ) {
     EdSurface(
@@ -314,11 +321,11 @@ private fun LessonGroups(
             groups.forEachIndexed { index, group ->
                 LessonItem(
                     imageUrl = "",
-                    imageInitials = group.title
+                    imageInitials = group.name
                         .split(' ')
                         .joinToString(separator = "") { it.take(1) },
-                    title = group.title,
-                    description = group.description,
+                    title = group.name,
+                    description = group.description.orEmpty(),
                     onItemClick = { onItemClick(group.id) },
                 )
                 if (index != groups.size - 1) {

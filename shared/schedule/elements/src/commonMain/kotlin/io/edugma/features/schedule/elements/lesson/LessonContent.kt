@@ -13,12 +13,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import io.edugma.core.api.utils.format
+import io.edugma.core.api.utils.getShortName
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
@@ -30,22 +30,19 @@ import io.edugma.core.designSystem.utils.edPlaceholder
 import io.edugma.core.designSystem.utils.rememberAsyncImagePainter
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.utils.Typed1Listener
-import io.edugma.features.schedule.domain.model.group.Group
-import io.edugma.features.schedule.domain.model.lesson.Lesson
+import io.edugma.features.schedule.domain.model.attentdee.AttendeeInfo
 import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
+import io.edugma.features.schedule.domain.model.lesson.LessonEvent
 import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubject
-import io.edugma.features.schedule.domain.model.lessonType.LessonType
 import io.edugma.features.schedule.domain.model.place.Place
-import io.edugma.features.schedule.domain.model.teacher.Teacher
-import io.edugma.features.schedule.domain.usecase.getShortName
 import io.edugma.features.schedule.elements.lesson.model.ScheduleItem
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @Composable
 fun LessonContent(
-    lesson: Lesson,
+    lesson: LessonEvent,
     displaySettings: LessonDisplaySettings,
-    onLessonClick: Typed1Listener<Lesson>,
+    onLessonClick: Typed1Listener<LessonEvent>,
 ) {
     EdCard(
         modifier = Modifier
@@ -57,7 +54,7 @@ fun LessonContent(
     ) {
         Column(Modifier.padding(start = 24.dp, end = 24.dp, top = 13.dp, bottom = 16.dp)) {
             WithContentAlpha(ContentAlpha.medium) {
-                LessonHeader(lesson.type)
+                LessonHeader(lesson.tags)
             }
             SpacerHeight(3.dp)
             WithContentAlpha(ContentAlpha.high) {
@@ -86,25 +83,23 @@ fun LessonContent(
 }
 
 @Composable
-fun LessonHeader(type: LessonType, isLoading: Boolean = false) {
-    LessonType(type, isLoading)
+fun LessonHeader(tags: List<String>, isLoading: Boolean = false) {
+    LessonTags(tags, isLoading)
 }
 
 @Composable
-fun LessonType(type: LessonType, isLoading: Boolean = false) {
-    val color = if (type.isImportant) {
-        EdTheme.colorScheme.error
-    } else {
-        Color.Unspecified
+fun LessonTags(tags: List<String>, isLoading: Boolean = false) {
+    Row(Modifier.fillMaxWidth()) {
+        tags.forEach { tag ->
+            EdLabel(
+                text = tag.uppercase(),
+                style = EdTheme.typography.labelSmall,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.edPlaceholder(visible = isLoading),
+            )
+        }
     }
-    Text(
-        text = type.title.uppercase(),
-        style = EdTheme.typography.labelSmall,
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
-        modifier = Modifier.edPlaceholder(visible = isLoading),
-        color = color,
-    )
 }
 
 @Composable
@@ -120,12 +115,12 @@ fun LessonTitle(subject: LessonSubject, isLoading: Boolean = false) {
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun TeachersContent(teachers: List<Teacher>, isLoading: Boolean = false) {
+fun TeachersContent(teachers: List<AttendeeInfo>, isLoading: Boolean = false) {
     val teachersText = remember(teachers) {
         if (teachers.size == 1) {
             teachers.first().name
         } else {
-            teachers.joinToString { it.getShortName() }
+            teachers.joinToString { getShortName(it.name) }
         }
     }
     EdLabel(
@@ -142,8 +137,8 @@ fun TeachersContent(teachers: List<Teacher>, isLoading: Boolean = false) {
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun GroupsContent(groups: List<Group>, isLoading: Boolean = false) {
-    val groupsText = remember(groups) { groups.joinToString { it.title } }
+fun GroupsContent(groups: List<AttendeeInfo>, isLoading: Boolean = false) {
+    val groupsText = remember(groups) { groups.joinToString { it.name } }
     EdLabel(
         text = groupsText,
         iconPainter = painterResource(EdIcons.ic_fluent_people_16_filled),
