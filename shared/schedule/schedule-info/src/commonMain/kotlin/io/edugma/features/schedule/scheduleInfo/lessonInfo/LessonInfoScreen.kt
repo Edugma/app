@@ -1,16 +1,10 @@
 package io.edugma.features.schedule.scheduleInfo.lessonInfo
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,24 +13,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
-import io.edugma.core.api.utils.format
 import io.edugma.core.designSystem.atoms.divider.EdDivider
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.molecules.avatar.EdAvatar
-import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
-import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
 import io.edugma.core.designSystem.utils.ContentAlpha
-import io.edugma.core.designSystem.utils.PrimaryContent
 import io.edugma.core.designSystem.utils.WithContentAlpha
 import io.edugma.core.designSystem.utils.rememberAsyncImagePainter
 import io.edugma.core.icons.EdIcons
@@ -45,7 +34,6 @@ import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.viewmodel.getViewModel
 import io.edugma.features.schedule.domain.model.attentdee.AttendeeInfo
-import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
 import io.edugma.features.schedule.domain.model.lesson.LessonEvent
 import io.edugma.features.schedule.domain.model.place.Place
 import io.edugma.features.schedule.domain.model.teacher.TeacherInfo
@@ -84,60 +72,61 @@ private fun LessonInfoContent(
     onGroupClick: Typed1Listener<String>,
     onPlaceClick: Typed1Listener<String>,
 ) {
-    Column(
-        Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-    ) {
-        EdSurface(
-            shape = EdTheme.shapes.large,
-        ) {
-            Column(Modifier.fillMaxWidth()) {
-                EdTopAppBar(
-                    title = "",
-                    onNavigationClick = onBackClick,
-                    colors = EdTopAppBarDefaults.colors(containerColor = Color.Transparent),
-                    windowInsets = WindowInsets.statusBars,
-                )
-                SpacerHeight(height = 32.dp)
-                state.lessonInfo?.lesson?.tags?.let { tags ->
-                    LessonTags(
-                        tags = tags,
-                    )
-                }
-                PrimaryContent {
-                    LessonTitle(
-                        title = state.lessonInfo?.lesson?.subject?.title ?: "",
-                    )
-                }
-                SpacerHeight(height = 4.dp)
-                state.lessonInfo?.dateTime?.let { LessonDateTime(lessonDateTime = it) }
-                SpacerHeight(height = 16.dp)
-            }
-        }
-        if (state.teachers.isNotEmpty()) {
-            SpacerHeight(height = 10.dp)
-            LessonTeachers(
-                teachers = state.teachers,
-                onItemClick = onTeacherClick,
-            )
-        }
-        if (state.lessonInfo?.lesson?.places?.isNotEmpty() == true) {
-            SpacerHeight(height = 10.dp)
-            LessonPlaces(
-                places = state.lessonInfo.lesson.places,
-                onItemClick = onPlaceClick,
-            )
-        }
-        if (state.lessonInfo?.lesson?.groups?.isNotEmpty() == true) {
-            SpacerHeight(height = 10.dp)
-            LessonGroups(
-                groups = state.lessonInfo.lesson.groups,
-                onItemClick = onGroupClick,
-            )
-        }
-        SpacerHeight(height = 10.dp)
-    }
+    // TODO
+//    Column(
+//        Modifier
+//            .fillMaxSize()
+//            .verticalScroll(rememberScrollState()),
+//    ) {
+//        EdSurface(
+//            shape = EdTheme.shapes.large,
+//        ) {
+//            Column(Modifier.fillMaxWidth()) {
+//                EdTopAppBar(
+//                    title = "",
+//                    onNavigationClick = onBackClick,
+//                    colors = EdTopAppBarDefaults.colors(containerColor = Color.Transparent),
+//                    windowInsets = WindowInsets.statusBars,
+//                )
+//                SpacerHeight(height = 32.dp)
+//                state.lessonInfo?.lesson?.tags?.let { tags ->
+//                    LessonTags(
+//                        tags = tags,
+//                    )
+//                }
+//                PrimaryContent {
+//                    LessonTitle(
+//                        title = state.lessonInfo?.lesson?.subject?.title ?: "",
+//                    )
+//                }
+//                SpacerHeight(height = 4.dp)
+//                state.lessonInfo?.dateTime?.let { LessonDateTime(lessonDateTime = it) }
+//                SpacerHeight(height = 16.dp)
+//            }
+//        }
+//        if (state.teachers.isNotEmpty()) {
+//            SpacerHeight(height = 10.dp)
+//            LessonTeachers(
+//                teachers = state.teachers,
+//                onItemClick = onTeacherClick,
+//            )
+//        }
+//        if (state.lessonInfo?.lesson?.places?.isNotEmpty() == true) {
+//            SpacerHeight(height = 10.dp)
+//            LessonPlaces(
+//                places = state.lessonInfo.lesson.places,
+//                onItemClick = onPlaceClick,
+//            )
+//        }
+//        if (state.lessonInfo?.lesson?.groups?.isNotEmpty() == true) {
+//            SpacerHeight(height = 10.dp)
+//            LessonGroups(
+//                groups = state.lessonInfo.lesson.groups,
+//                onItemClick = onGroupClick,
+//            )
+//        }
+//        SpacerHeight(height = 10.dp)
+//    }
 }
 
 @Composable
@@ -165,34 +154,34 @@ private fun LessonTitle(title: String) {
     )
 }
 
-@OptIn(ExperimentalResourceApi::class)
-@Composable
-private fun LessonDateTime(lessonDateTime: LessonDateTime) {
-    Row(
-        Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-    ) {
-        WithContentAlpha(ContentAlpha.medium) {
-            val timeStart = lessonDateTime.time.start.format("HH:mm")
-            val timeEnd = lessonDateTime.time.end.format("HH:mm")
-            val startDate = lessonDateTime.startDate.format("d MMMM yyyy (EE)") // + "!!"
-            EdLabel(
-                text = "$timeStart - $timeEnd",
-                style = EdTheme.typography.bodySmall,
-                iconPainter = painterResource(EdIcons.ic_fluent_clock_16_regular),
-                spacing = 3.dp,
-                modifier = Modifier.padding(start = 16.dp, end = 8.dp),
-            )
-            EdLabel(
-                text = startDate,
-                style = EdTheme.typography.bodySmall,
-                iconPainter = painterResource(EdIcons.ic_fluent_calendar_ltr_16_regular),
-                spacing = 3.dp,
-                modifier = Modifier.padding(start = 8.dp, end = 16.dp),
-            )
-        }
-    }
-}
+// @OptIn(ExperimentalResourceApi::class)
+// @Composable
+// private fun LessonDateTime(lessonDateTime: LessonEvent) {
+//    Row(
+//        Modifier.fillMaxWidth(),
+//        horizontalArrangement = Arrangement.SpaceBetween,
+//    ) {
+//        WithContentAlpha(ContentAlpha.medium) {
+//            val timeStart = lessonDateTime.time.start.format("HH:mm")
+//            val timeEnd = lessonDateTime.time.end.format("HH:mm")
+//            val startDate = lessonDateTime.startDate.format("d MMMM yyyy (EE)") // + "!!"
+//            EdLabel(
+//                text = "$timeStart - $timeEnd",
+//                style = EdTheme.typography.bodySmall,
+//                iconPainter = painterResource(EdIcons.ic_fluent_clock_16_regular),
+//                spacing = 3.dp,
+//                modifier = Modifier.padding(start = 16.dp, end = 8.dp),
+//            )
+//            EdLabel(
+//                text = startDate,
+//                style = EdTheme.typography.bodySmall,
+//                iconPainter = painterResource(EdIcons.ic_fluent_calendar_ltr_16_regular),
+//                spacing = 3.dp,
+//                modifier = Modifier.padding(start = 8.dp, end = 16.dp),
+//            )
+//        }
+//    }
+// }
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable

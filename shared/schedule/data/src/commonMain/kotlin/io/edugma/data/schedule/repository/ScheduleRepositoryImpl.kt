@@ -50,22 +50,26 @@ class ScheduleRepositoryImpl(
     }
 
     override fun getHistory(source: ScheduleSource): Flow<List<ScheduleRecord>> {
-        return scheduleCacheRepository.getScheduleHistory(source.id).map {
-            it?.map { ScheduleRecord(it.data.toModel(), it.timestamp) } ?: emptyList()
-        }
+        // TODO
+        TODO()
+//        return scheduleCacheRepository.getScheduleHistory(source.id).map {
+//            it?.map { ScheduleRecord(it.data.toModel(), it.timestamp) } ?: emptyList()
+//        }
     }
 
     override suspend fun getHistoryRecord(
         source: ScheduleSource,
         timestamp: Instant,
     ): ScheduleRecord? {
-        val cacheRecord = scheduleCacheRepository.getScheduleHistoryRecord(source.id, timestamp)
-        return cacheRecord?.let {
-            ScheduleRecord(
-                schedule = cacheRecord.data.toModel(),
-                timestamp = cacheRecord.timestamp,
-            )
-        }
+        // TODO
+        TODO()
+//        val cacheRecord = scheduleCacheRepository.getScheduleHistoryRecord(source.id, timestamp)
+//        return cacheRecord?.let {
+//            ScheduleRecord(
+//                schedule = cacheRecord.data.toModel(),
+//                timestamp = cacheRecord.timestamp,
+//            )
+//        }
     }
 
     // TODO

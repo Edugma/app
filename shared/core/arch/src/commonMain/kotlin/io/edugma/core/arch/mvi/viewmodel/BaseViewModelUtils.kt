@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
+@Deprecated("")
 fun <T, Y> Flow<T>.prop(propSelector: T.() -> Y): Flow<Y> {
     return this.map { propSelector(it) }
         .distinctUntilChanged()

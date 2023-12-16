@@ -1,5 +1,6 @@
 package io.edugma.features.schedule.lessonsReview
 
+import io.edugma.core.api.utils.onResult
 import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
@@ -12,13 +13,16 @@ class LessonsReviewViewModel(
 
     init {
         launchCoroutine {
-            useCase.getLessonsReview().collect {
-                newState {
-                    copy(
-                        lessons = it,
-                    )
-                }
-            }
+            useCase.getLessonsReview().onResult(
+                onSuccess = {
+                    newState {
+                        copy(
+                            lessons = it.value,
+                        )
+                    }
+                },
+                onFailure = {},
+            )
         }
     }
 }

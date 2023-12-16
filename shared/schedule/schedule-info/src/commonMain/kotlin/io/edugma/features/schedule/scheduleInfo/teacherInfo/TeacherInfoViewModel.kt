@@ -1,38 +1,33 @@
 package io.edugma.features.schedule.scheduleInfo.teacherInfo
 
-import io.edugma.core.api.utils.onFailure
-import io.edugma.core.api.utils.onSuccess
 import io.edugma.core.arch.mvi.newState
-import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
-import io.edugma.core.arch.mvi.viewmodel.prop
 import io.edugma.features.schedule.domain.model.source.ScheduleSource
 import io.edugma.features.schedule.domain.model.teacher.TeacherInfo
 import io.edugma.features.schedule.domain.repository.ScheduleInfoRepository
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.filterNotNull
 
 class TeacherInfoViewModel(
     private val repository: ScheduleInfoRepository,
 ) : BaseViewModel<TeacherInfoState>(TeacherInfoState()) {
     init {
-        launchCoroutine {
-            stateFlow.prop { id }.filterNotNull().collect {
-                repository.getTeacherInfo(it)
-                    .onSuccess {
-                        newState {
-                            copy(
-                                teacherInfo = it,
-                                scheduleSource = ScheduleSource(
-                                    type = "teacher",
-                                    key = it.id,
-                                ),
-                            )
-                        }
-                    }.onFailure {
-                    }.collect()
-            }
-        }
+        // TODO
+//        launchCoroutine {
+//            stateFlow.prop { id }.filterNotNull().collect {
+//                repository.getTeacherInfo(it)
+//                    .onSuccess {
+//                        newState {
+//                            copy(
+//                                teacherInfo = it,
+//                                scheduleSource = ScheduleSource(
+//                                    type = "teacher",
+//                                    key = it.id,
+//                                ),
+//                            )
+//                        }
+//                    }.onFailure {
+//                    }.collect()
+//            }
+//        }
     }
 
     fun setId(id: String) {

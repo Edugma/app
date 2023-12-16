@@ -4,14 +4,13 @@ import io.edugma.core.api.repository.CacheRepository
 import io.edugma.core.api.repository.SettingsRepository
 import io.edugma.core.api.repository.getFlow
 import io.edugma.core.api.repository.save
-import io.edugma.core.api.utils.Lce
+import io.edugma.core.api.utils.LceFlow
 import io.edugma.data.base.consts.CacheConst
 import io.edugma.data.base.consts.PrefConst
 import io.edugma.data.base.store.store
 import io.edugma.features.nodes.domain.NodesRepository
 import io.edugma.features.nodes.domain.model.Node
 import io.edugma.features.nodes.domain.model.NodeContract
-import kotlinx.coroutines.flow.Flow
 import kotlin.time.Duration.Companion.days
 
 class NodesRepositoryImpl(
@@ -44,8 +43,9 @@ class NodesRepositoryImpl(
         return settingsRepository.getString(PrefConst.SelectedNode)
     }
 
-    override fun getNodeContract(url: String): Flow<Lce<NodeContract?>> =
-        nodeStore.get(url)
+    override fun getNodeContract(url: String): LceFlow<NodeContract> {
+        return nodeStore.get(url)
+    }
 
     override suspend fun getNodeList(): List<Node> {
         return service.getNodeList().getOrThrow()

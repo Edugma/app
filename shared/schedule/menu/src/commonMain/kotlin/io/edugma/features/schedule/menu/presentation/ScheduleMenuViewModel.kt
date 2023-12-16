@@ -32,15 +32,18 @@ class ScheduleMenuViewModel(
     ScheduleMenuUiState(),
 ) {
     init {
-        launchCoroutine {
-            useCase.getCurrentScheduleFlow().collect {
-                val lessons = it.getOrNull()?.let {
-                    useCase.getScheduleDay(it, Clock.System.nowLocalDate())
-                } ?: emptyList()
-
-                getCurrentLesson(lessons)
-            }
-        }
+//        launchCoroutine {
+//            useCase.getCurrentScheduleFlow().onResult(
+//                {
+//                    val lessons = it.value.let {
+//                        useCase.getScheduleDay(it, Clock.System.nowLocalDate())
+//                    } ?: emptyList()
+//
+//                    getCurrentLesson(lessons)
+//                },
+//                onFailure = {},
+//            )
+//        }
 
         launchCoroutine {
             useCase.getSelectedSource().collect { selectedSource ->

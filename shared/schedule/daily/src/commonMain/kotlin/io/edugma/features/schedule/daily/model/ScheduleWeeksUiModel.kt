@@ -5,7 +5,10 @@ import io.edugma.features.schedule.domain.model.schedule.ScheduleWeeksCalendar
 class ScheduleWeeksUiModel(
     private val scheduleWeeksCalendar: ScheduleWeeksCalendar,
 ) {
-    fun get(index: Int): WeekUiModel {
+    val size: Int
+        get() = scheduleWeeksCalendar.size
+
+    operator fun get(index: Int): WeekUiModel {
         val days = scheduleWeeksCalendar.getWeek(index).map { scheduleDay ->
 
             DayUiModel(

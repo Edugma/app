@@ -24,15 +24,13 @@ import io.edugma.core.api.utils.nowLocalDate
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.withAlpha
-import io.edugma.core.utils.Typed2Listener
 import io.edugma.core.utils.viewmodel.getViewModel
-import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
 import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
 import io.edugma.features.schedule.domain.model.lesson.LessonEvent
 import io.edugma.features.schedule.domain.model.source.ScheduleSource
 import io.edugma.features.schedule.elements.lesson.LessonPlace
 import io.edugma.features.schedule.elements.lesson.LessonWindow
-import io.edugma.features.schedule.elements.lesson.model.ScheduleItem
+import io.edugma.features.schedule.elements.lesson.model.ScheduleEventUiModel
 import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
@@ -64,7 +62,7 @@ fun VerticalSchedule(
     scheduleDays: List<ScheduleDayUiModel>,
     lessonDisplaySettings: LessonDisplaySettings,
     currentDayIndex: Int,
-    onLessonClick: Typed2Listener<LessonEvent, LessonDateTime>,
+    onLessonClick: (LessonEvent) -> Unit,
 ) {
     val scrollState = rememberLazyListState()
 
@@ -87,16 +85,14 @@ fun VerticalSchedule(
             } else {
                 day.lessons.forEach { item ->
                     when (item) {
-                        is ScheduleItem.LessonEventUiModel -> {
+                        is ScheduleEventUiModel.Lesson -> {
                             LessonPlace(
-                                lessonEvent = item.lesson2,
+                                lessonEvent = item.lesson,
                                 lessonDisplaySettings = lessonDisplaySettings,
-                                onLessonClick = { lesson, lessonTime ->
-                                    onLessonClick(lesson, LessonDateTime(startDate = day.date, endDate = null, time = lessonTime))
-                                },
+                                onLessonClick = onLessonClick,
                             )
                         }
-                        is ScheduleItem.Window -> {
+                        is ScheduleEventUiModel.Window -> {
                             item {
                                 LessonWindow(
                                     lessonWindow = item,

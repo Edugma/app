@@ -35,7 +35,7 @@ import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
 import io.edugma.features.schedule.domain.model.lesson.LessonEvent
 import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubject
 import io.edugma.features.schedule.domain.model.place.Place
-import io.edugma.features.schedule.elements.lesson.model.ScheduleItem
+import io.edugma.features.schedule.elements.lesson.model.ScheduleEventUiModel
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @Composable
@@ -168,7 +168,7 @@ fun PlacesContent(places: List<Place>, isLoading: Boolean = false) {
 }
 
 @Composable
-fun LessonWindow(lessonWindow: ScheduleItem.Window) {
+fun LessonWindow(lessonWindow: ScheduleEventUiModel.Window) {
     val timeFrom = remember(lessonWindow) { lessonWindow.timeFrom.format("HH:mm") }
     val timeTo = remember(lessonWindow) { lessonWindow.timeTo.format("HH:mm") }
 

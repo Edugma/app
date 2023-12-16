@@ -1,5 +1,7 @@
 package io.edugma.data.schedule.repository
 
+import io.edugma.core.api.utils.LceFlow
+import io.edugma.core.api.utils.map
 import io.edugma.features.schedule.domain.model.lesson.LessonTime
 import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubject
 import io.edugma.features.schedule.domain.model.lessonType.LessonType
@@ -19,68 +21,68 @@ class LessonsReviewRepositoryImpl(
     private val scheduleRepository: ScheduleRepository,
 ) : LessonsReviewRepository {
 
-    override suspend fun getLessonsReview(source: ScheduleSource): List<LessonTimesReview> {
-        val schedule = scheduleRepository.getRawSchedule(source).first { it.isSuccess }.getOrNull()
+    override suspend fun getLessonsReview(source: ScheduleSource): LceFlow<List<LessonTimesReview>> {
+        return scheduleRepository.getRawSchedule(source).map { schedule ->
+            val lessons = schedule.lessons
+            val info = schedule
 
-        val lessons = schedule?.lessons ?: emptyList()
-        val info = schedule?.info
+            val resMap1 = mutableMapOf<String,
+                MutableMap<String,
+                    MutableMap<LessonDates, MutableCollection<LessonTime>>,
+                    >,
+                >()
 
-        val resMap1 = mutableMapOf<String,
-            MutableMap<String,
-                MutableMap<LessonDates, MutableCollection<LessonTime>>,
-                >,
-            >()
-
-        lessons.forEach { lessonDateTimes ->
-            lessonDateTimes.times.forEach { lessonDateTime ->
-                val lessonDates = LessonDates(lessonDateTime.startDate, lessonDateTime.endDate)
-
-                resMap1
-                    .getOrPut(lessonDateTimes.lesson.subjectId) { mutableMapOf() }
-                    .getOrPut(lessonDateTimes.lesson.typeId) { mutableMapOf() }
-                    .getOrPut(lessonDates) { LinkedHashSet() }
-                    .add(lessonDateTime.time)
+            lessons.forEach { lessonEvent ->
+//                lessonEvent
+//                val lessonDates = LessonDates(lessonDateTime.startDate, lessonDateTime.endDate)
+//
+//                resMap1
+//                    .getOrPut(lessonEvent.subjectId) { mutableMapOf() }
+//                        // TODO
+//                    .getOrPut("") { mutableMapOf() }
+//                    .getOrPut(lessonDates) { LinkedHashSet() }
+//                    .add(lessonDateTime.time)
             }
-        }
 
-        val resMap = resMap1.mapValues {
-            it.value.mapValues {
-                it.value.toList()
-                    .groupBy { it.first.start.dayOfWeek!! }
-                    .mapValues {
-                        it.value.groupBy { it.second }
-                            .mapValues { it.value.map { it.first } }
-                    }
+            val resMap = resMap1.mapValues {
+                it.value.mapValues {
+                    it.value.toList()
+                        .groupBy { it.first.start.dayOfWeek }
+                        .mapValues {
+                            it.value.groupBy { it.second }
+                                .mapValues { it.value.map { it.first } }
+                        }
+                }
             }
+
+            val resList = resMap.map { (subjectId, typeToDays) ->
+                val subject = info.subjects.firstOrNull { it.id == subjectId }
+                    ?.let { LessonSubject.from(it) }
+
+                LessonTimesReview(
+                    subject = subject!!,
+                    days = typeToDays.map { (typeId, mapOfDays) ->
+//                        val type = info?.typesInfo?.firstOrNull { it.id == typeId }
+//                            ?.let { LessonType.from(it) }
+
+                        LessonTimesReviewByType(
+                            lessonType = LessonType("", "", false),
+                            days = mapOfDays.flatMap { (dayOfWeek, datesAndTimes) ->
+                                datesAndTimes.map { (times, dates) ->
+                                    LessonReviewUnit(
+                                        dayOfWeek = dayOfWeek,
+                                        time = times.toList(),
+                                        dates = getLessonDates(dates),
+                                    )
+                                }
+                            }.sorted(),
+                        )
+                    }.sorted(),
+                )
+            }.sortedBy { it.subject }
+
+            resList
         }
-
-        val resList = resMap.map { (subjectId, typeToDays) ->
-            val subject = info?.subjectsInfo?.firstOrNull { it.id == subjectId }
-                ?.let { LessonSubject.from(it) }
-
-            LessonTimesReview(
-                subject = subject!!,
-                days = typeToDays.map { (typeId, mapOfDays) ->
-                    val type = info?.typesInfo?.firstOrNull { it.id == typeId }
-                        ?.let { LessonType.from(it) }
-
-                    LessonTimesReviewByType(
-                        lessonType = type!!,
-                        days = mapOfDays.flatMap { (dayOfWeek, datesAndTimes) ->
-                            datesAndTimes.map { (times, dates) ->
-                                LessonReviewUnit(
-                                    dayOfWeek = dayOfWeek,
-                                    time = times.toList(),
-                                    dates = getLessonDates(dates),
-                                )
-                            }
-                        }.sorted(),
-                    )
-                }.sorted(),
-            )
-        }.sortedBy { it.subject }
-
-        return resList
     }
 
     private fun getLessonDates(dates: List<LessonDates>): List<LessonDates> {

@@ -209,7 +209,7 @@ fun FreePlaceContent(
                                 )
                                 SecondaryContent {
                                     Text(
-                                        text = item.first.description,
+                                        text = item.first.description.orEmpty(),
                                         style = EdTheme.typography.titleSmall,
                                     )
                                 }

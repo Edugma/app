@@ -19,23 +19,24 @@ class PlaceInfoViewModel(
     private val freePlaceRepository: FreePlaceRepository,
 ) : BaseViewModel<PlaceInfoState>(PlaceInfoState()) {
     init {
-        launchCoroutine {
-            stateFlow.prop { id }.filterNotNull().collect {
-                repository.getPlaceInfo(it)
-                    .onSuccess {
-                        newState {
-                            copy(
-                                placeInfo = it,
-                                scheduleSource = ScheduleSource(
-                                    type = "place",
-                                    key = it.id,
-                                ),
-                            )
-                        }
-                    }.onFailure {
-                    }.collect()
-            }
-        }
+        // TODO
+//        launchCoroutine {
+//            stateFlow.prop { id }.filterNotNull().collect {
+//                repository.getPlaceInfo(it)
+//                    .onSuccess {
+//                        newState {
+//                            copy(
+//                                placeInfo = it,
+//                                scheduleSource = ScheduleSource(
+//                                    type = "place",
+//                                    key = it.id,
+//                                ),
+//                            )
+//                        }
+//                    }.onFailure {
+//                    }.collect()
+//            }
+//        }
 
         launchCoroutine {
             stateFlow.prop { id }.filterNotNull().collect {

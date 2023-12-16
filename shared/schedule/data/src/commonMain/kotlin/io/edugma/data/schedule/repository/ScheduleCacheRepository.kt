@@ -11,6 +11,7 @@ import io.edugma.core.api.repository.save
 import io.edugma.core.api.repository.saveObject
 import io.edugma.core.api.utils.runCoCatching
 import io.edugma.data.base.consts.CacheConst
+import io.edugma.features.schedule.domain.model.compact.CompactSchedule
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant

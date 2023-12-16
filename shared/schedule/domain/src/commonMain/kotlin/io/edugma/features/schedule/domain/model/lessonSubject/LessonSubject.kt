@@ -1,5 +1,6 @@
 package io.edugma.features.schedule.domain.model.lessonSubject
 
+import io.edugma.features.schedule.domain.model.compact.CompactLessonSubjectInfo
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -13,6 +14,12 @@ data class LessonSubject(
 
     companion object {
         fun from(info: LessonSubjectInfo) =
+            LessonSubject(
+                id = info.id,
+                title = info.title,
+            )
+
+        fun from(info: CompactLessonSubjectInfo) =
             LessonSubject(
                 id = info.id,
                 title = info.title,

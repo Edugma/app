@@ -4,18 +4,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.core.utils.Typed2Listener
+import io.edugma.features.schedule.domain.model.compact.zonedTime
 import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
 import io.edugma.features.schedule.domain.model.lesson.LessonEvent
-import io.edugma.features.schedule.domain.model.lesson.LessonTime
 
 fun LazyListScope.LessonPlace(
     lessonEvent: LessonEvent,
     lessonDisplaySettings: LessonDisplaySettings,
-    onLessonClick: Typed2Listener<LessonEvent, LessonTime>,
+    onLessonClick: (LessonEvent) -> Unit,
 ) {
     item {
         LessonTimeContent(lessonEvent)
@@ -24,15 +24,21 @@ fun LazyListScope.LessonPlace(
         LessonContent(
             lesson = lessonEvent,
             displaySettings = lessonDisplaySettings,
-            onLessonClick = { onLessonClick(it, lessonEvent) },
+            onLessonClick = { onLessonClick(lessonEvent) },
         )
     }
 }
 
 @Composable
-private fun LessonTimeContent(lessonTime: LessonTime) {
+private fun LessonTimeContent(lessonEvent: LessonEvent) {
+
+    val timeText = remember(lessonEvent.start, lessonEvent.end) {
+        val startTime = lessonEvent.start.zonedTime()
+        val endTime = lessonEvent.end.zonedTime()
+        "$startTime - endTime"
+    }
     Text(
-        text = "${lessonTime.start} - ${lessonTime.end}",
+        text = timeText,
         style = EdTheme.typography.titleSmall,
         modifier = Modifier
             .padding(start = 34.dp, end = 34.dp, top = 4.dp, bottom = 2.dp),

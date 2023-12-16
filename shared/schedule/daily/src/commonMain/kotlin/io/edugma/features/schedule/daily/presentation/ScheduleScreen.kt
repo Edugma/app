@@ -83,69 +83,73 @@ fun ScheduleContent(
 ) {
     Box {
         Column(Modifier.fillMaxSize()) {
-            val weekPagerState = rememberPagerState(state.weeksIndex) { state.weeks.size }
-            weekPagerState.bindTo(state.weeksIndex)
-            weekPagerState.onPageChanged { onAction(ScheduleDailyAction.OnWeeksPosChanged(it)) }
+            if (state.weeks != null) {
+                val weekPagerState = rememberPagerState(state.weeksIndex) { state.weeks.size }
+                weekPagerState.bindTo(state.weeksIndex)
+                weekPagerState.onPageChanged { onAction(ScheduleDailyAction.OnWeeksPosChanged(it)) }
 
-            EdSurface(
-                modifier = Modifier.fillMaxWidth(),
-                shape = EdTheme.shapes.large.bottom(),
-            ) {
-                Column(Modifier.fillMaxWidth()) {
-                    EdTopAppBar(
-                        title = stringResource(MR.strings.sch_schedule),
-                        subtitle = state.selectedDate.format("d MMMM, yyyy"),
-                        onNavigationClick = { onAction(ScheduleDailyAction.OnBack) },
-                        actions = {
-                            if (state.isLoading && state.schedule != null) {
-                                EdLoader(
-                                    size = EdLoaderSize.medium,
-                                )
-                                SpacerWidth(16.dp)
-                            }
-                        },
-                        colors = EdTopAppBarDefaults.transparent(),
-                        windowInsets = WindowInsets.statusBars,
-                    )
-                    DaysPager(
-                        weeks = state.weeks,
-                        dayOfWeekPos = state.dayOfWeekIndex,
-                        pagerState = weekPagerState,
-                        onDayClick = {
-                            onAction(ScheduleDailyAction.OnDayClick(it))
-                        },
-                        modifier = Modifier.padding(bottom = 3.dp),
-                    )
+                EdSurface(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = EdTheme.shapes.large.bottom(),
+                ) {
+                    Column(Modifier.fillMaxWidth()) {
+                        EdTopAppBar(
+                            title = stringResource(MR.strings.sch_schedule),
+                            subtitle = state.selectedDate.format("d MMMM, yyyy"),
+                            onNavigationClick = { onAction(ScheduleDailyAction.OnBack) },
+                            actions = {
+                                if (state.isLoading && state.schedule != null) {
+                                    EdLoader(
+                                        size = EdLoaderSize.medium,
+                                    )
+                                    SpacerWidth(16.dp)
+                                }
+                            },
+                            colors = EdTopAppBarDefaults.transparent(),
+                            windowInsets = WindowInsets.statusBars,
+                        )
+                        DaysPager(
+                            weeks = state.weeks,
+                            dayOfWeekPos = state.dayOfWeekIndex,
+                            pagerState = weekPagerState,
+                            onDayClick = {
+                                onAction(ScheduleDailyAction.OnDayClick(it))
+                            },
+                            modifier = Modifier.padding(bottom = 3.dp),
+                        )
+                    }
                 }
             }
             SpacerHeight(height = 10.dp)
-            EdSurface(
-                modifier = Modifier.fillMaxWidth(),
-                shape = EdTheme.shapes.large.top(),
-            ) {
-                if (state.isLoading && state.schedule == null) {
-                    ScheduleDayPlaceholder(4)
-                } else {
-                    val schedulePagerState = rememberPagerState(state.scheduleIndex) {
-                        state.schedule?.size ?: 0
-                    }
-                    schedulePagerState.bindTo(state.scheduleIndex)
-                    schedulePagerState.onPageChanged {
-                        onAction(ScheduleDailyAction.OnSchedulePosChanged(it))
-                    }
+            if (state.schedule != null) {
+                EdSurface(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = EdTheme.shapes.large.top(),
+                ) {
+                    if (state.isLoading && state.schedule == null) {
+                        ScheduleDayPlaceholder(4)
+                    } else {
+                        val schedulePagerState = rememberPagerState(state.scheduleIndex) {
+                            state.schedule?.size ?: 0
+                        }
+                        schedulePagerState.bindTo(state.scheduleIndex)
+                        schedulePagerState.onPageChanged {
+                            onAction(ScheduleDailyAction.OnSchedulePosChanged(it))
+                        }
 
-                    SchedulePager(
-                        scheduleDays = state.schedule ?: emptyList(),
-                        lessonDisplaySettings = state.lessonDisplaySettings,
-                        isRefreshing = state.isRefreshing,
-                        pagerState = schedulePagerState,
-                        onLessonClick = { lesson, dateTime ->
-                            onAction(ScheduleDailyAction.OnLessonClick(lesson, dateTime))
-                        },
-                        onRefreshing = {
-                            onAction(ScheduleDailyAction.OnRefreshing)
-                        },
-                    )
+                        SchedulePager(
+                            scheduleDays = state.schedule,
+                            lessonDisplaySettings = state.lessonDisplaySettings,
+                            isRefreshing = state.isRefreshing,
+                            pagerState = schedulePagerState,
+                            onLessonClick = { lesson ->
+                                onAction(ScheduleDailyAction.OnLessonClick(lesson))
+                            },
+                            onRefreshing = {
+                                onAction(ScheduleDailyAction.OnRefreshing)
+                            },
+                        )
+                    }
                 }
             }
         }

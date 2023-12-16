@@ -29,16 +29,13 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.navigationBarsPadding
 import io.edugma.core.resources.MR
 import io.edugma.core.utils.ClickListener
-import io.edugma.core.utils.Typed2Listener
-import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
 import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
 import io.edugma.features.schedule.domain.model.lesson.LessonEvent
-import io.edugma.features.schedule.domain.model.lesson.LessonTime
 import io.edugma.features.schedule.elements.lesson.LessonPlace
 import io.edugma.features.schedule.elements.lesson.LessonPlaceholder
 import io.edugma.features.schedule.elements.lesson.LessonWindow
-import io.edugma.features.schedule.elements.lesson.model.ScheduleItem
-import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
+import io.edugma.features.schedule.elements.lesson.model.ScheduleEventUiModel
+import io.edugma.features.schedule.elements.model.ScheduleCalendarUiModel
 import kotlinx.datetime.LocalDate
 
 private val relaxAnims = listOf(
@@ -50,7 +47,7 @@ private val relaxAnims = listOf(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SchedulePager(
-    scheduleDays: List<ScheduleDayUiModel>,
+    scheduleDays: ScheduleCalendarUiModel,
     lessonDisplaySettings: LessonDisplaySettings,
     isRefreshing: Boolean,
     pagerState: PagerState,
@@ -71,9 +68,7 @@ fun SchedulePager(
                 LessonList(
                     lessons = scheduleDay.lessons,
                     lessonDisplaySettings = lessonDisplaySettings,
-                    onLessonClick = { lesson, time ->
-                        onLessonClick(lesson, LessonDateTime(scheduleDay.date, null, time))
-                    },
+                    onLessonClick = onLessonClick,
                 )
             } else {
                 val randomAnim = remember { relaxAnims[page % relaxAnims.size] }
@@ -122,24 +117,22 @@ fun DateContent(date: LocalDate) {
 
 @Composable
 fun LessonList(
-    lessons: List<ScheduleItem>,
+    lessons: List<ScheduleEventUiModel>,
     lessonDisplaySettings: LessonDisplaySettings,
-    onLessonClick: Typed2Listener<LessonEvent, LessonTime>,
+    onLessonClick: (LessonEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(modifier = modifier.fillMaxSize()) {
         for (item in lessons) {
             when (item) {
-                is ScheduleItem.LessonEventUiModel -> {
+                is ScheduleEventUiModel.Lesson -> {
                     LessonPlace(
-                        lessonEvent = item.lesson2,
+                        lessonEvent = item.lesson,
                         lessonDisplaySettings = lessonDisplaySettings,
-                        onLessonClick = { lesson, lessonTime ->
-                            onLessonClick(lesson, lessonTime)
-                        },
+                        onLessonClick = onLessonClick,
                     )
                 }
-                is ScheduleItem.Window -> {
+                is ScheduleEventUiModel.Window -> {
                     item {
                         LessonWindow(
                             lessonWindow = item,

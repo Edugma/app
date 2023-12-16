@@ -1,7 +1,6 @@
 package io.edugma.features.schedule.calendar
 
-import io.edugma.core.api.utils.getOrDefault
-import io.edugma.core.api.utils.isFinalFailure
+import io.edugma.core.api.utils.onResult
 import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
@@ -19,10 +18,10 @@ class ScheduleCalendarViewModel(
 ) : BaseViewModel<ScheduleCalendarState>(ScheduleCalendarState()) {
     init {
         launchCoroutine {
-            useCase.getCurrentScheduleFlow().collect {
-                if (!it.isFinalFailure) {
+            useCase.getCurrentScheduleFlow().onResult(
+                onSuccess = {
                     newState {
-                        val schedule = calendarMapper.map(it.getOrDefault(emptyList()))
+                        val schedule = calendarMapper.map(it.value)
 
                         val (currentWeekIndex, currentDayOfWeekIndex) = getCurrentDayIndex(schedule)
 
@@ -36,8 +35,9 @@ class ScheduleCalendarViewModel(
                             this
                         }
                     }
-                }
-            }
+                },
+                onFailure = {},
+            )
         }
     }
 

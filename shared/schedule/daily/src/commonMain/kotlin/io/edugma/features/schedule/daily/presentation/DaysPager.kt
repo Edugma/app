@@ -43,16 +43,17 @@ import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.ui.isItemFullyVisible
 import io.edugma.core.utils.ui.sp
 import io.edugma.features.schedule.daily.model.DayUiModel
+import io.edugma.features.schedule.daily.model.ScheduleWeeksUiModel
 import io.edugma.features.schedule.daily.model.WeekUiModel
 import kotlinx.datetime.LocalDate
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DaysPager(
-    weeks: List<WeekUiModel>,
+    weeks: ScheduleWeeksUiModel,
     dayOfWeekPos: Int,
     pagerState: PagerState,
-    onDayClick: Typed1Listener<LocalDate>,
+    onDayClick: (LocalDate) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     HorizontalPager(
