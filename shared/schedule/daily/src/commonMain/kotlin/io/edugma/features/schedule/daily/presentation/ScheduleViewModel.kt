@@ -1,20 +1,16 @@
 package io.edugma.features.schedule.daily.presentation
 
-import io.edugma.core.api.utils.getOrThrow
 import io.edugma.core.api.utils.nowLocalDate
+import io.edugma.core.api.utils.onResult
 import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
-import io.edugma.core.arch.mvi.viewmodel.prop
 import io.edugma.core.navigation.schedule.ScheduleInfoScreens
-import io.edugma.features.schedule.domain.model.lesson.LessonDateTime
 import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
 import io.edugma.features.schedule.domain.model.lesson.LessonEvent
 import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
 import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
 import io.edugma.features.schedule.elements.utils.toUiModel
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.first
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.encodeToString
@@ -22,7 +18,9 @@ import kotlinx.serialization.json.Json
 
 class ScheduleViewModel(
     private val useCase: ScheduleUseCase,
-) : BaseActionViewModel<ScheduleDailyUiState, ScheduleDailyAction>(initState()) {
+) : BaseActionViewModel<ScheduleDailyUiState, ScheduleDailyAction>(
+    ScheduleDailyUiState.init(),
+) {
 
     init {
         launchCoroutine() {
@@ -52,50 +50,43 @@ class ScheduleViewModel(
     }
 
     private suspend fun getSchedule(forceUpdate: Boolean = false) {
-        useCase.getSchedule(forceUpdate = forceUpdate).collect {
-            if (it.isLoading) {
-                if (it.isSuccess) {
-                    val schedule = it.getOrThrow()
+        useCase.getCurrentScheduleFlow(forceUpdate = forceUpdate).onResult(
+            onSuccess = {
+                newState {
+                    setSchedule(it.value.toUiModel())
+                        .toLoading(it.isLoading)
+                }
+            },
+            onFailure = {
+                if (it.isLoading) {
                     newState {
-                        setSchedule(schedule.toUiModel())
-                            .setIsLoading(it.isLoading)
+                        toLoading(it.isLoading)
                     }
                 } else {
-                    newState {
-                        setIsLoading(it.isLoading)
-                    }
+                    // TODO on failure
                 }
-            } else if (it.isSuccess) {
-                val schedule = it.getOrThrow()
-                newState {
-                    setSchedule(schedule.toUiModel())
-                        .setIsLoading(it.isLoading)
-                }
-            } else {
-                // TODO on failure
-            }
-        }
+            },
+        )
     }
 
     override fun onAction(action: ScheduleDailyAction) {
         when (action) {
             ScheduleDailyAction.OnBack -> router.back()
             ScheduleDailyAction.OnFabClick -> newState {
-                setSelectedDate(selectedDate = Clock.System.nowLocalDate())
+                toDateSelected(date = Clock.System.nowLocalDate())
             }
             ScheduleDailyAction.OnRefreshing -> onRefreshing()
             is ScheduleDailyAction.OnDayClick -> newState {
-                setSelectedDate(selectedDate = action.date)
+                toDateSelected(date = action.date)
             }
             is ScheduleDailyAction.OnLessonClick -> onLessonClick(
                 lesson = action.lesson,
-                dateTime = action.dateTime,
             )
             is ScheduleDailyAction.OnWeeksPosChanged -> newState {
-                copy(weeksPos = action.weeksPos)
+                copy(weeksIndex = action.weeksPos)
             }
             is ScheduleDailyAction.OnSchedulePosChanged -> newState {
-                setSchedulePos(action.schedulePos)
+                toScheduleIndex(action.schedulePos)
             }
         }
     }
@@ -109,7 +100,8 @@ class ScheduleViewModel(
         }
     }
 
-    private fun onLessonClick(lesson: LessonEvent, dateTime: LessonDateTime) {
+    private fun onLessonClick(lesson: LessonEvent) {
+        val date = state.selectedDate
         router.navigateTo(
             ScheduleInfoScreens.LessonInfo(
                 lessonInfo = Json.encodeToString(
@@ -119,18 +111,10 @@ class ScheduleViewModel(
         )
     }
 
-    fun initDate(date: LocalDate?) {
+    fun onArgs(date: LocalDate?) {
         if (date != null) {
-            val schedule = stateFlow.value.schedule
-            if (schedule == null) {
-                launchCoroutine {
-                    val newSchedule = stateFlow.prop { this.schedule }
-                        .filterNotNull()
-                        .first()
-                    fixAndSetDate(date, newSchedule)
-                }
-            } else {
-                fixAndSetDate(date, schedule)
+            newState {
+                toDateSelected(date)
             }
         }
     }
@@ -148,13 +132,4 @@ class ScheduleViewModel(
             copy(selectedDate = fixedDate)
         }
     }
-}
-
-private fun initState(): ScheduleDailyUiState {
-    var state = ScheduleDailyUiState()
-    val pos = state.getWeeksPos(state.selectedDate)
-    state = state.copy(weeksPos = pos)
-    val weakPos = state.getDayOfWeekPos(state.selectedDate)
-    state = state.copy(dayOfWeekPos = weakPos)
-    return state
 }

@@ -1,6 +1,7 @@
 package io.edugma.core.api.utils
 
 class Lce<out T>(
+    @PublishedApi
     internal val result: Result<T>,
     /**
      * Returns `true` if this instance represents a loading outcome.
@@ -139,7 +140,7 @@ fun <R, T> Lce<T>.fold(
  * Note, that this function rethrows any [Throwable] exception thrown by [transform] function.
  * See [mapCatching] for an alternative that encapsulates exceptions.
  */
-fun <R, T> Lce<T>.map(transform: (value: T) -> R): Lce<R> =
+inline fun <R, T> Lce<T>.map(transform: (value: T) -> R): Lce<R> =
     Lce(this.result.map(transform), isLoading)
 
 /**

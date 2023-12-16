@@ -1,7 +1,7 @@
 package io.edugma.data.schedule.repository
 
-import io.edugma.core.api.utils.Lce
-import io.edugma.core.api.utils.loading
+import io.edugma.core.api.utils.LceFlow
+import io.edugma.core.api.utils.lce
 import io.edugma.core.api.utils.map
 import io.edugma.data.base.store.store
 import io.edugma.data.schedule.api.ScheduleService
@@ -13,11 +13,7 @@ import io.edugma.features.schedule.domain.model.source.ScheduleSource
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceType
 import io.edugma.features.schedule.domain.model.teacher.TeacherInfo
 import io.edugma.features.schedule.domain.repository.ScheduleRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Instant
 import kotlin.time.Duration.Companion.seconds
@@ -28,7 +24,7 @@ class ScheduleRepositoryImpl(
 ) : ScheduleRepository {
 
     private val scheduleMockRepository = ScheduleMockRepository()
-    override fun getRawSchedule(source: ScheduleSource): Flow<Lce<CompactSchedule?>> {
+    override fun getRawSchedule(source: ScheduleSource): LceFlow<CompactSchedule> {
         return scheduleStore0.get(source, false)
     }
 
@@ -75,24 +71,24 @@ class ScheduleRepositoryImpl(
     // TODO
     override fun getTeacher(source: ScheduleSource, id: String) =
         scheduleStore0.get(source)
-            .map { it.map { it?.attendees?.firstOrNull { it.id == id } as? TeacherInfo }.getOrNull() }
-            .flowOn(Dispatchers.IO)
+            .map { it?.attendees?.firstOrNull { it.id == id } as? TeacherInfo }
 
-    override fun getSchedule(source: ScheduleSource, forceUpdate: Boolean):
-        Flow<Lce<ScheduleCalendar?>> =
-        if (source.type == ScheduleSourceType.COMPLEX) {
-            flow {
-                emit(
-                    scheduleService.getComplexSchedule(
+    override fun getSchedule(
+        source: ScheduleSource,
+        forceUpdate: Boolean,
+    ): LceFlow<ScheduleCalendar> {
+        return if (source.type == ScheduleSourceType.COMPLEX) {
+            lce {
+                emitResult(
+                    result = scheduleService.getComplexSchedule(
                         ScheduleComplexFilter(),
                     ),
+                    isLoading = false,
                 )
-            }
-                .map { it.loading(false).map { ScheduleCalendar(it) } }
-                .flowOn(Dispatchers.IO)
+            }.map { ScheduleCalendar(it) }
         } else {
             scheduleStore0.get(source, forceUpdate)
-                .map { it.map { it?.let { ScheduleCalendar(it) } } }
-                .flowOn(Dispatchers.IO)
+                .map { ScheduleCalendar(it) }
         }
+    }
 }

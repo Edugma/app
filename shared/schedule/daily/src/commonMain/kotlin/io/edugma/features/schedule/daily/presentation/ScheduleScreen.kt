@@ -60,8 +60,8 @@ fun ScheduleScreen(
 ) {
     val state by viewModel.stateFlow.collectAsState()
 
-    LaunchedEffect(Unit) {
-        viewModel.initDate(date)
+    LaunchedEffect(date) {
+        viewModel.onArgs(date)
     }
 
     FeatureScreen(
@@ -83,8 +83,8 @@ fun ScheduleContent(
 ) {
     Box {
         Column(Modifier.fillMaxSize()) {
-            val weekPagerState = rememberPagerState(state.weeksPos) { state.weeks.size }
-            weekPagerState.bindTo(state.weeksPos)
+            val weekPagerState = rememberPagerState(state.weeksIndex) { state.weeks.size }
+            weekPagerState.bindTo(state.weeksIndex)
             weekPagerState.onPageChanged { onAction(ScheduleDailyAction.OnWeeksPosChanged(it)) }
 
             EdSurface(
@@ -109,7 +109,7 @@ fun ScheduleContent(
                     )
                     DaysPager(
                         weeks = state.weeks,
-                        dayOfWeekPos = state.dayOfWeekPos,
+                        dayOfWeekPos = state.dayOfWeekIndex,
                         pagerState = weekPagerState,
                         onDayClick = {
                             onAction(ScheduleDailyAction.OnDayClick(it))
@@ -126,10 +126,10 @@ fun ScheduleContent(
                 if (state.isLoading && state.schedule == null) {
                     ScheduleDayPlaceholder(4)
                 } else {
-                    val schedulePagerState = rememberPagerState(state.schedulePos) {
+                    val schedulePagerState = rememberPagerState(state.scheduleIndex) {
                         state.schedule?.size ?: 0
                     }
-                    schedulePagerState.bindTo(state.schedulePos)
+                    schedulePagerState.bindTo(state.scheduleIndex)
                     schedulePagerState.onPageChanged {
                         onAction(ScheduleDailyAction.OnSchedulePosChanged(it))
                     }

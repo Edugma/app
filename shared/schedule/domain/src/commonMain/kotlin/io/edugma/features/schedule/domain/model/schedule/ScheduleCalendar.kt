@@ -1,6 +1,5 @@
 package io.edugma.features.schedule.domain.model.schedule
 
-import io.edugma.core.api.utils.nowLocalDate
 import io.edugma.features.schedule.domain.model.attentdee.AttendeeType
 import io.edugma.features.schedule.domain.model.compact.CompactLessonEvent
 import io.edugma.features.schedule.domain.model.compact.CompactSchedule
@@ -9,7 +8,6 @@ import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubject
 import io.edugma.features.schedule.domain.model.place.Place
 import io.edugma.features.schedule.domain.model.rrule.Frequency
 import io.edugma.features.schedule.domain.model.rrule.RRule
-import kotlinx.datetime.Clock
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
@@ -17,15 +15,29 @@ import kotlinx.datetime.daysUntil
 import kotlinx.datetime.plus
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
+import kotlin.properties.Delegates.notNull
 
 class ScheduleCalendar(
     private val compactSchedule: CompactSchedule,
 ) {
-    private val scheduleDays: MutableMap<Int, ScheduleDay> = HashMap()
-    private val today = Clock.System.nowLocalDate()
-    val size: Int = Int.MAX_VALUE
-    private val todayIndex = size / 2
-    private val currentTimeZone = TimeZone.currentSystemDefault()
+    private val scheduleDays: MutableMap<Int, ScheduleDay> = hashMapOf()
+    private var today: LocalDate by notNull()
+    var size: Int by notNull()
+        private set
+    private var todayIndex: Int by notNull()
+    private var currentTimeZone: TimeZone by notNull()
+
+    fun init(
+        today: LocalDate,
+        size: Int,
+        todayIndex: Int,
+        timeZone: TimeZone = TimeZone.currentSystemDefault(),
+    ) {
+        this.today = today
+        this.size = size
+        this.todayIndex = todayIndex
+        this.currentTimeZone = timeZone
+    }
 
     private fun getSchedule(date: LocalDate): ScheduleDay {
         val lessons = mutableListOf<LessonEvent>()
@@ -37,6 +49,7 @@ class ScheduleCalendar(
         lessons.sortBy { it.start.dateTime.toInstant(it.start.timeZone) }
 
         return ScheduleDay(
+            isToday = date == today,
             date = date,
             lessons = lessons,
         )
@@ -91,21 +104,21 @@ class ScheduleCalendar(
         TODO()
     }
 
-    fun get(date: LocalDate): ScheduleDay {
+    operator fun get(date: LocalDate): ScheduleDay {
         val index = today.daysUntil(date)
         return scheduleDays.getOrPut(index) {
             getSchedule(date)
         }
     }
 
-    fun get(index: Int): ScheduleDay {
+    operator fun get(index: Int): ScheduleDay {
         return scheduleDays.getOrPut(index) {
             val date = today.plus(DatePeriod(days = index - todayIndex))
             getSchedule(date)
         }
     }
 
-    fun CompactLessonEvent.toModel(info: CompactSchedule): LessonEvent {
+    private fun CompactLessonEvent.toModel(info: CompactSchedule): LessonEvent {
         return LessonEvent(
             id = this.id,
             subject = info.subjects.first { it.id == this.subjectId }.let {

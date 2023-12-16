@@ -2,8 +2,9 @@ package io.edugma.data.base.store
 
 import co.touchlab.kermit.Logger
 import io.edugma.core.api.model.CachedResult
-import io.edugma.core.api.utils.Lce
+import io.edugma.core.api.utils.LceFlow
 import io.edugma.core.api.utils.TAG
+import io.edugma.core.api.utils.lce
 import io.edugma.core.api.utils.runCoCatching
 import io.ktor.util.collections.ConcurrentMap
 import kotlinx.coroutines.CoroutineScope
@@ -11,7 +12,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
 import kotlin.coroutines.CoroutineContext
 import kotlin.time.Duration
 
@@ -26,12 +26,19 @@ class StoreImpl<TKey, TData>(
     private val scope = coroutineContext?.let { CoroutineScope(it) }
     private val currentRequests = ConcurrentMap<TKey, Job>()
 
-    override fun get(key: TKey, forceUpdate: Boolean): Flow<Lce<TData?>> {
-        return flow {
+    override fun get(key: TKey, forceUpdate: Boolean): LceFlow<TData> {
+        return lce {
             val cachedData = reader(key).first()
 
             val needUpdate = cachedData?.isExpired(expiresIn) != false || forceUpdate
-            emit(Lce(Result.success(cachedData?.data), needUpdate))
+            val data = cachedData?.data
+            if (data != null) {
+                emitSuccess(data, needUpdate)
+            } else if (!needUpdate) {
+                // TODO
+                emitFailure(Exception("Not found in cache and cache is not expired"), false)
+            }
+
             if (needUpdate) {
                 val res = if (scope == null) {
                     fetchAndSave(key)
@@ -41,9 +48,10 @@ class StoreImpl<TKey, TData>(
                     }.await()
                 }
                 res.onSuccess { newData ->
-                    emit(Lce(Result.success(newData), false))
+                    emitSuccess(newData, false)
                 }.onFailure {
                     Logger.e("Fail to fetch data", it, tag = this@StoreImpl.TAG)
+                    emitFailure(it, false)
                 }
             }
         }

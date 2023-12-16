@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ScheduleDay(
+    val isToday: Boolean,
     val date: LocalDate,
     val lessons: List<LessonEvent>,
 )

@@ -19,7 +19,7 @@ class ScheduleCalendarViewModel(
 ) : BaseViewModel<ScheduleCalendarState>(ScheduleCalendarState()) {
     init {
         launchCoroutine {
-            useCase.getSchedule().collect {
+            useCase.getCurrentScheduleFlow().collect {
                 if (!it.isFinalFailure) {
                     newState {
                         val schedule = calendarMapper.map(it.getOrDefault(emptyList()))

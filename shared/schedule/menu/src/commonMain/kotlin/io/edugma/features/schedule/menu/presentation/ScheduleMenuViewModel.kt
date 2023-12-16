@@ -33,7 +33,7 @@ class ScheduleMenuViewModel(
 ) {
     init {
         launchCoroutine {
-            useCase.getSchedule().collect {
+            useCase.getCurrentScheduleFlow().collect {
                 val lessons = it.getOrNull()?.let {
                     useCase.getScheduleDay(it, Clock.System.nowLocalDate())
                 } ?: emptyList()

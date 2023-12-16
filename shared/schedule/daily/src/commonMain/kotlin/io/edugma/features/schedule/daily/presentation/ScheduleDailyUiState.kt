@@ -1,120 +1,141 @@
 package io.edugma.features.schedule.daily.presentation
 
 import io.edugma.core.api.utils.nowLocalDate
-import io.edugma.features.schedule.daily.model.WeekUiModel
+import io.edugma.features.schedule.daily.model.ScheduleWeeksUiModel
 import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
-import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
+import io.edugma.features.schedule.domain.model.schedule.ScheduleWeeksCalendar
+import io.edugma.features.schedule.elements.model.ScheduleCalendarUiModel
 import kotlinx.datetime.Clock
+import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.daysUntil
 import kotlinx.datetime.isoDayNumber
+import kotlinx.datetime.plus
 
 data class ScheduleDailyUiState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
     val isRefreshing: Boolean = false,
-    val schedule: List<ScheduleDayUiModel>? = null,
-    val weeks: List<WeekUiModel> = emptyList(),
+    val schedule: ScheduleCalendarUiModel? = null,
+    val weeks: ScheduleWeeksUiModel? = null,
     val lessonDisplaySettings: LessonDisplaySettings = LessonDisplaySettings.Default,
 
-    val selectedDate: LocalDate = Clock.System.nowLocalDate(),
-    val schedulePos: Int = 0,
-    val weeksPos: Int = 0,
-    val dayOfWeekPos: Int = 0,
+    val today: LocalDate,
+    val scheduleSize: Int,
+    val todayScheduleIndex: Int,
+    val todayWeeksIndex: Int,
+    val todayDayOfWeekIndex: Int,
+
+    val selectedDate: LocalDate = today,
+    val scheduleIndex: Int = todayScheduleIndex,
+    val weeksIndex: Int = todayWeeksIndex,
+    val dayOfWeekIndex: Int = todayDayOfWeekIndex,
 
     val showBackToTodayFab: Boolean = false,
 ) {
-    fun setSchedule(schedule: List<ScheduleDayUiModel>?): ScheduleDailyUiState {
+    fun setSchedule(schedule: ScheduleCalendarUiModel?): ScheduleDailyUiState {
+        schedule?.init(
+            today = this.today,
+            size = this.scheduleSize,
+            todayIndex = this.todayScheduleIndex,
+        )
+        val weeks = schedule?.scheduleCalendar?.let { calendar ->
+            ScheduleWeeksUiModel(ScheduleWeeksCalendar(calendar))
+        }
         return copy(
             schedule = schedule,
-        ).setDates()
+            weeks = weeks,
+        )
     }
 
-    fun setIsLoading(isLoading: Boolean): ScheduleDailyUiState {
+    fun toDateSelected(date: LocalDate): ScheduleDailyUiState {
+        return copy(
+            selectedDate = date,
+        ).updateIndexes()
+    }
+
+    fun toScheduleIndex(index: Int): ScheduleDailyUiState {
+        val daysUntilToday = index - todayScheduleIndex
+        val selectedDate = today.plus(DatePeriod(days = daysUntilToday))
+        return toDateSelected(selectedDate)
+    }
+
+    private fun getScheduleIndexByDate(date: LocalDate): Int {
+        return todayScheduleIndex + today.daysUntil(date)
+    }
+
+    private fun getWeeksIndex(date: LocalDate): Int {
+        val daysUntilToday = today.daysUntil(date)
+        val dayOfWeekIndex = getDayOfWeekIndex(date)
+        val mondayIndex = todayScheduleIndex + daysUntilToday - dayOfWeekIndex
+        return mondayIndex / 7
+    }
+
+    private fun getDayOfWeekIndex(date: LocalDate): Int {
+        return date.dayOfWeek.isoDayNumber - 1
+    }
+
+    private fun updateIndexes(): ScheduleDailyUiState {
+        val scheduleIndex = getScheduleIndexByDate(selectedDate)
+        val weeksIndex = getWeeksIndex(selectedDate)
+        val dayOfWeekPos = getDayOfWeekIndex(selectedDate)
+        val dateIsToday = scheduleIndex == todayScheduleIndex
+
+        return copy(
+            scheduleIndex = scheduleIndex,
+            weeksIndex = weeksIndex,
+            dayOfWeekIndex = dayOfWeekPos,
+            showBackToTodayFab = !dateIsToday,
+        )
+    }
+
+    fun toLoading(isLoading: Boolean): ScheduleDailyUiState {
         return copy(
             isLoading = isLoading && !isRefreshing,
             isRefreshing = isLoading && isRefreshing,
         ).updateIsError()
     }
-    fun updateIsError(): ScheduleDailyUiState {
+
+    private fun updateIsError(): ScheduleDailyUiState {
         val isError = !isLoading && isError
         return copy(isError = !isLoading && isError)
     }
 
-    fun setDates(): ScheduleDailyUiState {
-        val schedule = schedule ?: return this
+    companion object {
 
-        val weeks = WeekUiModel.fromSchedule(schedule)
-        val fixedSelectedDate = schedule.fixSelectedDate(selectedDate)
-        val schedulePos = schedule.getSchedulePos(selectedDate)
-        val weekPos = getWeeksPos(selectedDate)
-        val dayOfWeekPos = getDayOfWeekPos(selectedDate)
+        fun init(): ScheduleDailyUiState {
+            val weeksCount = Int.MAX_VALUE / 7
+            val daysCount = weeksCount * 7
 
-        return copy(
-            weeks = weeks,
-            schedulePos = schedulePos,
-            weeksPos = weekPos,
-            dayOfWeekPos = dayOfWeekPos,
-            selectedDate = fixedSelectedDate,
-        )
-    }
+            val today = Clock.System.nowLocalDate()
 
-    fun updateDatePos(): ScheduleDailyUiState {
-        val date = schedule?.getOrNull(schedulePos)?.date ?: Clock.System.nowLocalDate()
-        return copy(selectedDate = date).updatePositions()
-    }
+            val (todayIndex, todayWeeksIndex) = calculateTodayIndex(
+                daysCount = daysCount,
+                today = today,
+            )
 
-    fun setSelectedDate(selectedDate: LocalDate) =
-        copy(selectedDate = selectedDate)
-            .updatePositions()
-
-    fun updatePositions(): ScheduleDailyUiState {
-        val schedule = schedule ?: return this
-        val schedulePos = schedule.getSchedulePos(selectedDate)
-        val weekPos = getWeeksPos(selectedDate)
-        val dayOfWeekPos = getDayOfWeekPos(selectedDate)
-        val dateIsToday = selectedDate == Clock.System.nowLocalDate()
-
-        return copy(
-            schedulePos = schedulePos,
-            weeksPos = weekPos,
-            dayOfWeekPos = dayOfWeekPos,
-            showBackToTodayFab = !dateIsToday,
-        )
-    }
-
-    fun setSchedulePos(schedulePos: Int): ScheduleDailyUiState {
-        schedule ?: return this
-        return copy(
-            schedulePos = schedule.coerceSchedulePos(schedulePos),
-        ).updateDatePos()
-    }
-
-    fun getWeeksPos(date: LocalDate): Int {
-        return weeks.indexOfFirst { it.days.any { it.date == date } }.coerceAtLeast(0)
-    }
-
-    fun getDayOfWeekPos(date: LocalDate): Int {
-        return date.dayOfWeek.isoDayNumber - 1
-    }
-
-    private fun List<ScheduleDayUiModel>.fixSelectedDate(date: LocalDate): LocalDate {
-        val schedulePos = getSchedulePos(date)
-        return this[schedulePos].date
-    }
-
-    private fun List<ScheduleDayUiModel>.getSchedulePos(date: LocalDate): Int {
-        var index = this.indexOfFirst { it.date == date }
-        if (index == -1) {
-            index = if (this.all { it.date < date }) {
-                this.lastIndex
-            } else {
-                0
-            }
+            return ScheduleDailyUiState(
+                scheduleSize = daysCount,
+                today = today,
+                todayScheduleIndex = todayIndex,
+                todayWeeksIndex = todayWeeksIndex,
+                todayDayOfWeekIndex = today.dayOfWeek.isoDayNumber - 1,
+            )
         }
-        return coerceSchedulePos(index)
-    }
 
-    private fun List<ScheduleDayUiModel>.coerceSchedulePos(schedulePos: Int): Int {
-        return schedulePos.coerceIn(0, (size - 1).coerceAtLeast(0))
+        private fun calculateTodayIndex(
+            daysCount: Int,
+            today: LocalDate,
+        ): Pair<Int, Int> {
+            val middleIndex = daysCount / 2
+            val middleIndexDayOfWeak = middleIndex % 7
+            val middleMondayIndex = middleIndex - middleIndexDayOfWeak
+
+            val todayIndexDayOfWeek = today.dayOfWeek.isoDayNumber - 1
+            val todayIndex = middleMondayIndex + todayIndexDayOfWeek
+            val todayWeeksIndex = todayIndexDayOfWeek / 7
+
+            return todayIndex to todayWeeksIndex
+        }
     }
 }

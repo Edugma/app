@@ -4,19 +4,16 @@ import io.edugma.core.api.utils.insertSeparators
 import io.edugma.core.api.utils.untilMinutes
 import io.edugma.features.schedule.domain.model.lesson.LessonEvent
 import io.edugma.features.schedule.domain.model.lesson.LessonTime
-import io.edugma.features.schedule.domain.model.schedule.ScheduleDay
+import io.edugma.features.schedule.domain.model.schedule.ScheduleCalendar
 import io.edugma.features.schedule.elements.lesson.model.ScheduleItem
-import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
+import io.edugma.features.schedule.elements.model.ScheduleCalendarUiModel
 import kotlin.jvm.JvmName
 
 @JvmName("toUiModelScheduleDay")
-fun List<ScheduleDay>.toUiModel(): List<ScheduleDayUiModel> {
-    return map {
-        ScheduleDayUiModel(
-            date = it.date,
-            lessons = it.lessons.toUiModel(),
-        )
-    }
+fun ScheduleCalendar.toUiModel(): ScheduleCalendarUiModel {
+    return ScheduleCalendarUiModel(
+        scheduleCalendar = this,
+    )
 }
 
 @JvmName("toUiModelLessonsByTime")
