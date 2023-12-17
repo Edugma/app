@@ -33,7 +33,7 @@ class ScheduleRepositoryImpl(
             scheduleService.getCompactSchedule(
                 type = key.type,
                 key = key.key,
-            ).getOrThrow()
+            )
         }
         // fetcher { key -> scheduleMockRepository.getSuspendMockSchedule().getOrThrow() }
         cache {

@@ -19,8 +19,8 @@ class ScheduleService(
     private val client: EdugmaHttpClient,
 ) {
     // Compact
-    suspend fun getCompactSchedule(type: String, key: String): Result<CompactSchedule> =
-        client.getResult("$PREFIX-compact-schedule") {
+    suspend fun getCompactSchedule(type: String, key: String): CompactSchedule =
+        client.get("$PREFIX-compact") {
             param("type", type)
             param("key", key)
         }
