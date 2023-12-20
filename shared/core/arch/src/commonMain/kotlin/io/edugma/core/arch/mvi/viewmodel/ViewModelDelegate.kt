@@ -43,7 +43,7 @@ abstract class ViewModelDelegate<TState> : StateStore<TState> {
         _setState = setState
         this.viewModelScope = parentViewModel.viewModelScope
         _errorHandler = parentViewModel.errorHandler
-        _stateFlow = stateFlow.stateIn(viewModelScope, SharingStarted.Lazily, initialState)
+        _stateFlow = stateFlow.stateIn(viewModelScope, SharingStarted.Eagerly, initialState)
     }
 }
 

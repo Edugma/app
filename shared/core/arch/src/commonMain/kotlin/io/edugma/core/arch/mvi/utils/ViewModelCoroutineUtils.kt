@@ -1,6 +1,7 @@
 package io.edugma.core.arch.mvi.utils
 
 import co.touchlab.kermit.Logger
+import io.edugma.core.arch.mvi.delegate.DebounceDelegate
 import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
 import io.edugma.core.arch.mvi.viewmodel.ViewModelDelegate
 import io.edugma.core.arch.viewmodel.RestrictedApi
@@ -28,6 +29,43 @@ inline fun BaseActionViewModel<*, *>.launchCoroutine(
         },
         block = block,
     )
+}
+
+inline fun DebounceDelegate.launchCoroutine(
+    dispatcher: CoroutineDispatcher = Dispatchers.IO,
+    crossinline onError: (Throwable) -> Unit = {},
+    noinline block: suspend CoroutineScope.() -> Unit,
+): Job {
+    return launchCoroutine(
+        dispatcher = dispatcher,
+        errorHandler = ErrorHandler { cont, it ->
+            errorHandler?.handleException(cont, it)
+            onError(it)
+            Logger.e("ViewModel launchCoroutine error: ", it, tag = "launchCoroutine")
+        },
+        block = block,
+    )
+}
+
+@PublishedApi
+internal fun DebounceDelegate.launchCoroutine(
+    dispatcher: CoroutineDispatcher = Dispatchers.IO,
+    errorHandler: CoroutineExceptionHandler? = null,
+    block: suspend CoroutineScope.() -> Unit,
+): Job {
+    val coroutineContext = if (errorHandler != null) {
+        dispatcher + errorHandler
+    } else {
+        dispatcher + ErrorHandler { _, it ->
+            Logger.e("launchCoroutine: ", it, tag = "ViewModelCoroutine")
+        }
+    }
+    return with(scope) {
+        launchDebounce(
+            context = coroutineContext,
+            block = block,
+        )
+    }
 }
 
 @PublishedApi

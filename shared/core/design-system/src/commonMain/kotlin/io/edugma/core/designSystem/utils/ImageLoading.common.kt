@@ -53,12 +53,12 @@ fun rememberAsyncImagePainter(
             ImageRequest {
                 data(model)
                 scale(contentScale.toScale())
-                placeholderPainter?.let { placeholderPainter(it) }
-                errorPainter?.let { errorPainter(it) }
             }
         },
         imageLoader = imageLoader.loader,
         filterQuality = filterQuality,
+        placeholderPainter = placeholderPainter,
+        errorPainter = errorPainter,
     )
 }
 

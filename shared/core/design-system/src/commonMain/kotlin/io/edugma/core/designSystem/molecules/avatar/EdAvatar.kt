@@ -16,8 +16,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.resources.compose.painterResource
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.rememberAsyncImagePainter
+import io.edugma.core.icons.EdIcons
 
 @Composable
 fun EdAvatar(
@@ -54,7 +56,15 @@ fun EdAvatar(
             }
         }
     } else {
-        val painter = rememberAsyncImagePainter(url)
+        val painter = rememberAsyncImagePainter(
+            model = url,
+            placeholderPainter = {
+                painterResource(EdIcons.ic_color_placeholder)
+            },
+            errorPainter = {
+                painterResource(EdIcons.ic_color_error)
+            },
+        )
         Image(
             painter = painter,
             contentDescription = null,

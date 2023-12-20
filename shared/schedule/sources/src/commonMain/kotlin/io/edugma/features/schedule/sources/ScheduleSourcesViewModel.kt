@@ -1,7 +1,9 @@
 package io.edugma.features.schedule.sources
 
+import androidx.compose.runtime.Immutable
 import io.edugma.core.api.model.PagingDto
 import io.edugma.core.api.model.map
+import io.edugma.core.arch.mvi.delegate.debounce
 import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
@@ -55,6 +57,8 @@ class ScheduleSourcesViewModel(
         }
     }
 
+    private val queryDebounce = debounce()
+
     override fun onAction(action: ScheduleSourcesAction) {
         when (action) {
             ScheduleSourcesAction.OnLoadPage -> {
@@ -100,8 +104,9 @@ class ScheduleSourcesViewModel(
         newState {
             setQuery(query = query)
         }
-        // TODO сделать таймер
-        pagingViewModel.resetAndLoad()
+        queryDebounce.launchCoroutine {
+            pagingViewModel.resetAndLoad()
+        }
     }
 
     fun onApplyComplexSearch() {
@@ -120,6 +125,7 @@ class ScheduleSourcesViewModel(
     }
 }
 
+@Immutable
 data class ScheduleSourceState(
     val tabs: List<ScheduleSourceType> = emptyList(),
     val selectedTab: ScheduleSourceType? = null,
@@ -144,12 +150,8 @@ data class ScheduleSourceState(
     }
 }
 
+@Immutable
 data class ScheduleSourceUiModel(
     val isFavorite: Boolean,
     val source: ScheduleSourceFull,
-)
-
-data class ScheduleFilterState(
-    val filters: List<Pair<String, Boolean>> = emptyList(),
-    val query: String = "",
 )

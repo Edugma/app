@@ -13,7 +13,7 @@ kotlinxAtomic = "0.23.1"
 
 
 # common
-androidxAnnotations = "1.7.0"
+androidxAnnotations = "1.7.1"
 androidxDatastore = "1.1.0-alpha07"
 androidxCollections = "1.3.0"
 
@@ -21,31 +21,31 @@ buildKonfig = "0.14.0"
 
 composeBom = "2023.10.01"
 composeMultiplatform = "1.5.11"
-composeCompiler = "1.5.6"
+composeCompiler = "1.5.7"
 
-essenty = "1.2.0"
+essenty = "1.3.0"
 
-kotlinxDateTime = "0.4.1"
+kotlinxDateTime = "0.5.0"
 kotlinCoroutines = "1.7.3"
-kotlinxSerialization = "1.6.0"
+kotlinxSerialization = "1.6.2"
 
 koin = "3.4.3"
 koinCompose = "1.0.4"
 koinKsp = "1.2.2"
 
 ktorfit = "1.10.0"
-ktor = "2.3.5"
-ktorUtils = "2.3.5"
+ktor = "2.3.7"
+ktorUtils = "2.3.7"
 
 mokoResourcesVersion = "0.23.0"
 
-imageLoader = "1.6.7"
+imageLoader = "1.7.1"
 
 uuid = "0.7.0"
 kermit = "2.0.1"
 
 # android only
-materialView = "1.10.0"
+materialView = "1.11.0"
 splashScreen = "1.0.1"
 glance = "1.0.0"
 google-maps-compose = "2.11.1"
@@ -54,7 +54,7 @@ koinAndroid = "3.4.3"
 androidxViewmodel = "2.6.2"
 
 androidxLifecycle = "2.6.2"
-composeActivity = "1.8.1"
+composeActivity = "1.8.2"
 coreKtx = "1.12.0"
 appcompat = "1.6.1"
 startup = "1.1.1"

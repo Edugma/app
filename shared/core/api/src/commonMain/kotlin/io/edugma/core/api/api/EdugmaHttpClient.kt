@@ -9,6 +9,7 @@ import io.ktor.serialization.JsonConvertException
 import io.ktor.util.reflect.TypeInfo
 import io.ktor.util.reflect.typeInfo
 import io.ktor.utils.io.errors.IOException
+import kotlinx.coroutines.CancellationException
 
 interface EdugmaHttpClient {
 
@@ -103,11 +104,12 @@ suspend fun <T> EdugmaHttpClient.convert(
                 response.body<TempError>()
             }.getOrNull()
             val e = ResponseError.HttpError(body, response.status.value)
-            Logger.e("wrapSuspendResponse: ", e, tag = TAG)
+            Logger.e("wrapSuspendResponse: response status error", e, tag = TAG)
             Result.failure<T>(e)
         }
     } catch (e: Throwable) {
         val error = when (e) {
+            is CancellationException -> throw e
             is JsonConvertException -> ResponseError.SerializationError(e)
             is IOException -> ResponseError.NetworkError(e)
             else -> ResponseError.UnknownResponseError(e)
