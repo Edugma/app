@@ -1,6 +1,7 @@
 package io.edugma.core.designSystem.utils
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.FilterQuality
@@ -9,9 +10,12 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import com.seiko.imageloader.ImageLoader
 import com.seiko.imageloader.component.ComponentRegistryBuilder
+import com.seiko.imageloader.model.ImageAction
 import com.seiko.imageloader.model.ImageRequest
 import com.seiko.imageloader.option.toScale
+import com.seiko.imageloader.rememberImageAction
 import com.seiko.imageloader.rememberImagePainter
+import com.seiko.imageloader.rememberImageSuccessPainter
 import okio.Path.Companion.toPath
 
 @Composable
@@ -60,6 +64,36 @@ fun rememberAsyncImagePainter(
         placeholderPainter = placeholderPainter,
         errorPainter = errorPainter,
     )
+}
+
+@Composable
+fun AsyncImage(
+    model: String?,
+    imageLoader: BaseImageLoader = LocalEdImageLoader.current,
+    contentScale: ContentScale = ContentScale.Fit,
+    filterQuality: FilterQuality = DefaultFilterQuality,
+    image: @Composable (Painter) -> Unit,
+    placeholder: @Composable () -> Unit,
+) {
+    if (model == null) {
+        placeholder()
+    } else {
+        val request = remember(model, contentScale) {
+            ImageRequest {
+                data(model)
+                scale(contentScale.toScale())
+            }
+        }
+
+        val action by rememberImageAction(request, imageLoader.loader)
+
+        if (action is ImageAction.Failure || action is ImageAction.Loading) {
+            placeholder()
+        } else {
+            val painter = rememberImageSuccessPainter(action as ImageAction.Success, filterQuality)
+            image(painter)
+        }
+    }
 }
 
 // @Composable

@@ -37,10 +37,14 @@ class DebounceDelegate(
 }
 
 @OptIn(RestrictedApi::class)
-fun BaseActionViewModel<*, *>.debounce(timeout: Long = 1_000): DebounceDelegate {
+fun BaseActionViewModel<*, *>.debounce(timeout: Long = DebounceConst.SEARCH_TIMEOUT): DebounceDelegate {
     return DebounceDelegate(
         timeout = timeout,
         scope = viewModelScope,
         errorHandler = errorHandler,
     )
+}
+
+object DebounceConst {
+    const val SEARCH_TIMEOUT = 600L
 }

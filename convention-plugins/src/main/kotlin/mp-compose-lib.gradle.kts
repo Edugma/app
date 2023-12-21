@@ -1,5 +1,6 @@
 @file:Suppress("UNUSED_VARIABLE")
 import org.gradle.accessors.dm.LibrariesForLibs
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("mp-common-lib")
@@ -51,3 +52,15 @@ kotlin {
         }
     }
 }
+
+
+// TODO Compose Multiplatform > 1.5.11
+//tasks.withType<KotlinCompile>().configureEach {
+//    kotlinOptions {
+//        freeCompilerArgs += listOf(
+//            "-P",
+//            "plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=" +
+//                "$rootDir${File.separator}configs${File.separator}compose${File.separator}compose_compiler_config.conf"
+//        )
+//    }
+//}

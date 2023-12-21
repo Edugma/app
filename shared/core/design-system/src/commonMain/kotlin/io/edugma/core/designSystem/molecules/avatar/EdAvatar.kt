@@ -16,10 +16,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import dev.icerock.moko.resources.compose.painterResource
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.core.designSystem.utils.rememberAsyncImagePainter
-import io.edugma.core.icons.EdIcons
+import io.edugma.core.designSystem.utils.AsyncImage
 
 @Composable
 fun EdAvatar(
@@ -28,50 +26,45 @@ fun EdAvatar(
     size: EdAvatarSize = EdAvatarSize.medium,
     initials: String? = null,
 ) {
-    if (url.isNullOrEmpty()) {
-        val fixedInitials = initials?.take(5).orEmpty()
-        val textSize = size.textSizes[fixedInitials.length]
+    AsyncImage(
+        model = url?.takeIf { it.isNotEmpty() },
+        image = { painter ->
+            Image(
+                painter = painter,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = modifier
+                    .size(size.size)
+                    .clip(CircleShape),
+            )
+        },
+        placeholder = {
+            val fixedInitials = initials?.take(5).orEmpty()
+            val textSize = size.textSizes[fixedInitials.length]
 
-        Card(
-            shape = CircleShape,
-            modifier = modifier
-                .size(size.size),
-            colors = CardDefaults.cardColors(
-                containerColor = EdTheme.colorScheme.surfaceVariant,
-            ),
-        ) {
-            Box(
-                Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
+            Card(
+                shape = CircleShape,
+                modifier = modifier
+                    .size(size.size),
+                colors = CardDefaults.cardColors(
+                    containerColor = EdTheme.colorScheme.surfaceVariant,
+                ),
             ) {
-                Text(
-                    text = fixedInitials,
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .padding(5.dp),
-                    textAlign = TextAlign.Center,
-                    maxLines = 1,
-                    fontSize = textSize,
-                )
+                Box(
+                    Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        text = fixedInitials,
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .padding(5.dp),
+                        textAlign = TextAlign.Center,
+                        maxLines = 1,
+                        fontSize = textSize,
+                    )
+                }
             }
-        }
-    } else {
-        val painter = rememberAsyncImagePainter(
-            model = url,
-            placeholderPainter = {
-                painterResource(EdIcons.ic_color_placeholder)
-            },
-            errorPainter = {
-                painterResource(EdIcons.ic_color_error)
-            },
-        )
-        Image(
-            painter = painter,
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = modifier
-                .size(size.size)
-                .clip(CircleShape),
-        )
-    }
+        },
+    )
 }

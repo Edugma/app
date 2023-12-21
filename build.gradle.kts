@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     //alias(libs.plugins.android.application) apply false
     //alias(libs.plugins.kotlin.jvm) apply false
@@ -14,7 +16,7 @@ plugins {
 }
 
 subprojects {
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions.jvmTarget = libs.versions.java.get()
     }
 }
