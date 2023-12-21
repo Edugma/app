@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.utils.navigationBarsPadding
 
 @Composable
@@ -32,8 +33,8 @@ fun LazyItemScope.SpacerHeight(height: Dp) {
 }
 
 @Composable
-fun LazyItemScope.NavigationBarSpacer(height: Dp) {
-    Spacer(modifier = Modifier.navigationBarsPadding().height(height))
+fun LazyItemScope.NavigationBarSpacer(additionalHeight: Dp = 0.dp) {
+    Spacer(modifier = Modifier.navigationBarsPadding().height(additionalHeight))
 }
 
 @Composable

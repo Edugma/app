@@ -1,6 +1,6 @@
 package io.edugma.features.schedule.elements.model
 
-import io.edugma.core.api.utils.untilSeconds
+import io.edugma.core.api.utils.untilMinutes
 import io.edugma.features.schedule.domain.model.compact.zonedTime
 import io.edugma.features.schedule.domain.model.lesson.LessonEvent
 import io.edugma.features.schedule.domain.model.schedule.ScheduleCalendar
@@ -48,7 +48,7 @@ class ScheduleCalendarUiModel(
             if (previousLesson != null) {
                 val prevEndTime = previousLesson.end.zonedTime()
                 val curStartTime = lesson.start.zonedTime()
-                val timeWindowInMinutes = curStartTime.untilSeconds(prevEndTime)
+                val timeWindowInMinutes = curStartTime.untilMinutes(prevEndTime)
 
                 if (timeWindowInMinutes >= WINDOW_THRESHOLD_MINUTES) {
                     lessons.add(

@@ -39,9 +39,9 @@ class AuthWithCachingDataUseCase(
     suspend fun getData(): DataDto =
         coroutineScope {
             val personal = async { personalRepository.getLocalPersonalInfo() ?: personalRepository.getPersonalInfoSuspend().getOrNull() }
-            val marks = async { performanceRepository.getLocalMarks() ?: performanceRepository.getPerformance() }
-            val payments = async { paymentsRepository.getPaymentsLocal() ?: paymentsRepository.getPayments() }
-            return@coroutineScope DataDto(personal = personal.await(), contracts = payments.await(), performance = marks.await())
+            // val marks = async { performanceRepository.getLocalMarks() ?: performanceRepository.getPerformance() }
+            // val payments = async { paymentsRepository.getPaymentsLocal() ?: paymentsRepository.getPayments() }
+            return@coroutineScope DataDto(personal = personal.await(), contracts = null, performance = null)
         }
 
     suspend fun logout() = authorizationRepository.logout()

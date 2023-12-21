@@ -20,7 +20,7 @@ private inline fun headingTextStyle(
     letterSpacing: TextUnit = fontSize * -0.01,
 ): TextStyle {
     return TextStyle(
-        fontFamily = manropeFontFamily,
+        fontFamily = openSansFontFamily,
         fontWeight = fontWeight,
         fontSize = fontSize,
         lineHeight = lineHeight,
@@ -33,10 +33,10 @@ private inline fun bodyTextStyle(
     fontWeight: FontWeight,
     fontSize: TextUnit,
     lineHeight: TextUnit = fontSize * 1.4,
-    letterSpacing: TextUnit = fontSize * 0.01,
+    letterSpacing: TextUnit = fontSize * 0.005,
 ): TextStyle {
     return TextStyle(
-        fontFamily = manropeFontFamily,
+        fontFamily = openSansFontFamily,
         fontWeight = fontWeight,
         fontSize = fontSize,
         lineHeight = lineHeight,
@@ -49,10 +49,10 @@ private inline fun labelTextStyle(
     fontWeight: FontWeight,
     fontSize: TextUnit,
     lineHeight: TextUnit = fontSize * 1.4,
-    letterSpacing: TextUnit = fontSize * 0.06,
+    letterSpacing: TextUnit = fontSize * 0.04,
 ): TextStyle {
     return TextStyle(
-        fontFamily = manropeFontFamily,
+        fontFamily = openSansFontFamily,
         fontWeight = fontWeight,
         fontSize = fontSize,
         lineHeight = lineHeight,
@@ -87,7 +87,7 @@ val EdTypography
             fontSize = 24.sp,
         ),
         titleLarge = bodyTextStyle(
-            fontWeight = FontWeight.Medium,
+            fontWeight = FontWeight.Normal,
             fontSize = 20.sp,
         ),
         titleMedium = bodyTextStyle(
@@ -95,19 +95,19 @@ val EdTypography
             fontSize = 16.sp,
         ),
         titleSmall = bodyTextStyle(
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.Medium,
             fontSize = 14.sp,
         ),
         bodyLarge = bodyTextStyle(
             fontWeight = FontWeight.Medium,
-            fontSize = 16.sp,
+            fontSize = 15.sp,
         ),
         bodyMedium = bodyTextStyle(
-            fontWeight = FontWeight.Medium,
+            fontWeight = FontWeight.Normal,
             fontSize = 14.sp,
         ),
         bodySmall = bodyTextStyle(
-            fontWeight = FontWeight.Medium,
+            fontWeight = FontWeight.Normal,
             fontSize = 12.sp,
         ),
         labelLarge = labelTextStyle(

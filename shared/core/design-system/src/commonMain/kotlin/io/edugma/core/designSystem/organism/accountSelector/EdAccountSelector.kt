@@ -38,20 +38,21 @@ fun EdAccountSelector(
             .fillMaxWidth()
             .clip(EdTheme.shapes.small)
             .clickable(onClick = { onClick?.invoke() }, enabled = onClick != null)
-            .padding(horizontal = 10.dp, vertical = 10.dp),
+            .padding(horizontal = 6.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         EdAvatar(
             url = state.avatar,
             initials = state.title.toAvatarInitials(),
-            size = EdAvatarSize.large,
+            size = EdAvatarSize.extraLarge,
         )
-        SpacerWidth(width = 10.dp)
+        SpacerWidth(width = 6.dp)
         Column(
             modifier = Modifier.weight(1f),
         ) {
             EdLabel(
                 text = state.title,
+                maxLines = 1,
                 style = EdTheme.typography.titleMedium,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -80,17 +81,17 @@ fun EdAccountSelectorPlaceholder() {
         Modifier
             .fillMaxWidth()
             .clip(EdTheme.shapes.small)
-            .padding(horizontal = 10.dp, vertical = 10.dp),
+            .padding(horizontal = 6.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         EdAvatar(
             url = null,
-            size = EdAvatarSize.large,
+            size = EdAvatarSize.extraLarge,
             modifier = Modifier
                 .clip(CircleShape)
                 .edPlaceholder(),
         )
-        SpacerWidth(width = 10.dp)
+        SpacerWidth(width = 6.dp)
         Column(
             modifier = Modifier.weight(1f),
         ) {
@@ -98,6 +99,7 @@ fun EdAccountSelectorPlaceholder() {
                 text = "state.title",
                 style = EdTheme.typography.titleMedium,
                 overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
                 modifier = Modifier
                     .width(100.dp)
                     .edPlaceholder(),

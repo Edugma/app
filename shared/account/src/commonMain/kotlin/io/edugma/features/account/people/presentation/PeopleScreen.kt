@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import io.edugma.core.designSystem.atoms.label.EdLabel
+import io.edugma.core.designSystem.atoms.spacer.NavigationBarSpacer
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.molecules.avatar.EdAvatar
 import io.edugma.core.designSystem.molecules.avatar.EdAvatarSize
@@ -30,7 +31,6 @@ import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.SecondaryContent
-import io.edugma.core.designSystem.utils.navigationBarsPadding
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.pagination.PagingFooter
 import io.edugma.core.ui.screen.BottomSheet
@@ -157,7 +157,7 @@ fun PeopleListContent(
     onLoad: ClickListener,
     onShare: ClickListener,
 ) {
-    Column(Modifier.navigationBarsPadding()) {
+    Column(Modifier) {
         EdTopAppBar(
             title = state.type!!.title,
             onNavigationClick = backListener,
@@ -192,14 +192,14 @@ fun PeopleListContent(
                 EdNothingFound(modifier = Modifier.fillMaxSize())
             }
             else -> {
-                StudentsList(state, onPersonClick, onLoad)
+                PeopleList(state, onPersonClick, onLoad)
             }
         }
     }
 }
 
 @Composable
-fun StudentsList(
+internal fun PeopleList(
     state: StudentsState,
     studentClick: Typed1Listener<Person>,
     loadListener: ClickListener,
@@ -227,6 +227,9 @@ fun StudentsList(
                 }
             }
             item { PagingFooter(state.paginationState, loadListener) }
+            item {
+                NavigationBarSpacer(10.dp)
+            }
         }
     }
 }

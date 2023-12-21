@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -37,10 +38,12 @@ import io.edugma.core.arch.pagination.PaginationState
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.card.EdCardDefaults
 import io.edugma.core.designSystem.atoms.label.EdLabel
+import io.edugma.core.designSystem.atoms.spacer.NavigationBarSpacer
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.molecules.avatar.EdAvatar
+import io.edugma.core.designSystem.molecules.avatar.EdAvatarSize
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.searchField.EdSearchField
 import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetValue
@@ -67,6 +70,7 @@ fun ScheduleSourcesScreen(viewModel: ScheduleSourcesViewModel = getViewModel()) 
 
     FeatureScreen(
         statusBarPadding = false,
+        navigationBarPadding = false,
     ) {
         ScheduleSourcesContent(
             state = state,
@@ -372,6 +376,9 @@ private fun ColumnScope.Search(
             )
         }
         item { PagingFooter(paging, onLoadPage) }
+        item {
+            NavigationBarSpacer(10.dp)
+        }
     }
 }
 
@@ -410,57 +417,59 @@ fun SourceItem(
     onDeleteFavorite: Typed1Listener<ScheduleSourceFull>,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier
+    Row(
+        modifier = modifier
             .clickable(onClick = { onItemClick(source.source) })
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .padding(top = 10.dp, bottom = 10.dp, start = 6.dp, end = 4.dp),
     ) {
-        Row(Modifier.padding(vertical = 5.dp)) {
-            SpacerWidth(16.dp)
-            EdAvatar(url = source.source.avatar ?: "", initials = getInitials(source.source.title))
-            SpacerWidth(8.dp)
-            Column(Modifier.weight(1f)) {
+        EdAvatar(
+            url = source.source.avatar ?: "",
+            initials = getInitials(source.source.title),
+            size = EdAvatarSize.large,
+        )
+        SpacerWidth(8.dp)
+        Column(Modifier.weight(1f)) {
+            EdLabel(
+                text = source.source.title,
+                style = EdTheme.typography.titleSmall,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            WithContentAlpha(alpha = ContentAlpha.medium) {
                 EdLabel(
-                    text = source.source.title,
-                    style = EdTheme.typography.titleSmall,
+                    text = source.source.description ?: "",
+                    style = EdTheme.typography.bodySmall,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )
-                WithContentAlpha(alpha = ContentAlpha.medium) {
-                    EdLabel(
-                        text = source.source.description ?: "",
-                        style = EdTheme.typography.bodySmall,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                }
             }
-            IconButton(
-                onClick = {
-                    if (source.isFavorite) {
-                        onDeleteFavorite(source.source)
-                    } else {
-                        onAddFavorite(source.source)
-                    }
-                },
-            ) {
-                val tintColor = if (source.isFavorite) {
-                    EdTheme.colorScheme.primary
+        }
+        IconButton(
+            onClick = {
+                if (source.isFavorite) {
+                    onDeleteFavorite(source.source)
                 } else {
-                    LocalContentColor.current
+                    onAddFavorite(source.source)
                 }
-                val painter = if (source.isFavorite) {
-                    painterResource(EdIcons.ic_fluent_star_24_filled)
-                } else {
-                    painterResource(EdIcons.ic_fluent_star_24_regular)
-                }
-                Icon(
-                    painter = painter,
-                    contentDescription = null,
-                    tint = tintColor,
-                )
+            },
+        ) {
+            val tintColor = if (source.isFavorite) {
+                EdTheme.colorScheme.primary
+            } else {
+                LocalContentColor.current
             }
-            SpacerWidth(16.dp)
+            val painter = if (source.isFavorite) {
+                painterResource(EdIcons.ic_fluent_star_24_filled)
+            } else {
+                painterResource(EdIcons.ic_fluent_star_24_regular)
+            }
+            Icon(
+                modifier = Modifier.size(20.dp),
+                painter = painter,
+                contentDescription = null,
+                tint = tintColor,
+            )
         }
     }
 }
