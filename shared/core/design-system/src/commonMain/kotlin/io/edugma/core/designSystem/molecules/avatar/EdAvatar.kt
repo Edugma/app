@@ -13,6 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -24,6 +26,7 @@ fun EdAvatar(
     url: String?,
     modifier: Modifier = Modifier,
     size: EdAvatarSize = EdAvatarSize.medium,
+    placeholderColor: Color = Color.Unspecified,
     initials: String? = null,
 ) {
     AsyncImage(
@@ -47,7 +50,7 @@ fun EdAvatar(
                 modifier = modifier
                     .size(size.size),
                 colors = CardDefaults.cardColors(
-                    containerColor = EdTheme.colorScheme.surfaceVariant,
+                    containerColor = placeholderColor.takeOrElse { EdTheme.colorScheme.surfaceVariant },
                 ),
             ) {
                 Box(

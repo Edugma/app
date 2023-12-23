@@ -7,16 +7,14 @@ import androidx.compose.material3.Shapes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
-import androidx.compose.runtime.staticCompositionLocalOf
 import io.edugma.core.designSystem.tokens.colors.CustomColorScheme
-import io.edugma.core.designSystem.tokens.colors.dark_Success
-import io.edugma.core.designSystem.tokens.colors.dark_SuccessContainer
-import io.edugma.core.designSystem.tokens.colors.dark_Warning
-import io.edugma.core.designSystem.tokens.colors.dark_WarningContainer
-import io.edugma.core.designSystem.tokens.colors.light_Success
-import io.edugma.core.designSystem.tokens.colors.light_SuccessContainer
-import io.edugma.core.designSystem.tokens.colors.light_Warning
-import io.edugma.core.designSystem.tokens.colors.light_WarningContainer
+import io.edugma.core.designSystem.tokens.colors.LocalCustomColorScheme
+import io.edugma.core.designSystem.tokens.colors.LocalPaletteColorScheme
+import io.edugma.core.designSystem.tokens.colors.PaletteColorScheme
+import io.edugma.core.designSystem.tokens.colors.darkCustomColorScheme
+import io.edugma.core.designSystem.tokens.colors.darkPaletteColorScheme
+import io.edugma.core.designSystem.tokens.colors.lightCustomColorScheme
+import io.edugma.core.designSystem.tokens.colors.lightPaletteColorScheme
 import io.edugma.core.designSystem.tokens.paddings.EdPaddings
 import io.edugma.core.designSystem.tokens.shapes.EdShapes
 import io.edugma.core.designSystem.tokens.typography.EdTypography
@@ -36,7 +34,16 @@ fun EdTheme(
         lightCustomColorScheme
     }
 
-    CompositionLocalProvider(LocalCustomColorScheme provides customColors) {
+    val paletteColors = if (useDarkTheme) {
+        darkPaletteColorScheme
+    } else {
+        lightPaletteColorScheme
+    }
+
+    CompositionLocalProvider(
+        LocalCustomColorScheme provides customColors,
+        LocalPaletteColorScheme provides paletteColors,
+    ) {
         MaterialTheme(
             colorScheme = colors,
             shapes = EdShapes,
@@ -45,22 +52,6 @@ fun EdTheme(
         )
     }
 }
-
-private val lightCustomColorScheme = CustomColorScheme(
-    success = light_Success,
-    successContainer = light_SuccessContainer,
-    warning = light_Warning,
-    warningContainer = light_WarningContainer,
-)
-
-private val darkCustomColorScheme = CustomColorScheme(
-    success = dark_Success,
-    successContainer = dark_SuccessContainer,
-    warning = dark_Warning,
-    warningContainer = dark_WarningContainer,
-)
-
-internal val LocalCustomColorScheme = staticCompositionLocalOf { lightCustomColorScheme }
 
 @Composable
 expect fun getColorScheme(
@@ -81,6 +72,11 @@ object EdTheme {
         @Composable
         @ReadOnlyComposable
         get() = LocalCustomColorScheme.current
+
+    val paletteColorScheme: PaletteColorScheme
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalPaletteColorScheme.current
 
     /**
      * Retrieves the current [Typography] at the call site's position in the hierarchy.

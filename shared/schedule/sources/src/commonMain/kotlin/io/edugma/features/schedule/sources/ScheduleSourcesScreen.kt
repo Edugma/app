@@ -28,11 +28,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
-import io.edugma.core.api.utils.getInitials
 import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import io.edugma.core.arch.pagination.PaginationState
 import io.edugma.core.designSystem.atoms.card.EdCard
@@ -40,19 +38,16 @@ import io.edugma.core.designSystem.atoms.card.EdCardDefaults
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.NavigationBarSpacer
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
-import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.atoms.surface.EdSurface
-import io.edugma.core.designSystem.molecules.avatar.EdAvatar
-import io.edugma.core.designSystem.molecules.avatar.EdAvatarSize
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.searchField.EdSearchField
 import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetValue
 import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
+import io.edugma.core.designSystem.organism.cell.EdCell
+import io.edugma.core.designSystem.organism.cell.EdCellDefaults
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
-import io.edugma.core.designSystem.utils.ContentAlpha
-import io.edugma.core.designSystem.utils.WithContentAlpha
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.resources.MR
 import io.edugma.core.ui.pagination.PagingFooter
@@ -417,34 +412,16 @@ fun SourceItem(
     onDeleteFavorite: Typed1Listener<ScheduleSourceFull>,
     modifier: Modifier = Modifier,
 ) {
-    Row(
-        modifier = modifier
-            .clickable(onClick = { onItemClick(source.source) })
-            .fillMaxWidth()
-            .padding(top = 10.dp, bottom = 10.dp, start = 6.dp, end = 4.dp),
+    EdCell(
+        title = source.source.title,
+        subtitle = source.source.description.orEmpty(),
+        avatar = source.source.avatar,
+        onClick = {
+            onItemClick(source.source)
+        },
+        contentPadding = EdCellDefaults.contentPadding(end = 4.dp),
+        modifier = modifier,
     ) {
-        EdAvatar(
-            url = source.source.avatar ?: "",
-            initials = getInitials(source.source.title),
-            size = EdAvatarSize.large,
-        )
-        SpacerWidth(8.dp)
-        Column(Modifier.weight(1f)) {
-            EdLabel(
-                text = source.source.title,
-                style = EdTheme.typography.titleSmall,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-            WithContentAlpha(alpha = ContentAlpha.medium) {
-                EdLabel(
-                    text = source.source.description ?: "",
-                    style = EdTheme.typography.bodySmall,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
-        }
         IconButton(
             onClick = {
                 if (source.isFavorite) {

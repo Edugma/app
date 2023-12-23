@@ -7,7 +7,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Immutable
-class EdAvatarSize(
+data class EdAvatarSize(
     val size: Dp,
     val textSizes: List<TextUnit>,
 ) {

@@ -15,7 +15,7 @@ inline fun <reified T : Any> Modifier.ifNotNull(
     onTrue: Modifier.(T) -> Modifier,
 ): Modifier {
     return if (value != null) {
-        this.then(Modifier.onTrue(value))
+        this.onTrue(value)
     } else {
         this
     }

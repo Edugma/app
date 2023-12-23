@@ -2,8 +2,10 @@ package io.edugma.features.account.people.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -14,12 +16,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.NavigationBarSpacer
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
+import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.molecules.avatar.EdAvatar
 import io.edugma.core.designSystem.molecules.avatar.EdAvatarSize
 import io.edugma.core.designSystem.molecules.avatar.toAvatarInitials
@@ -61,6 +65,7 @@ fun PeopleScreen(
     val scope = rememberCoroutineScope()
     if (state.type != null) {
         FeatureBottomSheetScreen(
+            statusBarPadding = false,
             navigationBarPadding = false,
             sheetState = bottomState,
             sheetContent = {
@@ -158,29 +163,35 @@ fun PeopleListContent(
     onShare: ClickListener,
 ) {
     Column(Modifier) {
-        EdTopAppBar(
-            title = state.type!!.title,
-            onNavigationClick = backListener,
-            actions = {
-                val students = state.paginationState.items
+        EdSurface(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RectangleShape,
+        ) {
+            EdTopAppBar(
+                title = state.type!!.title,
+                onNavigationClick = backListener,
+                windowInsets = WindowInsets.statusBars,
+                actions = {
+                    val students = state.paginationState.items
 
-                IconButton(
-                    onClick = { onShare() },
-                    enabled = students.isNotEmpty(),
-                ) {
-                    Icon(
-                        painterResource(EdIcons.ic_fluent_share_24_regular),
-                        contentDescription = "Поделиться",
-                    )
-                }
-                IconButton(onClick = openBottomSheetListener) {
-                    Icon(
-                        painterResource(EdIcons.ic_fluent_search_24_regular),
-                        contentDescription = "Фильтр",
-                    )
-                }
-            },
-        )
+                    IconButton(
+                        onClick = { onShare() },
+                        enabled = students.isNotEmpty(),
+                    ) {
+                        Icon(
+                            painterResource(EdIcons.ic_fluent_share_24_regular),
+                            contentDescription = "Поделиться",
+                        )
+                    }
+                    IconButton(onClick = openBottomSheetListener) {
+                        Icon(
+                            painterResource(EdIcons.ic_fluent_search_24_regular),
+                            contentDescription = "Фильтр",
+                        )
+                    }
+                },
+            )
+        }
         when {
             state.isFullscreenError -> {
                 ErrorWithRetry(
