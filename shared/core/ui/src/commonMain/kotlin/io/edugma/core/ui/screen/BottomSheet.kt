@@ -14,7 +14,7 @@ import io.edugma.core.designSystem.theme.EdTheme
 @Composable
 fun ColumnScope.BottomSheet(
     modifier: Modifier = Modifier,
-    header: String? = null,
+    title: String? = null,
     headerStyle: TextStyle = EdTheme.typography.headlineMedium,
     contentPadding: PaddingValues = PaddingValues(
         horizontal = 16.dp,
@@ -22,9 +22,9 @@ fun ColumnScope.BottomSheet(
     ),
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    header?.let {
+    title?.let {
         EdLabel(
-            text = header,
+            text = title,
             style = headerStyle,
             modifier = Modifier.padding(start = 16.dp, end = 8.dp, bottom = 5.dp),
         )

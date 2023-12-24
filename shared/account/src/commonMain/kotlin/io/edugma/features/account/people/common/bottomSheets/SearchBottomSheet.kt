@@ -25,7 +25,7 @@ fun ColumnScope.SearchBottomSheet(
     onClick: () -> Unit,
 ) {
     BottomSheet(
-        header = title,
+        title = title,
         headerStyle = EdTheme.typography.headlineSmall,
     ) {
         val keyboardController = LocalSoftwareKeyboardController.current

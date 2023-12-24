@@ -14,30 +14,21 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
-import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.NavigationBarSpacer
-import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.surface.EdSurface
-import io.edugma.core.designSystem.molecules.avatar.EdAvatar
-import io.edugma.core.designSystem.molecules.avatar.EdAvatarSize
-import io.edugma.core.designSystem.molecules.avatar.toAvatarInitials
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetValue
 import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
 import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
 import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
+import io.edugma.core.designSystem.organism.shortInfoSheet.EdShortInfoSheet
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
-import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.core.designSystem.utils.SecondaryContent
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.pagination.PagingFooter
-import io.edugma.core.ui.screen.BottomSheet
 import io.edugma.core.ui.screen.FeatureBottomSheetScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
@@ -92,7 +83,7 @@ fun PeopleScreen(
             },
         ) {
             PeopleListContent(
-                state,
+                state = state,
                 backListener = viewModel::exit,
                 openBottomSheetListener = {
                     viewModel.selectFilter()
@@ -114,42 +105,16 @@ fun ColumnScope.PersonBottomSheet(
     person: Person,
     openSchedule: () -> Unit,
 ) {
-    BottomSheet {
-        Column(
-            Modifier
-                .fillMaxWidth(),
-        ) {
-            SpacerHeight(height = 10.dp)
-            EdAvatar(
-                url = person.avatar,
-                initials = person.name.toAvatarInitials(),
-                size = EdAvatarSize.xxxl,
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-            )
-            SpacerHeight(height = 10.dp)
-            EdLabel(
-                text = person.name,
-                style = EdTheme.typography.titleLarge,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 3,
-                modifier = Modifier.fillMaxWidth(),
-            )
-        }
-        person.description?.let {
-            SpacerHeight(height = 10.dp)
-            SecondaryContent {
-                EdLabel(
-                    text = person.description,
-                    style = EdTheme.typography.bodyMedium,
-                )
-            }
-            SpacerHeight(height = 16.dp)
-            EdButton(
-                text = "Посмотреть расписание",
-                onClick = openSchedule,
-                modifier = Modifier.fillMaxWidth(),
-            )
-        }
+    EdShortInfoSheet(
+        title = person.name,
+        avatar = person.avatar,
+        description = person.description.orEmpty(),
+    ) {
+        EdButton(
+            text = "Посмотреть расписание",
+            onClick = openSchedule,
+            modifier = Modifier.fillMaxWidth(),
+        )
     }
 }
 

@@ -1,13 +1,10 @@
 package io.edugma.features.account.people.common.items
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import io.edugma.core.designSystem.atoms.divider.EdDivider
-import io.edugma.core.designSystem.organism.accountSelector.EdAccountSelectorPlaceholder
 import io.edugma.core.designSystem.organism.cell.EdCell
+import io.edugma.core.designSystem.organism.cell.EdCellPlaceholder
 import io.edugma.core.utils.ClickListener
 
 @Composable
@@ -23,11 +20,5 @@ fun PeopleItem(title: String, description: String, avatar: String?, onClick: Cli
 
 @Composable
 fun PeopleItemPlaceholder() {
-    Column {
-        EdAccountSelectorPlaceholder()
-        EdDivider(
-            modifier = Modifier.padding(start = 75.dp, end = 10.dp).padding(vertical = 5.dp),
-            thickness = 1.dp,
-        )
-    }
+    EdCellPlaceholder(modifier = Modifier.fillMaxWidth())
 }

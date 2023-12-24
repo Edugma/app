@@ -15,7 +15,7 @@ import io.edugma.features.account.domain.model.performance.Performance
 @Composable
 fun ColumnScope.PerformanceBottomSheetContent(performance: Performance) {
     BottomSheet(
-        header = performance.title,
+        title = performance.title,
         headerStyle = EdTheme.typography.headlineSmall,
     ) {
         EdLabel(

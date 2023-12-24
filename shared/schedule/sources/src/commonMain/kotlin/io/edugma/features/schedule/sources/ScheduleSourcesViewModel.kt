@@ -64,6 +64,26 @@ class ScheduleSourcesViewModel(
             ScheduleSourcesAction.OnLoadPage -> {
                 pagingViewModel.loadNextPage()
             }
+
+            is ScheduleSourcesAction.OnAddToFavorite -> onAddFavorite(action.source.source)
+            is ScheduleSourcesAction.OnSourceSelected -> onSelectSource(action.source.source)
+            is ScheduleSourcesAction.OnDeleteFromFavorite -> onDeleteFavorite(action.source.source)
+            is ScheduleSourcesAction.OnSourceClicked -> onSourceClick(action.source)
+        }
+    }
+
+    fun onBottomSheetClosed() {
+        newState {
+            copy(showBottomSheet = false)
+        }
+    }
+
+    private fun onSourceClick(source: ScheduleSourceUiModel) {
+        newState {
+            copy(
+                selectedSource = source,
+                showBottomSheet = true,
+            )
         }
     }
 
@@ -79,21 +99,21 @@ class ScheduleSourcesViewModel(
         }
     }
 
-    fun onSelectSource(source: ScheduleSourceFull) {
+    private fun onSelectSource(source: ScheduleSourceFull) {
         launchCoroutine {
             useCase.setSelectedSource(source)
             router.back()
         }
     }
 
-    fun onAddFavorite(source: ScheduleSourceFull) {
+    private fun onAddFavorite(source: ScheduleSourceFull) {
         launchCoroutine {
             useCase.addFavoriteSource(source)
         }
         pagingViewModel.resetAndLoad()
     }
 
-    fun onDeleteFavorite(source: ScheduleSourceFull) {
+    private fun onDeleteFavorite(source: ScheduleSourceFull) {
         launchCoroutine {
             useCase.deleteFavoriteSource(source)
         }
@@ -132,6 +152,8 @@ data class ScheduleSourceState(
     val query: String = "",
     val filteredSources: List<ScheduleSourceUiModel> = emptyList(),
     val paginationState: PaginationState<ScheduleSourceUiModel> = PaginationState.empty(),
+    val selectedSource: ScheduleSourceUiModel? = null,
+    val showBottomSheet: Boolean = false,
 ) {
     fun setTabs(tabs: List<ScheduleSourceType>) =
         copy(tabs = tabs).updateSelectedTab()

@@ -23,7 +23,7 @@ fun ColumnScope.PaymentBottomSheet(
     openUri: () -> Unit,
 ) {
     BottomSheet(
-        header = paymentMethod.title,
+        title = paymentMethod.title,
     ) {
         val painter = rememberAsyncImagePainter(model = paymentMethod.url)
         Image(

@@ -24,9 +24,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
@@ -45,36 +48,63 @@ import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetValue
 import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
 import io.edugma.core.designSystem.organism.cell.EdCell
 import io.edugma.core.designSystem.organism.cell.EdCellDefaults
+import io.edugma.core.designSystem.organism.shortInfoSheet.EdShortInfoSheet
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.resources.MR
 import io.edugma.core.ui.pagination.PagingFooter
-import io.edugma.core.ui.screen.FeatureScreen
+import io.edugma.core.ui.screen.FeatureBottomSheetScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.viewmodel.getViewModel
-import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceType
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @Composable
 fun ScheduleSourcesScreen(viewModel: ScheduleSourcesViewModel = getViewModel()) {
     val state by viewModel.stateFlow.collectAsState()
 
-    FeatureScreen(
+    val bottomState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+    )
+
+    val scope = rememberCoroutineScope()
+
+    LaunchedEffect(state.showBottomSheet) {
+        if (state.showBottomSheet) {
+            scope.launch { bottomState.show() }
+        }
+    }
+
+    LaunchedEffect(bottomState) {
+        snapshotFlow {
+            bottomState.currentState
+        }.collect {
+            if (it == ModalBottomSheetValue.Hidden) {
+                viewModel.onBottomSheetClosed()
+            }
+        }
+    }
+
+    FeatureBottomSheetScreen(
         statusBarPadding = false,
         navigationBarPadding = false,
+        sheetState = bottomState,
+        sheetContent = {
+            ScheduleSourcesSheetContent(
+                state = state,
+                onAction = viewModel.rememberOnAction(),
+            )
+        },
     ) {
         ScheduleSourcesContent(
             state = state,
             onBackClick = viewModel::exit,
             onQueryChange = viewModel::onQueryChange,
             onTabSelected = viewModel::onSelectTab,
-            onSourceSelected = viewModel::onSelectSource,
-            onAddFavorite = viewModel::onAddFavorite,
-            onDeleteFavorite = viewModel::onDeleteFavorite,
             onApplyComplexSearch = viewModel::onApplyComplexSearch,
             onAction = viewModel.rememberOnAction(),
         )
@@ -82,14 +112,42 @@ fun ScheduleSourcesScreen(viewModel: ScheduleSourcesViewModel = getViewModel()) 
 }
 
 @Composable
-fun ScheduleSourcesContent(
+fun ScheduleSourcesSheetContent(
+    state: ScheduleSourceState,
+    onAction: (ScheduleSourcesAction) -> Unit,
+) {
+    if (state.selectedSource != null) {
+        EdShortInfoSheet(
+            title = state.selectedSource.source.title,
+            avatar = state.selectedSource.source.avatar,
+            description = state.selectedSource.source.description.orEmpty(),
+        ) {
+            EdButton(
+                text = "Выбрать",
+                onClick = {
+                    onAction(ScheduleSourcesAction.OnSourceSelected(state.selectedSource))
+                },
+                modifier = Modifier.fillMaxWidth(),
+            )
+            EdButton(
+                text = "Добавить в избранное",
+                onClick = {
+                    onAction(ScheduleSourcesAction.OnAddToFavorite(state.selectedSource))
+                },
+                modifier = Modifier
+                    .padding(top = 10.dp)
+                    .fillMaxWidth(),
+            )
+        }
+    }
+}
+
+@Composable
+private fun ScheduleSourcesContent(
     state: ScheduleSourceState,
     onBackClick: ClickListener,
     onQueryChange: Typed1Listener<String>,
     onTabSelected: Typed1Listener<ScheduleSourceType>,
-    onSourceSelected: Typed1Listener<ScheduleSourceFull>,
-    onAddFavorite: Typed1Listener<ScheduleSourceFull>,
-    onDeleteFavorite: Typed1Listener<ScheduleSourceFull>,
     onApplyComplexSearch: ClickListener,
     onAction: (ScheduleSourcesAction) -> Unit,
 ) {
@@ -140,9 +198,15 @@ fun ScheduleSourcesContent(
         } else {
             Search(
                 paging = state.paginationState,
-                onSourceSelected = onSourceSelected,
-                onAddFavorite = onAddFavorite,
-                onDeleteFavorite = onDeleteFavorite,
+                onSourceClick = {
+                    onAction(ScheduleSourcesAction.OnSourceClicked(it))
+                },
+                onAddFavorite = {
+                    onAction(ScheduleSourcesAction.OnAddToFavorite(it))
+                },
+                onDeleteFavorite = {
+                    onAction(ScheduleSourcesAction.OnDeleteFromFavorite(it))
+                },
                 onLoadPage = {
                     onAction(ScheduleSourcesAction.OnLoadPage)
                 },
@@ -348,9 +412,9 @@ private fun Filter(
 @Composable
 private fun ColumnScope.Search(
     paging: PaginationState<ScheduleSourceUiModel>,
-    onSourceSelected: Typed1Listener<ScheduleSourceFull>,
-    onAddFavorite: Typed1Listener<ScheduleSourceFull>,
-    onDeleteFavorite: Typed1Listener<ScheduleSourceFull>,
+    onSourceClick: (ScheduleSourceUiModel) -> Unit,
+    onAddFavorite: (ScheduleSourceUiModel) -> Unit,
+    onDeleteFavorite: (ScheduleSourceUiModel) -> Unit,
     onLoadPage: () -> Unit,
 ) {
     LazyColumn(
@@ -364,7 +428,7 @@ private fun ColumnScope.Search(
         ) { source ->
             SourceItem(
                 source = source,
-                onItemClick = onSourceSelected,
+                onItemClick = onSourceClick,
                 onAddFavorite = onAddFavorite,
                 onDeleteFavorite = onDeleteFavorite,
                 modifier = Modifier.animateItemPlacement(),
@@ -407,9 +471,9 @@ private fun SourceTypeTab(
 @Composable
 fun SourceItem(
     source: ScheduleSourceUiModel,
-    onItemClick: Typed1Listener<ScheduleSourceFull>,
-    onAddFavorite: Typed1Listener<ScheduleSourceFull>,
-    onDeleteFavorite: Typed1Listener<ScheduleSourceFull>,
+    onItemClick: (ScheduleSourceUiModel) -> Unit,
+    onAddFavorite: (ScheduleSourceUiModel) -> Unit,
+    onDeleteFavorite: (ScheduleSourceUiModel) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     EdCell(
@@ -417,7 +481,7 @@ fun SourceItem(
         subtitle = source.source.description.orEmpty(),
         avatar = source.source.avatar,
         onClick = {
-            onItemClick(source.source)
+            onItemClick(source)
         },
         contentPadding = EdCellDefaults.contentPadding(end = 4.dp),
         modifier = modifier,
@@ -425,9 +489,9 @@ fun SourceItem(
         IconButton(
             onClick = {
                 if (source.isFavorite) {
-                    onDeleteFavorite(source.source)
+                    onDeleteFavorite(source)
                 } else {
-                    onAddFavorite(source.source)
+                    onAddFavorite(source)
                 }
             },
         ) {

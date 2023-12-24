@@ -31,7 +31,7 @@ fun ColumnScope.FiltersBottomSheetContent(
     resetFilterListener: ClickListener,
 ) {
     BottomSheet(
-        header = "Фильтры",
+        title = "Фильтры",
         headerStyle = EdTheme.typography.headlineSmall,
     ) {
         SelectableChipsRow(

@@ -59,20 +59,27 @@ fun EdCell(
                 .padding(start = 8.dp)
                 .weight(1f),
         ) {
+            val maxLines = if (subtitle.isEmpty()) {
+                3
+            } else {
+                1
+            }
             EdLabel(
                 text = title,
                 style = size.titleTextStyle,
-                maxLines = 1,
+                maxLines = maxLines,
                 overflow = TextOverflow.Ellipsis,
             )
-            WithContentAlpha(alpha = ContentAlpha.medium) {
-                EdLabel(
-                    modifier = Modifier.padding(top = size.titleSubtitleSpacing),
-                    text = subtitle,
-                    style = size.subtitleTextStyle,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                )
+            if (subtitle.isNotEmpty()) {
+                WithContentAlpha(alpha = ContentAlpha.medium) {
+                    EdLabel(
+                        modifier = Modifier.padding(top = size.titleSubtitleSpacing),
+                        text = subtitle,
+                        style = size.subtitleTextStyle,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
             }
         }
         Box(modifier = Modifier.align(Alignment.CenterVertically)) {
@@ -83,8 +90,8 @@ fun EdCell(
 
 @Composable
 fun EdCellPlaceholder(
-    modifier: Modifier,
-    size: EdCellSize,
+    modifier: Modifier = Modifier,
+    size: EdCellSize = EdCellSize.medium,
 ) {
     Row(
         modifier
