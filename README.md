@@ -40,5 +40,5 @@ Edugma - децентрализованное приложение для уче
 
 ### Скриншоты прошлого приложения
 
-![screenshots 1](https://github.com/mospolyhelper/mospolyhelper-android/raw/master/screenshots/screenshots_1.png)
-![screenshots 2](https://github.com/mospolyhelper/mospolyhelper-android/raw/master/screenshots/screenshots_2.png)
+![screenshots 1](https://github.com/mospolyhelper/mospolyhelper-android/raw/master/docs/screenshots/screenshots_1.png)
+![screenshots 2](https://github.com/mospolyhelper/mospolyhelper-android/raw/master/docs/screenshots/screenshots_2.png)

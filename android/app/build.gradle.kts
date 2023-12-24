@@ -13,7 +13,7 @@ plugins {
 val libs = the<LibrariesForLibs>()
 
 val versionsProperties = Properties()
-versionsProperties.load(FileInputStream(rootProject.file("versions.properties")))
+versionsProperties.load(FileInputStream(rootProject.file("configs/versions.properties")))
 
 android {
     namespace = "io.edugma.android"
@@ -27,18 +27,30 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        // We use a bundled debug keystore, to allow debug builds from CI to be upgradable
+        named("debug") {
+            storeFile = rootProject.file("configs/debug.jks")
+            storePassword = "edugma"
+            keyAlias = "edugmadebugkey"
+            keyPassword = "edugma"
+        }
+    }
+
     buildTypes {
         getByName("debug") {
             applicationIdSuffix = ".debug"
 
+            signingConfig = signingConfigs.getByName("debug")
             isMinifyEnabled = false
             isShrinkResources = false
             isDebuggable = true
         }
-        create("qa") {
-            initWith(getByName("release"))
+        maybeCreate("qa").apply {
+            matchingFallbacks.add("release")
             applicationIdSuffix = ".qa"
 
+            signingConfig = signingConfigs.getByName("debug")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
         getByName("release") {

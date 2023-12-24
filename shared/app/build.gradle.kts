@@ -48,7 +48,7 @@ kotlin {
 }
 
 val versionsProperties = Properties()
-versionsProperties.load(FileInputStream(rootProject.file("versions.properties")))
+versionsProperties.load(FileInputStream(rootProject.file("configs/versions.properties")))
 
 fun TargetConfigDsl.boolean(name: String, value: Boolean) {
     buildConfigField(type = BOOLEAN, name = name, value = value.toString(), const = true)
