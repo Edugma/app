@@ -2,6 +2,7 @@ package io.edugma.features.account.data.repository
 
 import io.edugma.core.api.repository.CacheRepository
 import io.edugma.core.api.repository.SettingsRepository
+import io.edugma.core.api.utils.IO
 import io.edugma.core.api.utils.mapResult
 import io.edugma.core.api.utils.onSuccess
 import io.edugma.data.base.consts.CacheConst.ApplicationsKey
@@ -17,7 +18,6 @@ import io.edugma.features.account.data.api.AccountService
 import io.edugma.features.account.domain.model.auth.Login
 import io.edugma.features.account.domain.repository.AuthorizationRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn

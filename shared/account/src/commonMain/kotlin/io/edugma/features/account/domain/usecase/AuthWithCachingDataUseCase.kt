@@ -1,5 +1,6 @@
 package io.edugma.features.account.domain.usecase
 
+import io.edugma.core.api.utils.IO
 import io.edugma.features.account.domain.model.Personal
 import io.edugma.features.account.domain.model.payments.Contract
 import io.edugma.features.account.domain.model.performance.Performance
@@ -8,7 +9,6 @@ import io.edugma.features.account.domain.repository.PaymentsRepository
 import io.edugma.features.account.domain.repository.PerformanceRepository
 import io.edugma.features.account.domain.repository.PersonalRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext

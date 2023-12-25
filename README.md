@@ -29,6 +29,11 @@ Edugma - децентрализованное приложение для уче
 - [kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization) - сериализация данных
 - [KodeinDB](https://docs.kodein.org/kodein-db/) - NoSQL база данных с kotlinx.serialization для сериализации под капотом
 
+# Запуск
+```shell
+./gradlew :web:app:jsRun
+```
+
 ## Скриншоты
 Пример применения динамических цветов из Material You (Android 12+)
 

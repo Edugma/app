@@ -1,10 +1,10 @@
 package io.edugma.data.schedule.repository
 
+import io.edugma.core.api.utils.IO
 import io.edugma.data.schedule.api.ScheduleService
 import io.edugma.features.schedule.domain.model.place.PlaceFilters
 import io.edugma.features.schedule.domain.repository.FreePlaceRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 

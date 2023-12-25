@@ -1,7 +1,7 @@
 import org.gradle.accessors.dm.LibrariesForLibs
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
+    kotlin("multiplatform")
     id("io.edugma.android-lib")
 }
 

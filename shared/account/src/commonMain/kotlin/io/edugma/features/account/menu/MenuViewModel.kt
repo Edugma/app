@@ -1,5 +1,6 @@
 package io.edugma.features.account.menu
 
+import io.edugma.core.api.utils.IO
 import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
@@ -21,7 +22,6 @@ import io.edugma.features.account.domain.usecase.DataDto
 import io.edugma.features.account.domain.usecase.MenuDataConverterUseCase
 import io.edugma.features.account.domain.usecase.PersonalData
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.withContext
 

@@ -68,6 +68,7 @@ includeSubmodules(
     "shared",
     "android",
     "ios",
+    "web",
 
     deep = 4,
 )

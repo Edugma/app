@@ -3,9 +3,10 @@
 import org.gradle.accessors.dm.LibrariesForLibs
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
+    kotlin("multiplatform")
     id("mp-android-lib")
     id("mp-ios-lib")
+    id("io.edugma.mp-web-js-lib")
     id("mp-lint")
 }
 
@@ -30,15 +31,20 @@ kotlin {
             }
         }
 
+        val mobileCommonMain by creating {
+            dependsOn(commonMain.get())
+        }
+
         androidMain {
             // TODO due to moko resource crash
             dependsOn(commonMain.get())
+            dependsOn(mobileCommonMain)
         }
 
         iosMain {
             // TODO due to moko resource crash
             dependsOn(commonMain.get())
+            dependsOn(mobileCommonMain)
         }
-
     }
 }

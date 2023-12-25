@@ -14,8 +14,9 @@ import io.edugma.core.api.utils.InternalApi
 import io.edugma.data.base.utils.DataStoreFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
+import io.edugma.core.api.utils.IO
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -66,10 +67,10 @@ class PreferenceRepositoryImpl(
     }
 
     override fun getStringFlow(key: String): Flow<String?> {
-        return dataStore.data.map { it[stringPreferencesKey(key)] }
+        return dataStore.data.map { it[stringPreferencesKey(key)] }.distinctUntilChanged()
     }
     override fun getByteArrayFlow(key: String): Flow<ByteArray?> {
-        return dataStore.data.map { it[byteArrayPreferencesKey(key)] }
+        return dataStore.data.map { it[byteArrayPreferencesKey(key)] }.distinctUntilChanged()
     }
 
     @InternalApi
@@ -80,19 +81,19 @@ class PreferenceRepositoryImpl(
         val byteArrayFlow = getByteArrayFlow(key)
         return byteArrayFlow.map { byteArray ->
             byteArray?.let { Cbor.decodeFromByteArray(serializer, byteArray) }
-        }
+        }.distinctUntilChanged()
     }
 
     override fun getBooleanFlow(key: String): Flow<Boolean?> {
-        return dataStore.data.map { it[booleanPreferencesKey(key)] }
+        return dataStore.data.map { it[booleanPreferencesKey(key)] }.distinctUntilChanged()
     }
 
     override fun getIntFlow(key: String): Flow<Int?> {
-        return dataStore.data.map { it[intPreferencesKey(key)] }
+        return dataStore.data.map { it[intPreferencesKey(key)] }.distinctUntilChanged()
     }
 
     override fun getLongFlow(key: String): Flow<Long?> {
-        return dataStore.data.map { it[longPreferencesKey(key)] }
+        return dataStore.data.map { it[longPreferencesKey(key)] }.distinctUntilChanged()
     }
 
     override suspend fun saveString(key: String, value: String) {
