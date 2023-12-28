@@ -22,8 +22,13 @@ kotlin {
                 implementation(libs.ktor.client.contentNegotiation)
                 implementation(libs.ktor.client.serialization.json)
 
-                implementation(libs.androidx.datastore)
                 implementation(libs.kermit)
+            }
+        }
+
+        val mobileCommonMain by getting {
+            dependencies {
+                implementation(libs.androidx.datastore)
             }
         }
     }

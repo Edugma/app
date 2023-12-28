@@ -4,9 +4,10 @@ import io.edugma.core.api.repository.PreferenceRepository
 import io.edugma.core.api.utils.InternalApi
 import io.ktor.util.decodeBase64Bytes
 import io.ktor.util.encodeBase64
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.browser.localStorage as BrowserLocalStorage
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -22,10 +23,15 @@ class PreferenceRepositoryImpl : PreferenceRepository {
     private val dataStore: Storage = BrowserLocalStorage
     private var prefix: String by notNull()
 
-    private val snapshot = MutableStateFlow(0)
+    private val snapshot = MutableSharedFlow<Unit>(
+        replay = 1,
+        extraBufferCapacity = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST,
+    )
 
     override fun init(path: String) {
         prefix = path
+        snapshot.tryEmit(Unit)
     }
 
     override suspend fun getString(key: String): String? {
@@ -87,20 +93,25 @@ class PreferenceRepositoryImpl : PreferenceRepository {
     }
 
     override suspend fun saveString(key: String, value: String) {
+        snapshot.tryEmit(Unit)
         dataStore.set(key, value)
     }
     override suspend fun saveBoolean(key: String, value: Boolean) {
+        snapshot.tryEmit(Unit)
         dataStore.set(key, value.toString())
     }
 
     override suspend fun saveInt(key: String, value: Int) {
+        snapshot.tryEmit(Unit)
         dataStore.set(key, value.toString())
     }
 
     override suspend fun saveLong(key: String, value: Long) {
+        snapshot.tryEmit(Unit)
         dataStore.set(key, value.toString())
     }
     override suspend fun saveByteArray(key: String, value: ByteArray) {
+        snapshot.tryEmit(Unit)
         dataStore.set(key, value.encodeBase64())
     }
 
@@ -114,24 +125,30 @@ class PreferenceRepositoryImpl : PreferenceRepository {
     }
 
     override suspend fun removeString(key: String) {
+        snapshot.tryEmit(Unit)
         dataStore.removeItem(key)
     }
     override suspend fun removeBoolean(key: String) {
+        snapshot.tryEmit(Unit)
         dataStore.removeItem(key)
     }
 
     override suspend fun removeInt(key: String) {
+        snapshot.tryEmit(Unit)
         dataStore.removeItem(key)
     }
 
     override suspend fun removeLong(key: String) {
+        snapshot.tryEmit(Unit)
         dataStore.removeItem(key)
     }
     override suspend fun removeByteArray(key: String) {
+        snapshot.tryEmit(Unit)
         dataStore.removeItem(key)
     }
 
     override suspend fun removeObject(key: String) {
+        snapshot.tryEmit(Unit)
         dataStore.removeItem(key)
     }
 }

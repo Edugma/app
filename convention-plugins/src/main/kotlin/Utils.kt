@@ -7,6 +7,8 @@ fun DependencyHandlerScope.kspAllPlatforms(dependencyNotation: Any) {
     add("kspIosX64", dependencyNotation)
     add("kspIosArm64", dependencyNotation)
     add("kspIosSimulatorArm64", dependencyNotation)
+    add("kspJs", dependencyNotation)
+    //add("kspWasmJs", dependencyNotation)
 }
 
 //fun PluginDependenciesSpecScope.edugma(pluginName: String) {
