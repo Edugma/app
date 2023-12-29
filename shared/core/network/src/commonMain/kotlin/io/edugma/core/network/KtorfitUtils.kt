@@ -68,9 +68,7 @@ fun buildKtorClient(
         }
     }
     client.plugin(HttpSend).apply {
-        intercept { request ->
-            execute(request)
-        }
+        // TODO js fail
         interceptors.forEach {
             intercept(it)
         }

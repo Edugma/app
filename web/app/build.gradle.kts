@@ -4,12 +4,13 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
+    id("mp-resource-lib")
 }
 
-val copyJsResources = tasks.create("copyJsResourcesWorkaround", Copy::class.java) {
-    from(projects.shared.app.dependencyProject.file("src/commonMain/resources"))
-    into("build/processedResources/js/main")
-}
+//val copyJsResources = tasks.create("copyJsResourcesWorkaround", Copy::class.java) {
+//    from(projects.shared.app.dependencyProject.file("src/commonMain/resources"))
+//    into("build/processedResources/js/main")
+//}
 
 //val copyWasmResources = tasks.create("copyWasmResourcesWorkaround", Copy::class.java) {
 //    from(projects.shared.app.dependencyProject.file("src/commonMain/resources"))
@@ -17,16 +18,23 @@ val copyJsResources = tasks.create("copyJsResourcesWorkaround", Copy::class.java
 //}
 
 afterEvaluate {
-    project.tasks.getByName("jsProcessResources").finalizedBy(copyJsResources)
+    //project.tasks.getByName("jsProcessResources").finalizedBy(copyJsResources)
+    //project.tasks.getByName("jsDevelopmentExecutableCompileSync").finalizedBy(copyJsResources)
     //project.tasks.getByName("wasmJsProcessResources").finalizedBy(copyWasmResources)
 }
 
 kotlin {
+    applyDefaultHierarchyTemplate()
+
     js(IR) {
         moduleName = "edugma"
         browser {
+            useCommonJs()
             commonWebpackConfig {
                 outputFileName = "edugma.js"
+            }
+            dceTask {
+                keep("ktor-ktor-io.\$\$importsForInline\$\$.ktor-ktor-io.io.ktor.utils.io")
             }
         }
         binaries.executable()
@@ -65,12 +73,19 @@ kotlin {
                 implementation(projects.shared.core.api)
                 implementation(projects.shared.core.navigation)
 
+                // For moko resources
+                implementation(projects.shared.core.icons)
+                implementation(projects.shared.core.designSystem)
+                implementation(projects.shared.core.resources)
+
                 implementation(compose.runtime)
                 implementation(compose.ui)
                 implementation(compose.foundation)
                 implementation(compose.material)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
+                implementation(libs.moko.resources)
+                implementation(libs.moko.resourcesCompose)
                 implementation(libs.essenty.instanceKeeper)
             }
         }

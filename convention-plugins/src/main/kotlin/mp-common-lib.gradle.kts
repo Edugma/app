@@ -15,7 +15,7 @@ val libs = the<LibrariesForLibs>()
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
-    targetHierarchy.default()
+    applyDefaultHierarchyTemplate()
 
     sourceSets {
         commonMain {

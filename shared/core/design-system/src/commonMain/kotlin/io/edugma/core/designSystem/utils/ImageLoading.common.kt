@@ -140,6 +140,7 @@ abstract class BaseImageLoader {
     internal fun init(
         memCacheSize: Int = 32 * 1024 * 1024, // 32MB
         diskCache: DiskCache? = null,
+        isJs: Boolean = false,
         componentSetup: ComponentRegistryBuilder.() -> Unit,
     ) {
 
