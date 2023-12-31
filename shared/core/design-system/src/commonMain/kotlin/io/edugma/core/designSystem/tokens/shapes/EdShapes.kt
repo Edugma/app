@@ -15,11 +15,11 @@ val EdShapes = Shapes(
 )
 
 object EdShapeTokens {
-    private val CornerExtraSmallRadius = 4.0.dp
-    private val CornerSmallRadius = 10.0.dp
-    private val CornerMediumRadius = 16.0.dp
-    private val CornerLargeRadius = 24.0.dp
-    private val CornerExtraLargeRadius = 26.0.dp
+    internal val CornerExtraSmallRadius = 4.0.dp
+    internal val CornerSmallRadius = 10.0.dp
+    internal val CornerMediumRadius = 16.0.dp
+    internal val CornerLargeRadius = 24.0.dp
+    internal val CornerExtraLargeRadius = 26.0.dp
 
     val CornerExtraSmall = RoundedCornerShape(CornerExtraSmallRadius)
     val CornerSmall = RoundedCornerShape(CornerSmallRadius)

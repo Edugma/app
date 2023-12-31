@@ -17,12 +17,14 @@ actual fun LocalDateTime.format(
 ): String = DateTimeFormatter.ofPattern(format).format(this.toJavaLocalDateTime())
 
 actual fun LocalDate.format(
-    format: String,
-): String = DateTimeFormatter.ofPattern(format).format(this.toJavaLocalDate().atTime(0, 0))
+    format: DateFormat,
+): String = DateTimeFormatter.ofPattern(format.format)
+    .format(this.toJavaLocalDate().atTime(0, 0))
 
 actual fun LocalTime.format(
-    format: String,
-): String = DateTimeFormatter.ofPattern(format).format(this.toJavaLocalTime())
+    format: TimeFormat,
+): String = DateTimeFormatter.ofPattern(format.format)
+    .format(this.toJavaLocalTime())
 
 actual fun DayOfWeek.format(
     format: String,

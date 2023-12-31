@@ -25,6 +25,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
+import io.edugma.core.api.utils.DateFormat
+import io.edugma.core.api.utils.TimeFormat
 import io.edugma.core.api.utils.capitalized
 import io.edugma.core.api.utils.format
 import io.edugma.core.designSystem.atoms.spacer.NavigationBarSpacer
@@ -241,11 +243,11 @@ private fun Dates(
 ) {
     Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         dates.forEach { date ->
-            val dateFrom = date.start.format("d MMM")
+            val dateFrom = date.start.format(DateFormat.DAY_MONTH_SHORT)
             var dateText = dateFrom
 
             if (date.end != null) {
-                dateText += " - " + date.end!!.format("d MMM")
+                dateText += " - " + date.end!!.format(DateFormat.DAY_MONTH_SHORT)
             }
 
             Text(
@@ -263,8 +265,8 @@ private fun Times(
 ) {
     Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         times.forEach { time ->
-            val timeFrom = time.start.format("HH:mm")
-            val timeTo = time.end.format("HH:mm")
+            val timeFrom = time.start.format(TimeFormat.HOURS_MINUTES)
+            val timeTo = time.end.format(TimeFormat.HOURS_MINUTES)
             val timeText = "$timeFrom - $timeTo"
 
             Text(

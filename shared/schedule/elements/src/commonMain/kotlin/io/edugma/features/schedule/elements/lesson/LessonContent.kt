@@ -17,6 +17,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
+import io.edugma.core.api.utils.TimeFormat
 import io.edugma.core.api.utils.format
 import io.edugma.core.api.utils.getShortName
 import io.edugma.core.designSystem.atoms.card.EdCard
@@ -48,7 +49,6 @@ fun LessonContent(
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 6.dp)
             .fillMaxWidth(),
-        elevation = EdElevation.Level2,
         onClick = { onLessonClick(lesson) },
         shape = EdTheme.shapes.large,
     ) {
@@ -169,8 +169,8 @@ fun PlacesContent(places: List<Place>, isLoading: Boolean = false) {
 
 @Composable
 fun LessonWindow(lessonWindow: ScheduleEventUiModel.Window) {
-    val timeFrom = remember(lessonWindow) { lessonWindow.timeFrom.format("HH:mm") }
-    val timeTo = remember(lessonWindow) { lessonWindow.timeTo.format("HH:mm") }
+    val timeFrom = remember(lessonWindow) { lessonWindow.timeFrom.format(TimeFormat.HOURS_MINUTES) }
+    val timeTo = remember(lessonWindow) { lessonWindow.timeTo.format(TimeFormat.HOURS_MINUTES) }
 
     val timeText = remember(lessonWindow) {
         getTimeText(lessonWindow.totalMinutes)

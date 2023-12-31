@@ -26,6 +26,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
+import io.edugma.core.designSystem.tokens.elevation.LocalEdElevation
 import io.edugma.core.designSystem.utils.surfaceColorAtElevation
 
 @Composable
@@ -35,7 +36,7 @@ fun EdSurface(
     shape: Shape = RectangleShape,
     color: Color = EdTheme.colorScheme.surface,
     contentColor: Color = contentColorFor(color),
-    elevation: EdElevation = EdElevation.Level1,
+    elevation: EdElevation = LocalEdElevation.current,
     elevatedAlpha: Float = 1f,
     border: BorderStroke? = null,
     content: @Composable () -> Unit,
@@ -44,6 +45,7 @@ fun EdSurface(
     CompositionLocalProvider(
         LocalContentColor provides contentColor,
         LocalAbsoluteTonalElevation provides absoluteElevation,
+        LocalEdElevation provides elevation.getNextLevel(),
     ) {
         Box(
             modifier = modifier
@@ -76,7 +78,7 @@ fun EdSurface(
     color: Color = EdTheme.colorScheme.surface,
     selectedColor: Color = EdTheme.colorScheme.surfaceVariant,
     contentColor: Color = contentColorFor(color),
-    elevation: EdElevation = EdElevation.Level1,
+    elevation: EdElevation = LocalEdElevation.current,
     elevatedAlpha: Float = 1f,
     border: BorderStroke? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -86,6 +88,7 @@ fun EdSurface(
     CompositionLocalProvider(
         LocalContentColor provides contentColor,
         LocalAbsoluteTonalElevation provides absoluteElevation,
+        LocalEdElevation provides elevation.getNextLevel(),
     ) {
         Box(
             modifier = modifier
@@ -126,7 +129,7 @@ fun EdSurface(
     shape: Shape = RectangleShape,
     color: Color = EdTheme.colorScheme.surface,
     contentColor: Color = contentColorFor(color),
-    elevation: EdElevation = EdElevation.Level1,
+    elevation: EdElevation = LocalEdElevation.current,
     elevatedAlpha: Float = 1f,
     border: BorderStroke? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -136,6 +139,7 @@ fun EdSurface(
     CompositionLocalProvider(
         LocalContentColor provides contentColor,
         LocalAbsoluteTonalElevation provides absoluteElevation,
+        LocalEdElevation provides elevation.getNextLevel(),
     ) {
         Box(
             modifier = modifier

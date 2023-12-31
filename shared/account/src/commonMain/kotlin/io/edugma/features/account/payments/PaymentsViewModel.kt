@@ -2,20 +2,19 @@ package io.edugma.features.account.payments
 
 import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.utils.launchCoroutine
-import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
+import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
 import io.edugma.core.navigation.core.router.external.ExternalRouter
 import io.edugma.core.utils.isNotNull
-import io.edugma.core.utils.isNull
 import io.edugma.features.account.common.LOCAL_DATA_SHOWN_ERROR
-import io.edugma.features.account.domain.model.payments.Contract
 import io.edugma.features.account.domain.model.payments.PaymentMethod
 import io.edugma.features.account.domain.repository.PaymentsRepository
+import io.edugma.features.account.payments.model.toUiModel
 import kotlinx.coroutines.async
 
 class PaymentsViewModel(
     private val repository: PaymentsRepository,
     private val externalRouter: ExternalRouter,
-) : BaseViewModel<PaymentsState>(PaymentsState()) {
+) : BaseActionViewModel<PaymentsUiState, PaymentsAction>(PaymentsUiState()) {
 
     init {
         load(isUpdate = false)
@@ -23,19 +22,25 @@ class PaymentsViewModel(
 
     fun load(isUpdate: Boolean = true) {
         launchCoroutine {
-            setLoading(true)
-            val remote = async { repository.getPayments() }
+            newState {
+                onLoading(true)
+            }
+            val remote = async { repository.getPayments().map { it.toUiModel() } }
             if (!isUpdate) {
-                val local = async { repository.getPaymentsLocal() }
+                val local = async { repository.getPaymentsLocal()?.map { it.toUiModel() } }
                 val localContracts = local.await()
                 if (localContracts != null) {
-                    setData(localContracts.associateBy { it.title })
+                    newState {
+                        onContent(localContracts.associateBy { it.title })
+                    }
                 }
             }
             runCatching { remote.await() }
                 .onSuccess {
-                    setLoading(false)
-                    setData(it.associateBy { it.title })
+                    newState {
+                        onLoading(false)
+                            .onContent(it.associateBy { it.title })
+                    }
                 }
                 .onFailure {
                     setError(true)
@@ -44,28 +49,21 @@ class PaymentsViewModel(
         }
     }
 
-    fun setData(data: Map<String, Contract>) {
-        newState {
-            copy(data = data)
+    override fun onAction(action: PaymentsAction) {
+        when (action) {
+            PaymentsAction.OnOpenUrl -> onOpenUri()
+            is PaymentsAction.OnPaymentMethodClick -> onPaymentMethodClick(action.paymentMethod)
+            is PaymentsAction.OnContractSelected -> onContractSelected(action.id)
         }
     }
 
-    fun setLoading(isLoading: Boolean) {
-        newState {
-            copy(
-                isLoading = isLoading,
-                isError = !isLoading && isError,
-            )
-        }
-    }
-
-    fun onOpenUri() {
+    private fun onOpenUri() {
         state.selectedPaymentMethod?.url?.let { url ->
             externalRouter.openUri(url)
         }
     }
 
-    fun onPaymentMethodClick(paymentMethod: PaymentMethod) {
+    private fun onPaymentMethodClick(paymentMethod: PaymentMethod) {
         newState {
             copy(
                 selectedPaymentMethod = paymentMethod,
@@ -85,31 +83,9 @@ class PaymentsViewModel(
         }
     }
 
-    fun typeChange(newIndex: Int) {
+    private fun onContractSelected(id: String) {
         newState {
-            copy(selectedIndex = newIndex)
+            copy(selectedContract = data?.values?.firstOrNull { it.id == id })
         }
     }
 }
-
-data class PaymentsState(
-    val data: Map<String, Contract>? = null,
-    val isLoading: Boolean = false,
-    val isError: Boolean = false,
-    val selectedIndex: Int = 0,
-    val selectedPaymentMethod: PaymentMethod? = null,
-) {
-    val isRefreshing = data.isNotNull() && isLoading && !isError
-    val placeholders = data.isNull() && isLoading && !isError
-    val types = data?.keys?.toList()
-    val selectedType = types?.getOrNull(selectedIndex)
-    val selectedPayment = data?.values?.toList()?.getOrNull(selectedIndex)
-    val isNothingToShow
-        get() = data?.isEmpty() == true && !isLoading
-    val showError
-        get() = isError && data.isNull()
-}
-
-fun PaymentsState.getTypeByIndex(index: Int) = types?.getOrNull(index)
-
-fun PaymentsState.getPaymentsByIndex(index: Int) = data?.values?.toList()?.getOrNull(index)

@@ -98,16 +98,39 @@ internal fun isLeapYear(year: Int): Boolean {
 }
 
 expect fun LocalDateTime.format(
-    format: String = "dd MMMM yyyy HH:mm",
+    format: String = "d MMMM yyyy HH:mm",
 ): String
+
+fun LocalDateTime.formatTime(
+    format: TimeFormat = TimeFormat.HOURS_MINUTES,
+): String = this.time.format(format)
+
+fun LocalDateTime.formatDate(
+    format: DateFormat = DateFormat.FULL,
+): String = this.date.format(format)
 
 expect fun LocalDate.format(
-    format: String = "dd MMMM yyyy",
+    format: DateFormat = DateFormat.FULL,
 ): String
 
+enum class DateFormat(val format: String) {
+    FULL("d MMMM yyyy"),
+    FULL_PRETTY("d MMMM, yyyy"),
+    DAY_MONTH("d MMMM"),
+    DAY_MONTH_SHORT("d MMM"),
+    WEEK_DAY_MONTH("EEEE, d MMMM"),
+    WEEK_DAY_MONTH_YEAR("EEEE, d MMMM, yyyy"),
+    WEEK("EEEE"),
+    WEEK_SHORT("EEE"),
+}
+
 expect fun LocalTime.format(
-    format: String = "HH:mm",
+    format: TimeFormat = TimeFormat.HOURS_MINUTES,
 ): String
+
+enum class TimeFormat(val format: String) {
+    HOURS_MINUTES("HH:mm"),
+}
 
 expect fun DayOfWeek.format(
     format: String = "EE",

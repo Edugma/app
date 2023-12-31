@@ -162,8 +162,8 @@ private fun LessonTitle(title: String) {
 //        horizontalArrangement = Arrangement.SpaceBetween,
 //    ) {
 //        WithContentAlpha(ContentAlpha.medium) {
-//            val timeStart = lessonDateTime.time.start.format("HH:mm")
-//            val timeEnd = lessonDateTime.time.end.format("HH:mm")
+//            val timeStart = lessonDateTime.time.start.format(TimeFormat.HOURS_MINUTES)
+//            val timeEnd = lessonDateTime.time.end.format(TimeFormat.HOURS_MINUTES)
 //            val startDate = lessonDateTime.startDate.format("d MMMM yyyy (EE)") // + "!!"
 //            EdLabel(
 //                text = "$timeStart - $timeEnd",

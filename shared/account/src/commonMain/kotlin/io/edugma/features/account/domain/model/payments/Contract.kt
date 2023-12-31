@@ -24,7 +24,4 @@ data class Contract(
     val paymentMethods: List<PaymentMethod>,
     @SerialName("payments")
     val payments: List<Payment>,
-) {
-    val qrCurrent: String
-        get() = paymentMethods.getOrNull(0)?.url ?: ""
-}
+)

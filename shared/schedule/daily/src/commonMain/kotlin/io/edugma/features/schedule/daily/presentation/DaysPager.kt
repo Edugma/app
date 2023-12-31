@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import io.edugma.core.api.utils.DateFormat
 import io.edugma.core.api.utils.format
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.card.EdCardDefaults
@@ -129,7 +130,7 @@ fun RowScope.DayContent(
     ) {
         WithContentAlpha(ContentAlpha.medium) {
             Text(
-                text = day.date.format("EEE").uppercase(),
+                text = day.date.format(DateFormat.WEEK_SHORT).uppercase(),
                 style = EdTheme.typography.labelSmall,
                 maxLines = 1,
                 overflow = TextOverflow.Clip,

@@ -25,6 +25,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
+import io.edugma.core.api.utils.DateFormat
+import io.edugma.core.api.utils.TimeFormat
 import io.edugma.core.api.utils.format
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
@@ -130,15 +132,15 @@ private fun OccupancyTab(
     ) {
         val currentDay = state.placeOccupancy[it]
         Column(Modifier.fillMaxSize()) {
-            Text(text = currentDay.date.format("d MMMM yyyy"))
+            Text(text = currentDay.date.format(DateFormat.FULL))
             SpacerHeight(10.dp)
             LazyColumn(Modifier.fillMaxWidth()) {
                 items(currentDay.values) {
                     Card(
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                     ) {
-                        val time = it.timeFrom.format("HH:mm") +
-                            "-" + it.timeTo.format("HH:mm")
+                        val time = it.timeFrom.format(TimeFormat.HOURS_MINUTES) +
+                            "-" + it.timeTo.format(TimeFormat.HOURS_MINUTES)
                         Text(
                             text = time,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),

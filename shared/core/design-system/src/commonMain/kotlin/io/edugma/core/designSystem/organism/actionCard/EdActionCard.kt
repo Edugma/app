@@ -42,13 +42,19 @@ fun EdActionCard(
             ) {
                 content()
             }
+
+            val maxLines = if (subtitle == null) {
+                3
+            } else {
+                2
+            }
             EdLabel(
                 text = title,
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.CenterHorizontally),
                 style = EdTheme.typography.labelMedium,
-                maxLines = 2,
+                maxLines = maxLines,
             )
             if (subtitle != null) {
                 EdLabel(

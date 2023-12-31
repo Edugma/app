@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Shape
 import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
+import io.edugma.core.designSystem.tokens.elevation.LocalEdElevation
 
 @Composable
 @NonRestartableComposable
@@ -27,7 +28,7 @@ fun EdCard(
     colors: EdCardColors = EdCardDefaults.cardColors(
         containerColor = EdTheme.colorScheme.surface,
     ),
-    elevation: EdElevation = EdElevation.Level1,
+    elevation: EdElevation = LocalEdElevation.current,
     border: BorderStroke? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable ColumnScope.() -> Unit,
@@ -58,7 +59,7 @@ fun EdCard(
     colors: EdCardColors = EdCardDefaults.cardColors(
         containerColor = EdTheme.colorScheme.surface,
     ),
-    elevation: EdElevation = EdElevation.Level1,
+    elevation: EdElevation = LocalEdElevation.current,
     border: BorderStroke? = null,
     contentPadding: PaddingValues = PaddingValues(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -91,7 +92,7 @@ fun EdCard(
     colors: EdCardColors = EdCardDefaults.cardColors(
         containerColor = EdTheme.colorScheme.surface,
     ),
-    elevation: EdElevation = EdElevation.Level1,
+    elevation: EdElevation = LocalEdElevation.current,
     border: BorderStroke? = null,
     contentPadding: PaddingValues = PaddingValues(),
     content: @Composable ColumnScope.() -> Unit,

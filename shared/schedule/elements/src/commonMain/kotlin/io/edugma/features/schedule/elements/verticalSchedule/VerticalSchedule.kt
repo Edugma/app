@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import io.edugma.core.api.utils.DateFormat
 import io.edugma.core.api.utils.capitalized
 import io.edugma.core.api.utils.format
 import io.edugma.core.api.utils.nowLocalDate
@@ -130,9 +131,9 @@ private fun DayDate(date: LocalDate) {
 
     val dateFormatted = remember(date, now) {
         if (date.year == now.year) {
-            date.format("EEEE, d MMMM").capitalized()
+            date.format(DateFormat.WEEK_DAY_MONTH).capitalized()
         } else {
-            date.format("EEEE, d MMMM, yyyy").capitalized()
+            date.format(DateFormat.WEEK_DAY_MONTH_YEAR).capitalized()
         }
     }
 

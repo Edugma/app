@@ -28,19 +28,19 @@ actual fun LocalDateTime.format(format: String): String {
 }
 
 actual fun LocalDate.format(
-    format: String,
+    format: DateFormat,
 ): String {
     return this.atTime(LocalTime(1, 1, 1, 1))
         .toInstant(TimeZone.currentSystemDefault())
-        .format(format)
+        .format(format.format)
 }
 
 actual fun LocalTime.format(
-    format: String,
+    format: TimeFormat,
 ): String {
     return this.atDate(LocalDate(2018, 1, 1))
         .toInstant(TimeZone.currentSystemDefault())
-        .format(format)
+        .format(format.format)
 }
 
 actual fun DayOfWeek.format(

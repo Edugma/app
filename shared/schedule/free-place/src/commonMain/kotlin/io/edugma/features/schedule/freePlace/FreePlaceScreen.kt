@@ -24,6 +24,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
+import io.edugma.core.api.utils.DateFormat
+import io.edugma.core.api.utils.TimeFormat
 import io.edugma.core.api.utils.format
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.spacer.SpacerFill
@@ -114,7 +116,7 @@ fun FreePlaceContent(
                                 SpacerFill()
                                 EdButton(
                                     onClick = { },
-                                    text = state.date.format("d MMMM yyyy"),
+                                    text = state.date.format(DateFormat.FULL),
                                 )
                             }
                             SpacerHeight(4.dp)
@@ -129,7 +131,7 @@ fun FreePlaceContent(
                                 SpacerFill()
                                 EdButton(
                                     onClick = { },
-                                    text = state.timeFrom.format("HH:mm"),
+                                    text = state.timeFrom.format(TimeFormat.HOURS_MINUTES),
                                 )
                             }
                             SpacerHeight(4.dp)
@@ -144,7 +146,7 @@ fun FreePlaceContent(
                                 SpacerFill()
                                 EdButton(
                                     onClick = { },
-                                    text = state.timeTo.format("HH:mm"),
+                                    text = state.timeTo.format(TimeFormat.HOURS_MINUTES),
                                 )
                             }
                             SpacerHeight(8.dp)

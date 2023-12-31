@@ -1,5 +1,6 @@
 package io.edugma.core.designSystem.organism.chipRow
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Text
@@ -14,16 +15,21 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.edPlaceholder
 
 @Composable
-fun<T : Any> EdSelectableChipRow(
+fun <T : Any> EdSelectableChipRow(
     types: List<T>,
     selectedType: T?,
     nameMapper: (T) -> String,
+    modifier: Modifier = Modifier,
     chipForm: EdChipForm = EdChipForm.roundedSquare,
     defaultColor: Color = EdTheme.colorScheme.primary,
     selectedColor: Color = EdTheme.colorScheme.surface,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
     clickListener: (T) -> Unit,
 ) {
-    LazyRow() {
+    LazyRow(
+        modifier = modifier,
+        contentPadding = contentPadding,
+    ) {
         items(
             count = types.size,
             key = { types[it] },

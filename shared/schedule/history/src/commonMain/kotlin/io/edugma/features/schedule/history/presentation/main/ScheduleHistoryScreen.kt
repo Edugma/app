@@ -22,7 +22,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
-import io.edugma.core.api.utils.format
+import io.edugma.core.api.utils.DateFormat
+import io.edugma.core.api.utils.TimeFormat
+import io.edugma.core.api.utils.formatDate
+import io.edugma.core.api.utils.formatTime
 import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
@@ -162,14 +165,14 @@ private fun ScheduleHistoryContent(
                                 SpacerHeight(4.dp)
                                 SecondaryContent {
                                     EdLabel(
-                                        text = date.format("dd MMMM yyyy"),
+                                        text = date.formatDate(DateFormat.FULL),
                                         iconPainter = painterResource(
                                             EdIcons.ic_fluent_calendar_ltr_16_regular,
                                         ),
                                         style = EdTheme.typography.bodySmall,
                                     )
                                     EdLabel(
-                                        text = date.format("HH:mm"),
+                                        text = date.formatTime(TimeFormat.HOURS_MINUTES),
                                         iconPainter = painterResource(
                                             EdIcons.ic_fluent_clock_16_regular,
                                         ),

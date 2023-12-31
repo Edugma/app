@@ -1,10 +1,8 @@
 package io.edugma.core.designSystem.tokens.typography
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import dev.icerock.moko.resources.FontResource
 import dev.icerock.moko.resources.compose.asFont
 import io.edugma.core.designSystem.MR
 
@@ -19,4 +17,3 @@ val openSansFontFamily: FontFamily
             MR.fonts.OpenSans.extraBold.asFont(FontWeight.ExtraBold) ?: return FontFamily.Default, // W800
         )
     }
-

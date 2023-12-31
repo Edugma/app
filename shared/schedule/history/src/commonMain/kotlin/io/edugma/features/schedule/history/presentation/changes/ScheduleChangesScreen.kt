@@ -24,7 +24,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
+import io.edugma.core.api.utils.DateFormat
+import io.edugma.core.api.utils.TimeFormat
 import io.edugma.core.api.utils.format
+import io.edugma.core.api.utils.formatDate
+import io.edugma.core.api.utils.formatTime
 import io.edugma.core.arch.viewmodel.bind
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
@@ -114,14 +118,14 @@ fun ScheduleChangesContent(
                                         state.firstSelected.toLocalDateTime(TimeZone.currentSystemDefault())
                                     }
                                     EdLabel(
-                                        text = date1.format("dd MMMM yyyy"),
+                                        text = date1.formatDate(DateFormat.FULL),
                                         iconPainter = painterResource(
                                             EdIcons.ic_fluent_calendar_ltr_16_regular,
                                         ),
                                         style = EdTheme.typography.bodySmall,
                                     )
                                     EdLabel(
-                                        text = date1.format("HH:mm"),
+                                        text = date1.formatTime(TimeFormat.HOURS_MINUTES),
                                         iconPainter = painterResource(
                                             EdIcons.ic_fluent_clock_16_regular,
                                         ),
@@ -146,14 +150,14 @@ fun ScheduleChangesContent(
                                         state.secondSelected.toLocalDateTime(TimeZone.currentSystemDefault())
                                     }
                                     EdLabel(
-                                        text = date2.format("dd MMMM yyyy"),
+                                        text = date2.formatDate(DateFormat.FULL),
                                         iconPainter = painterResource(
                                             EdIcons.ic_fluent_calendar_ltr_16_regular,
                                         ),
                                         style = EdTheme.typography.bodySmall,
                                     )
                                     EdLabel(
-                                        text = date2.format("HH:mm"),
+                                        text = date2.formatTime(TimeFormat.HOURS_MINUTES),
                                         iconPainter = painterResource(
                                             EdIcons.ic_fluent_clock_16_regular,
                                         ),
@@ -185,7 +189,7 @@ fun ScheduleChangesContent(
                                 elevatedAlpha = 0.8f,
                             ) {
                                 Text(
-                                    date.format("d MMMM, yyyy"),
+                                    date.format(DateFormat.FULL_PRETTY),
                                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 5.dp),
                                     style = EdTheme.typography.bodyMedium,
                                 )

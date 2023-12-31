@@ -107,7 +107,8 @@ interface PlaceholderHighlight {
      * @param size The size of the current layout to draw in.
      */
     fun brush(
-        /* @FloatRange(from = 0.0, to = 1.0) */ progress: Float,
+        /* @FloatRange(from = 0.0, to = 1.0) */
+        progress: Float,
         size: Size,
     ): Brush
 
@@ -138,7 +139,8 @@ interface PlaceholderHighlight {
 @Composable
 fun PlaceholderHighlight.Companion.shimmer(
     animationSpec: InfiniteRepeatableSpec<Float> = PlaceholderDefaults.shimmerAnimationSpec,
-    /* @FloatRange(from = 0.0, to = 1.0) */ progressForMaxAlpha: Float = 0.6f,
+    /* @FloatRange(from = 0.0, to = 1.0) */
+    progressForMaxAlpha: Float = 0.6f,
 ): PlaceholderHighlight = Shimmer(
     highlightColor = PlaceholderDefaults.shimmerHighlightColor(),
     animationSpec = animationSpec,

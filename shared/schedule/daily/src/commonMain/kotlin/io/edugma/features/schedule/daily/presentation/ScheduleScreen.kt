@@ -31,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
+import io.edugma.core.api.utils.DateFormat
 import io.edugma.core.api.utils.format
 import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import io.edugma.core.designSystem.atoms.loader.EdLoader
@@ -95,7 +96,7 @@ fun ScheduleContent(
                     Column(Modifier.fillMaxWidth()) {
                         EdTopAppBar(
                             title = stringResource(MR.strings.sch_schedule),
-                            subtitle = state.selectedDate.format("d MMMM, yyyy"),
+                            subtitle = state.selectedDate.format(DateFormat.FULL_PRETTY),
                             onNavigationClick = { onAction(ScheduleDailyAction.OnBack) },
                             actions = {
                                 if (state.isLoading && state.schedule != null) {

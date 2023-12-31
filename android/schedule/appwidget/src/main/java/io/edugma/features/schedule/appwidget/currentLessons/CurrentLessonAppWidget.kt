@@ -145,8 +145,8 @@ private fun NoLessons() {
 private fun LessonContent(time: LessonTime, lesson: Lesson) {
     Column {
         Row {
-            val timeFrom = time.start.format("HH:mm")
-            val timeTo = time.end.format("HH:mm")
+            val timeFrom = time.start.format(TimeFormat.HOURS_MINUTES)
+            val timeTo = time.end.format(TimeFormat.HOURS_MINUTES)
             Text(
                 text = "$timeFrom - $timeTo",
                 style = TextStyle(

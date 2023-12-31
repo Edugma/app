@@ -17,6 +17,16 @@ data class EdCellSize(
     val titleSubtitleSpacing: Dp,
 ) {
     companion object {
+        val small: EdCellSize
+            @Composable
+            @ReadOnlyComposable
+            get() = EdCellSize(
+                avatarSize = EdAvatarSize.small,
+                titleTextStyle = EdTheme.typography.titleSmall,
+                subtitleTextStyle = EdTheme.typography.bodySmall,
+                titleSubtitleSpacing = 1.dp,
+            )
+
         val medium: EdCellSize
             @Composable
             @ReadOnlyComposable

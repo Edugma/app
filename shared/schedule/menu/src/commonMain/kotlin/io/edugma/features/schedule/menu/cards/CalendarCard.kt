@@ -3,6 +3,7 @@ package io.edugma.features.schedule.menu.cards
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.compose.stringResource
+import io.edugma.core.api.utils.DateFormat
 import io.edugma.core.api.utils.capitalized
 import io.edugma.core.api.utils.format
 import io.edugma.core.designSystem.organism.iconCard.EdIconCard
@@ -19,7 +20,7 @@ fun CalendarCard(
 ) {
     EdIconCard(
         title = stringResource(MR.strings.sch_calendar),
-        subtitle = date.format("EEEE").capitalized(),
+        subtitle = date.format(DateFormat.WEEK).capitalized(),
         onClick = onScheduleCalendarClick,
         icon = rememberCachedIconPainter(
             "https://img.icons8.com/fluency/48/calendar-${date.dayOfMonth}.png",
