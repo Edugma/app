@@ -1,4 +1,4 @@
-package io.edugma.features.account.marks.item
+package io.edugma.features.account.performance.model
 
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Text
@@ -10,7 +10,7 @@ import io.edugma.core.designSystem.molecules.chip.EdChipForm
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.utils.Typed1Listener
-import io.edugma.features.account.marks.Filter
+import io.edugma.features.account.performance.Filter
 
 @Composable
 fun FiltersRow(

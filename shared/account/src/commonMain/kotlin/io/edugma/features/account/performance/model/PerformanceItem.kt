@@ -1,4 +1,4 @@
-package io.edugma.features.account.marks.item
+package io.edugma.features.account.performance.model
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -51,7 +51,7 @@ fun PerformanceItem(
             overflow = TextOverflow.Ellipsis,
         )
 
-        val gradeColor = when (performance.grade.value) {
+        val gradeColor = when (performance.grade?.value) {
             GradeValue.VERY_GOOD -> EdTheme.customColorScheme.success
             GradeValue.GOOD -> EdTheme.customColorScheme.success
             GradeValue.NORMAL -> EdTheme.customColorScheme.warning
@@ -60,7 +60,7 @@ fun PerformanceItem(
             null -> LocalContentColor.current
         }
         Text(
-            text = performance.grade.title,
+            text = performance.grade?.title.orEmpty(),
             style = EdTheme.typography.titleLarge,
             color = gradeColor,
             modifier = Modifier

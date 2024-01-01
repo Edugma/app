@@ -1,8 +1,12 @@
-package io.edugma.features.account.marks
+package io.edugma.features.account.performance
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -14,14 +18,17 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
+import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
+import io.edugma.core.designSystem.atoms.spacer.NavigationBarSpacer
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
+import io.edugma.core.designSystem.organism.EdScaffold
 import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetValue
 import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
+import io.edugma.core.designSystem.organism.chipRow.EdSelectableChipRow
 import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
 import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
 import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
-import io.edugma.core.designSystem.utils.navigationBarsPadding
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureBottomSheetScreen
 import io.edugma.core.utils.ClickListener
@@ -29,11 +36,11 @@ import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.isNull
 import io.edugma.core.utils.viewmodel.getViewModel
 import io.edugma.features.account.domain.model.performance.Performance
-import io.edugma.features.account.marks.bottomSheets.FiltersBottomSheetContent
-import io.edugma.features.account.marks.bottomSheets.PerformanceBottomSheetContent
-import io.edugma.features.account.marks.item.FiltersRow
-import io.edugma.features.account.marks.item.PerformanceItem
-import io.edugma.features.account.marks.item.PerformancePlaceholder
+import io.edugma.features.account.performance.bottomSheets.FiltersBottomSheetContent
+import io.edugma.features.account.performance.bottomSheets.PerformanceBottomSheetContent
+import io.edugma.features.account.performance.model.FiltersRow
+import io.edugma.features.account.performance.model.PerformanceItem
+import io.edugma.features.account.performance.model.PerformancePlaceholder
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
@@ -47,6 +54,7 @@ fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
 
     FeatureBottomSheetScreen(
         navigationBarPadding = false,
+        statusBarPadding = false,
         sheetState = bottomState,
         sheetContent = {
             if (state.selectedPerformance.isNull()) {
@@ -66,9 +74,9 @@ fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
                 viewModel.openBottomSheetClick(it)
                 scope.launch { bottomState.show() }
             },
-            retryListener = viewModel::loadMarks,
             filterClickListener = viewModel::updateFilter,
             backListener = viewModel::exit,
+            onAction = viewModel.rememberOnAction(),
         )
     }
 }
@@ -76,37 +84,67 @@ fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 fun PerformanceContent(
-    state: MarksState,
+    state: PerformanceUiState,
     showBottomSheet: Typed1Listener<Performance?>,
-    retryListener: ClickListener,
     filterClickListener: Typed1Listener<Filter<*>>,
     backListener: ClickListener,
+    onAction: (PerformanceAction) -> Unit,
 ) {
-    Column(Modifier.navigationBarsPadding()) {
-        EdTopAppBar(
-            title = "Оценки",
-            onNavigationClick = backListener,
-            actions = {
-                IconButton(
-                    onClick = { showBottomSheet(null) },
-                    enabled = !state.isLoading,
-                ) {
-                    Icon(
-                        painterResource(EdIcons.ic_fluent_filter_24_regular),
-                        contentDescription = "Фильтр",
-                    )
+    EdScaffold(
+        modifier = Modifier.fillMaxWidth(),
+        topBar = {
+            Column(Modifier.fillMaxWidth()) {
+                EdTopAppBar(
+                    title = "Оценки",
+                    onNavigationClick = backListener,
+                    windowInsets = WindowInsets.statusBars,
+                    actions = {
+                        IconButton(
+                            onClick = { showBottomSheet(null) },
+                            enabled = !state.isLoading,
+                        ) {
+                            Icon(
+                                painterResource(EdIcons.ic_fluent_filter_24_regular),
+                                contentDescription = "Фильтр",
+                            )
+                        }
+                    },
+                )
+                if (state.periods != null) {
+                    EdSelectableChipRow(
+                        types = state.periods,
+                        selectedType = state.selectedPeriod,
+                        nameMapper = { it.value },
+                        modifier = Modifier.padding(bottom = 10.dp),
+                        contentPadding = PaddingValues(horizontal = 10.dp),
+                    ) { selectedItem ->
+                        onAction(PerformanceAction.OnPeriodSelected(selectedItem))
+                    }
                 }
+                FiltersRow(state.currentFilters, filterClickListener)
+            }
+        },
+    ) {
+        EdPullRefresh(
+            refreshing = state.isRefreshing,
+            onRefresh = {
+                onAction(PerformanceAction.OnRetryClicked)
             },
-        )
-        FiltersRow(state.currentFilters, filterClickListener)
-        EdPullRefresh(refreshing = state.isRefreshing, onRefresh = retryListener) {
+        ) {
             when {
                 state.showError -> {
-                    ErrorWithRetry(modifier = Modifier.fillMaxSize(), retryAction = retryListener)
+                    ErrorWithRetry(
+                        modifier = Modifier.fillMaxSize(),
+                        retryAction = {
+                            onAction(PerformanceAction.OnRetryClicked)
+                        },
+                    )
                 }
+
                 state.showNothingFound -> {
                     EdNothingFound(modifier = Modifier.fillMaxSize())
                 }
+
                 else -> PerformanceList(state, showBottomSheet)
             }
         }
@@ -115,7 +153,7 @@ fun PerformanceContent(
 
 @Composable
 fun PerformanceList(
-    state: MarksState,
+    state: PerformanceUiState,
     showBottomSheet: Typed1Listener<Performance?>,
 ) {
     LazyColumn(
@@ -138,6 +176,10 @@ fun PerformanceList(
                     state.filteredData!![it],
                 ) { showBottomSheet(state.filteredData?.get(it)) }
                 SpacerHeight(height = 3.dp)
+            }
+
+            item {
+                NavigationBarSpacer()
             }
         }
     }

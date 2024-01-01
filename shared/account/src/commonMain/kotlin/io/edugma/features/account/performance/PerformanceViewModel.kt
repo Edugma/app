@@ -1,38 +1,39 @@
-package io.edugma.features.account.marks
+package io.edugma.features.account.performance
 
 import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.utils.launchCoroutine
-import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
+import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
 import io.edugma.core.navigation.core.router.external.ExternalRouter
 import io.edugma.core.utils.isNotNull
-import io.edugma.core.utils.isNull
 import io.edugma.features.account.common.LOCAL_DATA_SHOWN_ERROR
 import io.edugma.features.account.domain.model.performance.Performance
 import io.edugma.features.account.domain.model.performance.PerformancePeriod
 import io.edugma.features.account.domain.repository.PerformanceRepository
-import io.edugma.features.account.marks.Filter.Name
-import io.edugma.features.account.marks.Filter.PerformancePeriodUiModel
-import io.edugma.features.account.marks.Filter.Type
+import io.edugma.features.account.performance.Filter.Name
+import io.edugma.features.account.performance.Filter.PerformancePeriodUiModel
+import io.edugma.features.account.performance.Filter.Type
 import kotlinx.coroutines.async
 
 class PerformanceViewModel(
     private val repository: PerformanceRepository,
     private val externalRouter: ExternalRouter,
-) : BaseViewModel<MarksState>(MarksState()) {
+) : BaseActionViewModel<PerformanceUiState, PerformanceAction>(PerformanceUiState()) {
 
     init {
         loadMarks(isUpdate = false)
     }
 
-    fun loadMarks(isUpdate: Boolean = true) {
+    private fun loadMarks(isUpdate: Boolean = true, periodId: String = "2") {
         launchCoroutine {
-            setLoading(true)
-            setError(false)
+            newState {
+                toLoading(true)
+                    .toError(false)
+            }
 
             val localMarks = async { repository.getLocalMarks() }
             val performancePeriods = async { repository.getPerformancePeriods() }
             // TODO Fix
-            val marks = async { repository.getPerformance("2") }
+            val marks = async { repository.getPerformance(periodId) }
             if (!isUpdate) {
                 localMarks.await()?.let {
                     setFilters(
@@ -58,14 +59,34 @@ class PerformanceViewModel(
                     }
                 }
                 .onFailure {
-                    setError(true)
+                    newState {
+                        toError(true)
+                    }
                     if (localMarks.await().isNotNull()) {
                         externalRouter.showMessage(LOCAL_DATA_SHOWN_ERROR)
                     }
                 }
 
-            setLoading(false)
+            newState {
+                toLoading(false)
+            }
         }
+    }
+
+    override fun onAction(action: PerformanceAction) {
+        when (action) {
+            is PerformanceAction.OnPeriodSelected -> onPeriodSelected(action.period)
+            PerformanceAction.OnRetryClicked -> loadMarks()
+        }
+    }
+
+    private fun onPeriodSelected(period: PerformancePeriodUiModel) {
+        newState {
+            copy(
+                selectedPeriod = period,
+            )
+        }
+        loadMarks(periodId = period.id)
     }
 
     fun openBottomSheetClick(performance: Performance?) {
@@ -77,18 +98,6 @@ class PerformanceViewModel(
     private fun setPerformanceData(data: List<Performance>) {
         newState {
             copy(data = data)
-        }
-    }
-
-    private fun setLoading(isLoading: Boolean) {
-        newState {
-            copy(isLoading = isLoading)
-        }
-    }
-
-    private fun setError(isError: Boolean) {
-        newState {
-            copy(isError = isError)
         }
     }
 
@@ -105,33 +114,33 @@ class PerformanceViewModel(
     }
 
     fun updateFilter(filter: Filter<*>) {
-        newState {
-            if (!isLoading) {
-                when (filter) {
-                    is PerformancePeriodUiModel -> copy(
-                        periods = periods.updateFilter(filter) as List<PerformancePeriodUiModel>,
-                        currentFilters = currentFilters.addOrDeleteFilter(filter),
-                    )
-                    is Type -> copy(
-                        types = types.updateFilter(filter) as List<Type>,
-                        currentFilters = currentFilters.addOrDeleteFilter(filter),
-                    )
-                    is Name -> copy(
-                        name = filter.copy(isChecked = !filter.isChecked),
-                        currentFilters = currentFilters.addOrDeleteFilter(filter),
-                    )
-                }
-            } else {
-                this
-            }
-        }
+//        newState {
+//            if (!isLoading) {
+//                when (filter) {
+//                    is PerformancePeriodUiModel -> copy(
+//                        periods = periods.updateFilter(filter) as List<PerformancePeriodUiModel>,
+//                        currentFilters = currentFilters.addOrDeleteFilter(filter),
+//                    )
+//                    is Type -> copy(
+//                        types = types.updateFilter(filter) as List<Type>,
+//                        currentFilters = currentFilters.addOrDeleteFilter(filter),
+//                    )
+//                    is Name -> copy(
+//                        name = filter.copy(isChecked = !filter.isChecked),
+//                        currentFilters = currentFilters.addOrDeleteFilter(filter),
+//                    )
+//                }
+//            } else {
+//                this
+//            }
+//        }
     }
 
     fun resetFilters() {
         newState {
             copy(
                 currentFilters = emptySet(),
-                periods = periods.map { it.copy(isChecked = false) },
+                periods = periods?.map { it.copy(isChecked = false) },
                 types = types.map { it.copy(isChecked = false) },
             )
         }
@@ -141,17 +150,18 @@ class PerformanceViewModel(
 
     // todo рефакторить и вынести в usecase
     private fun<T> List<Filter<T>>.updateFilter(newFilter: Filter<T>): Set<Filter<T>> {
-        val newSet = toMutableList()
-        newSet.forEachIndexed { index, filter ->
-            if (filter == newFilter) {
-                newSet[index] = when (newFilter) {
-                    is PerformancePeriodUiModel -> (newFilter as PerformancePeriodUiModel).copy(isChecked = !newFilter.isChecked)
-                    is Type -> (newFilter as Type).copy(isChecked = !newFilter.isChecked)
-                    is Name -> (newFilter as Name).copy(isChecked = !newFilter.isChecked)
-                } as Filter<T>
-            }
-        }
-        return newSet.toSet()
+        return emptySet()
+//        val newSet = toMutableList()
+//        newSet.forEachIndexed { index, filter ->
+//            if (filter == newFilter) {
+//                newSet[index] = when (newFilter) {
+//                    is PerformancePeriodUiModel -> (newFilter as PerformancePeriodUiModel).copy(isChecked = !newFilter.isChecked)
+//                    is Type -> (newFilter as Type).copy(isChecked = !newFilter.isChecked)
+//                    is Name -> (newFilter as Name).copy(isChecked = !newFilter.isChecked)
+//                } as Filter<T>
+//            }
+//        }
+//        return newSet.toSet()
     }
 
     private fun<T> Set<Filter<T>>.addOrDeleteFilter(newFilter: Filter<T>): Set<Filter<T>> {
@@ -176,53 +186,6 @@ class PerformanceViewModel(
         }
         return newSet.toSet()
     }
-}
-
-data class MarksState(
-    val data: List<Performance>? = null,
-    val periods: List<PerformancePeriodUiModel> = emptyList(),
-    val types: List<Type> = listOf(),
-    val name: Name = Name(""),
-    val currentFilters: Set<Filter<*>> = emptySet(),
-    val isLoading: Boolean = false,
-    val isError: Boolean = false,
-    val selectedPerformance: Performance? = null,
-) {
-    val placeholders = data.isNull() && isLoading && !isError
-    val bottomSheetPlaceholders = (isLoading && !isError) || (isError && data.isNull())
-    val isRefreshing = data.isNotNull() && isLoading && !isError
-    val showError
-        get() = isError && data.isNull()
-    val showNothingFound
-        get() = filteredData?.isEmpty() == true
-
-    private val filteredPeriods
-        get() = periods.filter { it.isChecked }.toSet()
-
-    private val filteredTypes
-        get() = types.filter { it.isChecked }.toSet()
-
-    private val enabledFilters
-        get() = (filteredPeriods + filteredTypes).let {
-            if (name.isChecked) it.plus(name) else it
-        }
-
-    val filteredData
-        get() = data?.filter { performance ->
-            when {
-                enabledFilters.isEmpty() -> true
-                else -> {
-                    val type = Type(performance.type, true)
-                    if (filteredTypes.isNotEmpty()) {
-                        if (!filteredTypes.contains(type)) return@filter false
-                    }
-                    if (name.isChecked && !performance.title.contains(name.value, ignoreCase = true)) {
-                        return@filter false
-                    }
-                    true
-                }
-            }
-        }
 }
 
 sealed class Filter<out T>(open val value: T, open val isChecked: Boolean) {

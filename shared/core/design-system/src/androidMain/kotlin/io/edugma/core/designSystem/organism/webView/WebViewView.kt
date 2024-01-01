@@ -1,4 +1,4 @@
-package io.edugma.features.account.web
+package io.edugma.core.designSystem.organism.webView
 
 import android.annotation.SuppressLint
 import android.content.Context

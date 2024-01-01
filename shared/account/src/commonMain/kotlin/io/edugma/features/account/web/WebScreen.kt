@@ -13,6 +13,8 @@ import androidx.compose.ui.Modifier
 import io.edugma.core.designSystem.atoms.loader.EdLoader
 import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
+import io.edugma.core.designSystem.organism.webView.WebViewCompose
+import io.edugma.core.designSystem.organism.webView.WebViewState
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.isNotNull

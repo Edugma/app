@@ -14,13 +14,15 @@ data class Performance(
     @SerialName("description")
     val description: String,
     @SerialName("grade")
-    val grade: Grade,
+    val grade: Grade?,
 )
 
 @Serializable
 data class Grade(
     @SerialName("title")
     val title: String,
+    @SerialName("description")
+    val description: String,
     @SerialName("value")
     val value: GradeValue?,
 )

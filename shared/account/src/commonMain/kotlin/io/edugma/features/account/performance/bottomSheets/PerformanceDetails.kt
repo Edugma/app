@@ -1,4 +1,4 @@
-package io.edugma.features.account.marks.bottomSheets
+package io.edugma.features.account.performance.bottomSheets
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.runtime.Composable
@@ -30,9 +30,9 @@ fun ColumnScope.PerformanceBottomSheetContent(performance: Performance) {
             style = EdTheme.typography.bodyMedium,
         )
         SpacerHeight(height = 12.dp)
-        performance.grade.takeIf { it.title.isNotEmpty() }?.let {
+        performance.grade.takeIf { !it?.title.isNullOrEmpty() }?.let {
             EdLabel(
-                text = performance.grade.title,
+                text = performance.grade?.title ?: "",
                 iconPainter = painterResource(EdIcons.ic_fluent_album_24_regular),
                 style = EdTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold,

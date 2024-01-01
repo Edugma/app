@@ -154,51 +154,49 @@ fun PaymentsContent(
     backListener: ClickListener,
     onAction: (PaymentsAction) -> Unit,
 ) {
-    Column {
-        EdScaffold(
-            modifier = Modifier.fillMaxWidth(),
-            topBar = {
-                Column(Modifier.fillMaxWidth()) {
-                    EdTopAppBar(
-                        title = state.selectedContract?.title ?: "Оплаты",
-                        onNavigationClick = backListener,
-                        windowInsets = WindowInsets.statusBars,
-                    )
-                    if (state.types != null) {
-                        EdSelectableChipRow(
-                            types = state.types,
-                            selectedType = state.selectedType,
-                            nameMapper = { it },
-                            modifier = Modifier.padding(bottom = 10.dp),
-                            contentPadding = PaddingValues(horizontal = 10.dp),
-                        ) { selectedTitle ->
-                            val id = state.data?.values
-                                ?.firstOrNull { it.title == selectedTitle }
-                                ?.id
-                            if (id != null) {
-                                onAction(PaymentsAction.OnContractSelected(id))
-                            }
+    EdScaffold(
+        modifier = Modifier.fillMaxWidth(),
+        topBar = {
+            Column(Modifier.fillMaxWidth()) {
+                EdTopAppBar(
+                    title = state.selectedContract?.title ?: "Оплаты",
+                    onNavigationClick = backListener,
+                    windowInsets = WindowInsets.statusBars,
+                )
+                if (state.types != null) {
+                    EdSelectableChipRow(
+                        types = state.types,
+                        selectedType = state.selectedType,
+                        nameMapper = { it },
+                        modifier = Modifier.padding(bottom = 10.dp),
+                        contentPadding = PaddingValues(horizontal = 10.dp),
+                    ) { selectedTitle ->
+                        val id = state.data?.values
+                            ?.firstOrNull { it.title == selectedTitle }
+                            ?.id
+                        if (id != null) {
+                            onAction(PaymentsAction.OnContractSelected(id))
                         }
                     }
                 }
-            },
-        ) {
-            EdPullRefresh(refreshing = state.isRefreshing, onRefresh = retryListener) {
-                when {
-                    state.isError && state.types.isNull() -> {
-                        ErrorWithRetry(modifier = Modifier.fillMaxSize(), retryAction = retryListener)
-                    }
-                    state.placeholders -> PaymentsScreenPlaceholder()
-                    else -> {
-                        // TODO No contracts placeholder
-                        if (state.selectedContract != null) {
-                            Payments(
-                                contract = state.selectedContract,
-                                onPaymentMethodClick = {
-                                    onAction(PaymentsAction.OnPaymentMethodClick(it))
-                                },
-                            )
-                        }
+            }
+        },
+    ) {
+        EdPullRefresh(refreshing = state.isRefreshing, onRefresh = retryListener) {
+            when {
+                state.isError && state.types.isNull() -> {
+                    ErrorWithRetry(modifier = Modifier.fillMaxSize(), retryAction = retryListener)
+                }
+                state.placeholders -> PaymentsScreenPlaceholder()
+                else -> {
+                    // TODO No contracts placeholder
+                    if (state.selectedContract != null) {
+                        Payments(
+                            contract = state.selectedContract,
+                            onPaymentMethodClick = {
+                                onAction(PaymentsAction.OnPaymentMethodClick(it))
+                            },
+                        )
                     }
                 }
             }

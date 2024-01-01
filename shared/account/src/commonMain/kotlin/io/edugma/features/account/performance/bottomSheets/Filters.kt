@@ -1,4 +1,4 @@
-package io.edugma.features.account.marks.bottomSheets
+package io.edugma.features.account.performance.bottomSheets
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -21,12 +21,12 @@ import io.edugma.core.designSystem.utils.edPlaceholder
 import io.edugma.core.ui.screen.BottomSheet
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
-import io.edugma.features.account.marks.Filter
-import io.edugma.features.account.marks.MarksState
+import io.edugma.features.account.performance.Filter
+import io.edugma.features.account.performance.PerformanceUiState
 
 @Composable
 fun ColumnScope.FiltersBottomSheetContent(
-    state: MarksState,
+    state: PerformanceUiState,
     filterUpdateListener: Typed1Listener<Filter<*>>,
     resetFilterListener: ClickListener,
 ) {
@@ -34,18 +34,20 @@ fun ColumnScope.FiltersBottomSheetContent(
         title = "Фильтры",
         headerStyle = EdTheme.typography.headlineSmall,
     ) {
-        SelectableChipsRow(
-            "Периоды",
-            state.periods,
-            filterUpdateListener,
-            state.bottomSheetPlaceholders,
-        )
+        if (state.periods != null) {
+            SelectableChipsRow(
+                name = "Периоды",
+                items = state.periods,
+                onClick = filterUpdateListener,
+                placeholders = state.bottomSheetPlaceholders,
+            )
+        }
         SpacerHeight(height = 15.dp)
         SelectableChipsRow(
-            "Тип",
-            state.types,
-            filterUpdateListener,
-            state.bottomSheetPlaceholders,
+            name = "Тип",
+            items = state.types,
+            onClick = filterUpdateListener,
+            placeholders = state.bottomSheetPlaceholders,
         )
         SpacerHeight(height = 15.dp)
         EdButton(

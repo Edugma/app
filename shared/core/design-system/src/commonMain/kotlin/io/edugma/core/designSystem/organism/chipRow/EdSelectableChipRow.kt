@@ -24,7 +24,7 @@ fun <T : Any> EdSelectableChipRow(
     defaultColor: Color = EdTheme.colorScheme.primary,
     selectedColor: Color = EdTheme.colorScheme.surface,
     contentPadding: PaddingValues = PaddingValues(0.dp),
-    clickListener: (T) -> Unit,
+    onClick: (T) -> Unit,
 ) {
     LazyRow(
         modifier = modifier,
@@ -32,14 +32,14 @@ fun <T : Any> EdSelectableChipRow(
     ) {
         items(
             count = types.size,
-            key = { types[it] },
+            // key = { types[it] },
         ) {
             EdSelectableChip(
                 selectedState = types[it] == selectedType,
                 chipForm = chipForm,
                 defaultColor = defaultColor,
                 selectedColor = selectedColor,
-                onClick = { clickListener.invoke(types[it]) },
+                onClick = { onClick.invoke(types[it]) },
             ) {
                 Text(
                     text = nameMapper.invoke(types[it]),

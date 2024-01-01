@@ -2,11 +2,11 @@ package io.edugma.features.account
 
 import io.edugma.core.navigation.AccountScreens
 import io.edugma.core.navigation.MainScreen
-import io.edugma.features.account.marks.PerformanceScreen
 import io.edugma.features.account.menu.MenuScreen
 import io.edugma.features.account.payments.PaymentsScreen
 import io.edugma.features.account.people.PeopleScreenType
 import io.edugma.features.account.people.presentation.PeopleScreen
+import io.edugma.features.account.performance.PerformanceScreen
 import io.edugma.features.account.personal.PersonalScreen
 import io.edugma.features.account.web.WebScreen
 import io.edugma.navigation.core.graph.screenModule

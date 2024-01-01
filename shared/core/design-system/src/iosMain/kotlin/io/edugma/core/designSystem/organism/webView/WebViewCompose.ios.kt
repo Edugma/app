@@ -1,8 +1,9 @@
-package io.edugma.features.account.web
+package io.edugma.core.designSystem.organism.webView
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import io.edugma.core.designSystem.organism.webView.WebViewState
 
 @Composable
 actual fun WebViewCompose(
