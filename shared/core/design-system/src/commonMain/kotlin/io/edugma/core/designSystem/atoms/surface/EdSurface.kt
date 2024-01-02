@@ -76,17 +76,24 @@ fun EdSurface(
     enabled: Boolean = true,
     shape: Shape = RectangleShape,
     color: Color = EdTheme.colorScheme.surface,
-    selectedColor: Color = EdTheme.colorScheme.surfaceVariant,
+    selectedColor: Color = EdTheme.colorScheme.secondaryContainer,
     contentColor: Color = contentColorFor(color),
+    selectedContentColor: Color = contentColorFor(selectedColor),
     elevation: EdElevation = LocalEdElevation.current,
     elevatedAlpha: Float = 1f,
     border: BorderStroke? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable () -> Unit,
 ) {
+    val finalContentColor = if (selected) {
+        selectedContentColor
+    } else {
+        contentColor
+    }
+
     val absoluteElevation = LocalAbsoluteTonalElevation.current + elevation.defaultElevation
     CompositionLocalProvider(
-        LocalContentColor provides contentColor,
+        LocalContentColor provides finalContentColor,
         LocalAbsoluteTonalElevation provides absoluteElevation,
         LocalEdElevation provides elevation.getNextLevel(),
     ) {

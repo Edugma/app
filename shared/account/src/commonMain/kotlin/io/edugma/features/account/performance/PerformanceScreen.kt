@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -24,7 +23,7 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.organism.EdScaffold
 import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetValue
 import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
-import io.edugma.core.designSystem.organism.chipRow.EdSelectableChipRow
+import io.edugma.core.designSystem.organism.chipRow.EdChipLabelLazyRow
 import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
 import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
 import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
@@ -111,10 +110,10 @@ fun PerformanceContent(
                     },
                 )
                 if (state.periods != null) {
-                    EdSelectableChipRow(
-                        types = state.periods,
-                        selectedType = state.selectedPeriod,
-                        nameMapper = { it.value },
+                    EdChipLabelLazyRow(
+                        items = state.periods,
+                        selectedItem = state.selectedPeriod,
+                        title = { it.value },
                         modifier = Modifier.padding(bottom = 10.dp),
                         contentPadding = PaddingValues(horizontal = 10.dp),
                     ) { selectedItem ->
@@ -158,14 +157,12 @@ fun PerformanceList(
 ) {
     LazyColumn(
         modifier = Modifier
-            .padding(horizontal = 16.dp)
             .fillMaxSize(),
     ) {
         if (state.placeholders) {
             items(3) {
                 SpacerHeight(height = 3.dp)
                 PerformancePlaceholder()
-                Divider()
             }
         } else {
             items(
@@ -173,9 +170,10 @@ fun PerformanceList(
                 key = { state.filteredData!![it].id },
             ) {
                 PerformanceItem(
-                    state.filteredData!![it],
-                ) { showBottomSheet(state.filteredData?.get(it)) }
-                SpacerHeight(height = 3.dp)
+                    performance = state.filteredData!![it],
+                    onClick = { showBottomSheet(state.filteredData?.get(it)) },
+                    modifier = Modifier.padding(bottom = 3.dp),
+                )
             }
 
             item {

@@ -1,72 +1,92 @@
 package io.edugma.core.designSystem.organism.chipRow
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.material3.Text
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import io.edugma.core.designSystem.molecules.chip.EdChipForm
-import io.edugma.core.designSystem.molecules.chip.EdSelectableChip
-import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.core.designSystem.utils.edPlaceholder
+import io.edugma.core.api.model.ListItemUiModel
+import io.edugma.core.api.model.contentType
+import io.edugma.core.api.model.key
+import io.edugma.core.designSystem.molecules.chip.EdChipLabel
+import io.edugma.core.designSystem.molecules.chip.EdChipLabelPlaceholder
+import io.edugma.core.designSystem.molecules.chip.EdChipSize
 
 @Composable
-fun <T : Any> EdSelectableChipRow(
-    types: List<T>,
-    selectedType: T?,
-    nameMapper: (T) -> String,
+fun <T : ListItemUiModel> EdChipLabelLazyRow(
+    items: List<T>,
+    selectedItem: T?,
+    title: (T) -> String,
     modifier: Modifier = Modifier,
-    chipForm: EdChipForm = EdChipForm.roundedSquare,
-    defaultColor: Color = EdTheme.colorScheme.primary,
-    selectedColor: Color = EdTheme.colorScheme.surface,
+    chipSize: EdChipSize = EdChipSize.medium,
     contentPadding: PaddingValues = PaddingValues(0.dp),
     onClick: (T) -> Unit,
 ) {
     LazyRow(
         modifier = modifier,
         contentPadding = contentPadding,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         items(
-            count = types.size,
-            // key = { types[it] },
+            items = items,
+            key = items.key(),
+            contentType = items.contentType(),
         ) {
-            EdSelectableChip(
-                selectedState = types[it] == selectedType,
-                chipForm = chipForm,
-                defaultColor = defaultColor,
-                selectedColor = selectedColor,
-                onClick = { onClick.invoke(types[it]) },
-            ) {
-                Text(
-                    text = nameMapper.invoke(types[it]),
-                    style = EdTheme.typography.labelLarge,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
+            EdChipLabel(
+                selected = it == selectedItem,
+                text = title.invoke(it),
+                onClick = { onClick.invoke(it) },
+                size = chipSize,
+            )
         }
     }
 }
 
 @Composable
-fun EdSelectableChipRowPlaceholders(
-    count: Int = 2,
-    chipForm: EdChipForm = EdChipForm.roundedSquare,
+fun EdChipLabelLazyRow(
+    items: List<String>,
+    selectedItem: String?,
+    modifier: Modifier = Modifier,
+    chipSize: EdChipSize = EdChipSize.medium,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
+    onClick: (String) -> Unit,
 ) {
-    LazyRow() {
+    LazyRow(
+        modifier = modifier,
+        contentPadding = contentPadding,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
         items(
-            count = count,
+            count = items.size,
+            key = { items[it] },
+            contentType = { 0 },
         ) {
-            EdSelectableChip(
-                modifier = Modifier
-                    .edPlaceholder()
-                    .widthIn(80.dp),
-                chipForm = chipForm,
-            ) {}
+            EdChipLabel(
+                selected = items[it] == selectedItem,
+                text = items[it],
+                onClick = { onClick.invoke(items[it]) },
+                size = chipSize,
+            )
         }
+    }
+}
+
+@Composable
+fun EdChipRowPlaceholders(
+    count: Int = 2,
+    chipSize: EdChipSize = EdChipSize.medium,
+) {
+    repeat(count) {
+        EdChipLabelPlaceholder(
+            size = chipSize,
+            modifier = if (it == 0) {
+                Modifier
+            } else {
+                Modifier.padding(end = 10.dp)
+            },
+        )
     }
 }

@@ -37,12 +37,12 @@ import dev.icerock.moko.resources.compose.stringResource
 import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import io.edugma.core.arch.pagination.PaginationState
 import io.edugma.core.designSystem.atoms.card.EdCard
-import io.edugma.core.designSystem.atoms.card.EdCardDefaults
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.NavigationBarSpacer
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.molecules.button.EdButton
+import io.edugma.core.designSystem.molecules.chip.EdChipLabel
 import io.edugma.core.designSystem.molecules.searchField.EdSearchField
 import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetValue
 import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
@@ -307,10 +307,11 @@ private fun SourceTypeTabs(
         contentPadding = PaddingValues(horizontal = EdTheme.paddings.xxs),
     ) {
         items(tabs) { tab ->
-            SourceTypeTab(
-                tab,
-                tab == selectedTab,
-                onTabSelected = onTabSelected,
+            EdChipLabel(
+                text = tab.title,
+                selected = tab == selectedTab,
+                onClick = { onTabSelected(tab) },
+                modifier = Modifier.padding(horizontal = 4.dp, vertical = 3.dp),
             )
         }
     }
@@ -438,32 +439,6 @@ private fun ColumnScope.Search(
         item {
             NavigationBarSpacer(10.dp)
         }
-    }
-}
-
-@Composable
-private fun SourceTypeTab(
-    tab: ScheduleSourceType,
-    isSelected: Boolean,
-    onTabSelected: Typed1Listener<ScheduleSourceType>,
-) {
-    val color = if (isSelected) {
-        EdTheme.colorScheme.secondaryContainer
-    } else {
-        EdTheme.colorScheme.surface
-    }
-
-    EdCard(
-        onClick = { onTabSelected(tab) },
-        modifier = Modifier.padding(horizontal = 4.dp, vertical = 3.dp),
-        colors = EdCardDefaults.cardColors(containerColor = color),
-        shape = EdTheme.shapes.small,
-    ) {
-        EdLabel(
-            text = tab.title,
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-            style = EdTheme.typography.bodyMedium,
-        )
     }
 }
 

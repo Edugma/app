@@ -30,6 +30,7 @@ fun EdCard(
     ),
     elevation: EdElevation = LocalEdElevation.current,
     border: BorderStroke? = null,
+    contentPadding: PaddingValues = PaddingValues(),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -44,7 +45,10 @@ fun EdCard(
         border = border,
         interactionSource = interactionSource,
     ) {
-        Column(content = content)
+        Column(
+            content = content,
+            modifier = Modifier.padding(contentPadding),
+        )
     }
 }
 

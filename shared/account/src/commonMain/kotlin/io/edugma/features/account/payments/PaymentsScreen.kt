@@ -23,6 +23,8 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
+import io.edugma.core.api.model.contentType
+import io.edugma.core.api.model.key
 import io.edugma.core.api.utils.format
 import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import io.edugma.core.designSystem.atoms.label.EdLabel
@@ -37,15 +39,14 @@ import io.edugma.core.designSystem.organism.cell.EdCell
 import io.edugma.core.designSystem.organism.cell.EdCellDefaults
 import io.edugma.core.designSystem.organism.cell.EdCellPlaceholder
 import io.edugma.core.designSystem.organism.cell.EdCellSize
-import io.edugma.core.designSystem.organism.chipRow.EdSelectableChipRow
-import io.edugma.core.designSystem.organism.chipRow.EdSelectableChipRowPlaceholders
+import io.edugma.core.designSystem.organism.chipRow.EdChipLabelLazyRow
+import io.edugma.core.designSystem.organism.chipRow.EdChipRowPlaceholders
 import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
 import io.edugma.core.designSystem.organism.iconCard.EdIconCard
 import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
 import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.designSystem.utils.navigationBarsPadding
 import io.edugma.core.designSystem.utils.rememberAsyncImagePainter
 import io.edugma.core.icons.EdIcons
@@ -53,7 +54,6 @@ import io.edugma.core.ui.screen.FeatureBottomSheetScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.isNull
 import io.edugma.core.utils.viewmodel.getViewModel
-import io.edugma.features.account.domain.model.payments.Payment
 import io.edugma.features.account.domain.model.payments.PaymentMethod
 import io.edugma.features.account.payments.bottomSheet.PaymentBottomSheet
 import io.edugma.features.account.payments.model.ContractUiModel
@@ -164,10 +164,9 @@ fun PaymentsContent(
                     windowInsets = WindowInsets.statusBars,
                 )
                 if (state.types != null) {
-                    EdSelectableChipRow(
-                        types = state.types,
-                        selectedType = state.selectedType,
-                        nameMapper = { it },
+                    EdChipLabelLazyRow(
+                        items = state.types,
+                        selectedItem = state.selectedType,
                         modifier = Modifier.padding(bottom = 10.dp),
                         contentPadding = PaddingValues(horizontal = 10.dp),
                     ) { selectedTitle ->
@@ -207,7 +206,7 @@ fun PaymentsContent(
 @Composable
 fun PaymentsScreenPlaceholder() {
     Column(Modifier.fillMaxSize()) {
-        EdSelectableChipRowPlaceholders()
+        EdChipRowPlaceholders()
         PaymentsPlaceholder()
     }
 }
@@ -276,8 +275,8 @@ fun Payments(
         }
         items(
             items = contract.payments,
-            key = { it.listKey },
-            contentType = { it.listContentType },
+            key = contract.payments.key(),
+            contentType = contract.payments.contentType(),
         ) {
             when (it) {
                 is PaymentUiModel.Date -> PaymentDate(it)

@@ -3,12 +3,16 @@ package io.edugma.core.api.utils
 import kotlinx.atomicfu.atomic
 
 /**
- * Unique in runtime id.
+ * Runtime unique id.
  */
 object RUID {
     private val counter = atomic(-1L)
 
-    fun get(): String {
+    fun getString(): String {
         return counter.incrementAndGet().toString()
+    }
+
+    fun get(): Long {
+        return counter.incrementAndGet()
     }
 }

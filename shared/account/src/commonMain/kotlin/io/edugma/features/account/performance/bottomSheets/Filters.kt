@@ -14,8 +14,7 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.chip.EdChip
-import io.edugma.core.designSystem.molecules.chip.EdChipForm
-import io.edugma.core.designSystem.molecules.chip.EdSelectableChip
+import io.edugma.core.designSystem.molecules.chip.EdChipLabel
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.edPlaceholder
 import io.edugma.core.ui.screen.BottomSheet
@@ -85,18 +84,11 @@ private fun<T> SelectableChipsRow(
                     count = listItems.size,
                     key = { listItems[it].hashCode() },
                 ) {
-                    EdSelectableChip(
-                        selectedState = listItems[it].isChecked,
-                        chipForm = EdChipForm.roundedSquare,
+                    EdChipLabel(
+                        text = listItems[it].mappedValue,
                         onClick = { onClick.invoke(listItems[it]) },
-                    ) {
-                        Text(
-                            text = listItems[it].mappedValue,
-                            style = EdTheme.typography.labelMedium,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    }
+                        selected = listItems[it].isChecked,
+                    )
                 }
             }
         }

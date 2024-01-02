@@ -1,5 +1,6 @@
 package io.edugma.features.account.performance
 
+import io.edugma.core.api.model.ListItemUiModel
 import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
@@ -188,7 +189,7 @@ class PerformanceViewModel(
     }
 }
 
-sealed class Filter<out T>(open val value: T, open val isChecked: Boolean) {
+sealed class Filter<out T>(open val value: T, open val isChecked: Boolean) : ListItemUiModel() {
 
     abstract val mappedValue: String
 
@@ -202,17 +203,23 @@ sealed class Filter<out T>(open val value: T, open val isChecked: Boolean) {
             id = period.id,
             value = period.title,
         )
+
+        override val listContentType: Any = 0
     }
 
     data class Type(
         override val value: String,
         override val isChecked: Boolean = false,
         override val mappedValue: String = value,
-    ) : Filter<String>(value, isChecked)
+    ) : Filter<String>(value, isChecked) {
+        override val listContentType: Any = 1
+    }
 
     data class Name(
         override val value: String,
         override val isChecked: Boolean = false,
         override val mappedValue: String = value,
-    ) : Filter<String>(value, isChecked)
+    ) : Filter<String>(value, isChecked) {
+        override val listContentType: Any = 2
+    }
 }
