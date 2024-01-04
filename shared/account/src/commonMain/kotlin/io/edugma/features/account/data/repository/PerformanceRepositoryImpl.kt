@@ -1,59 +1,42 @@
 package io.edugma.features.account.data.repository
 
 import io.edugma.core.api.repository.CacheRepository
-import io.edugma.core.api.repository.getData
+import io.edugma.core.api.repository.getDataFlow
 import io.edugma.core.api.repository.save
-import io.edugma.core.api.utils.IO
+import io.edugma.core.api.utils.LceFlow
 import io.edugma.data.base.consts.CacheConst.PerformanceKey
-import io.edugma.data.base.consts.CacheConst.PerformancePeriodsKey
+import io.edugma.data.base.store.store
 import io.edugma.features.account.data.api.AccountService
-import io.edugma.features.account.domain.model.performance.Performance
-import io.edugma.features.account.domain.model.performance.PerformancePeriod
+import io.edugma.features.account.domain.model.performance.PerformanceApi
 import io.edugma.features.account.domain.repository.PerformanceRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.withContext
+import kotlin.time.Duration.Companion.days
 
 class PerformanceRepositoryImpl(
     private val api: AccountService,
     private val cacheRepository: CacheRepository,
 ) : PerformanceRepository {
-    override suspend fun getPerformancePeriods(): List<PerformancePeriod> {
-        val periods = api.getPerformancePeriods()
-        setLocalPeriods(periods)
-        return periods
-    }
 
-    override suspend fun getPerformance(periodId: String?): List<Performance> {
-        val performance = api.getPerformance(periodId.orEmpty())
-        withContext(Dispatchers.IO) {
-            if (periodId == null) {
-                setLocalMarks(performance)
+    // TODO при ошибке парсинга не ронять всё, а ждать новые данные
+    private val performanceStore = store<String, PerformanceApi> {
+        fetcher { key ->
+            api.getPerformance(key)
+        }
+        cache {
+            reader { key ->
+                cacheRepository.getDataFlow(PerformanceKey + key)
             }
+            writer { key, data ->
+                cacheRepository.save(PerformanceKey + key, data)
+            }
+            expiresIn(1.days)
         }
-        return performance
+        coroutineScope()
     }
 
-    override suspend fun getLocalMarks(): List<Performance>? {
-        return cacheRepository.getData<List<Performance>>(PerformanceKey)
-    }
-
-    override suspend fun getLocalPerformancePeriods(): List<PerformancePeriod>? {
-        return cacheRepository.getData<List<PerformancePeriod>>(PerformancePeriodsKey)
-    }
-
-    override suspend fun setLocalMarks(data: List<Performance>) {
-        cacheRepository.save(PerformanceKey, data)
-    }
-
-    override suspend fun setLocalPeriods(periods: List<PerformancePeriod>) {
-        cacheRepository.save(PerformancePeriodsKey, periods)
-    }
-
-    override fun getMarksLocal(): Flow<List<Performance>?> {
-        return flow {
-            emit(getLocalMarks())
-        }
+    override suspend fun getPerformance(
+        periodId: String?,
+        forceUpdate: Boolean,
+    ): LceFlow<PerformanceApi> {
+        return performanceStore.get(periodId.orEmpty(), forceUpdate = forceUpdate)
     }
 }

@@ -1,14 +1,19 @@
 package io.edugma.features.account.domain.model.payments
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class PaymentMethod(
+    @SerialName("type")
     val type: String,
+    @SerialName("title")
     val title: String,
+    @SerialName("description")
     val description: String,
-    // TODO remove
-    val icon: String = "https://img.icons8.com/fluency/96/qr-code.png",
+    @SerialName("icon")
+    val icon: String?,
+    @SerialName("url")
     val url: String,
 ) {
     companion object {

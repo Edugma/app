@@ -28,15 +28,22 @@ class StoreImpl<TKey, TData>(
 
     override fun get(key: TKey, forceUpdate: Boolean): LceFlow<TData> {
         return lce {
-            val cachedData = reader(key).first()
+            val cachedDataRes = runCoCatching { reader(key).first() }
 
-            val needUpdate = cachedData?.isExpired(expiresIn) != false || forceUpdate
-            val data = cachedData?.data
-            if (data != null) {
-                emitSuccess(data, needUpdate)
-            } else if (!needUpdate) {
-                // TODO
-                emitFailure(Exception("Not found in cache and cache is not expired"), false)
+            var needUpdate = false
+
+            cachedDataRes.onSuccess { cachedData ->
+                needUpdate = cachedData?.isExpired(expiresIn) != false || forceUpdate
+                val data = cachedData?.data
+                if (data != null) {
+                    emitSuccess(data, needUpdate)
+                } else if (!needUpdate) {
+                    // TODO
+                    emitFailure(Exception("Not found in cache and cache is not expired"), false)
+                }
+            }.onFailure {
+                needUpdate = true
+                emitFailure(it, true)
             }
 
             if (needUpdate) {

@@ -307,7 +307,7 @@ private fun PaymentMethodItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val icon = rememberAsyncImagePainter(paymentMethod.icon)
+    val icon = rememberAsyncImagePainter(paymentMethod.icon.orEmpty())
 
     EdIconCard(
         title = paymentMethod.title,

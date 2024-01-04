@@ -4,10 +4,11 @@ import androidx.compose.runtime.Immutable
 import io.edugma.core.utils.isNotNull
 import io.edugma.core.utils.isNull
 import io.edugma.features.account.domain.model.performance.Performance
+import io.edugma.features.account.domain.model.performance.PerformanceApi
 
 @Immutable
 data class PerformanceUiState(
-    val data: List<Performance>? = null,
+    val performanceList: List<Performance>? = null,
     val periods: List<Filter.PerformancePeriodUiModel>? = null,
     val selectedPeriod: Filter.PerformancePeriodUiModel? = null,
     val types: List<Filter.Type> = listOf(),
@@ -17,11 +18,11 @@ data class PerformanceUiState(
     val isError: Boolean = false,
     val selectedPerformance: Performance? = null,
 ) {
-    val placeholders = data.isNull() && isLoading && !isError
-    val bottomSheetPlaceholders = (isLoading && !isError) || (isError && data.isNull())
-    val isRefreshing = data.isNotNull() && isLoading && !isError
+    val placeholders = performanceList.isNull() && isLoading && !isError
+    val bottomSheetPlaceholders = (isLoading && !isError) || (isError && performanceList.isNull())
+    val isRefreshing = performanceList.isNotNull() && isLoading && !isError
     val showError
-        get() = isError && data.isNull()
+        get() = isError && performanceList.isNull()
     val showNothingFound
         get() = filteredData?.isEmpty() == true
 
@@ -37,7 +38,7 @@ data class PerformanceUiState(
         }
 
     val filteredData
-        get() = data?.filter { performance ->
+        get() = performanceList?.filter { performance ->
             when {
                 enabledFilters.isEmpty() -> true
                 else -> {
@@ -52,6 +53,12 @@ data class PerformanceUiState(
                 }
             }
         }
+
+    fun toContent(data: PerformanceApi) =
+        copy(
+            performanceList = data.selected,
+            periods = data.periods.map { Filter.PerformancePeriodUiModel(it) },
+        )
 
     fun toError(isError: Boolean) = copy(isError = isError)
 

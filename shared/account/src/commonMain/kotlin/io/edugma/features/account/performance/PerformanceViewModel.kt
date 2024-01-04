@@ -1,11 +1,11 @@
 package io.edugma.features.account.performance
 
 import io.edugma.core.api.model.ListItemUiModel
+import io.edugma.core.api.utils.onResult
 import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
 import io.edugma.core.navigation.core.router.external.ExternalRouter
-import io.edugma.core.utils.isNotNull
 import io.edugma.features.account.common.LOCAL_DATA_SHOWN_ERROR
 import io.edugma.features.account.domain.model.performance.Performance
 import io.edugma.features.account.domain.model.performance.PerformancePeriod
@@ -13,7 +13,6 @@ import io.edugma.features.account.domain.repository.PerformanceRepository
 import io.edugma.features.account.performance.Filter.Name
 import io.edugma.features.account.performance.Filter.PerformancePeriodUiModel
 import io.edugma.features.account.performance.Filter.Type
-import kotlinx.coroutines.async
 
 class PerformanceViewModel(
     private val repository: PerformanceRepository,
@@ -21,56 +20,34 @@ class PerformanceViewModel(
 ) : BaseActionViewModel<PerformanceUiState, PerformanceAction>(PerformanceUiState()) {
 
     init {
-        loadMarks(isUpdate = false)
+        loadMarks(forceUpdate = false)
     }
 
-    private fun loadMarks(isUpdate: Boolean = true, periodId: String = "2") {
+    private fun loadMarks(forceUpdate: Boolean = true, periodId: String? = null) {
         launchCoroutine {
             newState {
                 toLoading(true)
                     .toError(false)
             }
 
-            val localMarks = async { repository.getLocalMarks() }
-            val performancePeriods = async { repository.getPerformancePeriods() }
-            // TODO Fix
-            val marks = async { repository.getPerformance(periodId) }
-            if (!isUpdate) {
-                localMarks.await()?.let {
-                    setFilters(
-                        periods = repository.getLocalPerformancePeriods() ?: emptyList(),
-                        types = it.getExamTypes(),
-                    )
-                    setPerformanceData(it)
-                }
-            }
-
-            kotlin.runCatching {
-                performancePeriods.await() to marks.await()
-            }
-                .onSuccess {
-                    val performancePeriodsList = it.first
-                    val performance = it.second
-                    setPerformanceData(performance)
-                    if (!isUpdate) {
-                        setFilters(
-                            periods = performancePeriodsList,
-                            types = performance.getExamTypes(),
-                        )
-                    }
-                }
-                .onFailure {
+            repository.getPerformance(periodId = periodId, forceUpdate = forceUpdate).onResult(
+                onSuccess = {
                     newState {
-                        toError(true)
+                        toContent(it.value)
+                            .toLoading(it.isLoading)
                     }
-                    if (localMarks.await().isNotNull()) {
+                },
+                onFailure = {
+                    newState {
+                        // TODO показывать ошибку на весь экран только если isLoading = false
+                        toError(true)
+                            .toLoading(false)
+                    }
+                    if (it.isLoading.not()) {
                         externalRouter.showMessage(LOCAL_DATA_SHOWN_ERROR)
                     }
-                }
-
-            newState {
-                toLoading(false)
-            }
+                },
+            )
         }
     }
 
@@ -98,7 +75,7 @@ class PerformanceViewModel(
 
     private fun setPerformanceData(data: List<Performance>) {
         newState {
-            copy(data = data)
+            copy(performanceList = data)
         }
     }
 

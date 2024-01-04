@@ -30,9 +30,9 @@ fun ColumnScope.PerformanceBottomSheetContent(performance: Performance) {
             style = EdTheme.typography.bodyMedium,
         )
         SpacerHeight(height = 12.dp)
-        performance.grade.takeIf { !it?.title.isNullOrEmpty() }?.let {
+        performance.grade.takeIf { it?.value != null }?.let {
             EdLabel(
-                text = performance.grade?.title ?: "",
+                text = performance.grade?.value?.toString().orEmpty(),
                 iconPainter = painterResource(EdIcons.ic_fluent_album_24_regular),
                 style = EdTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold,

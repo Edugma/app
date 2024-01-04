@@ -12,8 +12,7 @@ import io.edugma.features.account.domain.model.auth.Login
 import io.edugma.features.account.domain.model.auth.Token
 import io.edugma.features.account.domain.model.payments.Contract
 import io.edugma.features.account.domain.model.peoples.Person
-import io.edugma.features.account.domain.model.performance.Performance
-import io.edugma.features.account.domain.model.performance.PerformancePeriod
+import io.edugma.features.account.domain.model.performance.PerformanceApi
 
 class AccountService(
     private val client: EdugmaHttpClient,
@@ -42,10 +41,7 @@ class AccountService(
     suspend fun getApplications(): Result<List<Application>> =
         client.getResult("$PREFIX-applications")
 
-    suspend fun getPerformancePeriods(): List<PerformancePeriod> =
-        client.get("$PREFIX-performance-periods")
-
-    suspend fun getPerformance(periodId: String): List<Performance> =
+    suspend fun getPerformance(periodId: String?): PerformanceApi =
         client.get("$PREFIX-performance") {
             param("periodId", periodId)
         }

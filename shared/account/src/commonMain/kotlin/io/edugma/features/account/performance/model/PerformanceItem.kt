@@ -32,6 +32,7 @@ import io.edugma.core.designSystem.utils.SecondaryContent
 import io.edugma.core.designSystem.utils.edPlaceholder
 import io.edugma.features.account.domain.model.performance.GradeValue
 import io.edugma.features.account.domain.model.performance.Performance
+import kotlin.math.roundToInt
 
 @Composable
 fun PerformanceItem(
@@ -76,7 +77,7 @@ fun PerformanceItem(
             }
         }
 
-        val gradeColor = when (performance.grade?.value) {
+        val gradeColor = when (performance.grade?.normalizedValue) {
             GradeValue.VERY_GOOD -> EdTheme.customColorScheme.success
             GradeValue.GOOD -> EdTheme.customColorScheme.success
             GradeValue.NORMAL -> EdTheme.customColorScheme.warning
@@ -89,15 +90,20 @@ fun PerformanceItem(
             contentAlignment = Alignment.Center,
             modifier = Modifier.align(Alignment.CenterVertically),
         ) {
+            val progress = performance.grade?.let { grade ->
+                val range = grade.maxValue - grade.minValue
+                val normValue = grade.value - grade.minValue
+                normValue / range
+            } ?: .0
             CircularProgressIndicator(
-                progress = 0.7f,
+                progress = progress.toFloat(),
                 color = gradeColor,
                 modifier = Modifier.size(50.dp),
                 strokeCap = StrokeCap.Round,
             )
 
             Text(
-                text = performance.grade?.title.orEmpty(),
+                text = performance.grade?.value?.roundToInt()?.toString().orEmpty(),
                 style = EdTheme.typography.titleLarge,
                 color = gradeColor,
                 textAlign = TextAlign.Center,

@@ -43,7 +43,7 @@ class MenuDataConverterUseCase {
 
     private fun List<Performance>.getCurrent(): CurrentPerformance? {
         fun getSortedMarks(marks: List<Performance>): Map<String, Int> {
-            val marksList = marks.map { it.grade?.title ?: "" }.let { list ->
+            val marksList = marks.map { it.grade?.value?.toString().orEmpty() }.let { list ->
                 mutableMapOf<String, Int>().apply {
                     list.toSet().forEach { put(it, list.count { mark -> mark == it }) }
                     keys.forEach { this[it] = ((this[it] ?: 0).toDouble() / list.size * 100).roundToInt() }
