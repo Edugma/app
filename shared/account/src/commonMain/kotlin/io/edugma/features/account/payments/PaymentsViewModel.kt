@@ -1,15 +1,13 @@
 package io.edugma.features.account.payments
 
+import io.edugma.core.api.utils.onResult
 import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
 import io.edugma.core.navigation.core.router.external.ExternalRouter
-import io.edugma.core.utils.isNotNull
 import io.edugma.features.account.common.LOCAL_DATA_SHOWN_ERROR
 import io.edugma.features.account.domain.model.payments.PaymentMethod
 import io.edugma.features.account.domain.repository.PaymentsRepository
-import io.edugma.features.account.payments.model.toUiModel
-import kotlinx.coroutines.async
 
 class PaymentsViewModel(
     private val repository: PaymentsRepository,
@@ -17,35 +15,32 @@ class PaymentsViewModel(
 ) : BaseActionViewModel<PaymentsUiState, PaymentsAction>(PaymentsUiState()) {
 
     init {
-        load(isUpdate = false)
+        load(forceUpdate = false)
     }
 
-    fun load(isUpdate: Boolean = true) {
+    fun load(forceUpdate: Boolean = true, contractId: String? = null) {
         launchCoroutine {
             newState {
-                onLoading(true)
+                toLoading(true)
             }
-            val remote = async { repository.getPayments().map { it.toUiModel() } }
-            if (!isUpdate) {
-                val local = async { repository.getPaymentsLocal()?.map { it.toUiModel() } }
-                val localContracts = local.await()
-                if (localContracts != null) {
+            repository.getPayments(contractId = contractId, forceUpdate = forceUpdate).onResult(
+                onSuccess = {
                     newState {
-                        onContent(localContracts.associateBy { it.title })
+                        toContent(it.value)
+                            .toLoading(it.isLoading)
                     }
-                }
-            }
-            runCatching { remote.await() }
-                .onSuccess {
+                },
+                onFailure = {
                     newState {
-                        onLoading(false)
-                            .onContent(it.associateBy { it.title })
+                        // TODO показывать ошибку на весь экран только если isLoading = false
+                        toError(true)
+                            .toLoading(false)
                     }
-                }
-                .onFailure {
-                    setError(true)
-                    if (state.data.isNotNull()) externalRouter.showMessage(LOCAL_DATA_SHOWN_ERROR)
-                }
+                    if (it.isLoading.not()) {
+                        externalRouter.showMessage(LOCAL_DATA_SHOWN_ERROR)
+                    }
+                },
+            )
         }
     }
 
@@ -84,8 +79,6 @@ class PaymentsViewModel(
     }
 
     private fun onContractSelected(id: String) {
-        newState {
-            copy(selectedContract = data?.values?.firstOrNull { it.id == id })
-        }
+        load(contractId = id)
     }
 }

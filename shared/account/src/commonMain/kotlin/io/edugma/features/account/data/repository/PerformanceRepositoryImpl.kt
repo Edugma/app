@@ -17,7 +17,7 @@ class PerformanceRepositoryImpl(
 ) : PerformanceRepository {
 
     // TODO при ошибке парсинга не ронять всё, а ждать новые данные
-    private val performanceStore = store<String, PerformanceApi> {
+    private val store = store<String, PerformanceApi> {
         fetcher { key ->
             api.getPerformance(key)
         }
@@ -37,6 +37,6 @@ class PerformanceRepositoryImpl(
         periodId: String?,
         forceUpdate: Boolean,
     ): LceFlow<PerformanceApi> {
-        return performanceStore.get(periodId.orEmpty(), forceUpdate = forceUpdate)
+        return store.get(periodId.orEmpty(), forceUpdate = forceUpdate)
     }
 }

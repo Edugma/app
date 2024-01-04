@@ -1,9 +1,11 @@
 package io.edugma.features.account.domain.repository
 
-import io.edugma.features.account.domain.model.payments.Contract
+import io.edugma.core.api.utils.LceFlow
+import io.edugma.features.account.domain.model.payments.PaymentsApi
 
 interface PaymentsRepository {
-    suspend fun getPayments(): List<Contract>
-    suspend fun savePayments(contracts: List<Contract>)
-    suspend fun getPaymentsLocal(): List<Contract>?
+    suspend fun getPayments(
+        contractId: String? = null,
+        forceUpdate: Boolean = false,
+    ): LceFlow<PaymentsApi>
 }

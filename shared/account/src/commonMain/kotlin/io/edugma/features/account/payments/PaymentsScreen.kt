@@ -163,19 +163,15 @@ fun PaymentsContent(
                     onNavigationClick = backListener,
                     windowInsets = WindowInsets.statusBars,
                 )
-                if (state.types != null) {
+                if (state.contracts != null) {
                     EdChipLabelLazyRow(
-                        items = state.types,
-                        selectedItem = state.selectedType,
+                        items = state.contracts,
+                        selectedItem = state.selectedContractHeader,
+                        title = { it.title },
                         modifier = Modifier.padding(bottom = 10.dp),
                         contentPadding = PaddingValues(horizontal = 10.dp),
-                    ) { selectedTitle ->
-                        val id = state.data?.values
-                            ?.firstOrNull { it.title == selectedTitle }
-                            ?.id
-                        if (id != null) {
-                            onAction(PaymentsAction.OnContractSelected(id))
-                        }
+                    ) { selected ->
+                        onAction(PaymentsAction.OnContractSelected(selected.id))
                     }
                 }
             }
@@ -183,7 +179,7 @@ fun PaymentsContent(
     ) {
         EdPullRefresh(refreshing = state.isRefreshing, onRefresh = retryListener) {
             when {
-                state.isError && state.types.isNull() -> {
+                state.isError && state.contracts.isNull() -> {
                     ErrorWithRetry(modifier = Modifier.fillMaxSize(), retryAction = retryListener)
                 }
                 state.placeholders -> PaymentsScreenPlaceholder()

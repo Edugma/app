@@ -206,7 +206,7 @@ private val edugmaApi = EdugmaApi(
             url = "{baseUrl}/personal",
         ),
         "account-payments-get" to Path(
-            url = "{baseUrl}/payments",
+            url = "{baseUrl}/payments/{contractId}",
         ),
     ),
 )

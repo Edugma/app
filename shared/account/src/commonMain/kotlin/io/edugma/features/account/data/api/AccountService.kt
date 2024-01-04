@@ -10,7 +10,7 @@ import io.edugma.features.account.domain.model.Personal
 import io.edugma.features.account.domain.model.applications.Application
 import io.edugma.features.account.domain.model.auth.Login
 import io.edugma.features.account.domain.model.auth.Token
-import io.edugma.features.account.domain.model.payments.Contract
+import io.edugma.features.account.domain.model.payments.PaymentsApi
 import io.edugma.features.account.domain.model.peoples.Person
 import io.edugma.features.account.domain.model.performance.PerformanceApi
 
@@ -49,8 +49,10 @@ class AccountService(
     suspend fun getPersonalInfo(): Result<Personal> =
         client.getResult("$PREFIX-personal")
 
-    suspend fun getPayments(): List<Contract> =
-        client.get("$PREFIX-payments")
+    suspend fun getPayments(contractId: String?): PaymentsApi =
+        client.get("$PREFIX-payments") {
+            param("contractId", contractId)
+        }
 
     companion object {
         private const val PREFIX = "account"
