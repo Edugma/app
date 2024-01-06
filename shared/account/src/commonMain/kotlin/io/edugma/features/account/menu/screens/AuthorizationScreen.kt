@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -23,7 +24,6 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.textField.EdTextField
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.core.designSystem.utils.statusBarsPadding
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener

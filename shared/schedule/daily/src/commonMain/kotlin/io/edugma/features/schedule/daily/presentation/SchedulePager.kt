@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
@@ -26,7 +27,6 @@ import io.edugma.core.designSystem.atoms.lottie.rememberLottiePainter
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.core.designSystem.utils.navigationBarsPadding
 import io.edugma.core.resources.MR
 import io.edugma.core.utils.ClickListener
 import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings

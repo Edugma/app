@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
@@ -40,8 +42,6 @@ import io.edugma.core.designSystem.tokens.elevation.EdElevation
 import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.designSystem.tokens.shapes.top
 import io.edugma.core.designSystem.utils.SecondaryContent
-import io.edugma.core.designSystem.utils.navigationBarsPadding
-import io.edugma.core.designSystem.utils.statusBarsPadding
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.navigation.schedule.ScheduleHistoryScreens
 import io.edugma.core.ui.screen.FeatureScreen

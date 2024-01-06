@@ -23,7 +23,7 @@ import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetValue
 import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
-import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
+import io.edugma.core.designSystem.organism.errorWithRetry.EdErrorRetry
 import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
 import io.edugma.core.designSystem.organism.shortInfoSheet.EdShortInfoSheet
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
@@ -159,9 +159,9 @@ fun PeopleListContent(
         }
         when {
             state.isFullscreenError -> {
-                ErrorWithRetry(
+                EdErrorRetry(
                     modifier = Modifier.fillMaxSize(),
-                    retryAction = onLoad,
+                    onRetry = onLoad,
                 )
             }
             state.isNothingFound -> {

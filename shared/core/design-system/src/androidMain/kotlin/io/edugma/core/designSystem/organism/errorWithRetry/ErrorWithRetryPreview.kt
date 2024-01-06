@@ -8,6 +8,6 @@ import io.edugma.core.designSystem.theme.EdTheme
 @Composable
 fun ErrorWithRetryPreview() {
     EdTheme {
-        ErrorWithRetry()
+        EdErrorRetry()
     }
 }

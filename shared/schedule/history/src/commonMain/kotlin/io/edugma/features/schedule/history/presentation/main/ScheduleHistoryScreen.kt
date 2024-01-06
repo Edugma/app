@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -39,7 +40,6 @@ import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.designSystem.utils.SecondaryContent
-import io.edugma.core.designSystem.utils.statusBarsPadding
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen

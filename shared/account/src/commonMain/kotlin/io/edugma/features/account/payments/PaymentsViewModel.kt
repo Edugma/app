@@ -31,10 +31,11 @@ class PaymentsViewModel(
                     }
                 },
                 onFailure = {
-                    newState {
-                        // TODO показывать ошибку на весь экран только если isLoading = false
-                        toError(true)
-                            .toLoading(false)
+                    if (it.isLoading.not()) {
+                        newState {
+                            toError(true)
+                                .toLoading(false)
+                        }
                     }
                     if (it.isLoading.not()) {
                         externalRouter.showMessage(LOCAL_DATA_SHOWN_ERROR)
@@ -72,13 +73,9 @@ class PaymentsViewModel(
         }
     }
 
-    private fun setError(isError: Boolean) {
-        newState {
-            copy(isError = isError, isLoading = false)
-        }
-    }
-
     private fun onContractSelected(id: String) {
-        load(contractId = id)
+        if (state.selectedContractHeader?.id != id) {
+            load(contractId = id)
+        }
     }
 }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -25,7 +26,6 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.designSystem.utils.edPlaceholder
 import io.edugma.core.designSystem.utils.rememberCachedIconPainter
-import io.edugma.core.designSystem.utils.statusBarsPadding
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed2Listener

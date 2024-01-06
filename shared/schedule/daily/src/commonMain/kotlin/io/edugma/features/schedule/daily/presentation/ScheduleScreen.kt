@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
@@ -44,7 +45,6 @@ import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.designSystem.tokens.shapes.top
-import io.edugma.core.designSystem.utils.navigationBarsPadding
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen

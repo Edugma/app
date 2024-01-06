@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PaymentsApi(
+data class PaymentsDto(
     @SerialName("contracts")
     val contracts: List<ContractHeader>,
     @SerialName("selected")

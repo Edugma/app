@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -33,7 +34,6 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
 import io.edugma.core.designSystem.utils.LocalEdIconLoader
 import io.edugma.core.designSystem.utils.LocalEdImageLoader
-import io.edugma.core.designSystem.utils.statusBarsPadding
 import io.edugma.core.utils.viewmodel.getViewModel
 import io.edugma.features.app.presentation.main.widgets.BottomNav
 import io.edugma.features.app.presentation.main.widgets.rememberTabNavigator

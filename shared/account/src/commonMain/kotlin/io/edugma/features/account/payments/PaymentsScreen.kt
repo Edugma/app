@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
@@ -40,14 +41,10 @@ import io.edugma.core.designSystem.organism.cell.EdCellDefaults
 import io.edugma.core.designSystem.organism.cell.EdCellPlaceholder
 import io.edugma.core.designSystem.organism.cell.EdCellSize
 import io.edugma.core.designSystem.organism.chipRow.EdChipLabelLazyRow
-import io.edugma.core.designSystem.organism.chipRow.EdChipRowPlaceholders
-import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
 import io.edugma.core.designSystem.organism.iconCard.EdIconCard
-import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
-import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
+import io.edugma.core.designSystem.organism.lceScaffold.EdLceScaffold
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.core.designSystem.utils.navigationBarsPadding
 import io.edugma.core.designSystem.utils.rememberAsyncImagePainter
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureBottomSheetScreen
@@ -104,14 +101,6 @@ fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
         },
     ) {
         when {
-            state.showError -> {
-                PaymentsError(viewModel::exit, viewModel::load)
-            }
-
-            state.isNothingToShow -> {
-                NoPayments(viewModel::exit)
-            }
-
             else -> {
                 PaymentsContent(
                     state = state,
@@ -121,28 +110,6 @@ fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
                 )
             }
         }
-    }
-}
-
-@Composable
-fun NoPayments(backListener: ClickListener) {
-    Column(Modifier.navigationBarsPadding()) {
-        EdTopAppBar(
-            title = "Оплаты",
-            onNavigationClick = backListener,
-        )
-        EdNothingFound(Modifier.fillMaxSize(), message = "Оплат нет :)")
-    }
-}
-
-@Composable
-fun PaymentsError(backListener: ClickListener, retryListener: ClickListener) {
-    Column(Modifier.navigationBarsPadding()) {
-        EdTopAppBar(
-            title = "Оплаты",
-            onNavigationClick = backListener,
-        )
-        ErrorWithRetry(Modifier.fillMaxSize(), retryAction = retryListener)
     }
 }
 
@@ -159,13 +126,13 @@ fun PaymentsContent(
         topBar = {
             Column(Modifier.fillMaxWidth()) {
                 EdTopAppBar(
-                    title = state.selectedContract?.title ?: "Оплаты",
+                    title = state.contract?.title ?: "Оплаты",
                     onNavigationClick = backListener,
                     windowInsets = WindowInsets.statusBars,
                 )
-                if (state.contracts != null) {
+                if (state.contractHeaders != null) {
                     EdChipLabelLazyRow(
-                        items = state.contracts,
+                        items = state.contractHeaders,
                         selectedItem = state.selectedContractHeader,
                         title = { it.title },
                         modifier = Modifier.padding(bottom = 10.dp),
@@ -177,33 +144,27 @@ fun PaymentsContent(
             }
         },
     ) {
-        EdPullRefresh(refreshing = state.isRefreshing, onRefresh = retryListener) {
-            when {
-                state.isError && state.contracts.isNull() -> {
-                    ErrorWithRetry(modifier = Modifier.fillMaxSize(), retryAction = retryListener)
-                }
-                state.placeholders -> PaymentsScreenPlaceholder()
-                else -> {
-                    // TODO No contracts placeholder
-                    if (state.selectedContract != null) {
-                        Payments(
-                            contract = state.selectedContract,
-                            onPaymentMethodClick = {
-                                onAction(PaymentsAction.OnPaymentMethodClick(it))
-                            },
-                        )
-                    }
-                }
+        EdLceScaffold(
+            isRefreshing = state.isRefreshing,
+            onRefresh = retryListener,
+            isError = state.isError && state.contractHeaders.isNull(),
+            isPlaceholder = state.showPlaceholders,
+            isEmpty = state.isNothingToShow,
+            emptyTitle = "Нет договоров",
+            placeholder = {
+                PaymentsPlaceholder()
+            },
+        ) {
+            // TODO No contracts placeholder
+            if (state.contract != null) {
+                Payments(
+                    contract = state.contract,
+                    onPaymentMethodClick = {
+                        onAction(PaymentsAction.OnPaymentMethodClick(it))
+                    },
+                )
             }
         }
-    }
-}
-
-@Composable
-fun PaymentsScreenPlaceholder() {
-    Column(Modifier.fillMaxSize()) {
-        EdChipRowPlaceholders()
-        PaymentsPlaceholder()
     }
 }
 

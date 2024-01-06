@@ -7,7 +7,7 @@ import io.edugma.core.api.utils.LceFlow
 import io.edugma.data.base.consts.CacheConst.PaymentsKey
 import io.edugma.data.base.store.store
 import io.edugma.features.account.data.api.AccountService
-import io.edugma.features.account.domain.model.payments.PaymentsApi
+import io.edugma.features.account.domain.model.payments.PaymentsDto
 import io.edugma.features.account.domain.repository.PaymentsRepository
 import kotlin.time.Duration.Companion.days
 
@@ -16,7 +16,7 @@ class PaymentsRepositoryImpl(
     private val cacheRepository: CacheRepository,
 ) : PaymentsRepository {
 
-    private val store = store<String, PaymentsApi> {
+    private val store = store<String, PaymentsDto> {
         fetcher { key ->
             api.getPayments(key)
         }
@@ -35,7 +35,7 @@ class PaymentsRepositoryImpl(
     override suspend fun getPayments(
         contractId: String?,
         forceUpdate: Boolean,
-    ): LceFlow<PaymentsApi> {
+    ): LceFlow<PaymentsDto> {
         return store.get(key = contractId.orEmpty(), forceUpdate = forceUpdate)
     }
 }

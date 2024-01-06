@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
@@ -63,7 +64,6 @@ import io.edugma.core.designSystem.utils.ContentAlpha
 import io.edugma.core.designSystem.utils.LocalContentAlpha
 import io.edugma.core.designSystem.utils.WithContentAlpha
 import io.edugma.core.designSystem.utils.ifThen
-import io.edugma.core.designSystem.utils.navigationBarsPadding
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen

@@ -4,35 +4,33 @@ import androidx.compose.runtime.Immutable
 import io.edugma.core.utils.isNotNull
 import io.edugma.core.utils.isNull
 import io.edugma.features.account.domain.model.payments.PaymentMethod
-import io.edugma.features.account.domain.model.payments.PaymentsApi
+import io.edugma.features.account.domain.model.payments.PaymentsDto
 import io.edugma.features.account.payments.model.ContractHeaderUiModel
 import io.edugma.features.account.payments.model.ContractUiModel
 import io.edugma.features.account.payments.model.toUiModel
 
 @Immutable
 data class PaymentsUiState(
-    val contracts: List<ContractHeaderUiModel>? = null,
+    val contractHeaders: List<ContractHeaderUiModel>? = null,
     val selectedContractHeader: ContractHeaderUiModel? = null,
     val contract: ContractUiModel? = null,
     val isLoading: Boolean = false,
     val isError: Boolean = false,
-    val selectedContract: ContractUiModel? = null,
     val selectedPaymentMethod: PaymentMethod? = null,
 ) {
     val isRefreshing = contract.isNotNull() && isLoading && !isError
-    val placeholders = contract.isNull() && isLoading && !isError
-    val selectedType = selectedContract
+    val showPlaceholders = contract.isNull() && isLoading && !isError
     val isNothingToShow
         get() = contract == null && !isLoading
     val showError
         get() = isError && contract.isNull()
 
-    fun toContent(data: PaymentsApi): PaymentsUiState {
+    fun toContent(data: PaymentsDto): PaymentsUiState {
+        val contractHeaders = data.contracts.map { it.toUiModel() }
         return copy(
-            contracts = data.contracts.map { it.toUiModel() },
-            selectedContractHeader = null,
+            contractHeaders = contractHeaders,
+            selectedContractHeader = contractHeaders.firstOrNull { it.id == data.selected?.id },
             contract = data.selected?.toUiModel(),
-            selectedContract = contract,
         )
     }
 

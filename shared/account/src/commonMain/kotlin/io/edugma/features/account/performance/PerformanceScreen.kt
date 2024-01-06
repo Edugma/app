@@ -24,7 +24,7 @@ import io.edugma.core.designSystem.organism.EdScaffold
 import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetValue
 import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
 import io.edugma.core.designSystem.organism.chipRow.EdChipLabelLazyRow
-import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
+import io.edugma.core.designSystem.organism.errorWithRetry.EdErrorRetry
 import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
 import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
@@ -132,9 +132,9 @@ fun PerformanceContent(
         ) {
             when {
                 state.showError -> {
-                    ErrorWithRetry(
+                    EdErrorRetry(
                         modifier = Modifier.fillMaxSize(),
-                        retryAction = {
+                        onRetry = {
                             onAction(PerformanceAction.OnRetryClicked)
                         },
                     )

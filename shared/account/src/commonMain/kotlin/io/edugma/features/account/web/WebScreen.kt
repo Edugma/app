@@ -11,7 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import io.edugma.core.designSystem.atoms.loader.EdLoader
-import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
+import io.edugma.core.designSystem.organism.errorWithRetry.EdErrorRetry
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.organism.webView.WebViewCompose
 import io.edugma.core.designSystem.organism.webView.WebViewState
@@ -58,9 +58,9 @@ fun WebScreen(
                         }
                     }
                     state.errorCode.isNotNull() -> {
-                        ErrorWithRetry(
+                        EdErrorRetry(
                             modifier = Modifier.background(EdTheme.colorScheme.background).fillMaxSize(),
-                            retryAction = { viewModel.init(url, isFullScreen) },
+                            onRetry = { viewModel.init(url, isFullScreen) },
                         )
                     }
                 }

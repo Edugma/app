@@ -5,7 +5,10 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.union
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,9 +17,6 @@ import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetState
 import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetValue
 import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
 import io.edugma.core.designSystem.utils.ifThen
-import io.edugma.core.designSystem.utils.imePadding
-import io.edugma.core.designSystem.utils.navigationBarsPadding
-import io.edugma.core.designSystem.utils.statusBarsPadding
 
 @Composable
 fun FeatureScreen(
@@ -28,9 +28,9 @@ fun FeatureScreen(
     Box(
         modifier = Modifier.fillMaxSize()
             .ifThen(statusBarPadding) {
-                statusBarsPadding()
+                this.statusBarsPadding()
             }.ifThen(navigationBarPadding) {
-                navigationBarsPadding()
+                this.navigationBarsPadding()
             },
     ) {
         content()
@@ -63,7 +63,7 @@ fun FeatureBottomSheetScreen(
         sheetState = sheetState,
         sheetContent = sheetContent,
         modifier = Modifier.ifThen(imePadding) {
-            imePadding()
+            this.imePadding()
         },
         windowInsets = imeInsets.union(navigationBarInsets),
     ) {

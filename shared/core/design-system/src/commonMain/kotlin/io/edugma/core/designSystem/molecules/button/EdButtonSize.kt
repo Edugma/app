@@ -74,7 +74,7 @@ data class EdButtonSize(
                     horizontal = 16.dp,
                     vertical = 0.dp,
                 ),
-                textStyle = EdTheme.typography.labelLarge,
+                textStyle = EdTheme.typography.titleSmall,
                 textPadding = PaddingValues(bottom = 5.dp),
                 loaderSize = EdLoaderSize.medium,
                 spacer = 16.dp,

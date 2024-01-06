@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -32,13 +33,12 @@ import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.molecules.avatar.EdAvatar
-import io.edugma.core.designSystem.organism.errorWithRetry.ErrorWithRetry
+import io.edugma.core.designSystem.organism.errorWithRetry.EdErrorRetry
 import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.designSystem.utils.SecondaryContent
 import io.edugma.core.designSystem.utils.edPlaceholder
-import io.edugma.core.designSystem.utils.statusBarsPadding
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
@@ -90,7 +90,7 @@ fun PersonalContent(
             ) {
                 when {
                     state.isError && state.personal.isNull() -> {
-                        ErrorWithRetry(retryAction = refreshListener)
+                        EdErrorRetry(onRetry = refreshListener)
                     }
                     state.personalPlaceholders -> {
                         PersonalPlaceholder()
