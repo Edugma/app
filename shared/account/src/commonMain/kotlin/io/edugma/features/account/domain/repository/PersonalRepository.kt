@@ -1,9 +1,8 @@
 package io.edugma.features.account.domain.repository
 
+import io.edugma.core.api.utils.LceFlow
 import io.edugma.features.account.domain.model.Personal
 
 interface PersonalRepository {
-    suspend fun getPersonalInfoSuspend(): Result<Personal>
-    suspend fun setLocalPersonalInfo(personal: Personal)
-    suspend fun getLocalPersonalInfo(): Personal?
+    fun getPersonalInfo(forceUpdate: Boolean = false): LceFlow<Personal>
 }

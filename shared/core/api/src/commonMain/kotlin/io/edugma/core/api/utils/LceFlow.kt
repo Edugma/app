@@ -1,6 +1,7 @@
 package io.edugma.core.api.utils
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -74,6 +75,10 @@ suspend inline fun <T> LceFlow<T>.onResult(
             onFailure(lceData)
         }
     }
+}
+
+suspend inline fun <T> LceFlow<T>.first(): Result<T> {
+    return this.flow.first().result
 }
 
 class LceData<out T>(

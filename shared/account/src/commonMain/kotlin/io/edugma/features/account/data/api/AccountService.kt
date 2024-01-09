@@ -46,8 +46,8 @@ class AccountService(
             param("periodId", periodId)
         }
 
-    suspend fun getPersonalInfo(): Result<Personal> =
-        client.getResult("$PREFIX-personal")
+    suspend fun getPersonalInfo(): Personal =
+        client.get("$PREFIX-personal")
 
     suspend fun getPayments(contractId: String?): PaymentsDto =
         client.get("$PREFIX-payments") {

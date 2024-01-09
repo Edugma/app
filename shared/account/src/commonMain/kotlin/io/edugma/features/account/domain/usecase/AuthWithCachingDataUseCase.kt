@@ -1,6 +1,7 @@
 package io.edugma.features.account.domain.usecase
 
 import io.edugma.core.api.utils.IO
+import io.edugma.core.api.utils.first
 import io.edugma.features.account.domain.model.Personal
 import io.edugma.features.account.domain.model.payments.Contract
 import io.edugma.features.account.domain.model.performance.GradePosition
@@ -38,7 +39,7 @@ class AuthWithCachingDataUseCase(
 
     suspend fun getData(): DataDto =
         coroutineScope {
-            val personal = async { personalRepository.getLocalPersonalInfo() ?: personalRepository.getPersonalInfoSuspend().getOrNull() }
+            val personal = async { personalRepository.getPersonalInfo().first().getOrNull() }
             // val marks = async { performanceRepository.getLocalMarks() ?: performanceRepository.getPerformance() }
             // val payments = async { paymentsRepository.getPaymentsLocal() ?: paymentsRepository.getPayments() }
             return@coroutineScope DataDto(personal = personal.await(), contracts = null, performance = null)

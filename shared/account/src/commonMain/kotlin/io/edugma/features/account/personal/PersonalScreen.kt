@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -28,13 +27,13 @@ import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import io.edugma.core.api.utils.format
 import io.edugma.core.api.utils.getInitials
+import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.molecules.avatar.EdAvatar
-import io.edugma.core.designSystem.organism.errorWithRetry.EdErrorRetry
-import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
+import io.edugma.core.designSystem.organism.lceScaffold.EdLceScaffold
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.designSystem.utils.SecondaryContent
@@ -42,8 +41,6 @@ import io.edugma.core.designSystem.utils.edPlaceholder
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
-import io.edugma.core.utils.Typed1Listener
-import io.edugma.core.utils.isNull
 import io.edugma.core.utils.viewmodel.getViewModel
 import io.edugma.features.account.domain.model.Order
 import io.edugma.features.account.domain.model.Personal
@@ -57,50 +54,32 @@ fun PersonalScreen(viewModel: PersonalViewModel = getViewModel()) {
         PersonalContent(
             state = state,
             backListener = viewModel::exit,
-            refreshListener = viewModel::update,
-            typeListener = viewModel::setColumn,
+            onAction = viewModel.rememberOnAction(),
         )
     }
 }
 
 @Composable
 fun PersonalContent(
-    state: PersonalState,
+    state: PersonalUiState,
     backListener: ClickListener,
-    refreshListener: ClickListener,
-    typeListener: Typed1Listener<Columns>,
+    onAction: (PersonalAction) -> Unit,
 ) {
     Column {
         EdSurface(shape = EdTheme.shapes.large.bottom()) {
             Toolbar(
                 state.personal,
-                state.personalPlaceholders,
+                state.lceState.showPlaceholder,
                 backListener,
             )
         }
-        EdPullRefresh(
-            refreshing = state.isRefreshing,
-            onRefresh = refreshListener,
+        EdLceScaffold(
+            lceState = state.lceState,
+            onRefresh = { onAction(PersonalAction.OnRefresh) },
+            placeholder = { PersonalPlaceholder() },
         ) {
-            Column(
-                Modifier
-                    .verticalScroll(rememberScrollState())
-                    .padding(horizontal = 8.dp)
-                    .fillMaxSize(),
-            ) {
-                when {
-                    state.isError && state.personal.isNull() -> {
-                        EdErrorRetry(onRetry = refreshListener)
-                    }
-                    state.personalPlaceholders -> {
-                        PersonalPlaceholder()
-                    }
-                    else -> {
-                        state.personal?.let {
-                            Personal(state.personal)
-                        }
-                    }
-                }
+            state.personal?.let {
+                Personal(state.personal)
             }
         }
     }
@@ -156,7 +135,8 @@ private fun Toolbar(
 @Composable
 fun Personal(personal: Personal) {
     FlowRow(
-        modifier = Modifier.padding(vertical = 8.dp),
+        modifier = Modifier.padding(vertical = 8.dp, horizontal = 10.dp)
+            .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
