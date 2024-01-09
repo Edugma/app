@@ -48,6 +48,8 @@ import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetValue
 import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
 import io.edugma.core.designSystem.organism.cell.EdCell
 import io.edugma.core.designSystem.organism.cell.EdCellDefaults
+import io.edugma.core.designSystem.organism.cell.EdCellPlaceholder
+import io.edugma.core.designSystem.organism.lceScaffold.EdLceScaffold
 import io.edugma.core.designSystem.organism.shortInfoSheet.EdShortInfoSheet
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
@@ -60,6 +62,7 @@ import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.viewmodel.getViewModel
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceType
+import io.edugma.features.schedule.sources.model.ScheduleSourceUiModel
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
@@ -104,7 +107,6 @@ fun ScheduleSourcesScreen(viewModel: ScheduleSourcesViewModel = getViewModel()) 
             state = state,
             onBackClick = viewModel::exit,
             onQueryChange = viewModel::onQueryChange,
-            onTabSelected = viewModel::onSelectTab,
             onApplyComplexSearch = viewModel::onApplyComplexSearch,
             onAction = viewModel.rememberOnAction(),
         )
@@ -113,14 +115,14 @@ fun ScheduleSourcesScreen(viewModel: ScheduleSourcesViewModel = getViewModel()) 
 
 @Composable
 fun ScheduleSourcesSheetContent(
-    state: ScheduleSourceState,
+    state: ScheduleSourceUiState,
     onAction: (ScheduleSourcesAction) -> Unit,
 ) {
     if (state.selectedSource != null) {
         EdShortInfoSheet(
-            title = state.selectedSource.source.title,
-            avatar = state.selectedSource.source.avatar,
-            description = state.selectedSource.source.description.orEmpty(),
+            title = state.selectedSource.title,
+            avatar = state.selectedSource.avatar,
+            description = state.selectedSource.description.orEmpty(),
         ) {
             EdButton(
                 text = "Выбрать",
@@ -144,10 +146,9 @@ fun ScheduleSourcesSheetContent(
 
 @Composable
 private fun ScheduleSourcesContent(
-    state: ScheduleSourceState,
+    state: ScheduleSourceUiState,
     onBackClick: ClickListener,
     onQueryChange: Typed1Listener<String>,
-    onTabSelected: Typed1Listener<ScheduleSourceType>,
     onApplyComplexSearch: ClickListener,
     onAction: (ScheduleSourcesAction) -> Unit,
 ) {
@@ -168,7 +169,9 @@ private fun ScheduleSourcesContent(
                 SourceTypeTabs(
                     tabs = state.tabs,
                     selectedTab = state.selectedTab,
-                    onTabSelected = onTabSelected,
+                    onTabSelected = {
+                        onAction(ScheduleSourcesAction.OnTabSelected(it))
+                    },
                 )
                 EdSearchField(
                     value = state.query,
@@ -196,71 +199,29 @@ private fun ScheduleSourcesContent(
                 onApply = onApplyComplexSearch,
             )
         } else {
-            Search(
-                paging = state.paginationState,
-                onSourceClick = {
-                    onAction(ScheduleSourcesAction.OnSourceClicked(it))
-                },
-                onAddFavorite = {
-                    onAction(ScheduleSourcesAction.OnAddToFavorite(it))
-                },
-                onDeleteFavorite = {
-                    onAction(ScheduleSourcesAction.OnDeleteFromFavorite(it))
-                },
-                onLoadPage = {
-                    onAction(ScheduleSourcesAction.OnLoadPage)
-                },
-            )
+            EdLceScaffold(
+                lceState = state.paginationState.lceState,
+                onRefresh = { onAction(ScheduleSourcesAction.OnRefresh) },
+                placeholder = { ScheduleSourceListPlaceholder() },
+            ) {
+                ScheduleSourceList(
+                    paging = state.paginationState,
+                    onSourceClick = {
+                        onAction(ScheduleSourcesAction.OnSourceClicked(it))
+                    },
+                    onAddFavorite = {
+                        onAction(ScheduleSourcesAction.OnAddToFavorite(it))
+                    },
+                    onDeleteFavorite = {
+                        onAction(ScheduleSourcesAction.OnDeleteFromFavorite(it))
+                    },
+                    onLoadPage = {
+                        onAction(ScheduleSourcesAction.OnLoadPage)
+                    },
+                )
+            }
         }
     }
-
-//    (
-//        sheetContent = {
-// //            FiltersSelector(
-// //                filters = TODO(),
-// //                query = TODO(),
-// //                onFilterSelected = TODO(),
-// //                onQueryChange = TODO()
-// //            )
-//        },
-//        sheetState = q,
-//    ) {
-//        Column {
-//            PrimaryTopAppBar(
-//                title = stringResource(R.string.schedule_sou_schedule_selection),
-//                onBackClick = onBackClick
-//            )
-//            SourceTypeTabs(
-//                tabs = state.tabs,
-//                selectedTab = state.selectedTab,
-//                onTabSelected = onTabSelected
-//            )
-//            if (state.selectedTab == ScheduleSourcesTabs.Complex) {
-//                ComplexSearch(
-//                    typesId = TODO(),
-//                    subjectsId = TODO(),
-//                    teachersId = TODO(),
-//                    groupsId = TODO(),
-//                    placesId = TODO(),
-//                    onSelectTypes = TODO(),
-//                    onSelectSubjects = TODO(),
-//                    onSelectTeachers = TODO(),
-//                    onSelectGroups = TODO(),
-//                    onSelectPlaces = TODO()
-//                )
-//            } else {
-//                Search(
-//                    query = state.query,
-//                    filteredSources = state.filteredSources,
-//                    selectedTab = state.selectedTab,
-//                    onQueryChange = onQueryChange,
-//                    onSourceSelected = onSourceSelected,
-//                    onAddFavorite = onAddFavorite,
-//                    onDeleteFavorite = onDeleteFavorite
-//                )
-//            }
-//        }
-//    }
 }
 
 @Composable
@@ -411,7 +372,7 @@ private fun Filter(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun ColumnScope.Search(
+private fun ColumnScope.ScheduleSourceList(
     paging: PaginationUiState<ScheduleSourceUiModel>,
     onSourceClick: (ScheduleSourceUiModel) -> Unit,
     onAddFavorite: (ScheduleSourceUiModel) -> Unit,
@@ -424,8 +385,8 @@ private fun ColumnScope.Search(
     ) {
         items(
             items = paging.items,
-            key = { it.source.id to it.source.type },
-            contentType = { "source" },
+            key = { it.listKey },
+            contentType = { it.listContentType },
         ) { source ->
             SourceItem(
                 source = source,
@@ -452,9 +413,9 @@ fun SourceItem(
     modifier: Modifier = Modifier,
 ) {
     EdCell(
-        title = source.source.title,
-        subtitle = source.source.description.orEmpty(),
-        avatar = source.source.avatar,
+        title = source.title,
+        subtitle = source.description.orEmpty(),
+        avatar = source.avatar,
         onClick = {
             onItemClick(source)
         },
@@ -488,4 +449,18 @@ fun SourceItem(
             )
         }
     }
+}
+
+@Composable
+private fun ScheduleSourceListPlaceholder() {
+    Column(modifier = Modifier.fillMaxSize()) {
+        repeat(6) {
+            ScheduleSourceItemPlaceholder()
+        }
+    }
+}
+
+@Composable
+fun ScheduleSourceItemPlaceholder() {
+    EdCellPlaceholder(modifier = Modifier.fillMaxWidth())
 }

@@ -37,7 +37,7 @@ class PeopleViewModel(
 
     override fun onAction(action: PeopleAction) {
         when (action) {
-            PeopleAction.OnRefresh -> pagingViewModel.loadNextPage()
+            PeopleAction.OnRefresh -> pagingViewModel.resetAndLoad()
             PeopleAction.OnLoadNextPage -> pagingViewModel.loadNextPage()
             is PeopleAction.OnQuery -> onQuery(action.query)
         }

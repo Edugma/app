@@ -1,23 +1,24 @@
 package io.edugma.features.schedule.sources
 
-import androidx.compose.runtime.Immutable
 import io.edugma.core.api.model.PagingDto
 import io.edugma.core.api.model.map
 import io.edugma.core.arch.mvi.delegate.debounce
 import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
-import io.edugma.core.arch.pagination.PaginationUiState
 import io.edugma.core.arch.pagination.PagingViewModel
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceType
 import io.edugma.features.schedule.domain.usecase.ScheduleSourcesUseCase
+import io.edugma.features.schedule.sources.model.ScheduleSourceUiModel
+import io.edugma.features.schedule.sources.model.toDtoModel
+import io.edugma.features.schedule.sources.model.toUiModel
 import kotlinx.coroutines.flow.map
 
 class ScheduleSourcesViewModel(
     private val useCase: ScheduleSourcesUseCase,
     private val pagingViewModel: PagingViewModel<ScheduleSourceUiModel>,
-) : BaseActionViewModel<ScheduleSourceState, ScheduleSourcesAction>(ScheduleSourceState()) {
+) : BaseActionViewModel<ScheduleSourceUiState, ScheduleSourcesAction>(ScheduleSourceUiState()) {
     init {
         pagingViewModel.init(
             parentViewModel = this,
@@ -39,10 +40,7 @@ class ScheduleSourcesViewModel(
                 // TODO для favorite и complex
                 val favoriteSources = useCase.getFavoriteSources()
                 sources.map {
-                    ScheduleSourceUiModel(
-                        source = it,
-                        isFavorite = it in favoriteSources,
-                    )
+                    it.toUiModel(isFavorite = it in favoriteSources)
                 }
             }
         }
@@ -53,7 +51,11 @@ class ScheduleSourcesViewModel(
             },
         ) {
             val tabs = useCase.getSourceTypes()
+            val oldSelectedTab = state.selectedTab
             newState { setTabs(tabs = tabs) }
+            if (oldSelectedTab != state.selectedTab) {
+                pagingViewModel.resetAndLoad()
+            }
         }
     }
 
@@ -65,10 +67,12 @@ class ScheduleSourcesViewModel(
                 pagingViewModel.loadNextPage()
             }
 
-            is ScheduleSourcesAction.OnAddToFavorite -> onAddFavorite(action.source.source)
-            is ScheduleSourcesAction.OnSourceSelected -> onSelectSource(action.source.source)
-            is ScheduleSourcesAction.OnDeleteFromFavorite -> onDeleteFavorite(action.source.source)
+            is ScheduleSourcesAction.OnAddToFavorite -> onAddFavorite(action.source)
+            is ScheduleSourcesAction.OnSourceSelected -> onSelectSource(action.source)
+            is ScheduleSourcesAction.OnDeleteFromFavorite -> onDeleteFavorite(action.source)
             is ScheduleSourcesAction.OnSourceClicked -> onSourceClick(action.source)
+            is ScheduleSourcesAction.OnTabSelected -> onSelectTab(action.type)
+            ScheduleSourcesAction.OnRefresh -> pagingViewModel.resetAndLoad()
         }
     }
 
@@ -87,7 +91,7 @@ class ScheduleSourcesViewModel(
         }
     }
 
-    fun onSelectTab(selectedTab: ScheduleSourceType) {
+    private fun onSelectTab(selectedTab: ScheduleSourceType) {
         val previousTab = state.selectedTab
         newState {
             copy(selectedTab = selectedTab)
@@ -99,23 +103,23 @@ class ScheduleSourcesViewModel(
         }
     }
 
-    private fun onSelectSource(source: ScheduleSourceFull) {
+    private fun onSelectSource(source: ScheduleSourceUiModel) {
         launchCoroutine {
-            useCase.setSelectedSource(source)
+            useCase.setSelectedSource(source.toDtoModel())
             router.back()
         }
     }
 
-    private fun onAddFavorite(source: ScheduleSourceFull) {
+    private fun onAddFavorite(source: ScheduleSourceUiModel) {
         launchCoroutine {
-            useCase.addFavoriteSource(source)
+            useCase.addFavoriteSource(source.toDtoModel())
         }
         pagingViewModel.resetAndLoad()
     }
 
-    private fun onDeleteFavorite(source: ScheduleSourceFull) {
+    private fun onDeleteFavorite(source: ScheduleSourceUiModel) {
         launchCoroutine {
-            useCase.deleteFavoriteSource(source)
+            useCase.deleteFavoriteSource(source.id)
         }
         pagingViewModel.resetAndLoad()
     }
@@ -144,36 +148,3 @@ class ScheduleSourcesViewModel(
         }
     }
 }
-
-@Immutable
-data class ScheduleSourceState(
-    val tabs: List<ScheduleSourceType> = emptyList(),
-    val selectedTab: ScheduleSourceType? = null,
-    val query: String = "",
-    val filteredSources: List<ScheduleSourceUiModel> = emptyList(),
-    val paginationState: PaginationUiState<ScheduleSourceUiModel> = PaginationUiState.empty(),
-    val selectedSource: ScheduleSourceUiModel? = null,
-    val showBottomSheet: Boolean = false,
-) {
-    fun setTabs(tabs: List<ScheduleSourceType>) =
-        copy(tabs = tabs).updateSelectedTab()
-
-    fun setQuery(query: String) =
-        copy(query = query)
-
-    fun updateSelectedTab(): ScheduleSourceState {
-        return if (selectedTab !in tabs) {
-            tabs.firstOrNull()?.let {
-                copy(selectedTab = it)
-            } ?: this
-        } else {
-            this
-        }
-    }
-}
-
-@Immutable
-data class ScheduleSourceUiModel(
-    val isFavorite: Boolean,
-    val source: ScheduleSourceFull,
-)

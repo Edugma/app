@@ -48,9 +48,9 @@ class ScheduleSourcesUseCase(
         }
     }
 
-    suspend fun deleteFavoriteSource(source: ScheduleSourceFull) {
+    suspend fun deleteFavoriteSource(id: String) {
         val favoriteSources = scheduleSourcesRepository.getFavoriteSources()
-        scheduleSourcesRepository.setFavoriteSources(favoriteSources - source)
+        scheduleSourcesRepository.setFavoriteSources(favoriteSources.filter { it.id != id })
     }
 
     // TODO скрывать избранное, если ничего не выбрано
@@ -64,7 +64,11 @@ class ScheduleSourcesUseCase(
             id = ScheduleSourceType.COMPLEX,
             title = "Продвинутый поиск",
         )
-        return types + favoriteType
+        val size = types.size + 2
+        return buildList(size) {
+            add(favoriteType)
+            addAll(types)
+        }
     }
 
     suspend fun setSelectedSource(source: ScheduleSourceFull) =
