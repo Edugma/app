@@ -2,7 +2,7 @@ package io.edugma.features.account.domain.usecase
 
 import io.edugma.features.account.domain.model.Personal
 import io.edugma.features.account.domain.model.payments.Contract
-import io.edugma.features.account.domain.model.performance.Performance
+import io.edugma.features.account.domain.model.performance.GradePosition
 import kotlin.math.roundToInt
 
 class MenuDataConverterUseCase {
@@ -15,7 +15,7 @@ class MenuDataConverterUseCase {
         return contracts.getCurrent()
     }
 
-    fun convert(performance: List<Performance>): CurrentPerformance? {
+    fun convert(performance: List<GradePosition>): CurrentPerformance? {
         return performance.getCurrent()
     }
 
@@ -41,8 +41,8 @@ class MenuDataConverterUseCase {
         }
     }
 
-    private fun List<Performance>.getCurrent(): CurrentPerformance? {
-        fun getSortedMarks(marks: List<Performance>): Map<String, Int> {
+    private fun List<GradePosition>.getCurrent(): CurrentPerformance? {
+        fun getSortedMarks(marks: List<GradePosition>): Map<String, Int> {
             val marksList = marks.map { it.grade?.value?.toString().orEmpty() }.let { list ->
                 mutableMapOf<String, Int>().apply {
                     list.toSet().forEach { put(it, list.count { mark -> mark == it }) }

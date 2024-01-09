@@ -1,13 +1,13 @@
 package io.edugma.features.account.data.repository
 
 import io.edugma.core.api.repository.CacheRepository
-import io.edugma.core.api.repository.getDataFlow
+import io.edugma.core.api.repository.getFlow
 import io.edugma.core.api.repository.save
 import io.edugma.core.api.utils.LceFlow
 import io.edugma.data.base.consts.CacheConst.PerformanceKey
 import io.edugma.data.base.store.store
 import io.edugma.features.account.data.api.AccountService
-import io.edugma.features.account.domain.model.performance.PerformanceApi
+import io.edugma.features.account.domain.model.performance.PerformanceDto
 import io.edugma.features.account.domain.repository.PerformanceRepository
 import kotlin.time.Duration.Companion.days
 
@@ -17,13 +17,13 @@ class PerformanceRepositoryImpl(
 ) : PerformanceRepository {
 
     // TODO при ошибке парсинга не ронять всё, а ждать новые данные
-    private val store = store<String, PerformanceApi> {
+    private val store = store<String, PerformanceDto> {
         fetcher { key ->
             api.getPerformance(key)
         }
         cache {
             reader { key ->
-                cacheRepository.getDataFlow(PerformanceKey + key)
+                cacheRepository.getFlow(PerformanceKey + key)
             }
             writer { key, data ->
                 cacheRepository.save(PerformanceKey + key, data)
@@ -33,10 +33,10 @@ class PerformanceRepositoryImpl(
         coroutineScope()
     }
 
-    override suspend fun getPerformance(
+    override fun getPerformance(
         periodId: String?,
         forceUpdate: Boolean,
-    ): LceFlow<PerformanceApi> {
+    ): LceFlow<PerformanceDto> {
         return store.get(periodId.orEmpty(), forceUpdate = forceUpdate)
     }
 }

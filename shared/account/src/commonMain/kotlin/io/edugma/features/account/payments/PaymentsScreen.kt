@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
@@ -49,7 +48,6 @@ import io.edugma.core.designSystem.utils.rememberAsyncImagePainter
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureBottomSheetScreen
 import io.edugma.core.utils.ClickListener
-import io.edugma.core.utils.isNull
 import io.edugma.core.utils.viewmodel.getViewModel
 import io.edugma.features.account.domain.model.payments.PaymentMethod
 import io.edugma.features.account.payments.bottomSheet.PaymentBottomSheet
@@ -100,16 +98,11 @@ fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
             }
         },
     ) {
-        when {
-            else -> {
-                PaymentsContent(
-                    state = state,
-                    retryListener = viewModel::load,
-                    backListener = viewModel::exit,
-                    onAction = onAction,
-                )
-            }
-        }
+        PaymentsContent(
+            state = state,
+            backListener = viewModel::exit,
+            onAction = onAction,
+        )
     }
 }
 
@@ -117,7 +110,6 @@ fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
 @Composable
 fun PaymentsContent(
     state: PaymentsUiState,
-    retryListener: ClickListener,
     backListener: ClickListener,
     onAction: (PaymentsAction) -> Unit,
 ) {
@@ -145,25 +137,17 @@ fun PaymentsContent(
         },
     ) {
         EdLceScaffold(
-            isRefreshing = state.isRefreshing,
-            onRefresh = retryListener,
-            isError = state.isError && state.contractHeaders.isNull(),
-            isPlaceholder = state.showPlaceholders,
-            isEmpty = state.isNothingToShow,
+            lceState = state.lceState,
+            onRefresh = { onAction(PaymentsAction.OnRefresh) },
             emptyTitle = "Нет договоров",
-            placeholder = {
-                PaymentsPlaceholder()
-            },
+            placeholder = { PaymentsPlaceholder() },
         ) {
-            // TODO No contracts placeholder
-            if (state.contract != null) {
-                Payments(
-                    contract = state.contract,
-                    onPaymentMethodClick = {
-                        onAction(PaymentsAction.OnPaymentMethodClick(it))
-                    },
-                )
-            }
+            Payments(
+                contract = state.contract!!,
+                onPaymentMethodClick = {
+                    onAction(PaymentsAction.OnPaymentMethodClick(it))
+                },
+            )
         }
     }
 }

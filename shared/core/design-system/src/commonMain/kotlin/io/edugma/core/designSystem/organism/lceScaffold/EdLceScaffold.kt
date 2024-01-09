@@ -11,6 +11,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import io.edugma.core.api.model.LceUiState
 import io.edugma.core.designSystem.organism.errorWithRetry.EdErrorRetry
 import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
 import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
@@ -18,19 +19,16 @@ import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
 // TODO replace multiple booleans with enum
 @Composable
 fun EdLceScaffold(
-    isRefreshing: Boolean,
-    isError: Boolean,
-    isPlaceholder: Boolean,
-    isEmpty: Boolean,
-    emptyTitle: String,
+    lceState: LceUiState,
+    emptyTitle: String = "К сожалению, ничего не найдено",
     onRefresh: () -> Unit,
     insets: WindowInsets = WindowInsets.navigationBars,
     placeholder: @Composable () -> Unit,
     content: @Composable () -> Unit,
 ) {
-    EdPullRefresh(refreshing = isRefreshing, onRefresh = onRefresh) {
+    EdPullRefresh(refreshing = lceState.isRefreshing, onRefresh = onRefresh) {
         when {
-            isError -> {
+            lceState.showError -> {
                 EdErrorRetry(
                     modifier = Modifier.fillMaxSize()
                         .consumeWindowInsets(insets),
@@ -38,7 +36,7 @@ fun EdLceScaffold(
                 )
             }
 
-            isEmpty -> {
+            lceState.showEmptyContent -> {
                 BoxWithConstraints(
                     modifier = Modifier.fillMaxSize()
                         .consumeWindowInsets(insets),
@@ -52,7 +50,7 @@ fun EdLceScaffold(
                 }
             }
 
-            isPlaceholder -> {
+            lceState.showPlaceholder -> {
                 placeholder()
             }
 

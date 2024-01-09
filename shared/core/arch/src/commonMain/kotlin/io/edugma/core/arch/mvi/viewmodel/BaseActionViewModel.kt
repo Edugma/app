@@ -7,7 +7,6 @@ import io.edugma.core.arch.mvi.impl.SimpleStateStore
 import io.edugma.core.arch.viewmodel.RestrictedApi
 import io.edugma.core.arch.viewmodel.ViewModel
 import io.edugma.core.navigation.core.Router
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -23,8 +22,8 @@ abstract class BaseActionViewModel<TState, TAction>(
 
     val router: Router by inject()
 
-    internal var _errorHandler: CoroutineExceptionHandler? = null
-    val errorHandler: CoroutineExceptionHandler?
+    internal var _errorHandler: CombinedErrorHandler? = null
+    val errorHandler: CombinedErrorHandler?
         get() = _errorHandler
 
     protected val screenResultProvider: ScreenResultProvider by inject()

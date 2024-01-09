@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -24,9 +25,7 @@ import io.edugma.core.designSystem.organism.EdScaffold
 import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetValue
 import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
 import io.edugma.core.designSystem.organism.chipRow.EdChipLabelLazyRow
-import io.edugma.core.designSystem.organism.errorWithRetry.EdErrorRetry
-import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
-import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
+import io.edugma.core.designSystem.organism.lceScaffold.EdLceScaffold
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureBottomSheetScreen
@@ -34,7 +33,7 @@ import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.isNull
 import io.edugma.core.utils.viewmodel.getViewModel
-import io.edugma.features.account.domain.model.performance.Performance
+import io.edugma.features.account.domain.model.performance.GradePosition
 import io.edugma.features.account.performance.bottomSheets.FiltersBottomSheetContent
 import io.edugma.features.account.performance.bottomSheets.PerformanceBottomSheetContent
 import io.edugma.features.account.performance.model.FiltersRow
@@ -50,6 +49,12 @@ fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
         initialValue = ModalBottomSheetValue.Hidden,
     )
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(state.selectedPerformance) {
+        if (state.selectedPerformance != null) {
+            scope.launch { bottomState.show() }
+        }
+    }
 
     FeatureBottomSheetScreen(
         navigationBarPadding = false,
@@ -84,7 +89,7 @@ fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
 @Composable
 fun PerformanceContent(
     state: PerformanceUiState,
-    showBottomSheet: Typed1Listener<Performance?>,
+    showBottomSheet: Typed1Listener<GradePosition?>,
     filterClickListener: Typed1Listener<Filter<*>>,
     backListener: ClickListener,
     onAction: (PerformanceAction) -> Unit,
@@ -124,28 +129,17 @@ fun PerformanceContent(
             }
         },
     ) {
-        EdPullRefresh(
-            refreshing = state.isRefreshing,
-            onRefresh = {
-                onAction(PerformanceAction.OnRetryClicked)
-            },
+        EdLceScaffold(
+            lceState = state.lceState,
+            onRefresh = { onAction(PerformanceAction.OnRefresh) },
+            placeholder = { PerformanceListPlaceholder() },
         ) {
-            when {
-                state.showError -> {
-                    EdErrorRetry(
-                        modifier = Modifier.fillMaxSize(),
-                        onRetry = {
-                            onAction(PerformanceAction.OnRetryClicked)
-                        },
-                    )
-                }
-
-                state.showNothingFound -> {
-                    EdNothingFound(modifier = Modifier.fillMaxSize())
-                }
-
-                else -> PerformanceList(state, showBottomSheet)
-            }
+            PerformanceList(
+                state = state,
+                onItemClick = {
+                    onAction(PerformanceAction.OnPerformanceClicked(it))
+                },
+            )
         }
     }
 }
@@ -153,32 +147,38 @@ fun PerformanceContent(
 @Composable
 fun PerformanceList(
     state: PerformanceUiState,
-    showBottomSheet: Typed1Listener<Performance?>,
+    onItemClick: (GradePosition?) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
     ) {
-        if (state.placeholders) {
-            items(3) {
-                SpacerHeight(height = 3.dp)
-                PerformancePlaceholder()
-            }
-        } else {
-            items(
-                count = state.filteredData?.size ?: 0,
-                key = { state.filteredData!![it].id },
-            ) {
-                PerformanceItem(
-                    performance = state.filteredData!![it],
-                    onClick = { showBottomSheet(state.filteredData?.get(it)) },
-                    modifier = Modifier.padding(bottom = 3.dp),
-                )
-            }
+        items(
+            count = state.filteredData?.size ?: 0,
+            key = { state.filteredData!![it].id },
+        ) {
+            PerformanceItem(
+                performance = state.filteredData!![it],
+                onClick = { onItemClick(state.filteredData?.get(it)) },
+                modifier = Modifier.padding(bottom = 3.dp),
+            )
+        }
 
-            item {
-                NavigationBarSpacer()
-            }
+        item {
+            NavigationBarSpacer()
+        }
+    }
+}
+
+@Composable
+fun PerformanceListPlaceholder() {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize(),
+    ) {
+        items(3) {
+            SpacerHeight(height = 3.dp)
+            PerformancePlaceholder()
         }
     }
 }

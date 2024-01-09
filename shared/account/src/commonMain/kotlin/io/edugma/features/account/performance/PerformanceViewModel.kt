@@ -1,13 +1,10 @@
 package io.edugma.features.account.performance
 
 import io.edugma.core.api.model.ListItemUiModel
-import io.edugma.core.api.utils.onResult
 import io.edugma.core.arch.mvi.newState
-import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
-import io.edugma.core.navigation.core.router.external.ExternalRouter
-import io.edugma.features.account.common.LOCAL_DATA_SHOWN_ERROR
-import io.edugma.features.account.domain.model.performance.Performance
+import io.edugma.core.utils.lce.launchLce
+import io.edugma.features.account.domain.model.performance.GradePosition
 import io.edugma.features.account.domain.model.performance.PerformancePeriod
 import io.edugma.features.account.domain.repository.PerformanceRepository
 import io.edugma.features.account.performance.Filter.Name
@@ -16,45 +13,43 @@ import io.edugma.features.account.performance.Filter.Type
 
 class PerformanceViewModel(
     private val repository: PerformanceRepository,
-    private val externalRouter: ExternalRouter,
 ) : BaseActionViewModel<PerformanceUiState, PerformanceAction>(PerformanceUiState()) {
 
     init {
-        loadMarks(forceUpdate = false)
+        loadMarks(isRefreshing = false)
     }
 
-    private fun loadMarks(forceUpdate: Boolean = true, periodId: String? = null) {
-        launchCoroutine {
-            newState {
-                toLoading(true)
-                    .toError(false)
-            }
-
-            repository.getPerformance(periodId = periodId, forceUpdate = forceUpdate).onResult(
-                onSuccess = {
-                    newState {
-                        toContent(it.value)
-                            .toLoading(it.isLoading)
-                    }
-                },
-                onFailure = {
-                    newState {
-                        // TODO показывать ошибку на весь экран только если isLoading = false
-                        toError(true)
-                            .toLoading(false)
-                    }
-                    if (it.isLoading.not()) {
-                        externalRouter.showMessage(LOCAL_DATA_SHOWN_ERROR)
-                    }
-                },
-            )
-        }
+    private fun loadMarks(isRefreshing: Boolean = true, periodId: String? = null) {
+        launchLce(
+            lceProvider = {
+                repository.getPerformance(
+                    periodId = periodId,
+                    forceUpdate = isRefreshing,
+                )
+            },
+            getLceState = state::lceState,
+            setLceState = { newState { copy(lceState = it) } },
+            isContentEmpty = { state.performanceList == null },
+            isRefreshing = isRefreshing,
+            onSuccess = {
+                newState {
+                    toContent(it.value)
+                }
+            },
+        )
     }
 
     override fun onAction(action: PerformanceAction) {
         when (action) {
             is PerformanceAction.OnPeriodSelected -> onPeriodSelected(action.period)
-            PerformanceAction.OnRetryClicked -> loadMarks()
+            PerformanceAction.OnRefresh -> loadMarks(isRefreshing = true)
+            is PerformanceAction.OnPerformanceClicked -> onPerformanceClicked(action.gradePosition)
+        }
+    }
+
+    private fun onPerformanceClicked(gradePosition: GradePosition?) {
+        newState {
+            copy(selectedPerformance = gradePosition)
         }
     }
 
@@ -64,18 +59,12 @@ class PerformanceViewModel(
                 selectedPeriod = period,
             )
         }
-        loadMarks(periodId = period.id)
+        loadMarks(periodId = period.id, isRefreshing = false)
     }
 
-    fun openBottomSheetClick(performance: Performance?) {
+    fun openBottomSheetClick(performance: GradePosition?) {
         newState {
             copy(selectedPerformance = performance)
-        }
-    }
-
-    private fun setPerformanceData(data: List<Performance>) {
-        newState {
-            copy(performanceList = data)
         }
     }
 
@@ -124,7 +113,7 @@ class PerformanceViewModel(
         }
     }
 
-    private fun List<Performance>.getExamTypes() = map { it.type }.toSet()
+    private fun List<GradePosition>.getExamTypes() = map { it.type }.toSet()
 
     // todo рефакторить и вынести в usecase
     private fun<T> List<Filter<T>>.updateFilter(newFilter: Filter<T>): Set<Filter<T>> {

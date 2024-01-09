@@ -4,8 +4,8 @@ import io.edugma.core.api.model.PagingDto
 import io.edugma.core.api.repository.CacheRepository
 import io.edugma.core.api.repository.SettingsRepository
 import io.edugma.core.api.repository.get
-import io.edugma.core.api.repository.getData
 import io.edugma.core.api.repository.getFlow
+import io.edugma.core.api.repository.getOnlyData
 import io.edugma.core.api.repository.save
 import io.edugma.core.api.repository.saveOrRemove
 import io.edugma.data.base.consts.CacheConst
@@ -41,7 +41,7 @@ class ScheduleSourcesRepositoryImpl(
     }
 
     override suspend fun getFavoriteSources(): List<ScheduleSourceFull> {
-        return cacheRepository.getData<List<ScheduleSourceFull>>(
+        return cacheRepository.getOnlyData<List<ScheduleSourceFull>>(
             CacheConst.FavoriteScheduleSources,
         ) ?: emptyList()
     }

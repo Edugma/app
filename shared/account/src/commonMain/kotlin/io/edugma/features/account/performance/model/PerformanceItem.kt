@@ -30,13 +30,13 @@ import io.edugma.core.designSystem.molecules.chip.EdChipSize
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.SecondaryContent
 import io.edugma.core.designSystem.utils.edPlaceholder
+import io.edugma.features.account.domain.model.performance.GradePosition
 import io.edugma.features.account.domain.model.performance.GradeValue
-import io.edugma.features.account.domain.model.performance.Performance
 import kotlin.math.roundToInt
 
 @Composable
 fun PerformanceItem(
-    performance: Performance,
+    performance: GradePosition,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {

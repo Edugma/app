@@ -1,11 +1,9 @@
 package io.edugma.features.account.payments
 
-import io.edugma.core.api.utils.onResult
 import io.edugma.core.arch.mvi.newState
-import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
 import io.edugma.core.navigation.core.router.external.ExternalRouter
-import io.edugma.features.account.common.LOCAL_DATA_SHOWN_ERROR
+import io.edugma.core.utils.lce.launchLce
 import io.edugma.features.account.domain.model.payments.PaymentMethod
 import io.edugma.features.account.domain.repository.PaymentsRepository
 
@@ -15,34 +13,31 @@ class PaymentsViewModel(
 ) : BaseActionViewModel<PaymentsUiState, PaymentsAction>(PaymentsUiState()) {
 
     init {
-        load(forceUpdate = false)
+        load(isRefreshing = false)
     }
 
-    fun load(forceUpdate: Boolean = true, contractId: String? = null) {
-        launchCoroutine {
-            newState {
-                toLoading(true)
-            }
-            repository.getPayments(contractId = contractId, forceUpdate = forceUpdate).onResult(
-                onSuccess = {
-                    newState {
-                        toContent(it.value)
-                            .toLoading(it.isLoading)
-                    }
-                },
-                onFailure = {
-                    if (it.isLoading.not()) {
-                        newState {
-                            toError(true)
-                                .toLoading(false)
-                        }
-                    }
-                    if (it.isLoading.not()) {
-                        externalRouter.showMessage(LOCAL_DATA_SHOWN_ERROR)
-                    }
-                },
-            )
-        }
+    private fun load(isRefreshing: Boolean = false) {
+        launchLce(
+            lceProvider = {
+                repository.getPayments(
+                    contractId = state.selectedContractHeader?.id,
+                    forceUpdate = isRefreshing,
+                )
+            },
+            getLceState = state::lceState,
+            setLceState = { newState { copy(lceState = it) } },
+            isContentEmpty = { state.contract == null },
+            isRefreshing = isRefreshing,
+            onSuccess = {
+                newState {
+                    toContent(it.value)
+                }
+            },
+        )
+    }
+
+    private fun refresh() {
+        load(isRefreshing = true)
     }
 
     override fun onAction(action: PaymentsAction) {
@@ -50,6 +45,7 @@ class PaymentsViewModel(
             PaymentsAction.OnOpenUrl -> onOpenUri()
             is PaymentsAction.OnPaymentMethodClick -> onPaymentMethodClick(action.paymentMethod)
             is PaymentsAction.OnContractSelected -> onContractSelected(action.id)
+            PaymentsAction.OnRefresh -> refresh()
         }
     }
 
@@ -75,7 +71,10 @@ class PaymentsViewModel(
 
     private fun onContractSelected(id: String) {
         if (state.selectedContractHeader?.id != id) {
-            load(contractId = id)
+            newState {
+                toSelectedContractHeader(id)
+            }
+            load(isRefreshing = false)
         }
     }
 }

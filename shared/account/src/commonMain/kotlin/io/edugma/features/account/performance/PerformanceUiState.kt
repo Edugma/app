@@ -1,14 +1,16 @@
 package io.edugma.features.account.performance
 
 import androidx.compose.runtime.Immutable
-import io.edugma.core.utils.isNotNull
+import io.edugma.core.api.model.LceUiState
 import io.edugma.core.utils.isNull
+import io.edugma.features.account.domain.model.performance.GradePosition
 import io.edugma.features.account.domain.model.performance.Performance
-import io.edugma.features.account.domain.model.performance.PerformanceApi
+import io.edugma.features.account.domain.model.performance.PerformanceDto
 
 @Immutable
 data class PerformanceUiState(
-    val performanceList: List<Performance>? = null,
+    val lceState: LceUiState = LceUiState.init(),
+    val performanceList: Performance? = null,
     val periods: List<Filter.PerformancePeriodUiModel>? = null,
     val selectedPeriod: Filter.PerformancePeriodUiModel? = null,
     val types: List<Filter.Type> = listOf(),
@@ -16,15 +18,9 @@ data class PerformanceUiState(
     val currentFilters: Set<Filter<*>> = emptySet(),
     val isLoading: Boolean = false,
     val isError: Boolean = false,
-    val selectedPerformance: Performance? = null,
+    val selectedPerformance: GradePosition? = null,
 ) {
-    val placeholders = performanceList.isNull() && isLoading && !isError
     val bottomSheetPlaceholders = (isLoading && !isError) || (isError && performanceList.isNull())
-    val isRefreshing = performanceList.isNotNull() && isLoading && !isError
-    val showError
-        get() = isError && performanceList.isNull()
-    val showNothingFound
-        get() = filteredData?.isEmpty() == true
 
     private val filteredPeriods
         get() = periods?.filter { it.isChecked }?.toSet() ?: emptySet()
@@ -38,7 +34,7 @@ data class PerformanceUiState(
         }
 
     val filteredData
-        get() = performanceList?.filter { performance ->
+        get() = performanceList?.grades?.filter { performance ->
             when {
                 enabledFilters.isEmpty() -> true
                 else -> {
@@ -54,13 +50,19 @@ data class PerformanceUiState(
             }
         }
 
-    fun toContent(data: PerformanceApi) =
-        copy(
+    fun toContent(data: PerformanceDto): PerformanceUiState {
+        val selectedPeriod = if (data.selected?.id != selectedPeriod?.id) {
+            data.periods.firstOrNull { it.id == data.selected?.id }?.let {
+                Filter.PerformancePeriodUiModel(it)
+            }
+        } else {
+            selectedPeriod
+        }
+
+        return copy(
+            selectedPeriod = selectedPeriod,
             performanceList = data.selected,
             periods = data.periods.map { Filter.PerformancePeriodUiModel(it) },
         )
-
-    fun toError(isError: Boolean) = copy(isError = isError)
-
-    fun toLoading(isLoading: Boolean) = copy(isLoading = isLoading)
+    }
 }

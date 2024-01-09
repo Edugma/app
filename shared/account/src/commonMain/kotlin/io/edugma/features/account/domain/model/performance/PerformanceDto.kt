@@ -4,9 +4,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PerformanceApi(
+data class PerformanceDto(
     @SerialName("periods")
     val periods: List<PerformancePeriod>,
     @SerialName("selected")
-    val selected: List<Performance>,
+    val selected: Performance?,
 )

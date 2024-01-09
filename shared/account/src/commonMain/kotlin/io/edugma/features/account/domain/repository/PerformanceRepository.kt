@@ -1,11 +1,11 @@
 package io.edugma.features.account.domain.repository
 
 import io.edugma.core.api.utils.LceFlow
-import io.edugma.features.account.domain.model.performance.PerformanceApi
+import io.edugma.features.account.domain.model.performance.PerformanceDto
 
 interface PerformanceRepository {
-    suspend fun getPerformance(
+    fun getPerformance(
         periodId: String? = null,
         forceUpdate: Boolean = false,
-    ): LceFlow<PerformanceApi>
+    ): LceFlow<PerformanceDto>
 }

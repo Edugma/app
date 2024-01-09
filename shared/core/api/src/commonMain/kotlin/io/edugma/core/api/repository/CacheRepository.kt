@@ -3,7 +3,6 @@ package io.edugma.core.api.repository
 import io.edugma.core.api.model.CachedResult
 import io.edugma.core.api.utils.InternalApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Instant
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
@@ -30,10 +29,11 @@ suspend inline fun <reified T : Any> CacheRepository.get(key: String): CachedRes
 }
 
 @OptIn(InternalApi::class)
-suspend inline fun <reified T : Any> CacheRepository.getData(key: String): T? {
+suspend inline fun <reified T : Any> CacheRepository.getOnlyData(key: String): T? {
     return this.getInternal<T>(key, typeOf<T>())?.data
 }
 
+// TODO придумать: чтобы не пересекались getData и get
 @OptIn(InternalApi::class)
 suspend inline fun <reified T : Any> CacheRepository.getFlow(
     key: String,
@@ -41,12 +41,12 @@ suspend inline fun <reified T : Any> CacheRepository.getFlow(
     return this.getFlowInternal<T>(key, typeOf<T>())
 }
 
-@OptIn(InternalApi::class)
-suspend inline fun <reified T : Any> CacheRepository.getDataFlow(
-    key: String,
-): Flow<T?> {
-    return this.getFlowInternal<T>(key, typeOf<T>()).map { it?.data }
-}
+// @OptIn(InternalApi::class)
+// suspend inline fun <reified T : Any> CacheRepository.getDataFlow(
+//    key: String,
+// ): Flow<T?> {
+//    return this.getFlowInternal<T>(key, typeOf<T>()).map { it?.data }
+// }
 
 @OptIn(InternalApi::class)
 suspend inline fun <reified T : Any> CacheRepository.save(key: String, value: T) {

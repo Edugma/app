@@ -1,7 +1,7 @@
 package io.edugma.features.account.data.repository
 
 import io.edugma.core.api.repository.CacheRepository
-import io.edugma.core.api.repository.getDataFlow
+import io.edugma.core.api.repository.getFlow
 import io.edugma.core.api.repository.save
 import io.edugma.core.api.utils.LceFlow
 import io.edugma.data.base.consts.CacheConst.PaymentsKey
@@ -22,7 +22,7 @@ class PaymentsRepositoryImpl(
         }
         cache {
             reader { key ->
-                cacheRepository.getDataFlow(PaymentsKey + key)
+                cacheRepository.getFlow(PaymentsKey + key)
             }
             writer { key, data ->
                 cacheRepository.save(PaymentsKey + key, data)
@@ -32,7 +32,7 @@ class PaymentsRepositoryImpl(
         coroutineScope()
     }
 
-    override suspend fun getPayments(
+    override fun getPayments(
         contractId: String?,
         forceUpdate: Boolean,
     ): LceFlow<PaymentsDto> {

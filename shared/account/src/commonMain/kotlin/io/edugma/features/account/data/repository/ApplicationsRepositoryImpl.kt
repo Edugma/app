@@ -1,7 +1,7 @@
 package io.edugma.features.account.data.repository
 
 import io.edugma.core.api.repository.CacheRepository
-import io.edugma.core.api.repository.getData
+import io.edugma.core.api.repository.getOnlyData
 import io.edugma.core.api.repository.save
 import io.edugma.core.api.utils.IO
 import io.edugma.core.api.utils.onSuccess
@@ -28,6 +28,6 @@ class ApplicationsRepositoryImpl(
     }
 
     override suspend fun loadApplications(): List<Application>? {
-        return cacheRepository.getData(ApplicationsKey)
+        return cacheRepository.getOnlyData(ApplicationsKey)
     }
 }

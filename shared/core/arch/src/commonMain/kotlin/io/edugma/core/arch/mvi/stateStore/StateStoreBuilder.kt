@@ -1,14 +1,14 @@
 package io.edugma.core.arch.mvi.stateStore
 
 import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
+import io.edugma.core.arch.mvi.viewmodel.CombinedErrorHandler
 
 class StateStoreBuilder<TState, TAction>(
     private val stateStore: BaseActionViewModel<TState, TAction>,
 ) {
-    private var errorHandler: CoroutineExceptionHandler? = null
+    private var errorHandler: CombinedErrorHandler? = null
 
-    fun errorHandler(errorHandler: CoroutineExceptionHandler) {
+    fun errorHandler(errorHandler: CombinedErrorHandler) {
         this.errorHandler = errorHandler
     }
 

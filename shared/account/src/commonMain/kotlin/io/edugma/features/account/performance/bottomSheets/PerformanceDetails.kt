@@ -10,10 +10,10 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.BottomSheet
-import io.edugma.features.account.domain.model.performance.Performance
+import io.edugma.features.account.domain.model.performance.GradePosition
 
 @Composable
-fun ColumnScope.PerformanceBottomSheetContent(performance: Performance) {
+fun ColumnScope.PerformanceBottomSheetContent(performance: GradePosition) {
     BottomSheet(
         title = performance.title,
         headerStyle = EdTheme.typography.headlineSmall,
