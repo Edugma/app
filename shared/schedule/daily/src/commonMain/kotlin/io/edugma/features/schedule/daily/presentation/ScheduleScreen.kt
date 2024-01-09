@@ -40,6 +40,7 @@ import io.edugma.core.designSystem.atoms.loader.EdLoaderSize
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.atoms.surface.EdSurface
+import io.edugma.core.designSystem.organism.lceScaffold.EdLceScaffold
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
 import io.edugma.core.designSystem.theme.EdTheme
@@ -82,62 +83,64 @@ fun ScheduleContent(
     state: ScheduleDailyUiState,
     onAction: (ScheduleDailyAction) -> Unit,
 ) {
-    Box {
-        Column(Modifier.fillMaxSize()) {
-            if (state.weeks != null) {
-                val weekPagerState = rememberPagerState(state.weeksIndex) { state.weeks.size }
-                weekPagerState.bindTo(state.weeksIndex)
-                weekPagerState.onPageChanged { onAction(ScheduleDailyAction.OnWeeksPosChanged(it)) }
+    Column(Modifier.fillMaxSize()) {
+        if (state.weeks != null) {
+            val weekPagerState = rememberPagerState(state.weeksIndex) { state.weeks.size }
+            weekPagerState.bindTo(state.weeksIndex)
+            weekPagerState.onPageChanged { onAction(ScheduleDailyAction.OnWeeksPosChanged(it)) }
 
-                EdSurface(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = EdTheme.shapes.large.bottom(),
-                ) {
-                    Column(Modifier.fillMaxWidth()) {
-                        EdTopAppBar(
-                            title = stringResource(MR.strings.sch_schedule),
-                            subtitle = state.selectedDate.format(DateFormat.FULL_PRETTY),
-                            onNavigationClick = { onAction(ScheduleDailyAction.OnBack) },
-                            actions = {
-                                if (state.isLoading && state.schedule != null) {
-                                    EdLoader(
-                                        size = EdLoaderSize.medium,
-                                    )
-                                    SpacerWidth(16.dp)
-                                }
-                            },
-                            colors = EdTopAppBarDefaults.transparent(),
-                            windowInsets = WindowInsets.statusBars,
-                        )
-                        DaysPager(
-                            weeks = state.weeks,
-                            dayOfWeekPos = state.dayOfWeekIndex,
-                            pagerState = weekPagerState,
-                            onDayClick = {
-                                onAction(ScheduleDailyAction.OnDayClick(it))
-                            },
-                            modifier = Modifier.padding(bottom = 3.dp),
-                        )
-                    }
+            EdSurface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = EdTheme.shapes.large.bottom(),
+            ) {
+                Column(Modifier.fillMaxWidth()) {
+                    EdTopAppBar(
+                        title = stringResource(MR.strings.sch_schedule),
+                        subtitle = state.selectedDate.format(DateFormat.FULL_PRETTY),
+                        onNavigationClick = { onAction(ScheduleDailyAction.OnBack) },
+                        actions = {
+                            if (state.isLoading && state.schedule != null) {
+                                EdLoader(
+                                    size = EdLoaderSize.medium,
+                                )
+                                SpacerWidth(16.dp)
+                            }
+                        },
+                        colors = EdTopAppBarDefaults.transparent(),
+                        windowInsets = WindowInsets.statusBars,
+                    )
+                    DaysPager(
+                        weeks = state.weeks,
+                        dayOfWeekPos = state.dayOfWeekIndex,
+                        pagerState = weekPagerState,
+                        onDayClick = {
+                            onAction(ScheduleDailyAction.OnDayClick(it))
+                        },
+                        modifier = Modifier.padding(bottom = 3.dp),
+                    )
                 }
             }
-            SpacerHeight(height = 10.dp)
-            if (state.schedule != null) {
-                EdSurface(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = EdTheme.shapes.large.top(),
-                ) {
-                    if (state.isLoading && state.schedule == null) {
-                        ScheduleDayPlaceholder(4)
-                    } else {
-                        val schedulePagerState = rememberPagerState(state.scheduleIndex) {
-                            state.schedule?.size ?: 0
-                        }
-                        schedulePagerState.bindTo(state.scheduleIndex)
-                        schedulePagerState.onPageChanged {
-                            onAction(ScheduleDailyAction.OnSchedulePosChanged(it))
-                        }
+        }
+        SpacerHeight(height = 10.dp)
+        EdSurface(
+            modifier = Modifier.fillMaxWidth(),
+            shape = EdTheme.shapes.large.top(),
+        ) {
+            EdLceScaffold(
+                lceState = state.lceState,
+                onRefresh = { onAction(ScheduleDailyAction.OnRefresh) },
+                placeholder = { ScheduleDayPlaceholder(4) },
+            ) {
+                if (state.schedule != null) {
+                    val schedulePagerState = rememberPagerState(state.scheduleIndex) {
+                        state.schedule.size
+                    }
+                    schedulePagerState.bindTo(state.scheduleIndex)
+                    schedulePagerState.onPageChanged {
+                        onAction(ScheduleDailyAction.OnSchedulePosChanged(it))
+                    }
 
+                    Box(Modifier.fillMaxSize()) {
                         SchedulePager(
                             scheduleDays = state.schedule,
                             lessonDisplaySettings = state.lessonDisplaySettings,
@@ -147,15 +150,16 @@ fun ScheduleContent(
                                 onAction(ScheduleDailyAction.OnLessonClick(lesson))
                             },
                             onRefreshing = {
-                                onAction(ScheduleDailyAction.OnRefreshing)
+                                onAction(ScheduleDailyAction.OnRefresh)
                             },
                         )
+
+                        Fab(state.showBackToTodayFab) {
+                            onAction(ScheduleDailyAction.OnFabClick)
+                        }
                     }
                 }
             }
-        }
-        Fab(state.showBackToTodayFab) {
-            onAction(ScheduleDailyAction.OnFabClick)
         }
     }
 }

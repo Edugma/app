@@ -13,10 +13,10 @@ class PaymentsViewModel(
 ) : BaseActionViewModel<PaymentsUiState, PaymentsAction>(PaymentsUiState()) {
 
     init {
-        load(isRefreshing = false)
+        loadPayments(isRefreshing = false)
     }
 
-    private fun load(isRefreshing: Boolean = false) {
+    private fun loadPayments(isRefreshing: Boolean) {
         launchLce(
             lceProvider = {
                 repository.getPayments(
@@ -37,7 +37,7 @@ class PaymentsViewModel(
     }
 
     private fun refresh() {
-        load(isRefreshing = true)
+        loadPayments(isRefreshing = true)
     }
 
     override fun onAction(action: PaymentsAction) {
@@ -74,7 +74,7 @@ class PaymentsViewModel(
             newState {
                 toContractHeaderSelected(id)
             }
-            load(isRefreshing = false)
+            loadPayments(isRefreshing = false)
         }
     }
 }

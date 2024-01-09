@@ -1,15 +1,14 @@
 package io.edugma.features.schedule.daily.presentation
 
 import io.edugma.core.api.utils.nowLocalDate
-import io.edugma.core.api.utils.onResult
 import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
 import io.edugma.core.navigation.schedule.ScheduleInfoScreens
+import io.edugma.core.utils.lce.launchLce
 import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
 import io.edugma.features.schedule.domain.model.lesson.LessonEvent
 import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
-import io.edugma.features.schedule.elements.model.ScheduleDayUiModel
 import io.edugma.features.schedule.elements.utils.toUiModel
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
@@ -23,9 +22,7 @@ class ScheduleViewModel(
 ) {
 
     init {
-        launchCoroutine() {
-            getSchedule(true)
-        }
+        loadSchedule(isRefreshing = false)
 
         launchCoroutine(
             onError = {
@@ -49,21 +46,19 @@ class ScheduleViewModel(
         }
     }
 
-    private suspend fun getSchedule(forceUpdate: Boolean = false) {
-        useCase.getCurrentScheduleFlow(forceUpdate = forceUpdate).onResult(
+    private fun loadSchedule(isRefreshing: Boolean) {
+        launchLce(
+            lceProvider = {
+                useCase.getCurrentScheduleFlow(forceUpdate = isRefreshing)
+            },
+            getLceState = state::lceState,
+            setLceState = { newState { copy(lceState = it) } },
+            // TODO isContentEmpty
+            isContentEmpty = { false },
+            isRefreshing = isRefreshing,
             onSuccess = {
                 newState {
-                    setSchedule(it.value.toUiModel())
-                        .toLoading(it.isLoading)
-                }
-            },
-            onFailure = {
-                if (it.isLoading) {
-                    newState {
-                        toLoading(it.isLoading)
-                    }
-                } else {
-                    // TODO on failure
+                    toContent(it.value.toUiModel())
                 }
             },
         )
@@ -75,7 +70,7 @@ class ScheduleViewModel(
             ScheduleDailyAction.OnFabClick -> newState {
                 toDateSelected(date = Clock.System.nowLocalDate())
             }
-            ScheduleDailyAction.OnRefreshing -> onRefreshing()
+            ScheduleDailyAction.OnRefresh -> onRefreshing()
             is ScheduleDailyAction.OnDayClick -> newState {
                 toDateSelected(date = action.date)
             }
@@ -92,12 +87,7 @@ class ScheduleViewModel(
     }
 
     private fun onRefreshing() {
-        newState {
-            copy(isRefreshing = !isLoading)
-        }
-        launchCoroutine {
-            getSchedule(forceUpdate = true)
-        }
+        loadSchedule(isRefreshing = true)
     }
 
     private fun onLessonClick(lesson: LessonEvent) {
@@ -116,20 +106,6 @@ class ScheduleViewModel(
             newState {
                 toDateSelected(date)
             }
-        }
-    }
-
-    private fun fixAndSetDate(date: LocalDate, schedule: List<ScheduleDayUiModel>) {
-        newState {
-            var fixedDate = date
-            val firstDate = schedule.first().date
-            val lastDate = schedule.last().date
-            if (date < firstDate) {
-                fixedDate = firstDate
-            } else if (date > lastDate) {
-                fixedDate = lastDate
-            }
-            copy(selectedDate = fixedDate)
         }
     }
 }

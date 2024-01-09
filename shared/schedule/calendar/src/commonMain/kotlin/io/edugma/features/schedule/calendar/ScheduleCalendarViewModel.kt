@@ -1,55 +1,69 @@
 package io.edugma.features.schedule.calendar
 
-import io.edugma.core.api.utils.onResult
 import io.edugma.core.arch.mvi.newState
-import io.edugma.core.arch.mvi.utils.launchCoroutine
-import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
+import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
 import io.edugma.core.navigation.ScheduleScreens
+import io.edugma.core.utils.lce.launchLce
 import io.edugma.features.schedule.calendar.mapper.CalendarMapper
-import io.edugma.features.schedule.calendar.model.CalendarScheduleVO
-import io.edugma.features.schedule.calendar.usecase.GetCurrentDayIndex
+import io.edugma.features.schedule.calendar.usecase.GetCurrentDayIndexUseCase
 import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
 import kotlinx.datetime.LocalDate
 
 class ScheduleCalendarViewModel(
     private val useCase: ScheduleUseCase,
     private val calendarMapper: CalendarMapper,
-    private val getCurrentDayIndex: GetCurrentDayIndex,
-) : BaseViewModel<ScheduleCalendarState>(ScheduleCalendarState()) {
+    private val getCurrentDayIndexUseCase: GetCurrentDayIndexUseCase,
+) : BaseActionViewModel<ScheduleCalendarUiState, ScheduleCalendarAction>(
+    ScheduleCalendarUiState(),
+) {
+
     init {
-        launchCoroutine {
-            useCase.getCurrentScheduleFlow().onResult(
-                onSuccess = {
-                    newState {
-                        val schedule = calendarMapper.map(it.value)
+        loadScheduleCalendar(isRefreshing = false)
+    }
 
-                        val (currentWeekIndex, currentDayOfWeekIndex) = getCurrentDayIndex(schedule)
+    private fun loadScheduleCalendar(isRefreshing: Boolean) {
 
-                        if (this.schedule != schedule) {
-                            copy(
-                                schedule = schedule,
-                                currentWeekIndex = currentWeekIndex,
-                                currentDayOfWeekIndex = currentDayOfWeekIndex,
-                            )
-                        } else {
-                            this
-                        }
+        // TODO use isRefreshing
+        launchLce(
+            lceProvider = {
+                useCase.getCurrentScheduleFlow()
+            },
+            getLceState = state::lceState,
+            setLceState = { newState { copy(lceState = it) } },
+            // TODO isContentEmpty false
+            isContentEmpty = { false },
+            isRefreshing = isRefreshing,
+            onSuccess = {
+                newState {
+                    val schedule = calendarMapper.map(it.value)
+
+                    val (currentWeekIndex, currentDayOfWeekIndex) = getCurrentDayIndexUseCase(
+                        schedule,
+                    )
+
+                    if (this.schedule != schedule) {
+                        copy(
+                            schedule = schedule,
+                            currentWeekIndex = currentWeekIndex,
+                            currentDayOfWeekIndex = currentDayOfWeekIndex,
+                        )
+                    } else {
+                        this
                     }
-                },
-                onFailure = {},
-            )
+                }
+            },
+        )
+    }
+
+    override fun onAction(action: ScheduleCalendarAction) {
+        when (action) {
+            is ScheduleCalendarAction.OnDayClick -> onDayClick(action.date)
         }
     }
 
-    fun onDayClick(date: LocalDate) {
+    private fun onDayClick(date: LocalDate) {
         router.navigateTo(
             ScheduleScreens.Main(date = date),
         )
     }
 }
-
-data class ScheduleCalendarState(
-    val schedule: List<CalendarScheduleVO> = emptyList(),
-    val currentWeekIndex: Int = -1,
-    val currentDayOfWeekIndex: Int = -1,
-)

@@ -10,10 +10,10 @@ class PersonalViewModel(
 ) : BaseActionViewModel<PersonalUiState, PersonalAction>(PersonalUiState()) {
 
     init {
-        load()
+        load(isRefreshing = false)
     }
 
-    private fun load(isRefreshing: Boolean = false) {
+    private fun load(isRefreshing: Boolean) {
         launchLce(
             lceProvider = {
                 repository.getPersonalInfo(forceUpdate = isRefreshing)

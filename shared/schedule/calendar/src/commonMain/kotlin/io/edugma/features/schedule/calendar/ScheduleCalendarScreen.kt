@@ -52,10 +52,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
+import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.atoms.surface.EdSurface
+import io.edugma.core.designSystem.organism.lceScaffold.EdLceScaffold
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
 import io.edugma.core.designSystem.theme.EdTheme
@@ -89,16 +91,16 @@ fun ScheduleCalendarScreen(viewModel: ScheduleCalendarViewModel = getViewModel()
         ScheduleCalendarContent(
             state = state,
             onBackClick = viewModel::exit,
-            onItemClick = viewModel::onDayClick,
+            onAction = viewModel.rememberOnAction(),
         )
     }
 }
 
 @Composable
 private fun ScheduleCalendarContent(
-    state: ScheduleCalendarState,
+    state: ScheduleCalendarUiState,
     onBackClick: ClickListener,
-    onItemClick: Typed1Listener<LocalDate>,
+    onAction: (ScheduleCalendarAction) -> Unit,
 ) {
     var cellCount by remember { mutableStateOf(3) }
 //    val q = rememberTransformableState { zoomChange, _, _ ->
@@ -107,12 +109,20 @@ private fun ScheduleCalendarContent(
 //    }
 
     Box(Modifier.fillMaxSize()) {
-        CalendarThree(
-            schedule = state.schedule,
-            currentWeekIndex = state.currentWeekIndex,
-            currentDayOfWeekIndex = state.currentDayOfWeekIndex,
-            onItemClick = onItemClick,
-        )
+        EdLceScaffold(
+            lceState = state.lceState,
+            onRefresh = { },
+            placeholder = { /* TODO */ },
+        ) {
+            CalendarThree(
+                schedule = state.schedule,
+                currentWeekIndex = state.currentWeekIndex,
+                currentDayOfWeekIndex = state.currentDayOfWeekIndex,
+                onItemClick = {
+                    onAction(ScheduleCalendarAction.OnDayClick(it))
+                },
+            )
+        }
 
         EdSurface(
             modifier = Modifier.fillMaxWidth(),

@@ -42,7 +42,7 @@ suspend inline fun <T> LceFlow<T>.onDefaultResult(
 }
 
 inline fun <T> BaseActionViewModel<*, *>.launchLce(
-    crossinline lceProvider: () -> LceFlow<T>,
+    crossinline lceProvider: suspend () -> LceFlow<T>,
     crossinline getLceState: () -> LceUiState,
     crossinline setLceState: (LceUiState) -> Unit,
     isRefreshing: Boolean,

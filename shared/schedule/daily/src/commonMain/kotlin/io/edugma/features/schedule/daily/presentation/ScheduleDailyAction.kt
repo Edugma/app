@@ -18,5 +18,5 @@ sealed interface ScheduleDailyAction {
     data class OnLessonClick(
         val lesson: LessonEvent,
     ) : ScheduleDailyAction
-    object OnRefreshing : ScheduleDailyAction
+    object OnRefresh : ScheduleDailyAction
 }

@@ -29,9 +29,11 @@ import io.edugma.core.api.utils.DateFormat
 import io.edugma.core.api.utils.TimeFormat
 import io.edugma.core.api.utils.capitalized
 import io.edugma.core.api.utils.format
+import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import io.edugma.core.designSystem.atoms.spacer.NavigationBarSpacer
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.surface.EdSurface
+import io.edugma.core.designSystem.organism.lceScaffold.EdLceScaffold
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
 import io.edugma.core.designSystem.theme.EdTheme
@@ -60,16 +62,18 @@ fun LessonsReviewScreen(
         navigationBarPadding = false,
     ) {
         LessonsReviewContent(
-            lessons = state.lessons,
+            state = state,
             onBackClick = viewModel::exit,
+            onAction = viewModel.rememberOnAction(),
         )
     }
 }
 
 @Composable
 fun LessonsReviewContent(
-    lessons: List<LessonTimesReview>,
+    state: LessonsReviewUiState,
     onBackClick: ClickListener,
+    onAction: (LessonsReviewAction) -> Unit,
 ) {
     Column(Modifier.fillMaxSize()) {
         EdSurface(
@@ -86,14 +90,25 @@ fun LessonsReviewContent(
         EdSurface(
             shape = EdTheme.shapes.large.top(),
         ) {
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(lessons) { lessonTimesReview ->
-                    LessonTimesReviewContent(lessonTimesReview)
-                }
-                item {
-                    NavigationBarSpacer(10.dp)
-                }
+            EdLceScaffold(
+                lceState = state.lceState,
+                onRefresh = { onAction(LessonsReviewAction.OnRefresh) },
+                placeholder = { /* TODO */ },
+            ) {
+                LessonsReviewList(lessons = state.lessons)
             }
+        }
+    }
+}
+
+@Composable
+private fun LessonsReviewList(lessons: List<LessonTimesReview>) {
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+        items(lessons) { lessonTimesReview ->
+            LessonTimesReviewContent(lessonTimesReview)
+        }
+        item {
+            NavigationBarSpacer(10.dp)
         }
     }
 }

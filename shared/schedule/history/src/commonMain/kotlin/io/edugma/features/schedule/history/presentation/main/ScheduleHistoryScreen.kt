@@ -63,7 +63,7 @@ fun ScheduleHistoryScreen(viewModel: ScheduleHistoryViewModel = getViewModel()) 
 
 @Composable
 private fun ScheduleHistoryContent(
-    state: ScheduleHistoryState,
+    state: ScheduleHistoryUiState,
     onAction: (ScheduleHistoryAction) -> Unit,
 ) {
     Column(

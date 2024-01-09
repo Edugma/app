@@ -3,15 +3,11 @@ package io.edugma.features.schedule.history.presentation.changes
 import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
-import io.edugma.core.navigation.schedule.ScheduleHistoryScreens
-import io.edugma.features.schedule.domain.usecase.ScheduleDayChange
 import io.edugma.features.schedule.domain.usecase.ScheduleHistoryUseCase
-import io.edugma.navigation.core.screen.NavArgs
-import kotlinx.datetime.Instant
 
 class ScheduleChangesViewModel(
     private val useCase: ScheduleHistoryUseCase,
-) : BaseActionViewModel<ScheduleChangesState, ScheduleChangesAction>(ScheduleChangesState()) {
+) : BaseActionViewModel<ScheduleChangesUiState, ScheduleChangesAction>(ScheduleChangesUiState()) {
 
     override fun onAction(action: ScheduleChangesAction) {
         when (action) {
@@ -36,16 +32,4 @@ class ScheduleChangesViewModel(
             }
         }
     }
-}
-
-data class ScheduleChangesState(
-    val firstSelected: Instant? = null,
-    val secondSelected: Instant? = null,
-    val changes: List<ScheduleDayChange> = emptyList(),
-)
-
-sealed interface ScheduleChangesAction {
-    data class OnArguments(
-        val args: NavArgs<ScheduleHistoryScreens.Changes>,
-    ) : ScheduleChangesAction
 }

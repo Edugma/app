@@ -86,7 +86,7 @@ fun ScheduleChangesScreen(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ScheduleChangesContent(
-    state: ScheduleChangesState,
+    state: ScheduleChangesUiState,
     onBackClick: ClickListener,
 ) {
     Column(

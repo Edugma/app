@@ -19,7 +19,7 @@ class PerformanceViewModel(
         loadMarks(isRefreshing = false)
     }
 
-    private fun loadMarks(isRefreshing: Boolean = true) {
+    private fun loadMarks(isRefreshing: Boolean) {
         launchLce(
             lceProvider = {
                 repository.getPerformance(

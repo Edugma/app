@@ -5,7 +5,7 @@ import io.edugma.features.schedule.calendar.model.CalendarScheduleVO
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 
-class GetCurrentDayIndex {
+class GetCurrentDayIndexUseCase {
     operator fun invoke(schedule: List<CalendarScheduleVO>): Pair<Int, Int> {
         val currentDay = Clock.System.nowLocalDate()
         var notBeforeLessons = false

@@ -1,5 +1,6 @@
 package io.edugma.features.schedule.daily.presentation
 
+import io.edugma.core.api.model.LceUiState
 import io.edugma.core.api.utils.nowLocalDate
 import io.edugma.features.schedule.daily.model.ScheduleWeeksUiModel
 import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
@@ -13,6 +14,7 @@ import kotlinx.datetime.isoDayNumber
 import kotlinx.datetime.plus
 
 data class ScheduleDailyUiState(
+    val lceState: LceUiState = LceUiState.init(),
     val isLoading: Boolean = false,
     val isError: Boolean = false,
     val isRefreshing: Boolean = false,
@@ -33,7 +35,7 @@ data class ScheduleDailyUiState(
 
     val showBackToTodayFab: Boolean = false,
 ) {
-    fun setSchedule(schedule: ScheduleCalendarUiModel?): ScheduleDailyUiState {
+    fun toContent(schedule: ScheduleCalendarUiModel?): ScheduleDailyUiState {
         schedule?.init(
             today = this.today,
             size = this.scheduleSize,

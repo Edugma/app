@@ -16,7 +16,6 @@ class PerformanceRepositoryImpl(
     private val cacheRepository: CacheRepository,
 ) : PerformanceRepository {
 
-    // TODO при ошибке парсинга не ронять всё, а ждать новые данные
     private val store = store<String, PerformanceDto> {
         fetcher { key ->
             api.getPerformance(key)
