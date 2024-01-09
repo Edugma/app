@@ -18,13 +18,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
+import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import io.edugma.core.designSystem.atoms.spacer.NavigationBarSpacer
 import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetValue
 import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
-import io.edugma.core.designSystem.organism.errorWithRetry.EdErrorRetry
-import io.edugma.core.designSystem.organism.nothingFound.EdNothingFound
+import io.edugma.core.designSystem.organism.lceScaffold.EdLceScaffold
 import io.edugma.core.designSystem.organism.shortInfoSheet.EdShortInfoSheet
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.icons.EdIcons
@@ -49,6 +49,7 @@ fun PeopleScreen(
         viewModel.onArgs(type)
     }
     val state by viewModel.stateFlow.collectAsState()
+    val onAction = viewModel.rememberOnAction()
 
     val bottomState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
@@ -65,9 +66,11 @@ fun PeopleScreen(
                         SearchBottomSheet(
                             hint = state.type!!.queryHint,
                             searchValue = state.name,
-                            onSearchValueChanged = viewModel::setName,
+                            onSearchValueChanged = {
+                                onAction(PeopleAction.OnQuery(it))
+                            },
                         ) {
-                            viewModel.searchRequest()
+                            viewModel.onSearch()
                             scope.launch { bottomState.hide() }
                         }
                     }
@@ -86,15 +89,15 @@ fun PeopleScreen(
                 state = state,
                 backListener = viewModel::exit,
                 openBottomSheetListener = {
-                    viewModel.selectFilter()
+                    viewModel.onSelectFilter()
                     scope.launch { bottomState.show() }
                 },
                 onPersonClick = {
-                    viewModel.selectPerson(it)
+                    viewModel.onSelectPerson(it)
                     scope.launch { bottomState.show() }
                 },
                 onShare = viewModel::onShare,
-                onLoad = viewModel::loadNextPage,
+                onAction = onAction,
             )
         }
     }
@@ -120,12 +123,12 @@ fun ColumnScope.PersonBottomSheet(
 
 @Composable
 fun PeopleListContent(
-    state: StudentsState,
+    state: PeopleUiState,
     backListener: ClickListener,
     openBottomSheetListener: ClickListener,
     onPersonClick: Typed1Listener<Person>,
-    onLoad: ClickListener,
     onShare: ClickListener,
+    onAction: (PeopleAction) -> Unit,
 ) {
     Column(Modifier) {
         EdSurface(
@@ -157,55 +160,59 @@ fun PeopleListContent(
                 },
             )
         }
-        when {
-            state.isFullscreenError -> {
-                EdErrorRetry(
-                    modifier = Modifier.fillMaxSize(),
-                    onRetry = onLoad,
-                )
-            }
-            state.isNothingFound -> {
-                EdNothingFound(modifier = Modifier.fillMaxSize())
-            }
-            else -> {
-                PeopleList(state, onPersonClick, onLoad)
-            }
+        EdLceScaffold(
+            lceState = state.paginationState.lceState,
+            onRefresh = { onAction(PeopleAction.OnRefresh) },
+            placeholder = { PeopleListPlaceholder() },
+        ) {
+            PeopleList(
+                state = state,
+                studentClick = onPersonClick,
+                onAction = onAction,
+            )
         }
     }
 }
 
 @Composable
 internal fun PeopleList(
-    state: StudentsState,
+    state: PeopleUiState,
     studentClick: Typed1Listener<Person>,
-    loadListener: ClickListener,
+    onAction: (PeopleAction) -> Unit,
 ) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
-        if (state.placeholders) {
-            items(3) {
-                PeopleItemPlaceholder()
-            }
-        } else {
-            if (state.paginationState.items.isNotEmpty()) {
-                items(
-                    count = state.paginationState.items.size,
-                    key = { state.paginationState.items[it].id },
-                    contentType = { "people" },
-                ) {
-                    val item = state.paginationState.items[it]
-                    item.let {
-                        PeopleItem(
-                            title = it.name,
-                            description = it.description.orEmpty(),
-                            avatar = it.avatar,
-                        ) { studentClick.invoke(it) }
-                    }
+        if (state.paginationState.items.isNotEmpty()) {
+            items(
+                count = state.paginationState.items.size,
+                key = { state.paginationState.items[it].id },
+                contentType = { "people" },
+            ) {
+                val item = state.paginationState.items[it]
+                item.let {
+                    PeopleItem(
+                        title = it.name,
+                        description = it.description.orEmpty(),
+                        avatar = it.avatar,
+                    ) { studentClick.invoke(it) }
                 }
             }
-            item { PagingFooter(state.paginationState, loadListener) }
-            item {
-                NavigationBarSpacer(10.dp)
+        }
+        item {
+            PagingFooter(state.paginationState) {
+                onAction(PeopleAction.OnLoadNextPage)
             }
+        }
+        item {
+            NavigationBarSpacer(10.dp)
+        }
+    }
+}
+
+@Composable
+internal fun PeopleListPlaceholder() {
+    Column(modifier = Modifier.fillMaxSize()) {
+        repeat(6) {
+            PeopleItemPlaceholder()
         }
     }
 }

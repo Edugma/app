@@ -108,7 +108,7 @@ fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PaymentsContent(
+private fun PaymentsContent(
     state: PaymentsUiState,
     backListener: ClickListener,
     onAction: (PaymentsAction) -> Unit,
@@ -142,19 +142,21 @@ fun PaymentsContent(
             emptyTitle = "Нет договоров",
             placeholder = { PaymentsPlaceholder() },
         ) {
-            Payments(
-                contract = state.contract!!,
-                onPaymentMethodClick = {
-                    onAction(PaymentsAction.OnPaymentMethodClick(it))
-                },
-            )
+            if (state.contract != null) {
+                Payments(
+                    contract = state.contract,
+                    onPaymentMethodClick = {
+                        onAction(PaymentsAction.OnPaymentMethodClick(it))
+                    },
+                )
+            }
         }
     }
 }
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun Payments(
+private fun Payments(
     contract: ContractUiModel,
     onPaymentMethodClick: (PaymentMethod) -> Unit,
 ) {
@@ -231,7 +233,7 @@ fun Payments(
 }
 
 @Composable
-fun PaymentsPlaceholder() {
+private fun PaymentsPlaceholder() {
     Column(
         modifier = Modifier.fillMaxWidth(),
     ) {

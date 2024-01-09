@@ -172,11 +172,11 @@ fun PerformanceList(
 
 @Composable
 fun PerformanceListPlaceholder() {
-    LazyColumn(
+    Column(
         modifier = Modifier
             .fillMaxSize(),
     ) {
-        items(3) {
+        repeat(6) {
             SpacerHeight(height = 3.dp)
             PerformancePlaceholder()
         }

@@ -38,6 +38,7 @@ data class LceUiState(
 
     fun toStartLoading(isRefresh: Boolean): LceUiState {
         return copy(
+            content = if (isRefresh) content else null,
             loading = Loading(isRefresh = isRefresh),
         )
     }

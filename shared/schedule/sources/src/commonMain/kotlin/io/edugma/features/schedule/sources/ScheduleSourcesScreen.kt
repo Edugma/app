@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
-import io.edugma.core.arch.pagination.PaginationState
+import io.edugma.core.arch.pagination.PaginationUiState
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.NavigationBarSpacer
@@ -412,7 +412,7 @@ private fun Filter(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ColumnScope.Search(
-    paging: PaginationState<ScheduleSourceUiModel>,
+    paging: PaginationUiState<ScheduleSourceUiModel>,
     onSourceClick: (ScheduleSourceUiModel) -> Unit,
     onAddFavorite: (ScheduleSourceUiModel) -> Unit,
     onDeleteFavorite: (ScheduleSourceUiModel) -> Unit,

@@ -27,7 +27,8 @@ data class PaymentsUiState(
         )
     }
 
-    fun toSelectedContractHeader(id: String) = copy(
+    fun toContractHeaderSelected(id: String) = copy(
         selectedContractHeader = contractHeaders?.firstOrNull { it.id == id },
+        contract = null,
     )
 }

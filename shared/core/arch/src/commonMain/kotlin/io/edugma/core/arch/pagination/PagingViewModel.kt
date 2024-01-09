@@ -7,7 +7,7 @@ import io.edugma.core.arch.mvi.viewmodel.newState
 import kotlinx.coroutines.Job
 import kotlin.properties.Delegates
 
-class PagingViewModel<T> : ViewModelDelegate<PaginationState<T>>() {
+class PagingViewModel<T> : ViewModelDelegate<PaginationUiState<T>>() {
     private var loadJob: Job? = null
 
     var request: (suspend () -> PagingDto<T>) by Delegates.notNull()

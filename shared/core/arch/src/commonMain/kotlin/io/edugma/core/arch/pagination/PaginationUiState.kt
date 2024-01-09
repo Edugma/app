@@ -1,24 +1,27 @@
 package io.edugma.core.arch.pagination
 
 import androidx.compose.runtime.Immutable
+import io.edugma.core.api.model.LceUiState
 
 @Immutable
-data class PaginationState<T>(
+data class PaginationUiState<T>(
     val items: List<T> = emptyList(),
     // val currentPage: String? = null,
     val nextPage: String? = null,
     val pageSize: Int = 100,
     val enum: PaginationStateEnum = PaginationStateEnum.NotLoading,
+    val lceState: LceUiState = LceUiState.init(),
 ) {
-    fun toReset(): PaginationState<T> {
+    fun toReset(): PaginationUiState<T> {
         return copy(
             items = emptyList(),
             nextPage = null,
             enum = PaginationStateEnum.Loading,
+            lceState = LceUiState.init().toStartLoading(isRefresh = false),
         )
     }
 
-    fun needLoadNext(): PaginationState<T> {
+    fun needLoadNext(): PaginationUiState<T> {
         return when {
             enum == PaginationStateEnum.Loading -> this
             enum != PaginationStateEnum.End -> copy(
@@ -28,13 +31,14 @@ data class PaginationState<T>(
         }
     }
 
-    fun toError(): PaginationState<T> {
+    fun toError(): PaginationUiState<T> {
         return copy(
             enum = PaginationStateEnum.Error,
+            lceState = if (items.isEmpty()) lceState.toFinalError() else lceState,
         )
     }
 
-    fun toNewItems(items: List<T>, nextPage: String?): PaginationState<T> {
+    fun toNewItems(items: List<T>, nextPage: String?): PaginationUiState<T> {
         val isEnded = nextPage == null || items.isEmpty()
         val enum = if (isEnded) {
             PaginationStateEnum.End
@@ -42,10 +46,13 @@ data class PaginationState<T>(
             PaginationStateEnum.Loaded
         }
 
+        val newItems = this.items + items
+
         return copy(
-            items = this.items + items,
+            items = newItems,
             nextPage = nextPage,
             enum = enum,
+            lceState = lceState.toFinishLoading().toContent(isEmpty = newItems.isEmpty()),
         )
     }
 
@@ -67,7 +74,7 @@ data class PaginationState<T>(
     }
 
     companion object {
-        fun <T> empty() = PaginationState<T>()
+        fun <T> empty() = PaginationUiState<T>()
     }
 }
 

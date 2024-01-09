@@ -1,11 +1,8 @@
 package io.edugma.features.account.people.presentation
 
-import androidx.compose.runtime.Immutable
 import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.utils.launchCoroutine
-import io.edugma.core.arch.mvi.viewmodel.BaseViewModel
-import io.edugma.core.arch.pagination.PaginationState
-import io.edugma.core.arch.pagination.PaginationStateEnum
+import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
 import io.edugma.core.arch.pagination.PagingViewModel
 import io.edugma.core.navigation.core.router.external.ExternalRouter
 import io.edugma.core.navigation.schedule.ScheduleInfoScreens
@@ -19,7 +16,7 @@ class PeopleViewModel(
     private val repository: PeoplesRepository,
     private val externalRouter: ExternalRouter,
     private val pagingViewModel: PagingViewModel<Person>,
-) : BaseViewModel<StudentsState>(StudentsState()) {
+) : BaseActionViewModel<PeopleUiState, PeopleAction>(PeopleUiState()) {
 
     init {
         pagingViewModel.init(
@@ -38,11 +35,15 @@ class PeopleViewModel(
         }
     }
 
-    fun loadNextPage() {
-        pagingViewModel.loadNextPage()
+    override fun onAction(action: PeopleAction) {
+        when (action) {
+            PeopleAction.OnRefresh -> pagingViewModel.loadNextPage()
+            PeopleAction.OnLoadNextPage -> pagingViewModel.loadNextPage()
+            is PeopleAction.OnQuery -> onQuery(action.query)
+        }
     }
 
-    fun setName(name: String) {
+    private fun onQuery(name: String) {
         newState {
             copy(name = name)
         }
@@ -56,19 +57,19 @@ class PeopleViewModel(
         }
     }
 
-    fun selectFilter() {
+    fun onSelectFilter() {
         newState {
             copy(bottomType = BottomSheetType.Filter)
         }
     }
 
-    fun selectPerson(student: Person) {
+    fun onSelectPerson(student: Person) {
         newState {
             copy(selectedPerson = student, bottomType = BottomSheetType.Person)
         }
     }
 
-    fun searchRequest() {
+    fun onSearch() {
         pagingViewModel.resetAndLoad()
     }
 
@@ -86,28 +87,6 @@ class PeopleViewModel(
             router.navigateTo(ScheduleInfoScreens.TeacherInfo(it))
         }
     }
-}
-
-@Immutable
-data class StudentsState(
-    val type: PeopleScreenType? = null,
-    val name: String = "",
-    val bottomType: BottomSheetType = BottomSheetType.Filter,
-    val selectedPerson: Person? = null,
-    val paginationState: PaginationState<Person> = PaginationState.empty(),
-) {
-    val isNothingFound
-        get() = paginationState.isEnd() && paginationState.items.isEmpty()
-
-    val isFullscreenError
-        get() = paginationState.items.isEmpty() && paginationState.isError()
-
-    val placeholders
-        get() = paginationState.items.isEmpty() &&
-            (
-                paginationState.enum == PaginationStateEnum.NotLoading ||
-                    paginationState.enum == PaginationStateEnum.Loading
-                )
 }
 
 enum class BottomSheetType {

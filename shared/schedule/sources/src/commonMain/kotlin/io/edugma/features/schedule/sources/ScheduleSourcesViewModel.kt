@@ -7,7 +7,7 @@ import io.edugma.core.arch.mvi.delegate.debounce
 import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
-import io.edugma.core.arch.pagination.PaginationState
+import io.edugma.core.arch.pagination.PaginationUiState
 import io.edugma.core.arch.pagination.PagingViewModel
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceFull
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceType
@@ -151,7 +151,7 @@ data class ScheduleSourceState(
     val selectedTab: ScheduleSourceType? = null,
     val query: String = "",
     val filteredSources: List<ScheduleSourceUiModel> = emptyList(),
-    val paginationState: PaginationState<ScheduleSourceUiModel> = PaginationState.empty(),
+    val paginationState: PaginationUiState<ScheduleSourceUiModel> = PaginationUiState.empty(),
     val selectedSource: ScheduleSourceUiModel? = null,
     val showBottomSheet: Boolean = false,
 ) {

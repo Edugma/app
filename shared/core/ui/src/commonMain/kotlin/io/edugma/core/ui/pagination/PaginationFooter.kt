@@ -9,13 +9,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.edugma.core.arch.pagination.PaginationState
+import io.edugma.core.arch.pagination.PaginationUiState
 import io.edugma.core.designSystem.atoms.loader.EdLoader
 import io.edugma.core.designSystem.atoms.loader.EdLoaderSize
 import io.edugma.core.designSystem.organism.refresher.Refresher
 
 @Composable
-fun PagingFooter(pagingState: PaginationState<*>, loadTrigger: () -> Unit) {
+fun PagingFooter(pagingState: PaginationUiState<*>, loadTrigger: () -> Unit) {
     when {
         pagingState.isContent() -> {
             Spacer(Modifier.height(70.dp))

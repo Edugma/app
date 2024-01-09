@@ -19,11 +19,11 @@ class PerformanceViewModel(
         loadMarks(isRefreshing = false)
     }
 
-    private fun loadMarks(isRefreshing: Boolean = true, periodId: String? = null) {
+    private fun loadMarks(isRefreshing: Boolean = true) {
         launchLce(
             lceProvider = {
                 repository.getPerformance(
-                    periodId = periodId,
+                    periodId = state.selectedPeriod?.id,
                     forceUpdate = isRefreshing,
                 )
             },
@@ -54,12 +54,12 @@ class PerformanceViewModel(
     }
 
     private fun onPeriodSelected(period: PerformancePeriodUiModel) {
-        newState {
-            copy(
-                selectedPeriod = period,
-            )
+        if (state.selectedPeriod?.id != period.id) {
+            newState {
+                toPeriodSelected(period)
+            }
+            loadMarks(isRefreshing = false)
         }
-        loadMarks(periodId = period.id, isRefreshing = false)
     }
 
     fun openBottomSheetClick(performance: GradePosition?) {

@@ -65,4 +65,11 @@ data class PerformanceUiState(
             periods = data.periods.map { Filter.PerformancePeriodUiModel(it) },
         )
     }
+
+    fun toPeriodSelected(period: Filter.PerformancePeriodUiModel): PerformanceUiState {
+        return copy(
+            selectedPeriod = period,
+            performanceList = null,
+        )
+    }
 }

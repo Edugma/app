@@ -72,7 +72,7 @@ class PaymentsViewModel(
     private fun onContractSelected(id: String) {
         if (state.selectedContractHeader?.id != id) {
             newState {
-                toSelectedContractHeader(id)
+                toContractHeaderSelected(id)
             }
             load(isRefreshing = false)
         }
