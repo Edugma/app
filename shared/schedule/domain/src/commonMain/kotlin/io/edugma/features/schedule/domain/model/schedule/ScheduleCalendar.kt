@@ -1,11 +1,9 @@
 package io.edugma.features.schedule.domain.model.schedule
 
-import io.edugma.features.schedule.domain.model.attentdee.AttendeeType
 import io.edugma.features.schedule.domain.model.compact.CompactLessonEvent
 import io.edugma.features.schedule.domain.model.compact.CompactSchedule
+import io.edugma.features.schedule.domain.model.compact.toModel
 import io.edugma.features.schedule.domain.model.lesson.LessonEvent
-import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubject
-import io.edugma.features.schedule.domain.model.place.Place
 import io.edugma.features.schedule.domain.model.rrule.Frequency
 import io.edugma.features.schedule.domain.model.rrule.RRule
 import kotlinx.datetime.DatePeriod
@@ -116,43 +114,5 @@ class ScheduleCalendar(
             val date = today.plus(DatePeriod(days = index - todayIndex))
             getSchedule(date)
         }
-    }
-
-    private fun CompactLessonEvent.toModel(info: CompactSchedule): LessonEvent {
-        return LessonEvent(
-            id = this.id,
-            subject = info.getSubject(this.subjectId).let {
-                LessonSubject(
-                    id = it.id,
-                    title = it.title,
-                )
-            },
-            tags = this.tags,
-            teachers = this.attendeesId.mapNotNull { id ->
-                info.getAttendee(id)
-                    .takeIf { it.type == AttendeeType.Teacher }
-            },
-            groups = this.attendeesId.mapNotNull { id ->
-                info.getAttendee(id)
-                    .takeIf { it.type == AttendeeType.Group }
-            },
-            attendees = this.attendeesId.mapNotNull { id ->
-                info.getAttendee(id)
-                    .takeIf { it.type != AttendeeType.Group && it.type != AttendeeType.Teacher }
-            },
-            places = placesId.map { id ->
-                val temp = info.getPlace(id)
-                Place(
-                    id = temp.id,
-                    title = temp.title,
-                    type = temp.getType(),
-                    description = temp.description.orEmpty(),
-                )
-            },
-            start = this.start,
-            end = this.end,
-            recurrence = this.recurrence,
-            importance = this.importance,
-        )
     }
 }

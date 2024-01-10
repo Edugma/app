@@ -10,13 +10,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.RadioButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -106,79 +105,77 @@ private fun ScheduleHistoryContent(
                 SpacerHeight(8.dp)
             }
         }
-        Column(
-            Modifier.fillMaxSize()
-                .verticalScroll(rememberScrollState()),
+        LazyColumn(
+            Modifier.fillMaxSize(),
         ) {
-            state.history.forEach { (_, timestamp) ->
-                key(timestamp) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth()
-                            .padding(top = 10.dp, end = 16.dp),
-                        verticalAlignment = Alignment.CenterVertically,
+            items(state.history) {
+                val timestamp = it.timestamp
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(top = 10.dp, end = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    val interactionSource = remember { MutableInteractionSource() }
+
+                    val isSelectedPrevious = state.previousSelected == timestamp
+                    val isSelectedNext = state.nextSelected == timestamp
+                    val isSelected = isSelectedPrevious || isSelectedNext
+
+                    Column(
+                        Modifier.width(60.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
-                        val interactionSource = remember { MutableInteractionSource() }
-
-                        val isSelectedPrevious = state.previousSelected == timestamp
-                        val isSelectedNext = state.nextSelected == timestamp
-                        val isSelected = isSelectedPrevious || isSelectedNext
-
-                        Column(
-                            Modifier.width(60.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                        ) {
-                            RadioButton(
-                                selected = isSelected,
-                                onClick = null,
-                                interactionSource = interactionSource,
-                            )
-                            if (isSelected) {
-                                val text = if (isSelectedNext) {
-                                    "след."
-                                } else {
-                                    "пред."
-                                }
-                                EdLabel(
-                                    text = text,
-                                    style = EdTheme.typography.labelMedium,
-                                )
-                            }
-                        }
-                        EdCard(
-                            onClick = { onAction(ScheduleHistoryAction.OnScheduleSelected(timestamp)) },
+                        RadioButton(
                             selected = isSelected,
-                            modifier = Modifier.fillMaxWidth(),
+                            onClick = null,
                             interactionSource = interactionSource,
+                        )
+                        if (isSelected) {
+                            val text = if (isSelectedNext) {
+                                "след."
+                            } else {
+                                "пред."
+                            }
+                            EdLabel(
+                                text = text,
+                                style = EdTheme.typography.labelMedium,
+                            )
+                        }
+                    }
+                    EdCard(
+                        onClick = { onAction(ScheduleHistoryAction.OnScheduleSelected(timestamp)) },
+                        selected = isSelected,
+                        modifier = Modifier.fillMaxWidth(),
+                        interactionSource = interactionSource,
+                    ) {
+                        Column(
+                            Modifier
+                                .padding(vertical = 10.dp, horizontal = 16.dp)
+                                .fillMaxWidth(),
                         ) {
-                            Column(
-                                Modifier
-                                    .padding(vertical = 10.dp, horizontal = 16.dp)
-                                    .fillMaxWidth(),
-                            ) {
-                                val date = remember(timestamp) {
-                                    timestamp.toLocalDateTime(TimeZone.currentSystemDefault())
-                                }
+                            val date = remember(timestamp) {
+                                timestamp.toLocalDateTime(TimeZone.currentSystemDefault())
+                            }
+                            EdLabel(
+                                text = "Расписание",
+                                style = EdTheme.typography.titleMedium,
+                            )
+                            SpacerHeight(4.dp)
+                            SecondaryContent {
                                 EdLabel(
-                                    text = "Расписание",
-                                    style = EdTheme.typography.titleMedium,
+                                    text = date.formatDate(DateFormat.FULL),
+                                    iconPainter = painterResource(
+                                        EdIcons.ic_fluent_calendar_ltr_16_regular,
+                                    ),
+                                    style = EdTheme.typography.bodySmall,
                                 )
-                                SpacerHeight(4.dp)
-                                SecondaryContent {
-                                    EdLabel(
-                                        text = date.formatDate(DateFormat.FULL),
-                                        iconPainter = painterResource(
-                                            EdIcons.ic_fluent_calendar_ltr_16_regular,
-                                        ),
-                                        style = EdTheme.typography.bodySmall,
-                                    )
-                                    EdLabel(
-                                        text = date.formatTime(TimeFormat.HOURS_MINUTES),
-                                        iconPainter = painterResource(
-                                            EdIcons.ic_fluent_clock_16_regular,
-                                        ),
-                                        style = EdTheme.typography.bodySmall,
-                                    )
-                                }
+                                EdLabel(
+                                    text = date.formatTime(TimeFormat.HOURS_MINUTES),
+                                    iconPainter = painterResource(
+                                        EdIcons.ic_fluent_clock_16_regular,
+                                    ),
+                                    style = EdTheme.typography.bodySmall,
+                                )
                             }
                         }
                     }

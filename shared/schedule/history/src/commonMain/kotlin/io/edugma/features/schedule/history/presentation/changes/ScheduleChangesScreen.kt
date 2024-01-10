@@ -1,7 +1,6 @@
 package io.edugma.features.schedule.history.presentation.changes
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,14 +20,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import io.edugma.core.api.utils.DateFormat
 import io.edugma.core.api.utils.TimeFormat
-import io.edugma.core.api.utils.format
 import io.edugma.core.api.utils.formatDate
 import io.edugma.core.api.utils.formatTime
 import io.edugma.core.arch.viewmodel.bind
@@ -38,7 +35,6 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.core.designSystem.tokens.elevation.EdElevation
 import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.designSystem.tokens.shapes.top
 import io.edugma.core.designSystem.utils.SecondaryContent
@@ -49,7 +45,6 @@ import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.viewmodel.getViewModel
 import io.edugma.features.schedule.domain.model.attentdee.AttendeeInfo
 import io.edugma.features.schedule.domain.model.lesson.LessonEvent
-import io.edugma.features.schedule.domain.model.lesson.LessonTime
 import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubject
 import io.edugma.features.schedule.domain.model.lessonType.LessonType
 import io.edugma.features.schedule.domain.model.place.Place
@@ -176,37 +171,10 @@ fun ScheduleChangesContent(
             shape = EdTheme.shapes.large.top(),
         ) {
             LazyColumn(Modifier.fillMaxSize()) {
-                state.changes.forEach { (date, lessonsByDay) ->
-                    stickyHeader {
-                        Box(
-                            contentAlignment = Alignment.Center,
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            EdSurface(
-                                shape = EdTheme.shapes.small,
-                                modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
-                                elevation = EdElevation.Level0,
-                                elevatedAlpha = 0.8f,
-                            ) {
-                                Text(
-                                    date.format(DateFormat.FULL_PRETTY),
-                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 5.dp),
-                                    style = EdTheme.typography.bodyMedium,
-                                )
-                            }
-                        }
-                    }
-
-                    lessonsByDay.forEach { (time, lessonsByTime) ->
-                        item {
-                            LessonTime(time = time)
-                        }
-                        items(lessonsByTime) {
-                            LessonChangeContent(
-                                change = it,
-                            )
-                        }
-                    }
+                items(state.changes) {
+                    LessonChangeContent(
+                        change = it,
+                    )
                 }
                 item {
                     Spacer(Modifier.navigationBarsPadding())
@@ -214,14 +182,6 @@ fun ScheduleChangesContent(
             }
         }
     }
-}
-
-@Composable
-private fun LessonTime(time: LessonTime) {
-    Text(
-        "${time.start} - ${time.end}",
-        modifier = Modifier.padding(start = 16.dp),
-    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

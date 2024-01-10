@@ -1,9 +1,10 @@
 package io.edugma.features.schedule.domain.usecase
 
+import io.edugma.core.api.hash.Hash
+import io.edugma.features.schedule.domain.model.compact.CompactLessonEvent
+import io.edugma.features.schedule.domain.model.compact.CompactSchedule
+import io.edugma.features.schedule.domain.model.compact.toModel
 import io.edugma.features.schedule.domain.model.lesson.LessonEvent
-import io.edugma.features.schedule.domain.model.lesson.LessonTime
-import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubject
-import io.edugma.features.schedule.domain.model.schedule.ScheduleDay
 import io.edugma.features.schedule.domain.model.source.ScheduleSource
 import io.edugma.features.schedule.domain.repository.ScheduleRepository
 import io.edugma.features.schedule.domain.repository.ScheduleSourcesRepository
@@ -12,8 +13,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.transformLatest
 import kotlinx.datetime.Instant
-import kotlinx.datetime.LocalDate
-import kotlin.math.max
 
 class ScheduleHistoryUseCase(
     private val repository: ScheduleRepository,
@@ -33,7 +32,7 @@ class ScheduleHistoryUseCase(
     suspend fun getChanges(
         firstScheduleTimestamp: Instant,
         secondScheduleTimestamp: Instant,
-    ): List<ScheduleDayChange> {
+    ): List<LessonChange> {
         val source = scheduleSourcesRepository.getSelectedSource().first() ?: return emptyList()
         val scheduleSource = ScheduleSource(source.type, source.id)
         val firstSchedule = scheduleRepository.getHistoryRecord(
@@ -48,122 +47,90 @@ class ScheduleHistoryUseCase(
         return calculateChanges(firstSchedule.schedule, secondSchedule.schedule)
     }
 
-    private fun calculateChanges(
-        oldSchedule: List<ScheduleDay>,
-        newSchedule: List<ScheduleDay>,
-    ): List<ScheduleDayChange> {
-        val dateToLessons = mutableMapOf<LocalDate, MutableList<List<LessonEvent>>>()
-
-        oldSchedule.forEach {
-            val list = dateToLessons.getOrPut(it.date) { ArrayList(2) }
-            list.add(it.lessons)
-        }
-
-        newSchedule.forEach {
-            val list = dateToLessons.getOrPut(it.date) { ArrayList(2) }
-            list.add(it.lessons)
-        }
-
-        val lessons = dateToLessons.map { (date, pair) ->
-            val oldScheduleDay = pair.getOrElse(0) { emptyList() }
-            val newScheduleDay = pair.getOrElse(1) { emptyList() }
-
-            val changes = getDayChanges(
-                oldDay = oldScheduleDay,
-                newDay = newScheduleDay,
-            )
-
-            ScheduleDayChange(
-                date = date,
-                lessons = changes,
-            )
-        }.filter { it.lessons.isNotEmpty() }
-            .sortedBy { it.date }
-
-        return lessons
+    private fun CompactLessonEvent.getHash(): UInt {
+        return Hash.hash(this.toString())
     }
 
-    // TODO LessonsByTime -> LessonEvent
-    private fun getDayChanges(
-        oldDay: List<LessonEvent>,
-        newDay: List<LessonEvent>,
-    ): List<LessonsByTimeChange> {
-        val timeToLessons = mutableMapOf<LessonTime, MutableList<List<LessonEvent>>>()
+    private fun calculateChanges(
+        oldSchedule: CompactSchedule,
+        newSchedule: CompactSchedule,
+    ): List<LessonChange> {
+        val oldUniqueEvents = mutableMapOf<UInt, CompactLessonEvent>()
+        val newUniqueEvents = mutableMapOf<UInt, CompactLessonEvent>()
+        val resultChanges = mutableListOf<LessonChange>()
 
-//        oldDay.forEach {
-//            val list = timeToLessons.getOrPut(it.) { ArrayList(2) }
-//            list.add(it)
+        oldSchedule.lessons.forEach { event ->
+            oldUniqueEvents[event.getHash()] = event
+        }
+
+        newSchedule.lessons.forEach { event ->
+            val newEventHash = event.getHash()
+            if (newEventHash in oldUniqueEvents) {
+                // Remove events that not changed
+                oldUniqueEvents.remove(newEventHash)
+            } else {
+                newUniqueEvents[event.getHash()] = event
+                resultChanges.add(LessonChange.Added(event.toModel(newSchedule)))
+            }
+        }
+
+        oldUniqueEvents.forEach { (oldEventHash, event) ->
+            resultChanges.add(LessonChange.Removed(event.toModel(oldSchedule)))
+        }
+
+        return resultChanges
+    }
+
+//    private fun getPlaceChanges(
+//        oldLessonsByTime: List<CompactLessonEvent>,
+//        newLessonsByTime: List<CompactLessonEvent>,
+//    ): List<LessonChange> {
+//        val groupedBySubject = mutableMapOf<LessonSubject, MutableList<MutableList<CompactLessonEvent>>>()
+//
+//        oldLessonsByTime.forEach { lesson ->
+//            val list = groupedBySubject.getOrPut(lesson.subject) { MutableList(2) { mutableListOf() } }
+//            list[0].add(lesson)
 //        }
 //
-//        newDay.forEach {
-//            val list = timeToLessons.getOrPut(it.time) { ArrayList(2) }
-//            list.add(it.lessons)
+//        newLessonsByTime.forEach { lesson ->
+//            val list = groupedBySubject.getOrPut(lesson.subject) { MutableList(2) { mutableListOf() } }
+//            // Skip lesson if it in list[0] and remove it from list[0]
+//            if (list[0].remove(lesson).not()) {
+//                list[1].add(lesson)
+//            }
 //        }
+//
+//        val lessons = groupedBySubject.map { (subject, pair) ->
+//            val oldList = pair.getOrElse(0) { emptyList() }
+//            val newList = pair.getOrElse(1) { emptyList() }
+//
+//            val size = max(oldList.size, newList.size)
+//
+//            (0 until size).mapNotNull { index ->
+//                getLessonChanges(
+//                    oldLesson = oldList.getOrNull(index),
+//                    newLesson = newList.getOrNull(index),
+//                )
+//            }
+//        }
+//
+//        return lessons.flatten()
+//    }
 
-        val lessons = timeToLessons.map { (time, pair) ->
-            val old = pair.getOrElse(0) { emptyList() }
-            val new = pair.getOrElse(1) { emptyList() }
-
-            LessonsByTimeChange(
-                time = time,
-                lessons = getPlaceChanges(old, new),
-            )
-        }.filter { it.lessons.isNotEmpty() }
-            .sortedBy { it.time }
-
-        return lessons
-    }
-
-    private fun getPlaceChanges(
-        oldLessonsByTime: List<LessonEvent>,
-        newLessonsByTime: List<LessonEvent>,
-    ): List<LessonChange> {
-        val groupedBySubject = mutableMapOf<LessonSubject, MutableList<MutableList<LessonEvent>>>()
-
-        oldLessonsByTime.forEach { lesson ->
-            val list = groupedBySubject.getOrPut(lesson.subject) { MutableList(2) { mutableListOf() } }
-            list[0].add(lesson)
-        }
-
-        newLessonsByTime.forEach { lesson ->
-            val list = groupedBySubject.getOrPut(lesson.subject) { MutableList(2) { mutableListOf() } }
-            // Skip lesson if it in list[0] and remove it from list[0]
-            if (list[0].remove(lesson).not()) {
-                list[1].add(lesson)
-            }
-        }
-
-        val lessons = groupedBySubject.map { (subject, pair) ->
-            val oldList = pair.getOrElse(0) { emptyList() }
-            val newList = pair.getOrElse(1) { emptyList() }
-
-            val size = max(oldList.size, newList.size)
-
-            (0 until size).mapNotNull { index ->
-                getLessonChanges(
-                    oldLesson = oldList.getOrNull(index),
-                    newLesson = newList.getOrNull(index),
-                )
-            }
-        }
-
-        return lessons.flatten()
-    }
-
-    private fun getLessonChanges(
-        oldLesson: LessonEvent?,
-        newLesson: LessonEvent?,
-    ): LessonChange? {
-        if (oldLesson == newLesson) return null
-
-        return when {
-            oldLesson != null && newLesson != null ->
-                LessonChange.Modified(old = oldLesson, new = newLesson)
-            oldLesson != null -> LessonChange.Removed(oldLesson)
-            newLesson != null -> LessonChange.Added(newLesson)
-            else -> null
-        }
-    }
+//    private fun getLessonChanges(
+//        oldLesson: LessonEvent?,
+//        newLesson: LessonEvent?,
+//    ): LessonChange? {
+//        if (oldLesson == newLesson) return null
+//
+//        return when {
+//            oldLesson != null && newLesson != null ->
+//                LessonChange.Modified(old = oldLesson, new = newLesson)
+//            oldLesson != null -> LessonChange.Removed(oldLesson)
+//            newLesson != null -> LessonChange.Added(newLesson)
+//            else -> null
+//        }
+//    }
 }
 
 sealed class LessonChange {
@@ -180,13 +147,3 @@ sealed class LessonChange {
         val old: LessonEvent,
     ) : LessonChange()
 }
-
-data class ScheduleDayChange(
-    val date: LocalDate,
-    val lessons: List<LessonsByTimeChange>,
-)
-
-data class LessonsByTimeChange(
-    val time: LessonTime,
-    val lessons: List<LessonChange>,
-)
