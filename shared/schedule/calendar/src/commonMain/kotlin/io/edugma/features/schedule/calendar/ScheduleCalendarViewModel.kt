@@ -5,14 +5,12 @@ import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
 import io.edugma.core.navigation.ScheduleScreens
 import io.edugma.core.utils.lce.launchLce
 import io.edugma.features.schedule.calendar.mapper.CalendarMapper
-import io.edugma.features.schedule.calendar.usecase.GetCurrentDayIndexUseCase
 import io.edugma.features.schedule.domain.usecase.ScheduleUseCase
 import kotlinx.datetime.LocalDate
 
 class ScheduleCalendarViewModel(
     private val useCase: ScheduleUseCase,
     private val calendarMapper: CalendarMapper,
-    private val getCurrentDayIndexUseCase: GetCurrentDayIndexUseCase,
 ) : BaseActionViewModel<ScheduleCalendarUiState, ScheduleCalendarAction>(
     ScheduleCalendarUiState(),
 ) {
@@ -35,17 +33,18 @@ class ScheduleCalendarViewModel(
             isRefreshing = isRefreshing,
             onSuccess = {
                 newState {
-                    val schedule = calendarMapper.map(it.value)
-
-                    val (currentWeekIndex, currentDayOfWeekIndex) = getCurrentDayIndexUseCase(
-                        schedule,
+                    it.value.init(
+                        today = settings.today,
+                        size = settings.daysCount,
+                        todayIndex = settings.todayDayIndex,
                     )
+                    val schedule = calendarMapper.map(it.value)
 
                     if (this.schedule != schedule) {
                         copy(
                             schedule = schedule,
-                            currentWeekIndex = currentWeekIndex,
-                            currentDayOfWeekIndex = currentDayOfWeekIndex,
+                            currentWeekIndex = settings.todayWeeksIndex,
+                            currentDayOfWeekIndex = settings.todayDayOfWeekIndex,
                         )
                     } else {
                         this

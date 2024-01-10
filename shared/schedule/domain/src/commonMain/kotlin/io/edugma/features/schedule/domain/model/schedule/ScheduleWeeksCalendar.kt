@@ -1,7 +1,5 @@
 package io.edugma.features.schedule.domain.model.schedule
 
-import kotlinx.datetime.plus
-
 class ScheduleWeeksCalendar(
     private val scheduleCalendar: ScheduleCalendar,
 ) {

@@ -22,8 +22,7 @@ import io.edugma.core.api.utils.getInitials
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.molecules.avatar.EdAvatar
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.core.designSystem.utils.ContentAlpha
-import io.edugma.core.designSystem.utils.WithContentAlpha
+import io.edugma.core.designSystem.utils.SecondaryContent
 import io.edugma.core.designSystem.utils.edPlaceholder
 import io.edugma.core.designSystem.utils.getPaletteColor
 import io.edugma.core.designSystem.utils.ifNotNull
@@ -71,7 +70,7 @@ fun EdCell(
                 overflow = TextOverflow.Ellipsis,
             )
             if (subtitle.isNotEmpty()) {
-                WithContentAlpha(alpha = ContentAlpha.medium) {
+                SecondaryContent {
                     EdLabel(
                         modifier = Modifier.padding(top = size.titleSubtitleSpacing),
                         text = subtitle,

@@ -33,9 +33,7 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.core.designSystem.utils.ContentAlpha
 import io.edugma.core.designSystem.utils.SecondaryContent
-import io.edugma.core.designSystem.utils.WithContentAlpha
 import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
@@ -215,7 +213,7 @@ fun FreePlaceContent(
                                         style = EdTheme.typography.titleSmall,
                                     )
                                 }
-                                WithContentAlpha(alpha = ContentAlpha.medium) {
+                                SecondaryContent {
                                     Text(
                                         text = "Занятий в это время: " + item.second.toString(),
                                         style = EdTheme.typography.bodySmall,

@@ -119,6 +119,7 @@ enum class DateFormat(val format: String) {
     DAY_MONTH("d MMMM"),
     DAY_MONTH_SHORT("d MMM"),
     WEEK_DAY_MONTH("EEEE, d MMMM"),
+    WEEK_DAY_MONTH_SHORT("EEE, d MMM"),
     WEEK_DAY_MONTH_YEAR("EEEE, d MMMM, yyyy"),
     WEEK("EEEE"),
     WEEK_SHORT("EEE"),

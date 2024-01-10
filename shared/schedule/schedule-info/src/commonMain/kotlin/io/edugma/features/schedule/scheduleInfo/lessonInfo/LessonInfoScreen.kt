@@ -25,8 +25,7 @@ import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.molecules.avatar.EdAvatar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
-import io.edugma.core.designSystem.utils.ContentAlpha
-import io.edugma.core.designSystem.utils.WithContentAlpha
+import io.edugma.core.designSystem.utils.SecondaryContent
 import io.edugma.core.designSystem.utils.rememberAsyncImagePainter
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureScreen
@@ -131,7 +130,7 @@ private fun LessonInfoContent(
 
 @Composable
 private fun LessonTags(tags: List<String>) {
-    WithContentAlpha(ContentAlpha.medium) {
+    SecondaryContent {
         Row(Modifier.fillMaxWidth()) {
             // TODO
             tags.forEach { type ->
@@ -161,7 +160,7 @@ private fun LessonTitle(title: String) {
 //        Modifier.fillMaxWidth(),
 //        horizontalArrangement = Arrangement.SpaceBetween,
 //    ) {
-//        WithContentAlpha(ContentAlpha.medium) {
+//        SecondaryContent {
 //            val timeStart = lessonDateTime.time.start.format(TimeFormat.HOURS_MINUTES)
 //            val timeEnd = lessonDateTime.time.end.format(TimeFormat.HOURS_MINUTES)
 //            val startDate = lessonDateTime.startDate.format("d MMMM yyyy (EE)") // + "!!"
@@ -197,7 +196,7 @@ private fun LessonTeachers(
                 .fillMaxWidth()
                 .padding(vertical = 10.dp),
         ) {
-            WithContentAlpha(ContentAlpha.medium) {
+            SecondaryContent {
                 EdLabel(
                     text = "Преподаватели",
                     iconPainter = painterResource(EdIcons.ic_fluent_hat_graduation_24_filled),
@@ -240,7 +239,7 @@ private fun LessonPlaces(
                 .fillMaxWidth()
                 .padding(vertical = 10.dp),
         ) {
-            WithContentAlpha(ContentAlpha.medium) {
+            SecondaryContent {
                 EdLabel(
                     text = "Места",
                     iconPainter = painterResource(EdIcons.ic_fluent_location_24_filled),
@@ -296,7 +295,7 @@ private fun LessonGroups(
                 .fillMaxWidth()
                 .padding(vertical = 10.dp),
         ) {
-            WithContentAlpha(ContentAlpha.medium) {
+            SecondaryContent {
                 EdLabel(
                     text = "Группы",
                     iconPainter = painterResource(EdIcons.ic_fluent_people_24_filled),
@@ -359,7 +358,7 @@ private fun LessonItem(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
-                WithContentAlpha(alpha = ContentAlpha.medium) {
+                SecondaryContent {
                     Text(
                         text = description,
                         style = EdTheme.typography.bodySmall,

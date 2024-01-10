@@ -29,7 +29,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -62,9 +61,8 @@ import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
-import io.edugma.core.designSystem.utils.ContentAlpha
 import io.edugma.core.designSystem.utils.LocalContentAlpha
-import io.edugma.core.designSystem.utils.WithContentAlpha
+import io.edugma.core.designSystem.utils.SecondaryContent
 import io.edugma.core.designSystem.utils.ifThen
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.resources.MR
@@ -74,7 +72,8 @@ import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.ui.isItemFullyVisible
 import io.edugma.core.utils.viewmodel.getViewModel
 import io.edugma.features.schedule.calendar.model.CalendarDayVO
-import io.edugma.features.schedule.calendar.model.CalendarScheduleVO
+import io.edugma.features.schedule.calendar.model.CalendarWeekVO
+import io.edugma.features.schedule.calendar.model.ScheduleCalendarVO
 import io.edugma.features.schedule.domain.model.compact.Importance
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
@@ -114,14 +113,17 @@ private fun ScheduleCalendarContent(
             onRefresh = { },
             placeholder = { /* TODO */ },
         ) {
-            CalendarThree(
-                schedule = state.schedule,
-                currentWeekIndex = state.currentWeekIndex,
-                currentDayOfWeekIndex = state.currentDayOfWeekIndex,
-                onItemClick = {
-                    onAction(ScheduleCalendarAction.OnDayClick(it))
-                },
-            )
+            if (state.schedule != null) {
+                CalendarThree(
+                    schedule = state.schedule,
+                    weeksCount = state.settings.weeksCount,
+                    currentWeekIndex = state.currentWeekIndex,
+                    currentDayOfWeekIndex = state.currentDayOfWeekIndex,
+                    onItemClick = {
+                        onAction(ScheduleCalendarAction.OnDayClick(it))
+                    },
+                )
+            }
         }
 
         EdSurface(
@@ -143,7 +145,8 @@ private fun ScheduleCalendarContent(
 
 @Composable
 private fun BoxScope.CalendarThree(
-    schedule: List<CalendarScheduleVO>,
+    schedule: ScheduleCalendarVO,
+    weeksCount: Int,
     currentWeekIndex: Int,
     currentDayOfWeekIndex: Int,
     onItemClick: Typed1Listener<LocalDate>,
@@ -169,7 +172,8 @@ private fun BoxScope.CalendarThree(
                 EdTopAppBarDefaults.ContainerHeight,
         ),
     ) {
-        itemsIndexed(schedule) { index, week ->
+        items(weeksCount) { index ->
+            val week = schedule.get(index)
             SpacerHeight(9.dp)
             CalendarWeek(
                 week = week,
@@ -251,7 +255,7 @@ private fun BoxScope.Fab(scrollState: LazyListState, currentWeekIndex: Int, onCl
 
 @Composable
 private fun CalendarWeek(
-    week: CalendarScheduleVO,
+    week: CalendarWeekVO,
     isCurrentWeek: Boolean,
     currentDayOfWeekIndex: Int,
     onItemClick: Typed1Listener<LocalDate>,
@@ -445,56 +449,54 @@ private fun CalendarItem(
         if (day.lessons.isNotEmpty()) {
             SpacerHeight(4.dp)
         }
-        day.lessons.forEachIndexed { index, lessonsByTime ->
+        day.lessons.forEachIndexed { index, lesson ->
             if (index != 0) {
                 SpacerHeight(3.dp)
             }
-            WithContentAlpha(ContentAlpha.medium) {
-                lessonsByTime.lessons.forEach { lesson ->
-                    val containerColor = if (lesson.importance == Importance.High) {
-                        EdTheme.colorScheme.error.copy(alpha = 0.8f)
-                    } else {
-                        EdTheme.colorScheme.secondaryContainer.copy(alpha = 0.8f)
-                    }
-                    val textColor = if (lesson.importance == Importance.High) {
-                        EdTheme.colorScheme.onError.copy(alpha = LocalContentAlpha.current)
-                    } else {
-                        EdTheme.colorScheme.onSecondaryContainer.copy(alpha = LocalContentAlpha.current)
-                    }
+            SecondaryContent {
+                val containerColor = if (lesson.importance == Importance.High) {
+                    EdTheme.colorScheme.error.copy(alpha = 0.8f)
+                } else {
+                    EdTheme.colorScheme.secondaryContainer.copy(alpha = 0.8f)
+                }
+                val textColor = if (lesson.importance == Importance.High) {
+                    EdTheme.colorScheme.onError.copy(alpha = LocalContentAlpha.current)
+                } else {
+                    EdTheme.colorScheme.onSecondaryContainer.copy(alpha = LocalContentAlpha.current)
+                }
 
-                    Box(
-                        Modifier
-                            .height(IntrinsicSize.Min)
-                            .padding(
-                                start = when {
-                                    isStart -> 3.dp
-                                    !isEnd -> 2.dp
-                                    else -> 1.5.dp
-                                },
-                                end = when {
-                                    isEnd -> 3.dp
-                                    !isStart -> 2.dp
-                                    else -> 1.5.dp
-                                },
-                            )
-                            .fillMaxWidth()
-                            .background(
-                                containerColor,
-                                EdTheme.shapes.extraSmall,
-                            ),
-                    ) {
-                        Text(
-                            text = lesson.title,
-                            style = EdTheme.typography.labelSmall,
-                            modifier = Modifier.padding(
-                                start = 2.dp,
-                                end = 2.dp,
-                                bottom = 2.dp,
-                                top = 0.dp,
-                            ),
-                            color = textColor,
+                Box(
+                    Modifier
+                        .height(IntrinsicSize.Min)
+                        .padding(
+                            start = when {
+                                isStart -> 3.dp
+                                !isEnd -> 2.dp
+                                else -> 1.5.dp
+                            },
+                            end = when {
+                                isEnd -> 3.dp
+                                !isStart -> 2.dp
+                                else -> 1.5.dp
+                            },
                         )
-                    }
+                        .fillMaxWidth()
+                        .background(
+                            containerColor,
+                            EdTheme.shapes.extraSmall,
+                        ),
+                ) {
+                    Text(
+                        text = lesson.title,
+                        style = EdTheme.typography.labelSmall,
+                        modifier = Modifier.padding(
+                            start = 2.dp,
+                            end = 2.dp,
+                            bottom = 2.dp,
+                            top = 0.dp,
+                        ),
+                        color = textColor,
+                    )
                 }
             }
         }

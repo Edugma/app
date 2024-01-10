@@ -38,8 +38,7 @@ import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.card.EdCardDefaults
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.core.designSystem.utils.ContentAlpha
-import io.edugma.core.designSystem.utils.WithContentAlpha
+import io.edugma.core.designSystem.utils.SecondaryContent
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.ui.isItemFullyVisible
 import io.edugma.core.utils.ui.sp
@@ -128,7 +127,7 @@ fun RowScope.DayContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.weight(1f),
     ) {
-        WithContentAlpha(ContentAlpha.medium) {
+        SecondaryContent {
             Text(
                 text = day.date.format(DateFormat.WEEK_SHORT).uppercase(),
                 style = EdTheme.typography.labelSmall,

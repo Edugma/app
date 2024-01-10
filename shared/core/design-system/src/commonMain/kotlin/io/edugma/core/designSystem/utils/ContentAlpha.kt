@@ -3,11 +3,13 @@ package io.edugma.core.designSystem.utils
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.TextStyle
+import io.edugma.core.api.utils.InternalApi
 
 @Composable
 fun TextStyle.withAlpha(alpha: Float): TextStyle {
@@ -24,6 +26,8 @@ fun Color.withAlpha(alpha: Float): Color {
 }
 
 @Composable
+@InternalApi
+@NonRestartableComposable
 fun WithContentAlpha(alpha: Float, content: @Composable () -> Unit) {
     CompositionLocalProvider(
         LocalContentColor provides LocalContentColor.current.withAlpha(alpha),
@@ -31,7 +35,9 @@ fun WithContentAlpha(alpha: Float, content: @Composable () -> Unit) {
     )
 }
 
+@OptIn(InternalApi::class)
 @Composable
+@NonRestartableComposable
 fun PrimaryContent(
     enabled: Boolean = true,
     content: @Composable () -> Unit,
@@ -46,7 +52,9 @@ fun PrimaryContent(
     )
 }
 
+@OptIn(InternalApi::class)
 @Composable
+@NonRestartableComposable
 fun SecondaryContent(
     enabled: Boolean = true,
     content: @Composable () -> Unit,
@@ -61,7 +69,9 @@ fun SecondaryContent(
     )
 }
 
+@OptIn(InternalApi::class)
 @Composable
+@NonRestartableComposable
 fun DisabledContent(content: @Composable () -> Unit) {
     WithContentAlpha(alpha = ContentAlpha.disabled, content = content)
 }

@@ -7,5 +7,6 @@ import kotlinx.datetime.LocalDate
 data class CalendarDayVO(
     val dayTitle: String,
     val date: LocalDate,
-    val lessons: List<CalendarLessonPlaceVO>,
+    val isToday: Boolean,
+    val lessons: List<CalendarLessonVO>,
 )

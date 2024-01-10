@@ -25,8 +25,8 @@ import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
-import io.edugma.core.designSystem.utils.ContentAlpha
-import io.edugma.core.designSystem.utils.WithContentAlpha
+import io.edugma.core.designSystem.utils.PrimaryContent
+import io.edugma.core.designSystem.utils.SecondaryContent
 import io.edugma.core.designSystem.utils.edPlaceholder
 import io.edugma.core.designSystem.utils.rememberAsyncImagePainter
 import io.edugma.core.icons.EdIcons
@@ -53,15 +53,15 @@ fun LessonContent(
         shape = EdTheme.shapes.large,
     ) {
         Column(Modifier.padding(start = 24.dp, end = 24.dp, top = 13.dp, bottom = 16.dp)) {
-            WithContentAlpha(ContentAlpha.medium) {
+            SecondaryContent {
                 LessonHeader(lesson.tags)
             }
             SpacerHeight(3.dp)
-            WithContentAlpha(ContentAlpha.high) {
+            PrimaryContent {
                 LessonTitle(lesson.subject)
             }
             SpacerHeight(4.dp)
-            WithContentAlpha(ContentAlpha.medium) {
+            SecondaryContent {
                 if (displaySettings.showTeachers && lesson.teachers.isNotEmpty()) {
                     SpacerHeight(2.dp)
                     TeachersContent(lesson.teachers)
@@ -207,7 +207,7 @@ fun LessonWindow(lessonWindow: ScheduleEventUiModel.Window) {
                 text = "Окно на $timeText",
                 style = EdTheme.typography.titleMedium,
             )
-            WithContentAlpha(alpha = ContentAlpha.medium) {
+            SecondaryContent {
                 Text(
                     text = "$timeFrom - $timeTo",
                     style = EdTheme.typography.bodyMedium,

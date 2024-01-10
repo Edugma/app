@@ -1,12 +1,11 @@
 package io.edugma.features.schedule.daily.presentation
 
 import io.edugma.core.api.model.LceUiState
-import io.edugma.core.api.utils.nowLocalDate
 import io.edugma.features.schedule.daily.model.ScheduleWeeksUiModel
 import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
+import io.edugma.features.schedule.domain.model.schedule.CalendarSettings
 import io.edugma.features.schedule.domain.model.schedule.ScheduleWeeksCalendar
 import io.edugma.features.schedule.elements.model.ScheduleCalendarUiModel
-import kotlinx.datetime.Clock
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.daysUntil
@@ -106,38 +105,15 @@ data class ScheduleDailyUiState(
     companion object {
 
         fun init(): ScheduleDailyUiState {
-            val weeksCount = Int.MAX_VALUE / 7
-            val daysCount = weeksCount * 7
-
-            val today = Clock.System.nowLocalDate()
-
-            val (todayIndex, todayWeeksIndex) = calculateTodayIndex(
-                daysCount = daysCount,
-                today = today,
-            )
+            val settings = CalendarSettings.Infinity
 
             return ScheduleDailyUiState(
-                scheduleSize = daysCount,
-                today = today,
-                todayScheduleIndex = todayIndex,
-                todayWeeksIndex = todayWeeksIndex,
-                todayDayOfWeekIndex = today.dayOfWeek.isoDayNumber - 1,
+                scheduleSize = settings.daysCount,
+                today = settings.today,
+                todayScheduleIndex = settings.todayDayIndex,
+                todayWeeksIndex = settings.todayWeeksIndex,
+                todayDayOfWeekIndex = settings.todayDayOfWeekIndex,
             )
-        }
-
-        private fun calculateTodayIndex(
-            daysCount: Int,
-            today: LocalDate,
-        ): Pair<Int, Int> {
-            val middleIndex = daysCount / 2
-            val middleIndexDayOfWeak = middleIndex % 7
-            val middleMondayIndex = middleIndex - middleIndexDayOfWeak
-
-            val todayIndexDayOfWeek = today.dayOfWeek.isoDayNumber - 1
-            val todayIndex = middleMondayIndex + todayIndexDayOfWeek
-            val todayWeeksIndex = todayIndexDayOfWeek / 7
-
-            return todayIndex to todayWeeksIndex
         }
     }
 }
