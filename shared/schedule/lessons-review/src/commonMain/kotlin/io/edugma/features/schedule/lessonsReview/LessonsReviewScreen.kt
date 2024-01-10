@@ -10,26 +10,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
-import io.edugma.core.api.utils.DateFormat
-import io.edugma.core.api.utils.TimeFormat
-import io.edugma.core.api.utils.capitalized
 import io.edugma.core.api.utils.format
 import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
+import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.NavigationBarSpacer
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.surface.EdSurface
@@ -44,12 +36,8 @@ import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.viewmodel.getViewModel
-import io.edugma.features.schedule.domain.model.lesson.LessonTime
-import io.edugma.features.schedule.domain.model.lessonType.LessonType
-import io.edugma.features.schedule.domain.model.review.LessonDates
+import io.edugma.features.schedule.domain.model.compact.CompactLessonEvent
 import io.edugma.features.schedule.domain.model.review.LessonTimesReview
-import io.edugma.features.schedule.domain.model.review.LessonTimesReviewByType
-import kotlinx.datetime.DayOfWeek
 
 @Composable
 fun LessonsReviewScreen(
@@ -132,7 +120,7 @@ fun LessonTimesReviewContent(lessonTimesReview: LessonTimesReview) {
             Modifier.fillMaxWidth()
                 .padding(),
         ) {
-            lessonTimesReview.days.forEach { item ->
+            lessonTimesReview.events.forEach { item ->
                 Row(
                     Modifier
                         .fillMaxWidth()
@@ -151,7 +139,7 @@ fun LessonTimesReviewContent(lessonTimesReview: LessonTimesReview) {
 
 @Composable
 private fun DatesAndTimeUnit(
-    lessonTimesReviewByType: LessonTimesReviewByType,
+    lessonEvent: CompactLessonEvent,
     modifier: Modifier = Modifier,
 ) {
     EdSurface(
@@ -160,134 +148,19 @@ private fun DatesAndTimeUnit(
         shape = EdTheme.shapes.medium,
     ) {
         Column(Modifier.padding(start = 12.dp, end = 12.dp, top = 10.dp, bottom = 12.dp)) {
-            LessonTypeContent(
-                type = lessonTimesReviewByType.lessonType,
+            EdLabel(
+                text = lessonEvent.start.dateTime.format(),
             )
-            SpacerHeight(12.dp)
-            lessonTimesReviewByType.days.forEachIndexed { index, lessonReviewUnit ->
-                if (index != 0) {
-                    Divider(
-                        Modifier
-                            .height(1.dp)
-                            .fillMaxWidth(),
-                    )
-                }
-                DateRange(
-                    dayOfWeek = lessonReviewUnit.dayOfWeek,
-                    dates = lessonReviewUnit.dates,
-                    times = lessonReviewUnit.time,
+            EdLabel(
+                text = lessonEvent.end.dateTime.format(),
+            )
+            SpacerHeight(10.dp)
+            lessonEvent.recurrence.forEach {
+                EdLabel(
+                    text = it.toString(),
+                    style = EdTheme.typography.bodySmall,
                 )
             }
-        }
-    }
-}
-
-@Composable
-fun LessonTypeContent(type: LessonType) {
-    val color = if (type.isImportant) {
-        EdTheme.colorScheme.error
-    } else {
-        Color.Unspecified
-    }
-    Text(
-        text = type.title,
-        style = EdTheme.typography.titleSmall,
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
-        modifier = Modifier
-            .padding(horizontal = 10.dp)
-            .fillMaxWidth(),
-        color = color,
-        textAlign = TextAlign.Center,
-    )
-}
-
-@Composable
-fun DateRange(
-    dayOfWeek: DayOfWeek,
-    dates: List<LessonDates>,
-    times: List<LessonTime>,
-) {
-    Row(
-        modifier = Modifier
-            .padding(start = 12.dp, end = 12.dp)
-            .fillMaxWidth()
-            .height(IntrinsicSize.Max),
-    ) {
-        Text(
-            text = dayOfWeek.format("EEE").capitalized(),
-            style = EdTheme.typography.bodyMedium,
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .weight(1f)
-                .padding(bottom = 8.dp, top = 6.dp),
-        )
-        Divider(
-            Modifier
-                .padding(horizontal = 10.dp)
-                .width(1.dp)
-                .fillMaxHeight(),
-        )
-        Dates(
-            dates = dates,
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .weight(6f)
-                .padding(bottom = 8.dp, top = 6.dp),
-        )
-        Divider(
-            Modifier
-                .padding(horizontal = 10.dp)
-                .width(1.dp)
-                .fillMaxHeight(),
-        )
-        Times(
-            times = times,
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .weight(6f)
-                .padding(bottom = 8.dp, top = 6.dp),
-        )
-    }
-}
-
-@Composable
-private fun Dates(
-    dates: List<LessonDates>,
-    modifier: Modifier = Modifier,
-) {
-    Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        dates.forEach { date ->
-            val dateFrom = date.start.format(DateFormat.DAY_MONTH_SHORT)
-            var dateText = dateFrom
-
-            if (date.end != null) {
-                dateText += " - " + date.end!!.format(DateFormat.DAY_MONTH_SHORT)
-            }
-
-            Text(
-                text = dateText,
-                style = EdTheme.typography.bodySmall,
-            )
-        }
-    }
-}
-
-@Composable
-private fun Times(
-    times: List<LessonTime>,
-    modifier: Modifier = Modifier,
-) {
-    Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        times.forEach { time ->
-            val timeFrom = time.start.format(TimeFormat.HOURS_MINUTES)
-            val timeTo = time.end.format(TimeFormat.HOURS_MINUTES)
-            val timeText = "$timeFrom - $timeTo"
-
-            Text(
-                text = timeText,
-                style = EdTheme.typography.bodySmall,
-            )
         }
     }
 }

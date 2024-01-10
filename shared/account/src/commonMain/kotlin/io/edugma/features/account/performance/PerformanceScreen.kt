@@ -21,12 +21,15 @@ import dev.icerock.moko.resources.compose.painterResource
 import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import io.edugma.core.designSystem.atoms.spacer.NavigationBarSpacer
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
+import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.organism.EdScaffold
 import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetValue
 import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
 import io.edugma.core.designSystem.organism.chipRow.EdChipLabelLazyRow
 import io.edugma.core.designSystem.organism.lceScaffold.EdLceScaffold
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
+import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.tokens.shapes.top
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureBottomSheetScreen
 import io.edugma.core.utils.ClickListener
@@ -129,17 +132,21 @@ fun PerformanceContent(
             }
         },
     ) {
-        EdLceScaffold(
-            lceState = state.lceState,
-            onRefresh = { onAction(PerformanceAction.OnRefresh) },
-            placeholder = { PerformanceListPlaceholder() },
+        EdSurface(
+            shape = EdTheme.shapes.large.top(),
         ) {
-            PerformanceList(
-                state = state,
-                onItemClick = {
-                    onAction(PerformanceAction.OnPerformanceClicked(it))
-                },
-            )
+            EdLceScaffold(
+                lceState = state.lceState,
+                onRefresh = { onAction(PerformanceAction.OnRefresh) },
+                placeholder = { PerformanceListPlaceholder() },
+            ) {
+                PerformanceList(
+                    state = state,
+                    onItemClick = {
+                        onAction(PerformanceAction.OnPerformanceClicked(it))
+                    },
+                )
+            }
         }
     }
 }

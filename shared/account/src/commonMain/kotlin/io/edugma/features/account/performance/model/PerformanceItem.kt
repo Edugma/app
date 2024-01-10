@@ -102,15 +102,29 @@ fun PerformanceItem(
                 strokeCap = StrokeCap.Round,
             )
 
-            Text(
-                text = performance.grade?.value?.roundToInt()?.toString().orEmpty(),
-                style = EdTheme.typography.titleLarge,
-                color = gradeColor,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .width(50.dp)
-                    .padding(vertical = 5.dp),
-            )
+            if (performance.grade != null) {
+                val gradeText = if (
+                    performance.grade.maxValue == 1.0 &&
+                    performance.grade.minValue == .0
+                ) {
+                    if (performance.grade.value == 1.0) {
+                        "✔"
+                    } else {
+                        "✘"
+                    }
+                } else {
+                    performance.grade.value.roundToInt().toString()
+                }
+                Text(
+                    text = gradeText,
+                    style = EdTheme.typography.titleLarge,
+                    color = gradeColor,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .width(50.dp)
+                        .padding(vertical = 5.dp),
+                )
+            }
         }
     }
 }

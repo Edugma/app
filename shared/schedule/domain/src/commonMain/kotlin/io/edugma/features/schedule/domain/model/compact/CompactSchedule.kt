@@ -20,4 +20,16 @@ data class CompactSchedule(
             )
         }
     }
+
+    fun getSubject(id: String): CompactLessonSubjectInfo {
+        return subjects.firstOrNull { it.id == id } ?: error("Subject for $id not found")
+    }
+
+    fun getAttendee(id: String): AttendeeInfo {
+        return attendees.firstOrNull { it.id == id } ?: error("Attendee for $id not found")
+    }
+
+    fun getPlace(id: String): CompactPlaceInfo {
+        return places.firstOrNull { it.id == id } ?: error("Place for $id not found")
+    }
 }

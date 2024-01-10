@@ -121,27 +121,27 @@ class ScheduleCalendar(
     private fun CompactLessonEvent.toModel(info: CompactSchedule): LessonEvent {
         return LessonEvent(
             id = this.id,
-            subject = info.subjects.firstOrNull { it.id == this.subjectId }?.let {
+            subject = info.getSubject(this.subjectId).let {
                 LessonSubject(
                     id = it.id,
                     title = it.title,
                 )
-            } ?: error("Subject id not found"),
+            },
             tags = this.tags,
             teachers = this.attendeesId.mapNotNull { id ->
-                (info.attendees.firstOrNull { it.id == id } ?: error("Teacher id not found"))
+                info.getAttendee(id)
                     .takeIf { it.type == AttendeeType.Teacher }
             },
             groups = this.attendeesId.mapNotNull { id ->
-                (info.attendees.firstOrNull { it.id == id } ?: error("Group id not found"))
+                info.getAttendee(id)
                     .takeIf { it.type == AttendeeType.Group }
             },
             attendees = this.attendeesId.mapNotNull { id ->
-                (info.attendees.firstOrNull { it.id == id } ?: error("Attendees id not found"))
+                info.getAttendee(id)
                     .takeIf { it.type != AttendeeType.Group && it.type != AttendeeType.Teacher }
             },
             places = placesId.map { id ->
-                val temp = info.places.firstOrNull { it.id == id } ?: error("Place id not found")
+                val temp = info.getPlace(id)
                 Place(
                     id = temp.id,
                     title = temp.title,
