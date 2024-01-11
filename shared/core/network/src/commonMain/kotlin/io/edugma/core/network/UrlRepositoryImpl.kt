@@ -129,7 +129,7 @@ class UrlRepositoryImpl(
 
 private val edugmaApi = EdugmaApi(
     variables = mapOf(
-        "baseUrl" to "http://devspare.mospolytech.ru:8003",
+        "baseUrl" to "https://devspare.mospolytech.ru",
     ),
     endpoints = mapOf(
         "schedule-compact-get" to Path(

@@ -67,14 +67,18 @@ fun buildKtorClient(
             }
         }
     }
-    client.plugin(HttpSend).apply {
-        // TODO js fail
-        interceptors.forEach {
-            intercept(it)
+    val httpSendPlugin = client.plugin(HttpSend)
+
+    for (interceptor in interceptors) {
+        httpSendPlugin.intercept { request ->
+            interceptor.invoke(this, request)
         }
     }
 
     return client
 }
 
-typealias KtorInterceptor = suspend (sender: Sender, request: HttpRequestBuilder) -> HttpClientCall
+// Not typealias due js crash "this.interceptor_1 is not a function"
+interface KtorInterceptor {
+    suspend operator fun invoke(sender: Sender, request: HttpRequestBuilder): HttpClientCall
+}

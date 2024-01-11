@@ -29,9 +29,14 @@ Edugma - децентрализованное приложение для уче
 - [kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization) - сериализация данных
 - [KodeinDB](https://docs.kodein.org/kodein-db/) - NoSQL база данных с kotlinx.serialization для сериализации под капотом
 
-# Запуск
+# Запуск Web версии
 ```shell
 ./gradlew :web:app:jsRun
+```
+
+# Сборка Web версии
+```shell
+./gradlew :web:app:jsBrowserProductionWebpack
 ```
 
 ## Скриншоты
