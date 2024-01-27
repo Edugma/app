@@ -72,6 +72,7 @@ import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.ui.isItemFullyVisible
 import io.edugma.core.utils.viewmodel.getViewModel
 import io.edugma.features.schedule.calendar.model.CalendarDayVO
+import io.edugma.features.schedule.calendar.model.CalendarLessonVO
 import io.edugma.features.schedule.calendar.model.CalendarWeekVO
 import io.edugma.features.schedule.calendar.model.ScheduleCalendarVO
 import io.edugma.features.schedule.domain.model.compact.Importance
@@ -454,52 +455,62 @@ private fun CalendarItem(
                 SpacerHeight(3.dp)
             }
             SecondaryContent {
-                val containerColor = if (lesson.importance == Importance.High) {
-                    EdTheme.colorScheme.error.copy(alpha = 0.8f)
-                } else {
-                    EdTheme.colorScheme.secondaryContainer.copy(alpha = 0.8f)
-                }
-                val textColor = if (lesson.importance == Importance.High) {
-                    EdTheme.colorScheme.onError.copy(alpha = LocalContentAlpha.current)
-                } else {
-                    EdTheme.colorScheme.onSecondaryContainer.copy(alpha = LocalContentAlpha.current)
-                }
-
-                Box(
-                    Modifier
-                        .height(IntrinsicSize.Min)
-                        .padding(
-                            start = when {
-                                isStart -> 3.dp
-                                !isEnd -> 2.dp
-                                else -> 1.5.dp
-                            },
-                            end = when {
-                                isEnd -> 3.dp
-                                !isStart -> 2.dp
-                                else -> 1.5.dp
-                            },
-                        )
-                        .fillMaxWidth()
-                        .background(
-                            containerColor,
-                            EdTheme.shapes.extraSmall,
-                        ),
-                ) {
-                    Text(
-                        text = lesson.title,
-                        style = EdTheme.typography.labelSmall,
-                        modifier = Modifier.padding(
-                            start = 2.dp,
-                            end = 2.dp,
-                            bottom = 2.dp,
-                            top = 0.dp,
-                        ),
-                        color = textColor,
-                    )
-                }
+                Lesson(lesson, isStart, isEnd)
             }
         }
+    }
+}
+
+@Composable
+private fun Lesson(
+    lesson: CalendarLessonVO,
+    isStart: Boolean,
+    isEnd: Boolean,
+) {
+    val containerColor = if (lesson.importance == Importance.High) {
+        EdTheme.colorScheme.error.copy(alpha = 0.8f)
+    } else {
+        EdTheme.colorScheme.secondaryContainer.copy(alpha = 0.8f)
+    }
+    val textColor = if (lesson.importance == Importance.High) {
+        EdTheme.colorScheme.onError.copy(alpha = LocalContentAlpha.current)
+    } else {
+        EdTheme.colorScheme.onSecondaryContainer.copy(alpha = LocalContentAlpha.current)
+    }
+
+    Box(
+        Modifier
+            .height(IntrinsicSize.Min)
+            .padding(
+                start = when {
+                    isStart -> 3.dp
+                    !isEnd -> 2.dp
+                    else -> 1.5.dp
+                },
+                end = when {
+                    isEnd -> 3.dp
+                    !isStart -> 2.dp
+                    else -> 1.5.dp
+                },
+            )
+            .fillMaxWidth()
+            .background(
+                containerColor,
+                EdTheme.shapes.extraSmall,
+            ),
+    ) {
+        EdLabel(
+            text = lesson.title,
+            style = EdTheme.typography.labelSmall,
+            modifier = Modifier.padding(
+                start = 2.5.dp,
+                end = 2.5.dp,
+                bottom = 2.dp,
+                top = 1.dp,
+            ),
+            maxLines = 3,
+            color = textColor,
+        )
     }
 }
 

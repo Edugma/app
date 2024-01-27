@@ -20,6 +20,12 @@ kotlin {
                 api(libs.kotlinx.dateTime)
             }
         }
+
+        val webCommonMain by getting {
+            dependencies {
+                implementation(npm("@js-joda/timezone", "2.3.0"))
+            }
+        }
     }
 }
 

@@ -6,7 +6,7 @@ java="17"
 
 ksp = "1.9.21-1.0.15"
 kotlin = "1.9.21"
-androidGradlePlugin = "8.2.0"
+androidGradlePlugin = "8.2.2"
 kotlinter = "3.14.0"
 ktorfitGradle = "1.0.0"
 kotlinxAtomic = "0.23.1"
@@ -14,8 +14,8 @@ kotlinxAtomic = "0.23.1"
 
 # common
 androidxAnnotations = "1.7.1"
-androidxDatastore = "1.1.0-alpha07"
-androidxCollections = "1.3.0"
+androidxDatastore = "1.1.0-beta01"
+androidxCollections = "1.4.0"
 
 buildKonfig = "0.14.0"
 
@@ -51,9 +51,9 @@ glance = "1.0.0"
 google-maps-compose = "2.11.1"
 play-service-maps = "18.2.0"
 koinAndroid = "3.4.3"
-androidxViewmodel = "2.6.2"
+androidxViewmodel = "2.7.0"
 
-androidxLifecycle = "2.6.2"
+androidxLifecycle = "2.7.0"
 composeActivity = "1.8.2"
 coreKtx = "1.12.0"
 appcompat = "1.6.1"

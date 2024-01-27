@@ -25,3 +25,9 @@ fun LessonDateTime.zonedDate(
 ): LocalDate {
     return dateTime.toInstant(timeZone).toLocalDateTime(timeZone).date
 }
+
+fun LessonDateTime.zonedDateTime(
+    timeZone: TimeZone = TimeZone.currentSystemDefault(),
+): LocalDateTime {
+    return dateTime.toInstant(timeZone).toLocalDateTime(timeZone)
+}

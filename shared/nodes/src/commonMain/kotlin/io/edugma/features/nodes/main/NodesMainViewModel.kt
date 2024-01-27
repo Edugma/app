@@ -58,7 +58,7 @@ data class NodesMainState(
     val nodeUrl: String = "",
     val nodes: List<Node> = emptyList(),
     val selectedTab: NodeTabs = NodeTabs.ByList,
-    val tabs: List<NodeTabs> = NodeTabs.values().toList(),
+    val tabs: List<NodeTabs> = NodeTabs.entries,
 )
 
 enum class NodeTabs {

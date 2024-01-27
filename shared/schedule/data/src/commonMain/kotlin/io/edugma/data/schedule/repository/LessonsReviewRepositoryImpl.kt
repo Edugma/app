@@ -2,6 +2,7 @@ package io.edugma.data.schedule.repository
 
 import io.edugma.core.api.utils.LceFlow
 import io.edugma.core.api.utils.map
+import io.edugma.features.schedule.domain.model.compact.zonedDateTime
 import io.edugma.features.schedule.domain.model.review.LessonTimesReview
 import io.edugma.features.schedule.domain.model.source.ScheduleSource
 import io.edugma.features.schedule.domain.repository.LessonsReviewRepository
@@ -18,7 +19,7 @@ class LessonsReviewRepositoryImpl(
             lessonsBySubjectId.map {
                 LessonTimesReview(
                     subject = schedule.getSubject(it.key),
-                    events = it.value,
+                    events = it.value.sortedBy { it.start.zonedDateTime() },
                 )
             }
         }

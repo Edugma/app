@@ -98,8 +98,21 @@ internal fun isLeapYear(year: Int): Boolean {
 }
 
 expect fun LocalDateTime.format(
-    format: String = "d MMMM yyyy HH:mm",
+    format: DateTimeFormat = DateTimeFormat.FULL,
 ): String
+
+enum class DateTimeFormat(
+    val dateFormat: DateFormat,
+    val timeFormat: TimeFormat,
+    val separator: String,
+) {
+    FULL(DateFormat.FULL, TimeFormat.HOURS_MINUTES, ", "),
+    ;
+
+    fun toFormat(): String {
+        return dateFormat.format + separator + timeFormat.format
+    }
+}
 
 fun LocalDateTime.formatTime(
     format: TimeFormat = TimeFormat.HOURS_MINUTES,

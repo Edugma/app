@@ -22,9 +22,11 @@ private fun Instant.format(format: String): String {
     )
 }
 
-actual fun LocalDateTime.format(format: String): String {
+actual fun LocalDateTime.format(format: DateTimeFormat): String {
     return this.toInstant(TimeZone.currentSystemDefault())
-        .format(format)
+        .format(
+            format.toFormat(),
+        )
 }
 
 actual fun LocalDate.format(

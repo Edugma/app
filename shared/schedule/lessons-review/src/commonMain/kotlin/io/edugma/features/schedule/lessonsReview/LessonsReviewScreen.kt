@@ -1,13 +1,12 @@
 package io.edugma.features.schedule.lessonsReview
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,8 +17,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
+import io.edugma.core.api.utils.DateFormat
+import io.edugma.core.api.utils.capitalized
 import io.edugma.core.api.utils.format
+import io.edugma.core.api.utils.formatDate
+import io.edugma.core.api.utils.formatTime
+import io.edugma.core.api.utils.nowLocalDate
 import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.NavigationBarSpacer
@@ -32,12 +37,14 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
 import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.designSystem.tokens.shapes.top
+import io.edugma.core.icons.EdIcons
 import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.viewmodel.getViewModel
 import io.edugma.features.schedule.domain.model.compact.CompactLessonEvent
 import io.edugma.features.schedule.domain.model.review.LessonTimesReview
+import kotlinx.datetime.Clock
 
 @Composable
 fun LessonsReviewScreen(
@@ -91,7 +98,10 @@ fun LessonsReviewContent(
 
 @Composable
 private fun LessonsReviewList(lessons: List<LessonTimesReview>) {
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(top = 4.dp),
+    ) {
         items(lessons) { lessonTimesReview ->
             LessonTimesReviewContent(lessonTimesReview)
         }
@@ -105,7 +115,7 @@ private fun LessonsReviewList(lessons: List<LessonTimesReview>) {
 fun LessonTimesReviewContent(lessonTimesReview: LessonTimesReview) {
     Column(
         Modifier
-            .padding(horizontal = 8.dp, vertical = 8.dp)
+            .padding(horizontal = 8.dp, vertical = 6.dp)
             .fillMaxWidth(),
     ) {
         Text(
@@ -115,30 +125,85 @@ fun LessonTimesReviewContent(lessonTimesReview: LessonTimesReview) {
                 .fillMaxWidth()
                 .padding(horizontal = 12.dp),
         )
-        SpacerHeight(2.dp)
+        SpacerHeight(8.dp)
         Column(
             Modifier.fillMaxWidth()
                 .padding(),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            lessonTimesReview.events.forEach { item ->
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 6.dp)
-                        .height(IntrinsicSize.Max),
-                ) {
-                    DatesAndTimeUnit(
-                        item,
-                        // modifier = Modifier.weight(1f)
-                    )
-                }
+            lessonTimesReview.events.forEachIndexed { _, item ->
+                EventContent(
+                    item,
+                    modifier = Modifier,
+                )
             }
         }
     }
 }
 
 @Composable
-private fun DatesAndTimeUnit(
+private fun EventContent(
+    lessonEvent: CompactLessonEvent,
+    modifier: Modifier = Modifier,
+) {
+    if (lessonEvent.recurrence.isEmpty()) {
+        SingleEventContent(
+            lessonEvent = lessonEvent,
+            modifier = modifier,
+        )
+    } else {
+        OtherEventContent(
+            lessonEvent = lessonEvent,
+            modifier = modifier,
+        )
+    }
+}
+
+@Composable
+private fun SingleEventContent(
+    lessonEvent: CompactLessonEvent,
+    modifier: Modifier = Modifier,
+) {
+    EdSurface(
+        modifier = modifier.fillMaxHeight(),
+        elevation = EdElevation.Level2,
+        shape = EdTheme.shapes.medium,
+    ) {
+        val isOneDay = lessonEvent.start.dateTime.date == lessonEvent.end.dateTime.date
+        Column(Modifier.padding(start = 12.dp, end = 12.dp, top = 10.dp, bottom = 12.dp)) {
+            if (isOneDay) {
+                val startTime = lessonEvent.start.dateTime.formatTime()
+                val endTime = lessonEvent.end.dateTime.formatTime()
+                val time = "$startTime - $endTime"
+                val todayYear = Clock.System.nowLocalDate().year
+                val dateFormat = if (todayYear == lessonEvent.start.dateTime.year) {
+                    DateFormat.WEEK_DAY_MONTH
+                } else {
+                    DateFormat.WEEK_DAY_MONTH_YEAR
+                }
+                EdLabel(
+                    iconPainter = painterResource(EdIcons.ic_fluent_calendar_ltr_16_regular),
+                    text = lessonEvent.start.dateTime.formatDate(dateFormat).capitalized(),
+                )
+                EdLabel(
+                    iconPainter = painterResource(EdIcons.ic_fluent_clock_16_regular),
+                    text = time,
+                )
+            } else {
+                // TODO проверить
+                EdLabel(
+                    text = lessonEvent.start.dateTime.format(),
+                )
+                EdLabel(
+                    text = lessonEvent.end.dateTime.format(),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun OtherEventContent(
     lessonEvent: CompactLessonEvent,
     modifier: Modifier = Modifier,
 ) {

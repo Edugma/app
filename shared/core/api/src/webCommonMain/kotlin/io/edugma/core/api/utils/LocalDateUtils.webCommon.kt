@@ -17,7 +17,7 @@ private fun Instant.format(format: String): String {
         .toISOString()
 }
 
-actual fun LocalDateTime.format(format: String): String {
+actual fun LocalDateTime.format(format: DateTimeFormat): String {
     return this.toInstant(TimeZone.currentSystemDefault())
         .toJSDate()
         .toISOString()

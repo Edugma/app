@@ -92,7 +92,7 @@ private fun Dropdown(
     mode: ThemeMode,
     onThemeModeSelected: (ThemeMode) -> Unit,
 ) {
-    val options = remember { ThemeMode.values().toList() }
+    val options = ThemeMode.entries
     var expanded by remember { mutableStateOf(false) }
 
     Box(

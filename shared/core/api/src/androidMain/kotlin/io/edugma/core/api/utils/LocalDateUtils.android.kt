@@ -13,8 +13,10 @@ import kotlinx.datetime.toJavaLocalTime
 import java.time.format.DateTimeFormatter
 
 actual fun LocalDateTime.format(
-    format: String,
-): String = DateTimeFormatter.ofPattern(format).format(this.toJavaLocalDateTime())
+    format: DateTimeFormat,
+): String = DateTimeFormatter.ofPattern(
+    format.toFormat(),
+).format(this.toJavaLocalDateTime())
 
 actual fun LocalDate.format(
     format: DateFormat,
