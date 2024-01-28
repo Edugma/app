@@ -24,8 +24,11 @@ class ScheduleRepositoryImpl(
 ) : ScheduleRepository {
 
     private val scheduleMockRepository = ScheduleMockRepository()
-    override fun getRawSchedule(source: ScheduleSource): LceFlow<CompactSchedule> {
-        return scheduleStore0.get(source, false)
+    override fun getRawSchedule(
+        source: ScheduleSource,
+        forceUpdate: Boolean,
+    ): LceFlow<CompactSchedule> {
+        return scheduleStore0.get(source, forceUpdate)
     }
 
     private val scheduleStore0 = store<ScheduleSource, CompactSchedule> {

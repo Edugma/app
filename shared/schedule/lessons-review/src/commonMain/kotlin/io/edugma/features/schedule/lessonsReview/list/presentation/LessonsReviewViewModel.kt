@@ -1,9 +1,9 @@
-package io.edugma.features.schedule.lessonsReview
+package io.edugma.features.schedule.lessonsReview.list.presentation
 
 import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
 import io.edugma.core.utils.lce.launchLce
-import io.edugma.features.schedule.domain.usecase.LessonsReviewUseCase
+import io.edugma.features.schedule.lessonsReview.list.domain.LessonsReviewUseCase
 
 class LessonsReviewViewModel(
     private val useCase: LessonsReviewUseCase,

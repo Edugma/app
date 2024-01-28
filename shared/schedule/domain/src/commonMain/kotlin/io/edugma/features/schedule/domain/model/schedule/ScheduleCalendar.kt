@@ -87,7 +87,7 @@ class ScheduleCalendar(
 
         // TODO count and others
 
-        val untilDate = this.until?.toLocalDateTime(currentTimeZone)?.date ?: return true
+        val untilDate = this.until?.toLocalDateTime()?.date ?: return true
 
         return date <= untilDate
     }

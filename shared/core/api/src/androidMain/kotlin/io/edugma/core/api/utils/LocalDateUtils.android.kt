@@ -20,12 +20,12 @@ actual fun LocalDateTime.format(
 
 actual fun LocalDate.format(
     format: DateFormat,
-): String = DateTimeFormatter.ofPattern(format.format)
+): String = DateTimeFormatter.ofPattern(format.toFormat())
     .format(this.toJavaLocalDate().atTime(0, 0))
 
 actual fun LocalTime.format(
     format: TimeFormat,
-): String = DateTimeFormatter.ofPattern(format.format)
+): String = DateTimeFormatter.ofPattern(format.toFormat())
     .format(this.toJavaLocalTime())
 
 actual fun DayOfWeek.format(

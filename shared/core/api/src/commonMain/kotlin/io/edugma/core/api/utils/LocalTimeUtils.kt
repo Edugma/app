@@ -25,21 +25,33 @@ fun LocalTime.minus(other: Duration): LocalTime {
     )
 }
 
-val LocalTime.Companion.MIN
-    get() = LocalTime(
-        0,
-        0,
-        0,
-        0,
+val LocalTime.Companion.MIN: LocalTime by lazy {
+    LocalTime(
+        hour = 0,
+        minute = 0,
+        second = 0,
+        nanosecond = 0,
     )
+}
 
-val LocalTime.Companion.MAX
-    get() = LocalTime(
-        23,
-        59,
-        59,
-        999,
+val LocalTime.Companion.MAX: LocalTime by lazy {
+    LocalTime(
+        hour = 23,
+        minute = 59,
+        second = 59,
+        nanosecond = 999,
     )
+}
+
+val LocalTime.isMax: Boolean
+    get() {
+        return hour == 23 && minute == 59 && second == 59
+    }
+
+val LocalTime.isMin: Boolean
+    get() {
+        return hour == 0 && minute == 0 && second == 0 && nanosecond == 0
+    }
 
 fun LocalTime.copy(
     hour: Int = this.hour,

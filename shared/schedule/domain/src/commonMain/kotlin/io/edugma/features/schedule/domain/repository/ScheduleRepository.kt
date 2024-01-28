@@ -10,7 +10,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.Instant
 
 interface ScheduleRepository {
-    fun getRawSchedule(source: ScheduleSource): LceFlow<CompactSchedule>
+    fun getRawSchedule(
+        source: ScheduleSource,
+        forceUpdate: Boolean = false,
+    ): LceFlow<CompactSchedule>
     fun getSchedule(source: ScheduleSource, forceUpdate: Boolean = false): LceFlow<ScheduleCalendar>
     fun getHistory(source: ScheduleSource): Flow<List<ScheduleRecord>>
     suspend fun getHistoryRecord(source: ScheduleSource, timestamp: Instant): ScheduleRecord?

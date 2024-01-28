@@ -1,6 +1,13 @@
 package io.edugma.features.schedule.domain.model.rrule
 
+import io.edugma.core.api.utils.MAX
 import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atTime
+import kotlinx.datetime.toInstant
 
 /**
  * @param frequency (required)
@@ -38,9 +45,9 @@ import kotlinx.datetime.Instant
 data class RRule(
     val frequency: Frequency,
     val weekStartDay: Weekday? = null,
-    val until: Instant? = null,
+    val until: UntilDateTime? = null,
     val count: Int = 0,
-    val interval: Int = 0,
+    val interval: Int = 1,
     val byWeekday: List<WeekdayNum> = emptyList(),
     val byMonth: List<Int> = emptyList(),
     val byMonthDay: List<Int> = emptyList(),
@@ -48,3 +55,20 @@ data class RRule(
     val byYearDay: List<Int> = emptyList(),
     val bySetPos: List<Int> = emptyList(),
 )
+
+data class UntilDateTime(
+    val date: LocalDate,
+    val time: LocalTime?,
+) {
+    fun toInstant(): Instant {
+        return date.atTime(time ?: LocalTime.MAX).toInstant(TimeZone.UTC)
+    }
+
+    fun toLocalDateTime(): LocalDateTime? {
+        if (time == null) return null
+        return LocalDateTime(
+            date = date,
+            time = time,
+        )
+    }
+}

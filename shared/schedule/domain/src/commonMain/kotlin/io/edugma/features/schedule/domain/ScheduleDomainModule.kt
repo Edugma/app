@@ -1,8 +1,8 @@
 package io.edugma.features.schedule.domain
 
 import io.edugma.features.schedule.domain.usecase.GetClosestLessonsUseCase
+import io.edugma.features.schedule.domain.usecase.GetCurrentScheduleUseCase
 import io.edugma.features.schedule.domain.usecase.IsScheduleSourceSelectedUseCase
-import io.edugma.features.schedule.domain.usecase.LessonsReviewUseCase
 import io.edugma.features.schedule.domain.usecase.RemoveSelectedScheduleSourceUseCase
 import io.edugma.features.schedule.domain.usecase.ScheduleHistoryUseCase
 import io.edugma.features.schedule.domain.usecase.ScheduleSourcesUseCase
@@ -14,10 +14,10 @@ object ScheduleDomainModule {
     val deps = module {
         factoryOf(::ScheduleUseCase)
         factoryOf(::ScheduleSourcesUseCase)
-        factoryOf(::LessonsReviewUseCase)
         factoryOf(::ScheduleHistoryUseCase)
         factoryOf(::GetClosestLessonsUseCase)
         factoryOf(::IsScheduleSourceSelectedUseCase)
         factoryOf(::RemoveSelectedScheduleSourceUseCase)
+        factoryOf(::GetCurrentScheduleUseCase)
     }
 }

@@ -1,10 +1,16 @@
 package io.edugma.features.schedule.domain.model.rrule
 
+import io.edugma.core.api.utils.isMax
+import io.edugma.core.api.utils.isMin
 import io.edugma.features.schedule.domain.model.rrule.RRuleFormatter.DateParser.parseRRuleInstant
 import io.edugma.features.schedule.domain.model.rrule.RRuleFormatter.DateParser.toRruleString
+import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.Instant
-import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.minus
+import kotlinx.datetime.plus
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 
@@ -14,9 +20,9 @@ open class RRuleFormatter() {
     var freq: Frequency = Frequency.Daily
 
     var wkst: Weekday? = null
-    var until: Instant? = null
+    var until: UntilDateTime? = null
     var count = 0
-    var interval = 0
+    var interval = 1
 
     val byDay = arrayListOf<WeekdayNum>()
     val byMonth = arrayListOf<Int>() // in +/-[1-12]
@@ -171,11 +177,11 @@ open class RRuleFormatter() {
         val buf = StringBuilder()
         buf.append("$name:")
         buf.append("FREQ=").append(freq.toString())
-        if (interval > 0) {
+        if (interval > 1) {
             buf.append(";INTERVAL=").append(interval)
         }
         if (until != null) {
-            buf.append(";UNTIL=").append(until!!.toRruleString())
+            buf.append(";UNTIL=").append(until!!.toInstant().toRruleString())
         }
         if (count > 0) {
             buf.append(";COUNT=").append(count)
@@ -248,7 +254,7 @@ open class RRuleFormatter() {
         /**
          * Supported format yyyyMMdd'T'HHmmss'Z'
          */
-        fun parseRRuleInstant(rruleDate: String): Instant {
+        fun parseRRuleInstant(rruleDate: String): UntilDateTime {
             val lastIndex = rruleDate.lastIndex
 
             check(rruleDate[lastIndex] == 'Z')
@@ -260,15 +266,28 @@ open class RRuleFormatter() {
             val months = rruleDate.toPositive2Int(lastIndex - 11)
             val years = rruleDate.toPositiveIntYear()
 
-            return LocalDateTime(
-                year = years,
-                monthNumber = months,
-                dayOfMonth = days,
+            val time = LocalTime(
                 hour = hours,
                 minute = minutes,
                 second = seconds,
+            )
 
-            ).toInstant(TimeZone.UTC)
+            val date = LocalDate(
+                year = years,
+                monthNumber = months,
+                dayOfMonth = days,
+            ).let {
+                if (time.isMin) {
+                    it.minus(DatePeriod(days = 1))
+                } else {
+                    it
+                }
+            }
+
+            return UntilDateTime(
+                date = date,
+                time = time.takeIf { !it.isMax && !it.isMin },
+            )
         }
 
         private fun String.toPositive2Int(startIndex: Int): Int {

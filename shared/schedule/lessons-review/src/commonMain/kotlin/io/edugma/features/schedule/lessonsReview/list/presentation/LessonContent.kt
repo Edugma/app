@@ -1,4 +1,4 @@
-package io.edugma.features.schedule.lessonsReview
+package io.edugma.features.schedule.lessonsReview.list.presentation
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
