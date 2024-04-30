@@ -1,48 +1,46 @@
 [versions]
 compileSdk = "34"
 minSdk = "26"
-targetSdk = "33"
+targetSdk = "34"
 java="17"
 
-ksp = "1.9.21-1.0.15"
-kotlin = "1.9.21"
-androidGradlePlugin = "8.2.2"
+ksp = "2.0.0-RC2-1.0.20"
+kotlin = "2.0.0-RC2"
+androidGradlePlugin = "8.4.0"
 kotlinter = "3.14.0"
 ktorfitGradle = "1.0.0"
-kotlinxAtomic = "0.23.1"
+kotlinxAtomic = "0.24.0"
 
 
 # common
 androidxAnnotations = "1.7.1"
-androidxDatastore = "1.1.0-beta01"
+androidxDatastore = "1.1.0"
 androidxCollections = "1.4.0"
 
-buildKonfig = "0.14.0"
+buildKonfig = "0.15.1"
 
-composeBom = "2023.10.01"
-composeMultiplatform = "1.5.11"
-composeCompiler = "1.5.7"
+composeBom = "2024.04.01"
+composeMultiplatform = "1.6.10-beta03"
+composeCompiler = "1.5.11"
 
-essenty = "1.3.0"
+essenty = "2.0.0"
 
-kotlinxDateTime = "0.5.0"
-kotlinCoroutines = "1.7.3"
-kotlinxSerialization = "1.6.2"
+kotlinxDateTime = "0.6.0-RC.2"
+kotlinCoroutines = "1.8.0"
+kotlinxSerialization = "1.6.3"
 
-koin = "3.4.3"
-koinCompose = "1.0.4"
-koinKsp = "1.2.2"
+koinBom = "3.5.6"
 
-ktorfit = "1.10.0"
-ktor = "2.3.7"
-ktorUtils = "2.3.7"
+ktorfit = "1.14.0"
+ktor = "2.3.10"
+ktorUtils = "2.3.10"
 
 mokoResourcesVersion = "0.23.0"
 
-imageLoader = "1.7.1"
+imageLoader = "1.7.8"
 
-uuid = "0.7.0"
-kermit = "2.0.1"
+uuid = "0.8.4"
+kermit = "2.0.3"
 
 # android only
 materialView = "1.11.0"
@@ -50,11 +48,10 @@ splashScreen = "1.0.1"
 glance = "1.0.0"
 google-maps-compose = "2.11.1"
 play-service-maps = "18.2.0"
-koinAndroid = "3.4.3"
 androidxViewmodel = "2.7.0"
 
 androidxLifecycle = "2.7.0"
-composeActivity = "1.8.2"
+composeActivity = "1.9.0"
 coreKtx = "1.12.0"
 appcompat = "1.6.1"
 startup = "1.1.1"
@@ -67,7 +64,8 @@ gradlePlugin-android = { module = "com.android.tools.build:gradle", version.ref 
 gradlePlugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 gradlePlugin-ktlint = { module = "org.jmailen.gradle:kotlinter-gradle", version.ref = "kotlinter" }
 gradlePlugin-ksp = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp"}
-gradlePlugin-compose = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "composeMultiplatform" }
+gradlePlugin-composePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "composeMultiplatform" }
+gradlePlugin-composeCompiler = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 gradlePlugin-mokoResources = { module = "dev.icerock.moko:resources-generator", version.ref = "mokoResourcesVersion" }
 
 # Common
@@ -93,10 +91,11 @@ imageLoader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "image
 
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 
-koin-annotations = { module = "io.insert-koin:koin-annotations", version.ref = "koinKsp" }
-koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koinCompose" }
-koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
-koin-ksp = { module = "io.insert-koin:koin-ksp-compiler", version.ref = "koinKsp" }
+koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koinBom" }
+koin-core = { module = "io.insert-koin:koin-core" }
+koin-annotations = { module = "io.insert-koin:koin-annotations" }
+koin-compose = { module = "io.insert-koin:koin-compose" }
+koin-ksp = { module = "io.insert-koin:koin-ksp-compiler" }
 
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinCoroutines" }
 kotlinx-dateTime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDateTime" }
@@ -133,7 +132,7 @@ compose-activity = { module = "androidx.activity:activity-compose", version.ref 
 google-maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "google-maps-compose" }
 gms-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "play-service-maps" }
 
-koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroid" }
+koin-android = { module = "io.insert-koin:koin-android" }
 
 material3 = { module = "com.google.android.material:material", version.ref = "materialView" }
 
@@ -152,8 +151,9 @@ ktorfit = { id = "de.jensklingenberg.ktorfit", version.ref = "ktorfitGradle" }
 kotlinx-atomic = { id = "org.jetbrains.kotlin.plugin.atomicfu", version.ref = "kotlin" }
 buildKonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildKonfig" }
 
-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+jetbrains-composePlugin = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
+jetbrains-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+jetbrains-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 cocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
-compose = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
 #libres = { id = "io.github.skeptick.libres", version.ref = "libres" }
 #buildConfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildConfig" }

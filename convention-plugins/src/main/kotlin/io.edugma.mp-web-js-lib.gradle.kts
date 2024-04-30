@@ -1,5 +1,3 @@
-import gradle.kotlin.dsl.accessors._1ffbe1ad02abacea25c9328b2ef9c24c.sourceSets
-
 plugins {
     kotlin("multiplatform")
 }
@@ -8,9 +6,9 @@ plugins {
 kotlin {
     js(IR) {
         browser {
-            dceTask {
-                keep("ktor-ktor-io.\$\$importsForInline\$\$.ktor-ktor-io.io.ktor.utils.io")
-            }
+//            dceTask {
+//                keep("ktor-ktor-io.\$\$importsForInline\$\$.ktor-ktor-io.io.ktor.utils.io")
+//            }
         }
     }
 

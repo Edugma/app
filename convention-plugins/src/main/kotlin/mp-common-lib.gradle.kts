@@ -36,14 +36,10 @@ kotlin {
         }
 
         androidMain {
-            // TODO due to moko resource crash
-            dependsOn(commonMain.get())
             dependsOn(mobileCommonMain)
         }
 
         iosMain {
-            // TODO due to moko resource crash
-            dependsOn(commonMain.get())
             dependsOn(mobileCommonMain)
         }
     }

@@ -5,6 +5,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("mp-common-lib")
     id("org.jetbrains.compose")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 // https://github.com/gradle/gradle/issues/15383
@@ -15,15 +16,13 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                //implementation(platform(libs.compose.bom))
+                //implementation(project.dependencies.platform(libs.compose.bom))
                 //implementation(compose.ui)
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material3)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
-//                implementation("dev.icerock.moko:resources:0.23.0")
-//                implementation("dev.icerock.moko:resources-compose:0.23.0")
                 implementation(libs.moko.resources)
                 implementation(libs.moko.resourcesCompose)
                 //implementation(compose.preview)

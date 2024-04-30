@@ -15,7 +15,10 @@ kotlin {
                 api(libs.kotlinx.coroutines.core)
                 api(libs.kotlinx.serializationJson)
                 api(libs.kotlinx.serializationCbor)
+
+                api(project.dependencies.platform(libs.koin.bom))
                 api(libs.koin.core)
+
                 api(libs.ktorUtils)
                 api(libs.kotlinx.dateTime)
             }

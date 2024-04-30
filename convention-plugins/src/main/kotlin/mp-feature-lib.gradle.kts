@@ -1,4 +1,4 @@
-@file:Suppress("UnstableApiUsage", "UNUSED_VARIABLE")
+
 
 import org.gradle.accessors.dm.LibrariesForLibs
 
@@ -14,8 +14,8 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(project.dependencies.platform(libs.koin.bom))
                 implementation(libs.koin.core)
-                //implementation("io.insert-koin:koin-core:3.4.0")
                 implementation(project(":shared:core:arch"))
                 implementation(project(":shared:core:utils"))
             }

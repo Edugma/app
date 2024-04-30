@@ -16,6 +16,8 @@ kotlin {
                 implementation(projects.shared.core.navigation)
                 implementation(projects.shared.core.arch)
                 implementation(projects.shared.core.api)
+
+                implementation(project.dependencies.platform(libs.koin.bom))
                 implementation(libs.koin.core)
 
                 implementation(projects.shared.core.storage)
