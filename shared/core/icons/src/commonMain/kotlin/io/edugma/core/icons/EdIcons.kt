@@ -1,3 +1,5 @@
 package io.edugma.core.icons
 
-typealias EdIcons = MR.images
+import edugma.shared.core.icons.generated.resources.Res
+
+typealias EdIcons = Res.drawable

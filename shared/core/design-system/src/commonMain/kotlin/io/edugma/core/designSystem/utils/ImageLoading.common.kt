@@ -147,7 +147,7 @@ abstract class BaseImageLoader {
         this.loader = ImageLoader {
             interceptor {
                 memoryCacheConfig {
-                    maxSizeBytes(memCacheSize)
+                    maxSize(memCacheSize)
                 }
                 diskCache?.let {
                     diskCacheConfig {

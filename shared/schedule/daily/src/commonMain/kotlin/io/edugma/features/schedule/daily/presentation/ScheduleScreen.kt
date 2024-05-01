@@ -30,8 +30,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import dev.icerock.moko.resources.compose.painterResource
-import dev.icerock.moko.resources.compose.stringResource
+
+
+import edugma.shared.core.resources.generated.resources.Res
+import edugma.shared.core.resources.generated.resources.*
+import edugma.shared.core.icons.generated.resources.*
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import io.edugma.core.api.utils.DateFormat
 import io.edugma.core.api.utils.format
 import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
@@ -47,7 +52,6 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.designSystem.tokens.shapes.top
 import io.edugma.core.icons.EdIcons
-import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ui.bindTo
 import io.edugma.core.utils.ui.onPageChanged
@@ -95,7 +99,7 @@ fun ScheduleContent(
             ) {
                 Column(Modifier.fillMaxWidth()) {
                     EdTopAppBar(
-                        title = stringResource(MR.strings.sch_schedule),
+                        title = stringResource(Res.string.sch_schedule),
                         subtitle = state.selectedDate.format(DateFormat.FULL_PRETTY),
                         onNavigationClick = { onAction(ScheduleDailyAction.OnBack) },
                         actions = {
@@ -180,7 +184,7 @@ fun BoxScope.Fab(isVisible: Boolean, onClick: () -> Unit) {
             onClick = onClick,
             containerColor = EdTheme.colorScheme.primary,
             text = {
-                Text(text = stringResource(MR.strings.sch_to_today))
+                Text(text = stringResource(Res.string.sch_to_today))
             },
             icon = {
                 Icon(

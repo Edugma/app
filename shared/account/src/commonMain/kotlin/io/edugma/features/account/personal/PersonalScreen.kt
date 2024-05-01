@@ -24,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import dev.icerock.moko.resources.compose.painterResource
 import io.edugma.core.api.utils.format
 import io.edugma.core.api.utils.getInitials
 import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
@@ -45,6 +44,9 @@ import io.edugma.core.utils.viewmodel.getViewModel
 import io.edugma.features.account.domain.model.Order
 import io.edugma.features.account.domain.model.Personal
 import io.edugma.features.account.domain.model.applications.Application
+import edugma.shared.core.icons.generated.resources.*
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun PersonalScreen(viewModel: PersonalViewModel = getViewModel()) {

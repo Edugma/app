@@ -8,7 +8,6 @@ ksp = "2.0.0-RC2-1.0.20"
 kotlin = "2.0.0-RC2"
 androidGradlePlugin = "8.4.0"
 kotlinter = "3.14.0"
-ktorfitGradle = "1.0.0"
 kotlinxAtomic = "0.24.0"
 
 
@@ -21,7 +20,6 @@ buildKonfig = "0.15.1"
 
 composeBom = "2024.04.01"
 composeMultiplatform = "1.6.10-beta03"
-composeCompiler = "1.5.11"
 
 essenty = "2.0.0"
 
@@ -34,8 +32,6 @@ koinBom = "3.5.6"
 ktorfit = "1.14.0"
 ktor = "2.3.10"
 ktorUtils = "2.3.10"
-
-mokoResourcesVersion = "0.23.0"
 
 imageLoader = "1.7.8"
 
@@ -66,7 +62,6 @@ gradlePlugin-ktlint = { module = "org.jmailen.gradle:kotlinter-gradle", version.
 gradlePlugin-ksp = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp"}
 gradlePlugin-composePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "composeMultiplatform" }
 gradlePlugin-composeCompiler = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
-gradlePlugin-mokoResources = { module = "dev.icerock.moko:resources-generator", version.ref = "mokoResourcesVersion" }
 
 # Common
 androidx-datastore = { module = "androidx.datastore:datastore-preferences-core", version.ref = "androidxDatastore" }
@@ -75,7 +70,6 @@ androidx-annotations = { module = "androidx.annotation:annotation", version.ref 
 
 composeMP-utils = { module = "org.jetbrains.compose.ui:ui-util", version.ref = "composeMultiplatform" }
 
-compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "composeCompiler" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 compose-ui = { group = "androidx.compose.ui", name = "ui" }
@@ -102,10 +96,6 @@ kotlinx-dateTime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 kotlinx-serializationCbor = { module = "org.jetbrains.kotlinx:kotlinx-serialization-cbor", version.ref = "kotlinxSerialization" }
 kotlinx-serializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 kotlinx-atomic = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kotlinxAtomic" }
-
-moko-resources = { module = "dev.icerock.moko:resources", version.ref = "mokoResourcesVersion" }
-moko-resourcesCompose = { module = "dev.icerock.moko:resources-compose", version.ref = "mokoResourcesVersion" }
-moko-resourcesTest = { module = "dev.icerock.moko:resources-test", version.ref = "mokoResourcesVersion" }
 
 uuid = { module = "com.benasher44:uuid", version.ref = "uuid" }
 
@@ -147,7 +137,7 @@ test-espressoCore = { module = "androidx.test.espresso:espresso-core", version =
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-ktorfit = { id = "de.jensklingenberg.ktorfit", version.ref = "ktorfitGradle" }
+ktorfit = { id = "de.jensklingenberg.ktorfit", version.ref = "ktorfit" }
 kotlinx-atomic = { id = "org.jetbrains.kotlin.plugin.atomicfu", version.ref = "kotlin" }
 buildKonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildKonfig" }
 

@@ -17,7 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
-import dev.icerock.moko.resources.compose.painterResource
+import edugma.shared.core.icons.generated.resources.ic_fluent_chevron_left_20_filled
+import org.jetbrains.compose.resources.painterResource
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.ifNotNull

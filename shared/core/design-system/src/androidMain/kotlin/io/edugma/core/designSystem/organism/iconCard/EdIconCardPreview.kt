@@ -2,8 +2,9 @@ package io.edugma.core.designSystem.organism.iconCard
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import dev.icerock.moko.resources.compose.painterResource
+import org.jetbrains.compose.resources.painterResource
 import io.edugma.core.designSystem.theme.EdTheme
+import edugma.shared.core.icons.generated.resources.*
 import io.edugma.core.icons.EdIcons
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 

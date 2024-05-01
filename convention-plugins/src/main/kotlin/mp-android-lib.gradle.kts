@@ -8,18 +8,13 @@ plugins {
 // https://github.com/gradle/gradle/issues/15383
 val libs = the<LibrariesForLibs>()
 
-kotlin {
-    compilerOptions {
-        apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
-    }
-}
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
     androidTarget {
         compilations.all {
             kotlinOptions {
                 jvmTarget = libs.versions.java.get()
-                freeCompilerArgs += "-Xjdk-release=${JavaVersion.VERSION_1_8}"
+                freeCompilerArgs += "-Xjdk-release=${libs.versions.java.get()}"
             }
         }
         //https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html

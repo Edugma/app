@@ -20,8 +20,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import dev.icerock.moko.resources.compose.painterResource
-import dev.icerock.moko.resources.compose.stringResource
+
+
+import edugma.shared.core.resources.generated.resources.Res
+import edugma.shared.core.resources.generated.resources.*
+import edugma.shared.core.icons.generated.resources.*
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import io.edugma.core.api.utils.DateFormat
 import io.edugma.core.api.utils.TimeFormat
 import io.edugma.core.api.utils.formatDate
@@ -40,7 +45,6 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.designSystem.utils.SecondaryContent
 import io.edugma.core.icons.EdIcons
-import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.viewmodel.getViewModel
 import kotlinx.datetime.TimeZone
@@ -73,7 +77,7 @@ private fun ScheduleHistoryContent(
         ) {
             Column(Modifier.fillMaxWidth().statusBarsPadding()) {
                 EdTopAppBar(
-                    title = stringResource(MR.strings.schedule_history),
+                    title = stringResource(Res.string.schedule_history),
                     onNavigationClick = { onAction(ScheduleHistoryAction.OnBack) },
                     windowInsets = WindowInsets.statusBars,
                     colors = EdTopAppBarDefaults.transparent(),

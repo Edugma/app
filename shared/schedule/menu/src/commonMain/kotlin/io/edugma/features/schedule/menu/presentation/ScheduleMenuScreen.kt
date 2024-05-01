@@ -17,8 +17,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import dev.icerock.moko.resources.compose.painterResource
-import dev.icerock.moko.resources.compose.stringResource
+
+
+import edugma.shared.core.resources.generated.resources.Res
+import edugma.shared.core.resources.generated.resources.*
+import edugma.shared.core.icons.generated.resources.*
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.surface.EdSurface
@@ -27,7 +32,6 @@ import io.edugma.core.designSystem.molecules.button.EdButtonSize
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.icons.EdIcons
-import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.viewmodel.getViewModel
@@ -75,7 +79,7 @@ fun ScheduleMenuContent(
             ) {
                 Row(Modifier.fillMaxWidth()) {
                     Text(
-                        text = stringResource(MR.strings.sch_schedule),
+                        text = stringResource(Res.string.sch_schedule),
                         style = EdTheme.typography.headlineMedium,
                         modifier = Modifier
                             .padding(start = 16.dp)
@@ -158,7 +162,7 @@ private fun NeedSelectScheduleSource(
             .fillMaxWidth()
             .padding(horizontal = 8.dp),
     ) {
-        Text(text = stringResource(MR.strings.schedule_menu_need_select_source))
+        Text(text = stringResource(Res.string.schedule_menu_need_select_source))
         SpacerHeight(height = 10.dp)
         EdButton(
             text = "Выбрать расписание",

@@ -3,8 +3,6 @@ package io.edugma.core.designSystem.atoms.lottie
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.remember
-import dev.icerock.moko.resources.AssetResource
-import dev.icerock.moko.resources.FileResource
 import kotlin.jvm.JvmInline
 
 @Immutable
@@ -57,14 +55,7 @@ sealed interface LottieSource {
      * or else this may fail.
      */
     @JvmInline
-    value class FileRes(val file: FileResource) : LottieSource
-
-    /**
-     * Load an animation from the assets directory of your app. This isn't type safe like [RawRes]
-     * so make sure that the path to your animation is correct this will fail.
-     */
-    @JvmInline
-    value class Asset(val asset: AssetResource) : LottieSource
+    value class FileRes(val file: String) : LottieSource
 
     /**
      * Load an animation from its json string.

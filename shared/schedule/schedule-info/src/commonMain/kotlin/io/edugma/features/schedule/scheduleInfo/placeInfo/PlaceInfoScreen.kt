@@ -23,8 +23,11 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import dev.icerock.moko.resources.compose.painterResource
-import dev.icerock.moko.resources.compose.stringResource
+import edugma.shared.core.resources.generated.resources.Res as CommonRes
+import edugma.shared.core.resources.generated.resources.*
+import edugma.shared.core.icons.generated.resources.*
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import io.edugma.core.api.utils.DateFormat
 import io.edugma.core.api.utils.TimeFormat
 import io.edugma.core.api.utils.format
@@ -33,7 +36,6 @@ import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.icons.EdIcons
-import io.edugma.core.resources.MR
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.viewmodel.getViewModel
@@ -172,7 +174,7 @@ private fun PlaceBuilding(place: CompactPlaceInfo.Building) {
             SpacerHeight(8.dp)
             val description = place.description!!
             EdLabel(
-                text = stringResource(MR.strings.schedule_sch_inf_description),
+                text = stringResource(CommonRes.string.schedule_sch_inf_description),
                 iconPainter = painterResource(EdIcons.ic_fluent_text_description_20_regular),
             )
             SpacerHeight(4.dp)
@@ -209,7 +211,7 @@ private fun PlaceOnline(place: CompactPlaceInfo.Online) {
             SpacerHeight(8.dp)
             val description = place.description!!
             EdLabel(
-                text = stringResource(MR.strings.schedule_sch_inf_description),
+                text = stringResource(CommonRes.string.schedule_sch_inf_description),
                 iconPainter = painterResource(EdIcons.ic_fluent_text_description_20_regular),
             )
             SpacerHeight(4.dp)
@@ -229,7 +231,7 @@ private fun PlaceOther(place: CompactPlaceInfo.Other) {
             SpacerHeight(8.dp)
             val description = place.description!!
             EdLabel(
-                text = stringResource(MR.strings.schedule_sch_inf_description),
+                text = stringResource(CommonRes.string.schedule_sch_inf_description),
                 iconPainter = painterResource(EdIcons.ic_fluent_text_description_20_regular),
             )
             SpacerHeight(4.dp)

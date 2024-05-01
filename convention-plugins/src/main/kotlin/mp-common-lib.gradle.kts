@@ -1,5 +1,6 @@
 @file:Suppress("UNUSED_VARIABLE")
 
+import gradle.kotlin.dsl.accessors._b2937d1b40dda98f7678619569c6e850.kotlin
 import org.gradle.accessors.dm.LibrariesForLibs
 
 plugins {
@@ -15,6 +16,10 @@ val libs = the<LibrariesForLibs>()
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
+//    compilerOptions {
+//        apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
+//    }
+    task("testClasses")
     applyDefaultHierarchyTemplate()
 
     sourceSets {

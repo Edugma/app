@@ -32,8 +32,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import dev.icerock.moko.resources.compose.painterResource
-import dev.icerock.moko.resources.compose.stringResource
+
+
+import edugma.shared.core.resources.generated.resources.Res
+import edugma.shared.core.resources.generated.resources.*
+import edugma.shared.core.icons.generated.resources.*
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import io.edugma.core.arch.pagination.PaginationUiState
 import io.edugma.core.designSystem.atoms.card.EdCard
@@ -55,7 +60,6 @@ import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
 import io.edugma.core.icons.EdIcons
-import io.edugma.core.resources.MR
 import io.edugma.core.ui.pagination.PagingFooter
 import io.edugma.core.ui.screen.FeatureBottomSheetScreen
 import io.edugma.core.utils.ClickListener
@@ -64,7 +68,6 @@ import io.edugma.core.utils.viewmodel.getViewModel
 import io.edugma.features.schedule.domain.model.source.ScheduleSourceType
 import io.edugma.features.schedule.sources.model.ScheduleSourceUiModel
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @Composable
 fun ScheduleSourcesScreen(viewModel: ScheduleSourcesViewModel = getViewModel()) {
@@ -162,7 +165,7 @@ private fun ScheduleSourcesContent(
         ) {
             Column(Modifier.fillMaxWidth()) {
                 EdTopAppBar(
-                    title = stringResource(MR.strings.schedule_sou_schedule_selection),
+                    title = stringResource(Res.string.schedule_sou_schedule_selection),
                     onNavigationClick = onBackClick,
                     windowInsets = WindowInsets.statusBars,
                 )
@@ -179,7 +182,7 @@ private fun ScheduleSourcesContent(
                     modifier = Modifier
                         .padding(horizontal = EdTheme.paddings.s)
                         .fillMaxWidth(),
-                    placeholder = stringResource(MR.strings.schedule_sou_search),
+                    placeholder = stringResource(Res.string.schedule_sou_search),
                 )
                 SpacerHeight(height = EdTheme.paddings.s)
             }
@@ -238,7 +241,7 @@ private fun FiltersSelector(
             modifier = Modifier
                 .padding(start = 16.dp, end = 16.dp)
                 .fillMaxWidth(),
-            placeholder = stringResource(MR.strings.schedule_sou_search),
+            placeholder = stringResource(Res.string.schedule_sou_search),
         )
         LazyColumn(Modifier.fillMaxWidth()) {
             items(filters) {
@@ -336,7 +339,7 @@ private fun ComplexSearch(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalResourceApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun Filter(
     title: String,
@@ -403,7 +406,6 @@ private fun ColumnScope.ScheduleSourceList(
     }
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun SourceItem(
     source: ScheduleSourceUiModel,

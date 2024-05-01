@@ -6,6 +6,7 @@ plugins {
 version = "1.0.0"
 
 kotlin {
+    task("testClasses")
     sourceSets {
         commonMain {
             dependencies {

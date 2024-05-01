@@ -4,7 +4,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import dev.icerock.moko.resources.compose.painterResource
+import org.jetbrains.compose.resources.painterResource
+import edugma.shared.core.icons.generated.resources.ic_fluent_chevron_right_20_filled
 import io.edugma.core.designSystem.organism.cell.EdCell
 import io.edugma.core.designSystem.organism.cell.EdCellPlaceholder
 import io.edugma.core.designSystem.organism.cell.EdCellSize

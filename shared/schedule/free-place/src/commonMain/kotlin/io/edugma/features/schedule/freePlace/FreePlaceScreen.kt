@@ -23,7 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import dev.icerock.moko.resources.compose.stringResource
+
 import io.edugma.core.api.utils.DateFormat
 import io.edugma.core.api.utils.TimeFormat
 import io.edugma.core.api.utils.format
@@ -34,12 +34,16 @@ import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.SecondaryContent
-import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.viewmodel.getViewModel
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
+import edugma.shared.core.icons.generated.resources.*
+import edugma.shared.core.resources.generated.resources.Res
+import edugma.shared.core.resources.generated.resources.schedule_fre_pla_find_free_place
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun FreePlaceScreen(viewModel: FreePlaceViewModel = getViewModel()) {
@@ -81,7 +85,7 @@ fun FreePlaceContent(
 
         Column(Modifier.fillMaxSize()) {
             EdTopAppBar(
-                title = stringResource(MR.strings.schedule_fre_pla_find_free_place),
+                title = stringResource(Res.string.schedule_fre_pla_find_free_place),
                 onNavigationClick = onBackClick,
             )
             Column(Modifier.padding(start = 8.dp, end = 8.dp)) {

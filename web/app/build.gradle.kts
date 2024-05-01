@@ -25,6 +25,7 @@ afterEvaluate {
 }
 
 kotlin {
+    task("testClasses")
     applyDefaultHierarchyTemplate()
 
     js(IR) {
@@ -74,7 +75,6 @@ kotlin {
                 implementation(projects.shared.core.api)
                 implementation(projects.shared.core.navigation)
 
-                // For moko resources
                 implementation(projects.shared.core.icons)
                 implementation(projects.shared.core.designSystem)
                 implementation(projects.shared.core.resources)
@@ -85,8 +85,6 @@ kotlin {
                 implementation(compose.material)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
-                implementation(libs.moko.resources)
-                implementation(libs.moko.resourcesCompose)
                 implementation(libs.essenty.instanceKeeper)
             }
         }

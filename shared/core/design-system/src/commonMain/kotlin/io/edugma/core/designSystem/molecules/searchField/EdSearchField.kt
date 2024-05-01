@@ -18,7 +18,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import dev.icerock.moko.resources.compose.painterResource
+import edugma.shared.core.icons.generated.resources.ic_fluent_dismiss_20_filled
+import edugma.shared.core.icons.generated.resources.ic_fluent_search_24_regular
+import org.jetbrains.compose.resources.painterResource
 import io.edugma.core.designSystem.molecules.textField.EdTextField
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.icons.EdIcons

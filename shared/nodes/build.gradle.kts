@@ -5,6 +5,15 @@ plugins {
     alias(libs.plugins.ktorfit)
 }
 
+configurations.all {
+    resolutionStrategy.eachDependency {
+        val requestedGroup = this.requested.group
+        if (requestedGroup == "org.jetbrains.kotlin") {
+            useVersion(libs.versions.kotlin.get())
+        }
+    }
+}
+
 kotlin {
     sourceSets {
         commonMain {
@@ -25,10 +34,6 @@ kotlin {
             }
         }
     }
-}
-
-configure<de.jensklingenberg.ktorfit.gradle.KtorfitGradleConfiguration> {
-    version = libs.versions.ktorfit.get()
 }
 
 dependencies {

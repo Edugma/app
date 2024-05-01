@@ -19,15 +19,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import dev.icerock.moko.resources.FileResource
-import dev.icerock.moko.resources.compose.stringResource
+import edugma.shared.core.resources.generated.resources.Res
+import edugma.shared.core.resources.generated.resources.*
+import edugma.shared.core.icons.generated.resources.*
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import io.edugma.core.designSystem.atoms.lottie.EdLottie
 import io.edugma.core.designSystem.atoms.lottie.LottieSource
 import io.edugma.core.designSystem.atoms.lottie.rememberLottiePainter
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
 import io.edugma.core.designSystem.theme.EdTheme
-import io.edugma.core.resources.MR
 import io.edugma.core.utils.ClickListener
 import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
 import io.edugma.features.schedule.domain.model.lesson.LessonEvent
@@ -39,9 +41,9 @@ import io.edugma.features.schedule.elements.model.ScheduleCalendarUiModel
 import kotlinx.datetime.LocalDate
 
 private val relaxAnims = listOf(
-    MR.files.sch_relax_0,
-    MR.files.sch_relax_1,
-    MR.files.sch_relax_2,
+    "files/sch_relax_0.json",
+    "files/sch_relax_1.json",
+    "files/sch_relax_2.json",
 )
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -82,7 +84,7 @@ fun SchedulePager(
 
 @Composable
 fun NoLessonsDay(
-    animation: FileResource,
+    animation: String,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
@@ -98,7 +100,7 @@ fun NoLessonsDay(
                 .fillMaxWidth(),
         )
         Text(
-            text = stringResource(MR.strings.sch_no_lessons_today),
+            text = stringResource(Res.string.sch_no_lessons_today),
             style = EdTheme.typography.titleLarge,
             modifier = Modifier
                 .weight(4f)

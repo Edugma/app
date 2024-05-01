@@ -4,7 +4,9 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.style.TextOverflow
-import dev.icerock.moko.resources.compose.painterResource
+import edugma.shared.core.icons.generated.resources.*
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import io.edugma.core.designSystem.molecules.chip.EdChip
 import io.edugma.core.designSystem.molecules.chip.EdChipForm
 import io.edugma.core.designSystem.theme.EdTheme

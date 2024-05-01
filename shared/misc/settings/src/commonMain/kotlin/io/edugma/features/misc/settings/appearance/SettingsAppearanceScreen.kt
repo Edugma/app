@@ -18,8 +18,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
-import dev.icerock.moko.resources.compose.painterResource
-import dev.icerock.moko.resources.compose.stringResource
+import edugma.shared.core.icons.generated.resources.ic_fluent_dark_theme_24_filled
+import edugma.shared.core.resources.generated.resources.Res
+import edugma.shared.core.resources.generated.resources.*
+import edugma.shared.core.icons.generated.resources.*
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import io.edugma.core.api.model.ThemeMode
 import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import io.edugma.core.designSystem.atoms.label.EdLabel
@@ -31,10 +35,11 @@ import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.icons.EdIcons
-import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.viewmodel.getViewModel
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun SettingsAppearanceScreen(viewModel: SettingsAppearanceViewModel = getViewModel()) {
@@ -62,7 +67,7 @@ private fun SettingsAppearanceContent(
             shape = EdTheme.shapes.large.bottom(),
         ) {
             EdTopAppBar(
-                title = stringResource(MR.strings.misc_set_appearance),
+                title = stringResource(Res.string.misc_set_appearance),
                 onNavigationClick = onBackClick,
                 windowInsets = WindowInsets.statusBars,
                 colors = EdTopAppBarDefaults.transparent(),

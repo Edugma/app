@@ -14,15 +14,7 @@ dependencies {
     implementation(libs.gradlePlugin.composePlugin)
     implementation(libs.gradlePlugin.composeCompiler)
     implementation(libs.gradlePlugin.android)
-    implementation(libs.gradlePlugin.mokoResources)
     implementation(libs.gradlePlugin.ktlint)
-
-//    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.20")
-//    implementation("org.jetbrains.compose:compose-gradle-plugin:1.4.0")
-//    implementation("com.android.tools.build:gradle:8.0.0")
-//    implementation("dev.icerock.moko:resources-generator:0.23.0")
-//    implementation("org.jmailen.gradle:kotlinter-gradle:3.14.0")
-
 
     //implementation(libs.gradlePlugin.ksp)
 

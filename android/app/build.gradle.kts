@@ -7,6 +7,7 @@ plugins {
     id("io.edugma.android-app")
     kotlin("android")
     id("lint")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 // TODO signing
 // https://github.com/gradle/gradle/issues/15383
@@ -66,9 +67,6 @@ android {
     buildFeatures {
         compose = true
         buildConfig = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
 }
 

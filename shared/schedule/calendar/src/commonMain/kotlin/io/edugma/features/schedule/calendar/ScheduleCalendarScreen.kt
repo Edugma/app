@@ -49,8 +49,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import dev.icerock.moko.resources.compose.painterResource
-import dev.icerock.moko.resources.compose.stringResource
+import edugma.shared.core.icons.generated.resources.ic_fluent_calendar_today_24_regular
+import edugma.shared.core.resources.generated.resources.Res
+import edugma.shared.core.resources.generated.resources.*
+import edugma.shared.core.icons.generated.resources.*
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
@@ -65,7 +69,6 @@ import io.edugma.core.designSystem.utils.LocalContentAlpha
 import io.edugma.core.designSystem.utils.SecondaryContent
 import io.edugma.core.designSystem.utils.ifThen
 import io.edugma.core.icons.EdIcons
-import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
@@ -79,6 +82,8 @@ import io.edugma.features.schedule.domain.model.compact.Importance
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ScheduleCalendarScreen(viewModel: ScheduleCalendarViewModel = getViewModel()) {
@@ -133,7 +138,7 @@ private fun ScheduleCalendarContent(
             elevatedAlpha = 0.9f,
         ) {
             EdTopAppBar(
-                title = stringResource(MR.strings.schedule_cal_calendar),
+                title = stringResource(Res.string.schedule_cal_calendar),
                 onNavigationClick = onBackClick,
                 windowInsets = WindowInsets.statusBars,
                 colors = EdTopAppBarDefaults.colors(

@@ -7,8 +7,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.SwipeToDismiss
-import androidx.compose.material3.rememberDismissState
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxValue
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
@@ -17,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.unit.dp
-import dev.icerock.moko.resources.compose.painterResource
+
 import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.card.EdCardDefaults
 import io.edugma.core.designSystem.atoms.label.EdLabel
@@ -28,6 +29,7 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
 import io.edugma.core.designSystem.utils.SecondaryContent
 import kotlinx.coroutines.delay
+import org.jetbrains.compose.resources.painterResource
 import kotlin.time.Duration
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,11 +46,11 @@ fun EdSnackbar(
     style: EdSnackbarStyle = EdSnackbarStyle.default,
 ) {
     // TODO Sometimes it doesn't dismissed after swipe
-    val dismissState = rememberDismissState()
+    val dismissState = rememberSwipeToDismissBoxState()
 
     LaunchedEffect(Unit) {
         snapshotFlow { dismissState.currentValue }.collect {
-            if (it != DismissValue.Default) {
+            if (it != SwipeToDismissBoxValue.Settled) {
                 onDismissed()
             }
         }
@@ -61,10 +63,10 @@ fun EdSnackbar(
         }
     }
 
-    SwipeToDismiss(
+    SwipeToDismissBox(
         state = dismissState,
         modifier = modifier,
-        dismissContent = {
+        content = {
             SnackbarContent(
                 title = title,
                 subtitle = subtitle,
@@ -74,7 +76,7 @@ fun EdSnackbar(
                 modifier = Modifier.padding(contentPadding),
             )
         },
-        background = {
+        backgroundContent = {
         },
     )
 }

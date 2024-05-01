@@ -18,8 +18,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import dev.icerock.moko.resources.compose.painterResource
-import dev.icerock.moko.resources.compose.stringResource
+import edugma.shared.core.resources.generated.resources.Res
+import edugma.shared.core.resources.generated.resources.*
+import edugma.shared.core.icons.generated.resources.*
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import io.edugma.core.api.utils.DateFormat
 import io.edugma.core.api.utils.capitalized
 import io.edugma.core.api.utils.format
@@ -39,7 +42,6 @@ import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.designSystem.tokens.shapes.top
 import io.edugma.core.designSystem.utils.SecondaryContent
 import io.edugma.core.icons.EdIcons
-import io.edugma.core.resources.MR
 import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.viewmodel.getViewModel
@@ -79,7 +81,7 @@ fun LessonsReviewContent(
             shape = EdTheme.shapes.large.bottom(),
         ) {
             EdTopAppBar(
-                title = stringResource(MR.strings.schedule_les_rev_lessons_review),
+                title = stringResource(Res.string.schedule_les_rev_lessons_review),
                 onNavigationClick = onBackClick,
                 windowInsets = WindowInsets.statusBars,
                 colors = EdTopAppBarDefaults.transparent(),
