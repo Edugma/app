@@ -1,5 +1,6 @@
 package io.edugma.core.arch.mvi.delegate
 
+import androidx.lifecycle.viewModelScope
 import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
 import io.edugma.core.arch.viewmodel.RestrictedApi
 import kotlinx.coroutines.CoroutineExceptionHandler

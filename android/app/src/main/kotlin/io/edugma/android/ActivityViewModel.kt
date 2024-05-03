@@ -11,7 +11,7 @@ import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 @Composable
 fun ProvideActivityViewModelStoreOwner(content: @Composable () -> Unit) {
     CompositionLocalProvider(
-        LocalViewModelStoreOwner provides LocalContext.current.getActivity(),
+        LocalViewModelStoreOwner provides LocalContext.current.getActivity()!!,
         content = content,
     )
 }

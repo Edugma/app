@@ -22,7 +22,7 @@ inline fun <TState, TAction, reified T : BaseActionViewModel<TState, TAction>> g
 
     if (viewModelRef.value == null) {
         val viewModelKey = T::class.qualifiedName.orEmpty()
-        val viewModel = viewModelStoreOwner.viewModelStore.get(viewModelKey)
+        val viewModel = viewModelStoreOwner.viewModelStore.get(viewModelKey) as? T
             ?: koinInject<T>().apply {
                 viewModelStoreOwner.viewModelStore.put(viewModelKey, this)
             }

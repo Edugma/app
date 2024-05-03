@@ -38,8 +38,9 @@ data class NavigationUiState(
     }
 
     private fun activateCurrentScreen(): NavigationUiState {
-        val newCurrentScreen = backStack.last().lifecycleReset()
-        newCurrentScreen.lifecycleRegistry.create()
+        val newCurrentScreen = backStack.last()
+        newCurrentScreen.lifecycleReset()
+        newCurrentScreen.lifecycleCreate()
         return replaceLastBackStack(newCurrentScreen)
     }
 

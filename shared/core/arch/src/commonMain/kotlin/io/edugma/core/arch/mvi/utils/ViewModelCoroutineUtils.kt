@@ -1,5 +1,6 @@
 package io.edugma.core.arch.mvi.utils
 
+import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import io.edugma.core.api.utils.IO
 import io.edugma.core.arch.mvi.delegate.DebounceDelegate
@@ -81,7 +82,6 @@ internal fun BaseActionViewModel<*, *>.launchCoroutine(
             Logger.e("launchCoroutine: ", it, tag = "ViewModelCoroutine")
         }
     }
-    @OptIn(RestrictedApi::class)
     return viewModelScope.launch(
         context = coroutineContext,
         block = block,

@@ -11,19 +11,25 @@ import io.edugma.navigation.core.screen.ScreenBundle
 data class ScreenUiState(
     val screenBundle: ScreenBundle,
     val ui: @Composable (ScreenBundle) -> Unit,
-    private var _lifecycleRegistry = LifecycleRegistry(this),
+    private var _lifecycleRegistry: LifecycleRegistry? = null,
     override val viewModelStore: ViewModelStore = ViewModelStore(),
 ) : LifecycleOwner, ViewModelStoreOwner {
 
+    init {
+        if (_lifecycleRegistry == null) {
+            _lifecycleRegistry = LifecycleRegistry(this)
+        }
+    }
+
     override val lifecycle: Lifecycle
-        get() = _lifecycleRegistry
+        get() = _lifecycleRegistry!!
 
     fun lifecycleCreate() {
-        _lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
+        _lifecycleRegistry!!.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
     }
 
     fun lifecycleDestroy() {
-        _lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+        _lifecycleRegistry!!.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     }
 
     fun lifecycleReset() {

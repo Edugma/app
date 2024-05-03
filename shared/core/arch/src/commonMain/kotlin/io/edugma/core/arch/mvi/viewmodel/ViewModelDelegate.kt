@@ -1,5 +1,6 @@
 package io.edugma.core.arch.mvi.viewmodel
 
+import androidx.lifecycle.viewModelScope
 import io.edugma.core.arch.mvi.StateStore
 import io.edugma.core.arch.viewmodel.RestrictedApi
 import kotlinx.coroutines.CoroutineExceptionHandler
