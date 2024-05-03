@@ -7,10 +7,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import io.edugma.navigation.core.graph.ScreenGraphBuilder
 import io.edugma.navigation.core.graph.ScreenModule
-import io.edugma.navigation.core.instanceKeeper.LocalInstanceKeeperOwner
-import io.edugma.navigation.core.lifecycle.LocalScreenLifecycleOwner
 import io.edugma.navigation.core.navigator.EdugmaNavigator
 import io.edugma.navigation.core.screen.ScreenBundle
 
@@ -34,8 +34,8 @@ fun EdugmaNavigation(
     }
     Crossfade(targetState = currentScreen) { screenUiState ->
         CompositionLocalProvider(
-            LocalScreenLifecycleOwner provides screenUiState,
-            LocalInstanceKeeperOwner provides screenUiState,
+            LocalLifecycleOwner provides screenUiState,
+            LocalViewModelStoreOwner provides screenUiState,
         ) {
             screenUiState.ui(screenUiState.screenBundle)
         }

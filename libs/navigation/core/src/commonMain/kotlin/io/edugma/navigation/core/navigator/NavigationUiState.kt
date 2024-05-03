@@ -2,9 +2,6 @@ package io.edugma.navigation.core.navigator
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
-import com.arkivanov.essenty.lifecycle.LifecycleRegistry
-import com.arkivanov.essenty.lifecycle.create
-import com.arkivanov.essenty.lifecycle.destroy
 import io.edugma.navigation.core.screen.Screen
 import io.edugma.navigation.core.screen.ScreenBundle
 
@@ -41,9 +38,7 @@ data class NavigationUiState(
     }
 
     private fun activateCurrentScreen(): NavigationUiState {
-        val newCurrentScreen = backStack.last().copy(
-            lifecycleRegistry = LifecycleRegistry(),
-        )
+        val newCurrentScreen = backStack.last().lifecycleReset()
         newCurrentScreen.lifecycleRegistry.create()
         return replaceLastBackStack(newCurrentScreen)
     }
@@ -165,11 +160,11 @@ data class NavigationUiState(
     }
 
     private fun deactivateScreen(screen: ScreenUiState) {
-        screen.lifecycleRegistry.destroy()
+        screen.lifecycleDestroy()
     }
 
     private fun processRemovedScreen(screen: ScreenUiState) {
-        screen.instanceKeeperDispatcher.destroy()
+        screen.viewModelStore.clear()
     }
 
     companion object {
@@ -177,7 +172,7 @@ data class NavigationUiState(
             val state = NavigationUiState(
                 backStack = listOf(startScreen),
             )
-            startScreen.lifecycleRegistry.create()
+            startScreen.lifecycleCreate()
 
             return state
         }

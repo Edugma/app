@@ -1,11 +1,12 @@
 package io.edugma.core.arch.mvi.viewmodel
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import io.edugma.core.arch.mvi.ActionProducer
 import io.edugma.core.arch.mvi.StateStore
 import io.edugma.core.arch.mvi.impl.SimpleStateStore
 import io.edugma.core.arch.viewmodel.RestrictedApi
-import io.edugma.core.arch.viewmodel.ViewModel
 import io.edugma.core.navigation.core.Router
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,7 +30,6 @@ abstract class BaseActionViewModel<TState, TAction>(
     protected val screenResultProvider: ScreenResultProvider by inject()
 
     init {
-        @OptIn(RestrictedApi::class)
         viewModelScope.launch(Dispatchers.Default) {
             stateFlow.collect {
                 Logger.d(it.toString(), tag = "STATE")

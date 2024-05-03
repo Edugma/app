@@ -9,18 +9,13 @@ kotlin {
                 api(projects.shared.core.api)
                 api(projects.libs.navigation.core)
                 api(projects.shared.core.navigation)
-                api(libs.essenty.instanceKeeper)
-                api(libs.essenty.lifecycle)
+                api(libs.androidx.lifecycle.viewmodel)
+                api(libs.androidx.lifecycle.runtime)
 
                 implementation(project.dependencies.platform(libs.koin.bom))
                 implementation(libs.koin.core)
                 implementation(libs.koin.compose)
                 implementation(libs.kotlinx.dateTime)
-            }
-        }
-        androidMain {
-            dependencies {
-                implementation(libs.androidx.viewmodel.compose)
             }
         }
     }

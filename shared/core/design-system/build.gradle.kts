@@ -22,9 +22,6 @@ kotlin {
             dependencies {
                 implementation(libs.lottie)
                 implementation(libs.compose.activity)
-                //implementation(libs.androidx.lifecycleRuntime)
-                //implementation(libs.androidx.coreKtx)
-                //implementation(libs.androidx.appCompat)
             }
         }
     }

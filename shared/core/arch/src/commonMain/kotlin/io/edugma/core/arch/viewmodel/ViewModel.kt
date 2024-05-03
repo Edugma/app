@@ -2,7 +2,7 @@ package io.edugma.core.arch.viewmodel
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import com.arkivanov.essenty.instancekeeper.InstanceKeeper
+import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -20,22 +20,6 @@ import kotlinx.coroutines.cancel
 )
 @Retention(AnnotationRetention.BINARY)
 annotation class RestrictedApi
-
-open class ViewModel : InstanceKeeper.Instance {
-
-    @RestrictedApi
-    val viewModelScope: CoroutineScope =
-        CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
-
-    open fun onCleared() {
-    }
-
-    override fun onDestroy() {
-        @OptIn(RestrictedApi::class)
-        viewModelScope.cancel()
-        onCleared()
-    }
-}
 
 @Composable
 inline fun <reified T : ViewModel> T.bind(crossinline onBind: () -> Unit) {

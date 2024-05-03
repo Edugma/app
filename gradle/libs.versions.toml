@@ -15,13 +15,13 @@ kotlinxAtomic = "0.24.0"
 androidxAnnotations = "1.7.1"
 androidxDatastore = "1.1.0"
 androidxCollections = "1.4.0"
+androidxLifecycle = "2.8.0-beta02"
+androidxNavigation = "2.7.0-alpha03"
 
 buildKonfig = "0.15.1"
 
 composeBom = "2024.04.01"
 composeMultiplatform = "1.6.10-beta03"
-
-essenty = "2.0.0"
 
 kotlinxDateTime = "0.6.0-RC.2"
 kotlinCoroutines = "1.8.0"
@@ -46,7 +46,6 @@ google-maps-compose = "2.11.1"
 play-service-maps = "18.2.0"
 androidxViewmodel = "2.7.0"
 
-androidxLifecycle = "2.7.0"
 composeActivity = "1.9.0"
 coreKtx = "1.12.0"
 appcompat = "1.6.1"
@@ -67,6 +66,10 @@ gradlePlugin-composeCompiler = { module = "org.jetbrains.kotlin:compose-compiler
 androidx-datastore = { module = "androidx.datastore:datastore-preferences-core", version.ref = "androidxDatastore" }
 androidx-collections = { module = "androidx.collection:collection", version.ref = "androidxCollections" }
 androidx-annotations = { module = "androidx.annotation:annotation", version.ref = "androidxAnnotations" }
+androidx-lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
+androidx-lifecycle-runtime = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime", version.ref = "androidxLifecycle" }
+androidx-navigation-runtime = { module = "org.jetbrains.androidx.navigation:navigation-runtime", version.ref = "androidxNavigation" }
+androidx-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "androidxNavigation" }
 
 composeMP-utils = { module = "org.jetbrains.compose.ui:ui-util", version.ref = "composeMultiplatform" }
 
@@ -77,9 +80,6 @@ compose-uiTest = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 compose-uiTooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-uiToolingPreview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-uiUtil = { group = "androidx.compose.ui", name = "ui-util" }
-
-essenty-lifecycle = { module = "com.arkivanov.essenty:lifecycle", version.ref = "essenty" }
-essenty-instanceKeeper = { module = "com.arkivanov.essenty:instance-keeper", version.ref = "essenty" }
 
 imageLoader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "imageLoader" }
 
@@ -112,10 +112,8 @@ ktorUtils = { module = "io.ktor:ktor-utils", version.ref = "ktorUtils" }
 androidx-appCompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx-appWidget = { module = "androidx.glance:glance-appwidget", version.ref = "glance" }
 androidx-coreKtx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
-androidx-lifecycleRuntime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
 androidx-splashScreen = { module = "androidx.core:core-splashscreen", version.ref = "splashScreen" }
 androidx-startup = { module = "androidx.startup:startup-runtime", version.ref = "startup" }
-androidx-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxViewmodel" }
 
 compose-activity = { module = "androidx.activity:activity-compose", version.ref = "composeActivity" }
 

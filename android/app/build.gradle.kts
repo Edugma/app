@@ -87,8 +87,7 @@ dependencies {
     implementation(libs.androidx.coreKtx)
     implementation(libs.androidx.appCompat)
     implementation(libs.androidx.startup)
-    implementation(libs.androidx.viewmodel.compose)
-    implementation(libs.essenty.instanceKeeper)
+    implementation(libs.androidx.lifecycle.viewmodel)
     //implementation("androidx.compose.runtime:runtime-tracing:1.0.0-alpha03")
 
     testImplementation(libs.test.junit)

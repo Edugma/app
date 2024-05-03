@@ -7,9 +7,9 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(libs.essenty.lifecycle)
-                implementation(libs.essenty.instanceKeeper)
                 implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.androidx.lifecycle.viewmodel)
+                implementation(libs.androidx.navigation.runtime)
             }
         }
 

@@ -66,7 +66,7 @@ class MainActivity : ComponentActivity() {
                 )
                 onDispose {  }
             }
-            ProvideActivityInstanceKeeperOwner {
+            ProvideActivityViewModelStoreOwner {
                 MainScreen()
             }
         }

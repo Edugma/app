@@ -1,7 +1,6 @@
 package io.edugma.navigation.core.navigator
 
 import androidx.compose.runtime.Composable
-import com.arkivanov.essenty.lifecycle.create
 import io.edugma.navigation.core.graph.ScreenGraphBuilder
 import io.edugma.navigation.core.screen.Screen
 import io.edugma.navigation.core.screen.ScreenBundle
