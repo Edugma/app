@@ -70,6 +70,17 @@ android {
     }
 }
 
+configurations.all {
+    resolutionStrategy.eachDependency {
+        val requestedGroup = this.requested.group
+        if (requestedGroup == "org.jetbrains.kotlin") {
+            useVersion(libs.versions.kotlin.get())
+        } else if (requestedGroup.startsWith("io.ktor")) {
+            useVersion(libs.versions.ktor.get())
+        }
+    }
+}
+
 dependencies {
     implementation(project(":shared:app"))
     implementation(project(":android:resources"))

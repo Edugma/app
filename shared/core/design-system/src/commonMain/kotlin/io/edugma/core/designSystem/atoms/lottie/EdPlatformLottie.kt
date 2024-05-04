@@ -6,7 +6,7 @@ import androidx.compose.ui.layout.ContentScale
 
 @Composable
 internal expect fun EdPlatformLottie(
-    lottiePainter: LottiePainter,
+    lottieSource: LottieSource,
     modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.Fit,
 )

@@ -30,10 +30,10 @@ kotlinxSerialization = "1.6.3"
 koinBom = "3.5.6"
 
 ktorfit = "1.14.0"
-ktor = "2.3.10"
-ktorUtils = "2.3.10"
+ktor = "3.0.0-wasm2"
 
 imageLoader = "1.7.8"
+kottie = "1.8.3"
 
 uuid = "0.8.4"
 kermit = "2.0.3"
@@ -82,6 +82,7 @@ compose-uiToolingPreview = { group = "androidx.compose.ui", name = "ui-tooling-p
 compose-uiUtil = { group = "androidx.compose.ui", name = "ui-util" }
 
 imageLoader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "imageLoader" }
+kottie = { module = "io.github.ismai117:kottie", version.ref = "kottie" }
 
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 
@@ -106,7 +107,7 @@ ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-contentNegotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-client-serialization-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
-ktorUtils = { module = "io.ktor:ktor-utils", version.ref = "ktorUtils" }
+ktorUtils = { module = "io.ktor:ktor-utils", version.ref = "ktor" }
 
 # Android
 androidx-appCompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }

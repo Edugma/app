@@ -11,7 +11,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.lottie.EdLottie
-import io.edugma.core.designSystem.atoms.lottie.LottiePainter
+import io.edugma.core.designSystem.atoms.lottie.LottieSource
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.button.EdButtonSize
 import io.edugma.core.designSystem.theme.EdTheme
@@ -21,7 +21,7 @@ import io.edugma.core.designSystem.utils.SecondaryContent
 fun EdFullScreenMessage(
     title: String,
     subtitle: String?,
-    painter: LottiePainter,
+    lottieSource: LottieSource,
     actionTitle: String?,
     modifier: Modifier = Modifier,
     onAction: (() -> Unit)? = null,
@@ -33,7 +33,7 @@ fun EdFullScreenMessage(
             verticalArrangement = Arrangement.Center,
         ) {
             EdLottie(
-                lottiePainter = painter,
+                lottieSource = lottieSource,
                 modifier = Modifier
                     .fillMaxWidth(),
             )

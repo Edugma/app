@@ -13,12 +13,12 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 // android
 @Composable
 internal actual fun EdPlatformLottie(
-    lottiePainter: LottiePainter,
+    lottieSource: LottieSource,
     modifier: Modifier,
     contentScale: ContentScale,
 ) {
 
-    val composition by rememberLottieComposition(spec = lottiePainter.source.toLottie())
+    val composition by rememberLottieComposition(spec = lottieSource.toLottie())
     val progress by animateLottieCompositionAsState(
         composition = composition,
         iterations = LottieConstants.IterateForever,
@@ -34,7 +34,6 @@ internal actual fun EdPlatformLottie(
 
 private fun LottieSource.toLottie(): LottieCompositionSpec {
     return when (this) {
-        is LottieSource.File -> LottieCompositionSpec.File(this.fileName)
         is LottieSource.FileRes -> LottieCompositionSpec.File(this.file)
         is LottieSource.JsonString -> LottieCompositionSpec.JsonString(this.jsonString)
         is LottieSource.Url -> LottieCompositionSpec.Url(this.url)

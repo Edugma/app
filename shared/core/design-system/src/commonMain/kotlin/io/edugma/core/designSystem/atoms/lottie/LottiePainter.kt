@@ -6,28 +6,6 @@ import androidx.compose.runtime.remember
 import kotlin.jvm.JvmInline
 
 @Immutable
-class LottiePainter(
-    val source: LottieSource,
-    val alternativeUrl: String,
-)
-
-/**
- * @param alternativeUrl Url для картинки на ios
- */
-@Composable
-fun rememberLottiePainter(
-    source: LottieSource,
-    alternativeUrl: String,
-): LottiePainter {
-    return remember(source, alternativeUrl) {
-        LottiePainter(
-            source = source,
-            alternativeUrl = alternativeUrl,
-        )
-    }
-}
-
-@Immutable
 sealed interface LottieSource {
     /**
      * Load an animation from the internet. Lottie has a default network stack that will use
@@ -42,13 +20,6 @@ sealed interface LottieSource {
      */
     @JvmInline
     value class Url(val url: String) : LottieSource
-
-    /**
-     * Load an animation from an arbitrary file. Make sure that your app has permissions to read it
-     * or else this may fail.
-     */
-    @JvmInline
-    value class File(val fileName: String) : LottieSource
 
     /**
      * Load an animation from an arbitrary file. Make sure that your app has permissions to read it

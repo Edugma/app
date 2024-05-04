@@ -16,6 +16,7 @@ kotlin {
                 api(projects.shared.core.icons)
                 api(projects.shared.core.resources)
                 implementation(libs.imageLoader)
+                implementation(libs.kottie)
             }
         }
         androidMain {

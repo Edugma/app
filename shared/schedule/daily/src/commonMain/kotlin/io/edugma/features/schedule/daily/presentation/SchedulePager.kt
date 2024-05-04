@@ -21,12 +21,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import edugma.shared.core.resources.generated.resources.Res
 import edugma.shared.core.resources.generated.resources.*
-import edugma.shared.core.icons.generated.resources.*
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import io.edugma.core.designSystem.atoms.lottie.EdLottie
 import io.edugma.core.designSystem.atoms.lottie.LottieSource
-import io.edugma.core.designSystem.atoms.lottie.rememberLottiePainter
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.organism.pullRefresh.EdPullRefresh
 import io.edugma.core.designSystem.theme.EdTheme
@@ -89,12 +86,8 @@ fun NoLessonsDay(
 ) {
     Column(modifier = modifier) {
         Spacer(modifier = Modifier.weight(1f))
-        val painter = rememberLottiePainter(
-            source = LottieSource.FileRes(animation),
-            alternativeUrl = "https://raw.githubusercontent.com/Edugma/resources/main/42410-sleeping-polar-bear.gif",
-        )
         EdLottie(
-            lottiePainter = painter,
+            lottieSource = LottieSource.FileRes(animation),
             modifier = Modifier
                 .weight(5f)
                 .fillMaxWidth(),
