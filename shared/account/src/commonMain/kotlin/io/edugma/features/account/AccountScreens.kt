@@ -1,7 +1,7 @@
 package io.edugma.features.account
 
 import io.edugma.core.navigation.AccountScreens
-import io.edugma.core.navigation.MainScreen
+import io.edugma.core.navigation.MainDestination
 import io.edugma.features.account.menu.MenuScreen
 import io.edugma.features.account.payments.PaymentsScreen
 import io.edugma.features.account.people.PeopleScreenType
@@ -9,27 +9,31 @@ import io.edugma.features.account.people.presentation.PeopleScreen
 import io.edugma.features.account.performance.PerformanceScreen
 import io.edugma.features.account.personal.PersonalScreen
 import io.edugma.features.account.web.WebScreen
-import io.edugma.navigation.core.graph.screenModule
+import io.edugma.navigation.core.compose.rememberNavArgs
+import io.edugma.navigation.core.graph.NavGraphBuilder
+import io.edugma.navigation.core.graph.composeScreen
+import io.edugma.navigation.core.graph.graph
 
-val accountScreens = screenModule {
-    groupScreen(MainScreen.Account, AccountScreens.Menu) {
-        screen(AccountScreens.Menu) { MenuScreen() }
-        screen(AccountScreens.Payments) { PaymentsScreen() }
-        screen(AccountScreens.Teachers) {
+fun NavGraphBuilder.accountScreens() {
+    graph(MainDestination.Account, AccountScreens.Menu) {
+        composeScreen(AccountScreens.Menu) { MenuScreen() }
+        composeScreen(AccountScreens.Payments) { PaymentsScreen() }
+        composeScreen(AccountScreens.Teachers) {
             PeopleScreen(type = PeopleScreenType.teachers())
         }
-        screen(AccountScreens.Classmates) {
+        composeScreen(AccountScreens.Classmates) {
             PeopleScreen(type = PeopleScreenType.classmates())
         }
-        screen(AccountScreens.Students) {
+        composeScreen(AccountScreens.Students) {
             PeopleScreen(type = PeopleScreenType.students())
         }
-        screen(AccountScreens.Marks) { PerformanceScreen() }
-        screen(AccountScreens.Personal) { PersonalScreen() }
-        screen(AccountScreens.Web) {
+        composeScreen(AccountScreens.Marks) { PerformanceScreen() }
+        composeScreen(AccountScreens.Personal) { PersonalScreen() }
+        composeScreen(AccountScreens.Web) {
+            val args = rememberNavArgs(AccountScreens.Web)
             WebScreen(
-                screen.url.get(),
-                screen.isFullScreen.get(),
+                args { destination.url.get() },
+                args { destination.isFullScreen.get() },
             )
         }
     }

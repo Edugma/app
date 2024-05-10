@@ -3,14 +3,15 @@ package io.edugma.features.misc.settings
 import io.edugma.core.navigation.misc.SettingsScreens
 import io.edugma.features.misc.settings.appearance.SettingsAppearanceScreen
 import io.edugma.features.misc.settings.main.SettingsMainScreen
-import io.edugma.navigation.core.graph.screenModule
+import io.edugma.navigation.core.graph.NavGraphBuilder
+import io.edugma.navigation.core.graph.composeScreen
 
-val settingsScreens = screenModule {
-    screen(SettingsScreens.Main) {
+fun NavGraphBuilder.settingsScreens() {
+    composeScreen(SettingsScreens.Main) {
         SettingsMainScreen()
     }
 
-    screen(SettingsScreens.Appearance) {
+    composeScreen(SettingsScreens.Appearance) {
         SettingsAppearanceScreen()
     }
 }

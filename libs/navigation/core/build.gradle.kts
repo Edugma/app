@@ -9,7 +9,9 @@ kotlin {
             dependencies {
                 implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.androidx.lifecycle.viewmodel)
-                implementation(libs.androidx.navigation.runtime)
+                api(libs.androidx.navigation.compose)
+                api(libs.androidx.core.bundle)
+                implementation(libs.ktorUtils)
             }
         }
 

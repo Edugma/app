@@ -25,7 +25,7 @@ class ScheduleHistoryViewModel(
                 val firstSelected = state.previousSelected
                 val secondSelected = state.nextSelected
                 if (firstSelected != null && secondSelected != null) {
-                    router.navigateTo(
+                    scheduleRouter.navigateTo(
                         ScheduleHistoryScreens.Changes(
                             first = firstSelected,
                             second = secondSelected,

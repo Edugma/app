@@ -3,7 +3,10 @@ package io.edugma.features.schedule.daily
 import io.edugma.core.navigation.ScheduleScreens
 import io.edugma.features.schedule.daily.presentation.ScheduleScreen
 import io.edugma.features.schedule.daily.presentation.ScheduleViewModel
-import io.edugma.navigation.core.graph.screenModule
+import io.edugma.navigation.core.compose.rememberNavArgs
+import io.edugma.navigation.core.graph.NavGraphBuilder
+import io.edugma.navigation.core.graph.composeScreen
+import kotlinx.datetime.LocalDate
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
@@ -12,10 +15,14 @@ object ScheduleDailyFeatureModule {
         factoryOf(::ScheduleViewModel)
     }
 
-    val screens = screenModule {
-        screen(ScheduleScreens.Main) {
+    fun NavGraphBuilder.screens() {
+        composeScreen(ScheduleScreens.Main) {
+            val args = rememberNavArgs(ScheduleScreens.Main)
+
+            val date = LocalDate.fromEpochDays(args { destination.date.get() })
+
             ScheduleScreen(
-                date = screen.date.get(),
+                date = date,
             )
         }
     }

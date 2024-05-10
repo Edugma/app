@@ -9,7 +9,9 @@ import io.edugma.features.schedule.scheduleInfo.placeInfo.PlaceInfoScreen
 import io.edugma.features.schedule.scheduleInfo.placeInfo.PlaceInfoViewModel
 import io.edugma.features.schedule.scheduleInfo.teacherInfo.TeacherInfoScreen
 import io.edugma.features.schedule.scheduleInfo.teacherInfo.TeacherInfoViewModel
-import io.edugma.navigation.core.graph.screenModule
+import io.edugma.navigation.core.compose.rememberNavArgs
+import io.edugma.navigation.core.graph.NavGraphBuilder
+import io.edugma.navigation.core.graph.composeScreen
 import kotlinx.serialization.json.Json
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
@@ -22,28 +24,36 @@ object ScheduleInfoFeatureModule {
         factoryOf(::PlaceInfoViewModel)
     }
 
-    val screens = screenModule {
-        screen(ScheduleInfoScreens.LessonInfo) {
+    fun NavGraphBuilder.screens() {
+        composeScreen(ScheduleInfoScreens.LessonInfo) {
+            val args = rememberNavArgs(ScheduleInfoScreens.LessonInfo)
+
             LessonInfoScreen(
-                lessonInfo = Json.decodeFromString(screen.lessonInfo.get()),
+                lessonInfo = Json.decodeFromString(args { destination.lessonInfo.get() }),
             )
         }
 
-        screen(ScheduleInfoScreens.TeacherInfo) {
+        composeScreen(ScheduleInfoScreens.TeacherInfo) {
+            val args = rememberNavArgs(ScheduleInfoScreens.TeacherInfo)
+
             TeacherInfoScreen(
-                id = screen.id.get(),
+                id = args { destination.id.get() },
             )
         }
 
-        screen(ScheduleInfoScreens.GroupInfo) {
+        composeScreen(ScheduleInfoScreens.GroupInfo) {
+            val args = rememberNavArgs(ScheduleInfoScreens.GroupInfo)
+
             GroupInfoScreen(
-                id = screen.id.get(),
+                id = args { destination.id.get() },
             )
         }
 
-        screen(ScheduleInfoScreens.PlaceInfo) {
+        composeScreen(ScheduleInfoScreens.PlaceInfo) {
+            val args = rememberNavArgs(ScheduleInfoScreens.PlaceInfo)
+
             PlaceInfoScreen(
-                id = screen.id.get(),
+                id = args { destination.id.get() },
             )
         }
     }

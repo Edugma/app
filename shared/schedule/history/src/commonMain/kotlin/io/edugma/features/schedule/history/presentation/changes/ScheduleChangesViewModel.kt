@@ -4,6 +4,7 @@ import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.utils.launchCoroutine
 import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
 import io.edugma.features.schedule.domain.usecase.ScheduleHistoryUseCase
+import kotlinx.datetime.Instant
 
 class ScheduleChangesViewModel(
     private val useCase: ScheduleHistoryUseCase,
@@ -14,8 +15,8 @@ class ScheduleChangesViewModel(
             is ScheduleChangesAction.OnArguments -> {
                 newState {
                     copy(
-                        firstSelected = action.args { screen.first.get() },
-                        secondSelected = action.args { screen.second.get() },
+                        firstSelected = Instant.fromEpochMilliseconds(action.args { destination.first.get() }),
+                        secondSelected = Instant.fromEpochMilliseconds(action.args { destination.second.get() }),
                     )
                 }
                 launchCoroutine {

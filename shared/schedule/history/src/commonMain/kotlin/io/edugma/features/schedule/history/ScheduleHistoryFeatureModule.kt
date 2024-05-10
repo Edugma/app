@@ -5,7 +5,9 @@ import io.edugma.features.schedule.history.presentation.changes.ScheduleChangesS
 import io.edugma.features.schedule.history.presentation.changes.ScheduleChangesViewModel
 import io.edugma.features.schedule.history.presentation.main.ScheduleHistoryScreen
 import io.edugma.features.schedule.history.presentation.main.ScheduleHistoryViewModel
-import io.edugma.navigation.core.graph.screenModule
+import io.edugma.navigation.core.compose.rememberNavArgs
+import io.edugma.navigation.core.graph.NavGraphBuilder
+import io.edugma.navigation.core.graph.composeScreen
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
@@ -15,10 +17,12 @@ object ScheduleHistoryFeatureModule {
         factoryOf(::ScheduleChangesViewModel)
     }
 
-    val screens = screenModule {
-        screen(ScheduleHistoryScreens.Main) { ScheduleHistoryScreen() }
-        screen(ScheduleHistoryScreens.Changes) {
-            ScheduleChangesScreen(args = this)
+    fun NavGraphBuilder.screens() {
+        composeScreen(ScheduleHistoryScreens.Main) { ScheduleHistoryScreen() }
+        composeScreen(ScheduleHistoryScreens.Changes) {
+            val args = rememberNavArgs(ScheduleHistoryScreens.Changes)
+
+            ScheduleChangesScreen(args = args)
         }
     }
 }

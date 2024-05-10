@@ -1,7 +1,7 @@
 package io.edugma.core.navigation.nodes
 
-import io.edugma.navigation.core.screen.NoArgScreen
+import io.edugma.navigation.core.screen.NoArgDestination
 
 object NodesScreens {
-    object Main : NoArgScreen("nodesMain")
+    object Main : NoArgDestination("nodesMain")
 }

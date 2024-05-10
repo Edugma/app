@@ -86,22 +86,22 @@ class ScheduleMenuViewModel(
             ScheduleMenuAction.OnAppWidgetClick -> {
             }
             ScheduleMenuAction.OnFreePlaceClick -> {
-                router.navigateTo(ScheduleScreens.FreePlace())
+                scheduleRouter.navigateTo(ScheduleScreens.FreePlace())
             }
             ScheduleMenuAction.OnHistoryClick -> {
-                router.navigateTo(ScheduleHistoryScreens.Main())
+                scheduleRouter.navigateTo(ScheduleHistoryScreens.Main())
             }
             ScheduleMenuAction.OnLessonsReviewClick -> {
-                router.navigateTo(ScheduleScreens.LessonsReview())
+                scheduleRouter.navigateTo(ScheduleScreens.LessonsReview())
             }
             ScheduleMenuAction.OnScheduleCalendarClick -> {
-                router.navigateTo(ScheduleScreens.Calendar())
+                scheduleRouter.navigateTo(ScheduleScreens.Calendar())
             }
             ScheduleMenuAction.OnScheduleClick -> {
-                router.navigateTo(ScheduleScreens.Main())
+                scheduleRouter.navigateTo(ScheduleScreens.Main())
             }
             ScheduleMenuAction.OnScheduleSourceClick -> {
-                router.navigateTo(ScheduleScreens.Source())
+                scheduleRouter.navigateTo(ScheduleScreens.Source())
             }
             ScheduleMenuAction.OnSignOut -> launchCoroutine {
                 removeSelectedScheduleSourceUseCase()

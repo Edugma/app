@@ -1,7 +1,7 @@
 package io.edugma.core.navigation.misc
 
-import io.edugma.navigation.core.screen.NoArgScreen
+import io.edugma.navigation.core.screen.NoArgDestination
 
 object MiscMenuScreens {
-    object Menu : NoArgScreen("menu")
+    object Menu : NoArgDestination("menu")
 }

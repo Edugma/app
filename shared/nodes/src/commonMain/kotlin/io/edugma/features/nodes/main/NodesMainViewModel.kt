@@ -33,7 +33,7 @@ class NodesMainViewModel(
         launchCoroutine {
             nodesRepository.selectNode(stateFlow.value.nodeUrl)
             // router.navigateTo(HomeScreens.Main())
-            router.navigateTo(ScheduleScreens.Menu())
+            tabMenuRouter.navigateTo(ScheduleScreens.Menu())
         }
     }
 
@@ -48,7 +48,7 @@ class NodesMainViewModel(
     fun onNodeItemClick(node: Node) {
         launchCoroutine {
             nodesRepository.selectNode(stateFlow.value.nodeUrl)
-            router.navigateTo(ScheduleScreens.Menu())
+            tabMenuRouter.navigateTo(ScheduleScreens.Menu())
             // router.navigateTo(HomeScreens.Main())
         }
     }

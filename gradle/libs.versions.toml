@@ -15,13 +15,14 @@ kotlinxAtomic = "0.24.0"
 androidxAnnotations = "1.7.1"
 androidxDatastore = "1.1.0"
 androidxCollections = "1.4.0"
-androidxLifecycle = "2.8.0-beta02"
-androidxNavigation = "2.7.0-alpha03"
+androidxLifecycle = "2.8.0-rc01"
+androidxNavigation = "2.7.0-alpha04"
+androidxCore = "1.0.0-rc01"
 
 buildKonfig = "0.15.1"
 
 composeBom = "2024.04.01"
-composeMultiplatform = "1.6.10-beta03"
+composeMultiplatform = "1.6.10-rc01"
 
 kotlinxDateTime = "0.6.0-RC.2"
 kotlinCoroutines = "1.8.0"
@@ -70,6 +71,7 @@ androidx-lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:life
 androidx-lifecycle-runtime = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime", version.ref = "androidxLifecycle" }
 androidx-navigation-runtime = { module = "org.jetbrains.androidx.navigation:navigation-runtime", version.ref = "androidxNavigation" }
 androidx-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "androidxNavigation" }
+androidx-core-bundle = { module = "org.jetbrains.androidx.core:core-bundle", version.ref = "androidxCore" }
 
 composeMP-utils = { module = "org.jetbrains.compose.ui:ui-util", version.ref = "composeMultiplatform" }
 

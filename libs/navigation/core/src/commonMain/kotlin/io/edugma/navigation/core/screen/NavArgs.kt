@@ -1,19 +1,36 @@
 package io.edugma.navigation.core.screen
 
-class NavArgs<T : Screen>(
-    @PublishedApi
-    internal val screenBundle: ScreenBundle,
+public class NavArgs<T : Destination>(
+    public val destination: T,
+    private val argumentsStore: ArgumentsStore,
 ) {
-    @Suppress("UNCHECKED_CAST")
-    val screen
-        get() = screenBundle.screen as T
-
-    @Suppress("UNCHECKED_CAST")
-    fun <TArg : Any> ScreenArg<TArg>.get(): TArg {
-        return screenBundle.args[this] as TArg
+    public inline operator fun <Y> invoke(action: NavArgs<T>.() -> Y): Y {
+        return action()
     }
 
-    inline operator fun <TArg : Any> invoke(action: NavArgs<T>.() -> TArg): TArg {
-        return action(this)
+    /**
+     * Возвращает значение аргумента.
+     */
+    public fun <T : Any> NavArgument.Required<T>.get(): T {
+        val value = argumentsStore.get<T>(this.name)
+        checkNotNull(value) { "Обязательный аргумент должен быть установлен до момента получения" }
+        return value
+    }
+
+    /**
+     * Возвращает значение аргумента.
+     */
+    public fun <T : Any> NavArgument.Optional<T>.get(): T {
+        val value = argumentsStore.get<T>(this.name)
+        checkNotNull(value) { "У опционального аргумента должно быть значение по умолчанию" }
+        return value
+    }
+
+    /**
+     * Возвращает значение аргумента.
+     */
+    public fun <T : Any> NavArgument.NullableOptional<T>.get(): T? {
+        return argumentsStore.get<T>(name)
     }
 }
+

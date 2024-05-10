@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -34,10 +35,21 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
 import io.edugma.core.designSystem.utils.LocalEdIconLoader
 import io.edugma.core.designSystem.utils.LocalEdImageLoader
+import io.edugma.core.navigation.AccountScreens
+import io.edugma.core.navigation.MainDestination
+import io.edugma.core.navigation.ScheduleScreens
+import io.edugma.core.navigation.core.rememberRouterNavigator
+import io.edugma.core.navigation.misc.MiscMenuScreens
 import io.edugma.core.utils.viewmodel.getViewModel
+import io.edugma.features.app.core.appScreens
 import io.edugma.features.app.presentation.main.widgets.BottomNav
+import io.edugma.features.app.presentation.main.widgets.TabContent
 import io.edugma.features.app.presentation.main.widgets.rememberTabNavigator
+import io.edugma.features.app.presentation.main.widgets.showNavBar
 import io.edugma.navigation.core.compose.EdugmaTabNavigation
+import io.edugma.navigation.core.graph.composeScreen
+import io.edugma.navigation.core.utils.getRoute
+import kotlinx.coroutines.flow.combine
 import kotlin.time.Duration.Companion.seconds
 
 @Composable
@@ -63,11 +75,46 @@ fun MainScreen(
     }
 }
 
+fun String?.navBarIsVisible(tabScreen: String?, mainScreen: MainDestination): Boolean {
+    return tabScreen == mainScreen.getRoute() &&
+        this in showNavBar
+}
+
 @Composable
 fun MainContent(
     viewModel: MainViewModel = getViewModel(),
 ) {
+    val homeNavigator = rememberRouterNavigator(viewModel.homeRouter) {
+        viewModel.tabMenuRouter.back()
+    }
+    val scheduleNavigator = rememberRouterNavigator(viewModel.scheduleRouter) {
+        viewModel.tabMenuRouter.back()
+    }
+    val accountNavigator = rememberRouterNavigator(viewModel.accountRouter) {
+        viewModel.tabMenuRouter.back()
+    }
+    val miscNavigator = rememberRouterNavigator(viewModel.miscRouter) {
+        viewModel.tabMenuRouter.back()
+    }
+
     val (tabNavigator, isNavigationBarVisible) = rememberTabNavigator(viewModel)
+
+    LaunchedEffect(key1 = Unit) {
+        combine(
+            tabNavigator.navHostController.currentBackStackEntryFlow,
+            homeNavigator.navHostController.currentBackStackEntryFlow,
+            scheduleNavigator.navHostController.currentBackStackEntryFlow,
+            accountNavigator.navHostController.currentBackStackEntryFlow,
+            miscNavigator.navHostController.currentBackStackEntryFlow,
+        ) { tabScreen, homeScreen, scheduleScreen, accountScreen, miscScreen ->
+            homeScreen.destination.route.navBarIsVisible(tabScreen.destination.route, MainDestination.Home) ||
+                scheduleScreen.destination.route.navBarIsVisible(tabScreen.destination.route, MainDestination.Schedule) ||
+                accountScreen.destination.route.navBarIsVisible(tabScreen.destination.route, MainDestination.Account) ||
+                miscScreen.destination.route.navBarIsVisible(tabScreen.destination.route, MainDestination.Misc)
+        }.collect {
+            isNavigationBarVisible.value = it
+        }
+    }
 
     val state by viewModel.stateFlow.collectAsState()
 
@@ -78,7 +125,7 @@ fun MainContent(
         LocalEdIconLoader provides viewModel.iconImageLoader,
     ) {
         Scaffold(
-            bottomBar = { BottomNav(tabNavigator, isNavigationBarVisible) },
+            bottomBar = { BottomNav(tabNavigator, viewModel.tabMenuRouter, isNavigationBarVisible) },
             contentWindowInsets = WindowInsets(0.dp),
         ) { innerPadding ->
             Box(
@@ -86,7 +133,26 @@ fun MainContent(
                     .padding(innerPadding)
                     .fillMaxSize(),
             ) {
-                EdugmaTabNavigation(tabNavigator)
+                EdugmaTabNavigation(tabNavigator, MainDestination.Schedule) {
+                    //                    screen(MainScreen.Home) {
+//                        TabContent(homeNavigator, MainDestination.Home)
+//                    }
+                    composeScreen(MainDestination.Schedule) {
+                        TabContent(scheduleNavigator, MainDestination.Schedule) {
+                            appScreens()
+                        }
+                    }
+                    composeScreen(MainDestination.Account) {
+                        TabContent(accountNavigator, MainDestination.Account) {
+                            appScreens()
+                        }
+                    }
+                    composeScreen(MainDestination.Misc) {
+                        TabContent(miscNavigator, MainDestination.Misc) {
+                            appScreens()
+                        }
+                    }
+                }
                 Snackbar(
                     messageProvider = { state.snackbars.firstOrNull() },
                     onDismissed = {

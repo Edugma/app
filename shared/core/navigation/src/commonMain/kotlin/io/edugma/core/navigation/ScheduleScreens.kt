@@ -1,27 +1,29 @@
 package io.edugma.core.navigation
 
-import io.edugma.navigation.core.screen.NoArgScreen
-import io.edugma.navigation.core.screen.Screen
-import io.edugma.navigation.core.screen.bundleOf
-import io.edugma.navigation.core.screen.set
+import io.edugma.navigation.core.screen.NoArgDestination
+import io.edugma.navigation.core.screen.Destination
+import io.edugma.navigation.core.screen.optArg
+import io.edugma.navigation.core.screen.toBundle
 import kotlinx.datetime.LocalDate
 
 object ScheduleScreens {
-    object Menu : NoArgScreen("scheduleMenu")
+    object Menu : NoArgDestination("scheduleMenu")
 
-    object Main : Screen("scheduleMain") {
-        val date = optArg<LocalDate>("date", LocalDate.fromEpochDays(0))
+    object Main : Destination("scheduleMain") {
+        val date = optArg<Int>("date", 0)
 
         operator fun invoke(
             date: LocalDate? = null,
-        ) = bundleOf(this.date set date)
+        ) = toBundle {
+            destination.date set date?.toEpochDays()
+        }
     }
 
-    object Source : NoArgScreen("scheduleSource")
+    object Source : NoArgDestination("scheduleSource")
 
-    object Calendar : NoArgScreen("scheduleCalendar")
+    object Calendar : NoArgDestination("scheduleCalendar")
 
-    object LessonsReview : NoArgScreen("scheduleLessonsReview")
+    object LessonsReview : NoArgDestination("scheduleLessonsReview")
 
-    object FreePlace : NoArgScreen("scheduleFreePlace")
+    object FreePlace : NoArgDestination("scheduleFreePlace")
 }

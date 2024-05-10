@@ -35,15 +35,15 @@ class LessonInfoViewModel(
     }
 
     fun onTeacherClick(id: String) {
-        router.navigateTo(ScheduleInfoScreens.TeacherInfo(id))
+        scheduleRouter.navigateTo(ScheduleInfoScreens.TeacherInfo(id))
     }
 
     fun onGroupClick(id: String) {
-        router.navigateTo(ScheduleInfoScreens.GroupInfo(id))
+        scheduleRouter.navigateTo(ScheduleInfoScreens.GroupInfo(id))
     }
 
     fun onPlaceClick(id: String) {
-        router.navigateTo(ScheduleInfoScreens.PlaceInfo(id))
+        scheduleRouter.navigateTo(ScheduleInfoScreens.PlaceInfo(id))
     }
 }
 

@@ -1,16 +1,19 @@
-package io.edugma.core.navigation.core
+package io.edugma.navigation.core.navigator
 
+import androidx.navigation.NavHostController
 import co.touchlab.kermit.Logger
-import io.edugma.navigation.core.navigator.EdugmaNavigator
+import io.edugma.navigation.core.router.NavigationCommand
+import io.edugma.navigation.core.router.Router
+import io.edugma.navigation.core.utils.getRoute
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class ComposeNavigator(
-    val edugmaNavigator: EdugmaNavigator,
-    private val router: Router,
-    private val isActive: () -> Boolean,
+    val navHostController: NavHostController,
+    val router: Router,
+    private val onCantBack: () -> Unit,
 ) {
     companion object {
         private const val TAG = "ComposeNavigator"
@@ -38,9 +41,7 @@ class ComposeNavigator(
 
     private fun processCommand(commands: List<NavigationCommand>) {
         for (command in commands) {
-            if (isActive()) {
-                applyCommand(command)
-            }
+            applyCommand(command)
         }
     }
 
@@ -55,23 +56,26 @@ class ComposeNavigator(
     }
 
     private fun forward(command: NavigationCommand.Forward) {
-        edugmaNavigator.navigateTo(command.screen)
+        navHostController.navigate(command.screen.getRoute())
     }
 
     private fun replace(command: NavigationCommand.Replace) {
-        edugmaNavigator.back()
-        edugmaNavigator.navigateTo(command.screen)
+        navHostController.popBackStack()
+        navHostController.navigate(command.screen.getRoute())
     }
 
     private fun back() {
-        edugmaNavigator.back()
+        val result = navHostController.popBackStack()
+        if (result.not()) {
+            onCantBack()
+        }
     }
 
     private fun backTo(command: NavigationCommand.BackTo) {
-        if (command.screen == null) {
-            edugmaNavigator.backTo(null)
+        if (command.destination == null) {
+            navHostController.clearBackStack("")
         } else {
-            edugmaNavigator.backTo(command.screen)
+            navHostController.popBackStack(command.destination!!.getRoute(), false)
         }
     }
 }

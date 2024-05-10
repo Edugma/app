@@ -1,24 +1,24 @@
 package io.edugma.core.navigation.schedule
 
-import io.edugma.navigation.core.screen.NoArgScreen
-import io.edugma.navigation.core.screen.Screen
-import io.edugma.navigation.core.screen.bundleOf
-import io.edugma.navigation.core.screen.set
+import io.edugma.navigation.core.screen.NoArgDestination
+import io.edugma.navigation.core.screen.Destination
+import io.edugma.navigation.core.screen.reqArg
+import io.edugma.navigation.core.screen.toBundle
 import kotlinx.datetime.Instant
 
 object ScheduleHistoryScreens {
-    object Main : NoArgScreen("scheduleHistoryMain")
-    object Changes : Screen("scheduleHistoryMain") {
+    object Main : NoArgDestination("scheduleHistoryMain")
+    object Changes : Destination("scheduleHistoryMain") {
 
-        val first = reqArg<Instant>("first")
-        val second = reqArg<Instant>("second")
+        val first = reqArg<Long>("first")
+        val second = reqArg<Long>("second")
 
         operator fun invoke(
             first: Instant,
             second: Instant,
-        ) = bundleOf(
-            this.first set first,
-            this.second set second,
-        )
+        ) = toBundle {
+            destination.first set first.toEpochMilliseconds()
+            destination.second set second.toEpochMilliseconds()
+        }
     }
 }

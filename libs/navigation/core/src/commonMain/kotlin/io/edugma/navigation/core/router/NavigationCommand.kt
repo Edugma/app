@@ -1,7 +1,7 @@
-package io.edugma.core.navigation.core
+package io.edugma.navigation.core.router
 
-import io.edugma.navigation.core.screen.Screen
-import io.edugma.navigation.core.screen.ScreenBundle
+import io.edugma.navigation.core.screen.Destination
+import io.edugma.navigation.core.screen.DestinationBundle
 
 /**
  * Navigation command describes screens transition.
@@ -11,12 +11,12 @@ sealed interface NavigationCommand {
     /**
      * Opens new screen.
      */
-    data class Forward(val screen: ScreenBundle) : NavigationCommand
+    data class Forward(val screen: DestinationBundle<*>) : NavigationCommand
 
     /**
      * Replaces the current screen.
      */
-    data class Replace(val screen: ScreenBundle) : NavigationCommand
+    data class Replace(val screen: DestinationBundle<*>) : NavigationCommand
 
     /**
      * Rolls fragmentBack the last transition from the screens chain.
@@ -29,5 +29,5 @@ sealed interface NavigationCommand {
      * Behavior in the case when no needed screens found depends on an implementation of the
      * But the recommended behavior is to return to the root.
      */
-    data class BackTo(val screen: Screen?) : NavigationCommand
+    data class BackTo(val destination: Destination?) : NavigationCommand
 }

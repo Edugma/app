@@ -5,6 +5,6 @@ import io.edugma.core.navigation.misc.SettingsScreens
 
 class SettingsMainViewModel : BaseViewModel<Unit>(Unit) {
     fun onAppearanceClick() {
-        router.navigateTo(SettingsScreens.Appearance())
+        miscRouter.navigateTo(SettingsScreens.Appearance())
     }
 }

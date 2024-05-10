@@ -1,8 +1,8 @@
 package io.edugma.core.navigation.misc
 
-import io.edugma.navigation.core.screen.NoArgScreen
+import io.edugma.navigation.core.screen.NoArgDestination
 
 object SettingsScreens {
-    object Main : NoArgScreen("settingsMain")
-    object Appearance : NoArgScreen("settingsAppearance")
+    object Main : NoArgDestination("settingsMain")
+    object Appearance : NoArgDestination("settingsAppearance")
 }

@@ -1,38 +1,39 @@
 package io.edugma.core.navigation
 
-import io.edugma.navigation.core.screen.NoArgScreen
-import io.edugma.navigation.core.screen.Screen
-import io.edugma.navigation.core.screen.bundleOf
-import io.edugma.navigation.core.screen.set
+import io.edugma.navigation.core.screen.NoArgDestination
+import io.edugma.navigation.core.screen.Destination
+import io.edugma.navigation.core.screen.optArg
+import io.edugma.navigation.core.screen.reqArg
+import io.edugma.navigation.core.screen.toBundle
 
 object AccountScreens {
 
-    object Menu : NoArgScreen("accountMenu")
+    object Menu : NoArgDestination("accountMenu")
 
-    object Applications : NoArgScreen("accountApplications")
+    object Applications : NoArgDestination("accountApplications")
 
-    object Personal : NoArgScreen("accountPersonal")
+    object Personal : NoArgDestination("accountPersonal")
 
-    object Marks : NoArgScreen("accountMarks")
+    object Marks : NoArgDestination("accountMarks")
 
-    object Students : NoArgScreen("accountStudents")
+    object Students : NoArgDestination("accountStudents")
 
-    object Classmates : NoArgScreen("accountClassmates")
+    object Classmates : NoArgDestination("accountClassmates")
 
-    object Teachers : NoArgScreen("accountTeachers")
+    object Teachers : NoArgDestination("accountTeachers")
 
-    object Payments : NoArgScreen("accountPayments")
+    object Payments : NoArgDestination("accountPayments")
 
-    object Web : Screen("accountWeb") {
+    object Web : Destination("accountWeb") {
         val url = reqArg<String>("url")
         val isFullScreen = optArg("isFullScreen", false)
 
         operator fun invoke(
             url: String,
             isFullScreen: Boolean? = null,
-        ) = bundleOf(
-            this.url set url,
-            this.isFullScreen set isFullScreen,
-        )
+        ) = toBundle {
+            destination.url set url
+            destination.isFullScreen set isFullScreen
+        }
     }
 }

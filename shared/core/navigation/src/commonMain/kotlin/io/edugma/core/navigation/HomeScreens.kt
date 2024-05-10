@@ -1,7 +1,7 @@
 package io.edugma.core.navigation
 
-import io.edugma.navigation.core.screen.NoArgScreen
+import io.edugma.navigation.core.screen.NoArgDestination
 
 object HomeScreens {
-    object Main : NoArgScreen("homeMain")
+    object Main : NoArgDestination("homeMain")
 }

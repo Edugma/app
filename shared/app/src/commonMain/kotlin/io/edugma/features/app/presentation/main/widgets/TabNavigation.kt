@@ -12,7 +12,6 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
@@ -25,7 +24,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
-import edugma.shared.core.icons.generated.resources.*
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import io.edugma.core.designSystem.atoms.label.EdLabel
@@ -33,171 +31,62 @@ import io.edugma.core.designSystem.organism.navigationBar.EdNavigationBar
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.navigation.AccountScreens
 import io.edugma.core.navigation.HomeScreens
-import io.edugma.core.navigation.MainScreen
+import io.edugma.core.navigation.MainDestination
 import io.edugma.core.navigation.ScheduleScreens
+import io.edugma.core.navigation.core.TabMenuRouter
 import io.edugma.core.navigation.core.rememberRouterNavigator
 import io.edugma.core.navigation.misc.MiscMenuScreens
-import io.edugma.features.app.core.appScreens
 import io.edugma.features.app.presentation.main.MainViewModel
 import io.edugma.navigation.core.compose.EdugmaNavigation
-import io.edugma.navigation.core.compose.rememberEdugmaNavigator
-import io.edugma.navigation.core.graph.screenModule
-import io.edugma.navigation.core.navigator.EdugmaNavigator
-import io.edugma.navigation.core.navigator.ScreenUiState
-import io.edugma.navigation.core.screen.bundleOf
-import kotlinx.coroutines.flow.combine
+import io.edugma.navigation.core.graph.NavGraphBuilder
+import io.edugma.navigation.core.navigator.ComposeNavigator
+import io.edugma.navigation.core.screen.Destination
+import io.edugma.navigation.core.screen.toBundle
+import io.edugma.navigation.core.utils.getRoute
 
 val showNavBar = listOf(
     HomeScreens.Main,
     ScheduleScreens.Menu,
     AccountScreens.Menu,
     MiscMenuScreens.Menu,
-).map { it.name }
+).map { it.getRoute() }
 
 @Composable
-internal fun rememberTabNavigator(viewModel: MainViewModel): Pair<EdugmaNavigator, MutableState<Boolean>> {
-    val homeNavigatorIsActive = remember {
-        mutableStateOf(false)
-    }
-    val homeNavigator = rememberRouterNavigator(
-        router = viewModel.router,
-        screens = listOf(appScreens),
-        firstScreen = HomeScreens.Main(),
-        isActive = { homeNavigatorIsActive.value },
-    )
-    val scheduleNavigatorIsActive = remember {
-        mutableStateOf(false)
-    }
-
-    val scheduleNavigator = rememberRouterNavigator(
-        router = viewModel.router,
-        screens = listOf(appScreens),
-        firstScreen = ScheduleScreens.Menu(),
-        isActive = { scheduleNavigatorIsActive.value },
-    )
-    val accountNavigatorIsActive = remember {
-        mutableStateOf(false)
-    }
-    val accountNavigator = rememberRouterNavigator(
-        router = viewModel.router,
-        screens = listOf(appScreens),
-        firstScreen = AccountScreens.Menu(),
-        isActive = { accountNavigatorIsActive.value },
-    )
-    val miscNavigatorIsActive = remember {
-        mutableStateOf(false)
-    }
-    val miscNavigator = rememberRouterNavigator(
-        router = viewModel.router,
-        screens = listOf(appScreens),
-        firstScreen = MiscMenuScreens.Menu(),
-        isActive = { miscNavigatorIsActive.value },
-    )
-
-    val tabNavigator = rememberEdugmaNavigator(
-        screens = remember {
-            listOf(
-                screenModule {
-//                    screen(MainScreen.Home) {
-//                        TabContent(homeNavigator)
-//                    }
-                    screen(MainScreen.Schedule) {
-                        TabContent(scheduleNavigator)
-                    }
-                    screen(MainScreen.Account) {
-                        TabContent(accountNavigator)
-                    }
-                    screen(MainScreen.Misc) {
-                        TabContent(miscNavigator)
-                    }
-                },
-            )
-        },
-        firstScreen = MainScreen.Schedule.bundleOf(),
-    )
+internal fun rememberTabNavigator(viewModel: MainViewModel): Pair<ComposeNavigator, MutableState<Boolean>> {
+    val tabNavigator = rememberRouterNavigator(viewModel.tabMenuRouter)
 
     val isNavigationBarVisible = remember {
         mutableStateOf(true)
     }
 
-    fun ScreenUiState.navBarIsVisible(tabScreen: ScreenUiState, mainScreen: MainScreen): Boolean {
-        return tabScreen.screenBundle.screen == mainScreen &&
-            this.screenBundle.screen.name in showNavBar
-    }
-
-    LaunchedEffect(key1 = Unit) {
-        tabNavigator.state.collect {
-
-            when (it.currentScreen.screenBundle.screen) {
-                MainScreen.Home -> {
-                    homeNavigatorIsActive.value = true
-                    scheduleNavigatorIsActive.value = false
-                    accountNavigatorIsActive.value = false
-                    miscNavigatorIsActive.value = false
-                }
-
-                MainScreen.Schedule -> {
-                    homeNavigatorIsActive.value = false
-                    scheduleNavigatorIsActive.value = true
-                    accountNavigatorIsActive.value = false
-                    miscNavigatorIsActive.value = false
-                }
-
-                MainScreen.Account -> {
-                    homeNavigatorIsActive.value = false
-                    scheduleNavigatorIsActive.value = false
-                    accountNavigatorIsActive.value = true
-                    miscNavigatorIsActive.value = false
-                }
-
-                MainScreen.Misc -> {
-                    homeNavigatorIsActive.value = false
-                    scheduleNavigatorIsActive.value = false
-                    accountNavigatorIsActive.value = false
-                    miscNavigatorIsActive.value = true
-                }
-
-                else -> {}
-            }
-        }
-    }
-
-    LaunchedEffect(key1 = Unit) {
-        combine(
-            tabNavigator.state,
-            homeNavigator.state,
-            scheduleNavigator.state,
-            accountNavigator.state,
-            miscNavigator.state,
-        ) { tabScreen, homeScreen, scheduleScreen, accountScreen, miscScreen ->
-            homeScreen.currentScreen.navBarIsVisible(tabScreen.currentScreen, MainScreen.Home) ||
-                scheduleScreen.currentScreen.navBarIsVisible(tabScreen.currentScreen, MainScreen.Schedule) ||
-                accountScreen.currentScreen.navBarIsVisible(tabScreen.currentScreen, MainScreen.Account) ||
-                miscScreen.currentScreen.navBarIsVisible(tabScreen.currentScreen, MainScreen.Misc)
-        }.collect {
-            isNavigationBarVisible.value = it
-        }
-    }
     return Pair(tabNavigator, isNavigationBarVisible)
 }
 
 @Composable
-fun TabContent(edugmaNavigator: EdugmaNavigator) {
-    EdugmaNavigation(edugmaNavigator)
+fun TabContent(
+    edugmaNavigator: ComposeNavigator,
+    start: Destination,
+    builder: NavGraphBuilder.() -> Unit,
+) {
+    EdugmaNavigation(
+        navigator = edugmaNavigator,
+        start = start,
+        builder = builder,
+    )
 }
 
 val items = listOf(
     // MainScreen.Home,
-    MainScreen.Schedule,
-    MainScreen.Account,
-    MainScreen.Misc,
+    MainDestination.Schedule,
+    MainDestination.Account,
+    MainDestination.Misc,
 )
 
 @Composable
-fun BottomNav(navController: EdugmaNavigator, isVisible: State<Boolean>) {
-    val navigationState by navController.state.collectAsState()
+fun BottomNav(navigator: ComposeNavigator, router: TabMenuRouter, isVisible: State<Boolean>) {
+    val navigationState by navigator.navHostController.currentBackStackEntryFlow.collectAsState(null)
     val currentDestination by remember {
-        derivedStateOf { navigationState.currentScreen }
+        derivedStateOf { navigationState?.destination?.route }
     }
     val density = LocalDensity.current
 
@@ -220,7 +109,7 @@ fun BottomNav(navController: EdugmaNavigator, isVisible: State<Boolean>) {
             height = 62.dp,
         ) {
             items.forEach { screen ->
-                val selected = currentDestination.screenBundle.screen.name == screen.name
+                val selected = currentDestination == screen.getRoute()
                 EdNavigationBarItem(
                     icon = {
                         Crossfade(
@@ -255,7 +144,7 @@ fun BottomNav(navController: EdugmaNavigator, isVisible: State<Boolean>) {
                         )
                     },
                     onClick = {
-                        navController.navigateTo(screen.bundleOf(), singleTop = true)
+                        router.navigateTo(screen.toBundle())
                     },
                 )
             }

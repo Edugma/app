@@ -2,10 +2,11 @@ package io.edugma.features.nodes
 
 import io.edugma.core.navigation.nodes.NodesScreens
 import io.edugma.features.nodes.main.NodesMainScreen
-import io.edugma.navigation.core.graph.screenModule
+import io.edugma.navigation.core.graph.NavGraphBuilder
+import io.edugma.navigation.core.graph.composeScreen
 
-val nodesScreens = screenModule {
-    screen(NodesScreens.Main) {
+fun NavGraphBuilder.nodesScreens() {
+    composeScreen(NodesScreens.Main) {
         NodesMainScreen()
     }
 }

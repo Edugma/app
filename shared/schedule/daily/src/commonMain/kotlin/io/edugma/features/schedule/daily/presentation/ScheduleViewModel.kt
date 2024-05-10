@@ -92,7 +92,7 @@ class ScheduleViewModel(
 
     private fun onLessonClick(lesson: LessonEvent) {
         val date = state.selectedDate
-        router.navigateTo(
+        scheduleRouter.navigateTo(
             ScheduleInfoScreens.LessonInfo(
                 lessonInfo = Json.encodeToString(
                     lesson,

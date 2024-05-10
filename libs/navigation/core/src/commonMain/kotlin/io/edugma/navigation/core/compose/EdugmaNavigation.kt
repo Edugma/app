@@ -9,73 +9,86 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
-import io.edugma.navigation.core.graph.ScreenGraphBuilder
-import io.edugma.navigation.core.graph.ScreenModule
-import io.edugma.navigation.core.navigator.EdugmaNavigator
-import io.edugma.navigation.core.screen.ScreenBundle
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder as JetpackNavGraphBuilder
+import androidx.navigation.NavGraph as JetpackNavGraph
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.createGraph
+import io.edugma.navigation.core.graph.NavGraph
+import io.edugma.navigation.core.graph.NavGraphBuilder
+import io.edugma.navigation.core.navigator.ComposeNavigator
+import io.edugma.navigation.core.screen.Destination
+import io.edugma.navigation.core.screen.DestinationBundle
+import io.edugma.navigation.core.utils.getRoute
 
 @Composable
 fun EdugmaNavigation(
-    navigator: EdugmaNavigator,
+    navigator: ComposeNavigator,
+    start: Destination,
+    builder: NavGraphBuilder.() -> Unit,
 ) {
-    val state by navigator.state.collectAsState()
-    val currentScreen by remember {
-        derivedStateOf {
-            state.currentScreen
-        }
-    }
     val navigationBackHandler = LocalNavigationBackHandler.current
 
+    val graph = navigator.navHostController.rememberJetpackNavigationGraph(
+        start = start,
+        builder = builder,
+    )
+
     BackHandler {
-        val canNavigateBack = navigator.back()
+        val canNavigateBack = navigator.navHostController.popBackStack()
         if (!canNavigateBack) {
             navigationBackHandler.onCantBack()
         }
     }
-    Crossfade(targetState = currentScreen) { screenUiState ->
-        CompositionLocalProvider(
-            LocalLifecycleOwner provides screenUiState,
-            LocalViewModelStoreOwner provides screenUiState,
-        ) {
-            screenUiState.ui(screenUiState.screenBundle)
-        }
+    CompositionLocalProvider(LocalNavigationBackHandler provides navigationBackHandler) {
+        NavHost(
+            navController = navigator.navHostController,
+            graph = graph,
+        )
     }
 }
 
 @Composable
 fun EdugmaTabNavigation(
-    navigator: EdugmaNavigator,
+    navigator: ComposeNavigator,
+    start: Destination,
+    builder: NavGraphBuilder.() -> Unit,
 ) {
-    val state by navigator.state.collectAsState()
-    val currentScreen by remember {
-        derivedStateOf {
-            state.currentScreen
-        }
-    }
-
     val navigationBackHandler = remember {
         NavigationBackHandler(
             onCantBack = {
-                navigator.back()
+                navigator.navHostController.popBackStack()
             },
         )
     }
 
+    val graph = navigator.navHostController.rememberJetpackNavigationGraph(
+        start = start,
+        builder = builder,
+    )
+
     CompositionLocalProvider(LocalNavigationBackHandler provides navigationBackHandler) {
-        Crossfade(targetState = currentScreen) { screenUiState ->
-            screenUiState.ui(screenUiState.screenBundle)
-        }
+        NavHost(
+            navController = navigator.navHostController,
+            graph = graph,
+        )
     }
 }
 
 @Composable
-fun rememberEdugmaNavigator(
-    screens: List<ScreenModule>,
-    firstScreen: ScreenBundle,
-): EdugmaNavigator {
-    return remember(screens) {
-        val screenGraphBuilder = ScreenGraphBuilder()
-        screens.forEach { it.invoke(screenGraphBuilder) }
-        EdugmaNavigator(screenGraphBuilder, firstScreen)
+public fun NavController.rememberJetpackNavigationGraph(
+    start: Destination,
+    builder: NavGraphBuilder.() -> Unit,
+): JetpackNavGraph {
+    return remember(start, builder) {
+        val jetpackBuilder = JetpackNavGraphBuilder(
+            provider = this@rememberJetpackNavigationGraph.navigatorProvider,
+            startDestination = start.getRoute(),
+            route = null,
+        )
+        builder(NavGraphBuilder(jetpackBuilder))
+        jetpackBuilder.build()
     }
 }

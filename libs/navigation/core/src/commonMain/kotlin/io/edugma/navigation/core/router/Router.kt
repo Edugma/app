@@ -1,12 +1,12 @@
-package io.edugma.core.navigation.core
+package io.edugma.navigation.core.router
 
-import io.edugma.navigation.core.screen.Screen
-import io.edugma.navigation.core.screen.ScreenBundle
+import io.edugma.navigation.core.screen.Destination
+import io.edugma.navigation.core.screen.DestinationBundle
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 
-class Router {
+open class Router {
     private val _commandBuffer = MutableSharedFlow<List<NavigationCommand>>(
         replay = 0,
         extraBufferCapacity = Int.MAX_VALUE,
@@ -23,7 +23,7 @@ class Router {
      *
      * @param screen screen
      */
-    fun navigateTo(screen: ScreenBundle) {
+    fun navigateTo(screen: DestinationBundle<*>) {
         executeCommands(NavigationCommand.Forward(screen))
     }
 
@@ -32,7 +32,7 @@ class Router {
      *
      * @param screen screen
      */
-    fun newRootScreen(screen: ScreenBundle) {
+    fun newRootScreen(screen: DestinationBundle<*>) {
         executeCommands(NavigationCommand.BackTo(null), NavigationCommand.Replace(screen))
     }
 
@@ -45,7 +45,7 @@ class Router {
      *
      * @param screen screen
      */
-    fun replaceScreen(screen: ScreenBundle) {
+    fun replaceScreen(screen: DestinationBundle<*>) {
         executeCommands(NavigationCommand.Replace(screen))
     }
 
@@ -55,10 +55,10 @@ class Router {
      * Behavior in the case when no needed screens found depends on
      * the processing of the [NavigationCommand.BackTo] command in a [Navigator] implementation.
      *
-     * @param screen screen
+     * @param destination screen
      */
-    fun backTo(screen: Screen?) {
-        executeCommands(NavigationCommand.BackTo(screen))
+    fun backTo(destination: Destination?) {
+        executeCommands(NavigationCommand.BackTo(destination))
     }
 
     /**
@@ -66,7 +66,7 @@ class Router {
      *
      * @param screens
      */
-    fun newChain(vararg screens: ScreenBundle) {
+    fun newChain(vararg screens: DestinationBundle<*>) {
         val commands = screens.map { NavigationCommand.Forward(it) }
         executeCommands(*commands.toTypedArray())
     }
@@ -76,7 +76,7 @@ class Router {
      *
      * @param screens
      */
-    fun newRootChain(vararg screens: ScreenBundle) {
+    fun newRootChain(vararg screens: DestinationBundle<*>) {
         val commands = screens.mapIndexed { index, screen ->
             if (index == 0) {
                 NavigationCommand.Replace(screen)

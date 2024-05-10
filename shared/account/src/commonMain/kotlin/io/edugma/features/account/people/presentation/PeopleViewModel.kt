@@ -84,7 +84,7 @@ class PeopleViewModel(
 
     fun openSchedule() {
         state.selectedPerson?.id?.let {
-            router.navigateTo(ScheduleInfoScreens.TeacherInfo(it))
+            accountRouter.navigateTo(ScheduleInfoScreens.TeacherInfo(it))
         }
     }
 }

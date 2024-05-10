@@ -61,7 +61,7 @@ class ScheduleCalendarViewModel(
     }
 
     private fun onDayClick(date: LocalDate) {
-        router.navigateTo(
+        scheduleRouter.navigateTo(
             ScheduleScreens.Main(date = date),
         )
     }

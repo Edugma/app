@@ -1,6 +1,6 @@
 package io.edugma.features.app.core
 
-import io.edugma.core.navigation.MainScreen
+import io.edugma.core.navigation.MainDestination
 import io.edugma.core.navigation.ScheduleScreens
 import io.edugma.features.account.accountScreens
 import io.edugma.features.home.homeScreens
@@ -14,20 +14,21 @@ import io.edugma.features.schedule.lessonsReview.ScheduleLessonsReviewFeatureMod
 import io.edugma.features.schedule.menu.ScheduleMenuFeatureModule
 import io.edugma.features.schedule.scheduleInfo.ScheduleInfoFeatureModule
 import io.edugma.features.schedule.sources.ScheduleSourcesFeatureModule
-import io.edugma.navigation.core.graph.screenModule
+import io.edugma.navigation.core.graph.NavGraphBuilder
+import io.edugma.navigation.core.graph.graph
 
-val appScreens = screenModule {
+fun NavGraphBuilder.appScreens() {
     nodesScreens()
     homeScreens()
-    groupScreen(MainScreen.Schedule, ScheduleScreens.Menu) {
-        ScheduleMenuFeatureModule.screens(this)
-        ScheduleDailyFeatureModule.screens(this)
-        ScheduleInfoFeatureModule.screens(this)
-        ScheduleCalendarFeatureModule.screens(this)
-        ScheduleLessonsReviewFeatureModule.screens(this)
-        ScheduleSourcesFeatureModule.screens(this)
-        ScheduleHistoryFeatureModule.screens(this)
-        ScheduleFreePlaceFeatureModule.screens(this)
+    graph(MainDestination.Schedule, ScheduleScreens.Menu) {
+        with(ScheduleMenuFeatureModule) { screens() }
+        with(ScheduleDailyFeatureModule) { screens() }
+        with(ScheduleInfoFeatureModule) { screens() }
+        with(ScheduleCalendarFeatureModule) { screens() }
+        with(ScheduleLessonsReviewFeatureModule) { screens() }
+        with(ScheduleSourcesFeatureModule) { screens() }
+        with(ScheduleHistoryFeatureModule) { screens() }
+        with(ScheduleFreePlaceFeatureModule) { screens() }
     }
     accountScreens()
     miscMenuScreens()

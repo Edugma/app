@@ -141,17 +141,17 @@ class MenuViewModel(
     }
 
     fun openPersonal() {
-        router.navigateTo(AccountScreens.Personal())
+        accountRouter.navigateTo(AccountScreens.Personal())
     }
 
     fun cardClick(type: CardType, url: String?) {
         when (type) {
-            Students -> router.navigateTo(AccountScreens.Students())
-            Teachers -> router.navigateTo(AccountScreens.Teachers())
-            Classmates -> router.navigateTo(AccountScreens.Classmates())
-            Payments -> router.navigateTo(AccountScreens.Payments())
-            Marks -> router.navigateTo(AccountScreens.Marks())
-            Web -> router.navigateTo(AccountScreens.Web(url.orEmpty()))
+            Students -> accountRouter.navigateTo(AccountScreens.Students())
+            Teachers -> accountRouter.navigateTo(AccountScreens.Teachers())
+            Classmates -> accountRouter.navigateTo(AccountScreens.Classmates())
+            Payments -> accountRouter.navigateTo(AccountScreens.Payments())
+            Marks -> accountRouter.navigateTo(AccountScreens.Marks())
+            Web -> accountRouter.navigateTo(AccountScreens.Web(url.orEmpty()))
         }
     }
 

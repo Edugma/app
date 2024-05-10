@@ -4,7 +4,8 @@ import io.edugma.core.navigation.ScheduleScreens
 import io.edugma.features.schedule.lessonsReview.list.domain.LessonsReviewUseCase
 import io.edugma.features.schedule.lessonsReview.list.presentation.LessonsReviewScreen
 import io.edugma.features.schedule.lessonsReview.list.presentation.LessonsReviewViewModel
-import io.edugma.navigation.core.graph.screenModule
+import io.edugma.navigation.core.graph.NavGraphBuilder
+import io.edugma.navigation.core.graph.composeScreen
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
@@ -14,7 +15,7 @@ object ScheduleLessonsReviewFeatureModule {
         factoryOf(::LessonsReviewUseCase)
     }
 
-    val screens = screenModule {
-        screen(ScheduleScreens.LessonsReview) { LessonsReviewScreen() }
+    fun NavGraphBuilder.screens() {
+        composeScreen(ScheduleScreens.LessonsReview) { LessonsReviewScreen() }
     }
 }

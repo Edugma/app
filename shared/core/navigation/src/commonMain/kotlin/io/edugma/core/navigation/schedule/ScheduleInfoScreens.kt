@@ -1,47 +1,57 @@
 package io.edugma.core.navigation.schedule
 
-import io.edugma.navigation.core.screen.Screen
-import io.edugma.navigation.core.screen.bundleOf
-import io.edugma.navigation.core.screen.set
+import io.edugma.navigation.core.screen.Destination
+import io.edugma.navigation.core.screen.reqArg
+import io.edugma.navigation.core.screen.toBundle
 
 object ScheduleInfoScreens {
-    object LessonInfo : Screen("scheduleInfoLesson") {
+    object LessonInfo : Destination("scheduleInfoLesson") {
         val lessonInfo = reqArg<String>("lessonInfo")
 
         operator fun invoke(
             lessonInfo: String,
-        ) = bundleOf(this.lessonInfo set lessonInfo)
+        ) = toBundle {
+            destination.lessonInfo set lessonInfo
+        }
     }
 
-    object SubjectInfo : Screen("scheduleInfoSubjectInfo") {
+    object SubjectInfo : Destination("scheduleInfoSubjectInfo") {
         val id = reqArg<String>("id")
 
         operator fun invoke(
             id: String,
-        ) = bundleOf(this.id set id)
+        ) = toBundle {
+            destination.id set id
+        }
     }
 
-    object TeacherInfo : Screen("scheduleInfoTeacherInfo") {
+    object TeacherInfo : Destination("scheduleInfoTeacherInfo") {
         val id = reqArg<String>("id")
 
         operator fun invoke(
             id: String,
-        ) = bundleOf(this.id set id)
+        ) = toBundle {
+            destination.id set id
+        }
     }
 
-    object GroupInfo : Screen("scheduleInfoGroupInfo") {
+    object GroupInfo : Destination("scheduleInfoGroupInfo") {
         val id = reqArg<String>("id")
 
         operator fun invoke(
             id: String,
-        ) = bundleOf(this.id set id)
+        ) = toBundle {
+            destination.id set id
+        }
     }
 
-    object PlaceInfo : Screen("scheduleInfoPlaceInfo") {
+    object PlaceInfo : Destination("scheduleInfoPlaceInfo") {
         val id = reqArg<String>("id")
 
         operator fun invoke(
             id: String,
-        ) = bundleOf(this.id set id)
+        ) = toBundle {
+            destination.id set id
+        }
     }
 }
