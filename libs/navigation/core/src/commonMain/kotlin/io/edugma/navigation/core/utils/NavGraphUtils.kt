@@ -6,12 +6,10 @@ import androidx.navigation.NavDestinationBuilder
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import io.edugma.navigation.core.graph.NavGraph
-import io.edugma.navigation.core.screen.ArgumentType
-import io.edugma.navigation.core.screen.Destination
-import io.edugma.navigation.core.screen.DestinationBundle
-import io.edugma.navigation.core.screen.NavArgument
-import io.edugma.navigation.core.screen.NavDeepLink
-import androidx.navigation.NavDeepLink as JetpackNavDeepLink
+import io.edugma.navigation.core.destination.ArgumentType
+import io.edugma.navigation.core.destination.Destination
+import io.edugma.navigation.core.destination.DestinationBundle
+import io.edugma.navigation.core.destination.NavArgument
 
 fun <D : NavDestination> NavDestinationBuilder<D>.argument(argument: NavArgument<*>) {
     argument(argument.name) {

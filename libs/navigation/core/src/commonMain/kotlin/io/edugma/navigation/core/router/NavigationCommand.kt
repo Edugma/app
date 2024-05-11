@@ -1,33 +1,44 @@
 package io.edugma.navigation.core.router
 
-import io.edugma.navigation.core.screen.Destination
-import io.edugma.navigation.core.screen.DestinationBundle
+import io.edugma.navigation.core.destination.Destination
+import io.edugma.navigation.core.destination.DestinationBundle
+import io.edugma.navigation.core.graph.NavGraph
+import io.edugma.navigation.core.router.navOptions.NavOptionsBuilder
 
-/**
- * Navigation command describes screens transition.
- */
 sealed interface NavigationCommand {
 
-    /**
-     * Opens new screen.
-     */
-    data class Forward(val screen: DestinationBundle<*>) : NavigationCommand
+    data object Back : NavigationCommand
 
-    /**
-     * Replaces the current screen.
-     */
-    data class Replace(val screen: DestinationBundle<*>) : NavigationCommand
+    data class BackTo(val destination: Destination) : NavigationCommand
 
-    /**
-     * Rolls fragmentBack the last transition from the screens chain.
-     */
-    object Back : NavigationCommand
+    data class Deeplink(
+        val deeplink: String,
+        val optionsBuilder: NavOptionsBuilder.() -> Unit = { },
+    ) : NavigationCommand
 
-    /**
-     * Rolls fragmentBack to the needed screen from the screens chain.
-     *
-     * Behavior in the case when no needed screens found depends on an implementation of the
-     * But the recommended behavior is to return to the root.
-     */
-    data class BackTo(val destination: Destination?) : NavigationCommand
+    data class SendResult<T : Any>(
+        val key: String,
+        val result: T,
+        val usePreviousBackStackEntry: Boolean = false,
+    ) : NavigationCommand
+
+    data class AddResultListener(
+        val key: String,
+        val backStackEntryId: String,
+        val action: (Any) -> Unit,
+    ) : NavigationCommand
+
+    data class ToScreen(
+        val destinationBundle: DestinationBundle<*>,
+        val canDuplicate: Boolean,
+        val ignoreLock: Boolean = false,
+        val optionsBuilder: NavOptionsBuilder.() -> Unit = { },
+    ) : NavigationCommand
+
+    data class ToGraph(
+        val graph: NavGraph,
+        val optionsBuilder: NavOptionsBuilder.() -> Unit = { },
+    ) : NavigationCommand
+
+    data object Lock : NavigationCommand
 }

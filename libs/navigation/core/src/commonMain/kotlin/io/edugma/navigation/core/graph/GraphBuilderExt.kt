@@ -8,7 +8,7 @@ import androidx.navigation.NavBackStackEntry
 import io.edugma.navigation.core.navDestination.ComposeDestination
 import io.edugma.navigation.core.navDestination.ComposeDialogDestination
 import io.edugma.navigation.core.navDestination.GraphDestination
-import io.edugma.navigation.core.screen.Destination
+import io.edugma.navigation.core.destination.Destination
 import kotlin.jvm.JvmSuppressWildcards
 
 fun NavGraphBuilder.composeScreen(

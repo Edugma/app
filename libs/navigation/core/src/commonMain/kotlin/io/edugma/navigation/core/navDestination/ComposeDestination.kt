@@ -5,7 +5,7 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavBackStackEntry
-import io.edugma.navigation.core.screen.Destination
+import io.edugma.navigation.core.destination.Destination
 import kotlin.jvm.JvmSuppressWildcards
 
 class ComposeDestination(

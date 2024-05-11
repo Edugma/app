@@ -40,8 +40,8 @@ import io.edugma.features.app.presentation.main.MainViewModel
 import io.edugma.navigation.core.compose.EdugmaNavigation
 import io.edugma.navigation.core.graph.NavGraphBuilder
 import io.edugma.navigation.core.navigator.ComposeNavigator
-import io.edugma.navigation.core.screen.Destination
-import io.edugma.navigation.core.screen.toBundle
+import io.edugma.navigation.core.destination.Destination
+import io.edugma.navigation.core.destination.toBundle
 import io.edugma.navigation.core.utils.getRoute
 
 val showNavBar = listOf(
@@ -84,7 +84,7 @@ val items = listOf(
 
 @Composable
 fun BottomNav(navigator: ComposeNavigator, router: TabMenuRouter, isVisible: State<Boolean>) {
-    val navigationState by navigator.navHostController.currentBackStackEntryFlow.collectAsState(null)
+    val navigationState by navigator.navController.currentBackStackEntryFlow.collectAsState(null)
     val currentDestination by remember {
         derivedStateOf { navigationState?.destination?.route }
     }
@@ -144,7 +144,12 @@ fun BottomNav(navigator: ComposeNavigator, router: TabMenuRouter, isVisible: Sta
                         )
                     },
                     onClick = {
-                        router.navigateTo(screen.toBundle())
+                        router.navigateTo(screen.toBundle()) {
+                            popUpTo(screen) {
+                                inclusive = true
+                            }
+                            launchSingleTop = true
+                        }
                     },
                 )
             }

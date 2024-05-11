@@ -1,4 +1,4 @@
-package io.edugma.navigation.core.screen
+package io.edugma.navigation.core.destination
 
 inline fun <T : Destination> T.toBundle(action: DestinationBundle<T>.() -> Unit = {}): DestinationBundle<T> {
     return DestinationBundle(destination = this).apply {

@@ -1,8 +1,8 @@
 package io.edugma.core.navigation.schedule
 
-import io.edugma.navigation.core.screen.Destination
-import io.edugma.navigation.core.screen.reqArg
-import io.edugma.navigation.core.screen.toBundle
+import io.edugma.navigation.core.destination.Destination
+import io.edugma.navigation.core.destination.reqArg
+import io.edugma.navigation.core.destination.toBundle
 
 object ScheduleInfoScreens {
     object LessonInfo : Destination("scheduleInfoLesson") {

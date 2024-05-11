@@ -40,6 +40,10 @@ class GroupInfoViewModel(
             copy(selectedTab = tab)
         }
     }
+
+    fun exit() {
+        scheduleRouter.back()
+    }
 }
 
 data class GroupInfoState(

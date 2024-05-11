@@ -26,7 +26,6 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(libs.kermit)
-//                implementation("co.touchlab:kermit:2.0.0-RC4")
             }
         }
 

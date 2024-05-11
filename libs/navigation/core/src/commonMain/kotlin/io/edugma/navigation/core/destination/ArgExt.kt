@@ -1,4 +1,4 @@
-package io.edugma.navigation.core.screen
+package io.edugma.navigation.core.destination
 
 inline fun <reified T : Any> Destination.reqArg(
     name: String,

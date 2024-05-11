@@ -65,4 +65,8 @@ class ScheduleCalendarViewModel(
             ScheduleScreens.Main(date = date),
         )
     }
+
+    fun exit() {
+        scheduleRouter.back()
+    }
 }

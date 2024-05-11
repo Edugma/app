@@ -1,15 +1,17 @@
 package io.edugma.core.designSystem.organism.bottomSheet
 
-import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.SwipeableDefaults
+import androidx.compose.material3.BottomSheetDefaults as BottomSheetDefaults3
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet as ModalBottomSheet3
+import androidx.compose.material3.ModalBottomSheetDefaults as ModalBottomSheetDefaults3
+import androidx.compose.material3.SheetState as SheetState3
+import androidx.compose.material3.SheetValue as SheetValue3
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -18,7 +20,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
@@ -29,27 +30,22 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.molecules.dragger.EdDragHandle
 import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
-import io.edugma.core.designSystem.tokens.shapes.bottom
 import io.edugma.core.designSystem.tokens.shapes.top
 import io.edugma.core.designSystem.utils.BackHandler
 import kotlinx.coroutines.launch
-import androidx.compose.material.ModalBottomSheetState as Material2ModalBottomSheetState
-import androidx.compose.material.ModalBottomSheetValue as Material2ModalBottomSheetValue
-import androidx.compose.material.rememberModalBottomSheetState as rememberMaterial2ModalBottomSheetState
+import androidx.compose.material3.rememberModalBottomSheetState as rememberModalBottomSheetState3
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun EdModalBottomSheet(
-    sheetContent: @Composable ColumnScope.() -> Unit,
+    onDismissRequest: () -> Unit = {},
     modifier: Modifier = Modifier,
-    sheetState: ModalBottomSheetState =
-        rememberModalBottomSheetState(ModalBottomSheetValue.Hidden),
+    sheetState: SheetState = rememberModalBottomSheetState(),
     showDragHandle: Boolean = true,
     containerColor: Color = EdTheme.colorScheme.surface,
     contentColor: Color = contentColorFor(containerColor),
     tonalElevation: Dp = EdElevation.Level2.defaultElevation,
     windowInsets: WindowInsets = WindowInsets(0),
-    content: @Composable () -> Unit,
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -72,38 +68,40 @@ fun EdModalBottomSheet(
         }
     }
 
-    ModalBottomSheetLayout(
-        sheetContent = {
-            Column(
-                modifier = Modifier
-                    .windowInsetsPadding(windowInsets)
-                    .fillMaxWidth(),
-            ) {
-                if (showDragHandle) {
-                    EdDragHandle(
-                        modifier = Modifier
-                            .padding(top = 12.dp, bottom = 3.dp)
-                            .align(Alignment.CenterHorizontally),
-                    )
-                } else {
-                    SpacerHeight(height = 15.dp)
-                }
-                sheetContent()
-            }
-        },
+    ModalBottomSheet3(
+        onDismissRequest = onDismissRequest,
         modifier = modifier,
-        sheetState = sheetState.m2State,
-        sheetGesturesEnabled = true,
-        sheetShape = EdTheme.shapes.extraLarge.top(),
-        sheetElevation = tonalElevation,
-        sheetBackgroundColor = containerColor,
-        sheetContentColor = contentColor,
-        scrimColor = EdTheme.colorScheme.scrim.copy(alpha = 0.5f),
-        content = content,
-    )
+        sheetState = sheetState.state3,
+        sheetMaxWidth = BottomSheetDefaults3.SheetMaxWidth,
+        shape = EdTheme.shapes.extraLarge.top(),
+        containerColor = containerColor,
+        contentColor = contentColor,
+        tonalElevation = tonalElevation,
+        scrimColor = BottomSheetDefaults3.ScrimColor, // EdTheme.colorScheme.scrim.copy(alpha = 0.5f)
+        dragHandle = { BottomSheetDefaults3.DragHandle() },
+        windowInsets = BottomSheetDefaults3.windowInsets,
+        properties = ModalBottomSheetDefaults3.properties(),
+    ) {
+        Column(
+            modifier = Modifier
+                .windowInsetsPadding(windowInsets)
+                .fillMaxWidth(),
+        ) {
+            if (showDragHandle) {
+                EdDragHandle(
+                    modifier = Modifier
+                        .padding(top = 12.dp, bottom = 3.dp)
+                        .align(Alignment.CenterHorizontally),
+                )
+            } else {
+                SpacerHeight(height = 15.dp)
+            }
+            content()
+        }
+    }
 }
 
-enum class ModalBottomSheetValue {
+enum class SheetValue {
     /**
      * The bottom sheet is not visible.
      */
@@ -118,85 +116,63 @@ enum class ModalBottomSheetValue {
      * The bottom sheet is partially visible at 50% of the screen height. This state is only
      * enabled if the height of the bottom sheet is more than 50% of the screen height.
      */
-    HalfExpanded,
+    PartiallyExpanded,
 }
 
-@OptIn(ExperimentalMaterialApi::class)
-private fun ModalBottomSheetValue.toMaterial2(): Material2ModalBottomSheetValue {
+@OptIn(ExperimentalMaterial3Api::class)
+private fun SheetValue3.toEdugma(): SheetValue {
     return when (this) {
-        ModalBottomSheetValue.Hidden -> Material2ModalBottomSheetValue.Hidden
-        ModalBottomSheetValue.Expanded -> Material2ModalBottomSheetValue.Expanded
-        ModalBottomSheetValue.HalfExpanded -> Material2ModalBottomSheetValue.HalfExpanded
-    }
-}
-
-@OptIn(ExperimentalMaterialApi::class)
-private fun Material2ModalBottomSheetValue.toEdugma(): ModalBottomSheetValue {
-    return when (this) {
-        Material2ModalBottomSheetValue.Hidden -> ModalBottomSheetValue.Hidden
-        Material2ModalBottomSheetValue.Expanded -> ModalBottomSheetValue.Expanded
-        Material2ModalBottomSheetValue.HalfExpanded -> ModalBottomSheetValue.HalfExpanded
+        SheetValue3.Hidden -> SheetValue.Hidden
+        SheetValue3.Expanded -> SheetValue.Expanded
+        SheetValue3.PartiallyExpanded -> SheetValue.PartiallyExpanded
     }
 }
 
 @Stable
-class ModalBottomSheetState @OptIn(ExperimentalMaterialApi::class)
-internal constructor(
-    internal val m2State: Material2ModalBottomSheetState,
+class SheetState internal constructor(
+    internal val state3: SheetState3,
 ) {
-    @OptIn(ExperimentalMaterialApi::class)
-    val isVisible: Boolean by m2State::isVisible
+    val isVisible: Boolean by state3::isVisible
 
-    @OptIn(ExperimentalMaterialApi::class)
-    val targetState: ModalBottomSheetValue
-        get() = m2State.targetValue.toEdugma()
+    val targetValue: SheetValue
+        get() = state3.targetValue.toEdugma()
 
-    @OptIn(ExperimentalMaterialApi::class)
-    val currentState: ModalBottomSheetValue
-        get() = m2State.currentValue.toEdugma()
+    val currentValue: SheetValue
+        get() = state3.currentValue.toEdugma()
 
-    @OptIn(ExperimentalMaterialApi::class)
     suspend fun show() {
-        m2State.show()
+        state3.show()
     }
 
-    @OptIn(ExperimentalMaterialApi::class)
     suspend fun hide() {
-        m2State.hide()
+        state3.hide()
     }
 
-    @OptIn(ExperimentalMaterialApi::class)
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other == null || this::class != other::class) return false
 
-        other as ModalBottomSheetState
+        other as SheetState
 
-        return m2State == other.m2State
+        return state3 == other.state3
     }
 
-    @OptIn(ExperimentalMaterialApi::class)
     override fun hashCode(): Int {
-        return m2State.hashCode()
+        return state3.hashCode()
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun rememberModalBottomSheetState(
-    initialValue: ModalBottomSheetValue,
-    animationSpec: AnimationSpec<Float> = SwipeableDefaults.AnimationSpec,
-    confirmValueChange: (ModalBottomSheetValue) -> Boolean = { true },
-    skipHalfExpanded: Boolean = true,
-): ModalBottomSheetState {
-    val m2State = rememberMaterial2ModalBottomSheetState(
-        initialValue = initialValue.toMaterial2(),
-        animationSpec = animationSpec,
+    skipPartiallyExpanded: Boolean = false,
+    confirmValueChange: (SheetValue) -> Boolean = { true },
+): SheetState {
+    val state3 = rememberModalBottomSheetState3(
+        skipPartiallyExpanded = skipPartiallyExpanded,
         confirmValueChange = { confirmValueChange(it.toEdugma()) },
-        skipHalfExpanded = skipHalfExpanded,
     )
 
-    return remember(m2State) {
-        ModalBottomSheetState(m2State)
+    return remember(state3) {
+        SheetState(state3)
     }
 }

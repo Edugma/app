@@ -4,9 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
-import io.edugma.navigation.core.screen.ArgumentsStore
-import io.edugma.navigation.core.screen.Destination
-import io.edugma.navigation.core.screen.NavArgs
+import io.edugma.navigation.core.destination.ArgumentsStore
+import io.edugma.navigation.core.destination.Destination
+import io.edugma.navigation.core.destination.NavArgs
 
 val LocalArguments: ProvidableCompositionLocal<ArgumentsStore?> = staticCompositionLocalOf { null }
 

@@ -106,7 +106,7 @@ class ScheduleSourcesViewModel(
     private fun onSelectSource(source: ScheduleSourceUiModel) {
         launchCoroutine {
             useCase.setSelectedSource(source.toDtoModel())
-            router.back()
+            exit()
         }
     }
 
@@ -144,7 +144,11 @@ class ScheduleSourcesViewModel(
                     avatar = null,
                 ),
             )
-            router.back()
+            exit()
         }
+    }
+
+    fun exit() {
+        scheduleRouter.back()
     }
 }

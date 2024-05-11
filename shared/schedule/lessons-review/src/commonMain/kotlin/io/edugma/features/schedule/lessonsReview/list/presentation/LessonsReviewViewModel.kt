@@ -37,4 +37,8 @@ class LessonsReviewViewModel(
             },
         )
     }
+
+    fun exit() {
+        scheduleRouter.back()
+    }
 }

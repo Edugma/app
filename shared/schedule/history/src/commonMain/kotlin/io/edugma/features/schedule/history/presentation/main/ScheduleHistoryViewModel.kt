@@ -39,7 +39,11 @@ class ScheduleHistoryViewModel(
                 }
             }
 
-            ScheduleHistoryAction.OnBack -> router.back()
+            ScheduleHistoryAction.OnBack -> exit()
         }
+    }
+
+    fun exit() {
+        scheduleRouter.back()
     }
 }

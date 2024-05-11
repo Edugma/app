@@ -87,6 +87,10 @@ class PeopleViewModel(
             accountRouter.navigateTo(ScheduleInfoScreens.TeacherInfo(it))
         }
     }
+
+    fun exit() {
+        accountRouter.back()
+    }
 }
 
 enum class BottomSheetType {

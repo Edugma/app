@@ -49,7 +49,7 @@ import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.chip.EdChipLabel
 import io.edugma.core.designSystem.molecules.searchField.EdSearchField
-import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetValue
+import io.edugma.core.designSystem.organism.bottomSheet.SheetValue
 import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
 import io.edugma.core.designSystem.organism.cell.EdCell
 import io.edugma.core.designSystem.organism.cell.EdCellDefaults
@@ -73,9 +73,7 @@ import kotlinx.coroutines.launch
 fun ScheduleSourcesScreen(viewModel: ScheduleSourcesViewModel = getViewModel()) {
     val state by viewModel.stateFlow.collectAsState()
 
-    val bottomState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden,
-    )
+    val bottomState = rememberModalBottomSheetState()
 
     val scope = rememberCoroutineScope()
 
@@ -87,9 +85,9 @@ fun ScheduleSourcesScreen(viewModel: ScheduleSourcesViewModel = getViewModel()) 
 
     LaunchedEffect(bottomState) {
         snapshotFlow {
-            bottomState.currentState
+            bottomState.currentValue
         }.collect {
-            if (it == ModalBottomSheetValue.Hidden) {
+            if (it == SheetValue.Hidden) {
                 viewModel.onBottomSheetClosed()
             }
         }
@@ -156,7 +154,7 @@ private fun ScheduleSourcesContent(
     onAction: (ScheduleSourcesAction) -> Unit,
 ) {
 
-    val q = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
+    val q = rememberModalBottomSheetState()
 
     Column {
         EdSurface(

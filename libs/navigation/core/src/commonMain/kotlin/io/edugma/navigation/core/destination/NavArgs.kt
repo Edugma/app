@@ -1,4 +1,4 @@
-package io.edugma.navigation.core.screen
+package io.edugma.navigation.core.destination
 
 public class NavArgs<T : Destination>(
     public val destination: T,

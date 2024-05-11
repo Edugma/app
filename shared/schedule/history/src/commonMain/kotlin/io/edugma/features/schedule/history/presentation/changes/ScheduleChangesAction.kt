@@ -1,7 +1,7 @@
 package io.edugma.features.schedule.history.presentation.changes
 
 import io.edugma.core.navigation.schedule.ScheduleHistoryScreens
-import io.edugma.navigation.core.screen.NavArgs
+import io.edugma.navigation.core.destination.NavArgs
 
 sealed interface ScheduleChangesAction {
     data class OnArguments(

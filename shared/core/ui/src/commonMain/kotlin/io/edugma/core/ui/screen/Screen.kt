@@ -10,11 +10,11 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.union
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.edugma.core.designSystem.organism.bottomSheet.EdModalBottomSheet
-import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetState
-import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetValue
+import io.edugma.core.designSystem.organism.bottomSheet.SheetState
 import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
 import io.edugma.core.designSystem.utils.ifThen
 
@@ -37,6 +37,7 @@ fun FeatureScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FeatureBottomSheetScreen(
     statusBarPadding: Boolean = true,
@@ -44,8 +45,7 @@ fun FeatureBottomSheetScreen(
     imePadding: Boolean = true,
     isNavigationBarVisible: Boolean = true,
     sheetNavigationBarPadding: Boolean = true,
-    sheetState: ModalBottomSheetState =
-        rememberModalBottomSheetState(ModalBottomSheetValue.Hidden),
+    sheetState: SheetState = rememberModalBottomSheetState(),
     sheetContent: @Composable ColumnScope.() -> Unit,
     content: @Composable () -> Unit,
 ) {
@@ -59,23 +59,23 @@ fun FeatureBottomSheetScreen(
     } else {
         WindowInsets(0)
     }
-    EdModalBottomSheet(
-        sheetState = sheetState,
-        sheetContent = sheetContent,
-        modifier = Modifier.ifThen(imePadding) {
-            this.imePadding()
-        },
-        windowInsets = imeInsets.union(navigationBarInsets),
+    Box(
+        modifier = Modifier.fillMaxSize()
+            .ifThen(statusBarPadding) {
+                statusBarsPadding()
+            }.ifThen(navigationBarPadding) {
+                navigationBarsPadding()
+            },
     ) {
-        Box(
-            modifier = Modifier.fillMaxSize()
-                .ifThen(statusBarPadding) {
-                    statusBarsPadding()
-                }.ifThen(navigationBarPadding) {
-                    navigationBarsPadding()
-                },
+        content()
+        EdModalBottomSheet(
+            sheetState = sheetState,
+            modifier = Modifier.ifThen(imePadding) {
+                this.imePadding()
+            },
+            windowInsets = imeInsets.union(navigationBarInsets),
         ) {
-            content()
+            sheetContent()
         }
     }
 }

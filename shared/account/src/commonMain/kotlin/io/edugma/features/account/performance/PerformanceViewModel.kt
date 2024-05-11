@@ -153,6 +153,10 @@ class PerformanceViewModel(
         }
         return newSet.toSet()
     }
+
+    fun exit() {
+        accountRouter.back()
+    }
 }
 
 sealed class Filter<out T>(open val value: T, open val isChecked: Boolean) : ListItemUiModel() {

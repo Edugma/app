@@ -55,6 +55,10 @@ class WebViewModel(
             copy(authToken = token)
         }
     }
+
+    fun exit() {
+        accountRouter.back()
+    }
 }
 
 data class WebState(

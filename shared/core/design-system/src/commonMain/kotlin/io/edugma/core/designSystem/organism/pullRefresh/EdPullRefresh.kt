@@ -1,14 +1,22 @@
 package io.edugma.core.designSystem.organism.pullRefresh
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.pullrefresh.pullRefresh
-import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.unit.dp
+import co.touchlab.kermit.Logger
+import io.edugma.core.designSystem.theme.EdTheme
+import io.edugma.core.designSystem.utils.surfaceColorAtElevation
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 inline fun EdPullRefresh(
     refreshing: Boolean,
@@ -16,15 +24,40 @@ inline fun EdPullRefresh(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
-    val pullRefreshState = rememberPullRefreshState(refreshing, onRefresh)
+    val refreshingState = rememberUpdatedState(refreshing)
+    val state = rememberPullToRefreshState(
+        enabled = {
+            refreshingState.value.not()
+        }
+    )
+
+
+    LaunchedEffect(Unit) {
+        snapshotFlow { refreshingState.value }.collect {
+            if (it) {
+                state.startRefresh()
+            } else {
+                state.endRefresh()
+            }
+        }
+    }
+
+    LaunchedEffect(state) {
+        snapshotFlow { state.isRefreshing }.collect {
+            if (state.isRefreshing && state.isRefreshing != refreshingState.value) {
+                onRefresh()
+            }
+        }
+    }
 
     Box(
-        modifier = modifier.pullRefresh(pullRefreshState),
+        modifier = modifier.nestedScroll(state.nestedScrollConnection),
     ) {
         content()
-        EdPullRefreshIndicator(
-            refreshing = refreshing,
-            state = pullRefreshState,
+        PullToRefreshContainer(
+            state = state,
+            containerColor = EdTheme.colorScheme.surfaceColorAtElevation(15.dp),
+            contentColor = EdTheme.colorScheme.onSurface,
             modifier = Modifier.align(Alignment.TopCenter),
         )
     }

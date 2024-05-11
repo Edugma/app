@@ -24,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import edugma.shared.core.icons.generated.resources.*
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
 import io.edugma.core.api.model.contentType
 import io.edugma.core.api.model.key
 import io.edugma.core.api.utils.format
@@ -35,7 +34,7 @@ import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.organism.EdScaffold
 import io.edugma.core.designSystem.organism.actionCard.EdActionCardWidth
-import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetValue
+import io.edugma.core.designSystem.organism.bottomSheet.SheetValue
 import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
 import io.edugma.core.designSystem.organism.cell.EdCell
 import io.edugma.core.designSystem.organism.cell.EdCellDefaults
@@ -62,9 +61,7 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
     val state by viewModel.stateFlow.collectAsState()
 
-    val bottomState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden,
-    )
+    val bottomState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
 
     val onAction = viewModel.rememberOnAction()
@@ -77,9 +74,9 @@ fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
 
     LaunchedEffect(bottomState) {
         snapshotFlow {
-            bottomState.currentState
+            bottomState.currentValue
         }.collect {
-            if (it == ModalBottomSheetValue.Hidden) {
+            if (it == SheetValue.Hidden) {
                 viewModel.onBottomSheetClosed()
             }
         }

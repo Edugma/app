@@ -1,4 +1,5 @@
 import org.gradle.accessors.dm.LibrariesForLibs
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     kotlin("multiplatform")
@@ -11,11 +12,9 @@ val libs = the<LibrariesForLibs>()
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
     androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = libs.versions.java.get()
-                freeCompilerArgs += "-Xjdk-release=${libs.versions.java.get()}"
-            }
+        compilerOptions {
+            jvmTarget.set(JvmTarget.fromTarget(libs.versions.java.get()))
+            freeCompilerArgs.add("-Xjdk-release=${libs.versions.java.get()}")
         }
         //https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html
 //        @OptIn(ExperimentalKotlinGradlePluginApi::class)

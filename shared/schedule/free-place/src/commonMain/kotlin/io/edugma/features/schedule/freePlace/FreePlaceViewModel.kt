@@ -103,6 +103,10 @@ class FreePlaceViewModel(
             )
         }
     }
+
+    fun exit() {
+        scheduleRouter.back()
+    }
 }
 
 data class FreePlaceState(

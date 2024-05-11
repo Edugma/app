@@ -35,4 +35,8 @@ class PersonalViewModel(
             PersonalAction.OnRefresh -> load(isRefreshing = true)
         }
     }
+
+    fun exit() {
+        accountRouter.back()
+    }
 }

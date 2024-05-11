@@ -19,13 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import edugma.shared.core.icons.generated.resources.*
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
 import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import io.edugma.core.designSystem.atoms.spacer.NavigationBarSpacer
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.organism.EdScaffold
-import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetValue
 import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
 import io.edugma.core.designSystem.organism.chipRow.EdChipLabelLazyRow
 import io.edugma.core.designSystem.organism.lceScaffold.EdLceScaffold
@@ -50,9 +48,7 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 @Composable
 fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
     val state by viewModel.stateFlow.collectAsState()
-    val bottomState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden,
-    )
+    val bottomState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(state.selectedPerformance) {

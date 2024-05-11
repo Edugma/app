@@ -1,9 +1,9 @@
 package io.edugma.core.navigation
 
-import io.edugma.navigation.core.screen.NoArgDestination
-import io.edugma.navigation.core.screen.Destination
-import io.edugma.navigation.core.screen.optArg
-import io.edugma.navigation.core.screen.toBundle
+import io.edugma.navigation.core.destination.NoArgDestination
+import io.edugma.navigation.core.destination.Destination
+import io.edugma.navigation.core.destination.optArg
+import io.edugma.navigation.core.destination.toBundle
 import kotlinx.datetime.LocalDate
 
 object ScheduleScreens {

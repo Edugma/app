@@ -1,7 +1,7 @@
 package io.edugma.navigation.core.navDestination
 
 import androidx.compose.runtime.Composable
-import io.edugma.navigation.core.screen.Destination
+import io.edugma.navigation.core.destination.Destination
 
 class ComposeDialogDestination(
     val destination: Destination,

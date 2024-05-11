@@ -7,4 +7,8 @@ class SettingsMainViewModel : BaseViewModel<Unit>(Unit) {
     fun onAppearanceClick() {
         miscRouter.navigateTo(SettingsScreens.Appearance())
     }
+
+    fun exit() {
+        miscRouter.back()
+    }
 }

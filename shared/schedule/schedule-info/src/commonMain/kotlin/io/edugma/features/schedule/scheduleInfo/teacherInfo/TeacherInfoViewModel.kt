@@ -41,6 +41,10 @@ class TeacherInfoViewModel(
             copy(selectedTab = tab)
         }
     }
+
+    fun exit() {
+        scheduleRouter.back()
+    }
 }
 
 data class TeacherInfoState(

@@ -1,7 +1,7 @@
 package io.edugma.navigation.core.compose
 
 import androidx.core.bundle.Bundle
-import io.edugma.navigation.core.screen.ArgumentsStore
+import io.edugma.navigation.core.destination.ArgumentsStore
 
 class ComposeArgumentsStore(
     private val arguments: Bundle,

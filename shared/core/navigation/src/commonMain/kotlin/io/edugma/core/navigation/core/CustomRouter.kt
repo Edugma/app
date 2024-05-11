@@ -1,9 +1,9 @@
 package io.edugma.core.navigation.core
 
-import io.edugma.navigation.core.router.Router
+import io.edugma.navigation.core.router.DefaultRouter
 
-class TabMenuRouter : Router()
-class HomeRouter : Router()
-class ScheduleRouter : Router()
-class AccountRouter : Router()
-class MiscRouter : Router()
+class TabMenuRouter : DefaultRouter()
+class HomeRouter : DefaultRouter()
+class ScheduleRouter : DefaultRouter()
+class AccountRouter : DefaultRouter()
+class MiscRouter : DefaultRouter()

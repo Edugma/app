@@ -25,8 +25,6 @@ abstract class BaseActionViewModel<TState, TAction>(
     ActionProducer<TAction>,
     KoinComponent {
 
-        @Deprecated("11")
-    val router: Router by inject()
     val tabMenuRouter: TabMenuRouter by inject()
     val homeRouter: HomeRouter by inject()
     val scheduleRouter: ScheduleRouter by inject()
@@ -45,9 +43,5 @@ abstract class BaseActionViewModel<TState, TAction>(
                 Logger.d(it.toString(), tag = "STATE")
             }
         }
-    }
-
-    open fun exit() {
-        router.back()
     }
 }

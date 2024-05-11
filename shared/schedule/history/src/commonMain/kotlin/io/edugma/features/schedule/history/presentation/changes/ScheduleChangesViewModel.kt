@@ -33,4 +33,8 @@ class ScheduleChangesViewModel(
             }
         }
     }
+
+    fun exit() {
+        scheduleRouter.back()
+    }
 }

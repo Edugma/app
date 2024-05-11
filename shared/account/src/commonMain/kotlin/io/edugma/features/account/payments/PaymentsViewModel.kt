@@ -77,4 +77,8 @@ class PaymentsViewModel(
             loadPayments(isRefreshing = false)
         }
     }
+
+    fun exit() {
+        accountRouter.back()
+    }
 }

@@ -64,6 +64,10 @@ class PlaceInfoViewModel(
             )
         }
     }
+
+    fun exit() {
+        scheduleRouter.back()
+    }
 }
 
 data class PlaceInfoState(

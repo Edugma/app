@@ -20,7 +20,10 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.node.Ref
@@ -35,11 +38,8 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.elevation.EdElevation
 import io.edugma.core.designSystem.utils.LocalEdIconLoader
 import io.edugma.core.designSystem.utils.LocalEdImageLoader
-import io.edugma.core.navigation.AccountScreens
 import io.edugma.core.navigation.MainDestination
-import io.edugma.core.navigation.ScheduleScreens
 import io.edugma.core.navigation.core.rememberRouterNavigator
-import io.edugma.core.navigation.misc.MiscMenuScreens
 import io.edugma.core.utils.viewmodel.getViewModel
 import io.edugma.features.app.core.appScreens
 import io.edugma.features.app.presentation.main.widgets.BottomNav
@@ -75,42 +75,32 @@ fun MainScreen(
     }
 }
 
-fun String?.navBarIsVisible(tabScreen: String?, mainScreen: MainDestination): Boolean {
-    return tabScreen == mainScreen.getRoute() &&
-        this in showNavBar
-}
-
 @Composable
 fun MainContent(
     viewModel: MainViewModel = getViewModel(),
 ) {
-    val homeNavigator = rememberRouterNavigator(viewModel.homeRouter) {
-        viewModel.tabMenuRouter.back()
-    }
-    val scheduleNavigator = rememberRouterNavigator(viewModel.scheduleRouter) {
-        viewModel.tabMenuRouter.back()
-    }
-    val accountNavigator = rememberRouterNavigator(viewModel.accountRouter) {
-        viewModel.tabMenuRouter.back()
-    }
-    val miscNavigator = rememberRouterNavigator(viewModel.miscRouter) {
-        viewModel.tabMenuRouter.back()
-    }
 
     val (tabNavigator, isNavigationBarVisible) = rememberTabNavigator(viewModel)
 
+    var needTabMenuForHome by remember { mutableStateOf(false) }
+    var needTabMenuForSchedule by remember { mutableStateOf(false) }
+    var needTabMenuForAccount by remember { mutableStateOf(false) }
+    var needTabMenuForMisc by remember { mutableStateOf(false) }
+
     LaunchedEffect(key1 = Unit) {
         combine(
-            tabNavigator.navHostController.currentBackStackEntryFlow,
-            homeNavigator.navHostController.currentBackStackEntryFlow,
-            scheduleNavigator.navHostController.currentBackStackEntryFlow,
-            accountNavigator.navHostController.currentBackStackEntryFlow,
-            miscNavigator.navHostController.currentBackStackEntryFlow,
-        ) { tabScreen, homeScreen, scheduleScreen, accountScreen, miscScreen ->
-            homeScreen.destination.route.navBarIsVisible(tabScreen.destination.route, MainDestination.Home) ||
-                scheduleScreen.destination.route.navBarIsVisible(tabScreen.destination.route, MainDestination.Schedule) ||
-                accountScreen.destination.route.navBarIsVisible(tabScreen.destination.route, MainDestination.Account) ||
-                miscScreen.destination.route.navBarIsVisible(tabScreen.destination.route, MainDestination.Misc)
+            tabNavigator.navController.currentBackStackEntryFlow,
+            snapshotFlow { needTabMenuForHome },
+            snapshotFlow { needTabMenuForSchedule },
+            snapshotFlow { needTabMenuForAccount },
+            snapshotFlow { needTabMenuForMisc },
+        ) { tabScreen, needForHome, needForSchedule, needForAccount, needForMisc ->
+            tabScreen.destination.route == MainDestination.Home.getRoute() && needForHome ||
+                tabScreen.destination.route == MainDestination.Schedule
+                .getRoute() && needForSchedule ||
+                tabScreen.destination.route == MainDestination.Account
+                .getRoute() && needForAccount ||
+                tabScreen.destination.route == MainDestination.Misc.getRoute() && needForMisc
         }.collect {
             isNavigationBarVisible.value = it
         }
@@ -134,20 +124,54 @@ fun MainContent(
                     .fillMaxSize(),
             ) {
                 EdugmaTabNavigation(tabNavigator, MainDestination.Schedule) {
-                    //                    screen(MainScreen.Home) {
-//                        TabContent(homeNavigator, MainDestination.Home)
+//                    composeScreen(MainDestination.Home) {
+//                        val homeNavigator = rememberRouterNavigator(viewModel.homeRouter) {
+//                            viewModel.tabMenuRouter.back()
+//                        }
+//                        LaunchedEffect(homeNavigator) {
+//                            homeNavigator.navHostController.currentBackStackEntryFlow.collect {
+//                                needTabMenuForHome = it.destination.route in showNavBar
+//                            }
+//                        }
+//                        TabContent(homeNavigator, MainDestination.Home) {
+//                            appScreens()
+//                        }
 //                    }
                     composeScreen(MainDestination.Schedule) {
+                        val scheduleNavigator = rememberRouterNavigator(viewModel.scheduleRouter) {
+                            viewModel.tabMenuRouter.back()
+                        }
+                        LaunchedEffect(scheduleNavigator) {
+                            scheduleNavigator.navController.currentBackStackEntryFlow.collect {
+                                needTabMenuForSchedule = it.destination.route in showNavBar
+                            }
+                        }
                         TabContent(scheduleNavigator, MainDestination.Schedule) {
                             appScreens()
                         }
                     }
                     composeScreen(MainDestination.Account) {
+                        val accountNavigator = rememberRouterNavigator(viewModel.accountRouter) {
+                            viewModel.tabMenuRouter.back()
+                        }
+                        LaunchedEffect(accountNavigator) {
+                            accountNavigator.navController.currentBackStackEntryFlow.collect {
+                                needTabMenuForAccount = it.destination.route in showNavBar
+                            }
+                        }
                         TabContent(accountNavigator, MainDestination.Account) {
                             appScreens()
                         }
                     }
                     composeScreen(MainDestination.Misc) {
+                        val miscNavigator = rememberRouterNavigator(viewModel.miscRouter) {
+                            viewModel.tabMenuRouter.back()
+                        }
+                        LaunchedEffect(miscNavigator) {
+                            miscNavigator.navController.currentBackStackEntryFlow.collect {
+                                needTabMenuForMisc = it.destination.route in showNavBar
+                            }
+                        }
                         TabContent(miscNavigator, MainDestination.Misc) {
                             appScreens()
                         }

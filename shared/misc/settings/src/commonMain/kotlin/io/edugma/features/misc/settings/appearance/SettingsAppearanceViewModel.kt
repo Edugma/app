@@ -40,6 +40,10 @@ class SettingsAppearanceViewModel(
             }
         }
     }
+
+    fun exit() {
+        miscRouter.back()
+    }
 }
 
 data class SettingsAppearanceUiState(

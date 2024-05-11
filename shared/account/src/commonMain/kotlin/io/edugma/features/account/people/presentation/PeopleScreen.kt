@@ -19,12 +19,10 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import edugma.shared.core.icons.generated.resources.*
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
 import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import io.edugma.core.designSystem.atoms.spacer.NavigationBarSpacer
 import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.molecules.button.EdButton
-import io.edugma.core.designSystem.organism.bottomSheet.ModalBottomSheetValue
 import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
 import io.edugma.core.designSystem.organism.lceScaffold.EdLceScaffold
 import io.edugma.core.designSystem.organism.shortInfoSheet.EdShortInfoSheet
@@ -53,9 +51,7 @@ fun PeopleScreen(
     val state by viewModel.stateFlow.collectAsState()
     val onAction = viewModel.rememberOnAction()
 
-    val bottomState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden,
-    )
+    val bottomState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     if (state.type != null) {
         FeatureBottomSheetScreen(

@@ -109,6 +109,10 @@ class ScheduleMenuViewModel(
             }
         }
     }
+
+    fun exit() {
+        scheduleRouter.back()
+    }
 }
 
 data class ScheduleMenuUiState(

@@ -2,7 +2,7 @@ package io.edugma.navigation.core.navDestination
 
 import io.edugma.navigation.core.graph.NavGraph
 import io.edugma.navigation.core.graph.NavGraphBuilder
-import io.edugma.navigation.core.screen.Destination
+import io.edugma.navigation.core.destination.Destination
 
 class GraphDestination(
     public val graph: NavGraph,

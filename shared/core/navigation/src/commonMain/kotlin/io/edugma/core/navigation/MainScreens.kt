@@ -12,7 +12,6 @@ import edugma.shared.core.resources.generated.resources.Res
 import edugma.shared.core.resources.generated.resources.*
 import io.edugma.core.icons.EdIcons
 import io.edugma.navigation.core.graph.NavGraph
-import io.edugma.navigation.core.screen.Destination
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 

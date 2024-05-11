@@ -14,6 +14,10 @@ val libs = the<LibrariesForLibs>()
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
     sourceSets {
+        all {
+            languageSettings.optIn("androidx.compose.material3.ExperimentalMaterial3Api")
+        }
+
         commonMain {
             dependencies {
                 //implementation(project.dependencies.platform(libs.compose.bom))
@@ -48,14 +52,10 @@ kotlin {
     }
 }
 
-
-// TODO Compose Multiplatform > 1.5.11
-//tasks.withType<KotlinCompile>().configureEach {
-//    kotlinOptions {
-//        freeCompilerArgs += listOf(
-//            "-P",
-//            "plugin:androidx.compose.compiler.plugins.kotlin:stabilityConfigurationPath=" +
-//                "$rootDir${File.separator}configs${File.separator}compose${File.separator}compose_compiler_config.conf"
-//        )
-//    }
-//}
+composeCompiler {
+    stabilityConfigurationFile.set(
+        File(
+            "$rootDir/configs/compose/compose_compiler_config.conf"
+        )
+    )
+}

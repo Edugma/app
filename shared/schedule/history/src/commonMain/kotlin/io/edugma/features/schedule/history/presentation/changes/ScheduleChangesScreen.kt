@@ -48,12 +48,11 @@ import io.edugma.features.schedule.domain.model.lessonSubject.LessonSubject
 import io.edugma.features.schedule.domain.model.lessonType.LessonType
 import io.edugma.features.schedule.domain.model.place.Place
 import io.edugma.features.schedule.domain.usecase.LessonChange
-import io.edugma.navigation.core.screen.NavArgs
+import io.edugma.navigation.core.destination.NavArgs
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import edugma.shared.core.icons.generated.resources.*
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ScheduleChangesScreen(

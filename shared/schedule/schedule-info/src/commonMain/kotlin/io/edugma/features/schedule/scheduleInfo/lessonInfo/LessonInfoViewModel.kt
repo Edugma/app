@@ -45,6 +45,10 @@ class LessonInfoViewModel(
     fun onPlaceClick(id: String) {
         scheduleRouter.navigateTo(ScheduleInfoScreens.PlaceInfo(id))
     }
+
+    fun exit() {
+        scheduleRouter.back()
+    }
 }
 
 data class LessonInfoState(

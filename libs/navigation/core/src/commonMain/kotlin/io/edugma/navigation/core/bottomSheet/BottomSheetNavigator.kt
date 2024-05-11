@@ -62,8 +62,7 @@
 //@Composable
 //public fun rememberBottomSheetNavigator(
 //): BottomSheetNavigator {
-//    val sheetState = rememberModalBottomSheetState(
-//    )
+//    val sheetState = rememberModalBottomSheetState()
 //    return remember { BottomSheetNavigator(sheetState) }
 //}
 //

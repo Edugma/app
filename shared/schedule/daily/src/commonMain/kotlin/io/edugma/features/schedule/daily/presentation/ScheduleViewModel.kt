@@ -66,7 +66,7 @@ class ScheduleViewModel(
 
     override fun onAction(action: ScheduleDailyAction) {
         when (action) {
-            ScheduleDailyAction.OnBack -> router.back()
+            ScheduleDailyAction.OnBack -> exit()
             ScheduleDailyAction.OnFabClick -> newState {
                 toDateSelected(date = Clock.System.nowLocalDate())
             }
@@ -107,5 +107,9 @@ class ScheduleViewModel(
                 toDateSelected(date)
             }
         }
+    }
+
+    fun exit() {
+        scheduleRouter.back()
     }
 }

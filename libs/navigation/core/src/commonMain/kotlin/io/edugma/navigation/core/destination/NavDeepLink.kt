@@ -1,4 +1,4 @@
-package io.edugma.navigation.core.screen
+package io.edugma.navigation.core.destination
 
 class NavDeepLink(
     val uriPattern: String?,
