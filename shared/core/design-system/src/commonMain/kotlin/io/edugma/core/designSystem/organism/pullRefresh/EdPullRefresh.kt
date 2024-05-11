@@ -10,6 +10,8 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import co.touchlab.kermit.Logger
@@ -51,7 +53,8 @@ inline fun EdPullRefresh(
     }
 
     Box(
-        modifier = modifier.nestedScroll(state.nestedScrollConnection),
+        modifier = modifier.nestedScroll(state.nestedScrollConnection)
+            .clip(RectangleShape),
     ) {
         content()
         PullToRefreshContainer(
