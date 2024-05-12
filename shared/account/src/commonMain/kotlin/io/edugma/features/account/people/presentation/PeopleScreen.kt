@@ -30,6 +30,7 @@ import io.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.pagination.PagingFooter
 import io.edugma.core.ui.screen.FeatureBottomSheetScreen
+import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.viewmodel.getViewModel
@@ -54,34 +55,9 @@ fun PeopleScreen(
     val bottomState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     if (state.type != null) {
-        FeatureBottomSheetScreen(
+        FeatureScreen(
             statusBarPadding = false,
             navigationBarPadding = false,
-            sheetState = bottomState,
-            sheetContent = {
-                when (state.bottomType) {
-                    BottomSheetType.Filter -> {
-                        SearchBottomSheet(
-                            hint = state.type!!.queryHint,
-                            searchValue = state.name,
-                            onSearchValueChanged = {
-                                onAction(PeopleAction.OnQuery(it))
-                            },
-                        ) {
-                            viewModel.onSearch()
-                            scope.launch { bottomState.hide() }
-                        }
-                    }
-                    BottomSheetType.Person -> {
-                        state.selectedPerson?.let {
-                            PersonBottomSheet(
-                                person = it,
-                                openSchedule = viewModel::openSchedule,
-                            )
-                        }
-                    }
-                }
-            },
         ) {
             PeopleListContent(
                 state = state,
@@ -97,6 +73,33 @@ fun PeopleScreen(
                 onShare = viewModel::onShare,
                 onAction = onAction,
             )
+        }
+
+        FeatureBottomSheetScreen(
+            sheetState = bottomState,
+        ) {
+            when (state.bottomType) {
+                BottomSheetType.Filter -> {
+                    SearchBottomSheet(
+                        hint = state.type!!.queryHint,
+                        searchValue = state.name,
+                        onSearchValueChanged = {
+                            onAction(PeopleAction.OnQuery(it))
+                        },
+                    ) {
+                        viewModel.onSearch()
+                        scope.launch { bottomState.hide() }
+                    }
+                }
+                BottomSheetType.Person -> {
+                    state.selectedPerson?.let {
+                        PersonBottomSheet(
+                            person = it,
+                            openSchedule = viewModel::openSchedule,
+                        )
+                    }
+                }
+            }
         }
     }
 }

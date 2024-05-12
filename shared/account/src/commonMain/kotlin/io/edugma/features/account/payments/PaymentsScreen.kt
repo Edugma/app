@@ -48,6 +48,7 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.utils.rememberAsyncImagePainter
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureBottomSheetScreen
+import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.viewmodel.getViewModel
 import io.edugma.features.account.domain.model.payments.PaymentMethod
@@ -82,26 +83,28 @@ fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
         }
     }
 
-    FeatureBottomSheetScreen(
+    FeatureScreen(
         navigationBarPadding = false,
         statusBarPadding = false,
-        sheetState = bottomState,
-        sheetContent = {
-            state.selectedPaymentMethod?.let { selectedPaymentMethod ->
-                PaymentBottomSheet(
-                    paymentMethod = selectedPaymentMethod,
-                    openUri = {
-                        onAction(PaymentsAction.OnOpenUrl)
-                    },
-                )
-            }
-        },
     ) {
         PaymentsContent(
             state = state,
             backListener = viewModel::exit,
             onAction = onAction,
         )
+    }
+
+    FeatureBottomSheetScreen(
+        sheetState = bottomState,
+    ) {
+        state.selectedPaymentMethod?.let { selectedPaymentMethod ->
+            PaymentBottomSheet(
+                paymentMethod = selectedPaymentMethod,
+                openUri = {
+                    onAction(PaymentsAction.OnOpenUrl)
+                },
+            )
+        }
     }
 }
 

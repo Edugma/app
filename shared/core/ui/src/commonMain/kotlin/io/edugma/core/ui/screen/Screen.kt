@@ -12,7 +12,10 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.union
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import co.touchlab.kermit.Logger
 import io.edugma.core.designSystem.organism.bottomSheet.EdModalBottomSheet
 import io.edugma.core.designSystem.organism.bottomSheet.SheetState
 import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
@@ -37,7 +40,6 @@ fun FeatureScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FeatureBottomSheetScreen(
     statusBarPadding: Boolean = true,
@@ -47,7 +49,6 @@ fun FeatureBottomSheetScreen(
     sheetNavigationBarPadding: Boolean = true,
     sheetState: SheetState = rememberModalBottomSheetState(),
     sheetContent: @Composable ColumnScope.() -> Unit,
-    content: @Composable () -> Unit,
 ) {
     val imeInsets = if (imePadding) {
         WindowInsets.ime
@@ -59,21 +60,18 @@ fun FeatureBottomSheetScreen(
     } else {
         WindowInsets(0)
     }
-    Box(
-        modifier = Modifier.fillMaxSize()
-            .ifThen(statusBarPadding) {
-                statusBarsPadding()
-            }.ifThen(navigationBarPadding) {
-                navigationBarsPadding()
-            },
-    ) {
-        content()
+    LaunchedEffect(sheetState) {
+        snapshotFlow { sheetState.showBottomSheet }.collect {
+            Logger.d("$it", tag = "Test123")
+        }
+    }
+    if (sheetState.showBottomSheet) {
         EdModalBottomSheet(
-            sheetState = sheetState,
-            modifier = Modifier.ifThen(imePadding) {
-                this.imePadding()
+            onDismissRequest = {
+                sheetState.setHide()
             },
-            windowInsets = imeInsets.union(navigationBarInsets),
+            sheetState = sheetState,
+            windowInsets = imeInsets,
         ) {
             sheetContent()
         }

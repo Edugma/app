@@ -32,6 +32,7 @@ import io.edugma.core.designSystem.theme.EdTheme
 import io.edugma.core.designSystem.tokens.shapes.top
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.screen.FeatureBottomSheetScreen
+import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.isNull
@@ -57,21 +58,9 @@ fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
         }
     }
 
-    FeatureBottomSheetScreen(
+    FeatureScreen(
         navigationBarPadding = false,
         statusBarPadding = false,
-        sheetState = bottomState,
-        sheetContent = {
-            if (state.selectedPerformance.isNull()) {
-                FiltersBottomSheetContent(
-                    state = state,
-                    filterUpdateListener = viewModel::updateFilter,
-                    resetFilterListener = viewModel::resetFilters,
-                )
-            } else {
-                PerformanceBottomSheetContent(performance = state.selectedPerformance!!)
-            }
-        },
     ) {
         PerformanceContent(
             state,
@@ -83,6 +72,20 @@ fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
             backListener = viewModel::exit,
             onAction = viewModel.rememberOnAction(),
         )
+    }
+
+    FeatureBottomSheetScreen(
+        sheetState = bottomState,
+    ) {
+        if (state.selectedPerformance.isNull()) {
+            FiltersBottomSheetContent(
+                state = state,
+                filterUpdateListener = viewModel::updateFilter,
+                resetFilterListener = viewModel::resetFilters,
+            )
+        } else {
+            PerformanceBottomSheetContent(performance = state.selectedPerformance!!)
+        }
     }
 }
 

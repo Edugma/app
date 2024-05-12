@@ -1,10 +1,14 @@
 package io.edugma.core.designSystem.organism.bottomSheet
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.BottomSheetDefaults as BottomSheetDefaults3
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -14,10 +18,14 @@ import androidx.compose.material3.SheetState as SheetState3
 import androidx.compose.material3.SheetValue as SheetValue3
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +34,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import co.touchlab.kermit.Logger
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import io.edugma.core.designSystem.molecules.dragger.EdDragHandle
 import io.edugma.core.designSystem.theme.EdTheme
@@ -78,8 +87,16 @@ fun EdModalBottomSheet(
         contentColor = contentColor,
         tonalElevation = tonalElevation,
         scrimColor = BottomSheetDefaults3.ScrimColor, // EdTheme.colorScheme.scrim.copy(alpha = 0.5f)
-        dragHandle = { BottomSheetDefaults3.DragHandle() },
-        windowInsets = BottomSheetDefaults3.windowInsets,
+        dragHandle = if (showDragHandle) {
+            {
+                EdDragHandle(
+                    modifier = Modifier.padding(top = 16.dp, bottom = 16.dp)
+                )
+            }
+        } else {
+            null
+        },
+        windowInsets = windowInsets,
         properties = ModalBottomSheetDefaults3.properties(),
     ) {
         Column(
@@ -87,20 +104,12 @@ fun EdModalBottomSheet(
                 .windowInsetsPadding(windowInsets)
                 .fillMaxWidth(),
         ) {
-            if (showDragHandle) {
-                EdDragHandle(
-                    modifier = Modifier
-                        .padding(top = 12.dp, bottom = 3.dp)
-                        .align(Alignment.CenterHorizontally),
-                )
-            } else {
-                SpacerHeight(height = 15.dp)
-            }
             content()
         }
     }
 }
 
+@Immutable
 enum class SheetValue {
     /**
      * The bottom sheet is not visible.
@@ -134,6 +143,10 @@ class SheetState internal constructor(
 ) {
     val isVisible: Boolean by state3::isVisible
 
+    private var _showBottomSheet = mutableStateOf(false)
+    val showBottomSheet: Boolean
+        get() = _showBottomSheet.value
+
     val targetValue: SheetValue
         get() = state3.targetValue.toEdugma()
 
@@ -141,11 +154,18 @@ class SheetState internal constructor(
         get() = state3.currentValue.toEdugma()
 
     suspend fun show() {
-        state3.show()
+        _showBottomSheet.value = true
     }
 
     suspend fun hide() {
         state3.hide()
+        if (!state3.isVisible) {
+            _showBottomSheet.value = false
+        }
+    }
+
+    fun setHide() {
+        _showBottomSheet.value = false
     }
 
     override fun equals(other: Any?): Boolean {
@@ -167,9 +187,13 @@ fun rememberModalBottomSheetState(
     skipPartiallyExpanded: Boolean = false,
     confirmValueChange: (SheetValue) -> Boolean = { true },
 ): SheetState {
+    // TODO Проверить, почему лямбды в rememberModalBottomSheetState не оборачивались
+    // в remember
     val state3 = rememberModalBottomSheetState3(
         skipPartiallyExpanded = skipPartiallyExpanded,
-        confirmValueChange = { confirmValueChange(it.toEdugma()) },
+        confirmValueChange = remember {
+            { it: SheetValue3 -> confirmValueChange(it.toEdugma()) }
+        },
     )
 
     return remember(state3) {

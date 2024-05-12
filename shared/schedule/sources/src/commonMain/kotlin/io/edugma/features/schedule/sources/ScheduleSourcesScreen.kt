@@ -62,6 +62,7 @@ import io.edugma.core.designSystem.tokens.elevation.EdElevation
 import io.edugma.core.icons.EdIcons
 import io.edugma.core.ui.pagination.PagingFooter
 import io.edugma.core.ui.screen.FeatureBottomSheetScreen
+import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.viewmodel.getViewModel
@@ -80,35 +81,30 @@ fun ScheduleSourcesScreen(viewModel: ScheduleSourcesViewModel = getViewModel()) 
     LaunchedEffect(state.showBottomSheet) {
         if (state.showBottomSheet) {
             scope.launch { bottomState.show() }
+            viewModel.onBottomSheetClosed()
         }
     }
 
-    LaunchedEffect(bottomState) {
-        snapshotFlow {
-            bottomState.currentValue
-        }.collect {
-            if (it == SheetValue.Hidden) {
-                viewModel.onBottomSheetClosed()
-            }
-        }
-    }
-
-    FeatureBottomSheetScreen(
+    FeatureScreen(
         statusBarPadding = false,
         navigationBarPadding = false,
-        sheetState = bottomState,
-        sheetContent = {
-            ScheduleSourcesSheetContent(
-                state = state,
-                onAction = viewModel.rememberOnAction(),
-            )
-        },
     ) {
         ScheduleSourcesContent(
             state = state,
             onBackClick = viewModel::exit,
             onQueryChange = viewModel::onQueryChange,
             onApplyComplexSearch = viewModel::onApplyComplexSearch,
+            onAction = viewModel.rememberOnAction(),
+        )
+    }
+
+    FeatureBottomSheetScreen(
+        statusBarPadding = false,
+        navigationBarPadding = false,
+        sheetState = bottomState,
+    ) {
+        ScheduleSourcesSheetContent(
+            state = state,
             onAction = viewModel.rememberOnAction(),
         )
     }

@@ -58,4 +58,6 @@ composeCompiler {
             "$rootDir/configs/compose/compose_compiler_config.conf"
         )
     )
+    enableStrongSkippingMode.set(true)
+    enableIntrinsicRemember.set(true)
 }
