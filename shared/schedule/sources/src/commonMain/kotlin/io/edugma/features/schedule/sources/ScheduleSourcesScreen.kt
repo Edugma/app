@@ -29,8 +29,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 
 
@@ -45,11 +45,12 @@ import io.edugma.core.designSystem.atoms.card.EdCard
 import io.edugma.core.designSystem.atoms.label.EdLabel
 import io.edugma.core.designSystem.atoms.spacer.NavigationBarSpacer
 import io.edugma.core.designSystem.atoms.spacer.SpacerHeight
+import io.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import io.edugma.core.designSystem.atoms.surface.EdSurface
 import io.edugma.core.designSystem.molecules.button.EdButton
 import io.edugma.core.designSystem.molecules.chip.EdChipLabel
+import io.edugma.core.designSystem.molecules.iconButton.EdIconButton
 import io.edugma.core.designSystem.molecules.searchField.EdSearchField
-import io.edugma.core.designSystem.organism.bottomSheet.SheetValue
 import io.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
 import io.edugma.core.designSystem.organism.cell.EdCell
 import io.edugma.core.designSystem.organism.cell.EdCellDefaults
@@ -85,12 +86,26 @@ fun ScheduleSourcesScreen(viewModel: ScheduleSourcesViewModel = getViewModel()) 
         }
     }
 
+    val filledFavoritePainter = painterResource(EdIcons.ic_fluent_star_24_filled)
+    val regularFavoritePainter = painterResource(EdIcons.ic_fluent_star_24_regular)
+
+    val favoriteListPainterProvider: (Boolean) -> Painter = remember {
+        { isFavorite: Boolean ->
+            if (isFavorite) {
+                filledFavoritePainter
+            } else {
+                regularFavoritePainter
+            }
+        }
+    }
+
     FeatureScreen(
         statusBarPadding = false,
         navigationBarPadding = false,
     ) {
         ScheduleSourcesContent(
             state = state,
+            favoritePainterProvider = favoriteListPainterProvider,
             onBackClick = viewModel::exit,
             onQueryChange = viewModel::onQueryChange,
             onApplyComplexSearch = viewModel::onApplyComplexSearch,
@@ -121,22 +136,37 @@ fun ScheduleSourcesSheetContent(
             avatar = state.selectedSource.avatar,
             description = state.selectedSource.description.orEmpty(),
         ) {
-            EdButton(
-                text = "Выбрать",
-                onClick = {
-                    onAction(ScheduleSourcesAction.OnSourceSelected(state.selectedSource))
-                },
-                modifier = Modifier.fillMaxWidth(),
-            )
-            EdButton(
-                text = "Добавить в избранное",
-                onClick = {
-                    onAction(ScheduleSourcesAction.OnAddToFavorite(state.selectedSource))
-                },
-                modifier = Modifier
-                    .padding(top = 10.dp)
-                    .fillMaxWidth(),
-            )
+            Row(Modifier.fillMaxWidth()) {
+                EdButton(
+                    text = "Выбрать",
+                    onClick = {
+                        onAction(ScheduleSourcesAction.OnSourceSelected(state.selectedSource))
+                    },
+                    modifier = Modifier.weight(1f),
+                )
+                SpacerWidth(16.dp)
+
+                val painter = if (state.selectedSource.isFavorite) {
+                    painterResource(EdIcons.ic_fluent_star_24_filled)
+                } else {
+                    painterResource(EdIcons.ic_fluent_star_24_regular)
+                }
+
+                EdIconButton(
+                    painter = painter,
+                    onClick = {
+                        if (state.selectedSource.isFavorite) {
+                            onAction(
+                                ScheduleSourcesAction.OnDeleteFromFavorite(state.selectedSource),
+                            )
+                        } else {
+                            onAction(ScheduleSourcesAction.OnAddToFavorite(state.selectedSource))
+                        }
+                    },
+                    modifier = Modifier,
+                )
+            }
+
         }
     }
 }
@@ -144,6 +174,7 @@ fun ScheduleSourcesSheetContent(
 @Composable
 private fun ScheduleSourcesContent(
     state: ScheduleSourceUiState,
+    favoritePainterProvider: (Boolean) -> Painter,
     onBackClick: ClickListener,
     onQueryChange: Typed1Listener<String>,
     onApplyComplexSearch: ClickListener,
@@ -197,12 +228,13 @@ private fun ScheduleSourcesContent(
             )
         } else {
             EdLceScaffold(
-                lceState = state.paginationState.lceState,
+                lceState = state.paginationUiState.lceState,
                 onRefresh = { onAction(ScheduleSourcesAction.OnRefresh) },
                 placeholder = { ScheduleSourceListPlaceholder() },
             ) {
                 ScheduleSourceList(
-                    paging = state.paginationState,
+                    paging = state.paginationUiState,
+                    favoritePainterProvider = favoritePainterProvider,
                     onSourceClick = {
                         onAction(ScheduleSourcesAction.OnSourceClicked(it))
                     },
@@ -371,6 +403,7 @@ private fun Filter(
 @Composable
 private fun ColumnScope.ScheduleSourceList(
     paging: PaginationUiState<ScheduleSourceUiModel>,
+    favoritePainterProvider: (Boolean) -> Painter,
     onSourceClick: (ScheduleSourceUiModel) -> Unit,
     onAddFavorite: (ScheduleSourceUiModel) -> Unit,
     onDeleteFavorite: (ScheduleSourceUiModel) -> Unit,
@@ -387,6 +420,7 @@ private fun ColumnScope.ScheduleSourceList(
         ) { source ->
             SourceItem(
                 source = source,
+                favoritePainterProvider = favoritePainterProvider,
                 onItemClick = onSourceClick,
                 onAddFavorite = onAddFavorite,
                 onDeleteFavorite = onDeleteFavorite,
@@ -403,6 +437,7 @@ private fun ColumnScope.ScheduleSourceList(
 @Composable
 fun SourceItem(
     source: ScheduleSourceUiModel,
+    favoritePainterProvider: (Boolean) -> Painter,
     onItemClick: (ScheduleSourceUiModel) -> Unit,
     onAddFavorite: (ScheduleSourceUiModel) -> Unit,
     onDeleteFavorite: (ScheduleSourceUiModel) -> Unit,
@@ -432,11 +467,7 @@ fun SourceItem(
             } else {
                 LocalContentColor.current
             }
-            val painter = if (source.isFavorite) {
-                painterResource(EdIcons.ic_fluent_star_24_filled)
-            } else {
-                painterResource(EdIcons.ic_fluent_star_24_regular)
-            }
+            val painter = favoritePainterProvider(source.isFavorite)
             Icon(
                 modifier = Modifier.size(20.dp),
                 painter = painter,

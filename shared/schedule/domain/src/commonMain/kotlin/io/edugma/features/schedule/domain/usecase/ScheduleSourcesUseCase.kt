@@ -16,9 +16,17 @@ class ScheduleSourcesUseCase(
     ): PagingDto<ScheduleSourceFull> {
         return when (type.id) {
             ScheduleSourceType.FAVORITE -> {
-                PagingDto.from(
-                    scheduleSourcesRepository.getFavoriteSources(),
-                )
+                val favoriteSources = scheduleSourcesRepository.getFavoriteSources()
+                if (query.isEmpty()) {
+                    PagingDto.from(favoriteSources)
+                } else {
+                    PagingDto.from(
+                        scheduleSourcesRepository.getFavoriteSources()
+                            .filter {
+                                it.title.contains(query, ignoreCase = true)
+                            },
+                    )
+                }
             }
             ScheduleSourceType.COMPLEX -> error("Complex source type is not allowed")
             else -> {

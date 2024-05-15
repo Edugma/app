@@ -3,6 +3,13 @@ package io.edugma.core.arch.pagination
 import androidx.compose.runtime.Immutable
 import io.edugma.core.api.model.LceUiState
 
+/**
+ * @property items List of items.
+ * @property nextPage Key for next page.
+ * @property pageSize Size of page.
+ * @property enum State of pagination.
+ * @property lceState State of LCE.
+ */
 @Immutable
 data class PaginationUiState<T>(
     val items: List<T> = emptyList(),
@@ -76,6 +83,16 @@ data class PaginationUiState<T>(
     companion object {
         fun <T> empty() = PaginationUiState<T>()
     }
+}
+
+inline fun <T, R> PaginationUiState<T>.map(transform: (T) -> R): PaginationUiState<R> {
+    return PaginationUiState(
+        items = this.items.map(transform),
+        nextPage = this.nextPage,
+        pageSize = this.pageSize,
+        enum = this.enum,
+        lceState = this.lceState,
+    )
 }
 
 enum class PaginationStateEnum {
