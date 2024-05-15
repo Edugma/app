@@ -1,5 +1,6 @@
 package io.edugma.data.base.repository
 
+import co.touchlab.kermit.Logger
 import io.edugma.core.api.model.CachedResult
 import io.edugma.core.api.repository.CacheRepository
 import io.edugma.core.api.repository.PreferenceRepository
@@ -46,6 +47,7 @@ class CacheRepositoryImpl(
 
     @InternalApi
     override suspend fun <T : Any> saveInternal(key: String, value: T, type: KType) {
+        Logger.d("Save cache by key=$key", tag = TAG)
         preferenceRepository.saveObjectInternal(key, value, type)
 
         val now = Clock.System.now().epochSeconds
@@ -64,5 +66,6 @@ class CacheRepositoryImpl(
     companion object {
         private const val PATH = "ds_cache"
         private const val VERSION_PREFIX = "__v_"
+        private const val TAG = "CacheRepository"
     }
 }

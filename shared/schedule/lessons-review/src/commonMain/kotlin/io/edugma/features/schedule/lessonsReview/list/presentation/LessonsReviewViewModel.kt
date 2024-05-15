@@ -31,7 +31,7 @@ class LessonsReviewViewModel(
             onSuccess = {
                 newState {
                     copy(
-                        lessons = it.value,
+                        lessons = it.valueOrThrow,
                     )
                 }
             },

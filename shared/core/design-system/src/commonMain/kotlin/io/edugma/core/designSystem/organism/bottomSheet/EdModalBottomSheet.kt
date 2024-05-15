@@ -98,15 +98,8 @@ fun EdModalBottomSheet(
         },
         windowInsets = windowInsets,
         properties = ModalBottomSheetDefaults3.properties(),
-    ) {
-        Column(
-            modifier = Modifier
-                .windowInsetsPadding(windowInsets)
-                .fillMaxWidth(),
-        ) {
-            content()
-        }
-    }
+        content = content,
+    )
 }
 
 @Immutable

@@ -20,12 +20,11 @@ kotlin {
 
         commonMain {
             dependencies {
-                //implementation(project.dependencies.platform(libs.compose.bom))
-                //implementation(compose.ui)
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material3)
-                //implementation(compose.preview)
+                implementation(compose.ui)
+                implementation(compose.components.uiToolingPreview)
             }
         }
 
@@ -34,21 +33,12 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
+    }
+}
 
-        androidMain {
-            dependencies {
-                // debugImplementation
-                implementation(libs.compose.uiTooling)
-                implementation(libs.compose.uiToolingPreview)
-//                implementation("androidx.compose.ui:ui-tooling:1.4.0")
-//                implementation("androidx.compose.ui:ui-tooling-preview:1.4.0")
-            }
-        }
-
-        iosMain {
-            dependencies {
-            }
-        }
+android {
+    dependencies {
+        debugImplementation(libs.compose.uiTooling)
     }
 }
 

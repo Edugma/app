@@ -1,5 +1,6 @@
 package io.edugma.features.account.performance
 
+import co.touchlab.kermit.Logger
 import io.edugma.core.api.model.ListItemUiModel
 import io.edugma.core.arch.mvi.newState
 import io.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
@@ -28,12 +29,14 @@ class PerformanceViewModel(
                 )
             },
             getLceState = state::lceState,
-            setLceState = { newState { copy(lceState = it) } },
+            setLceState = {
+                newState { copy(lceState = it) }
+            },
             isContentEmpty = { state.performanceList == null },
             isRefreshing = isRefreshing,
             onSuccess = {
                 newState {
-                    toContent(it.value)
+                    toContent(it.valueOrThrow)
                 }
             },
         )

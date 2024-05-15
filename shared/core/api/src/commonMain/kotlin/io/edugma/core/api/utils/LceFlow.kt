@@ -89,20 +89,23 @@ class LceData<out T>(
      */
     override val isLoading: Boolean,
 ) : LceSuccess<T>, LceFailure {
-    override val value: T
+    override val valueOrThrow: T
         get() = result.getOrThrow()
 
-    override val exception: Throwable
+    override val exceptionOrThrow: Throwable
         get() = result.exceptionOrNull()!!
+
+    val isSuccess: Boolean
+        get() = this.result.isSuccess
 }
 
 interface LceSuccess<out T> {
-    val value: T
+    val valueOrThrow: T
     val isLoading: Boolean
 }
 
 interface LceFailure {
-    val exception: Throwable
+    val exceptionOrThrow: Throwable
     val isLoading: Boolean
 }
 
@@ -113,6 +116,14 @@ inline fun <T, R> LceFlow<T>.map(crossinline transform: (T) -> R): LceFlow<R> {
                 result = oldLceData.result.map { transform(it) },
                 isLoading = oldLceData.isLoading,
             )
+        },
+    )
+}
+
+inline fun <T, R> LceFlow<T>.mapLce(crossinline transform: (LceData<T>) -> LceData<R>): LceFlow<R> {
+    return LceFlow<R>(
+        flow.map { oldLceData ->
+            transform(oldLceData)
         },
     )
 }

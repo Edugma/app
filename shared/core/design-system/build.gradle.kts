@@ -9,7 +9,7 @@ kotlin {
             dependencies {
                 implementation(compose.animation)
                 implementation(compose.material)
-                implementation(libs.composeMP.utils)
+                implementation(compose.uiUtil)
 
                 implementation(projects.shared.core.api)
                 implementation(projects.shared.core.storage)

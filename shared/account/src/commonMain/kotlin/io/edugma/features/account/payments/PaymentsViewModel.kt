@@ -30,7 +30,7 @@ class PaymentsViewModel(
             isRefreshing = isRefreshing,
             onSuccess = {
                 newState {
-                    toContent(it.value)
+                    toContent(it.valueOrThrow)
                 }
             },
         )

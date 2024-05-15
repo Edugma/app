@@ -42,7 +42,7 @@ class AccountService(
         client.getResult("$PREFIX-applications")
 
     suspend fun getPerformance(periodId: String?): PerformanceDto =
-        client.get("$PREFIX-performance") {
+        client.get<PerformanceDto>("$PREFIX-performance") {
             param("periodId", periodId)
         }
 

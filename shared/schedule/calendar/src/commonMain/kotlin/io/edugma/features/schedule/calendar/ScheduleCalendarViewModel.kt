@@ -33,12 +33,12 @@ class ScheduleCalendarViewModel(
             isRefreshing = isRefreshing,
             onSuccess = {
                 newState {
-                    it.value.init(
+                    it.valueOrThrow.init(
                         today = settings.today,
                         size = settings.daysCount,
                         todayIndex = settings.todayDayIndex,
                     )
-                    val schedule = calendarMapper.map(it.value)
+                    val schedule = calendarMapper.map(it.valueOrThrow)
 
                     if (this.schedule != schedule) {
                         copy(

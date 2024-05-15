@@ -7,11 +7,10 @@ plugins {
     id("io.edugma.android-app")
     kotlin("android")
     id("lint")
-    id("org.jetbrains.kotlin.plugin.compose")
+    alias(libs.plugins.jetbrains.composePlugin)
+    alias(libs.plugins.jetbrains.compose.compiler)
 }
 // TODO signing
-// https://github.com/gradle/gradle/issues/15383
-val libs = the<LibrariesForLibs>()
 
 val versionsProperties = Properties()
 versionsProperties.load(FileInputStream(rootProject.file("configs/versions.properties")))
@@ -65,7 +64,6 @@ android {
         jvmTarget = libs.versions.java.get()
     }
     buildFeatures {
-        compose = true
         buildConfig = true
     }
 }

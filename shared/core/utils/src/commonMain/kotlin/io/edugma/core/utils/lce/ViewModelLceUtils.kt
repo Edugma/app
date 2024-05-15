@@ -35,7 +35,7 @@ suspend inline fun <T> LceFlow<T>.onDefaultResult(
                 setLce(lceState.toFinalError())
             }
             if (it.isLoading.not()) {
-                viewModel.errorHandler?.handleException(it.exception)
+                viewModel.errorHandler?.handleException(it.exceptionOrThrow)
             }
         },
     )

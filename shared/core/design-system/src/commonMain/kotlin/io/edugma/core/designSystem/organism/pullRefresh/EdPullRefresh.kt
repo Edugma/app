@@ -6,6 +6,7 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -20,9 +21,9 @@ import io.edugma.core.designSystem.utils.surfaceColorAtElevation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-inline fun EdPullRefresh(
+fun EdPullRefresh(
     refreshing: Boolean,
-    noinline onRefresh: () -> Unit,
+    onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
@@ -32,7 +33,6 @@ inline fun EdPullRefresh(
             refreshingState.value.not()
         }
     )
-
 
     LaunchedEffect(Unit) {
         snapshotFlow { refreshingState.value }.collect {

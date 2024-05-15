@@ -1,15 +1,18 @@
 package io.edugma.core.ui.screen
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.union
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -60,11 +63,6 @@ fun FeatureBottomSheetScreen(
     } else {
         WindowInsets(0)
     }
-    LaunchedEffect(sheetState) {
-        snapshotFlow { sheetState.showBottomSheet }.collect {
-            Logger.d("$it", tag = "Test123")
-        }
-    }
     if (sheetState.showBottomSheet) {
         EdModalBottomSheet(
             onDismissRequest = {
@@ -73,7 +71,13 @@ fun FeatureBottomSheetScreen(
             sheetState = sheetState,
             windowInsets = imeInsets,
         ) {
-            sheetContent()
+            Column(
+                modifier = Modifier
+                    .windowInsetsPadding(navigationBarInsets)
+                    .fillMaxWidth(),
+            ) {
+                sheetContent()
+            }
         }
     }
 }

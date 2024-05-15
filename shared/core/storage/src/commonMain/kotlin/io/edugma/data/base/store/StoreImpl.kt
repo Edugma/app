@@ -4,7 +4,6 @@ import co.touchlab.kermit.Logger
 import io.edugma.core.api.model.CachedResult
 import io.edugma.core.api.utils.LceFlow
 import io.edugma.core.api.utils.LceFlowCollector
-import io.edugma.core.api.utils.TAG
 import io.edugma.core.api.utils.lce
 import io.edugma.core.api.utils.runCoCatching
 import io.ktor.util.collections.ConcurrentMap
@@ -29,8 +28,18 @@ class StoreImpl<TKey, TData>(
     private val currentRequests = ConcurrentMap<TKey, Job>()
 
     override fun get(key: TKey, forceUpdate: Boolean): LceFlow<TData> {
+        Logger.d(
+            "Get data from store#${this.hashCode()} " +
+                "with key=$key, forceUpdate=$forceUpdate",
+            tag = TAG,
+        )
         return lce {
-            val needUpdate = readCachedData(key, forceUpdate)
+            // if forceUpdate we don't read from cache
+            val needUpdate = if (forceUpdate) {
+                true
+            } else {
+                readCachedData(key, forceUpdate)
+            }
 
             if (needUpdate) {
                 val res = if (scope == null) {
@@ -43,7 +52,11 @@ class StoreImpl<TKey, TData>(
                 res.onSuccess { newData ->
                     emitSuccess(newData, false)
                 }.onFailure {
-                    Logger.e("Fail to fetch data", it, tag = this@StoreImpl.TAG)
+                    Logger.e(
+                        messageString = "Fail to fetch data in store#${this.hashCode()}",
+                        throwable = it,
+                        tag = TAG,
+                    )
                     emitFailure(it, false)
                 }
             }
@@ -142,5 +155,9 @@ class StoreImpl<TKey, TData>(
                 ),
             )
         }
+    }
+
+    companion object {
+        private const val TAG = "Store"
     }
 }

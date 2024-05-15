@@ -58,7 +58,7 @@ class ScheduleViewModel(
             isRefreshing = isRefreshing,
             onSuccess = {
                 newState {
-                    toContent(it.value.toUiModel())
+                    toContent(it.valueOrThrow.toUiModel())
                 }
             },
         )
