@@ -40,7 +40,7 @@ class MainViewModel(
         }
     }
 
-    override fun onAction(action: MainAction) {
+    override fun processAction(action: MainAction) {
         when (action) {
             is MainAction.OnSnackbarDismissed -> {
                 newState {

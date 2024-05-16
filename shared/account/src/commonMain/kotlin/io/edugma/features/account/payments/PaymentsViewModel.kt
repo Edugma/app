@@ -40,7 +40,7 @@ class PaymentsViewModel(
         loadPayments(isRefreshing = true)
     }
 
-    override fun onAction(action: PaymentsAction) {
+    override fun processAction(action: PaymentsAction) {
         when (action) {
             PaymentsAction.OnOpenUrl -> onOpenUri()
             is PaymentsAction.OnPaymentMethodClick -> onPaymentMethodClick(action.paymentMethod)

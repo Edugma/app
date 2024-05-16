@@ -13,7 +13,7 @@ class LessonsReviewViewModel(
         loadLessonsReview(isRefreshing = false)
     }
 
-    override fun onAction(action: LessonsReviewAction) {
+    override fun processAction(action: LessonsReviewAction) {
         when (action) {
             LessonsReviewAction.OnRefresh -> loadLessonsReview(isRefreshing = true)
         }

@@ -12,6 +12,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -87,17 +90,12 @@ fun LessonsReviewContent(
                 colors = EdTopAppBarDefaults.transparent(),
             )
         }
-        SpacerHeight(10.dp)
-        EdSurface(
-            shape = EdTheme.shapes.large.top(),
+        EdLceScaffold(
+            lceState = state.lceState,
+            onRefresh = { onAction(LessonsReviewAction.OnRefresh) },
+            placeholder = { /* TODO */ },
         ) {
-            EdLceScaffold(
-                lceState = state.lceState,
-                onRefresh = { onAction(LessonsReviewAction.OnRefresh) },
-                placeholder = { /* TODO */ },
-            ) {
-                LessonsReviewList(lessons = state.lessons)
-            }
+            LessonsReviewList(lessons = state.lessons)
         }
     }
 }
@@ -106,7 +104,8 @@ fun LessonsReviewContent(
 private fun LessonsReviewList(lessons: List<LessonReviewUiState>) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(top = 4.dp),
+        contentPadding = PaddingValues(top = 14.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(lessons) { lessonTimesReview ->
             LessonTimesReviewContent(lessonTimesReview)
@@ -119,28 +118,32 @@ private fun LessonsReviewList(lessons: List<LessonReviewUiState>) {
 
 @Composable
 fun LessonTimesReviewContent(lessonReviewUiState: LessonReviewUiState) {
-    Column(
-        Modifier
-            .padding(vertical = 6.dp)
-            .fillMaxWidth(),
+    EdSurface(
+        shape = EdTheme.shapes.large,
     ) {
-        EdLabel(
-            text = lessonReviewUiState.subject.title,
-            style = EdTheme.typography.titleMedium,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp),
-        )
-        SpacerHeight(8.dp)
         Column(
-            Modifier.fillMaxWidth()
-                .padding(),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
+            Modifier
+                .padding(vertical = 12.dp)
+                .fillMaxWidth(),
         ) {
-            lessonReviewUiState.events.forEachIndexed { _, item ->
-                EventGroup(
-                    eventsByPeriod = item,
-                )
+            EdLabel(
+                text = lessonReviewUiState.subject.title,
+                style = EdTheme.typography.titleMedium,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp),
+            )
+            SpacerHeight(8.dp)
+            Column(
+                Modifier.fillMaxWidth()
+                    .padding(),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                lessonReviewUiState.events.forEachIndexed { _, item ->
+                    EventGroup(
+                        eventsByPeriod = item,
+                    )
+                }
             }
         }
     }
@@ -184,7 +187,7 @@ private fun ColumnScope.EventGroup(eventsByPeriod: LessonReviewEventsByPeriod) {
     SecondaryContent {
         EdLabel(
             text = groupTitle.uppercase(),
-            modifier = Modifier.padding(horizontal = 8.dp),
+            modifier = Modifier.padding(horizontal = 12.dp),
             style = EdTheme.typography.labelMedium,
         )
     }

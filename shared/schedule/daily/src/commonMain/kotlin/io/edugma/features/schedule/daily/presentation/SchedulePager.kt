@@ -1,5 +1,8 @@
 package io.edugma.features.schedule.daily.presentation
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.VisibilityThreshold
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +13,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerDefaults
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import edugma.shared.core.resources.generated.resources.Res
 import edugma.shared.core.resources.generated.resources.*
+import io.edugma.core.api.model.LceUiState
 import org.jetbrains.compose.resources.stringResource
 import io.edugma.core.designSystem.atoms.lottie.EdLottie
 import io.edugma.core.designSystem.atoms.lottie.LottieSource
@@ -48,17 +53,25 @@ private val relaxAnims = listOf(
 fun SchedulePager(
     scheduleDays: ScheduleCalendarUiModel,
     lessonDisplaySettings: LessonDisplaySettings,
-    isRefreshing: Boolean,
+    lceState: LceUiState,
     pagerState: PagerState,
     onLessonClick: (LessonEvent) -> Unit,
-    onRefreshing: ClickListener,
+    onRefresh: ClickListener,
 ) {
     EdPullRefresh(
-        refreshing = isRefreshing,
-        onRefresh = onRefreshing,
+        refreshing = lceState.isRefreshing,
+        onRefresh = onRefresh,
     ) {
         HorizontalPager(
             state = pagerState,
+            flingBehavior = PagerDefaults.flingBehavior(
+                state = pagerState,
+                // TODO remove after update https://issuetracker.google.com/issues/338710348
+                snapAnimationSpec = spring(
+                    stiffness = Spring.StiffnessMediumLow,
+                    visibilityThreshold = Int.VisibilityThreshold.toFloat()
+                ),
+            ),
             modifier = Modifier.fillMaxSize(),
         ) { page ->
             val scheduleDay by remember(scheduleDays, page) { mutableStateOf(scheduleDays[page]) }

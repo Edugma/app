@@ -34,7 +34,7 @@ fun EdPullRefresh(
         }
     )
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(state) {
         snapshotFlow { refreshingState.value }.collect {
             if (it) {
                 state.startRefresh()

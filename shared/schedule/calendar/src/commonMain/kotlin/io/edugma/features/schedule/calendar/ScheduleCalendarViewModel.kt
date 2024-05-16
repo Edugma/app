@@ -54,7 +54,7 @@ class ScheduleCalendarViewModel(
         )
     }
 
-    override fun onAction(action: ScheduleCalendarAction) {
+    override fun processAction(action: ScheduleCalendarAction) {
         when (action) {
             is ScheduleCalendarAction.OnDayClick -> onDayClick(action.date)
         }

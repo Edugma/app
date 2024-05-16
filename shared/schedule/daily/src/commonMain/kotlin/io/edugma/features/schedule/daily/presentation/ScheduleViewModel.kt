@@ -64,7 +64,7 @@ class ScheduleViewModel(
         )
     }
 
-    override fun onAction(action: ScheduleDailyAction) {
+    override fun processAction(action: ScheduleDailyAction) {
         when (action) {
             ScheduleDailyAction.OnBack -> exit()
             ScheduleDailyAction.OnFabClick -> newState {

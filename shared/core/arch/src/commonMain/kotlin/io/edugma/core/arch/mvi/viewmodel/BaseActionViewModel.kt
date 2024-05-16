@@ -3,6 +3,7 @@ package io.edugma.core.arch.mvi.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
+import io.edugma.core.api.utils.IO
 import io.edugma.core.arch.mvi.ActionProducer
 import io.edugma.core.arch.mvi.StateStore
 import io.edugma.core.arch.mvi.impl.SimpleStateStore
@@ -35,13 +36,26 @@ abstract class BaseActionViewModel<TState, TAction>(
     val errorHandler: CombinedErrorHandler?
         get() = _errorHandler
 
+    final override fun onAction(action: TAction) {
+        Logger.d("Action: $action", tag = TAG)
+        processAction(action)
+    }
+
+    open fun processAction(action: TAction) {
+
+    }
+
     protected val screenResultProvider: ScreenResultProvider by inject()
 
     init {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch(Dispatchers.IO) {
             stateFlow.collect {
-                Logger.d(it.toString(), tag = "STATE")
+                Logger.d("State: $it", tag = TAG)
             }
         }
+    }
+
+    private companion object {
+        private const val TAG = "StateStore"
     }
 }

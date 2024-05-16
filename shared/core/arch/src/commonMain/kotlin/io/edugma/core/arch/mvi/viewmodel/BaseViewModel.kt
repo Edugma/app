@@ -7,7 +7,7 @@ abstract class SimpleViewModel() : BaseActionViewModel<Unit, Nothing>(Unit)
 abstract class BaseViewModel<TState>(
     initialState: TState,
 ) : BaseActionViewModel<TState, Nothing>(initialState) {
-    override fun onAction(action: Nothing) {
+    override fun processAction(action: Nothing) {
         TODO("Not yet implemented")
     }
 }

@@ -10,7 +10,7 @@ class ScheduleChangesViewModel(
     private val useCase: ScheduleHistoryUseCase,
 ) : BaseActionViewModel<ScheduleChangesUiState, ScheduleChangesAction>(ScheduleChangesUiState()) {
 
-    override fun onAction(action: ScheduleChangesAction) {
+    override fun processAction(action: ScheduleChangesAction) {
         when (action) {
             is ScheduleChangesAction.OnArguments -> {
                 newState {

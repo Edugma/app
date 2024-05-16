@@ -19,7 +19,7 @@ class ScheduleHistoryViewModel(
         }
     }
 
-    override fun onAction(action: ScheduleHistoryAction) {
+    override fun processAction(action: ScheduleHistoryAction) {
         when (action) {
             ScheduleHistoryAction.OnCompareClicked -> {
                 val firstSelected = state.previousSelected

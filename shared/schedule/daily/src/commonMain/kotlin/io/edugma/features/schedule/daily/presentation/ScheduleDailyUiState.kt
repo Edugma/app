@@ -1,5 +1,6 @@
 package io.edugma.features.schedule.daily.presentation
 
+import co.touchlab.kermit.Logger
 import io.edugma.core.api.model.LceUiState
 import io.edugma.features.schedule.daily.model.ScheduleWeeksUiModel
 import io.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings

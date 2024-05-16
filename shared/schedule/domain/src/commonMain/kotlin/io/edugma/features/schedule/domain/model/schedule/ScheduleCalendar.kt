@@ -1,5 +1,6 @@
 package io.edugma.features.schedule.domain.model.schedule
 
+import co.touchlab.kermit.Logger
 import io.edugma.features.schedule.domain.model.compact.CompactLessonEvent
 import io.edugma.features.schedule.domain.model.compact.CompactSchedule
 import io.edugma.features.schedule.domain.model.compact.toModel
@@ -7,6 +8,7 @@ import io.edugma.features.schedule.domain.model.lesson.LessonEvent
 import io.edugma.features.schedule.domain.model.rrule.Frequency
 import io.edugma.features.schedule.domain.model.rrule.RRule
 import kotlinx.datetime.DatePeriod
+import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.daysUntil
@@ -76,30 +78,101 @@ class ScheduleCalendar(
     }
 
     private fun RRule.hasDailyMatch(startDate: LocalDate, date: LocalDate): Boolean {
-        // TODO
-        TODO()
+        // Check for startDate
+        if (date < startDate) return false
+
+        // Check for untilDate
+        this.until?.let {
+            if (date > this.until.date) return false
+        }
+
+        // Check for count
+        if (count != 0 && date > getEndDateByCount(startDate)) return false
+
+        // TODO Check for interval (2+)
+
+        // TODO Check for by*
+
+        return true
     }
 
     private fun RRule.hasWeeklyMatch(startDate: LocalDate, date: LocalDate): Boolean {
-        if (startDate.dayOfWeek != date.dayOfWeek) {
-            return false
+        // Check for startDate
+        if (date < startDate) return false
+
+        // No events with same day of week
+        if (startDate.dayOfWeek != date.dayOfWeek) return false
+
+        // Check for untilDate
+        this.until?.let {
+            if (date > this.until.date) return false
         }
 
-        // TODO count and others
+        // Check for count
+        if (count != 0 && date > getEndDateByCount(startDate)) return false
 
-        val untilDate = this.until?.toLocalDateTime()?.date ?: return true
+        // TODO Check for interval (2+)
 
-        return date <= untilDate
+        // TODO Check for by*
+
+        return true
     }
 
     private fun RRule.hasMonthlyMatch(startDate: LocalDate, date: LocalDate): Boolean {
-        // TODO
-        TODO()
+        // Check for startDate
+        if (date < startDate) return false
+
+        // No events with same moth
+        if (startDate.dayOfMonth != date.dayOfMonth) return false
+
+        // Check for untilDate
+        this.until?.let {
+            if (date > this.until.date) return false
+        }
+
+        // Check for count
+        if (count != 0 && date > getEndDateByCount(startDate)) return false
+
+        // TODO Check for interval (2+)
+
+        // TODO Check for by*
+
+        return true
     }
 
     private fun RRule.hasYearlyMatch(startDate: LocalDate, date: LocalDate): Boolean {
-        // TODO
-        TODO()
+        // Check for startDate
+        if (date < startDate) return false
+
+        // No events with same moth
+        if (startDate.dayOfYear != date.dayOfYear) return false
+
+        // Check for untilDate
+        this.until?.let {
+            if (date > this.until.date) return false
+        }
+
+        // Check for count
+        if (count != 0 && date > getEndDateByCount(startDate)) return false
+
+        // TODO Check for interval (2+)
+
+        // TODO Check for by*
+
+        return true
+    }
+
+    private fun RRule.getEndDateByCount(startDate: LocalDate): LocalDate {
+        if (count <= 1) return startDate
+
+        val unit = when (this.frequency) {
+            Frequency.Daily -> DateTimeUnit.DAY
+            Frequency.Weekly -> DateTimeUnit.WEEK
+            Frequency.Monthly -> DateTimeUnit.MONTH
+            Frequency.Yearly -> DateTimeUnit.YEAR
+        }
+
+        return startDate.plus(this.count - 1, unit)
     }
 
     operator fun get(date: LocalDate): ScheduleDay {

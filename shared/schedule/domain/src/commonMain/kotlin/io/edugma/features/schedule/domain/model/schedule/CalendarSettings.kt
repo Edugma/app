@@ -16,7 +16,9 @@ data class CalendarSettings(
     companion object {
         val Infinity: CalendarSettings
             get() {
-                val weeksCount = Int.MAX_VALUE / 7
+                // TODO replace by MAX_VALUE in 1.7 https://issuetracker.google.com/issues/326887746
+                val fakeMaxValue = 10_000
+                val weeksCount = fakeMaxValue / 7
                 val daysCount = weeksCount * 7
 
                 val today = Clock.System.nowLocalDate()

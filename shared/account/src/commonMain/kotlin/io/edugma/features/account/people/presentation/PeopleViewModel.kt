@@ -35,7 +35,7 @@ class PeopleViewModel(
         }
     }
 
-    override fun onAction(action: PeopleAction) {
+    override fun processAction(action: PeopleAction) {
         when (action) {
             PeopleAction.OnRefresh -> pagingViewModel.resetAndLoad()
             PeopleAction.OnLoadNextPage -> pagingViewModel.loadNextPage()

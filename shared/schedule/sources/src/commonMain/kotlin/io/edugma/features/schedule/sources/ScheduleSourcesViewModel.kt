@@ -58,7 +58,7 @@ class ScheduleSourcesViewModel(
 
     private val queryDebounce = debounce()
 
-    override fun onAction(action: ScheduleSourcesAction) {
+    override fun processAction(action: ScheduleSourcesAction) {
         when (action) {
             ScheduleSourcesAction.OnLoadPage -> {
                 pagingViewModel.loadNextPage()

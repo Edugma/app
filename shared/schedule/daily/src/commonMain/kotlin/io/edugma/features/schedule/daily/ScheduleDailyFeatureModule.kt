@@ -19,7 +19,8 @@ object ScheduleDailyFeatureModule {
         composeScreen(ScheduleScreens.Main) {
             val args = rememberNavArgs(ScheduleScreens.Main)
 
-            val date = LocalDate.fromEpochDays(args { destination.date.get() })
+            val epochDays = args { destination.date.get() }.takeIf { it != 0 }
+            val date = epochDays?.let { LocalDate.fromEpochDays(it) }
 
             ScheduleScreen(
                 date = date,

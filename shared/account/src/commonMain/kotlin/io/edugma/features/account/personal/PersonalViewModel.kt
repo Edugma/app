@@ -30,7 +30,7 @@ class PersonalViewModel(
         )
     }
 
-    override fun onAction(action: PersonalAction) {
+    override fun processAction(action: PersonalAction) {
         when (action) {
             PersonalAction.OnRefresh -> load(isRefreshing = true)
         }

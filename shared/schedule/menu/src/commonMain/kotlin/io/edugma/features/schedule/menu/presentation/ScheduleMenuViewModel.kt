@@ -81,7 +81,7 @@ class ScheduleMenuViewModel(
         newState { copy(menuItems = menuItems) }
     }
 
-    override fun onAction(action: ScheduleMenuAction) {
+    override fun processAction(action: ScheduleMenuAction) {
         when (action) {
             ScheduleMenuAction.OnAppWidgetClick -> {
             }

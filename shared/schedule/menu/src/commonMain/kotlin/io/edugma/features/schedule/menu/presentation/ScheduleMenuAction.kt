@@ -1,12 +1,12 @@
 package io.edugma.features.schedule.menu.presentation
 
 sealed interface ScheduleMenuAction {
-    object OnScheduleClick : ScheduleMenuAction
-    object OnLessonsReviewClick : ScheduleMenuAction
-    object OnScheduleCalendarClick : ScheduleMenuAction
-    object OnScheduleSourceClick : ScheduleMenuAction
-    object OnFreePlaceClick : ScheduleMenuAction
-    object OnAppWidgetClick : ScheduleMenuAction
-    object OnHistoryClick : ScheduleMenuAction
-    object OnSignOut : ScheduleMenuAction
+    data object OnScheduleClick : ScheduleMenuAction
+    data object OnLessonsReviewClick : ScheduleMenuAction
+    data object OnScheduleCalendarClick : ScheduleMenuAction
+    data object OnScheduleSourceClick : ScheduleMenuAction
+    data object OnFreePlaceClick : ScheduleMenuAction
+    data object OnAppWidgetClick : ScheduleMenuAction
+    data object OnHistoryClick : ScheduleMenuAction
+    data object OnSignOut : ScheduleMenuAction
 }

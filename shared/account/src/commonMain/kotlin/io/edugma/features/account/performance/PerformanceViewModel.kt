@@ -42,7 +42,7 @@ class PerformanceViewModel(
         )
     }
 
-    override fun onAction(action: PerformanceAction) {
+    override fun processAction(action: PerformanceAction) {
         when (action) {
             is PerformanceAction.OnPeriodSelected -> onPeriodSelected(action.period)
             PerformanceAction.OnRefresh -> loadMarks(isRefreshing = true)

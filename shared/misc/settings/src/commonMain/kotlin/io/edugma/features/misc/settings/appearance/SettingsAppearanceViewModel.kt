@@ -23,7 +23,7 @@ class SettingsAppearanceViewModel(
         }
     }
 
-    override fun onAction(action: SettingsAppearanceAction) {
+    override fun processAction(action: SettingsAppearanceAction) {
         when (action) {
 
             is SettingsAppearanceAction.OnThemeModeSelected -> {

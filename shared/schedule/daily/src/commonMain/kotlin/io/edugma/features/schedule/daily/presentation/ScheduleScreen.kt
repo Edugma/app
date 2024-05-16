@@ -30,8 +30,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-
-
 import edugma.shared.core.resources.generated.resources.Res
 import edugma.shared.core.resources.generated.resources.*
 import edugma.shared.core.icons.generated.resources.*
@@ -133,6 +131,7 @@ fun ScheduleContent(
             EdLceScaffold(
                 lceState = state.lceState,
                 onRefresh = { onAction(ScheduleDailyAction.OnRefresh) },
+                pullToRefreshEnabled = false,
                 placeholder = { ScheduleDayPlaceholder(4) },
             ) {
                 if (state.schedule != null) {
@@ -148,14 +147,12 @@ fun ScheduleContent(
                         SchedulePager(
                             scheduleDays = state.schedule,
                             lessonDisplaySettings = state.lessonDisplaySettings,
-                            isRefreshing = state.isRefreshing,
+                            lceState = state.lceState,
                             pagerState = schedulePagerState,
                             onLessonClick = { lesson ->
                                 onAction(ScheduleDailyAction.OnLessonClick(lesson))
                             },
-                            onRefreshing = {
-                                onAction(ScheduleDailyAction.OnRefresh)
-                            },
+                            onRefresh = { onAction(ScheduleDailyAction.OnRefresh) },
                         )
 
                         Fab(state.showBackToTodayFab) {
