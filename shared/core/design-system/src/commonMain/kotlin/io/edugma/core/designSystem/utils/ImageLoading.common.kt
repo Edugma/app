@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import com.seiko.imageloader.ImageLoader
 import com.seiko.imageloader.component.ComponentRegistryBuilder
+import com.seiko.imageloader.intercept.bitmapMemoryCacheConfig
 import com.seiko.imageloader.model.ImageAction
 import com.seiko.imageloader.model.ImageRequest
 import com.seiko.imageloader.option.toScale
@@ -146,7 +147,7 @@ abstract class BaseImageLoader {
 
         this.loader = ImageLoader {
             interceptor {
-                memoryCacheConfig {
+                bitmapMemoryCacheConfig {
                     maxSize(memCacheSize)
                 }
                 diskCache?.let {

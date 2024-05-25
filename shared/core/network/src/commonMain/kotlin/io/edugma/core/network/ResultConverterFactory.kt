@@ -4,7 +4,7 @@ import co.touchlab.kermit.Logger
 import de.jensklingenberg.ktorfit.Ktorfit
 import de.jensklingenberg.ktorfit.converter.Converter
 import de.jensklingenberg.ktorfit.converter.KtorfitResult
-import de.jensklingenberg.ktorfit.internal.TypeData
+import de.jensklingenberg.ktorfit.converter.TypeData
 import io.edugma.core.api.model.ResponseError
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
@@ -20,10 +20,6 @@ class ResultConverterFactory : Converter.Factory {
     ): Converter.SuspendResponseConverter<HttpResponse, *>? {
         if (typeData.typeInfo.type == Result::class) {
             return object : Converter.SuspendResponseConverter<HttpResponse, Any> {
-                override suspend fun convert(response: HttpResponse): Any {
-                    return convert(KtorfitResult.Success(response))
-                }
-
                 override suspend fun convert(result: KtorfitResult): Any {
                     return when (result) {
                         is KtorfitResult.Failure -> {
