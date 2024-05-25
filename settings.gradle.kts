@@ -41,11 +41,11 @@ includeSubmodules(
     "libs",
     "shared",
     "android",
-    "ios",
     "web",
 
     deep = 4,
 )
+include(":sharedIos")
 
 fun includeSubmodules(vararg projectPaths: String, deep: Int = 1) {
     require(deep >= 1)

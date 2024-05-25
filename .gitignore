@@ -1,13 +1,24 @@
 *.iml
 .gradle
 .kotlin
-/local.properties
-/.idea
+local.properties
+.idea
+**/build/
+!src/**/build/
+
+# iOS
+xcuserdata
 .DS_Store
-build/
-/captures
+captures
 .externalNativeBuild
 .cxx
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcodeproj/project.xcworkspace/
+!*.xcworkspace/contents.xcworkspacedata
+**/xcshareddata/WorkspaceSettings.xcsettings
+
 iosApp/Podfile.lock
 iosApp/Pods/*
 iosApp/iosApp.xcworkspace/*
@@ -15,4 +26,6 @@ iosApp/iosApp.xcodeproj/*
 !iosApp/iosApp.xcodeproj/project.pbxproj
 shared/shared.podspec
 *.podspec
+
+# Js
 *generated.js

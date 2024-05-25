@@ -1,6 +1,7 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.BOOLEAN
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import com.codingfeline.buildkonfig.gradle.TargetConfigDsl
+import org.jetbrains.kotlin.gradle.plugin.mpp.BitcodeEmbeddingMode
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -10,6 +11,19 @@ plugins {
 }
 
 kotlin {
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "shared"
+            isStatic = true
+            //embedBitcodeMode = BitcodeEmbeddingMode.DISABLE
+            //export(projects.shared.app)
+        }
+    }
+
     sourceSets {
         commonMain {
             dependencies {

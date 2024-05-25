@@ -18,6 +18,12 @@ kotlin {
             languageSettings.optIn("androidx.compose.material3.ExperimentalMaterial3Api")
         }
 
+        androidMain {
+            dependencies {
+                implementation(libs.compose.uiToolingPreview)
+            }
+        }
+
         commonMain {
             dependencies {
                 implementation(compose.runtime)

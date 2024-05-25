@@ -1,6 +1,5 @@
 @file:Suppress("UNUSED_VARIABLE")
 
-import gradle.kotlin.dsl.accessors._b2937d1b40dda98f7678619569c6e850.kotlin
 import org.gradle.accessors.dm.LibrariesForLibs
 
 plugins {
