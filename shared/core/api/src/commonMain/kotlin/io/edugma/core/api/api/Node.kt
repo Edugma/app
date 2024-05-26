@@ -1,4 +1,4 @@
-package io.edugma.features.nodes.domain.model
+package io.edugma.core.api.api
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

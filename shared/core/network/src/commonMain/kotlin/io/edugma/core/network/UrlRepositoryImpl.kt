@@ -1,42 +1,48 @@
 package io.edugma.core.network
 
-import io.edugma.core.api.api.Path
+import io.edugma.core.api.api.EdugmaApi
+import io.edugma.core.api.api.Node
+import io.edugma.core.api.model.NodeState
+import io.edugma.core.api.repository.CacheRepository
+import io.edugma.core.api.repository.NodesRepository
 import io.edugma.core.api.repository.SettingsRepository
 import io.edugma.core.api.repository.UrlRepository
 import io.edugma.core.api.repository.UrlTemplateRepository
 import io.edugma.core.api.repository.get
+import io.edugma.core.api.repository.getFlow
 import io.edugma.core.api.repository.save
 
 class UrlRepositoryImpl(
     private val settingsRepository: SettingsRepository,
+    private val cacheRepository: CacheRepository,
+    private val nodesRepository: NodesRepository,
 ) : UrlRepository, UrlTemplateRepository {
 
-    private var templates: Map<String, Path>? = emptyMap()
-    private var predefinedVariables: Map<String, String> = emptyMap()
+    private var edugmaApi: EdugmaApi? = null
 
-    override suspend fun init() {
-        templates = settingsRepository.get<Map<String, Path>>(URL_TEMPLATES_KEY)
-        // TODO Remove this
-        templates = edugmaApi.endpoints
-        predefinedVariables = edugmaApi.variables
-    }
-
-    override suspend fun setTemplates(templates: Map<String, Path>) {
-        settingsRepository.save(URL_TEMPLATES_KEY, templates)
-        this.templates = templates
+    override suspend fun init(): NodeState {
+        edugmaApi = nodesRepository.getSelectedContract()
+        if (edugmaApi == null) {
+            return NodeState.Selection
+        } else {
+            return NodeState.Ready
+        }
     }
 
     override fun url(name: String, params: Map<String, String>): String {
-        val templates = checkNotNull(templates) { "Templates are null" }
-        val template = checkNotNull(templates[name]) { "Url $name not found" }.url
-        val resultParams = predefinedVariables + params
+        val edugmaApi = checkNotNull(edugmaApi) { "EdugmaApi are null" }
+
+        val template = checkNotNull(edugmaApi.endpoints[name]) { "Url $name not found" }.url
+        val resultParams = edugmaApi.variables + params
 
         return replaceParams(template, resultParams)
     }
 
     override fun queryParams(name: String, params: Map<String, String>): Map<String, String> {
-        val queryParams = checkNotNull(templates?.get(name)).queryParams ?: return emptyMap()
-        val resultParams = predefinedVariables + params
+        val edugmaApi = checkNotNull(edugmaApi) { "EdugmaApi are null" }
+
+        val queryParams = checkNotNull(edugmaApi.endpoints.get(name)).queryParams ?: return emptyMap()
+        val resultParams = edugmaApi.variables + params
 
         return queryParams.mapNotNull { (name, template) ->
             val value = replaceParams(template, resultParams)
@@ -49,8 +55,10 @@ class UrlRepositoryImpl(
     }
 
     override fun headerParams(name: String, params: Map<String, String>): Map<String, String> {
-        val headerParams = checkNotNull(templates?.get(name)).headerParams ?: return emptyMap()
-        val resultParams = predefinedVariables + params
+        val edugmaApi = checkNotNull(edugmaApi) { "EdugmaApi are null" }
+
+        val headerParams = checkNotNull(edugmaApi.endpoints.get(name)).headerParams ?: return emptyMap()
+        val resultParams = edugmaApi.variables + params
 
         return headerParams.mapNotNull { (name, template) ->
             val value = replaceParams(template, resultParams)
@@ -123,95 +131,6 @@ class UrlRepositoryImpl(
         private const val PARAMETER_START_CHAR = '{'
         private const val PARAMETER_END_CHAR = '}'
         private const val PARAMETER_ESCAPE_CHAR = '\\'
-        private const val URL_TEMPLATES_KEY = "url_templates_key"
+        private const val URL_TEMPLATES_KEY = "edugma_api"
     }
 }
-
-private val edugmaApi = EdugmaApi(
-    variables = mapOf(
-        "baseUrl" to "https://devspare.mospolytech.ru",
-    ),
-    endpoints = mapOf(
-        "schedule-compact-get" to Path(
-            url = "{baseUrl}/schedules/compact/{type}/{key}",
-        ),
-        "schedule-compact-complex-post" to Path(
-            url = "{baseUrl}/schedules/compact/complex",
-        ),
-        "schedule-sources-get" to Path(
-            url = "{baseUrl}/schedule/sources/{type}",
-            queryParams = mapOf(
-                "query" to "{query}",
-                "page" to "{page}",
-                "limit" to "{limit}",
-            ),
-        ),
-        "schedule-sources-types-get" to Path(
-            url = "{baseUrl}/schedule/sources",
-        ),
-        "schedule-info-group-get" to Path(
-            url = "{baseUrl}/schedule/group/{id}",
-        ),
-        "schedule-info-teacher-get" to Path(
-            url = "{baseUrl}/schedule/teacher/{id}",
-        ),
-        "schedule-info-place-get" to Path(
-            url = "{baseUrl}/schedule/place/{id}",
-        ),
-        "schedule-info-subject-get" to Path(
-            url = "{baseUrl}/schedule/subject/{id}",
-        ),
-        "schedule-info-lesson-type-get" to Path(
-            url = "{baseUrl}/schedule/lesson-type/{id}",
-        ),
-        "schedule-places-free-post" to Path(
-            url = "{baseUrl}/schedule/places/free",
-        ),
-        "schedule-places-occupancy-get" to Path(
-            url = "{baseUrl}/schedule/places/occupancy/{placeId}",
-        ),
-
-        "account-login-post" to Path(
-            url = "{baseUrl}/login",
-        ),
-        "account-lk-token-get" to Path(
-            url = "{baseUrl}/getLkToken",
-        ),
-        "account-peoples-classmates-get" to Path(
-            url = "{baseUrl}/peoples/classmates",
-        ),
-        "account-peoples-students-get" to Path(
-            url = "{baseUrl}/peoples/students",
-            queryParams = mapOf(
-                "query" to "{query}",
-                "page" to "{page}",
-                "limit" to "{limit}",
-            ),
-        ),
-        "account-peoples-teachers-get" to Path(
-            url = "{baseUrl}/peoples/teachers",
-            queryParams = mapOf(
-                "query" to "{query}",
-                "page" to "{page}",
-                "limit" to "{limit}",
-            ),
-        ),
-        "account-applications-get" to Path(
-            url = "{baseUrl}/applications",
-        ),
-        "account-performance-get" to Path(
-            url = "{baseUrl}/performance/{periodId}",
-        ),
-        "account-personal-get" to Path(
-            url = "{baseUrl}/personal",
-        ),
-        "account-payments-get" to Path(
-            url = "{baseUrl}/payments/{contractId}",
-        ),
-    ),
-)
-
-class EdugmaApi(
-    val variables: Map<String, String>,
-    val endpoints: Map<String, Path>,
-)

@@ -18,7 +18,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,6 +30,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.node.Ref
 import androidx.compose.ui.unit.dp
+import io.edugma.core.api.model.AppState
+import io.edugma.core.api.model.NodeState
 import io.edugma.core.api.model.SnackbarCommand
 import io.edugma.core.api.model.ThemeMode
 import io.edugma.core.arch.mvi.viewmodel.rememberOnAction
@@ -40,13 +44,16 @@ import io.edugma.core.designSystem.utils.LocalEdIconLoader
 import io.edugma.core.designSystem.utils.LocalEdImageLoader
 import io.edugma.core.navigation.MainDestination
 import io.edugma.core.navigation.core.rememberRouterNavigator
+import io.edugma.core.navigation.nodes.NodesScreens
 import io.edugma.core.utils.viewmodel.getViewModel
 import io.edugma.features.app.core.appScreens
 import io.edugma.features.app.presentation.main.widgets.BottomNav
 import io.edugma.features.app.presentation.main.widgets.TabContent
 import io.edugma.features.app.presentation.main.widgets.rememberTabNavigator
 import io.edugma.features.app.presentation.main.widgets.showNavBar
+import io.edugma.features.nodes.nodesScreens
 import io.edugma.navigation.core.compose.EdugmaTabNavigation
+import io.edugma.navigation.core.destination.Destination
 import io.edugma.navigation.core.graph.composeScreen
 import io.edugma.navigation.core.utils.getRoute
 import kotlinx.coroutines.flow.combine
@@ -57,6 +64,11 @@ fun MainScreen(
     viewModel: MainAppViewModel = getViewModel(),
 ) {
     val state by viewModel.stateFlow.collectAsState()
+    val appState = remember {
+        derivedStateOf {
+            state.appState
+        }
+    }
 
     EdTheme(
         useDynamicColors = true,
@@ -70,13 +82,16 @@ fun MainScreen(
             color = EdTheme.colorScheme.background,
             elevation = EdElevation.Level0,
         ) {
-            MainContent()
+            MainContent(
+                appState = appState,
+            )
         }
     }
 }
 
 @Composable
 fun MainContent(
+    appState: State<AppState>,
     viewModel: MainViewModel = getViewModel(),
 ) {
 
@@ -123,7 +138,27 @@ fun MainContent(
                     .padding(innerPadding)
                     .fillMaxSize(),
             ) {
-                EdugmaTabNavigation(tabNavigator, MainDestination.Schedule) {
+                var firstScreen: Destination? by remember { mutableStateOf(null) }
+                LaunchedEffect(Unit) {
+                    snapshotFlow { appState.value }.collect {
+                        if (firstScreen == null) {
+                            when (it.nodeState) {
+                                NodeState.Initialization -> {
+                                }
+                                NodeState.Ready -> {
+                                    firstScreen = MainDestination.Schedule
+                                }
+                                NodeState.Selection -> {
+                                    firstScreen = NodesScreens.Main
+                                }
+                            }
+                        }
+                    }
+                }
+
+                firstScreen?.let {
+                    EdugmaTabNavigation(tabNavigator, firstScreen!!) {
+                        nodesScreens()
 //                    composeScreen(MainDestination.Home) {
 //                        val homeNavigator = rememberRouterNavigator(viewModel.homeRouter) {
 //                            viewModel.tabMenuRouter.back()
@@ -137,46 +172,48 @@ fun MainContent(
 //                            appScreens()
 //                        }
 //                    }
-                    composeScreen(MainDestination.Schedule) {
-                        val scheduleNavigator = rememberRouterNavigator(viewModel.scheduleRouter) {
-                            viewModel.tabMenuRouter.back()
-                        }
-                        LaunchedEffect(scheduleNavigator) {
-                            scheduleNavigator.navController.currentBackStackEntryFlow.collect {
-                                needTabMenuForSchedule = it.destination.route in showNavBar
+                        composeScreen(MainDestination.Schedule) {
+                            val scheduleNavigator = rememberRouterNavigator(viewModel.scheduleRouter) {
+                                viewModel.tabMenuRouter.back()
+                            }
+                            LaunchedEffect(scheduleNavigator) {
+                                scheduleNavigator.navController.currentBackStackEntryFlow.collect {
+                                    needTabMenuForSchedule = it.destination.route in showNavBar
+                                }
+                            }
+                            TabContent(scheduleNavigator, MainDestination.Schedule) {
+                                appScreens()
                             }
                         }
-                        TabContent(scheduleNavigator, MainDestination.Schedule) {
-                            appScreens()
-                        }
-                    }
-                    composeScreen(MainDestination.Account) {
-                        val accountNavigator = rememberRouterNavigator(viewModel.accountRouter) {
-                            viewModel.tabMenuRouter.back()
-                        }
-                        LaunchedEffect(accountNavigator) {
-                            accountNavigator.navController.currentBackStackEntryFlow.collect {
-                                needTabMenuForAccount = it.destination.route in showNavBar
+                        composeScreen(MainDestination.Account) {
+                            val accountNavigator = rememberRouterNavigator(viewModel.accountRouter) {
+                                viewModel.tabMenuRouter.back()
+                            }
+                            LaunchedEffect(accountNavigator) {
+                                accountNavigator.navController.currentBackStackEntryFlow.collect {
+                                    needTabMenuForAccount = it.destination.route in showNavBar
+                                }
+                            }
+                            TabContent(accountNavigator, MainDestination.Account) {
+                                appScreens()
                             }
                         }
-                        TabContent(accountNavigator, MainDestination.Account) {
-                            appScreens()
-                        }
-                    }
-                    composeScreen(MainDestination.Misc) {
-                        val miscNavigator = rememberRouterNavigator(viewModel.miscRouter) {
-                            viewModel.tabMenuRouter.back()
-                        }
-                        LaunchedEffect(miscNavigator) {
-                            miscNavigator.navController.currentBackStackEntryFlow.collect {
-                                needTabMenuForMisc = it.destination.route in showNavBar
+                        composeScreen(MainDestination.Misc) {
+                            val miscNavigator = rememberRouterNavigator(viewModel.miscRouter) {
+                                viewModel.tabMenuRouter.back()
                             }
-                        }
-                        TabContent(miscNavigator, MainDestination.Misc) {
-                            appScreens()
+                            LaunchedEffect(miscNavigator) {
+                                miscNavigator.navController.currentBackStackEntryFlow.collect {
+                                    needTabMenuForMisc = it.destination.route in showNavBar
+                                }
+                            }
+                            TabContent(miscNavigator, MainDestination.Misc) {
+                                appScreens()
+                            }
                         }
                     }
                 }
+
                 Snackbar(
                     messageProvider = { state.snackbars.firstOrNull() },
                     onDismissed = {

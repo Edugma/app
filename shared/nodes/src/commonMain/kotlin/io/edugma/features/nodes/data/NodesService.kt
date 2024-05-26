@@ -2,8 +2,8 @@ package io.edugma.features.nodes.data
 
 import de.jensklingenberg.ktorfit.http.GET
 import de.jensklingenberg.ktorfit.http.Url
-import io.edugma.features.nodes.domain.model.Node
-import io.edugma.features.nodes.domain.model.NodeContract
+import io.edugma.core.api.api.EdugmaApi
+import io.edugma.core.api.api.Node
 
 interface NodesService {
     companion object {
@@ -14,7 +14,7 @@ interface NodesService {
     @GET
     suspend fun getNodeContract(
         @Url url: String,
-    ): Result<NodeContract>
+    ): EdugmaApi
 
     @GET
     suspend fun getNodeList(

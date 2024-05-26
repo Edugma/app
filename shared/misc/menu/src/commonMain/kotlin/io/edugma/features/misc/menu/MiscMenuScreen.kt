@@ -29,6 +29,7 @@ fun MiscMenuScreen(viewModel: MiscMenuViewModel = getViewModel()) {
     ) {
         MiscMenuContent(
             onSettingsClick = viewModel::onSettingsClick,
+            onNodeClick = viewModel::onNodeClick,
         )
     }
 }
@@ -36,7 +37,8 @@ fun MiscMenuScreen(viewModel: MiscMenuViewModel = getViewModel()) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MiscMenuContent(
-    onSettingsClick: io.edugma.core.utils.ClickListener,
+    onSettingsClick: () -> Unit,
+    onNodeClick: () -> Unit,
 ) {
     Column(
         Modifier.fillMaxSize(),
@@ -76,7 +78,12 @@ private fun MiscMenuContent(
                 modifier = Modifier.weight(1f),
                 icon = rememberCachedIconPainter("https://img.icons8.com/fluency/48/settings.png"),
             )
-            SpacerFill(Modifier.weight(2f))
+            EdIconCard(
+                title = "Сервер\n",
+                onClick = onNodeClick,
+                modifier = Modifier.weight(1f),
+                icon = rememberCachedIconPainter("https://img.icons8.com/fluency/48/server--v1.png"),
+            )
         }
         SpacerHeight(height = 8.dp)
     }

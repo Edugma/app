@@ -33,11 +33,6 @@ class MainViewModel(
         launchCoroutine {
             checkUpdateUseCase()
         }
-
-        launchCoroutine {
-            // TODO
-            urlRepository.init()
-        }
     }
 
     override fun processAction(action: MainAction) {

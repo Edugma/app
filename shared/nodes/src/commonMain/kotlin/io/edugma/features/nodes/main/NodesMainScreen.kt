@@ -31,7 +31,7 @@ import io.edugma.core.ui.screen.FeatureScreen
 import io.edugma.core.utils.ClickListener
 import io.edugma.core.utils.Typed1Listener
 import io.edugma.core.utils.viewmodel.getViewModel
-import io.edugma.features.nodes.domain.model.Node
+import io.edugma.core.api.api.Node
 
 @Composable
 fun NodesMainScreen(viewModel: NodesMainViewModel = getViewModel()) {
