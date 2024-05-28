@@ -57,7 +57,14 @@ class NodesRepositoryImpl(
         return cacheRepository.get<EdugmaApi>(CacheConst.SelectedContract)?.data
     }
 
+    private val testNode = Node(
+        name = "Тестовый сервер",
+        otherNames = listOf(),
+        image = "https://avatars.githubusercontent.com/u/97068545?s=200&v=4",
+        contract = "https://raw.githubusercontent.com/Edugma/example-node/main/contract.json",
+    )
+
     override suspend fun getNodeList(): List<Node> {
-        return service.getNodeList().getOrThrow()
+        return service.getNodeList().getOrThrow() + testNode
     }
 }

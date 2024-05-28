@@ -11,6 +11,7 @@ import io.edugma.core.api.repository.UrlTemplateRepository
 import io.edugma.core.api.repository.get
 import io.edugma.core.api.repository.getFlow
 import io.edugma.core.api.repository.save
+import io.ktor.http.HttpMethod
 
 class UrlRepositoryImpl(
     private val settingsRepository: SettingsRepository,
@@ -36,6 +37,29 @@ class UrlRepositoryImpl(
         val resultParams = edugmaApi.variables + params
 
         return replaceParams(template, resultParams)
+    }
+
+    override fun getMethod(name: String): HttpMethod {
+        val edugmaApi = checkNotNull(edugmaApi) { "EdugmaApi are null" }
+
+        val method = checkNotNull(edugmaApi.endpoints.get(name)).method
+
+        return when (method) {
+            "get" -> HttpMethod.Get
+            "post" -> HttpMethod.Post
+            "put" -> HttpMethod.Put
+            "patch" -> HttpMethod.Patch
+            "delete" -> HttpMethod.Delete
+            "head" -> HttpMethod.Head
+            "options" -> HttpMethod.Options
+            else -> error("Unsupported http method")
+        }
+    }
+
+    override fun isSecure(name: String): Boolean {
+        val edugmaApi = checkNotNull(edugmaApi) { "EdugmaApi are null" }
+
+        return checkNotNull(edugmaApi.endpoints.get(name)).security
     }
 
     override fun queryParams(name: String, params: Map<String, String>): Map<String, String> {

@@ -2,6 +2,7 @@ package io.edugma.core.network.interceptors
 
 import io.edugma.core.api.repository.SettingsRepository
 import io.edugma.core.network.KtorInterceptor
+import io.edugma.core.network.SecurityAttribute
 import io.ktor.client.call.HttpClientCall
 import io.ktor.client.plugins.Sender
 import io.ktor.client.request.HttpRequestBuilder
@@ -17,6 +18,7 @@ class TokenInterceptor(
     }
 
     override suspend fun invoke(sender: Sender, request: HttpRequestBuilder): HttpClientCall {
+        if (request.attributes[SecurityAttribute] != true) return sender.execute(request)
         // TODO: Переделать
 
         val token = settingsRepository.getString(TokenKey)

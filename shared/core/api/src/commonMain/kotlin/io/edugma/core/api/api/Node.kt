@@ -5,8 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Node(
-    @SerialName("id")
-    val id: String,
     @SerialName("name")
     val name: String,
     @SerialName("other_names")

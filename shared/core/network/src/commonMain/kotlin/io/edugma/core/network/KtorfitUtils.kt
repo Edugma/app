@@ -15,6 +15,7 @@ import io.ktor.client.plugins.plugin
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.http.ContentType
 import io.ktor.serialization.kotlinx.json.json
+import io.ktor.util.AttributeKey
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 
@@ -82,3 +83,5 @@ fun buildKtorClient(
 interface KtorInterceptor {
     suspend operator fun invoke(sender: Sender, request: HttpRequestBuilder): HttpClientCall
 }
+
+val SecurityAttribute = AttributeKey<Boolean>("EdugmaSecurity")

@@ -9,7 +9,10 @@ import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
+import io.ktor.http.HttpMethod
 import io.ktor.http.contentType
+import io.ktor.util.AttributeKey
+import io.ktor.util.Attributes
 
 class EdugmaHttpClientImpl(
     private val urlRepository: UrlRepository,
@@ -35,6 +38,12 @@ class EdugmaHttpClientImpl(
                     append(name, value)
                 }
             }
+
+            val withToken = urlRepository.isSecure(name)
+
+            setAttributes {
+                put(SecurityAttribute, withToken)
+            }
         }
     }
 
@@ -43,6 +52,12 @@ class EdugmaHttpClientImpl(
         builder: EdugmaHttpClient.PostBuilder,
     ): HttpResponse {
         val name = "$name-post"
+
+        // TODO name-post-get
+        // Учесть: что в post проверка идёт по name-post
+        if (urlRepository.getMethod(name) == HttpMethod.Get) {
+            return getInternal(name, builder)
+        }
 
         val url = urlRepository.url(name, builder.paramsMap)
         return httpClient.post(url) {
@@ -59,6 +74,12 @@ class EdugmaHttpClientImpl(
                 headers {
                     append(name, value)
                 }
+            }
+
+            val withToken = urlRepository.isSecure(name)
+
+            setAttributes {
+                put(SecurityAttribute, withToken)
             }
 
             contentType(ContentType.Application.Json)

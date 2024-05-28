@@ -64,8 +64,18 @@ class NodesMainViewModel(
 
     fun onNodeItemClick(node: Node) {
         launchCoroutine {
-            nodesRepository.selectNode(stateFlow.value.nodeUrl)
-            tabMenuRouter.navigateTo(ScheduleScreens.Menu())
+            nodesRepository.selectNode(node.contract)
+            urlTemplateRepository.init()
+            appStateRepository.newState(
+                appStateRepository.state.value.copy(
+                    nodeState = NodeState.Ready,
+                ),
+            )
+            tabMenuRouter.navigateTo(MainDestination.Schedule) {
+                popUpTo(NodesScreens.Main) {
+                    inclusive = true
+                }
+            }
             // router.navigateTo(HomeScreens.Main())
         }
     }
