@@ -13,7 +13,7 @@ fun DependencyHandlerScope.kspAllPlatforms(dependencyNotation: Any) {
 }
 
 //fun PluginDependenciesSpecScope.edugma(pluginName: String) {
-//    id("io.edugma.$pluginName")
+//    id("com.edugma.$pluginName")
 //}
 //
 //fun PluginDependenciesSpecScope.edugmaAndroidLib() {

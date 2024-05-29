@@ -29,6 +29,6 @@ kotlin {
 }
 
 android {
-    namespace = "io.edugma.core.designSystem"
+    namespace = "com.edugma.core.designSystem"
     resourcePrefix("core_ed_")
 }

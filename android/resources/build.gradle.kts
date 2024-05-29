@@ -1,10 +1,10 @@
 plugins {
     kotlin("android")
-    id("io.edugma.android-lib")
+    id("com.edugma.android-lib")
 }
 
 android {
-    namespace = "io.edugma.core.androidResources"
+    namespace = "com.edugma.core.androidResources"
     resourcePrefix("core_ed_")
 }
 

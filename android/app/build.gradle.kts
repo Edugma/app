@@ -5,7 +5,7 @@ import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
-    id("io.edugma.android-app")
+    id("com.edugma.android-app")
     kotlin("android")
     id("lint")
     alias(libs.plugins.jetbrains.composePlugin)
@@ -17,10 +17,10 @@ val versionsProperties = Properties()
 versionsProperties.load(FileInputStream(rootProject.file("configs/versions.properties")))
 
 android {
-    namespace = "io.edugma.android"
+    namespace = "com.edugma.android"
 
     defaultConfig {
-        applicationId = "io.edugma.android"
+        applicationId = "com.edugma.android"
         targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = versionsProperties.getProperty("versionCode").toInt()
         versionName = versionsProperties.getProperty("versionName")

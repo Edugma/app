@@ -42,5 +42,5 @@ compose.resources {
 //        .replace("..", ".")
 //
 //
-//    multiplatformResourcesPackage = "io.edugma${resPath}"
+//    multiplatformResourcesPackage = "com.edugma${resPath}"
 //}

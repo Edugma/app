@@ -3,4 +3,4 @@ plugins {
     id("mp-resource-lib")
 }
 
-android.namespace = "io.edugma.core.icons"
+android.namespace = "com.edugma.core.icons"

@@ -23,5 +23,5 @@ kotlin {
     }
 }
 
-android.namespace = "io.edugma.navigation.core"
+android.namespace = "com.edugma.navigation.core"
 

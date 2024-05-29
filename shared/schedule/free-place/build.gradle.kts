@@ -18,5 +18,5 @@ kotlin {
 }
 
 android {
-    namespace = "io.edugma.features.schedule.free_place"
+    namespace = "com.edugma.features.schedule.free_place"
 }

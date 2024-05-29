@@ -36,5 +36,5 @@ dependencies {
     kspAllPlatforms(libs.ktorfit.ksp)
 }
 
-android.namespace = "io.edugma.core.network"
+android.namespace = "com.edugma.core.network"
 

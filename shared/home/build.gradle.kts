@@ -16,5 +16,5 @@ kotlin {
 }
 
 android {
-    namespace = "io.edugma.features.home"
+    namespace = "com.edugma.features.home"
 }

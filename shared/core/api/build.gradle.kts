@@ -32,4 +32,4 @@ kotlin {
     }
 }
 
-android.namespace = "io.edugma.core.api"
+android.namespace = "com.edugma.core.api"

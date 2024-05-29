@@ -18,5 +18,5 @@ kotlin {
 }
 
 android {
-    namespace = "io.edugma.features.schedule.history"
+    namespace = "com.edugma.features.schedule.history"
 }

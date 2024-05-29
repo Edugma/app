@@ -13,5 +13,5 @@ kotlin {
 }
 
 android {
-    namespace = "io.edugma.core.resources"
+    namespace = "com.edugma.core.resources"
 }

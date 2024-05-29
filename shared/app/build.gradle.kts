@@ -86,7 +86,7 @@ fun TargetConfigDsl.buildConfigFields(
 }
 
 buildkonfig {
-    packageName = "io.edugma.shared.app"
+    packageName = "com.edugma.shared.app"
     exposeObjectWithName = "BuildKonfig"
 
     defaultConfigs("debug") {
@@ -128,5 +128,5 @@ buildkonfig {
 }
 
 android {
-    namespace = "io.edugma.features.app"
+    namespace = "com.edugma.features.app"
 }

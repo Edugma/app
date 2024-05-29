@@ -19,6 +19,6 @@ kotlin {
 }
 
 android {
-    namespace = "io.edugma.features.schedule.scheduleInfo"
+    namespace = "com.edugma.features.schedule.scheduleInfo"
     resourcePrefix("schedule_info_")
 }

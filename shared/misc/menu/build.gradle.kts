@@ -17,6 +17,6 @@ kotlin {
 }
 
 android {
-    namespace = "io.edugma.features.misc.menu"
+    namespace = "com.edugma.features.misc.menu"
 }
 

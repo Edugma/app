@@ -43,4 +43,4 @@ dependencies {
     kspAllPlatforms(libs.ktorfit.ksp)
 }
 
-android.namespace = "io.edugma.core.storage"
+android.namespace = "com.edugma.core.storage"

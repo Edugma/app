@@ -35,6 +35,6 @@ dependencies {
 }
 
 android {
-    namespace = "io.edugma.features.misc.other"
+    namespace = "com.edugma.features.misc.other"
 }
 

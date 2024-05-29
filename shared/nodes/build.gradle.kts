@@ -41,5 +41,5 @@ dependencies {
 }
 
 android {
-    namespace = "io.edugma.features.nodes"
+    namespace = "com.edugma.features.nodes"
 }

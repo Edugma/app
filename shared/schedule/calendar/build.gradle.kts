@@ -18,6 +18,6 @@ kotlin {
 }
 
 android {
-    namespace = "io.edugma.features.schedule.calendar"
+    namespace = "com.edugma.features.schedule.calendar"
     resourcePrefix("schedule_calendar_")
 }

@@ -53,5 +53,5 @@ kotlin {
 }
 
 //android {
-//    namespace = "io.edugma.ios.shared"
+//    namespace = "com.edugma.ios.shared"
 //}

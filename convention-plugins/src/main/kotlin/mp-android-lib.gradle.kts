@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     kotlin("multiplatform")
-    id("io.edugma.android-lib")
+    id("com.edugma.android-lib")
 }
 
 // https://github.com/gradle/gradle/issues/15383

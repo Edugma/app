@@ -18,6 +18,6 @@ kotlin {
 }
 
 android {
-    namespace = "io.edugma.features.schedule.sources"
+    namespace = "com.edugma.features.schedule.sources"
     resourcePrefix("schedule_sources_")
 }

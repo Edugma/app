@@ -6,7 +6,7 @@ plugins {
     kotlin("multiplatform")
     id("mp-android-lib")
     id("mp-ios-lib")
-    id("io.edugma.mp-web-js-lib")
+    id("com.edugma.mp-web-js-lib")
     id("mp-lint")
 }
 

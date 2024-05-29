@@ -11,5 +11,5 @@
 //    implementation(libs.material3)
 //}
 //android {
-//    namespace = "io.edugma.features.schedule.appwidget"
+//    namespace = "com.edugma.features.schedule.appwidget"
 //}

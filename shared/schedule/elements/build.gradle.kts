@@ -18,5 +18,5 @@ kotlin {
 }
 
 android {
-    namespace = "io.edugma.features.schedule.elements"
+    namespace = "com.edugma.features.schedule.elements"
 }

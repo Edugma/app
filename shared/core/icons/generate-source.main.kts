@@ -56,7 +56,7 @@ resourceFolder.mkdirs()
 
 println("Copying")
 //val writer = resourcesFile.bufferedWriter()
-//writer.appendLine("package io.edugma.core.icons")
+//writer.appendLine("package com.edugma.core.icons")
 //writer.appendLine()
 //writer.appendLine("public object EdIcons {")
 iconsDir.walkTopDown().filter { it.extension == "svg" }

@@ -14,4 +14,4 @@ kotlin {
     }
 }
 
-android.namespace = "io.edugma.domain.schedule"
+android.namespace = "com.edugma.domain.schedule"

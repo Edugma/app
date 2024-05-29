@@ -31,4 +31,4 @@ dependencies {
     kspAllPlatforms(libs.ktorfit.ksp)
 }
 
-android.namespace = "io.edugma.data.schedule"
+android.namespace = "com.edugma.data.schedule"

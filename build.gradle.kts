@@ -16,9 +16,9 @@ plugins {
     // alias(libs.plugins.buildConfig).apply(false)
 
     // TODO https://github.com/JetBrains/compose-multiplatform/issues/4773
-    id("io.edugma.android-app").apply(false)
-    id("io.edugma.android-lib").apply(false)
-    id("io.edugma.mp-web-js-lib").apply(false)
+    id("com.edugma.android-app").apply(false)
+    id("com.edugma.android-lib").apply(false)
+    id("com.edugma.mp-web-js-lib").apply(false)
     id("lint").apply(false)
     id("mp-android-lib").apply(false)
     id("mp-common-lib").apply(false)

@@ -37,5 +37,5 @@ dependencies {
 }
 
 android {
-    namespace = "io.edugma.features.account"
+    namespace = "com.edugma.features.account"
 }
