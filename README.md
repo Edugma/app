@@ -64,5 +64,9 @@ Edugma - децентрализованное приложение для уче
 ```
 
 ```kotlin
+./gradlew :android:app:bundleRelease
+```
+
+```kotlin
 ./gradlew :android:app:assembleDebug
 ```
