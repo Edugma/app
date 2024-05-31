@@ -36,7 +36,7 @@ Edugma - децентрализованное приложение для уче
 
 # Сборка Web версии
 ```shell
-./gradlew :web:app:jsBrowserProductionWebpack
+./gradlew jsBrowserProductionWebpack
 ```
 
 ## Скриншоты
@@ -54,19 +54,19 @@ Edugma - децентрализованное приложение для уче
 ![screenshots 2](https://github.com/mospolyhelper/mospolyhelper-android/raw/master/docs/screenshots/screenshots_2.png)
 
 
-```bash
+```shell
 ./gradlew :ios:shared:embedAndSignAppleFrameworkForXcode
 ```
 
 
-```kotlin
+```shell
 ./gradlew :android:app:assembleRelease
 ```
 
-```kotlin
+```shell
 ./gradlew :android:app:bundleRelease
 ```
 
-```kotlin
+```shell
 ./gradlew :android:app:assembleDebug
 ```

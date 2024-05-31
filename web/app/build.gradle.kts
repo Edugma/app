@@ -28,18 +28,19 @@ kotlin {
     task("testClasses")
     applyDefaultHierarchyTemplate()
 
-    js(IR) {
+    js {
         moduleName = "edugma"
         browser {
-            useCommonJs()
             commonWebpackConfig {
                 outputFileName = "edugma.js"
             }
-//            dceTask {
-//                keep("ktor-ktor-io.\$\$importsForInline\$\$.ktor-ktor-io.io.ktor.utils.io")
-//            }
+            // Not working
+            distribution {
+                outputDirectory.set(rootDir.resolve("webDist"))
+            }
         }
         binaries.executable()
+        useEsModules()
     }
 
 //    wasmJs {
@@ -70,6 +71,7 @@ kotlin {
     sourceSets {
         // Common for jsMain and wasmJsMain
         val webCommonMain by creating {
+            dependsOn(commonMain.get())
             dependencies {
                 implementation(projects.shared.app)
                 implementation(projects.shared.core.api)
@@ -98,8 +100,4 @@ kotlin {
 //            dependsOn(webCommonMain)
 //        }
     }
-}
-
-compose.experimental {
-    web.application {}
 }
