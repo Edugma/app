@@ -68,7 +68,7 @@ inline fun <reified T> inferArgumentType(): ArgumentType {
         String::class -> ArgumentType.STRING
         else -> {
             throw IllegalArgumentException(
-                "Объект типа ${T::class.qualifiedName} не поддерживается в качестве аргумента.",
+                "Объект типа ${T::class.simpleName} не поддерживается в качестве аргумента.",
             )
         }
     }

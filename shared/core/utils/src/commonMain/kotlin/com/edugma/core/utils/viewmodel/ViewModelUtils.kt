@@ -5,6 +5,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.node.Ref
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import com.edugma.core.api.utils.IO
+import com.edugma.core.api.utils.getFullClassName
 import com.edugma.core.arch.mvi.stateStore.StateStoreBuilder
 import com.edugma.core.arch.mvi.utils.launchCoroutine
 import com.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
@@ -21,7 +22,7 @@ inline fun <TState, TAction, reified T : BaseActionViewModel<TState, TAction>> g
     val viewModelRef = remember(T::class) { Ref<T>() }
 
     if (viewModelRef.value == null) {
-        val viewModelKey = T::class.qualifiedName.orEmpty()
+        val viewModelKey = T::class.getFullClassName()
         val viewModel = viewModelStoreOwner.viewModelStore.get(viewModelKey) as? T
             ?: koinInject<T>().apply {
                 viewModelStoreOwner.viewModelStore.put(viewModelKey, this)
