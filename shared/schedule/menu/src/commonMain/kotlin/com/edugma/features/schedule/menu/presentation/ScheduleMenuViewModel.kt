@@ -2,6 +2,7 @@ package com.edugma.features.schedule.menu.presentation
 
 import com.edugma.core.api.utils.nowLocalDate
 import com.edugma.core.api.utils.nowLocalTime
+import com.edugma.core.api.utils.onResult
 import com.edugma.core.api.utils.untilMinutes
 import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
@@ -44,6 +45,20 @@ class ScheduleMenuViewModel(
 //                onFailure = {},
 //            )
 //        }
+        launchCoroutine {
+            useCase.getCurrentScheduleFlow().onResult(
+                onSuccess = {
+                    val calendar = it.valueOrThrow
+                    val lessonCount = calendar.getEventCount(Clock.System.nowLocalDate())
+                    newState {
+                        toLessonCount(lessonCount)
+                    }
+                },
+                onFailure = {
+
+                }
+            )
+        }
 
         launchCoroutine {
             useCase.getSelectedSource().collect { selectedSource ->
@@ -134,7 +149,14 @@ data class ScheduleMenuUiState(
         ),
     )
 
+    fun toLessonCount(count: Int) = copy(
+        main = main.copy(
+            todayLessonsCount = count
+        )
+    )
+
     data class MainUiState(
+        val todayLessonsCount: Int = -1,
         val currentLessons: List<ClosestLessons> = emptyList(),
         val notStartedLessons: List<ClosestLessons> = emptyList(),
     )

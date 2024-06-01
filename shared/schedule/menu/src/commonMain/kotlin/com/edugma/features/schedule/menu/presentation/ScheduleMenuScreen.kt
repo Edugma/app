@@ -187,15 +187,15 @@ private fun RowScope.MenuCard(
         when (menuItem) {
             MenuItem.DailySchedule -> {
                 ScheduleCard(
-                    state.main,
-                    onScheduleClick,
+                    state = state.main,
+                    onScheduleClick = onScheduleClick,
                     modifier = Modifier.weight(menuItem.weight),
                 )
             }
             MenuItem.Calendar -> {
                 CalendarCard(
-                    state.date,
-                    onScheduleCalendarClick,
+                    date = state.date,
+                    onScheduleCalendarClick = onScheduleCalendarClick,
                     modifier = Modifier.weight(menuItem.weight),
                 )
             }

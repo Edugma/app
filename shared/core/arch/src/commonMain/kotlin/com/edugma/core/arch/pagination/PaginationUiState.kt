@@ -51,7 +51,23 @@ data class PaginationUiState<T>(
         )
     }
 
-    fun toNewItems(items: List<T>, nextPage: String?): PaginationUiState<T> {
+    fun replaceItems(items: List<T>, nextPage: String?): PaginationUiState<T> {
+        val isEnded = nextPage == null || items.isEmpty()
+        val enum = if (isEnded) {
+            PaginationStateEnum.End
+        } else {
+            PaginationStateEnum.Loaded
+        }
+
+        return copy(
+            items = items,
+            nextPage = nextPage,
+            enum = enum,
+            lceState = lceState.toFinishLoading().toContent(isEmpty = items.isEmpty()),
+        )
+    }
+
+    fun addItems(items: List<T>, nextPage: String?): PaginationUiState<T> {
         val isEnded = nextPage == null || items.isEmpty()
         val enum = if (isEnded) {
             PaginationStateEnum.End

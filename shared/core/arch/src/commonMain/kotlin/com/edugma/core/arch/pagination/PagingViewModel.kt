@@ -19,7 +19,7 @@ class PagingViewModel<T> : ViewModelDelegate<PaginationUiState<T>>() {
         newState {
             toReset()
         }
-        load()
+        load(append = true)
     }
 
     fun refresh() {
@@ -27,10 +27,10 @@ class PagingViewModel<T> : ViewModelDelegate<PaginationUiState<T>>() {
         newState {
             toRefresh()
         }
-        load()
+        load(append = false)
     }
 
-    private fun load() {
+    private fun load(append: Boolean) {
         if (loadJob != null) {
             loadJob?.cancel()
         }
@@ -40,7 +40,11 @@ class PagingViewModel<T> : ViewModelDelegate<PaginationUiState<T>>() {
             },
         ) {
             val pagingDto = request()
-            newState { toNewItems(pagingDto.data, pagingDto.next) }
+            if (append) {
+                newState { addItems(pagingDto.data, pagingDto.next) }
+            } else {
+                newState { replaceItems(pagingDto.data, pagingDto.next) }
+            }
         }
     }
 
@@ -55,7 +59,7 @@ class PagingViewModel<T> : ViewModelDelegate<PaginationUiState<T>>() {
                 },
             ) {
                 val pagingDto = request()
-                newState { toNewItems(pagingDto.data, pagingDto.next) }
+                newState { addItems(pagingDto.data, pagingDto.next) }
             }
         }
     }

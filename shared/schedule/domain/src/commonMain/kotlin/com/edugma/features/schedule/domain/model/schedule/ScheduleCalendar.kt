@@ -200,4 +200,12 @@ class ScheduleCalendar(
             .firstOrNull { it.id == id }
             ?.toModel(compactSchedule)
     }
+
+    fun getEventCount(
+        date: LocalDate,
+        timeZone: TimeZone = TimeZone.currentSystemDefault(),
+    ): Int {
+        this.currentTimeZone = timeZone
+        return compactSchedule.lessons.count { lesson -> lesson.isToday(date) }
+    }
 }

@@ -35,8 +35,7 @@ class CheckUpdateUseCase(
         val now = Clock.System.now()
 
         if (appVersion < minVersion) {
-            // TODO Dont forget
-            val timeToShow = 0.days
+            val timeToShow = 1.days
             if (now - lastUpdate > timeToShow) {
                 val actionResult = appSnackbarRepository.sendWarningWithResult(
                     title = "Срочно обновите приложение",
@@ -50,8 +49,7 @@ class CheckUpdateUseCase(
                 }
             }
         } else if (appVersion < lastVersion) {
-            // TODO Dont forget
-            val timeToShow = 0.days
+            val timeToShow = 1.days
             if (now - lastUpdate > timeToShow) {
                 val actionResult = appSnackbarRepository.sendWarningWithResult(
                     title = "Обновите приложение",

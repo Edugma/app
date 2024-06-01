@@ -49,7 +49,7 @@ class ScheduleCalendarUiModel(
             if (previousLesson != null) {
                 val prevEndTime = previousLesson.end.zonedTime()
                 val curStartTime = lesson.start.zonedTime()
-                val timeWindowInMinutes = curStartTime.untilMinutes(prevEndTime)
+                val timeWindowInMinutes = prevEndTime.untilMinutes(curStartTime)
 
                 if (timeWindowInMinutes >= WINDOW_THRESHOLD_MINUTES) {
                     lessons.add(

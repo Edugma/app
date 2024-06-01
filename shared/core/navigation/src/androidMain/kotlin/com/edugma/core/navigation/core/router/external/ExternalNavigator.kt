@@ -71,6 +71,8 @@ class ExternalNavigator(
 
     private fun openStore(command: ExternalNavigationCommand.OpenStore) {
         val packageName = command.packageName ?: context.packageName
+        // TODO common logic for any store
+        // need try first - source of current app
         try {
             context.startActivity(
                 Intent().apply {
