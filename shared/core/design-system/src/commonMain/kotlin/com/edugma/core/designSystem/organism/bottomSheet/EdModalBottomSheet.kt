@@ -186,6 +186,7 @@ fun rememberModalBottomSheetState(
     // в remember
     val state3 = rememberModalBottomSheetState3(
         skipPartiallyExpanded = skipPartiallyExpanded,
+        // TODO Lambda memoization
         confirmValueChange = remember {
             { it: SheetValue3 -> confirmValueChange(it.toEdugma()) }
         },

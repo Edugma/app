@@ -1,24 +1,28 @@
 package com.edugma.features.schedule.elements.lesson
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import edugma.shared.core.icons.generated.resources.*
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
 import com.edugma.core.api.utils.TimeFormat
 import com.edugma.core.api.utils.format
 import com.edugma.core.api.utils.getShortName
@@ -34,6 +38,7 @@ import com.edugma.core.designSystem.utils.rememberAsyncImagePainter
 import com.edugma.core.icons.EdIcons
 import com.edugma.core.utils.Typed1Listener
 import com.edugma.features.schedule.domain.model.attentdee.AttendeeInfo
+import com.edugma.features.schedule.domain.model.compact.Importance
 import com.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
 import com.edugma.features.schedule.domain.model.lesson.LessonEvent
 import com.edugma.features.schedule.domain.model.lessonSubject.LessonSubject
@@ -56,7 +61,7 @@ fun LessonContent(
     ) {
         Column(Modifier.padding(start = 24.dp, end = 24.dp, top = 13.dp, bottom = 16.dp)) {
             SecondaryContent {
-                LessonHeader(lesson.tags)
+                LessonHeader(tags = lesson.tags, importance = lesson.importance)
             }
             SpacerHeight(3.dp)
             PrimaryContent {
@@ -85,22 +90,38 @@ fun LessonContent(
 }
 
 @Composable
-fun LessonHeader(tags: List<String>, isLoading: Boolean = false) {
-    LessonTags(tags, isLoading)
+fun LessonHeader(
+    tags: List<String>,
+    importance: Importance,
+    isLoading: Boolean = false
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        if (importance == Importance.High) {
+            Box(
+                Modifier
+                    .clip(CircleShape)
+                    .size(8.dp)
+                    .background(EdTheme.colorScheme.error)
+            )
+        }
+        LessonTags(tags, isLoading)
+    }
 }
 
 @Composable
-fun LessonTags(tags: List<String>, isLoading: Boolean = false) {
-    Row(Modifier.fillMaxWidth()) {
-        tags.forEach { tag ->
-            EdLabel(
-                text = tag.uppercase(),
-                style = EdTheme.typography.labelSmall,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.edPlaceholder(visible = isLoading),
-            )
-        }
+fun RowScope.LessonTags(tags: List<String>, isLoading: Boolean = false) {
+    tags.forEach { tag ->
+        EdLabel(
+            text = tag.uppercase(),
+            style = EdTheme.typography.labelSmall,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.edPlaceholder(visible = isLoading),
+        )
     }
 }
 

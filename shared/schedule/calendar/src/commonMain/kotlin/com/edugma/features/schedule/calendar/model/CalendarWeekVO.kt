@@ -4,6 +4,6 @@ import androidx.compose.runtime.Immutable
 
 @Immutable
 data class CalendarWeekVO(
-    val weekNumber: Int = 0,
+    val weekNumber: Int,
     val weekSchedule: List<CalendarDayVO>,
 )

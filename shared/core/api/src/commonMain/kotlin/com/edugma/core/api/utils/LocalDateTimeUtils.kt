@@ -14,10 +14,15 @@ import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.todayIn
 
-fun LocalDate.getFloorMonday(): LocalDate {
-    val currentValue = this.dayOfWeek.isoDayNumber
-    val mondayValue = DayOfWeek.MONDAY.isoDayNumber
-    return this.plus(mondayValue - currentValue, DateTimeUnit.DAY)
+/**
+ * Get monday of current week.
+ */
+fun LocalDate.getMondayOfCurrentWeek(): LocalDate {
+    if (this.dayOfWeek == DayOfWeek.MONDAY) return this
+
+    val currentDayOfWeekNumber = this.dayOfWeek.isoDayNumber
+    val mondayNumber = DayOfWeek.MONDAY.isoDayNumber
+    return this.plus(mondayNumber - currentDayOfWeekNumber, DateTimeUnit.DAY)
 }
 
 fun LocalDate.getCeilSunday(): LocalDate {
@@ -97,6 +102,31 @@ fun Clock.System.nowLocalDateTime(
 
 fun LocalDate.isLeapYear(): Boolean = isLeapYear(this.year)
 fun LocalDateTime.isLeapYear(): Boolean = isLeapYear(this.year)
+
+/**
+ * Returns the ISO 8601 week number for the given date.
+ */
+fun LocalDate.getIsoWeekNumber(): Int {
+    val date = this.getMondayOfCurrentWeek()
+
+    val dayOfYear = date.dayOfYear
+    val weekNumber = (dayOfYear - 1) / 7 + 1
+
+    val thursdayYear = date.plus(DayOfWeek.THURSDAY.isoDayNumber - 1, DateTimeUnit.DAY).year
+
+    if (date.year != thursdayYear) {
+        return 1
+    }
+
+    // ISO 8601. Adjust if the year starts in the middle of the week and the first week is short
+    val daysOfFirstWeek = (dayOfYear - 1) % 7
+
+    return if (daysOfFirstWeek >= DayOfWeek.THURSDAY.isoDayNumber) {
+        weekNumber + 1
+    } else {
+        weekNumber
+    }
+}
 
 internal fun isLeapYear(year: Int): Boolean {
     val prolepticYear: Long = year.toLong()

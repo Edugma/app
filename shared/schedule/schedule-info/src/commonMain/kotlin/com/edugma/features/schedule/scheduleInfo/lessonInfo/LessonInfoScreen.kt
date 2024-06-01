@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.edugma.core.api.model.Coordinates
 import edugma.shared.core.icons.generated.resources.*
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -121,10 +122,10 @@ private fun LessonInfoContent(
                 SpacerHeight(height = 16.dp)
             }
         }
-        if (state.teachers.isNotEmpty()) {
+        if (state.lessonInfo?.teachers?.isNotEmpty() == true) {
             SpacerHeight(height = 10.dp)
             LessonTeachers(
-                teachers = state.teachers,
+                teachers = state.lessonInfo.teachers,
                 onItemClick = onTeacherClick,
             )
         }
@@ -132,6 +133,7 @@ private fun LessonInfoContent(
             SpacerHeight(height = 10.dp)
             LessonPlaces(
                 places = state.lessonInfo.places,
+                coordinates = state.coordinates,
                 onItemClick = onPlaceClick,
             )
         }
@@ -203,7 +205,7 @@ private fun LessonTitle(title: String) {
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun LessonTeachers(
-    teachers: List<TeacherInfo>,
+    teachers: List<AttendeeInfo>,
     onItemClick: Typed1Listener<String>,
 ) {
     EdSurface(
@@ -232,7 +234,7 @@ private fun LessonTeachers(
                         .split(' ')
                         .joinToString(separator = "") { it.take(1) },
                     title = teacher.name,
-                    description = teacher.description,
+                    description = teacher.description.orEmpty(),
                     onItemClick = { onItemClick(teacher.id) },
                 )
                 if (index != teachers.size - 1) {
@@ -247,6 +249,7 @@ private fun LessonTeachers(
 @Composable
 private fun LessonPlaces(
     places: List<Place>,
+    coordinates: Coordinates?,
     onItemClick: Typed1Listener<String>,
 ) {
     EdSurface(
@@ -282,18 +285,23 @@ private fun LessonPlaces(
                     EdDivider(Modifier.padding(start = 70.dp, end = 20.dp))
                 }
             }
-            SpacerHeight(8.dp)
-            val text = "https://static-maps.yandex.ru/1.x/?l=map&pt=37.544180,55.833268,org&z=16&size=450,250"
-            val painter = rememberAsyncImagePainter(model = text)
-            Image(
-                painter = painter,
-                contentDescription = null,
-                modifier = Modifier
-                    .padding(horizontal = 10.dp)
-                    .fillMaxWidth()
-                    .clip(EdTheme.shapes.large),
-                contentScale = ContentScale.FillWidth,
-            )
+            // TODO fix map for all places
+            if (coordinates != null) {
+                val x = coordinates.lng
+                val y = coordinates.lat
+                SpacerHeight(8.dp)
+                val text = "https://static-maps.yandex.ru/1.x/?l=map&pt=$x,$y,org&z=16&size=450,250"
+                val painter = rememberAsyncImagePainter(model = text)
+                Image(
+                    painter = painter,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(horizontal = 10.dp)
+                        .fillMaxWidth()
+                        .clip(EdTheme.shapes.large),
+                    contentScale = ContentScale.FillWidth,
+                )
+            }
             SpacerHeight(8.dp)
         }
     }

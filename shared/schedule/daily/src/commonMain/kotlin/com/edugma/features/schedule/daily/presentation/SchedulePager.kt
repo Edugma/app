@@ -4,17 +4,25 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.rememberScrollableState
+import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerDefaults
 import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,6 +30,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import edugma.shared.core.resources.generated.resources.Res
 import edugma.shared.core.resources.generated.resources.*
@@ -84,8 +93,17 @@ fun SchedulePager(
                 )
             } else {
                 val randomAnim = remember { relaxAnims[page % relaxAnims.size] }
+                var offset = remember { mutableStateOf(0f) }
+                // TODO Lambda memoization
+                val scrollState = rememberScrollableState(remember { { 0f } })
                 NoLessonsDay(
                     animation = randomAnim,
+                    modifier = Modifier.scrollable(
+                        orientation = Orientation.Vertical,
+                        state = scrollState,
+                    ).offset {
+                        IntOffset(0, offset.value.toInt())
+                    }
                 )
             }
         }

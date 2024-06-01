@@ -381,7 +381,7 @@ private fun ColumnScope.WeekNumber(
             shape = EdTheme.shapes.small,
         ) {
             Text(
-                text = (weekNumber + 1).toString(),
+                text = weekNumber.toString(),
                 style = EdTheme.typography.labelMedium,
                 color = if (isCurrentWeek) {
                     EdTheme.colorScheme.onPrimaryContainer

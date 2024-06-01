@@ -1,17 +1,15 @@
 package com.edugma.features.schedule.scheduleInfo.lessonInfo
 
-import com.edugma.core.api.utils.nowLocalDate
+import com.edugma.core.api.model.Coordinates
 import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
 import com.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import com.edugma.core.navigation.schedule.ScheduleInfoScreens
+import com.edugma.features.schedule.domain.model.compact.CompactPlaceInfo
 import com.edugma.features.schedule.domain.model.lesson.LessonEvent
-import com.edugma.features.schedule.domain.model.teacher.TeacherInfo
+import com.edugma.features.schedule.domain.model.place.PlaceType
 import com.edugma.features.schedule.domain.usecase.ScheduleUseCase
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalDateTime
 
 class LessonInfoViewModel(
     private val scheduleUseCase: ScheduleUseCase,
@@ -47,6 +45,21 @@ class LessonInfoViewModel(
                     date = currentDate,
                 )
             }
+
+            // TODO
+            val firstBuilding = lessonEvent?.places?.firstOrNull { it.type == PlaceType.Building }
+            if (firstBuilding != null) {
+                val place = scheduleUseCase.getLocalPlaceInfo(firstBuilding.id)
+                val coordinates = (place as? CompactPlaceInfo.Building)?.coordinates
+
+                if (coordinates != null) {
+                    newState {
+                        copy(
+                            coordinates = coordinates
+                        )
+                    }
+                }
+            }
         }
     }
 
@@ -69,6 +82,6 @@ class LessonInfoViewModel(
 
 data class LessonInfoState(
     val lessonInfo: LessonEvent? = null,
-    val teachers: List<TeacherInfo> = emptyList(),
+    val coordinates: Coordinates? = null,
     val date: LocalDate? = null,
 )
