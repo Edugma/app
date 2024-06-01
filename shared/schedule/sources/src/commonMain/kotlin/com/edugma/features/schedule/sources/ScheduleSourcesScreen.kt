@@ -29,9 +29,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
+import co.touchlab.kermit.Logger
 
 
 import edugma.shared.core.resources.generated.resources.Res
@@ -51,6 +53,8 @@ import com.edugma.core.designSystem.molecules.button.EdButton
 import com.edugma.core.designSystem.molecules.chip.EdChipLabel
 import com.edugma.core.designSystem.molecules.iconButton.EdIconButton
 import com.edugma.core.designSystem.molecules.searchField.EdSearchField
+import com.edugma.core.designSystem.organism.bottomSheet.SheetState
+import com.edugma.core.designSystem.organism.bottomSheet.bind
 import com.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
 import com.edugma.core.designSystem.organism.cell.EdCell
 import com.edugma.core.designSystem.organism.cell.EdCellDefaults
@@ -60,6 +64,7 @@ import com.edugma.core.designSystem.organism.shortInfoSheet.EdShortInfoSheet
 import com.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import com.edugma.core.designSystem.theme.EdTheme
 import com.edugma.core.designSystem.tokens.elevation.EdElevation
+import com.edugma.core.designSystem.tokens.shapes.top
 import com.edugma.core.icons.EdIcons
 import com.edugma.core.ui.pagination.PagingFooter
 import com.edugma.core.ui.screen.FeatureBottomSheetScreen
@@ -75,16 +80,13 @@ import kotlinx.coroutines.launch
 fun ScheduleSourcesScreen(viewModel: ScheduleSourcesViewModel = getViewModel()) {
     val state by viewModel.stateFlow.collectAsState()
 
+    val onAction = viewModel.rememberOnAction()
+
     val bottomState = rememberModalBottomSheetState()
-
-    val scope = rememberCoroutineScope()
-
-    LaunchedEffect(state.showBottomSheet) {
-        if (state.showBottomSheet) {
-            scope.launch { bottomState.show() }
-            viewModel.onBottomSheetClosed()
-        }
-    }
+    bottomState.bind(
+        showBottomSheet = { state.showBottomSheet },
+        onClosed = { viewModel.onBottomSheetClosed() }
+    )
 
     val filledFavoritePainter = painterResource(EdIcons.ic_fluent_star_24_filled)
     val regularFavoritePainter = painterResource(EdIcons.ic_fluent_star_24_regular)
@@ -109,7 +111,7 @@ fun ScheduleSourcesScreen(viewModel: ScheduleSourcesViewModel = getViewModel()) 
             onBackClick = viewModel::exit,
             onQueryChange = viewModel::onQueryChange,
             onApplyComplexSearch = viewModel::onApplyComplexSearch,
-            onAction = viewModel.rememberOnAction(),
+            onAction = onAction,
         )
     }
 
@@ -180,13 +182,10 @@ private fun ScheduleSourcesContent(
     onApplyComplexSearch: ClickListener,
     onAction: (ScheduleSourcesAction) -> Unit,
 ) {
-
-    val q = rememberModalBottomSheetState()
-
     Column {
         EdSurface(
             elevation = EdElevation.Level1,
-            shape = EdTheme.shapes.large,
+            shape = EdTheme.shapes.large.top(),
         ) {
             Column(Modifier.fillMaxWidth()) {
                 EdTopAppBar(

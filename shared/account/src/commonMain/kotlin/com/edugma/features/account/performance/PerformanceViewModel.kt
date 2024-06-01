@@ -47,12 +47,20 @@ class PerformanceViewModel(
             is PerformanceAction.OnPeriodSelected -> onPeriodSelected(action.period)
             PerformanceAction.OnRefresh -> loadMarks(isRefreshing = true)
             is PerformanceAction.OnPerformanceClicked -> onPerformanceClicked(action.gradePosition)
+            PerformanceAction.OnBottomSheetClosed -> onBottomSheetClosed()
+            PerformanceAction.OnFiltersClicked -> openBottomSheetClick(null)
+        }
+    }
+
+    private fun onBottomSheetClosed() {
+        newState {
+            copy(showBottomSheet = false)
         }
     }
 
     private fun onPerformanceClicked(gradePosition: GradePosition?) {
         newState {
-            copy(selectedPerformance = gradePosition)
+            copy(selectedPerformance = gradePosition, showBottomSheet = true)
         }
     }
 
@@ -67,7 +75,7 @@ class PerformanceViewModel(
 
     fun openBottomSheetClick(performance: GradePosition?) {
         newState {
-            copy(selectedPerformance = performance)
+            copy(selectedPerformance = performance, showBottomSheet = true)
         }
     }
 

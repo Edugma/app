@@ -28,6 +28,12 @@ data class PaginationUiState<T>(
         )
     }
 
+    fun toRefresh(): PaginationUiState<T> {
+        return copy(
+            lceState = this.lceState.toStartLoading(isRefresh = true),
+        )
+    }
+
     fun needLoadNext(): PaginationUiState<T> {
         return when {
             enum == PaginationStateEnum.Loading -> this
@@ -96,5 +102,10 @@ inline fun <T, R> PaginationUiState<T>.map(transform: (T) -> R): PaginationUiSta
 }
 
 enum class PaginationStateEnum {
-    NotLoading, NeedLoadNext, Loading, Loaded, End, Error,
+    NotLoading,
+    NeedLoadNext,
+    Loading,
+    Loaded,
+    End,
+    Error,
 }

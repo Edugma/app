@@ -11,10 +11,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import edugma.shared.core.icons.generated.resources.*
@@ -24,6 +22,7 @@ import com.edugma.core.designSystem.atoms.spacer.NavigationBarSpacer
 import com.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import com.edugma.core.designSystem.atoms.surface.EdSurface
 import com.edugma.core.designSystem.organism.EdScaffold
+import com.edugma.core.designSystem.organism.bottomSheet.bind
 import com.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
 import com.edugma.core.designSystem.organism.chipRow.EdChipLabelLazyRow
 import com.edugma.core.designSystem.organism.lceScaffold.EdLceScaffold
@@ -43,20 +42,18 @@ import com.edugma.features.account.performance.bottomSheets.PerformanceBottomShe
 import com.edugma.features.account.performance.model.FiltersRow
 import com.edugma.features.account.performance.model.PerformanceItem
 import com.edugma.features.account.performance.model.PerformancePlaceholder
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @Composable
 fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
     val state by viewModel.stateFlow.collectAsState()
-    val bottomState = rememberModalBottomSheetState()
-    val scope = rememberCoroutineScope()
+    val onAction = viewModel.rememberOnAction()
 
-    LaunchedEffect(state.selectedPerformance) {
-        if (state.selectedPerformance != null) {
-            scope.launch { bottomState.show() }
-        }
-    }
+    val bottomState = rememberModalBottomSheetState()
+    bottomState.bind(
+        showBottomSheet = { state.showBottomSheet },
+        onClosed = { onAction(PerformanceAction.OnBottomSheetClosed) }
+    )
 
     FeatureScreen(
         navigationBarPadding = false,
@@ -64,13 +61,9 @@ fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
     ) {
         PerformanceContent(
             state,
-            showBottomSheet = {
-                viewModel.openBottomSheetClick(it)
-                scope.launch { bottomState.show() }
-            },
             filterClickListener = viewModel::updateFilter,
             backListener = viewModel::exit,
-            onAction = viewModel.rememberOnAction(),
+            onAction = onAction,
         )
     }
 
@@ -93,7 +86,6 @@ fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
 @Composable
 fun PerformanceContent(
     state: PerformanceUiState,
-    showBottomSheet: Typed1Listener<GradePosition?>,
     filterClickListener: Typed1Listener<Filter<*>>,
     backListener: ClickListener,
     onAction: (PerformanceAction) -> Unit,
@@ -108,7 +100,7 @@ fun PerformanceContent(
                     windowInsets = WindowInsets.statusBars,
                     actions = {
                         IconButton(
-                            onClick = { showBottomSheet(null) },
+                            onClick = { onAction(PerformanceAction.OnFiltersClicked) },
                             enabled = !state.isLoading,
                         ) {
                             Icon(

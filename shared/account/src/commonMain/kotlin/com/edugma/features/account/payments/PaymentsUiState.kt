@@ -16,6 +16,7 @@ data class PaymentsUiState(
     val contract: ContractUiModel? = null,
     val isLoading: Boolean = false,
     val isError: Boolean = false,
+    val showBottomSheet: Boolean = false,
     val selectedPaymentMethod: PaymentMethod? = null,
 ) {
     fun toContent(data: PaymentsDto): PaymentsUiState {

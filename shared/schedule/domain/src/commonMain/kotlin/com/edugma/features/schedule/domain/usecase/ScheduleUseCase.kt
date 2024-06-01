@@ -1,6 +1,7 @@
 package com.edugma.features.schedule.domain.usecase
 
 import com.edugma.core.api.utils.LceFlow
+import com.edugma.core.api.utils.first
 import com.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
 import com.edugma.features.schedule.domain.model.lesson.LessonEvent
 import com.edugma.features.schedule.domain.model.schedule.ScheduleCalendar
@@ -83,5 +84,12 @@ class ScheduleUseCase(
                 showPlaces = true,
             )
         }
+    }
+
+    suspend fun getEvent(eventId: String): LessonEvent? {
+        return getCurrentScheduleFlow()
+            .first()
+            .getOrNull()
+            ?.findEvent(eventId)
     }
 }

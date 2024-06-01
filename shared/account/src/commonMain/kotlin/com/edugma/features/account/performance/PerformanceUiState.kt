@@ -19,6 +19,7 @@ data class PerformanceUiState(
     val isLoading: Boolean = false,
     val isError: Boolean = false,
     val selectedPerformance: GradePosition? = null,
+    val showBottomSheet: Boolean = false,
 ) {
     val bottomSheetPlaceholders = (isLoading && !isError) || (isError && performanceList.isNull())
 

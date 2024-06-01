@@ -9,6 +9,7 @@ import com.edugma.features.account.people.PeopleScreenType
 data class PeopleUiState(
     val type: PeopleScreenType? = null,
     val name: String = "",
+    val showBottomSheet: Boolean = false,
     val bottomType: BottomSheetType = BottomSheetType.Filter,
     val selectedPerson: Person? = null,
     val paginationState: PaginationUiState<Person> = PaginationUiState.empty(),

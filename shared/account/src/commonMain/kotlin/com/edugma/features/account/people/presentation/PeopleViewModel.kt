@@ -37,9 +37,17 @@ class PeopleViewModel(
 
     override fun processAction(action: PeopleAction) {
         when (action) {
-            PeopleAction.OnRefresh -> pagingViewModel.resetAndLoad()
+            PeopleAction.OnRefresh -> pagingViewModel.refresh()
             PeopleAction.OnLoadNextPage -> pagingViewModel.loadNextPage()
             is PeopleAction.OnQuery -> onQuery(action.query)
+            is PeopleAction.OnArgs -> onArgs(action.type)
+            PeopleAction.OnSearchClick -> onSearch()
+            PeopleAction.Back -> exit()
+            PeopleAction.OnSelectFilter -> onSelectFilter()
+            is PeopleAction.OnSelectPerson -> onSelectPerson(action.person)
+            PeopleAction.OnShareClick -> onShare()
+            PeopleAction.OnOpenSchedule -> openSchedule()
+            PeopleAction.OnBottomSheetClosed -> newState { copy(showBottomSheet = false) }
         }
     }
 
@@ -49,7 +57,7 @@ class PeopleViewModel(
         }
     }
 
-    fun onShare() {
+    private fun onShare() {
         launchCoroutine {
             state.paginationState.items
                 .convertAndShare()
@@ -57,23 +65,33 @@ class PeopleViewModel(
         }
     }
 
-    fun onSelectFilter() {
+    private fun onSelectFilter() {
         newState {
-            copy(bottomType = BottomSheetType.Filter)
+            copy(
+                bottomType = BottomSheetType.Filter,
+                showBottomSheet = true,
+            )
         }
     }
 
-    fun onSelectPerson(student: Person) {
+    private fun onSelectPerson(person: Person) {
         newState {
-            copy(selectedPerson = student, bottomType = BottomSheetType.Person)
+            copy(
+                selectedPerson = person,
+                bottomType = BottomSheetType.Person,
+                showBottomSheet = true,
+            )
         }
     }
 
-    fun onSearch() {
+    private fun onSearch() {
+        newState {
+            copy(showBottomSheet = false)
+        }
         pagingViewModel.resetAndLoad()
     }
 
-    fun onArgs(type: PeopleScreenType) {
+    private fun onArgs(type: PeopleScreenType) {
         newState {
             copy(
                 type = type,
@@ -82,13 +100,13 @@ class PeopleViewModel(
         pagingViewModel.resetAndLoad()
     }
 
-    fun openSchedule() {
+    private fun openSchedule() {
         state.selectedPerson?.id?.let {
             accountRouter.navigateTo(ScheduleInfoScreens.TeacherInfo(it))
         }
     }
 
-    fun exit() {
+    private fun exit() {
         accountRouter.back()
     }
 }

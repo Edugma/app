@@ -3,15 +3,22 @@ package com.edugma.core.navigation.schedule
 import com.edugma.navigation.core.destination.Destination
 import com.edugma.navigation.core.destination.reqArg
 import com.edugma.navigation.core.destination.toBundle
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 
 object ScheduleInfoScreens {
     object LessonInfo : Destination("scheduleInfoLesson") {
-        val lessonInfo = reqArg<String>("lessonInfo")
+        val eventId = reqArg<String>("eventId")
+        val currentDate = reqArg<Int>("currentDate")
 
         operator fun invoke(
-            lessonInfo: String,
+            eventId: String,
+            currentDate: LocalDate,
         ) = toBundle {
-            destination.lessonInfo set lessonInfo
+            destination.eventId set eventId
+            destination.currentDate set currentDate.toEpochDays()
         }
     }
 

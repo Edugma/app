@@ -151,6 +151,8 @@ class SheetState internal constructor(
     }
 
     suspend fun hide() {
+        if (_showBottomSheet.value == false) return
+
         state3.hide()
         if (!state3.isVisible) {
             _showBottomSheet.value = false
@@ -191,5 +193,31 @@ fun rememberModalBottomSheetState(
 
     return remember(state3) {
         SheetState(state3)
+    }
+}
+
+@Composable
+fun SheetState.bind(
+    showBottomSheet: () -> Boolean,
+    onClosed: () -> Unit
+) {
+    val scope = rememberCoroutineScope()
+
+    LaunchedEffect(this) {
+        snapshotFlow { showBottomSheet() }.collect {
+            if (it) {
+                scope.launch { this@bind.show() }
+            } else {
+                scope.launch { this@bind.hide() }
+            }
+        }
+    }
+
+    LaunchedEffect(this) {
+        snapshotFlow { this@bind.showBottomSheet }.collect {
+            if (!it) {
+                onClosed()
+            }
+        }
     }
 }

@@ -46,7 +46,12 @@ class ScheduleCalendar(
                 lessons.add(lesson.toModel(compactSchedule))
             }
         }
-        lessons.sortBy { it.start.dateTime.toInstant(it.start.timeZone) }
+
+        // Sort by today's time
+        lessons.sortBy {
+            it.start.dateTime.toInstant(it.start.timeZone)
+                .toLocalDateTime(currentTimeZone).time
+        }
 
         return ScheduleDay(
             isToday = date == today,
@@ -59,6 +64,7 @@ class ScheduleCalendar(
         val startDate = start.dateTime.toInstant(start.timeZone)
             .toLocalDateTime(currentTimeZone).date
 
+        // If the event is a one-time and it is today
         if (recurrence.isEmpty() && startDate == today) {
             return true
         }
@@ -187,5 +193,11 @@ class ScheduleCalendar(
             val date = today.plus(DatePeriod(days = index - todayIndex))
             getSchedule(date)
         }
+    }
+
+    fun findEvent(id: String): LessonEvent? {
+        return compactSchedule.lessons
+            .firstOrNull { it.id == id }
+            ?.toModel(compactSchedule)
     }
 }

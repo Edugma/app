@@ -46,6 +46,7 @@ class PaymentsViewModel(
             is PaymentsAction.OnPaymentMethodClick -> onPaymentMethodClick(action.paymentMethod)
             is PaymentsAction.OnContractSelected -> onContractSelected(action.id)
             PaymentsAction.OnRefresh -> refresh()
+            PaymentsAction.OnBottomSheetClosed -> onBottomSheetClosed()
         }
     }
 
@@ -59,13 +60,17 @@ class PaymentsViewModel(
         newState {
             copy(
                 selectedPaymentMethod = paymentMethod,
+                showBottomSheet = true,
             )
         }
     }
 
     fun onBottomSheetClosed() {
         newState {
-            copy(selectedPaymentMethod = null)
+            copy(
+                selectedPaymentMethod = null,
+                showBottomSheet = false,
+            )
         }
     }
 

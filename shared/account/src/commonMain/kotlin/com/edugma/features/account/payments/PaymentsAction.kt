@@ -7,4 +7,5 @@ sealed interface PaymentsAction {
     data class OnContractSelected(val id: String) : PaymentsAction
     data object OnOpenUrl : PaymentsAction
     data object OnRefresh : PaymentsAction
+    data object OnBottomSheetClosed : PaymentsAction
 }

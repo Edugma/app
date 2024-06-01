@@ -10,4 +10,6 @@ sealed interface PerformanceAction {
     data class OnPerformanceClicked(val gradePosition: GradePosition?) : PerformanceAction
 
     data object OnRefresh : PerformanceAction
+    data object OnBottomSheetClosed : PerformanceAction
+    data object OnFiltersClicked : PerformanceAction
 }

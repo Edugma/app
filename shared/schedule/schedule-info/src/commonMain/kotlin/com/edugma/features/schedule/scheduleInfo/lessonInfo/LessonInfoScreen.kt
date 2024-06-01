@@ -3,8 +3,13 @@ package com.edugma.features.schedule.scheduleInfo.lessonInfo
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -13,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -25,8 +31,11 @@ import com.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import com.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import com.edugma.core.designSystem.atoms.surface.EdSurface
 import com.edugma.core.designSystem.molecules.avatar.EdAvatar
+import com.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
+import com.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
 import com.edugma.core.designSystem.theme.EdTheme
 import com.edugma.core.designSystem.tokens.elevation.EdElevation
+import com.edugma.core.designSystem.utils.PrimaryContent
 import com.edugma.core.designSystem.utils.SecondaryContent
 import com.edugma.core.designSystem.utils.rememberAsyncImagePainter
 import com.edugma.core.icons.EdIcons
@@ -39,17 +48,24 @@ import com.edugma.features.schedule.domain.model.lesson.LessonEvent
 import com.edugma.features.schedule.domain.model.place.Place
 import com.edugma.features.schedule.domain.model.teacher.TeacherInfo
 import com.edugma.features.schedule.domain.model.teacher.description
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @Composable
 fun LessonInfoScreen(
     viewModel: LessonInfoViewModel = getViewModel(),
-    lessonInfo: LessonEvent?,
+    eventId: String,
+    currentDate: LocalDate,
 ) {
     val state by viewModel.stateFlow.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.onLessonInfo(lessonInfo)
+        viewModel.onLessonInfo(
+            eventId = eventId,
+            currentDate = currentDate
+        )
     }
 
     FeatureScreen(
@@ -74,60 +90,60 @@ private fun LessonInfoContent(
     onPlaceClick: Typed1Listener<String>,
 ) {
     // TODO
-//    Column(
-//        Modifier
-//            .fillMaxSize()
-//            .verticalScroll(rememberScrollState()),
-//    ) {
-//        EdSurface(
-//            shape = EdTheme.shapes.large,
-//        ) {
-//            Column(Modifier.fillMaxWidth()) {
-//                EdTopAppBar(
-//                    title = "",
-//                    onNavigationClick = onBackClick,
-//                    colors = EdTopAppBarDefaults.colors(containerColor = Color.Transparent),
-//                    windowInsets = WindowInsets.statusBars,
-//                )
-//                SpacerHeight(height = 32.dp)
-//                state.lessonInfo?.lesson?.tags?.let { tags ->
-//                    LessonTags(
-//                        tags = tags,
-//                    )
-//                }
-//                PrimaryContent {
-//                    LessonTitle(
-//                        title = state.lessonInfo?.lesson?.subject?.title ?: "",
-//                    )
-//                }
-//                SpacerHeight(height = 4.dp)
-//                state.lessonInfo?.dateTime?.let { LessonDateTime(lessonDateTime = it) }
-//                SpacerHeight(height = 16.dp)
-//            }
-//        }
-//        if (state.teachers.isNotEmpty()) {
-//            SpacerHeight(height = 10.dp)
-//            LessonTeachers(
-//                teachers = state.teachers,
-//                onItemClick = onTeacherClick,
-//            )
-//        }
-//        if (state.lessonInfo?.lesson?.places?.isNotEmpty() == true) {
-//            SpacerHeight(height = 10.dp)
-//            LessonPlaces(
-//                places = state.lessonInfo.lesson.places,
-//                onItemClick = onPlaceClick,
-//            )
-//        }
-//        if (state.lessonInfo?.lesson?.groups?.isNotEmpty() == true) {
-//            SpacerHeight(height = 10.dp)
-//            LessonGroups(
-//                groups = state.lessonInfo.lesson.groups,
-//                onItemClick = onGroupClick,
-//            )
-//        }
-//        SpacerHeight(height = 10.dp)
-//    }
+    Column(
+        Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
+    ) {
+        EdSurface(
+            shape = EdTheme.shapes.large,
+        ) {
+            Column(Modifier.fillMaxWidth()) {
+                EdTopAppBar(
+                    title = "",
+                    onNavigationClick = onBackClick,
+                    colors = EdTopAppBarDefaults.colors(containerColor = Color.Transparent),
+                    windowInsets = WindowInsets.statusBars,
+                )
+                SpacerHeight(height = 32.dp)
+                state.lessonInfo?.tags?.let { tags ->
+                    LessonTags(
+                        tags = tags,
+                    )
+                }
+                PrimaryContent {
+                    LessonTitle(
+                        title = state.lessonInfo?.subject?.title ?: "",
+                    )
+                }
+                SpacerHeight(height = 4.dp)
+                //state.lessonInfo?.dateTime?.let { LessonDateTime(lessonDateTime = it) }
+                SpacerHeight(height = 16.dp)
+            }
+        }
+        if (state.teachers.isNotEmpty()) {
+            SpacerHeight(height = 10.dp)
+            LessonTeachers(
+                teachers = state.teachers,
+                onItemClick = onTeacherClick,
+            )
+        }
+        if (state.lessonInfo?.places?.isNotEmpty() == true) {
+            SpacerHeight(height = 10.dp)
+            LessonPlaces(
+                places = state.lessonInfo.places,
+                onItemClick = onPlaceClick,
+            )
+        }
+        if (state.lessonInfo?.groups?.isNotEmpty() == true) {
+            SpacerHeight(height = 10.dp)
+            LessonGroups(
+                groups = state.lessonInfo.groups,
+                onItemClick = onGroupClick,
+            )
+        }
+        SpacerHeight(height = 10.dp)
+    }
 }
 
 @Composable

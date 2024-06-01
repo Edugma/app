@@ -16,6 +16,7 @@ import com.edugma.features.schedule.domain.repository.ScheduleRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Instant
+import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.seconds
 
 class ScheduleRepositoryImpl(
@@ -46,8 +47,7 @@ class ScheduleRepositoryImpl(
             writer { key, data ->
                 scheduleCacheRepository.saveSchedule(key.id, data)
             }
-            // expiresIn(1.days)
-            expiresIn(10.seconds)
+            expiresIn(1.days)
         }
         coroutineScope()
     }

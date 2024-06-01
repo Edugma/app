@@ -35,6 +35,7 @@ import com.edugma.core.designSystem.atoms.surface.EdSurface
 import com.edugma.core.designSystem.organism.EdScaffold
 import com.edugma.core.designSystem.organism.actionCard.EdActionCardWidth
 import com.edugma.core.designSystem.organism.bottomSheet.SheetValue
+import com.edugma.core.designSystem.organism.bottomSheet.bind
 import com.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
 import com.edugma.core.designSystem.organism.cell.EdCell
 import com.edugma.core.designSystem.organism.cell.EdCellDefaults
@@ -55,33 +56,20 @@ import com.edugma.features.account.domain.model.payments.PaymentMethod
 import com.edugma.features.account.payments.bottomSheet.PaymentBottomSheet
 import com.edugma.features.account.payments.model.ContractUiModel
 import com.edugma.features.account.payments.model.PaymentUiModel
+import com.edugma.features.account.people.presentation.PeopleAction
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @Composable
 fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
     val state by viewModel.stateFlow.collectAsState()
-
-    val bottomState = rememberModalBottomSheetState()
-    val scope = rememberCoroutineScope()
-
     val onAction = viewModel.rememberOnAction()
 
-    LaunchedEffect(state.selectedPaymentMethod) {
-        if (state.selectedPaymentMethod != null) {
-            scope.launch { bottomState.show() }
-        }
-    }
-
-    LaunchedEffect(bottomState) {
-        snapshotFlow {
-            bottomState.currentValue
-        }.collect {
-            if (it == SheetValue.Hidden) {
-                viewModel.onBottomSheetClosed()
-            }
-        }
-    }
+    val bottomState = rememberModalBottomSheetState()
+    bottomState.bind(
+        showBottomSheet = { state.showBottomSheet },
+        onClosed = { onAction(PaymentsAction.OnBottomSheetClosed) }
+    )
 
     FeatureScreen(
         navigationBarPadding = false,

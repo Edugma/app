@@ -69,7 +69,7 @@ class ScheduleSourcesViewModel(
             is ScheduleSourcesAction.OnDeleteFromFavorite -> onDeleteFavorite(action.source)
             is ScheduleSourcesAction.OnSourceClicked -> onSourceClick(action.source)
             is ScheduleSourcesAction.OnTabSelected -> onSelectTab(action.type)
-            ScheduleSourcesAction.OnRefresh -> pagingViewModel.resetAndLoad()
+            ScheduleSourcesAction.OnRefresh -> pagingViewModel.refresh()
         }
     }
 
@@ -119,6 +119,9 @@ class ScheduleSourcesViewModel(
     private fun onSelectSource(source: ScheduleSourceUiModel) {
         launchCoroutine {
             useCase.setSelectedSource(source.toDtoModel())
+            newState {
+                copy(showBottomSheet = false)
+            }
             exit()
         }
     }

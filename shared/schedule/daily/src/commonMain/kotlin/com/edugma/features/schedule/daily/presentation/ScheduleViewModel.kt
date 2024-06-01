@@ -94,9 +94,9 @@ class ScheduleViewModel(
         val date = state.selectedDate
         scheduleRouter.navigateTo(
             ScheduleInfoScreens.LessonInfo(
-                lessonInfo = Json.encodeToString(
-                    lesson,
-                ),
+                eventId = lesson.id,
+                currentDate = date,
+
             ),
         )
     }

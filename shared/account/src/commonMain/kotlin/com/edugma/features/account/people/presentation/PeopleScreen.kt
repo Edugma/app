@@ -23,6 +23,7 @@ import com.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import com.edugma.core.designSystem.atoms.spacer.NavigationBarSpacer
 import com.edugma.core.designSystem.atoms.surface.EdSurface
 import com.edugma.core.designSystem.molecules.button.EdButton
+import com.edugma.core.designSystem.organism.bottomSheet.bind
 import com.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
 import com.edugma.core.designSystem.organism.lceScaffold.EdLceScaffold
 import com.edugma.core.designSystem.organism.shortInfoSheet.EdShortInfoSheet
@@ -46,14 +47,18 @@ fun PeopleScreen(
     viewModel: PeopleViewModel = getViewModel(),
     type: PeopleScreenType,
 ) {
-    LaunchedEffect(type) {
-        viewModel.onArgs(type)
-    }
     val state by viewModel.stateFlow.collectAsState()
     val onAction = viewModel.rememberOnAction()
 
+    LaunchedEffect(type) {
+        onAction(PeopleAction.OnArgs(type))
+    }
+
     val bottomState = rememberModalBottomSheetState()
-    val scope = rememberCoroutineScope()
+    bottomState.bind(
+        showBottomSheet = { state.showBottomSheet },
+        onClosed = { onAction(PeopleAction.OnBottomSheetClosed) }
+    )
     if (state.type != null) {
         FeatureScreen(
             statusBarPadding = false,
@@ -61,16 +66,12 @@ fun PeopleScreen(
         ) {
             PeopleListContent(
                 state = state,
-                backListener = viewModel::exit,
                 openBottomSheetListener = {
-                    viewModel.onSelectFilter()
-                    scope.launch { bottomState.show() }
+                    onAction(PeopleAction.OnSelectFilter)
                 },
                 onPersonClick = {
-                    viewModel.onSelectPerson(it)
-                    scope.launch { bottomState.show() }
+                    onAction(PeopleAction.OnSelectPerson(it))
                 },
-                onShare = viewModel::onShare,
                 onAction = onAction,
             )
         }
@@ -87,15 +88,16 @@ fun PeopleScreen(
                             onAction(PeopleAction.OnQuery(it))
                         },
                     ) {
-                        viewModel.onSearch()
-                        scope.launch { bottomState.hide() }
+                        onAction(PeopleAction.OnSearchClick)
                     }
                 }
                 BottomSheetType.Person -> {
                     state.selectedPerson?.let {
                         PersonBottomSheet(
                             person = it,
-                            openSchedule = viewModel::openSchedule,
+                            openSchedule = {
+                                onAction(PeopleAction.OnOpenSchedule)
+                            },
                         )
                     }
                 }
@@ -125,10 +127,8 @@ fun ColumnScope.PersonBottomSheet(
 @Composable
 fun PeopleListContent(
     state: PeopleUiState,
-    backListener: ClickListener,
     openBottomSheetListener: ClickListener,
     onPersonClick: Typed1Listener<Person>,
-    onShare: ClickListener,
     onAction: (PeopleAction) -> Unit,
 ) {
     Column(Modifier) {
@@ -138,13 +138,15 @@ fun PeopleListContent(
         ) {
             EdTopAppBar(
                 title = state.type!!.title,
-                onNavigationClick = backListener,
+                onNavigationClick = {
+                    onAction(PeopleAction.Back)
+                },
                 windowInsets = WindowInsets.statusBars,
                 actions = {
                     val students = state.paginationState.items
 
                     IconButton(
-                        onClick = { onShare() },
+                        onClick = { onAction(PeopleAction.OnShareClick) },
                         enabled = students.isNotEmpty(),
                     ) {
                         Icon(

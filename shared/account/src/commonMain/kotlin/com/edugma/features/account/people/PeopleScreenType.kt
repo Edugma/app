@@ -1,6 +1,9 @@
 package com.edugma.features.account.people
 
-class PeopleScreenType(
+import androidx.compose.runtime.Immutable
+
+@Immutable
+data class PeopleScreenType(
     val url: String,
     val title: String,
     val queryHint: String,

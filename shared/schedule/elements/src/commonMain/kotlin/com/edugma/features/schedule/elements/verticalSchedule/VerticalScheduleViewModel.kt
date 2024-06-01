@@ -53,13 +53,13 @@ class VerticalScheduleViewModel(
     }
 
     fun onLessonClick(lesson: LessonEvent) {
-        scheduleRouter.navigateTo(
-            ScheduleInfoScreens.LessonInfo(
-                lessonInfo = Json.encodeToString(
-                    lesson,
-                ),
-            ),
-        )
+//        scheduleRouter.navigateTo(
+//            ScheduleInfoScreens.LessonInfo(
+//                lessonInfo = Json.encodeToString(
+//                    lesson,
+//                ),
+//            ),
+//        )
     }
 }
 
