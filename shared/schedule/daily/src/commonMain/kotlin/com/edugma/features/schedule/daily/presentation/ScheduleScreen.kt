@@ -101,7 +101,7 @@ fun ScheduleContent(
                         subtitle = state.selectedDate.format(DateFormat.FULL_PRETTY),
                         onNavigationClick = { onAction(ScheduleDailyAction.OnBack) },
                         actions = {
-                            if (state.isLoading && state.schedule != null) {
+                            if (state.lceState.showContentLoader) {
                                 EdLoader(
                                     size = EdLoaderSize.medium,
                                 )

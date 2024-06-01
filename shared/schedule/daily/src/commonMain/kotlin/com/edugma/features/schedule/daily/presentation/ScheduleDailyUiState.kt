@@ -16,8 +16,6 @@ import kotlinx.datetime.plus
 data class ScheduleDailyUiState(
     val lceState: LceUiState = LceUiState.init(),
     val isLoading: Boolean = false,
-    val isError: Boolean = false,
-    val isRefreshing: Boolean = false,
     val schedule: ScheduleCalendarUiModel? = null,
     val weeks: ScheduleWeeksUiModel? = null,
     val lessonDisplaySettings: LessonDisplaySettings = LessonDisplaySettings.Default,
@@ -89,18 +87,6 @@ data class ScheduleDailyUiState(
             dayOfWeekIndex = dayOfWeekPos,
             showBackToTodayFab = !dateIsToday,
         )
-    }
-
-    fun toLoading(isLoading: Boolean): ScheduleDailyUiState {
-        return copy(
-            isLoading = isLoading && !isRefreshing,
-            isRefreshing = isLoading && isRefreshing,
-        ).updateIsError()
-    }
-
-    private fun updateIsError(): ScheduleDailyUiState {
-        val isError = !isLoading && isError
-        return copy(isError = !isLoading && isError)
     }
 
     companion object {

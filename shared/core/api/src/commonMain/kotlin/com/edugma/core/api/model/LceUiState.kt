@@ -11,6 +11,9 @@ data class LceUiState(
     val isRefreshing: Boolean
         get() = loading != null && loading.isRefresh
 
+    val showContentLoader: Boolean
+        get() = loading != null && loading.isRefresh.not() && content != null
+
     val showContent: Boolean
         get() = content != null && content.isEmpty.not()
 
