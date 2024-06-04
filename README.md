@@ -36,7 +36,7 @@ Edugma - децентрализованное приложение для уче
 
 # Сборка Web версии
 ```shell
-./gradlew jsBrowserProductionWebpack
+./gradlew jsBrowserDistribution
 ```
 
 ## Скриншоты

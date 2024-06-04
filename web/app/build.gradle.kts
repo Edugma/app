@@ -34,10 +34,6 @@ kotlin {
             commonWebpackConfig {
                 outputFileName = "edugma.js"
             }
-            // Not working
-            distribution {
-                outputDirectory.set(rootDir.resolve("webDist"))
-            }
         }
         binaries.executable()
         useEsModules()
