@@ -2,7 +2,9 @@ package com.edugma.core.designSystem.organism.fullScreenMessage
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,8 +36,10 @@ fun EdFullScreenMessage(
         ) {
             EdLottie(
                 lottieSource = lottieSource,
+                backgroundColor = EdTheme.colorScheme.background,
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .aspectRatio(1.5f),
             )
             EdLabel(
                 text = title,

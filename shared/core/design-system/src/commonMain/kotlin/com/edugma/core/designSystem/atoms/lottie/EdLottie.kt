@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import edugma.shared.core.resources.generated.resources.Res
 import com.edugma.core.api.utils.IO
@@ -20,6 +21,7 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 @NonRestartableComposable
 fun EdLottie(
     lottieSource: LottieSource,
+    backgroundColor: Color,
     modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.Fit,
 ) {
@@ -49,6 +51,7 @@ fun EdLottie(
             lottieSource = lottieSourceState,
             modifier = modifier,
             contentScale = contentScale,
+            backgroundColor = backgroundColor,
         )
     }
 }

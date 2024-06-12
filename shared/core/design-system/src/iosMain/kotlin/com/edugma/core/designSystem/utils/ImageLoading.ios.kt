@@ -21,7 +21,7 @@ actual open class CommonImageLoader(
 ) : BaseImageLoader() {
     init {
         this.init(
-            // diskCache = DiskCache(path = pathRepository.getImageCachePath()),
+            diskCache = DiskCache(path = pathRepository.getImageCachePath()),
             componentSetup = {
                 this.setupDefaultComponents()
             },

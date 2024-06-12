@@ -28,10 +28,12 @@ kotlinxCoroutines = "1.8.1"
 kotlinxSerialization = "1.7.0-RC"
 kotlinxAtomic = "0.24.0"
 
-koinBom = "3.6.0-wasm-alpha2"
-
+koinBom = "3.5.6"
+# "3.6.0-wasm-alpha2"
 ktorfit = "2.0.0-rc01"
 ktor = "3.0.0-wasm2"
+
+okio = "3.9.0"
 
 imageLoader = "1.8.0"
 kottie = "1.8.3"
@@ -107,6 +109,8 @@ ktor-client-contentNegotiation = { module = "io.ktor:ktor-client-content-negotia
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 ktor-client-serialization-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktorUtils = { module = "io.ktor:ktor-utils", version.ref = "ktor" }
+
+okio-fakefilesystem = { module = "com.squareup.okio:okio-fakefilesystem", version.ref="okio" }
 
 # Android
 androidx-appCompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }

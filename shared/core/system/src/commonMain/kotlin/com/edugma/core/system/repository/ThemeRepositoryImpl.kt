@@ -4,8 +4,10 @@ import com.edugma.core.api.model.ThemeMode
 import com.edugma.core.api.repository.SettingsRepository
 import com.edugma.core.api.repository.ThemeRepository
 import com.edugma.core.system.theme.ThemeUtils
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
 class ThemeRepositoryImpl(
     private val settingsRepository: SettingsRepository,
@@ -13,10 +15,14 @@ class ThemeRepositoryImpl(
 
     override suspend fun init() {
         val mode = settingsRepository.getInt(SETTINGS_THEME_KEY)?.toTheme() ?: ThemeMode.System
-        ThemeUtils.setTheme(mode)
+        withContext(Dispatchers.Main) {
+            ThemeUtils.setTheme(mode)
+        }
     }
     override suspend fun setTheme(mode: ThemeMode) {
-        ThemeUtils.setTheme(mode)
+        withContext(Dispatchers.Main) {
+            ThemeUtils.setTheme(mode)
+        }
         settingsRepository.saveInt(SETTINGS_THEME_KEY, mode.toInt())
     }
 

@@ -1,6 +1,7 @@
 import com.android.build.api.dsl.ApplicationBuildType
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import org.gradle.accessors.dm.LibrariesForLibs
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -37,12 +38,14 @@ android {
             keyPassword = "edugma"
         }
         create("release") {
-            val path: String = gradleLocalProperties(rootDir, providers).getProperty("signing.path")
-            storeFile = rootProject.file(path)
-            storePassword = gradleLocalProperties(rootDir, providers)
-                .getProperty("signing.store.password")
-            keyAlias = gradleLocalProperties(rootDir, providers).getProperty("signing.key.alias")
-            keyPassword = gradleLocalProperties(rootDir, providers).getProperty("signing.key.password")
+            val path: String = gradleLocalProperties(rootDir, providers).getProperty("signing.path", "")
+            if (path.isNotEmpty()) {
+                storeFile = rootProject.file(path)
+                storePassword = gradleLocalProperties(rootDir, providers)
+                    .getProperty("signing.store.password")
+                keyAlias = gradleLocalProperties(rootDir, providers).getProperty("signing.key.alias")
+                keyPassword = gradleLocalProperties(rootDir, providers).getProperty("signing.key.password")
+            }
         }
     }
 

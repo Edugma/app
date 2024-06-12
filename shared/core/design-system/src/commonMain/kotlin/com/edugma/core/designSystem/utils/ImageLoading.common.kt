@@ -1,6 +1,7 @@
 package com.edugma.core.designSystem.utils
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -8,16 +9,29 @@ import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.drawscope.DrawScope.Companion.DefaultFilterQuality
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import co.touchlab.kermit.Severity
 import com.seiko.imageloader.ImageLoader
 import com.seiko.imageloader.component.ComponentRegistryBuilder
+import com.seiko.imageloader.intercept.Interceptor
 import com.seiko.imageloader.intercept.bitmapMemoryCacheConfig
 import com.seiko.imageloader.model.ImageAction
 import com.seiko.imageloader.model.ImageRequest
+import com.seiko.imageloader.model.ImageRequestBuilder
+import com.seiko.imageloader.model.ImageResult
 import com.seiko.imageloader.option.toScale
 import com.seiko.imageloader.rememberImageAction
+import com.seiko.imageloader.rememberImageActionPainter
 import com.seiko.imageloader.rememberImagePainter
 import com.seiko.imageloader.rememberImageSuccessPainter
+import com.seiko.imageloader.util.LogPriority
+import com.seiko.imageloader.util.Logger
+import io.ktor.http.decodeURLPart
+import io.ktor.utils.io.charsets.Charsets
+import io.ktor.utils.io.charsets.forName
+import io.ktor.utils.io.charsets.isSupported
+import okio.FileSystem
 import okio.Path.Companion.toPath
+import okio.fakefilesystem.FakeFileSystem
 
 @Composable
 fun rememberCachedIconPainter(
@@ -53,14 +67,23 @@ fun rememberAsyncImagePainter(
     placeholderPainter: (@Composable () -> Painter)? = null,
     errorPainter: (@Composable () -> Painter)? = null,
 ): Painter {
-    return rememberImagePainter(
-        request = remember(model, contentScale, placeholderPainter, errorPainter) {
-            ImageRequest {
-                data(model)
-                scale(contentScale.toScale())
-            }
-        },
-        imageLoader = imageLoader.loader,
+    val request = remember(model, contentScale, placeholderPainter, errorPainter) {
+        ImageRequest {
+            data(model)
+            scale(contentScale.toScale())
+        }
+    }
+
+    val action by rememberImageAction(request, imageLoader.loader)
+    LaunchedEffect(action) {
+        if (action is ImageAction.Failure) {
+            val error = (action as ImageAction.Failure).error
+            co.touchlab.kermit.Logger.e("Image error ${error.message}", error)
+        }
+
+    }
+    return rememberImageActionPainter(
+        action = action,
         filterQuality = filterQuality,
         placeholderPainter = placeholderPainter,
         errorPainter = errorPainter,
@@ -147,8 +170,35 @@ abstract class BaseImageLoader {
 
         this.loader = ImageLoader {
             interceptor {
+
+                addInterceptor(
+                    Interceptor {
+                        if (it.request.data is String) {
+                            val newRequest = ImageRequest {
+                                takeFrom(it.request)
+                                val url = it.request.data as String
+                                // TODO
+                                data(url.decodeURLPart(charset = Charsets.ISO_8859_1))
+                            }
+                            it.proceed(newRequest)
+                        } else {
+                            it.proceed(it.request)
+                        }
+                    }
+                )
                 bitmapMemoryCacheConfig {
                     maxSize(memCacheSize)
+                }
+                if (diskCache == null) {
+                    diskCacheConfig(FakeFileSystem().apply { emulateUnix() }) {
+                        directory(FileSystem.SYSTEM_TEMPORARY_DIRECTORY)
+                        maxSizeBytes(256L * 1024 * 1024) // 256MB
+                    }
+                } else {
+                    diskCacheConfig {
+                        directory(diskCache.path.toPath())
+                        maxSizeBytes(diskCache.size.toLong())
+                    }
                 }
                 diskCache?.let {
                     diskCacheConfig {
@@ -159,6 +209,43 @@ abstract class BaseImageLoader {
             }
             components {
                 componentSetup()
+            }
+            logger = object : Logger {
+                override fun isLoggable(priority: LogPriority): Boolean {
+                    return true
+                }
+
+                override fun log(
+                    priority: LogPriority,
+                    tag: String,
+                    data: Any?,
+                    throwable: Throwable?,
+                    message: String,
+                ) {
+                    val severity = when (priority) {
+                        LogPriority.VERBOSE -> Severity.Verbose
+                        LogPriority.DEBUG -> Severity.Debug
+                        LogPriority.INFO -> Severity.Info
+                        LogPriority.WARN -> Severity.Warn
+                        LogPriority.ERROR -> Severity.Error
+                        LogPriority.ASSERT -> Severity.Assert
+                    }
+                    co.touchlab.kermit.Logger.log(
+                        severity = severity,
+                        tag = tag,
+                        throwable = throwable,
+                        message = buildString {
+                            if (data != null) {
+                                append("[image data]")
+                                append(data.toString().take(100))
+                                append("\n")
+                            }
+                            append("[message] ")
+                            append(message)
+                        }
+                    )
+                }
+
             }
         }
     }

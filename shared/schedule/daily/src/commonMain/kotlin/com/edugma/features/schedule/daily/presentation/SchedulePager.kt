@@ -119,6 +119,7 @@ fun NoLessonsDay(
         Spacer(modifier = Modifier.weight(1f))
         EdLottie(
             lottieSource = LottieSource.FileRes(animation),
+            backgroundColor = EdTheme.colorScheme.background,
             modifier = Modifier
                 .weight(5f)
                 .fillMaxWidth(),

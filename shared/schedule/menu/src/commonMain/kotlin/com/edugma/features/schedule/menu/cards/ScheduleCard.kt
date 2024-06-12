@@ -19,6 +19,7 @@ import com.edugma.core.designSystem.atoms.lottie.EdLottie
 import com.edugma.core.designSystem.atoms.lottie.LottieSource
 import com.edugma.core.designSystem.organism.actionCard.EdActionCard
 import com.edugma.core.designSystem.organism.actionCard.EdActionCardWidth
+import com.edugma.core.designSystem.theme.EdTheme
 import com.edugma.core.designSystem.utils.rememberCachedIconPainter
 import com.edugma.core.icons.EdIcons
 import com.edugma.core.utils.ClickListener
@@ -53,6 +54,7 @@ fun ScheduleCard(
                     lottieSource = LottieSource.FileRes("files/sch_relax_2.json"),
                     modifier = Modifier
                         .width(100.dp),
+                    backgroundColor = EdTheme.colorScheme.surface,
                     contentScale = ContentScale.FillWidth,
                 )
             }

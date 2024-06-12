@@ -3,6 +3,7 @@ package com.edugma.core.designSystem.atoms.lottie
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -14,6 +15,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 @Composable
 internal actual fun EdPlatformLottie(
     lottieSource: LottieSource,
+    backgroundColor: Color,
     modifier: Modifier,
     contentScale: ContentScale,
 ) {

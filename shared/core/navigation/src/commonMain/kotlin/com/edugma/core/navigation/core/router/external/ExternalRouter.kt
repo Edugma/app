@@ -28,12 +28,12 @@ class ExternalRouter : BaseCommandBus<ExternalNavigationCommand>() {
     }
 
     /**
-     * @param packageName Package of app to open. Will open current app page in store if equal null.
+     * @param appPage Package of app to open. Will open current app page in store if equal null.
      */
-    fun openStore(packageName: String? = null) {
+    fun openStore(appPage: AppPage = AppPage.Edugma) {
         sendCommand(
             ExternalNavigationCommand.OpenStore(
-                packageName = packageName,
+                appPage = appPage,
             ),
         )
     }

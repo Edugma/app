@@ -70,7 +70,7 @@ class ExternalNavigator(
     }
 
     private fun openStore(command: ExternalNavigationCommand.OpenStore) {
-        val packageName = command.packageName ?: context.packageName
+        val packageName = command.appPage.packageName
         // TODO common logic for any store
         // need try first - source of current app
         try {
