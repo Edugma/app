@@ -40,7 +40,7 @@ fun EdSearchField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    colors: TextFieldColors = TextFieldDefaults.textFieldColors(
+    colors: TextFieldColors = TextFieldDefaults.colors(
         focusedIndicatorColor = Color.Transparent,
         unfocusedIndicatorColor = Color.Transparent,
         disabledIndicatorColor = Color.Transparent,

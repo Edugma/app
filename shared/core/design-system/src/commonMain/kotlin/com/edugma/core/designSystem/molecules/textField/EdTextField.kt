@@ -43,7 +43,7 @@ fun EdTextField(
     maxLines: Int = Int.MAX_VALUE,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = EdTheme.shapes.medium,
-    colors: TextFieldColors = TextFieldDefaults.textFieldColors(
+    colors: TextFieldColors = TextFieldDefaults.colors(
         focusedIndicatorColor = Color.Transparent,
         unfocusedIndicatorColor = Color.Transparent,
         disabledIndicatorColor = Color.Transparent,

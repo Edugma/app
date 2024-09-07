@@ -2,7 +2,8 @@ package com.edugma.core.designSystem.organism.pullRefresh
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,41 +28,25 @@ fun EdPullRefresh(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
-    val refreshingState = rememberUpdatedState(refreshing)
-    val state = rememberPullToRefreshState(
-        enabled = {
-            refreshingState.value.not()
-        }
-    )
+    val state = rememberPullToRefreshState()
 
-    LaunchedEffect(state) {
-        snapshotFlow { refreshingState.value }.collect {
-            if (it) {
-                state.startRefresh()
-            } else {
-                state.endRefresh()
-            }
+    PullToRefreshBox(
+        modifier = modifier,
+        state = state,
+        isRefreshing = refreshing,
+        onRefresh = {
+            onRefresh()
+        },
+        indicator = {
+            Indicator(
+                modifier = Modifier.align(Alignment.TopCenter),
+                containerColor = EdTheme.colorScheme.surfaceColorAtElevation(15.dp),
+                color = EdTheme.colorScheme.onSurface,
+                isRefreshing = refreshing,
+                state = state
+            )
         }
-    }
-
-    LaunchedEffect(state) {
-        snapshotFlow { state.isRefreshing }.collect {
-            if (state.isRefreshing && state.isRefreshing != refreshingState.value) {
-                onRefresh()
-            }
-        }
-    }
-
-    Box(
-        modifier = modifier.nestedScroll(state.nestedScrollConnection)
-            .clip(RectangleShape),
     ) {
         content()
-        PullToRefreshContainer(
-            state = state,
-            containerColor = EdTheme.colorScheme.surfaceColorAtElevation(15.dp),
-            contentColor = EdTheme.colorScheme.onSurface,
-            modifier = Modifier.align(Alignment.TopCenter),
-        )
     }
 }

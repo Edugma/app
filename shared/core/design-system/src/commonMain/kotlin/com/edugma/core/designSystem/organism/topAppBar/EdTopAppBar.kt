@@ -7,9 +7,9 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
@@ -99,7 +99,7 @@ fun EdTopAppBar(
                                 enabled = true,
                                 role = Role.Button,
                                 interactionSource = remember { MutableInteractionSource() },
-                                indication = rememberRipple(
+                                indication = ripple(
                                     bounded = false,
                                     radius = 24.dp,
                                 ),

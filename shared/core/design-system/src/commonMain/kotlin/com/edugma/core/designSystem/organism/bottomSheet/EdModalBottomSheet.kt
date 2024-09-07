@@ -96,8 +96,8 @@ fun EdModalBottomSheet(
         } else {
             null
         },
-        windowInsets = windowInsets,
-        properties = ModalBottomSheetDefaults3.properties(),
+        contentWindowInsets = { windowInsets },
+        properties = ModalBottomSheetDefaults3.properties,
         content = content,
     )
 }

@@ -4,56 +4,60 @@ minSdk = "26"
 targetSdk = "34"
 java = "17"
 
-ksp = "2.0.0-1.0.21"
-kotlin = "2.0.0"
-androidGradlePlugin = "8.4.1"
+ksp = "2.0.20-1.0.25" # https://github.com/google/ksp/releases
+kotlin = "2.0.20" # https://github.com/JetBrains/kotlin/releases
+androidGradlePlugin = "8.6.0" # https://developer.android.com/build/releases/gradle-plugin
 kotlinter = "3.14.0"
 
 
 # common
-androidxAnnotations = "1.8.0"
-androidxDatastore = "1.1.1"
-androidxCollections = "1.4.0"
-androidxLifecycle = "2.8.0"
-androidxNavigation = "2.7.0-alpha07"
-androidxCore = "1.0.0"
+androidxAnnotations = "1.8.2" # https://developer.android.com/jetpack/androidx/releases/annotation
+androidxDatastore = "1.1.1" # https://developer.android.com/jetpack/androidx/releases/datastore
+androidxCollections = "1.4.3" # https://developer.android.com/jetpack/androidx/releases/collection
 
-buildKonfig = "0.15.1"
+# jetbrains
+androidxLifecycle = "2.8.1" # https://github.com/JetBrains/compose-multiplatform/releases
+androidxNavigation = "2.8.0-alpha09" # https://github.com/JetBrains/compose-multiplatform/releases
+androidxCore = "1.0.1" # https://mvnrepository.com/artifact/org.jetbrains.androidx.core/core-bundle
 
-composeBom = "2024.05.00"
-composeMultiplatform = "1.6.10"
+buildKonfig = "0.15.2" # https://github.com/yshrsmz/BuildKonfig/releases
 
-kotlinxDateTime = "0.6.0"
-kotlinxCoroutines = "1.8.1"
-kotlinxSerialization = "1.7.0-RC"
-kotlinxAtomic = "0.24.0"
+composeBom = "2024.08.00"
+composeMultiplatform = "1.7.0-beta01" # https://github.com/JetBrains/compose-multiplatform/releases
 
-koinBom = "3.5.6"
-# "3.6.0-wasm-alpha2"
-ktorfit = "2.0.0-rc01"
-ktor = "3.0.0-wasm2"
+kotlinxDateTime = "0.6.1" # https://github.com/Kotlin/kotlinx-datetime/releases
+kotlinxCoroutines = "1.9.0-RC.2" # https://github.com/Kotlin/kotlinx.coroutines/releases
+kotlinxSerialization = "1.7.2" # https://github.com/Kotlin/kotlinx.serialization/releases
+kotlinxAtomic = "0.25.0" # https://github.com/Kotlin/kotlinx-atomicfu/releases
 
-okio = "3.9.0"
+koinBom = "4.0.0-RC2" # https://github.com/InsertKoinIO/koin/releases
+ktorfit = "2.1.0" # https://github.com/Foso/Ktorfit/releases
+ktor = "3.0.0-beta-2" # https://github.com/ktorio/ktor/releases
 
-imageLoader = "1.8.0"
-kottie = "1.8.3"
+okio = "3.9.0" # https://github.com/square/okio/blob/master/CHANGELOG.md
 
-uuid = "0.8.4"
-kermit = "2.0.3"
+# TODO replace coil https://github.com/coil-kt/coil/releases
+imageLoader = "1.8.3" # https://github.com/qdsfdhvh/compose-imageloader/releases
+# TODO replace compotie https://github.com/alexzhirkevich/compottie/releases
+kottie = "1.9.6" # https://github.com/ismai117/kottie/releases
+lottie = "6.5.0" # https://github.com/airbnb/lottie-android/releases
+
+# TODO replace kotlin
+uuid = "0.8.4" # https://github.com/benasher44/uuid/releases
+kermit = "2.0.4" # https://github.com/touchlab/Kermit/releases
 
 # android only
-materialView = "1.12.0"
-splashScreen = "1.0.1"
+materialView = "1.12.0" # https://github.com/material-components/material-components-android/releases
+splashScreen = "1.1.0-rc01" # https://developer.android.com/jetpack/androidx/releases/core
 glance = "1.0.0"
 google-maps-compose = "2.11.1"
 play-service-maps = "18.2.0"
 androidxViewmodel = "2.7.0"
 
-composeActivity = "1.9.0"
-coreKtx = "1.13.1"
-appcompat = "1.6.1"
-startup = "1.1.1"
-lottie = "6.4.0"
+composeActivity = "1.9.2" # https://developer.android.com/jetpack/androidx/releases/activity
+coreKtx = "1.13.1" # https://developer.android.com/jetpack/androidx/releases/core
+appcompat = "1.7.0" # https://developer.android.com/jetpack/androidx/releases/appcompat
+startup = "1.1.1" # https://developer.android.com/jetpack/androidx/releases/startup
 
 
 [libraries]

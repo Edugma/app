@@ -7,7 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.minimumInteractiveComponentSize
-import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material.ripple
 import androidx.compose.material3.LocalAbsoluteTonalElevation
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.contentColorFor
@@ -115,7 +115,7 @@ fun EdSurface(
                 )
                 .clickable(
                     interactionSource = interactionSource,
-                    indication = rememberRipple(),
+                    indication = ripple(),
                     enabled = enabled,
                     role = Role.Button,
                     onClick = onClick,
@@ -162,7 +162,7 @@ fun EdSurface(
                 )
                 .clickable(
                     interactionSource = interactionSource,
-                    indication = rememberRipple(),
+                    indication = ripple(),
                     enabled = enabled,
                     role = Role.Button,
                     onClick = onClick,
