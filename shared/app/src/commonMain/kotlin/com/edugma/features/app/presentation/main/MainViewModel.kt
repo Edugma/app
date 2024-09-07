@@ -1,5 +1,6 @@
 package com.edugma.features.app.presentation.main
 
+import com.edugma.core.api.api.CrashAnalytics
 import com.edugma.core.api.model.SnackbarCommand
 import com.edugma.core.api.repository.MainSnackbarRepository
 import com.edugma.core.api.repository.UrlTemplateRepository
@@ -9,8 +10,14 @@ import com.edugma.core.arch.mvi.utils.launchCoroutine
 import com.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
 import com.edugma.core.designSystem.utils.CommonImageLoader
 import com.edugma.core.designSystem.utils.IconImageLoader
+import com.edugma.core.navigation.core.AccountRouter
+import com.edugma.core.navigation.core.HomeRouter
+import com.edugma.core.navigation.core.MiscRouter
+import com.edugma.core.navigation.core.ScheduleRouter
+import com.edugma.core.navigation.core.TabMenuRouter
 import com.edugma.features.misc.other.inAppUpdate.domain.CheckUpdateUseCase
 import kotlinx.coroutines.flow.filterIsInstance
+import org.koin.core.component.inject
 
 class MainViewModel(
     val commonImageLoader: CommonImageLoader,

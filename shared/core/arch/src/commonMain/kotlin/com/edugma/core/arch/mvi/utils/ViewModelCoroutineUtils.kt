@@ -2,6 +2,7 @@ package com.edugma.core.arch.mvi.utils
 
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
+import com.edugma.core.api.api.CrashAnalytics
 import com.edugma.core.api.utils.IO
 import com.edugma.core.arch.mvi.delegate.DebounceDelegate
 import com.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
@@ -26,7 +27,7 @@ inline fun BaseActionViewModel<*, *>.launchCoroutine(
         errorHandler = ErrorHandler { cont, it ->
             errorHandler?.handleException(cont, it)
             onError(it)
-            Logger.e("ViewModel launchCoroutine error: ", it, tag = "launchCoroutine")
+            CrashAnalytics.logException("launchCoroutine", "ViewModel launchCoroutine error: ", it)
         },
         block = block,
     )
@@ -42,7 +43,7 @@ inline fun DebounceDelegate.launchCoroutine(
         errorHandler = ErrorHandler { cont, it ->
             errorHandler?.handleException(cont, it)
             onError(it)
-            Logger.e("ViewModel launchCoroutine error: ", it, tag = "launchCoroutine")
+            CrashAnalytics.logException("launchCoroutine", "ViewModel launchCoroutine error: ", it)
         },
         block = block,
     )
@@ -58,7 +59,7 @@ internal fun DebounceDelegate.launchCoroutine(
         dispatcher + errorHandler
     } else {
         dispatcher + ErrorHandler { _, it ->
-            Logger.e("launchCoroutine: ", it, tag = "ViewModelCoroutine")
+            CrashAnalytics.logException("launchCoroutine", "launchCoroutine: ", it)
         }
     }
     return with(scope) {
@@ -79,7 +80,7 @@ internal fun BaseActionViewModel<*, *>.launchCoroutine(
         dispatcher + errorHandler
     } else {
         dispatcher + ErrorHandler { _, it ->
-            Logger.e("launchCoroutine: ", it, tag = "ViewModelCoroutine")
+            CrashAnalytics.logException("launchCoroutine", "launchCoroutine: ", it)
         }
     }
     return viewModelScope.launch(
@@ -98,7 +99,7 @@ inline fun ViewModelDelegate<*>.launchCoroutine(
         errorHandler = ErrorHandler { cont, it ->
             errorHandler?.handleException(cont, it)
             onError(it)
-            Logger.e("ViewModel launchCoroutine error: ", it, tag = "launchCoroutine")
+            CrashAnalytics.logException("launchCoroutine", "launchCoroutine: ", it)
         },
         block = block,
     )
@@ -114,7 +115,7 @@ internal fun ViewModelDelegate<*>.launchCoroutineInternal(
         dispatcher + errorHandler
     } else {
         dispatcher + ErrorHandler { _, it ->
-            Logger.e("launchCoroutine: ", it, tag = "ViewModelCoroutine")
+            CrashAnalytics.logException("launchCoroutine", "launchCoroutine: ", it)
         }
     }
     @OptIn(RestrictedApi::class)

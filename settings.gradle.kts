@@ -11,6 +11,7 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        maven { setUrl("https://artifactory-external.vkpartner.ru/artifactory/maven/") }
     }
 }
 
@@ -28,6 +29,7 @@ dependencyResolutionManagement {
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
         // kottie -> ktor 3.0.0-wasm2
         maven("https://maven.pkg.jetbrains.space/kotlin/p/wasm/experimental")
+        maven { setUrl("https://artifactory-external.vkpartner.ru/artifactory/maven/") }
     }
 }
 

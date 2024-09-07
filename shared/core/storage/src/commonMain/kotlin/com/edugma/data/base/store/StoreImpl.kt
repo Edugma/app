@@ -1,11 +1,14 @@
 package com.edugma.data.base.store
 
 import co.touchlab.kermit.Logger
+import com.edugma.core.api.api.CrashAnalytics
 import com.edugma.core.api.model.CachedResult
 import com.edugma.core.api.utils.LceFlow
 import com.edugma.core.api.utils.LceFlowCollector
 import com.edugma.core.api.utils.lce
 import com.edugma.core.api.utils.runCoCatching
+import com.edugma.core.network.ResultConverterFactory
+import com.edugma.core.network.ResultConverterFactory.Companion
 import io.ktor.util.collections.ConcurrentMap
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -52,9 +55,9 @@ class StoreImpl<TKey, TData>(
                 res.onSuccess { newData ->
                     emitSuccess(newData, false)
                 }.onFailure {
-                    Logger.e(
-                        messageString = "Fail to fetch data in store#${this.hashCode()}",
-                        throwable = it,
+                    CrashAnalytics.logException(
+                        message = "Fail to fetch data in store#${this.hashCode()}",
+                        exception = it,
                         tag = TAG,
                     )
                     emitFailure(it, false)

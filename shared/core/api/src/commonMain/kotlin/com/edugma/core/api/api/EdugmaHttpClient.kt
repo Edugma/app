@@ -4,6 +4,7 @@ import co.touchlab.kermit.Logger
 import com.edugma.core.api.model.ResponseError
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.isSuccess
 import io.ktor.serialization.JsonConvertException
 import io.ktor.util.reflect.TypeInfo
@@ -100,11 +101,12 @@ suspend fun <T> EdugmaHttpClient.convert(
             val body = response.call.bodyNullable(typeInfo)
             Result.success<T>(body as T)
         } else {
-            val body = runCatching {
+            val body: Any = runCatching {
                 response.body<TempError>()
-            }.getOrNull()
+            }.getOrNull() ?: response.bodyAsText()
+            
             val e = ResponseError.HttpError(body, response.status.value)
-            Logger.e("wrapSuspendResponse: response status error", e, tag = TAG)
+            CrashAnalytics.logException(TAG, "wrapSuspendResponse: response status error", e)
             Result.failure<T>(e)
         }
     } catch (e: Throwable) {
@@ -115,7 +117,7 @@ suspend fun <T> EdugmaHttpClient.convert(
             else -> ResponseError.UnknownResponseError(e)
         }
 
-        Logger.e("wrapSuspendResponse: ", error, tag = TAG)
+        CrashAnalytics.logException(TAG, "wrapSuspendResponse: ", error)
         Result.failure<T>(error)
     }
 }

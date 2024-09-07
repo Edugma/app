@@ -11,6 +11,7 @@ plugins {
     id("lint")
     alias(libs.plugins.jetbrains.composePlugin)
     alias(libs.plugins.jetbrains.compose.compiler)
+    alias(libs.plugins.tracer) version libs.versions.tracer.get()
 }
 // TODO signing
 
@@ -94,11 +95,46 @@ configurations.all {
     }
 }
 
+val properties = Properties().apply {
+    load(rootProject.file("secrets-dev.properties").reader())
+}
+val tracerPluginToken = properties.getProperty("edugma.tracer.token.plugin").orEmpty()
+val tracerAppToken = properties.getProperty("edugma.tracer.token.app").orEmpty()
+
+tracer {
+    create("defaultConfig") {
+        pluginToken = ""
+        appToken = ""
+    }
+
+    create("release") {
+        pluginToken = System.getenv("TRACER_PROD_PLUGIN_TOKEN").orEmpty()
+        appToken = System.getenv("TRACER_PROD_APP_TOKEN").orEmpty()
+
+        uploadMapping = true
+    }
+
+    create("qa") {
+        pluginToken = tracerPluginToken
+        appToken = tracerAppToken
+
+        uploadMapping = true
+    }
+
+    create("debug") {
+        pluginToken = tracerPluginToken
+        appToken = tracerAppToken
+
+        uploadMapping = false
+    }
+}
+
 dependencies {
     implementation(project(":shared:app"))
     implementation(project(":android:resources"))
     implementation(projects.shared.core.navigation)
     implementation(projects.shared.core.api)
+    implementation(projects.shared.core.analytics)
     //implementation(projects.android.schedule.appwidget)
 
     implementation(project.dependencies.platform(libs.compose.bom))
@@ -113,6 +149,13 @@ dependencies {
     implementation(libs.androidx.startup)
     implementation(libs.androidx.lifecycle.viewmodel)
     //implementation("androidx.compose.runtime:runtime-tracing:1.0.0-alpha03")
+
+    // tracer
+    implementation(libs.tracer.crash)
+    implementation(libs.tracer.heap)
+    implementation(libs.tracer.disk)
+//    implementation(libs.tracer.profiler.sampling)
+//    implementation(libs.tracer.profiler.systrace)
 
     testImplementation(libs.test.junit)
     androidTestImplementation(libs.test.junit.ext)

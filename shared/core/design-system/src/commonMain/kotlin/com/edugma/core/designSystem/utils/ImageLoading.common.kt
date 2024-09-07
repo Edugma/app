@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope.Companion.DefaultFilterQ
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import co.touchlab.kermit.Severity
+import com.edugma.core.api.api.CrashAnalytics
 import com.seiko.imageloader.ImageLoader
 import com.seiko.imageloader.component.ComponentRegistryBuilder
 import com.seiko.imageloader.intercept.Interceptor
@@ -78,7 +79,7 @@ fun rememberAsyncImagePainter(
     LaunchedEffect(action) {
         if (action is ImageAction.Failure) {
             val error = (action as ImageAction.Failure).error
-            co.touchlab.kermit.Logger.e("Image error ${error.message}", error)
+            CrashAnalytics.logException(error)
         }
 
     }

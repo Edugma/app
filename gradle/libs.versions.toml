@@ -54,6 +54,8 @@ google-maps-compose = "2.11.1"
 play-service-maps = "18.2.0"
 androidxViewmodel = "2.7.0"
 
+tracer = "0.4.4"
+
 composeActivity = "1.9.2" # https://developer.android.com/jetpack/androidx/releases/activity
 coreKtx = "1.13.1" # https://developer.android.com/jetpack/androidx/releases/core
 appcompat = "1.7.0" # https://developer.android.com/jetpack/androidx/releases/appcompat
@@ -125,6 +127,12 @@ androidx-startup = { module = "androidx.startup:startup-runtime", version.ref = 
 
 compose-activity = { module = "androidx.activity:activity-compose", version.ref = "composeActivity" }
 
+tracer-crash = { module = "ru.ok.tracer:tracer-crash-report", version.ref = "tracer" }
+tracer-heap = { module = "ru.ok.tracer:tracer-heap-dumps", version.ref = "tracer" }
+tracer-disk = { module = "ru.ok.tracer:tracer-disk-usage", version.ref = "tracer" }
+tracer-profiler-sampling = { module = "ru.ok.tracer:tracer-profiler-sampling", version.ref = "tracer" }
+tracer-profiler-systrace = { module = "ru.ok.tracer:tracer-profiler-systrace", version.ref = "tracer" }
+
 google-maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "google-maps-compose" }
 gms-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "play-service-maps" }
 
@@ -151,5 +159,6 @@ jetbrains-composePlugin = { id = "org.jetbrains.compose", version.ref = "compose
 jetbrains-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 jetbrains-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 cocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
+tracer = { id = "ru.ok.tracer", version.ref = "tracer" }
 #libres = { id = "io.github.skeptick.libres", version.ref = "libres" }
 #buildConfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildConfig" }

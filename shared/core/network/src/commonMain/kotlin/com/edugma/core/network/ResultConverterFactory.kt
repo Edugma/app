@@ -1,6 +1,7 @@
 package com.edugma.core.network
 
 import co.touchlab.kermit.Logger
+import com.edugma.core.api.api.CrashAnalytics
 import de.jensklingenberg.ktorfit.Ktorfit
 import de.jensklingenberg.ktorfit.converter.Converter
 import de.jensklingenberg.ktorfit.converter.KtorfitResult
@@ -50,7 +51,7 @@ class ResultConverterFactory : Converter.Factory {
                                 response.body<Any>(typeData.typeArgs.first().typeInfo)
                             }.getOrNull()
                             val e = ResponseError.HttpError(body, response.status.value)
-                            Logger.e("wrapSuspendResponse: ", e, tag = TAG)
+                            CrashAnalytics.logException(TAG, "wrapSuspendResponse: ", e)
                             Result.failure<Any>(e)
                         }
                     } catch (e: Throwable) {
@@ -59,7 +60,7 @@ class ResultConverterFactory : Converter.Factory {
                             else -> ResponseError.UnknownResponseError(e)
                         }
 
-                        Logger.e("wrapSuspendResponse: ", error, tag = TAG)
+                        CrashAnalytics.logException(TAG, "wrapSuspendResponse: ", error)
                         Result.failure<Any>(error)
                     }
                 }

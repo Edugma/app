@@ -1,6 +1,7 @@
 package com.edugma.core.navigation.core.router.external
 
 import co.touchlab.kermit.Logger
+import com.edugma.core.api.api.CrashAnalytics
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -25,7 +26,7 @@ class ExternalNavigator(
                 try {
                     processCommand(it)
                 } catch (e: Exception) {
-                    Logger.e("", e)
+                    CrashAnalytics.logException(e)
                 }
             }
         }

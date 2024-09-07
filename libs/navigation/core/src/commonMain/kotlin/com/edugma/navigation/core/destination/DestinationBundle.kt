@@ -30,6 +30,10 @@ class DestinationBundle<T : Destination>(
         }
     }
 
+    override fun toString(): String {
+        return "$destination, arguments: $arguments"
+    }
+
     public infix fun <T : Any> NavArgument.Required<T>.set(value: T) {
         _arguments[this] = value
     }

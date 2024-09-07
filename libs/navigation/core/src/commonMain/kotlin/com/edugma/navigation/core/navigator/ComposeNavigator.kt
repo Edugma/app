@@ -28,7 +28,7 @@ class ComposeNavigator(
     suspend fun listenCommands() {
         router.commands.takeWhile { it !is NavigationCommand.Lock }.collect {
             processCommand(it)
-            printBackStack()
+            //printBackStack()
         }
     }
 

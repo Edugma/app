@@ -29,3 +29,7 @@ shared/shared.podspec
 
 # Js
 *generated.js
+
+# custom
+secrets-dev.properties
+secrets-prod.properties
