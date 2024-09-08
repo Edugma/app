@@ -43,8 +43,6 @@ imageLoader = "1.8.3" # https://github.com/qdsfdhvh/compose-imageloader/releases
 kottie = "1.9.6" # https://github.com/ismai117/kottie/releases
 lottie = "6.5.0" # https://github.com/airbnb/lottie-android/releases
 
-# TODO replace kotlin
-uuid = "0.8.4" # https://github.com/benasher44/uuid/releases
 kermit = "2.0.4" # https://github.com/touchlab/Kermit/releases
 
 # android only
@@ -106,8 +104,6 @@ kotlinx-dateTime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 kotlinx-serializationCbor = { module = "org.jetbrains.kotlinx:kotlinx-serialization-cbor", version.ref = "kotlinxSerialization" }
 kotlinx-serializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 kotlinx-atomic = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kotlinxAtomic" }
-
-uuid = { module = "com.benasher44:uuid", version.ref = "uuid" }
 
 ktorfit = { module = "de.jensklingenberg.ktorfit:ktorfit-lib", version.ref = "ktorfit" }
 ktorfit-ksp = { module = "de.jensklingenberg.ktorfit:ktorfit-ksp", version.ref = "ktorfit" }

@@ -149,3 +149,12 @@ dependencies {
     androidTestImplementation(project.dependencies.platform(libs.compose.bom))
     androidTestImplementation(libs.compose.uiTest)
 }
+
+configurations.all {
+    resolutionStrategy.eachDependency {
+        val requestedGroup = this.requested.group
+        if (requestedGroup.startsWith("io.ktor")) {
+            useVersion(libs.versions.ktor.get())
+        }
+    }
+}

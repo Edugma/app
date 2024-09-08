@@ -1,9 +1,11 @@
 package com.edugma.core.api.utils
 
-import com.benasher44.uuid.uuid4
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 object UUID {
+    @OptIn(ExperimentalUuidApi::class)
     fun get(): String {
-        return uuid4().toString()
+        return Uuid.random().toString()
     }
 }

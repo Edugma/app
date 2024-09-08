@@ -9,7 +9,6 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(libs.composeRuntime())
-                implementation(libs.uuid)
                 implementation(libs.ktor.client.core)
                 implementation(libs.kotlinx.atomic)
                 api(libs.kotlinx.coroutines.core)
