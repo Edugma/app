@@ -50,7 +50,7 @@ formatting:
     indentSize: 4
     maxLineLength: 120
   CommentSpacing:
-    active: true
+    active: false
     autoCorrect: true
   CommentWrapping:
     active: true
@@ -67,7 +67,6 @@ formatting:
     indentSize: 4
   EnumEntryNameCase:
     active: true
-    aliases: ['EnumEntryName']
     autoCorrect: true
   EnumWrapping:
     active: true
@@ -99,7 +98,7 @@ formatting:
     autoCorrect: true
     maxLineLength: 120
   FunctionSignature:
-    active: true
+    active: false
     autoCorrect: true
     forceMultilineWhenParameterCountGreaterOrEqualThan: 2147483647
     functionBodyExpressionWrapping: 'default'
@@ -137,8 +136,7 @@ formatting:
     autoCorrect: true
     indentSize: 4
   MaximumLineLength:
-    active: true
-    aliases: ['MaxLineLength']
+    active: false
     maxLineLength: 120
     ignoreBackTickedIdentifier: false
   MixedConditionOperators:
@@ -154,7 +152,7 @@ formatting:
     autoCorrect: true
     indentSize: 4
   MultilineExpressionWrapping:
-    active: true
+    active: false
     autoCorrect: true
     indentSize: 4
   MultilineLoop:
@@ -181,7 +179,7 @@ formatting:
   NoEmptyFile:
     active: true
   NoEmptyFirstLineInClassBody:
-    active: true
+    active: false
     autoCorrect: true
     indentSize: 4
   NoEmptyFirstLineInMethodBlock:
@@ -235,7 +233,7 @@ formatting:
     indentSize: 4
     maxLineLength: 120
   PropertyName:
-    active: true
+    active: false
   PropertyWrapping:
     active: true
     autoCorrect: true
