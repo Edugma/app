@@ -54,7 +54,6 @@ fun ScheduleCard(
                     lottieSource = LottieSource.FileRes("files/sch_relax_2.json"),
                     modifier = Modifier
                         .width(100.dp),
-                    backgroundColor = EdTheme.colorScheme.surface,
                     contentScale = ContentScale.FillWidth,
                 )
             }

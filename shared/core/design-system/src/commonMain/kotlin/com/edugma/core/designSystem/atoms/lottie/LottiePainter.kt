@@ -1,8 +1,6 @@
 package com.edugma.core.designSystem.atoms.lottie
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.remember
 import kotlin.jvm.JvmInline
 
 @Immutable

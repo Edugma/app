@@ -26,7 +26,6 @@ fun EdWorkingProgress(modifier: Modifier = Modifier, message: String = "В пр�
     ) {
         EdLottie(
             lottieSource = LottieSource.FileRes(anim),
-            backgroundColor = EdTheme.colorScheme.background,
             modifier = Modifier
                 .fillMaxWidth(),
         )

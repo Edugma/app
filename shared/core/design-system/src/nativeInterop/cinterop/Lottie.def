@@ -1,3 +1,0 @@
-language = Objective-C
-modules = Lottie
-linkerOpts = -framework Lottie

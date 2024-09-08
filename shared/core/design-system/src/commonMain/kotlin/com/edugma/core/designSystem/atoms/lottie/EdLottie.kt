@@ -1,19 +1,18 @@
 package com.edugma.core.designSystem.atoms.lottie
 
+import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import edugma.shared.core.resources.generated.resources.Res
-import com.edugma.core.api.utils.IO
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import io.github.alexzhirkevich.compottie.Compottie
+import io.github.alexzhirkevich.compottie.LottieCompositionSpec
+import io.github.alexzhirkevich.compottie.Url
+import io.github.alexzhirkevich.compottie.animateLottieCompositionAsState
+import io.github.alexzhirkevich.compottie.rememberLottieComposition
+import io.github.alexzhirkevich.compottie.rememberLottiePainter
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @OptIn(ExperimentalResourceApi::class)
@@ -21,37 +20,37 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 @NonRestartableComposable
 fun EdLottie(
     lottieSource: LottieSource,
-    backgroundColor: Color,
     modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.Fit,
 ) {
-
-    var lottieSourceState by remember {
-        mutableStateOf<LottieSource?>(null)
-    }
-    LaunchedEffect(Unit) {
-        when (val source = lottieSource) {
+    val composition by rememberLottieComposition {
+        when (lottieSource) {
             is LottieSource.FileRes -> {
-                withContext(Dispatchers.IO) {
-                    val jsonString = Res.readBytes(source.file).decodeToString()
-                    lottieSourceState = LottieSource.JsonString(jsonString)
-                }
+                LottieCompositionSpec.JsonString(
+                    Res.readBytes(lottieSource.file).decodeToString()
+                )
             }
             is LottieSource.JsonString -> {
-                lottieSourceState = LottieSource.JsonString(source.jsonString)
+                LottieCompositionSpec.JsonString(lottieSource.jsonString)
             }
             is LottieSource.Url -> {
-                lottieSourceState = LottieSource.Url(source.url)
+                LottieCompositionSpec.Url(lottieSource.url)
             }
         }
     }
 
-    lottieSourceState?.let { lottieSourceState ->
-        EdPlatformLottie(
-            lottieSource = lottieSourceState,
-            modifier = modifier,
-            contentScale = contentScale,
-            backgroundColor = backgroundColor,
-        )
-    }
+    val progress by animateLottieCompositionAsState(
+        composition = composition,
+        iterations = Compottie.IterateForever,
+    )
+
+    Image(
+        painter = rememberLottiePainter(
+            composition = composition,
+            progress = { progress },
+        ),
+        modifier = modifier,
+        contentScale = contentScale,
+        contentDescription = "Lottie animation"
+    )
 }

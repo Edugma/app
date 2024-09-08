@@ -39,9 +39,7 @@ okio = "3.9.0" # https://github.com/square/okio/blob/master/CHANGELOG.md
 
 # TODO replace coil https://github.com/coil-kt/coil/releases
 imageLoader = "1.8.3" # https://github.com/qdsfdhvh/compose-imageloader/releases
-# TODO replace compotie https://github.com/alexzhirkevich/compottie/releases
-kottie = "1.9.6" # https://github.com/ismai117/kottie/releases
-lottie = "6.5.0" # https://github.com/airbnb/lottie-android/releases
+compottie = "2.0.0-beta02" # https://github.com/alexzhirkevich/compottie/releases
 
 kermit = "2.0.4" # https://github.com/touchlab/Kermit/releases
 
@@ -89,7 +87,10 @@ compose-uiToolingPreview = { group = "androidx.compose.ui", name = "ui-tooling-p
 compose-uiUtil = { group = "androidx.compose.ui", name = "ui-util" }
 
 imageLoader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "imageLoader" }
-kottie = { module = "io.github.ismai117:kottie", version.ref = "kottie" }
+compottie = { module = "io.github.alexzhirkevich:compottie", version.ref = "compottie" }
+compottie-dot = { module = "io.github.alexzhirkevich:compottie-dot", version.ref = "compottie" }
+compottie-network = { module = "io.github.alexzhirkevich:compottie-network", version.ref = "compottie" }
+compottie-resources = { module = "io.github.alexzhirkevich:compottie-resources", version.ref = "compottie" }
 
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 
@@ -137,9 +138,6 @@ gms-maps = { module = "com.google.android.gms:play-services-maps", version.ref =
 koin-android = { module = "io.insert-koin:koin-android" }
 
 material3 = { module = "com.google.android.material:material", version.ref = "materialView" }
-
-lottie = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie" }
-
 
 test-junit = { module = "junit:junit", version = "4.13.2" }
 test-junit-ext = { module = "androidx.test.ext:junit-ktx", version = "1.1.5" }

@@ -36,7 +36,6 @@ fun EdFullScreenMessage(
         ) {
             EdLottie(
                 lottieSource = lottieSource,
-                backgroundColor = EdTheme.colorScheme.background,
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(1.5f),
