@@ -1,5 +1,6 @@
 @file:Suppress("UNUSED_VARIABLE")
 import org.gradle.accessors.dm.LibrariesForLibs
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -50,10 +51,11 @@ android {
 
 composeCompiler {
     stabilityConfigurationFile.set(
-        File(
-            "$rootDir/configs/compose/compose_compiler_config.conf"
-        )
+        file("$rootDir/configs/compose/compose_compiler_config.conf")
     )
-    enableStrongSkippingMode.set(true)
-    enableIntrinsicRemember.set(true)
+    featureFlags.set(
+        listOf(
+            ComposeFeatureFlag.StrongSkipping, ComposeFeatureFlag.IntrinsicRemember,
+        ),
+    )
 }

@@ -8,6 +8,7 @@ ksp = "2.0.20-1.0.25" # https://github.com/google/ksp/releases
 kotlin = "2.0.20" # https://github.com/JetBrains/kotlin/releases
 androidGradlePlugin = "8.6.0" # https://developer.android.com/build/releases/gradle-plugin
 kotlinter = "3.14.0"
+detekt = "1.23.6"
 
 
 # common
@@ -69,6 +70,7 @@ gradlePlugin-ktlint = { module = "org.jmailen.gradle:kotlinter-gradle", version.
 gradlePlugin-ksp = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp"}
 gradlePlugin-composePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "composeMultiplatform" }
 gradlePlugin-composeCompiler = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
+gradlePlugin-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 
 # Common
 androidx-datastore = { module = "androidx.datastore:datastore-preferences-core", version.ref = "androidxDatastore" }
@@ -154,6 +156,7 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 ktorfit = { id = "de.jensklingenberg.ktorfit", version.ref = "ktorfit" }
 kotlinx-atomic = { id = "org.jetbrains.kotlin.plugin.atomicfu", version.ref = "kotlin" }
 buildKonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildKonfig" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 
 jetbrains-composePlugin = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
 jetbrains-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }

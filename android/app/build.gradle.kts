@@ -1,7 +1,4 @@
-import com.android.build.api.dsl.ApplicationBuildType
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-import org.gradle.accessors.dm.LibrariesForLibs
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -81,17 +78,6 @@ android {
     }
     buildFeatures {
         buildConfig = true
-    }
-}
-
-configurations.all {
-    resolutionStrategy.eachDependency {
-        val requestedGroup = this.requested.group
-        if (requestedGroup == "org.jetbrains.kotlin") {
-            useVersion(libs.versions.kotlin.get())
-        } else if (requestedGroup.startsWith("io.ktor")) {
-            useVersion(libs.versions.ktor.get())
-        }
     }
 }
 

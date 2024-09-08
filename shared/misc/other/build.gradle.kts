@@ -5,15 +5,6 @@ plugins {
     alias(libs.plugins.ktorfit)
 }
 
-configurations.all {
-    resolutionStrategy.eachDependency {
-        val requestedGroup = this.requested.group
-        if (requestedGroup == "org.jetbrains.kotlin") {
-            useVersion(libs.versions.kotlin.get())
-        }
-    }
-}
-
 kotlin {
     sourceSets {
         commonMain {
