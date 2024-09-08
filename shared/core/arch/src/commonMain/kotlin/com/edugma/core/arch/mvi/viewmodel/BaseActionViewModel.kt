@@ -32,6 +32,7 @@ abstract class BaseActionViewModel<TState, TAction>(
     val accountRouter: AccountRouter by inject()
     val miscRouter: MiscRouter by inject()
 
+    @Suppress("VariableNaming")
     internal var _errorHandler: CombinedErrorHandler? = null
     val errorHandler: CombinedErrorHandler?
         get() = _errorHandler

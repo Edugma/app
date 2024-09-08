@@ -12,8 +12,7 @@ val LocalArguments: ProvidableCompositionLocal<ArgumentsStore?> = staticComposit
 
 @Composable
 fun <T : Destination> rememberNavArgs(destination: T): NavArgs<T> {
-    val arguments = LocalArguments.current
-        ?: throw IllegalStateException("Не найдены аргументы для $destination")
+    val arguments = checkNotNull(LocalArguments.current) { "Не найдены аргументы для $destination" }
 
     return remember(destination, arguments) {
         NavArgs(destination, arguments)

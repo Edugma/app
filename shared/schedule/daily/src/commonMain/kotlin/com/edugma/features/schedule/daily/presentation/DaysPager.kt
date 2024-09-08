@@ -170,7 +170,7 @@ fun RowScope.DayContent(
                     .height(14.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                (0 until day.lessonCount).forEach {
+                repeat(day.lessonCount) {
                     Box(
                         modifier = Modifier
                             .padding(horizontal = 1.5.dp)

@@ -127,7 +127,7 @@ data class FreePlaceState(
 ) {
     companion object {
         val minPerDay = LocalTime.MAX.toSecondOfDay() / 60
-        val totalDays = 100L
+        const val totalDays = 100L
     }
 
     fun setFilterQuery(filterQuery: String) =

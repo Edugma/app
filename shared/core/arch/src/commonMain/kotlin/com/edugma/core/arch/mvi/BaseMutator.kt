@@ -5,9 +5,8 @@ abstract class BaseMutator<TState> {
     var state: TState
         get() = _state!!
         set(value) {
-            if (!isMutating && _state != null) {
-                throw IllegalStateException("Mutate state only inside mutation scope")
-            }
+            check(!isMutating && _state != null) { "Mutate state only inside mutation scope" }
+
             val needChange = _state != value
             if (needChange) {
                 _state = value

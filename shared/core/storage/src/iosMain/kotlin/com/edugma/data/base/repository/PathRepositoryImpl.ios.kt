@@ -9,7 +9,7 @@ import platform.Foundation.NSSearchPathForDirectoriesInDomains
 import platform.Foundation.NSURL
 import platform.Foundation.NSUserDomainMask
 
-class PathRepositoryImpl() : PathRepository {
+class PathRepositoryImpl : PathRepository {
     @OptIn(ExperimentalForeignApi::class)
     override fun getDatastorePath(dataStoreFileName: String): String {
         val documentDirectory: NSURL? = NSFileManager.defaultManager.URLForDirectory(

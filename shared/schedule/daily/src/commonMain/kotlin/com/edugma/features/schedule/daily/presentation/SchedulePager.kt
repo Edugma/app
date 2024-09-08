@@ -178,7 +178,7 @@ fun LessonList(
 @Composable
 fun ScheduleDayPlaceholder(size: Int) {
     Column(Modifier.fillMaxSize()) {
-        (0..<size).forEach {
+        repeat(size) {
             LessonPlaceholder()
             SpacerHeight(8.dp)
         }

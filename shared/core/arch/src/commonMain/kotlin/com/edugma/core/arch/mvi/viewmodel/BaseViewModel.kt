@@ -1,7 +1,7 @@
 package com.edugma.core.arch.mvi.viewmodel
 
 // Without state and actions
-abstract class SimpleViewModel() : BaseActionViewModel<Unit, Nothing>(Unit)
+abstract class SimpleViewModel : BaseActionViewModel<Unit, Nothing>(Unit)
 
 // Only state
 abstract class BaseViewModel<TState>(

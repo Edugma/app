@@ -1,37 +1,54 @@
+import io.gitlab.arturbosch.detekt.Detekt
+import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
+
 plugins {
-    id("org.jmailen.kotlinter")
+    id("io.gitlab.arturbosch.detekt")
 }
 
-// TODO Fix formatKotlinAndroidDebug crashes
-//tasks.filter {
-//    (it.name.startsWith("formatKotlin") ||
-//        it.name.startsWith("lintKotlin")) &&
-//        it is ConfigurableKtLintTask
-//}.forEach {
-//    it as ConfigurableKtLintTask
-//    it.source = (it.source - fileTree("$buildDir/generated")).asFileTree
-//}
-//
-//fun excludeGeneratedSourceFromLint() {
-//    val formatTaskNames = listOf(
-//        "formatKotlinCommonMain",
-//        "formatKotlinAndroidDebug",
-//        "formatKotlinAndroidRelease",
-//    )
-//    val lintTaskNames = listOf(
-//        "lintKotlinCommonMain",
-//        "lintKotlinAndroidRelease",
-//        "lintKotlinAndroidDebug",
-//    )
-//    formatTaskNames.forEach {
-//        tasks.named<FormatTask>(it) {
-//            source = (source - fileTree("$buildDir/generated")).asFileTree
-//        }
-//    }
-//
-//    lintTaskNames.forEach {
-//        tasks.named<LintTask>(it) {
-//            source = (source - fileTree("$buildDir/generated")).asFileTree
-//        }
-//    }
-//}
+tasks.register<Detekt>("detektFormat") {
+    autoCorrect = true
+}
+
+tasks.withType<DetektCreateBaselineTask> {
+    setSource(files(projectDir))
+    config.setFrom(files("$rootDir/configs/detekt.yml"))
+    baseline.set(file("$rootDir/configs/detekt-baseline.xml"))
+
+    include("**/*.kt", "**/*.kts")
+    exclude(
+        "**/resources/**",
+        "**/build/**",
+    )
+
+    parallel = true
+    buildUponDefaultConfig = true
+    allRules = true
+
+    // Target version of the generated JVM bytecode. It is used for type resolution.
+    this.jvmTarget = "1.8"
+}
+
+tasks.withType<Detekt> {
+    reports {
+        html.required.set(false)
+        xml.required.set(false)
+        txt.required.set(false)
+    }
+
+    setSource(files(projectDir))
+    config.setFrom(files("$rootDir/configs/detekt.yml"))
+    //baseline.set(file("/detekt-baseline.xml"))
+
+    include("**/*.kt", "**/*.kts")
+    exclude(
+        "**/resources/**",
+        "**/build/**",
+    )
+
+    parallel = true
+    buildUponDefaultConfig = true
+    allRules = true
+
+    // Target version of the generated JVM bytecode. It is used for type resolution.
+    this.jvmTarget = "1.8"
+}

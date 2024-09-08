@@ -36,6 +36,8 @@ class DayIterator(
     private val dateTo: LocalDate,
 ) : Iterable<LocalDate> {
     override fun iterator() = Iterator()
+
+    @Suppress("IteratorNotThrowingNoSuchElementException") // TODO
     inner class Iterator : kotlin.collections.Iterator<LocalDate> {
         var currentDate: LocalDate? = null
 
@@ -59,6 +61,8 @@ class WeekIterator(
     private val totalWeeks = (firstMonday.daysUntil(lastSunday) + 1) / 7
 
     override fun iterator() = Iterator()
+
+    @Suppress("IteratorNotThrowingNoSuchElementException") // TODO
     inner class Iterator : kotlin.collections.Iterator<DayIterator> {
         var currentWeek: Int? = null
 

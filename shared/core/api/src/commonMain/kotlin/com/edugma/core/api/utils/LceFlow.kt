@@ -1,6 +1,7 @@
 package com.edugma.core.api.utils
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
@@ -59,7 +60,7 @@ class LceFlow<out T>(
         }
 
         fun empty(): LceFlow<Nothing> {
-            return LceFlow(flowOf(LceData(Result.failure(Exception()), false)))
+            return LceFlow(emptyFlow())
         }
     }
 }

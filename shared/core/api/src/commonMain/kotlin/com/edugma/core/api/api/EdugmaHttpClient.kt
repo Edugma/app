@@ -18,7 +18,7 @@ interface EdugmaHttpClient {
 
     suspend fun postInternal(name: String, builder: PostBuilder): HttpResponse
 
-    open class Builder() {
+    open class Builder {
         var paramsMap = hashMapOf<String, String>()
         var version: String = ""
         fun param(name: String, value: Any?) {
@@ -104,7 +104,7 @@ suspend fun <T> EdugmaHttpClient.convert(
             val body: Any = runCatching {
                 response.body<TempError>()
             }.getOrNull() ?: response.bodyAsText()
-            
+
             val e = ResponseError.HttpError(body, response.status.value)
             CrashAnalytics.logException(TAG, "wrapSuspendResponse: response status error", e)
             Result.failure<T>(e)
