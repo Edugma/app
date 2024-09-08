@@ -5,7 +5,7 @@ import java.util.Properties
 plugins {
     id("com.edugma.android-app")
     kotlin("android")
-    id("lint")
+    id("mp-lint")
     alias(libs.plugins.jetbrains.composePlugin)
     alias(libs.plugins.jetbrains.compose.compiler)
     alias(libs.plugins.tracer) version libs.versions.tracer.get()

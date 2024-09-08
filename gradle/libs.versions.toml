@@ -139,6 +139,8 @@ koin-android = { module = "io.insert-koin:koin-android" }
 
 material3 = { module = "com.google.android.material:material", version.ref = "materialView" }
 
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+
 test-junit = { module = "junit:junit", version = "4.13.2" }
 test-junit-ext = { module = "androidx.test.ext:junit-ktx", version = "1.1.5" }
 test-espressoCore = { module = "androidx.test.espresso:espresso-core", version = "3.5.1" }

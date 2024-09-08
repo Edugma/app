@@ -19,7 +19,6 @@ plugins {
     id("com.edugma.android-app").apply(false)
     id("com.edugma.android-lib").apply(false)
     id("com.edugma.mp-web-js-lib").apply(false)
-    id("lint").apply(false)
     id("mp-android-lib").apply(false)
     id("mp-common-lib").apply(false)
     id("mp-compose-lib").apply(false)
