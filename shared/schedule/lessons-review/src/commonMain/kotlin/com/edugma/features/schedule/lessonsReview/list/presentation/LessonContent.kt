@@ -11,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-
 import com.edugma.core.api.utils.getShortName
 import com.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import com.edugma.core.designSystem.theme.EdTheme
@@ -20,11 +19,9 @@ import com.edugma.core.icons.EdIcons
 import com.edugma.features.schedule.domain.model.attentdee.AttendeeInfo
 import com.edugma.features.schedule.domain.model.lessonSubject.LessonSubject
 import com.edugma.features.schedule.domain.model.place.Place
+import edugma.shared.core.icons.generated.resources.*
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
-import edugma.shared.core.icons.generated.resources.*
-import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun LessonTitle(subject: LessonSubject, isLoading: Boolean = false) {

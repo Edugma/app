@@ -5,27 +5,44 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavBackStackEntry
+import com.edugma.navigation.core.destination.Destination
 import com.edugma.navigation.core.navDestination.ComposeDestination
 import com.edugma.navigation.core.navDestination.ComposeDialogDestination
 import com.edugma.navigation.core.navDestination.GraphDestination
-import com.edugma.navigation.core.destination.Destination
 import kotlin.jvm.JvmSuppressWildcards
 
 fun NavGraphBuilder.composeScreen(
     destination: Destination,
-    enterTransition: (@JvmSuppressWildcards
-    AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? = null,
-    exitTransition: (@JvmSuppressWildcards
-    AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? = null,
-    popEnterTransition: (@JvmSuppressWildcards
-    AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? =
+    enterTransition: (
+        @JvmSuppressWildcards
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?
+    )? = null,
+    exitTransition: (
+        @JvmSuppressWildcards
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?
+    )? = null,
+    popEnterTransition: (
+        @JvmSuppressWildcards
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?
+    )? =
         enterTransition,
-    popExitTransition: (@JvmSuppressWildcards
-    AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? =
+    popExitTransition: (
+        @JvmSuppressWildcards
+        AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?
+    )? =
         exitTransition,
     composeScreen: @Composable () -> Unit,
 ) {
-    addDestination(ComposeDestination(destination, composeScreen, enterTransition, exitTransition, popEnterTransition, popExitTransition))
+    addDestination(
+        ComposeDestination(
+            destination,
+            composeScreen,
+            enterTransition,
+            exitTransition,
+            popEnterTransition,
+            popExitTransition
+        )
+    )
 }
 
 fun NavGraphBuilder.composeDialog(
@@ -51,4 +68,3 @@ fun NavGraphBuilder.graph(
         ),
     )
 }
-

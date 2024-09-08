@@ -2,11 +2,11 @@ package com.edugma.core.designSystem.organism.iconCard
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import org.jetbrains.compose.resources.painterResource
 import com.edugma.core.designSystem.theme.EdTheme
-import edugma.shared.core.icons.generated.resources.*
 import com.edugma.core.icons.EdIcons
+import edugma.shared.core.icons.generated.resources.*
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalResourceApi::class)
 @Preview

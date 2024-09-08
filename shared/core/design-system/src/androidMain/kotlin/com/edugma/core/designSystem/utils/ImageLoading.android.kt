@@ -1,8 +1,8 @@
 package com.edugma.core.designSystem.utils
 
 import android.content.Context
-import com.seiko.imageloader.component.setupDefaultComponents
 import com.edugma.core.api.repository.PathRepository
+import com.seiko.imageloader.component.setupDefaultComponents
 
 actual class IconImageLoader(
     pathRepository: PathRepository,

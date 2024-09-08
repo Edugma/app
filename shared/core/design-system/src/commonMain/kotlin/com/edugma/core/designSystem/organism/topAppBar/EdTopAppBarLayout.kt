@@ -176,7 +176,7 @@ internal fun EdTopAppBarLayout(
 
 // An easing function used to compute the alpha value that is applied to the top title part of a
 // Medium or Large app bar.
-/*@VisibleForTesting*/
+// @VisibleForTesting
 internal val TopTitleAlphaEasing = CubicBezierEasing(.8f, 0f, .8f, .15f)
 
 private val TopAppBarHorizontalPadding = 4.dp

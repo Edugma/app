@@ -23,11 +23,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import edugma.shared.core.resources.generated.resources.Res as CommonRes
-import edugma.shared.core.resources.generated.resources.*
-import edugma.shared.core.icons.generated.resources.*
-import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
 import com.edugma.core.api.utils.DateFormat
 import com.edugma.core.api.utils.TimeFormat
 import com.edugma.core.api.utils.format
@@ -42,7 +37,12 @@ import com.edugma.core.utils.viewmodel.getViewModel
 import com.edugma.features.schedule.domain.model.compact.CompactPlaceInfo
 import com.edugma.features.schedule.elements.verticalSchedule.VerticalScheduleComponent
 import com.edugma.features.schedule.scheduleInfo.groupInfo.InfoScaffold
+import edugma.shared.core.icons.generated.resources.*
+import edugma.shared.core.resources.generated.resources.*
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+import edugma.shared.core.resources.generated.resources.Res as CommonRes
 
 @Composable
 fun PlaceInfoScreen(viewModel: PlaceInfoViewModel = getViewModel(), id: String) {

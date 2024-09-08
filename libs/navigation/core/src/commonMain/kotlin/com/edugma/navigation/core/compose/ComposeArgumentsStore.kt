@@ -11,4 +11,3 @@ class ComposeArgumentsStore(
         return arguments.get(key) as T
     }
 }
-

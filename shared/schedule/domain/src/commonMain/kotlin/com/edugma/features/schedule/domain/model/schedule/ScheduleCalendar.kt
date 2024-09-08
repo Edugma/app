@@ -1,6 +1,5 @@
 package com.edugma.features.schedule.domain.model.schedule
 
-import co.touchlab.kermit.Logger
 import com.edugma.features.schedule.domain.model.compact.CompactLessonEvent
 import com.edugma.features.schedule.domain.model.compact.CompactSchedule
 import com.edugma.features.schedule.domain.model.compact.toModel

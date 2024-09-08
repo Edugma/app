@@ -9,7 +9,7 @@ interface CrashAnalytics {
     fun setProperties(vararg properties: Pair<String, String>)
 
     sealed class Key(val key: String, val value: String) {
-        data class CurrentScreen(val name: String): Key(key = "CurrentScreen", value = name)
+        data class CurrentScreen(val name: String) : Key(key = "CurrentScreen", value = name)
     }
     data class User(
         val id: String

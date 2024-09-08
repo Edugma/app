@@ -24,23 +24,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
-import co.touchlab.kermit.Logger
-
-
-import edugma.shared.core.resources.generated.resources.Res
-import edugma.shared.core.resources.generated.resources.*
-import edugma.shared.core.icons.generated.resources.*
-import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
 import com.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import com.edugma.core.arch.pagination.PaginationUiState
 import com.edugma.core.designSystem.atoms.card.EdCard
@@ -53,7 +42,6 @@ import com.edugma.core.designSystem.molecules.button.EdButton
 import com.edugma.core.designSystem.molecules.chip.EdChipLabel
 import com.edugma.core.designSystem.molecules.iconButton.EdIconButton
 import com.edugma.core.designSystem.molecules.searchField.EdSearchField
-import com.edugma.core.designSystem.organism.bottomSheet.SheetState
 import com.edugma.core.designSystem.organism.bottomSheet.bind
 import com.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
 import com.edugma.core.designSystem.organism.cell.EdCell
@@ -74,7 +62,11 @@ import com.edugma.core.utils.Typed1Listener
 import com.edugma.core.utils.viewmodel.getViewModel
 import com.edugma.features.schedule.domain.model.source.ScheduleSourceType
 import com.edugma.features.schedule.sources.model.ScheduleSourceUiModel
-import kotlinx.coroutines.launch
+import edugma.shared.core.icons.generated.resources.*
+import edugma.shared.core.resources.generated.resources.*
+import edugma.shared.core.resources.generated.resources.Res
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ScheduleSourcesScreen(viewModel: ScheduleSourcesViewModel = getViewModel()) {
@@ -92,7 +84,8 @@ fun ScheduleSourcesScreen(viewModel: ScheduleSourcesViewModel = getViewModel()) 
     val regularFavoritePainter = painterResource(EdIcons.ic_fluent_star_24_regular)
 
     val favoriteListPainterProvider: (Boolean) -> Painter = remember {
-        { isFavorite: Boolean ->
+        {
+                isFavorite: Boolean ->
             if (isFavorite) {
                 filledFavoritePainter
             } else {
@@ -168,7 +161,6 @@ fun ScheduleSourcesSheetContent(
                     modifier = Modifier,
                 )
             }
-
         }
     }
 }

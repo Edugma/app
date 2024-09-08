@@ -12,9 +12,7 @@ import com.edugma.features.schedule.scheduleInfo.teacherInfo.TeacherInfoViewMode
 import com.edugma.navigation.core.compose.rememberNavArgs
 import com.edugma.navigation.core.graph.NavGraphBuilder
 import com.edugma.navigation.core.graph.composeScreen
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
-import kotlinx.serialization.json.Json
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 

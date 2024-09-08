@@ -31,7 +31,6 @@ fun LazyListScope.LessonPlace(
 
 @Composable
 private fun LessonTimeContent(lessonEvent: LessonEvent) {
-
     val timeText = remember(lessonEvent.start, lessonEvent.end) {
         val startTime = lessonEvent.start.zonedTime()
         val endTime = lessonEvent.end.zonedTime()

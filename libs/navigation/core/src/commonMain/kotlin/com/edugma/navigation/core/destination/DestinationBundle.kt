@@ -75,4 +75,3 @@ class DestinationBundle<T : Destination>(
         }
     }
 }
-

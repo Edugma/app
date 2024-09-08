@@ -15,6 +15,8 @@ fun <T, Y> Flow<T>.prop(propSelector: T.() -> Y): Flow<Y> {
 @Composable
 fun <TAction> BaseActionViewModel<*, TAction>.rememberOnAction(): (TAction) -> Unit {
     return remember {
-        { onAction(it) }
+        {
+            onAction(it)
+        }
     }
 }

@@ -21,7 +21,6 @@ public sealed class NavArgument<T>(
     public class Optional<T>(
         name: String,
         type: ArgumentType,
-
         public val defaultValue: T,
     ) : NavArgument<T>(
         name = name,
@@ -31,11 +30,9 @@ public sealed class NavArgument<T>(
     public class NullableOptional<T>(
         name: String,
         type: ArgumentType,
-
         public val defaultValue: T? = null,
     ) : NavArgument<T>(
         name = name,
         type = type,
     )
 }
-

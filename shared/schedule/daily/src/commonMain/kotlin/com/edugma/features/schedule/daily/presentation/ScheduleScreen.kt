@@ -30,11 +30,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import edugma.shared.core.resources.generated.resources.Res
-import edugma.shared.core.resources.generated.resources.*
-import edugma.shared.core.icons.generated.resources.*
-import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
 import com.edugma.core.api.utils.DateFormat
 import com.edugma.core.api.utils.format
 import com.edugma.core.arch.mvi.viewmodel.rememberOnAction
@@ -54,8 +49,13 @@ import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.ui.bindTo
 import com.edugma.core.utils.ui.onPageChanged
 import com.edugma.core.utils.viewmodel.getViewModel
+import edugma.shared.core.icons.generated.resources.*
+import edugma.shared.core.resources.generated.resources.*
+import edugma.shared.core.resources.generated.resources.Res
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ScheduleScreen(

@@ -14,13 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
-import edugma.shared.core.icons.generated.resources.ic_fluent_chevron_right_20_filled
-import org.jetbrains.compose.resources.painterResource
 import com.edugma.core.designSystem.atoms.label.EdLabel
 import com.edugma.core.designSystem.atoms.surface.EdSurface
 import com.edugma.core.designSystem.theme.EdTheme
 import com.edugma.core.designSystem.utils.SecondaryContent
 import com.edugma.core.icons.EdIcons
+import edugma.shared.core.icons.generated.resources.ic_fluent_chevron_right_20_filled
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun EdSettingsSelector(

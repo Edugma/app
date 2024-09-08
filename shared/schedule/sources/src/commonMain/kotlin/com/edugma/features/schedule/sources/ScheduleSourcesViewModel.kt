@@ -12,7 +12,6 @@ import com.edugma.features.schedule.domain.model.source.ScheduleSourceType
 import com.edugma.features.schedule.domain.usecase.ScheduleSourcesUseCase
 import com.edugma.features.schedule.sources.model.ScheduleSourceUiModel
 import com.edugma.features.schedule.sources.model.toDtoModel
-import com.edugma.features.schedule.sources.model.toUiModel
 import kotlinx.coroutines.flow.map
 
 class ScheduleSourcesViewModel(

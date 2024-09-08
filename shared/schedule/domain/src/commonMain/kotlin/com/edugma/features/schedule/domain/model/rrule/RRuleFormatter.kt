@@ -173,7 +173,6 @@ open class RRuleFormatter() {
      * Transforms this RRule to a RFC5545 standard iCal String.
      */
     fun toRFC5545String(): String {
-
         val buf = StringBuilder()
         buf.append("$name:")
         buf.append("FREQ=").append(freq.toString())

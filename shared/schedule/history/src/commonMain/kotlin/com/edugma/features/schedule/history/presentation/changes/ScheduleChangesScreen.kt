@@ -49,9 +49,9 @@ import com.edugma.features.schedule.domain.model.lessonType.LessonType
 import com.edugma.features.schedule.domain.model.place.Place
 import com.edugma.features.schedule.domain.usecase.LessonChange
 import com.edugma.navigation.core.destination.NavArgs
+import edugma.shared.core.icons.generated.resources.*
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import edugma.shared.core.icons.generated.resources.*
 import org.jetbrains.compose.resources.painterResource
 
 @Composable

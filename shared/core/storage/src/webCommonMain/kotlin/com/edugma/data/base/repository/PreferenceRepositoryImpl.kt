@@ -5,7 +5,6 @@ import com.edugma.core.api.utils.InternalApi
 import io.ktor.util.decodeBase64Bytes
 import io.ktor.util.encodeBase64
 import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.browser.localStorage as BrowserLocalStorage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -18,6 +17,7 @@ import org.w3c.dom.Storage
 import org.w3c.dom.set
 import kotlin.properties.Delegates.notNull
 import kotlin.reflect.KType
+import kotlinx.browser.localStorage as BrowserLocalStorage
 
 class PreferenceRepositoryImpl : PreferenceRepository {
     private val dataStore: Storage = BrowserLocalStorage

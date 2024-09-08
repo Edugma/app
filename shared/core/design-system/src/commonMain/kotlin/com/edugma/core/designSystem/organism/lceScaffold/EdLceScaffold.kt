@@ -10,10 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.pulltorefresh.PullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import co.touchlab.kermit.Logger
 import com.edugma.core.api.model.LceUiState
 import com.edugma.core.designSystem.organism.errorWithRetry.EdErrorRetry
 import com.edugma.core.designSystem.organism.nothingFound.EdNothingFound
@@ -56,7 +54,6 @@ fun EdLceScaffold(
             )
         }
     }
-
 }
 
 @Composable

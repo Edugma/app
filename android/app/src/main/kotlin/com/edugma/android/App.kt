@@ -7,7 +7,6 @@ import com.edugma.core.analytics.TracerCrashAnalytics
 import com.edugma.core.api.api.CrashAnalytics
 import com.edugma.features.app.core.appModules
 import com.edugma.shared.app.BuildKonfig
-// import com.edugma.features.schedule.appwidget.ScheduleAppwidgetFeatureModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin

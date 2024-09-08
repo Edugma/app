@@ -1,12 +1,10 @@
 package com.edugma.features.schedule.domain.usecase
 
-import com.edugma.core.api.model.Coordinates
 import com.edugma.core.api.utils.LceFlow
 import com.edugma.core.api.utils.first
 import com.edugma.features.schedule.domain.model.compact.CompactPlaceInfo
 import com.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
 import com.edugma.features.schedule.domain.model.lesson.LessonEvent
-import com.edugma.features.schedule.domain.model.place.Place
 import com.edugma.features.schedule.domain.model.schedule.ScheduleCalendar
 import com.edugma.features.schedule.domain.model.schedule.ScheduleDay
 import com.edugma.features.schedule.domain.model.source.ScheduleSource

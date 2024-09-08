@@ -55,7 +55,6 @@ class ScheduleMenuViewModel(
                     }
                 },
                 onFailure = {
-
                 }
             )
         }

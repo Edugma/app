@@ -112,5 +112,6 @@ class PeopleViewModel(
 }
 
 enum class BottomSheetType {
-    Filter, Person
+    Filter,
+    Person
 }

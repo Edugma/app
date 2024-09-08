@@ -102,7 +102,6 @@ class ComposeNavigator(
         navController.popBackStack(command.destination.getRoute(), false)
     }
 
-
     private fun NavOptionsBuilder.navOptions(navOptions: EdNavOptionsBuilder) {
         launchSingleTop = navOptions.launchSingleTop
         restoreState = navOptions.restoreState
@@ -115,7 +114,6 @@ class ComposeNavigator(
             saveState = navPopUpTo.saveState
         }
     }
-
 
     private fun addResultListener(
         key: String,

@@ -59,7 +59,7 @@ fun ColumnScope.FiltersBottomSheetContent(
 }
 
 @Composable
-private fun<T> SelectableChipsRow(
+private fun <T> SelectableChipsRow(
     name: String,
     items: List<Filter<T>>,
     onClick: Typed1Listener<Filter<T>>,

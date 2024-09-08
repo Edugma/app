@@ -8,7 +8,7 @@ import com.edugma.core.designSystem.theme.EdTheme
 @Composable
 fun RefresherPreview() {
     EdTheme {
-        Refresher() {
+        Refresher {
         }
     }
 }

@@ -13,12 +13,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
-import edugma.shared.core.icons.generated.resources.*
-import org.jetbrains.compose.resources.painterResource
 import com.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import com.edugma.core.designSystem.atoms.spacer.NavigationBarSpacer
 import com.edugma.core.designSystem.atoms.surface.EdSurface
@@ -40,7 +37,8 @@ import com.edugma.features.account.people.PeopleScreenType
 import com.edugma.features.account.people.common.bottomSheets.SearchBottomSheet
 import com.edugma.features.account.people.common.items.PeopleItem
 import com.edugma.features.account.people.common.items.PeopleItemPlaceholder
-import kotlinx.coroutines.launch
+import edugma.shared.core.icons.generated.resources.*
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun PeopleScreen(

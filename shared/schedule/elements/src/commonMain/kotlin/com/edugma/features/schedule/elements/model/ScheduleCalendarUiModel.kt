@@ -1,6 +1,5 @@
 package com.edugma.features.schedule.elements.model
 
-import co.touchlab.kermit.Logger
 import com.edugma.core.api.utils.untilMinutes
 import com.edugma.features.schedule.domain.model.compact.zonedTime
 import com.edugma.features.schedule.domain.model.lesson.LessonEvent

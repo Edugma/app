@@ -1,10 +1,10 @@
 package com.edugma.navigation.core.router
 
-import kotlinx.coroutines.flow.Flow
 import com.edugma.navigation.core.destination.Destination
 import com.edugma.navigation.core.destination.DestinationBundle
 import com.edugma.navigation.core.graph.NavGraph
 import com.edugma.navigation.core.router.navOptions.NavOptionsBuilder
+import kotlinx.coroutines.flow.Flow
 
 interface Router {
     val commands: Flow<NavigationCommand>
@@ -28,9 +28,7 @@ interface Router {
 
     fun back()
 
-
     fun onSignal(key: String, backStackEntryId: String, action: () -> Unit)
-
 
     fun <T : Any> onResult(key: String, backStackEntryId: String, action: (T) -> Unit)
 

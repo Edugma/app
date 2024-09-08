@@ -93,10 +93,8 @@ object EdTextFieldDefaults {
     fun textFieldColors() = TextFieldDefaults.colors(
         focusedTextColor = LocalContentColor.current,
         unfocusedTextColor = LocalContentColor.current,
-
         focusedContainerColor = Color.Transparent,
         unfocusedContainerColor = Color.Transparent,
-
         focusedIndicatorColor = Color.Transparent,
         unfocusedIndicatorColor = Color.Transparent,
         disabledIndicatorColor = Color.Transparent,

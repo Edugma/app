@@ -1,7 +1,6 @@
 package com.edugma.features.schedule.menu.cards
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -11,20 +10,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-
-import edugma.shared.core.resources.generated.resources.Res
-import edugma.shared.core.resources.generated.resources.*
-import org.jetbrains.compose.resources.stringResource
 import com.edugma.core.designSystem.atoms.lottie.EdLottie
 import com.edugma.core.designSystem.atoms.lottie.LottieSource
 import com.edugma.core.designSystem.organism.actionCard.EdActionCard
 import com.edugma.core.designSystem.organism.actionCard.EdActionCardWidth
-import com.edugma.core.designSystem.theme.EdTheme
 import com.edugma.core.designSystem.utils.rememberCachedIconPainter
-import com.edugma.core.icons.EdIcons
 import com.edugma.core.utils.ClickListener
 import com.edugma.features.schedule.menu.presentation.ScheduleMenuUiState
-import org.jetbrains.compose.resources.painterResource
+import edugma.shared.core.resources.generated.resources.*
+import edugma.shared.core.resources.generated.resources.Res
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ScheduleCard(
@@ -38,7 +33,7 @@ fun ScheduleCard(
         count == 0 -> "Сегодня нет занятий"
         else -> {
             val lessonText = chooseDeclension(number = count, forms = lessonTextList)
-            "Сегодня ${count} ${lessonText}"
+            "Сегодня $count $lessonText"
         }
     }
     EdActionCard(
@@ -49,7 +44,7 @@ fun ScheduleCard(
         modifier = modifier,
     ) {
         if (count == 0) {
-            Box (Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
+            Box(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
                 EdLottie(
                     lottieSource = LottieSource.FileRes("files/sch_relax_2.json"),
                     modifier = Modifier

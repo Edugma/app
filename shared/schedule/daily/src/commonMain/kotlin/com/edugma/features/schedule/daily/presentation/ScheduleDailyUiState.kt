@@ -1,6 +1,5 @@
 package com.edugma.features.schedule.daily.presentation
 
-import co.touchlab.kermit.Logger
 import com.edugma.core.api.model.LceUiState
 import com.edugma.features.schedule.daily.model.ScheduleWeeksUiModel
 import com.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
@@ -19,18 +18,15 @@ data class ScheduleDailyUiState(
     val schedule: ScheduleCalendarUiModel? = null,
     val weeks: ScheduleWeeksUiModel? = null,
     val lessonDisplaySettings: LessonDisplaySettings = LessonDisplaySettings.Default,
-
     val today: LocalDate,
     val scheduleSize: Int,
     val todayScheduleIndex: Int,
     val todayWeeksIndex: Int,
     val todayDayOfWeekIndex: Int,
-
     val selectedDate: LocalDate = today,
     val scheduleIndex: Int = todayScheduleIndex,
     val weeksIndex: Int = todayWeeksIndex,
     val dayOfWeekIndex: Int = todayDayOfWeekIndex,
-
     val showBackToTodayFab: Boolean = false,
 ) {
     fun toContent(schedule: ScheduleCalendarUiModel?): ScheduleDailyUiState {

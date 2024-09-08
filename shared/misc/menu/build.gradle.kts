@@ -19,4 +19,3 @@ kotlin {
 android {
     namespace = "com.edugma.features.misc.menu"
 }
-

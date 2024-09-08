@@ -2,16 +2,13 @@ package com.edugma.features.app.presentation.main
 
 import co.touchlab.kermit.Logger
 import com.edugma.core.api.model.AppState
-import com.edugma.core.api.model.NodeState
 import com.edugma.core.api.model.ThemeMode
 import com.edugma.core.api.repository.AppStateRepository
 import com.edugma.core.api.repository.ThemeRepository
-import com.edugma.core.api.repository.UrlRepository
 import com.edugma.core.api.repository.UrlTemplateRepository
 import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
 import com.edugma.core.arch.mvi.viewmodel.BaseViewModel
-import com.edugma.core.network.UrlRepositoryImpl
 
 class MainAppViewModel(
     private val themeRepository: ThemeRepository,

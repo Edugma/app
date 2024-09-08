@@ -1,7 +1,6 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.BOOLEAN
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import com.codingfeline.buildkonfig.gradle.TargetConfigDsl
-import org.jetbrains.kotlin.gradle.plugin.mpp.BitcodeEmbeddingMode
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -53,7 +52,6 @@ kotlin {
                 implementation(projects.shared.misc.menu)
                 implementation(projects.shared.misc.settings)
                 implementation(projects.shared.misc.other)
-
 
                 implementation(projects.shared.schedule.data)
             }

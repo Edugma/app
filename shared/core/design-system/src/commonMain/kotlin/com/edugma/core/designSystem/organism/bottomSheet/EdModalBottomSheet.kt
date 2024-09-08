@@ -1,21 +1,9 @@
 package com.edugma.core.designSystem.organism.bottomSheet
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material3.BottomSheetDefaults as BottomSheetDefaults3
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet as ModalBottomSheet3
-import androidx.compose.material3.ModalBottomSheetDefaults as ModalBottomSheetDefaults3
-import androidx.compose.material3.SheetState as SheetState3
-import androidx.compose.material3.SheetValue as SheetValue3
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -27,21 +15,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import co.touchlab.kermit.Logger
-import com.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import com.edugma.core.designSystem.molecules.dragger.EdDragHandle
 import com.edugma.core.designSystem.theme.EdTheme
 import com.edugma.core.designSystem.tokens.elevation.EdElevation
 import com.edugma.core.designSystem.tokens.shapes.top
 import com.edugma.core.designSystem.utils.BackHandler
 import kotlinx.coroutines.launch
+import androidx.compose.material3.BottomSheetDefaults as BottomSheetDefaults3
+import androidx.compose.material3.ModalBottomSheet as ModalBottomSheet3
+import androidx.compose.material3.ModalBottomSheetDefaults as ModalBottomSheetDefaults3
+import androidx.compose.material3.SheetState as SheetState3
+import androidx.compose.material3.SheetValue as SheetValue3
 import androidx.compose.material3.rememberModalBottomSheetState as rememberModalBottomSheetState3
 
 @Composable
@@ -188,7 +178,10 @@ fun rememberModalBottomSheetState(
         skipPartiallyExpanded = skipPartiallyExpanded,
         // TODO Lambda memoization
         confirmValueChange = remember {
-            { it: SheetValue3 -> confirmValueChange(it.toEdugma()) }
+            {
+                    it: SheetValue3 ->
+                confirmValueChange(it.toEdugma())
+            }
         },
     )
 

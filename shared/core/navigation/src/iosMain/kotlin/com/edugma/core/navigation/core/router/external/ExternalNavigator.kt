@@ -1,6 +1,5 @@
 package com.edugma.core.navigation.core.router.external
 
-import co.touchlab.kermit.Logger
 import com.edugma.core.api.api.CrashAnalytics
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -58,7 +57,7 @@ class ExternalNavigator(
             animated = true,
             completion = null,
         )
-       // activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
+        // activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
     }
 
     private fun openUri(command: ExternalNavigationCommand.OpenUri) {
@@ -80,6 +79,5 @@ class ExternalNavigator(
             options = emptyMap<Any?, Any>(),
             completionHandler = null,
         )
-
     }
 }

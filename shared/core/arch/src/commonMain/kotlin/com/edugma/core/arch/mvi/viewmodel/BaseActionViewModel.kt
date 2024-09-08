@@ -10,7 +10,6 @@ import com.edugma.core.arch.mvi.impl.SimpleStateStore
 import com.edugma.core.navigation.core.AccountRouter
 import com.edugma.core.navigation.core.HomeRouter
 import com.edugma.core.navigation.core.MiscRouter
-import com.edugma.navigation.core.router.Router
 import com.edugma.core.navigation.core.ScheduleRouter
 import com.edugma.core.navigation.core.TabMenuRouter
 import kotlinx.coroutines.Dispatchers
@@ -43,7 +42,6 @@ abstract class BaseActionViewModel<TState, TAction>(
     }
 
     open fun processAction(action: TAction) {
-
     }
 
     protected val screenResultProvider: ScreenResultProvider by inject()

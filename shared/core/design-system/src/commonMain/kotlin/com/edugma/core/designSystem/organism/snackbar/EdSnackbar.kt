@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.unit.dp
-
 import com.edugma.core.designSystem.atoms.card.EdCard
 import com.edugma.core.designSystem.atoms.card.EdCardDefaults
 import com.edugma.core.designSystem.atoms.label.EdLabel

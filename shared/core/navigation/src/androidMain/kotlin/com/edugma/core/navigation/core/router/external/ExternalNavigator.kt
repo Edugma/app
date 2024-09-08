@@ -6,14 +6,12 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
-import co.touchlab.kermit.Logger
 import com.edugma.core.api.api.CrashAnalytics
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-
 
 class ExternalNavigator(
     private val externalRouter: ExternalRouter,

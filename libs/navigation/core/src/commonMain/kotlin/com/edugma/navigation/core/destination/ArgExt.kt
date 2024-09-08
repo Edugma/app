@@ -73,4 +73,3 @@ inline fun <reified T> inferArgumentType(): ArgumentType {
         }
     }
 }
-

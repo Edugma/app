@@ -1,6 +1,5 @@
 package com.edugma.core.api.api
 
-import com.edugma.core.api.api.Path
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

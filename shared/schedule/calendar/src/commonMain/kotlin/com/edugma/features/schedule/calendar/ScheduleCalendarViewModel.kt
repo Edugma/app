@@ -20,7 +20,6 @@ class ScheduleCalendarViewModel(
     }
 
     private fun loadScheduleCalendar(isRefreshing: Boolean) {
-
         // TODO use isRefreshing
         launchLce(
             lceProvider = {

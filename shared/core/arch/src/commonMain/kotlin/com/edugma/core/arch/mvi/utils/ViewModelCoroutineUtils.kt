@@ -1,7 +1,6 @@
 package com.edugma.core.arch.mvi.utils
 
 import androidx.lifecycle.viewModelScope
-import co.touchlab.kermit.Logger
 import com.edugma.core.api.api.CrashAnalytics
 import com.edugma.core.api.utils.IO
 import com.edugma.core.arch.mvi.delegate.DebounceDelegate

@@ -1,6 +1,5 @@
 package com.edugma.features.account.data.api
 
-import de.jensklingenberg.ktorfit.http.Body
 import com.edugma.core.api.api.EdugmaHttpClient
 import com.edugma.core.api.api.get
 import com.edugma.core.api.api.getResult
@@ -13,6 +12,7 @@ import com.edugma.features.account.domain.model.auth.Token
 import com.edugma.features.account.domain.model.payments.PaymentsDto
 import com.edugma.features.account.domain.model.peoples.Person
 import com.edugma.features.account.domain.model.performance.PerformanceDto
+import de.jensklingenberg.ktorfit.http.Body
 
 class AccountService(
     private val client: EdugmaHttpClient,

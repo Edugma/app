@@ -23,9 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-
-import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
 import com.edugma.core.designSystem.atoms.label.EdLabel
 import com.edugma.core.designSystem.organism.navigationBar.EdNavigationBar
 import com.edugma.core.designSystem.theme.EdTheme
@@ -38,11 +35,13 @@ import com.edugma.core.navigation.core.rememberRouterNavigator
 import com.edugma.core.navigation.misc.MiscMenuScreens
 import com.edugma.features.app.presentation.main.MainViewModel
 import com.edugma.navigation.core.compose.EdugmaNavigation
-import com.edugma.navigation.core.graph.NavGraphBuilder
-import com.edugma.navigation.core.navigator.ComposeNavigator
 import com.edugma.navigation.core.destination.Destination
 import com.edugma.navigation.core.destination.toBundle
+import com.edugma.navigation.core.graph.NavGraphBuilder
+import com.edugma.navigation.core.navigator.ComposeNavigator
 import com.edugma.navigation.core.utils.getRoute
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 val showNavBar = listOf(
     HomeScreens.Main,
@@ -102,7 +101,6 @@ fun BottomNav(navigator: ComposeNavigator, router: TabMenuRouter, isVisible: Sta
         exit = slideOutVertically {
             with(density) { 40.dp.roundToPx() }
         } + shrinkVertically() + fadeOut(),
-
     ) {
         EdNavigationBar(
             tonalElevation = 3.dp,

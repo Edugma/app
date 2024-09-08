@@ -33,4 +33,3 @@ public class NavArgs<T : Destination>(
         return argumentsStore.get<T>(name)
     }
 }
-

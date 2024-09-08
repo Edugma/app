@@ -3,8 +3,8 @@ package com.edugma.core.designSystem.tokens.typography
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import edugma.shared.core.design_system.generated.resources.Res
 import edugma.shared.core.design_system.generated.resources.*
+import edugma.shared.core.design_system.generated.resources.Res
 import org.jetbrains.compose.resources.Font
 
 val openSansFontFamily: FontFamily

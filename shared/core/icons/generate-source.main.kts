@@ -10,7 +10,7 @@ val iconsInProject = mutableSetOf<String>()
 
 val regex = """EdIcons\.(ic_fluent_[_0-9a-zA-Z]*)""".toRegex()
 val projectFolder = File("../..")
-projectFolder.walkTopDown().filter { it.extension == "kt" }.forEach {  kotlinFile ->
+projectFolder.walkTopDown().filter { it.extension == "kt" }.forEach { kotlinFile ->
     val fileText = kotlinFile.readText()
     regex.findAll(fileText).forEach {
         iconsInProject += it.groups[1]!!.value + ".svg"

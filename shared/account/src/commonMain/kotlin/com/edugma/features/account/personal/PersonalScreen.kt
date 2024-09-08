@@ -46,7 +46,6 @@ import com.edugma.features.account.domain.model.Personal
 import com.edugma.features.account.domain.model.applications.Application
 import edugma.shared.core.icons.generated.resources.*
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun PersonalScreen(viewModel: PersonalViewModel = getViewModel()) {

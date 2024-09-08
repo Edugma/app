@@ -28,4 +28,3 @@ dependencies {
 }
 
 android.namespace = "com.edugma.core.network"
-

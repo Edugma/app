@@ -23,9 +23,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.edugma.core.api.model.Coordinates
-import edugma.shared.core.icons.generated.resources.*
-import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
 import com.edugma.core.designSystem.atoms.divider.EdDivider
 import com.edugma.core.designSystem.atoms.label.EdLabel
 import com.edugma.core.designSystem.atoms.spacer.SpacerHeight
@@ -45,14 +42,12 @@ import com.edugma.core.utils.ClickListener
 import com.edugma.core.utils.Typed1Listener
 import com.edugma.core.utils.viewmodel.getViewModel
 import com.edugma.features.schedule.domain.model.attentdee.AttendeeInfo
-import com.edugma.features.schedule.domain.model.lesson.LessonEvent
 import com.edugma.features.schedule.domain.model.place.Place
-import com.edugma.features.schedule.domain.model.teacher.TeacherInfo
 import com.edugma.features.schedule.domain.model.teacher.description
-import kotlinx.datetime.Instant
+import edugma.shared.core.icons.generated.resources.*
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalDateTime
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun LessonInfoScreen(

@@ -1,7 +1,6 @@
 package com.edugma.core.network
 
 import com.edugma.core.api.api.EdugmaApi
-import com.edugma.core.api.api.Node
 import com.edugma.core.api.model.NodeState
 import com.edugma.core.api.repository.CacheRepository
 import com.edugma.core.api.repository.NodesRepository
@@ -9,8 +8,6 @@ import com.edugma.core.api.repository.SettingsRepository
 import com.edugma.core.api.repository.UrlRepository
 import com.edugma.core.api.repository.UrlTemplateRepository
 import com.edugma.core.api.repository.get
-import com.edugma.core.api.repository.getFlow
-import com.edugma.core.api.repository.save
 import io.ktor.http.HttpMethod
 
 class UrlRepositoryImpl(

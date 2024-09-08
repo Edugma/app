@@ -6,6 +6,6 @@ fun Collection<Person>.convertAndShare(): String {
     return share { index, student -> "${index + 1}. ${student.name}" }
 }
 
-fun<T> Collection<T>.share(mapper: (Int, T) -> String): String {
+fun <T> Collection<T>.share(mapper: (Int, T) -> String): String {
     return mapIndexed { index: Int, t: T -> mapper(index, t) }.joinToString("\n")
 }

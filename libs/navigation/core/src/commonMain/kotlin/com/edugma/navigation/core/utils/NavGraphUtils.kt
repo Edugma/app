@@ -5,11 +5,11 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestinationBuilder
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.edugma.navigation.core.graph.NavGraph
 import com.edugma.navigation.core.destination.ArgumentType
 import com.edugma.navigation.core.destination.Destination
 import com.edugma.navigation.core.destination.DestinationBundle
 import com.edugma.navigation.core.destination.NavArgument
+import com.edugma.navigation.core.graph.NavGraph
 
 fun <D : NavDestination> NavDestinationBuilder<D>.argument(argument: NavArgument<*>) {
     argument(argument.name) {
@@ -36,7 +36,6 @@ fun getNamedNavArgument(argument: NavArgument<*>): NamedNavArgument {
         }
     }
 }
-
 
 // fun getDeeplink(deeplink: NavDeepLink): JetpackNavDeepLink =
 //     androidx.navigation.NavDeepLink(
@@ -101,7 +100,6 @@ private fun <T> T.toUrlEncodedString(): String {
     return if (this is String) this.toUrlEncoded() else this.toString()
 }
 
-
 internal fun String.toUrlEncoded(): String {
     val result = StringBuilder()
     for (char in this) {
@@ -133,4 +131,3 @@ internal fun String.toUrlDecoded(): String {
     }
     return result.toString()
 }
-

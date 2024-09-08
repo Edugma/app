@@ -18,13 +18,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import edugma.shared.core.icons.generated.resources.ic_fluent_dismiss_20_filled
-import edugma.shared.core.icons.generated.resources.ic_fluent_search_24_regular
-import org.jetbrains.compose.resources.painterResource
 import com.edugma.core.designSystem.molecules.textField.EdTextField
 import com.edugma.core.designSystem.theme.EdTheme
 import com.edugma.core.icons.EdIcons
+import edugma.shared.core.icons.generated.resources.ic_fluent_dismiss_20_filled
+import edugma.shared.core.icons.generated.resources.ic_fluent_search_24_regular
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

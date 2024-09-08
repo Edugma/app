@@ -4,11 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.graphics.Color
+import com.edugma.core.designSystem.theme.EdTheme
+import com.edugma.core.icons.EdIcons
 import edugma.shared.core.icons.generated.resources.ic_fluent_error_circle_24_regular
 import edugma.shared.core.icons.generated.resources.ic_fluent_info_24_regular
 import edugma.shared.core.icons.generated.resources.ic_fluent_warning_24_regular
-import com.edugma.core.designSystem.theme.EdTheme
-import com.edugma.core.icons.EdIcons
 import org.jetbrains.compose.resources.DrawableResource
 
 @Immutable

@@ -17,7 +17,10 @@ data class CompactLessonEvent(
     val placesId: List<String>,
     val start: LessonDateTime,
     val end: LessonDateTime,
-    val recurrence: List<@Serializable(RRuleSerializer::class) RRule>,
+    val recurrence: List<
+        @Serializable(RRuleSerializer::class)
+        RRule
+        >,
     val importance: Importance,
 )
 

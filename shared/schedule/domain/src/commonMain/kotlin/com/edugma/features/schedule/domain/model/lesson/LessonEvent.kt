@@ -20,7 +20,10 @@ data class LessonEvent(
     val places: List<Place>,
     val start: LessonDateTime,
     val end: LessonDateTime,
-    val recurrence: List<@Serializable(RRuleSerializer::class) RRule>,
+    val recurrence: List<
+        @Serializable(RRuleSerializer::class)
+        RRule
+        >,
     val importance: Importance,
 ) : Comparable<LessonEvent> {
     override fun compareTo(other: LessonEvent): Int {

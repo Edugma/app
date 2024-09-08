@@ -1,6 +1,5 @@
 package com.edugma.features.account.performance
 
-import co.touchlab.kermit.Logger
 import com.edugma.core.api.model.ListItemUiModel
 import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
@@ -127,7 +126,7 @@ class PerformanceViewModel(
     private fun List<GradePosition>.getExamTypes() = map { it.type }.toSet()
 
     // todo рефакторить и вынести в usecase
-    private fun<T> List<Filter<T>>.updateFilter(newFilter: Filter<T>): Set<Filter<T>> {
+    private fun <T> List<Filter<T>>.updateFilter(newFilter: Filter<T>): Set<Filter<T>> {
         return emptySet()
 //        val newSet = toMutableList()
 //        newSet.forEachIndexed { index, filter ->
@@ -142,7 +141,7 @@ class PerformanceViewModel(
 //        return newSet.toSet()
     }
 
-    private fun<T> Set<Filter<T>>.addOrDeleteFilter(newFilter: Filter<T>): Set<Filter<T>> {
+    private fun <T> Set<Filter<T>>.addOrDeleteFilter(newFilter: Filter<T>): Set<Filter<T>> {
         val newSet = toMutableList()
         if (newFilter.isChecked) {
             if (newFilter is Name) {
@@ -152,7 +151,9 @@ class PerformanceViewModel(
             newSet.remove(newFilter)
         } else {
             val filter = when (newFilter) {
-                is PerformancePeriodUiModel -> (newFilter as PerformancePeriodUiModel).copy(isChecked = !newFilter.isChecked)
+                is PerformancePeriodUiModel -> (newFilter as PerformancePeriodUiModel).copy(
+                    isChecked = !newFilter.isChecked
+                )
                 is Type -> (newFilter as Type).copy(isChecked = !newFilter.isChecked)
                 is Name -> {
                     // TODO Поправить

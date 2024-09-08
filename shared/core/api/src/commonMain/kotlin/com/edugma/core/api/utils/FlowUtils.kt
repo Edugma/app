@@ -19,20 +19,20 @@ private const val StopTimeoutMillis: Long = 5000
  */
 val WhileViewSubscribed: SharingStarted = SharingStarted.WhileSubscribed(StopTimeoutMillis)
 
-fun<T> Flow<Result<T>>.onSuccess(action: suspend (value: T) -> Unit) =
+fun <T> Flow<Result<T>>.onSuccess(action: suspend (value: T) -> Unit) =
     onEach { it.onSuccess { action(it) } }
 
-fun<T> Flow<Result<T>>.onFailure(action: suspend (exception: Throwable) -> Unit) =
+fun <T> Flow<Result<T>>.onFailure(action: suspend (exception: Throwable) -> Unit) =
     onEach {
         it.onFailure { error ->
             action(error)
         }
     }
 
-fun<T, R> Flow<Result<T>>.mapResult(action: (T) -> R): Flow<Result<R>> =
+fun <T, R> Flow<Result<T>>.mapResult(action: (T) -> R): Flow<Result<R>> =
     map { it.mapCatching(action) }
 
-suspend fun<T> Flow<Result<T>>.execute(
+suspend fun <T> Flow<Result<T>>.execute(
     onStart: (() -> Unit)? = null,
     onSuccess: ((T) -> Unit)? = null,
     onError: ((Throwable) -> Unit)? = null,
@@ -47,7 +47,7 @@ suspend fun<T> Flow<Result<T>>.execute(
     }
 }
 
-suspend fun<T> Flow<Result<T>>.executeResult(onStart: (() -> Unit)? = null, onExecute: ((Result<T>) -> Unit)? = null) {
+suspend fun <T> Flow<Result<T>>.executeResult(onStart: (() -> Unit)? = null, onExecute: ((Result<T>) -> Unit)? = null) {
     onStart?.invoke()
     collect {
         onExecute?.invoke(it)

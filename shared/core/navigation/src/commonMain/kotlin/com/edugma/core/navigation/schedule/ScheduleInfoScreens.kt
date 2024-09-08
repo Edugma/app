@@ -4,9 +4,6 @@ import com.edugma.navigation.core.destination.Destination
 import com.edugma.navigation.core.destination.reqArg
 import com.edugma.navigation.core.destination.toBundle
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toInstant
 
 object ScheduleInfoScreens {
     object LessonInfo : Destination("scheduleInfoLesson") {

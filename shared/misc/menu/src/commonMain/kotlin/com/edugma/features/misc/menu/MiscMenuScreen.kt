@@ -12,7 +12,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.edugma.core.designSystem.atoms.spacer.SpacerFill
 import com.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import com.edugma.core.designSystem.atoms.surface.EdSurface
 import com.edugma.core.designSystem.organism.iconCard.EdIconCard

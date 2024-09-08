@@ -25,7 +25,6 @@ class SettingsAppearanceViewModel(
 
     override fun processAction(action: SettingsAppearanceAction) {
         when (action) {
-
             is SettingsAppearanceAction.OnThemeModeSelected -> {
                 newState {
                     copy(themeMode = action.themeMode)

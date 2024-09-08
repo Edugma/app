@@ -1,11 +1,9 @@
 package com.edugma.features.account.data.repository
 
-import co.touchlab.kermit.Logger
 import com.edugma.core.api.repository.CacheRepository
 import com.edugma.core.api.repository.getFlow
 import com.edugma.core.api.repository.save
 import com.edugma.core.api.utils.LceFlow
-import com.edugma.core.api.utils.mapLce
 import com.edugma.data.base.consts.CacheConst.PerformanceKey
 import com.edugma.data.base.store.store
 import com.edugma.features.account.data.api.AccountService

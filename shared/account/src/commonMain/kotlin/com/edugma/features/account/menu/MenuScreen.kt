@@ -11,7 +11,6 @@ import com.edugma.features.account.menu.screens.MainScreen
 
 @Composable
 fun MenuScreen(viewModel: MenuViewModel = getViewModel()) {
-
     val state by viewModel.stateFlow.collectAsState()
 
     FeatureScreen(statusBarPadding = false) {

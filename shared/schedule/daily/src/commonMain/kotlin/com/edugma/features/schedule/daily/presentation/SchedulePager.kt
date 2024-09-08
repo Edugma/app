@@ -7,9 +7,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,8 +19,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerDefaults
 import androidx.compose.foundation.pager.PagerState
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,10 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import edugma.shared.core.resources.generated.resources.Res
-import edugma.shared.core.resources.generated.resources.*
 import com.edugma.core.api.model.LceUiState
-import org.jetbrains.compose.resources.stringResource
 import com.edugma.core.designSystem.atoms.lottie.EdLottie
 import com.edugma.core.designSystem.atoms.lottie.LottieSource
 import com.edugma.core.designSystem.atoms.spacer.SpacerHeight
@@ -49,7 +42,10 @@ import com.edugma.features.schedule.elements.lesson.LessonPlaceholder
 import com.edugma.features.schedule.elements.lesson.LessonWindow
 import com.edugma.features.schedule.elements.lesson.model.ScheduleEventUiModel
 import com.edugma.features.schedule.elements.model.ScheduleCalendarUiModel
+import edugma.shared.core.resources.generated.resources.*
+import edugma.shared.core.resources.generated.resources.Res
 import kotlinx.datetime.LocalDate
+import org.jetbrains.compose.resources.stringResource
 
 private val relaxAnims = listOf(
     "files/sch_relax_0.json",

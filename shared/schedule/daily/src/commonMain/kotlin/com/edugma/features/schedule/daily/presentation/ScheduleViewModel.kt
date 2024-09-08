@@ -12,8 +12,6 @@ import com.edugma.features.schedule.domain.usecase.ScheduleUseCase
 import com.edugma.features.schedule.elements.utils.toUiModel
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 class ScheduleViewModel(
     private val useCase: ScheduleUseCase,
@@ -96,7 +94,6 @@ class ScheduleViewModel(
             ScheduleInfoScreens.LessonInfo(
                 eventId = lesson.id,
                 currentDate = date,
-
             ),
         )
     }

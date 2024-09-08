@@ -49,12 +49,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import edugma.shared.core.icons.generated.resources.ic_fluent_calendar_today_24_regular
-import edugma.shared.core.resources.generated.resources.Res
-import edugma.shared.core.resources.generated.resources.*
-import edugma.shared.core.icons.generated.resources.*
-import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
 import com.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import com.edugma.core.designSystem.atoms.label.EdLabel
 import com.edugma.core.designSystem.atoms.spacer.SpacerHeight
@@ -79,6 +73,10 @@ import com.edugma.features.schedule.calendar.model.CalendarLessonVO
 import com.edugma.features.schedule.calendar.model.CalendarWeekVO
 import com.edugma.features.schedule.calendar.model.ScheduleCalendarVO
 import com.edugma.features.schedule.domain.model.compact.Importance
+import edugma.shared.core.icons.generated.resources.*
+import edugma.shared.core.icons.generated.resources.ic_fluent_calendar_today_24_regular
+import edugma.shared.core.resources.generated.resources.*
+import edugma.shared.core.resources.generated.resources.Res
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.ExperimentalResourceApi

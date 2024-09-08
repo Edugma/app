@@ -1,6 +1,5 @@
 package com.edugma.core.api.api
 
-import io.ktor.http.HttpMethod
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

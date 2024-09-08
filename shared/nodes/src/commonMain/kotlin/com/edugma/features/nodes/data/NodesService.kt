@@ -1,9 +1,9 @@
 package com.edugma.features.nodes.data
 
-import de.jensklingenberg.ktorfit.http.GET
-import de.jensklingenberg.ktorfit.http.Url
 import com.edugma.core.api.api.EdugmaApi
 import com.edugma.core.api.api.Node
+import de.jensklingenberg.ktorfit.http.GET
+import de.jensklingenberg.ktorfit.http.Url
 
 interface NodesService {
     companion object {

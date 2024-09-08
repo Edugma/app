@@ -17,13 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
-import edugma.shared.core.icons.generated.resources.ic_fluent_chevron_left_20_filled
-import org.jetbrains.compose.resources.painterResource
 import com.edugma.core.designSystem.atoms.label.EdLabel
 import com.edugma.core.designSystem.theme.EdTheme
 import com.edugma.core.designSystem.utils.ifNotNull
 import com.edugma.core.icons.EdIcons
+import edugma.shared.core.icons.generated.resources.ic_fluent_chevron_left_20_filled
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable

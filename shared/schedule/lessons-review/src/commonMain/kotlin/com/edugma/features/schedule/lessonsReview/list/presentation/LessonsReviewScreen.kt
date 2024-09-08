@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -21,11 +19,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import edugma.shared.core.resources.generated.resources.Res
-import edugma.shared.core.resources.generated.resources.*
-import edugma.shared.core.icons.generated.resources.*
-import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
 import com.edugma.core.api.utils.DateFormat
 import com.edugma.core.api.utils.capitalized
 import com.edugma.core.api.utils.format
@@ -54,6 +47,11 @@ import com.edugma.features.schedule.lessonsReview.list.domain.LessonReviewEvent
 import com.edugma.features.schedule.lessonsReview.list.domain.LessonReviewEventsByPeriod
 import com.edugma.features.schedule.lessonsReview.list.domain.LessonReviewPeriod
 import com.edugma.features.schedule.lessonsReview.list.domain.LessonReviewUiState
+import edugma.shared.core.icons.generated.resources.*
+import edugma.shared.core.resources.generated.resources.*
+import edugma.shared.core.resources.generated.resources.Res
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun LessonsReviewScreen(
@@ -207,7 +205,6 @@ private fun EventContent(
     event: LessonReviewEvent,
     modifier: Modifier = Modifier,
 ) {
-
     when (event) {
         is LessonReviewEvent.OneTime -> {
             OneTimeEventContent(

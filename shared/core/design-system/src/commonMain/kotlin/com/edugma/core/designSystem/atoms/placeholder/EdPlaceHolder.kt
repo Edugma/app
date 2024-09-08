@@ -107,17 +107,18 @@ interface PlaceholderHighlight {
      * @param size The size of the current layout to draw in.
      */
     fun brush(
-        /* @FloatRange(from = 0.0, to = 1.0) */
+        // @FloatRange(from = 0.0, to = 1.0)
         progress: Float,
         size: Size,
     ): Brush
+
+    // @FloatRange(from = 0.0, to = 1.0)
 
     /**
      * Return the desired alpha value used for drawing the [Brush] returned from [brush].
      *
      * @param progress the current animated progress in the range of 0f..1f.
      */
-    /* @FloatRange(from = 0.0, to = 1.0) */
     fun alpha(progress: Float): Float
 
     companion object
@@ -139,7 +140,7 @@ interface PlaceholderHighlight {
 @Composable
 fun PlaceholderHighlight.Companion.shimmer(
     animationSpec: InfiniteRepeatableSpec<Float> = PlaceholderDefaults.shimmerAnimationSpec,
-    /* @FloatRange(from = 0.0, to = 1.0) */
+    // @FloatRange(from = 0.0, to = 1.0)
     progressForMaxAlpha: Float = 0.6f,
 ): PlaceholderHighlight = Shimmer(
     highlightColor = PlaceholderDefaults.shimmerHighlightColor(),

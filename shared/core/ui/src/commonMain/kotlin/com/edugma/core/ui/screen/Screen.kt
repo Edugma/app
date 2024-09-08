@@ -11,14 +11,9 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
-import co.touchlab.kermit.Logger
 import com.edugma.core.designSystem.organism.bottomSheet.EdModalBottomSheet
 import com.edugma.core.designSystem.organism.bottomSheet.SheetState
 import com.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState

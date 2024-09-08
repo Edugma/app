@@ -24,4 +24,3 @@ kotlin {
 }
 
 android.namespace = "com.edugma.navigation.core"
-

@@ -1,12 +1,11 @@
 package com.edugma.core.network
 
-import co.touchlab.kermit.Logger
 import com.edugma.core.api.api.CrashAnalytics
+import com.edugma.core.api.model.ResponseError
 import de.jensklingenberg.ktorfit.Ktorfit
 import de.jensklingenberg.ktorfit.converter.Converter
 import de.jensklingenberg.ktorfit.converter.KtorfitResult
 import de.jensklingenberg.ktorfit.converter.TypeData
-import com.edugma.core.api.model.ResponseError
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.isSuccess

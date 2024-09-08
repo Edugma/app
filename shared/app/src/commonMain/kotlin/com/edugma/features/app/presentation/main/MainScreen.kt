@@ -94,7 +94,6 @@ fun MainContent(
     appState: State<AppState>,
     viewModel: MainViewModel = getViewModel(),
 ) {
-
     val (tabNavigator, isNavigationBarVisible) = rememberTabNavigator(viewModel)
 
     var needTabMenuForHome by remember { mutableStateOf(false) }
@@ -112,9 +111,9 @@ fun MainContent(
         ) { tabScreen, needForHome, needForSchedule, needForAccount, needForMisc ->
             tabScreen.destination.route == MainDestination.Home.getRoute() && needForHome ||
                 tabScreen.destination.route == MainDestination.Schedule
-                .getRoute() && needForSchedule ||
+                    .getRoute() && needForSchedule ||
                 tabScreen.destination.route == MainDestination.Account
-                .getRoute() && needForAccount ||
+                    .getRoute() && needForAccount ||
                 tabScreen.destination.route == MainDestination.Misc.getRoute() && needForMisc
         }.collect {
             isNavigationBarVisible.value = it

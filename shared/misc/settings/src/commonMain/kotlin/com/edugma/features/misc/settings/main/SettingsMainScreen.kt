@@ -7,13 +7,6 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-
-
-import edugma.shared.core.resources.generated.resources.Res
-import edugma.shared.core.resources.generated.resources.*
-import edugma.shared.core.icons.generated.resources.*
-import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
 import com.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import com.edugma.core.designSystem.atoms.surface.EdSurface
 import com.edugma.core.designSystem.molecules.settings.button.EdSettingsButton
@@ -24,10 +17,14 @@ import com.edugma.core.designSystem.tokens.shapes.bottom
 import com.edugma.core.icons.EdIcons
 import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.viewmodel.getViewModel
+import edugma.shared.core.icons.generated.resources.*
+import edugma.shared.core.resources.generated.resources.*
+import edugma.shared.core.resources.generated.resources.Res
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun SettingsMainScreen(viewModel: SettingsMainViewModel = getViewModel()) {
-
     FeatureScreen(
         statusBarPadding = false,
     ) {

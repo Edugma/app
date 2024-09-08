@@ -23,7 +23,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-
 import com.edugma.core.api.utils.DateFormat
 import com.edugma.core.api.utils.TimeFormat
 import com.edugma.core.api.utils.format
@@ -37,12 +36,11 @@ import com.edugma.core.designSystem.utils.SecondaryContent
 import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.ClickListener
 import com.edugma.core.utils.viewmodel.getViewModel
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalTime
 import edugma.shared.core.icons.generated.resources.*
 import edugma.shared.core.resources.generated.resources.Res
 import edugma.shared.core.resources.generated.resources.schedule_fre_pla_find_free_place
-import org.jetbrains.compose.resources.painterResource
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalTime
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -177,7 +175,6 @@ fun FreePlaceContent(
                                             modifier = Modifier
                                                 .weight(weight = 1f, fill = true)
                                                 .padding(horizontal = 10.dp, vertical = 10.dp),
-
                                         )
 
                                         Checkbox(

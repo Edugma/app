@@ -1,6 +1,5 @@
 package com.edugma.core.api.api
 
-import co.touchlab.kermit.Logger
 import com.edugma.core.api.model.ResponseError
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse

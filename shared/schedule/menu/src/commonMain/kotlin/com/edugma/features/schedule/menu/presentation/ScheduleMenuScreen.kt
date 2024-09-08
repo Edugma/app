@@ -17,13 +17,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-
-
-import edugma.shared.core.resources.generated.resources.Res
-import edugma.shared.core.resources.generated.resources.*
-import edugma.shared.core.icons.generated.resources.*
-import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
 import com.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import com.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import com.edugma.core.designSystem.atoms.surface.EdSurface
@@ -43,7 +36,12 @@ import com.edugma.features.schedule.menu.cards.ScheduleAppWidgetCard
 import com.edugma.features.schedule.menu.cards.ScheduleCard
 import com.edugma.features.schedule.menu.cards.ScheduleSourcesCard
 import com.edugma.features.schedule.menu.model.MenuItem
+import edugma.shared.core.icons.generated.resources.*
+import edugma.shared.core.resources.generated.resources.*
+import edugma.shared.core.resources.generated.resources.Res
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ScheduleMenuScreen(viewModel: ScheduleMenuViewModel = getViewModel()) {

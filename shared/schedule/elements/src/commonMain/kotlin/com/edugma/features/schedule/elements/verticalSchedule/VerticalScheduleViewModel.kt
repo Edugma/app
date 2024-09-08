@@ -2,14 +2,11 @@ package com.edugma.features.schedule.elements.verticalSchedule
 
 import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.viewmodel.BaseViewModel
-import com.edugma.core.navigation.schedule.ScheduleInfoScreens
 import com.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
 import com.edugma.features.schedule.domain.model.lesson.LessonEvent
 import com.edugma.features.schedule.domain.model.source.ScheduleSource
 import com.edugma.features.schedule.domain.usecase.ScheduleUseCase
 import com.edugma.features.schedule.elements.model.ScheduleDayUiModel
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 class VerticalScheduleViewModel(
     private val useCase: ScheduleUseCase,

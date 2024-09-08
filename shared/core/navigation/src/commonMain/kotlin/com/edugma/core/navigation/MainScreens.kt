@@ -1,5 +1,7 @@
 package com.edugma.core.navigation
 
+import com.edugma.core.icons.EdIcons
+import com.edugma.navigation.core.graph.NavGraph
 import edugma.shared.core.icons.generated.resources.ic_fluent_apps_24_filled
 import edugma.shared.core.icons.generated.resources.ic_fluent_apps_24_regular
 import edugma.shared.core.icons.generated.resources.ic_fluent_calendar_ltr_24_filled
@@ -8,10 +10,8 @@ import edugma.shared.core.icons.generated.resources.ic_fluent_home_24_filled
 import edugma.shared.core.icons.generated.resources.ic_fluent_home_24_regular
 import edugma.shared.core.icons.generated.resources.ic_fluent_person_24_filled
 import edugma.shared.core.icons.generated.resources.ic_fluent_person_24_regular
-import edugma.shared.core.resources.generated.resources.Res
 import edugma.shared.core.resources.generated.resources.*
-import com.edugma.core.icons.EdIcons
-import com.edugma.navigation.core.graph.NavGraph
+import edugma.shared.core.resources.generated.resources.Res
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 

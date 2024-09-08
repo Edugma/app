@@ -18,12 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
-import edugma.shared.core.icons.generated.resources.ic_fluent_dark_theme_24_filled
-import edugma.shared.core.resources.generated.resources.Res
-import edugma.shared.core.resources.generated.resources.*
-import edugma.shared.core.icons.generated.resources.*
-import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
 import com.edugma.core.api.model.ThemeMode
 import com.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import com.edugma.core.designSystem.atoms.label.EdLabel
@@ -38,6 +32,10 @@ import com.edugma.core.icons.EdIcons
 import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.ClickListener
 import com.edugma.core.utils.viewmodel.getViewModel
+import edugma.shared.core.icons.generated.resources.*
+import edugma.shared.core.icons.generated.resources.ic_fluent_dark_theme_24_filled
+import edugma.shared.core.resources.generated.resources.*
+import edugma.shared.core.resources.generated.resources.Res
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 

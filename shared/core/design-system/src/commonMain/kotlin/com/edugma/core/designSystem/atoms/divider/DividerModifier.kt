@@ -16,7 +16,6 @@ fun Modifier.bottomDivider(
     thickness: Dp = 0.5.dp,
     color: Color = Color.Unspecified,
 ): Modifier = composed {
-
     val density = LocalDensity.current
 
     val strokeWidthPx = density.run { thickness.toPx() }

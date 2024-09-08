@@ -1,14 +1,13 @@
 package com.edugma.features.nodes.main
 
-import com.edugma.core.arch.mvi.newState
-import com.edugma.core.arch.mvi.utils.launchCoroutine
-import com.edugma.core.arch.mvi.viewmodel.BaseViewModel
-import com.edugma.core.navigation.ScheduleScreens
-import com.edugma.core.api.repository.NodesRepository
 import com.edugma.core.api.api.Node
 import com.edugma.core.api.model.NodeState
 import com.edugma.core.api.repository.AppStateRepository
+import com.edugma.core.api.repository.NodesRepository
 import com.edugma.core.api.repository.UrlTemplateRepository
+import com.edugma.core.arch.mvi.newState
+import com.edugma.core.arch.mvi.utils.launchCoroutine
+import com.edugma.core.arch.mvi.viewmodel.BaseViewModel
 import com.edugma.core.navigation.MainDestination
 import com.edugma.core.navigation.nodes.NodesScreens
 

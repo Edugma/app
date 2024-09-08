@@ -21,8 +21,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import edugma.shared.core.icons.generated.resources.*
-import org.jetbrains.compose.resources.painterResource
 import com.edugma.core.api.utils.TimeFormat
 import com.edugma.core.api.utils.format
 import com.edugma.core.api.utils.getShortName
@@ -44,7 +42,9 @@ import com.edugma.features.schedule.domain.model.lesson.LessonEvent
 import com.edugma.features.schedule.domain.model.lessonSubject.LessonSubject
 import com.edugma.features.schedule.domain.model.place.Place
 import com.edugma.features.schedule.elements.lesson.model.ScheduleEventUiModel
+import edugma.shared.core.icons.generated.resources.*
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun LessonContent(

@@ -15,15 +15,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import edugma.shared.core.icons.generated.resources.*
-import org.jetbrains.compose.resources.painterResource
 import com.edugma.core.api.model.contentType
 import com.edugma.core.api.model.key
 import com.edugma.core.api.utils.format
@@ -34,7 +29,6 @@ import com.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import com.edugma.core.designSystem.atoms.surface.EdSurface
 import com.edugma.core.designSystem.organism.EdScaffold
 import com.edugma.core.designSystem.organism.actionCard.EdActionCardWidth
-import com.edugma.core.designSystem.organism.bottomSheet.SheetValue
 import com.edugma.core.designSystem.organism.bottomSheet.bind
 import com.edugma.core.designSystem.organism.bottomSheet.rememberModalBottomSheetState
 import com.edugma.core.designSystem.organism.cell.EdCell
@@ -56,9 +50,9 @@ import com.edugma.features.account.domain.model.payments.PaymentMethod
 import com.edugma.features.account.payments.bottomSheet.PaymentBottomSheet
 import com.edugma.features.account.payments.model.ContractUiModel
 import com.edugma.features.account.payments.model.PaymentUiModel
-import com.edugma.features.account.people.presentation.PeopleAction
-import kotlinx.coroutines.launch
+import edugma.shared.core.icons.generated.resources.*
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {

@@ -11,8 +11,6 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
 import io.ktor.http.contentType
-import io.ktor.util.AttributeKey
-import io.ktor.util.Attributes
 
 class EdugmaHttpClientImpl(
     private val urlRepository: UrlRepository,

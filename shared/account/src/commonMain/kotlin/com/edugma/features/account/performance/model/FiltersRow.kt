@@ -4,15 +4,14 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.style.TextOverflow
-import edugma.shared.core.icons.generated.resources.*
-import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
 import com.edugma.core.designSystem.molecules.chip.EdChip
 import com.edugma.core.designSystem.molecules.chip.EdChipForm
 import com.edugma.core.designSystem.theme.EdTheme
 import com.edugma.core.icons.EdIcons
 import com.edugma.core.utils.Typed1Listener
 import com.edugma.features.account.performance.Filter
+import edugma.shared.core.icons.generated.resources.*
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun FiltersRow(

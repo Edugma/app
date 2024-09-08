@@ -15,8 +15,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import edugma.shared.core.icons.generated.resources.*
-import org.jetbrains.compose.resources.painterResource
 import com.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import com.edugma.core.designSystem.atoms.spacer.NavigationBarSpacer
 import com.edugma.core.designSystem.atoms.spacer.SpacerHeight
@@ -42,7 +40,9 @@ import com.edugma.features.account.performance.bottomSheets.PerformanceBottomShe
 import com.edugma.features.account.performance.model.FiltersRow
 import com.edugma.features.account.performance.model.PerformanceItem
 import com.edugma.features.account.performance.model.PerformancePlaceholder
+import edugma.shared.core.icons.generated.resources.*
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {

@@ -4,15 +4,14 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import edugma.shared.core.icons.generated.resources.*
-import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource
 import com.edugma.core.designSystem.atoms.label.EdLabel
 import com.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import com.edugma.core.designSystem.theme.EdTheme
 import com.edugma.core.icons.EdIcons
 import com.edugma.core.ui.screen.BottomSheet
 import com.edugma.features.account.domain.model.performance.GradePosition
+import edugma.shared.core.icons.generated.resources.*
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun ColumnScope.PerformanceBottomSheetContent(performance: GradePosition) {

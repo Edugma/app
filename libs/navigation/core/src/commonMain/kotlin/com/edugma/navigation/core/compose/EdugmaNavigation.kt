@@ -4,13 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder as JetpackNavGraphBuilder
-import androidx.navigation.NavGraph as JetpackNavGraph
 import androidx.navigation.compose.NavHost
+import com.edugma.navigation.core.destination.Destination
 import com.edugma.navigation.core.graph.NavGraphBuilder
 import com.edugma.navigation.core.navigator.ComposeNavigator
-import com.edugma.navigation.core.destination.Destination
 import com.edugma.navigation.core.utils.getRoute
+import androidx.navigation.NavGraph as JetpackNavGraph
+import androidx.navigation.NavGraphBuilder as JetpackNavGraphBuilder
 
 @Composable
 fun EdugmaNavigation(

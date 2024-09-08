@@ -17,19 +17,14 @@ import com.seiko.imageloader.intercept.Interceptor
 import com.seiko.imageloader.intercept.bitmapMemoryCacheConfig
 import com.seiko.imageloader.model.ImageAction
 import com.seiko.imageloader.model.ImageRequest
-import com.seiko.imageloader.model.ImageRequestBuilder
-import com.seiko.imageloader.model.ImageResult
 import com.seiko.imageloader.option.toScale
 import com.seiko.imageloader.rememberImageAction
 import com.seiko.imageloader.rememberImageActionPainter
-import com.seiko.imageloader.rememberImagePainter
 import com.seiko.imageloader.rememberImageSuccessPainter
 import com.seiko.imageloader.util.LogPriority
 import com.seiko.imageloader.util.Logger
 import io.ktor.http.decodeURLPart
 import io.ktor.utils.io.charsets.Charsets
-import io.ktor.utils.io.charsets.forName
-import io.ktor.utils.io.charsets.isSupported
 import okio.FileSystem
 import okio.Path.Companion.toPath
 import okio.fakefilesystem.FakeFileSystem
@@ -81,7 +76,6 @@ fun rememberAsyncImagePainter(
             val error = (action as ImageAction.Failure).error
             CrashAnalytics.logException(error)
         }
-
     }
     return rememberImageActionPainter(
         action = action,
@@ -168,10 +162,8 @@ abstract class BaseImageLoader {
         isJs: Boolean = false,
         componentSetup: ComponentRegistryBuilder.() -> Unit,
     ) {
-
         this.loader = ImageLoader {
             interceptor {
-
                 addInterceptor(
                     Interceptor {
                         if (it.request.data is String) {
@@ -246,7 +238,6 @@ abstract class BaseImageLoader {
                         }
                     )
                 }
-
             }
         }
     }

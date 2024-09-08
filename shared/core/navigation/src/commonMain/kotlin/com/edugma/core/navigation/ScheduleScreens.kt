@@ -1,7 +1,7 @@
 package com.edugma.core.navigation
 
-import com.edugma.navigation.core.destination.NoArgDestination
 import com.edugma.navigation.core.destination.Destination
+import com.edugma.navigation.core.destination.NoArgDestination
 import com.edugma.navigation.core.destination.optArg
 import com.edugma.navigation.core.destination.toBundle
 import kotlinx.datetime.LocalDate
