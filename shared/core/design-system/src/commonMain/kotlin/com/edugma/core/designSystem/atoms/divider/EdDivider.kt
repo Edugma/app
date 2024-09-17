@@ -2,6 +2,7 @@ package com.edugma.core.designSystem.atoms.divider
 
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DividerDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Modifier
@@ -16,9 +17,9 @@ fun EdDivider(
     thickness: Dp = 0.5.dp,
     color: Color = DividerDefaults.color,
 ) {
-    Divider(
+    HorizontalDivider(
         modifier = modifier,
         thickness = thickness,
-        color = color,
+        color = color
     )
 }

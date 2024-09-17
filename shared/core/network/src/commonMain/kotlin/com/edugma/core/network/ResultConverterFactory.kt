@@ -10,7 +10,7 @@ import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.isSuccess
 import io.ktor.serialization.JsonConvertException
-import io.ktor.utils.io.errors.IOException
+import kotlinx.io.IOException
 
 class ResultConverterFactory : Converter.Factory {
 

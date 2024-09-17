@@ -1,7 +1,7 @@
 package com.edugma.core.api.model
 
 import io.ktor.serialization.JsonConvertException
-import io.ktor.utils.io.errors.IOException
+import kotlinx.io.IOException
 
 sealed interface ResponseError {
     /**

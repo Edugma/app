@@ -53,9 +53,4 @@ composeCompiler {
     stabilityConfigurationFile.set(
         file("$rootDir/configs/compose/compose_compiler_config.conf")
     )
-    featureFlags.set(
-        listOf(
-            ComposeFeatureFlag.StrongSkipping, ComposeFeatureFlag.IntrinsicRemember,
-        ),
-    )
 }
