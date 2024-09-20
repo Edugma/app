@@ -30,6 +30,7 @@ data class PaginationUiState<T>(
 
     fun toRefresh(): PaginationUiState<T> {
         return copy(
+            nextPage = null,
             lceState = this.lceState.toStartLoading(isRefresh = true),
         )
     }
