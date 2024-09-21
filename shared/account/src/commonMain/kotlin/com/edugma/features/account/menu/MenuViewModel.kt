@@ -3,7 +3,7 @@ package com.edugma.features.account.menu
 import com.edugma.core.api.utils.IO
 import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
-import com.edugma.core.arch.mvi.viewmodel.BaseViewModel
+import com.edugma.core.arch.mvi.viewmodel.FeatureLogic2
 import com.edugma.core.designSystem.organism.accountSelector.AccountSelectorVO
 import com.edugma.core.navigation.AccountScreens
 import com.edugma.features.account.domain.model.menu.Card
@@ -29,9 +29,12 @@ class MenuViewModel(
     private val authCachingUseCase: AuthWithCachingDataUseCase,
     private val converterUseCase: MenuDataConverterUseCase,
     private val cardsRepository: CardsRepository,
-) : BaseViewModel<MenuState>(MenuState.Loading) {
-    // init
-    init {
+) : FeatureLogic2<MenuState>() {
+    override fun initialState(): MenuState {
+        return MenuState.Loading
+    }
+
+    override fun onCreate() {
         checkAuth()
     }
 
@@ -77,7 +80,7 @@ class MenuViewModel(
         launchCoroutine {
             lateinit var login: String
             lateinit var password: String
-            (stateFlow.value as? MenuState.Authorization)
+            (state as? MenuState.Authorization)
                 ?.let {
                     login = it.login
                     password = it.password
@@ -168,7 +171,7 @@ class MenuViewModel(
 
     // todo подумать как лучше
     private fun setLoading(isLoading: Boolean) {
-        when (stateFlow.value) {
+        when (state) {
             is MenuState.Authorization ->
                 mutateStateWithCheck<MenuState.Authorization> {
                     it.copy(isLoading = isLoading)

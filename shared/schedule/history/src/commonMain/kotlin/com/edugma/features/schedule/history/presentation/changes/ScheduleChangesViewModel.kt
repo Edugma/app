@@ -2,13 +2,16 @@ package com.edugma.features.schedule.history.presentation.changes
 
 import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
-import com.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
+import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
 import com.edugma.features.schedule.domain.usecase.ScheduleHistoryUseCase
 import kotlinx.datetime.Instant
 
 class ScheduleChangesViewModel(
     private val useCase: ScheduleHistoryUseCase,
-) : BaseActionViewModel<ScheduleChangesUiState, ScheduleChangesAction>(ScheduleChangesUiState()) {
+) : FeatureLogic<ScheduleChangesUiState, ScheduleChangesAction>() {
+    override fun initialState(): ScheduleChangesUiState {
+        return ScheduleChangesUiState()
+    }
 
     override fun processAction(action: ScheduleChangesAction) {
         when (action) {

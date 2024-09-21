@@ -25,7 +25,8 @@ import com.edugma.core.api.utils.nowLocalDate
 import com.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import com.edugma.core.designSystem.theme.EdTheme
 import com.edugma.core.designSystem.utils.withAlpha
-import com.edugma.core.utils.viewmodel.getViewModel
+import com.edugma.core.utils.viewmodel.collectAsState
+import com.edugma.core.utils.viewmodel.getViewModel2
 import com.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
 import com.edugma.features.schedule.domain.model.lesson.LessonEvent
 import com.edugma.features.schedule.domain.model.source.ScheduleSource
@@ -38,10 +39,10 @@ import kotlinx.datetime.LocalDate
 
 @Composable
 fun VerticalScheduleComponent(
-    viewModel: VerticalScheduleViewModel = getViewModel(),
+    viewModel: VerticalScheduleViewModel = getViewModel2(),
     scheduleSource: ScheduleSource,
 ) {
-    val state by viewModel.stateFlow.collectAsState()
+    val state by viewModel.collectAsState()
 
     LaunchedEffect(scheduleSource) {
         viewModel.setScheduleSource(scheduleSource)

@@ -45,7 +45,8 @@ import com.edugma.core.icons.EdIcons
 import com.edugma.core.ui.screen.FeatureBottomSheetScreen
 import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.ClickListener
-import com.edugma.core.utils.viewmodel.getViewModel
+import com.edugma.core.utils.viewmodel.collectAsState
+import com.edugma.core.utils.viewmodel.getViewModel2
 import com.edugma.features.account.domain.model.payments.PaymentMethod
 import com.edugma.features.account.payments.bottomSheet.PaymentBottomSheet
 import com.edugma.features.account.payments.model.ContractUiModel
@@ -55,8 +56,8 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
-    val state by viewModel.stateFlow.collectAsState()
+fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel2()) {
+    val state by viewModel.collectAsState()
     val onAction = viewModel.rememberOnAction()
 
     val bottomState = rememberModalBottomSheetState()

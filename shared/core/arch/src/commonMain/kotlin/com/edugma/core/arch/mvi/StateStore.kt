@@ -9,11 +9,20 @@ interface StateStore<TState> {
 
     @RestrictedApi
     fun setState(state: TState)
+
+    @RestrictedApi
+    fun compareAndSet(expect: TState, update: TState): Boolean
 }
 
 @OptIn(RestrictedApi::class)
 inline fun <TState> StateStore<TState>.newState(
     newState: TState.() -> TState,
 ) {
-    setState(newState(stateFlow.value))
+    while (true) {
+        val prevValue = stateFlow.value
+        val nextValue = newState(prevValue)
+        if (compareAndSet(prevValue, nextValue)) {
+            return
+        }
+    }
 }

@@ -5,7 +5,7 @@ import com.edugma.core.api.utils.MIN
 import com.edugma.core.api.utils.nowLocalDate
 import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
-import com.edugma.core.arch.mvi.viewmodel.BaseViewModel
+import com.edugma.core.arch.mvi.viewmodel.FeatureLogic2
 import com.edugma.features.schedule.domain.model.compact.CompactPlaceInfo
 import com.edugma.features.schedule.domain.model.place.Place
 import com.edugma.features.schedule.domain.model.place.PlaceFilters
@@ -19,7 +19,10 @@ import kotlinx.datetime.LocalTime
 class FreePlaceViewModel(
     private val repository: FreePlaceRepository,
     private val useCase: ScheduleUseCase,
-) : BaseViewModel<FreePlaceState>(FreePlaceState()) {
+) : FeatureLogic2<FreePlaceState>() {
+    override fun initialState(): FreePlaceState {
+        return FreePlaceState()
+    }
 //    fun onDateRangeChange(dateRange: ClosedFloatingPointRange<Float>) {
 //        mutateState {
 //            setDateRange(dateRange)
@@ -84,9 +87,9 @@ class FreePlaceViewModel(
         ) {
             repository.findFreePlaces(
                 PlaceFilters(
-                    ids = stateFlow.value.places.map { it.id },
-                    dateTimeFrom = LocalDateTime(stateFlow.value.date, stateFlow.value.timeFrom),
-                    dateTimeTo = LocalDateTime(stateFlow.value.date, stateFlow.value.timeTo),
+                    ids = state.places.map { it.id },
+                    dateTimeFrom = LocalDateTime(state.date, state.timeFrom),
+                    dateTimeTo = LocalDateTime(state.date, state.timeTo),
                 ),
             ).collect {
                 newState {

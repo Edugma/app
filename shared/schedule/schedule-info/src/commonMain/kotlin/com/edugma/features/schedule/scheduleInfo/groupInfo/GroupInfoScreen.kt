@@ -35,7 +35,8 @@ import com.edugma.core.icons.EdIcons
 import com.edugma.core.utils.ClickListener
 import com.edugma.core.utils.Typed1Listener
 import com.edugma.core.utils.ui.pxToDp
-import com.edugma.core.utils.viewmodel.getViewModel
+import com.edugma.core.utils.viewmodel.collectAsState
+import com.edugma.core.utils.viewmodel.getViewModel2
 import com.edugma.features.schedule.domain.model.group.description
 import com.edugma.features.schedule.elements.verticalSchedule.VerticalScheduleComponent
 import edugma.shared.core.icons.generated.resources.*
@@ -43,8 +44,8 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun GroupInfoScreen(viewModel: GroupInfoViewModel = getViewModel(), id: String) {
-    val state by viewModel.stateFlow.collectAsState()
+fun GroupInfoScreen(viewModel: GroupInfoViewModel = getViewModel2(), id: String) {
+    val state by viewModel.collectAsState()
 
     LaunchedEffect(id) {
         viewModel.setId(id)

@@ -3,13 +3,16 @@ package com.edugma.core.arch.pagination
 import co.touchlab.kermit.Logger
 import com.edugma.core.api.model.PagingDto
 import com.edugma.core.arch.mvi.utils.launchCoroutine
-import com.edugma.core.arch.mvi.viewmodel.ViewModelDelegate
-import com.edugma.core.arch.mvi.viewmodel.newState
+import com.edugma.core.arch.mvi.viewmodel.FeatureLogicDelegate
 import kotlinx.coroutines.Job
 import kotlin.properties.Delegates
 
-class PagingViewModel<T> : ViewModelDelegate<PaginationUiState<T>>() {
+class PagingViewModel<T> : FeatureLogicDelegate<PaginationUiState<T>, Nothing>() {
     private var loadJob: Job? = null
+
+    @Suppress("EmptyFunctionBlock")
+    override fun processAction(action: Nothing) {
+    }
 
     var request: (suspend () -> PagingDto<T>) by Delegates.notNull()
 

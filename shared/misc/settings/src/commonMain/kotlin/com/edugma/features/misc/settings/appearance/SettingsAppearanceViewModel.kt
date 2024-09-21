@@ -4,16 +4,17 @@ import com.edugma.core.api.model.ThemeMode
 import com.edugma.core.api.repository.ThemeRepository
 import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
-import com.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
+import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
 import kotlinx.coroutines.flow.collect
 
 class SettingsAppearanceViewModel(
     private val themeRepository: ThemeRepository,
-) : BaseActionViewModel<SettingsAppearanceUiState, SettingsAppearanceAction>(
-    SettingsAppearanceUiState(),
-) {
+) : FeatureLogic<SettingsAppearanceUiState, SettingsAppearanceAction>() {
+    override fun initialState(): SettingsAppearanceUiState {
+        return SettingsAppearanceUiState()
+    }
 
-    init {
+    override fun onCreate() {
         launchCoroutine {
             themeRepository.getTheme().collect {
                 newState {

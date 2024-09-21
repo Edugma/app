@@ -33,7 +33,8 @@ import com.edugma.core.designSystem.theme.EdTheme
 import com.edugma.core.icons.EdIcons
 import com.edugma.core.utils.ClickListener
 import com.edugma.core.utils.Typed1Listener
-import com.edugma.core.utils.viewmodel.getViewModel
+import com.edugma.core.utils.viewmodel.collectAsState
+import com.edugma.core.utils.viewmodel.getViewModel2
 import com.edugma.features.schedule.domain.model.compact.CompactPlaceInfo
 import com.edugma.features.schedule.elements.verticalSchedule.VerticalScheduleComponent
 import com.edugma.features.schedule.scheduleInfo.groupInfo.InfoScaffold
@@ -45,8 +46,8 @@ import org.jetbrains.compose.resources.stringResource
 import edugma.shared.core.resources.generated.resources.Res as CommonRes
 
 @Composable
-fun PlaceInfoScreen(viewModel: PlaceInfoViewModel = getViewModel(), id: String) {
-    val state by viewModel.stateFlow.collectAsState()
+fun PlaceInfoScreen(viewModel: PlaceInfoViewModel = getViewModel2(), id: String) {
+    val state by viewModel.collectAsState()
 
     LaunchedEffect(id) {
         viewModel.setId(id)

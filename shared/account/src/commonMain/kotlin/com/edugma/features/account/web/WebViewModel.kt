@@ -2,14 +2,17 @@ package com.edugma.features.account.web
 
 import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
-import com.edugma.core.arch.mvi.viewmodel.BaseViewModel
+import com.edugma.core.arch.mvi.viewmodel.FeatureLogic2
 import com.edugma.features.account.domain.repository.AuthorizationRepository
 
 class WebViewModel(
     private val authorizationRepository: AuthorizationRepository,
-) : BaseViewModel<WebState>(WebState()) {
+) : FeatureLogic2<WebState>() {
+    override fun initialState(): WebState {
+        return WebState()
+    }
 
-    init {
+    override fun onCreate() {
         setTokenLoading(true)
         launchCoroutine {
             authorizationRepository.getLkToken()

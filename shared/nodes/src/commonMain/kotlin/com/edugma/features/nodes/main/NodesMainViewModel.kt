@@ -7,7 +7,7 @@ import com.edugma.core.api.repository.NodesRepository
 import com.edugma.core.api.repository.UrlTemplateRepository
 import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
-import com.edugma.core.arch.mvi.viewmodel.BaseViewModel
+import com.edugma.core.arch.mvi.viewmodel.FeatureLogic2
 import com.edugma.core.navigation.MainDestination
 import com.edugma.core.navigation.nodes.NodesScreens
 
@@ -15,8 +15,12 @@ class NodesMainViewModel(
     private val nodesRepository: NodesRepository,
     private val appStateRepository: AppStateRepository,
     private val urlTemplateRepository: UrlTemplateRepository,
-) : BaseViewModel<NodesMainState>(NodesMainState()) {
-    init {
+) : FeatureLogic2<NodesMainState>() {
+    override fun initialState(): NodesMainState {
+        return NodesMainState()
+    }
+
+    override fun onCreate() {
         launchCoroutine {
             val nodeList = nodesRepository.getNodeList()
             newState {
@@ -37,7 +41,7 @@ class NodesMainViewModel(
 
     fun onEnterNodeUrl() {
         launchCoroutine {
-            nodesRepository.selectNode(stateFlow.value.nodeUrl)
+            nodesRepository.selectNode(state.nodeUrl)
             urlTemplateRepository.init()
             appStateRepository.newState(
                 appStateRepository.state.value.copy(

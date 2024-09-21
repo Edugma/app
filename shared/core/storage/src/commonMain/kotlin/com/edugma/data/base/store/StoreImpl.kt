@@ -42,6 +42,8 @@ class StoreImpl<TKey, TData>(
                 readCachedData(key, forceUpdate)
             }
 
+            Logger.d("Need update $needUpdate", tag = TAG)
+
             if (needUpdate) {
                 val res = if (scope == null) {
                     fetchAndSave(key)
@@ -51,6 +53,7 @@ class StoreImpl<TKey, TData>(
                     }.await()
                 }
                 res.onSuccess { newData ->
+                    Logger.d("Emitted server data", tag = TAG)
                     emitSuccess(newData, false)
                 }.onFailure {
                     CrashAnalytics.logException(
@@ -76,8 +79,10 @@ class StoreImpl<TKey, TData>(
             needUpdate = cachedData == null || cachedData.isExpired(expiresIn) || forceUpdate
             val data = cachedData?.data
             if (data != null) {
+                Logger.d("Emitted cached data", tag = TAG)
                 emitSuccess(data, needUpdate)
             } else if (!needUpdate) {
+                Logger.d("Not found in cache and cache is not expired", tag = TAG)
                 // TODO
                 emitFailure(
                     Exception("Not found in cache and cache is not expired"),

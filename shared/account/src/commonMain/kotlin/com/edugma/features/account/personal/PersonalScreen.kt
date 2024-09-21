@@ -40,7 +40,8 @@ import com.edugma.core.designSystem.utils.edPlaceholder
 import com.edugma.core.icons.EdIcons
 import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.ClickListener
-import com.edugma.core.utils.viewmodel.getViewModel
+import com.edugma.core.utils.viewmodel.collectAsState
+import com.edugma.core.utils.viewmodel.getViewModel2
 import com.edugma.features.account.domain.model.Order
 import com.edugma.features.account.domain.model.Personal
 import com.edugma.features.account.domain.model.applications.Application
@@ -48,8 +49,8 @@ import edugma.shared.core.icons.generated.resources.*
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun PersonalScreen(viewModel: PersonalViewModel = getViewModel()) {
-    val state by viewModel.stateFlow.collectAsState()
+fun PersonalScreen(viewModel: PersonalViewModel = getViewModel2()) {
+    val state by viewModel.collectAsState()
 
     FeatureScreen(statusBarPadding = false) {
         PersonalContent(

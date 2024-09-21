@@ -6,7 +6,7 @@ import com.edugma.core.api.repository.UrlTemplateRepository
 import com.edugma.core.api.utils.sendResult
 import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
-import com.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
+import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
 import com.edugma.core.designSystem.utils.CommonImageLoader
 import com.edugma.core.designSystem.utils.IconImageLoader
 import com.edugma.features.misc.other.inAppUpdate.domain.CheckUpdateUseCase
@@ -18,8 +18,12 @@ class MainViewModel(
     private val mainSnackbarRepository: MainSnackbarRepository,
     private val checkUpdateUseCase: CheckUpdateUseCase,
     private val urlRepository: UrlTemplateRepository,
-) : BaseActionViewModel<MainUiState, MainAction>(MainUiState()) {
-    init {
+) : FeatureLogic<MainUiState, MainAction>() {
+    override fun initialState(): MainUiState {
+        return MainUiState()
+    }
+
+    override fun onCreate() {
         launchCoroutine {
             mainSnackbarRepository.messageFlow
                 .filterIsInstance<SnackbarCommand.Message>()

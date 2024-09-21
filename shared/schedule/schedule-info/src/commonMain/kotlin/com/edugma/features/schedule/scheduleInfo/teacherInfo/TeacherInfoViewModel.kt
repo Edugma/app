@@ -1,15 +1,19 @@
 package com.edugma.features.schedule.scheduleInfo.teacherInfo
 
 import com.edugma.core.arch.mvi.newState
-import com.edugma.core.arch.mvi.viewmodel.BaseViewModel
+import com.edugma.core.arch.mvi.viewmodel.FeatureLogic2
 import com.edugma.features.schedule.domain.model.source.ScheduleSource
 import com.edugma.features.schedule.domain.model.teacher.TeacherInfo
 import com.edugma.features.schedule.domain.repository.ScheduleInfoRepository
 
 class TeacherInfoViewModel(
     private val repository: ScheduleInfoRepository,
-) : BaseViewModel<TeacherInfoState>(TeacherInfoState()) {
-    init {
+) : FeatureLogic2<TeacherInfoState>() {
+    override fun initialState(): TeacherInfoState {
+        return TeacherInfoState()
+    }
+
+    override fun onCreate() {
         // TODO
 //        launchCoroutine {
 //            stateFlow.prop { id }.filterNotNull().collect {

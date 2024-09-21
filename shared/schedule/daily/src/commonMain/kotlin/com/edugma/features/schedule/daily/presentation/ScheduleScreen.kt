@@ -1,14 +1,12 @@
 package com.edugma.features.schedule.daily.presentation
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
@@ -30,6 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import co.touchlab.kermit.Logger
 import com.edugma.core.api.utils.DateFormat
 import com.edugma.core.api.utils.format
 import com.edugma.core.arch.mvi.viewmodel.rememberOnAction
@@ -48,21 +47,21 @@ import com.edugma.core.icons.EdIcons
 import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.ui.bindTo
 import com.edugma.core.utils.ui.onPageChanged
-import com.edugma.core.utils.viewmodel.getViewModel
+import com.edugma.core.utils.viewmodel.collectAsState
+import com.edugma.core.utils.viewmodel.getViewModel2
 import edugma.shared.core.icons.generated.resources.*
 import edugma.shared.core.resources.generated.resources.*
 import edugma.shared.core.resources.generated.resources.Res
 import kotlinx.datetime.LocalDate
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ScheduleScreen(
-    viewModel: ScheduleViewModel = getViewModel(),
+    viewModel: ScheduleViewModel = getViewModel2(),
     date: LocalDate? = null,
 ) {
-    val state by viewModel.stateFlow.collectAsState()
+    val state by viewModel.collectAsState()
 
     LaunchedEffect(date) {
         viewModel.onArgs(date)
@@ -79,7 +78,6 @@ fun ScheduleScreen(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ScheduleContent(
     state: ScheduleDailyUiState,
@@ -101,6 +99,11 @@ fun ScheduleContent(
                         subtitle = state.selectedDate.format(DateFormat.FULL_PRETTY),
                         onNavigationClick = { onAction(ScheduleDailyAction.OnBack) },
                         actions = {
+                            // TODO TEST123
+                            Logger.d(
+                                "state.lceState.showContentLoader=${state.lceState.showContentLoader}",
+                                tag = "StateStore"
+                            )
                             if (state.lceState.showContentLoader) {
                                 EdLoader(
                                     size = EdLoaderSize.medium,
@@ -165,7 +168,6 @@ fun ScheduleContent(
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class, ExperimentalResourceApi::class)
 @Composable
 fun BoxScope.Fab(isVisible: Boolean, onClick: () -> Unit) {
     AnimatedVisibility(

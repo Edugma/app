@@ -6,7 +6,7 @@ import com.edugma.core.api.utils.onResult
 import com.edugma.core.api.utils.untilMinutes
 import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
-import com.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
+import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
 import com.edugma.core.designSystem.organism.accountSelector.AccountSelectorVO
 import com.edugma.core.navigation.ScheduleScreens
 import com.edugma.core.navigation.schedule.ScheduleHistoryScreens
@@ -29,11 +29,13 @@ class ScheduleMenuViewModel(
     private val getClosestLessonsUseCase: GetClosestLessonsUseCase,
     private val getScheduleMenuItems: GetScheduleMenuItems,
     private val removeSelectedScheduleSourceUseCase: RemoveSelectedScheduleSourceUseCase,
-) : BaseActionViewModel<ScheduleMenuUiState, ScheduleMenuAction>(
-    ScheduleMenuUiState(),
-) {
-    init {
-//        launchCoroutine {
+) : FeatureLogic<ScheduleMenuUiState, ScheduleMenuAction>() {
+    override fun initialState(): ScheduleMenuUiState {
+        return ScheduleMenuUiState()
+    }
+
+    override fun onCreate() {
+        //        launchCoroutine {
 //            useCase.getCurrentScheduleFlow().onResult(
 //                {
 //                    val lessons = it.value.let {

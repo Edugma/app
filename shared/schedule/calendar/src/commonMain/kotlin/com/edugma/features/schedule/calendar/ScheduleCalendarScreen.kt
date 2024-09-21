@@ -67,7 +67,8 @@ import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.ClickListener
 import com.edugma.core.utils.Typed1Listener
 import com.edugma.core.utils.ui.isItemFullyVisible
-import com.edugma.core.utils.viewmodel.getViewModel
+import com.edugma.core.utils.viewmodel.collectAsState
+import com.edugma.core.utils.viewmodel.getViewModel2
 import com.edugma.features.schedule.calendar.model.CalendarDayVO
 import com.edugma.features.schedule.calendar.model.CalendarLessonVO
 import com.edugma.features.schedule.calendar.model.CalendarWeekVO
@@ -84,8 +85,8 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun ScheduleCalendarScreen(viewModel: ScheduleCalendarViewModel = getViewModel()) {
-    val state by viewModel.stateFlow.collectAsState()
+fun ScheduleCalendarScreen(viewModel: ScheduleCalendarViewModel = getViewModel2()) {
+    val state by viewModel.collectAsState()
 
     FeatureScreen(
         statusBarPadding = false,

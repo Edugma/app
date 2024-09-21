@@ -16,4 +16,9 @@ class SimpleStateStore<TState>(initialState: TState) : StateStore<TState> {
     override fun setState(state: TState) {
         _stateFlow.value = state
     }
+
+    @RestrictedApi
+    override fun compareAndSet(expect: TState, update: TState): Boolean {
+        return _stateFlow.compareAndSet(expect, update)
+    }
 }

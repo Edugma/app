@@ -1,15 +1,18 @@
 package com.edugma.features.schedule.lessonsReview.list.presentation
 
 import com.edugma.core.arch.mvi.newState
-import com.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
+import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
 import com.edugma.core.utils.lce.launchLce
 import com.edugma.features.schedule.lessonsReview.list.domain.LessonsReviewUseCase
 
 class LessonsReviewViewModel(
     private val useCase: LessonsReviewUseCase,
-) : BaseActionViewModel<LessonsReviewUiState, LessonsReviewAction>(LessonsReviewUiState()) {
+) : FeatureLogic<LessonsReviewUiState, LessonsReviewAction>() {
+    override fun initialState(): LessonsReviewUiState {
+        return LessonsReviewUiState()
+    }
 
-    init {
+    override fun onCreate() {
         loadLessonsReview(isRefreshing = false)
     }
 

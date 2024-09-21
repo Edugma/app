@@ -1,7 +1,7 @@
 package com.edugma.features.schedule.calendar
 
 import com.edugma.core.arch.mvi.newState
-import com.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
+import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
 import com.edugma.core.navigation.ScheduleScreens
 import com.edugma.core.utils.lce.launchLce
 import com.edugma.features.schedule.calendar.mapper.CalendarMapper
@@ -11,11 +11,12 @@ import kotlinx.datetime.LocalDate
 class ScheduleCalendarViewModel(
     private val useCase: ScheduleUseCase,
     private val calendarMapper: CalendarMapper,
-) : BaseActionViewModel<ScheduleCalendarUiState, ScheduleCalendarAction>(
-    ScheduleCalendarUiState(),
-) {
+) : FeatureLogic<ScheduleCalendarUiState, ScheduleCalendarAction>() {
+    override fun initialState(): ScheduleCalendarUiState {
+        return ScheduleCalendarUiState()
+    }
 
-    init {
+    override fun onCreate() {
         loadScheduleCalendar(isRefreshing = false)
     }
 

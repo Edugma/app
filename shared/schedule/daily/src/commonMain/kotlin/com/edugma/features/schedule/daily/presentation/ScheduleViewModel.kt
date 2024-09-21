@@ -3,7 +3,7 @@ package com.edugma.features.schedule.daily.presentation
 import com.edugma.core.api.utils.nowLocalDate
 import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
-import com.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
+import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
 import com.edugma.core.navigation.schedule.ScheduleInfoScreens
 import com.edugma.core.utils.lce.launchLce
 import com.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
@@ -15,11 +15,13 @@ import kotlinx.datetime.LocalDate
 
 class ScheduleViewModel(
     private val useCase: ScheduleUseCase,
-) : BaseActionViewModel<ScheduleDailyUiState, ScheduleDailyAction>(
-    ScheduleDailyUiState.init(),
-) {
+) : FeatureLogic<ScheduleDailyUiState, ScheduleDailyAction>() {
 
-    init {
+    override fun initialState(): ScheduleDailyUiState {
+        return ScheduleDailyUiState.init()
+    }
+
+    override fun onCreate() {
         loadSchedule(isRefreshing = false)
 
         launchCoroutine(

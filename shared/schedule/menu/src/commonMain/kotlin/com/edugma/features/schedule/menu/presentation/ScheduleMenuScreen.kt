@@ -27,7 +27,8 @@ import com.edugma.core.designSystem.tokens.shapes.bottom
 import com.edugma.core.icons.EdIcons
 import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.ClickListener
-import com.edugma.core.utils.viewmodel.getViewModel
+import com.edugma.core.utils.viewmodel.collectAsState
+import com.edugma.core.utils.viewmodel.getViewModel2
 import com.edugma.features.schedule.menu.cards.CalendarCard
 import com.edugma.features.schedule.menu.cards.ChangeHistoryCard
 import com.edugma.features.schedule.menu.cards.FindFreePlaceCard
@@ -44,8 +45,8 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun ScheduleMenuScreen(viewModel: ScheduleMenuViewModel = getViewModel()) {
-    val state by viewModel.stateFlow.collectAsState()
+fun ScheduleMenuScreen(viewModel: ScheduleMenuViewModel = getViewModel2()) {
+    val state by viewModel.collectAsState()
 
     FeatureScreen(
         statusBarPadding = false,

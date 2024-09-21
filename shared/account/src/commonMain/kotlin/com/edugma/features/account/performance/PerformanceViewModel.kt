@@ -2,7 +2,7 @@ package com.edugma.features.account.performance
 
 import com.edugma.core.api.model.ListItemUiModel
 import com.edugma.core.arch.mvi.newState
-import com.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
+import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
 import com.edugma.core.utils.lce.launchLce
 import com.edugma.features.account.domain.model.performance.GradePosition
 import com.edugma.features.account.domain.model.performance.PerformancePeriod
@@ -13,9 +13,12 @@ import com.edugma.features.account.performance.Filter.Type
 
 class PerformanceViewModel(
     private val repository: PerformanceRepository,
-) : BaseActionViewModel<PerformanceUiState, PerformanceAction>(PerformanceUiState()) {
+) : FeatureLogic<PerformanceUiState, PerformanceAction>() {
+    override fun initialState(): PerformanceUiState {
+        return PerformanceUiState()
+    }
 
-    init {
+    override fun onCreate() {
         loadMarks(isRefreshing = false)
     }
 

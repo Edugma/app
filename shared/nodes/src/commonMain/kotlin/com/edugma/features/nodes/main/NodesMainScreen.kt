@@ -31,11 +31,12 @@ import com.edugma.core.designSystem.utils.rememberAsyncImagePainter
 import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.ClickListener
 import com.edugma.core.utils.Typed1Listener
-import com.edugma.core.utils.viewmodel.getViewModel
+import com.edugma.core.utils.viewmodel.collectAsState
+import com.edugma.core.utils.viewmodel.getViewModel2
 
 @Composable
-fun NodesMainScreen(viewModel: NodesMainViewModel = getViewModel()) {
-    val state by viewModel.stateFlow.collectAsState()
+fun NodesMainScreen(viewModel: NodesMainViewModel = getViewModel2()) {
+    val state by viewModel.collectAsState()
 
     FeatureScreen {
         NodesMainContent(

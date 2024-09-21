@@ -1,6 +1,5 @@
 package com.edugma.core.designSystem.atoms.divider
 
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable

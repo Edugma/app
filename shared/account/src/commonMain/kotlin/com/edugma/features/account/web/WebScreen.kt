@@ -18,15 +18,16 @@ import com.edugma.core.designSystem.organism.webView.WebViewState
 import com.edugma.core.designSystem.theme.EdTheme
 import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.isNotNull
-import com.edugma.core.utils.viewmodel.getViewModel
+import com.edugma.core.utils.viewmodel.collectAsState
+import com.edugma.core.utils.viewmodel.getViewModel2
 
 @Composable
 fun WebScreen(
     url: String,
     isFullScreen: Boolean,
-    viewModel: WebViewModel = getViewModel(),
+    viewModel: WebViewModel = getViewModel2(),
 ) {
-    val state by viewModel.stateFlow.collectAsState()
+    val state by viewModel.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.init(url, isFullScreen)

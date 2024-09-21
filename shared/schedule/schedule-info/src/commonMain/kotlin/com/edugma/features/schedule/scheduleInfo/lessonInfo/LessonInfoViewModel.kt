@@ -3,7 +3,7 @@ package com.edugma.features.schedule.scheduleInfo.lessonInfo
 import com.edugma.core.api.model.Coordinates
 import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
-import com.edugma.core.arch.mvi.viewmodel.BaseViewModel
+import com.edugma.core.arch.mvi.viewmodel.FeatureLogic2
 import com.edugma.core.navigation.schedule.ScheduleInfoScreens
 import com.edugma.features.schedule.domain.model.compact.CompactPlaceInfo
 import com.edugma.features.schedule.domain.model.lesson.LessonEvent
@@ -13,7 +13,10 @@ import kotlinx.datetime.LocalDate
 
 class LessonInfoViewModel(
     private val scheduleUseCase: ScheduleUseCase,
-) : BaseViewModel<LessonInfoState>(LessonInfoState()) {
+) : FeatureLogic2<LessonInfoState>() {
+    override fun initialState(): LessonInfoState {
+        return LessonInfoState()
+    }
 
     init {
 //        launchCoroutine {

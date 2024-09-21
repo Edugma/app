@@ -1,7 +1,7 @@
 package com.edugma.features.account.payments
 
 import com.edugma.core.arch.mvi.newState
-import com.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
+import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
 import com.edugma.core.navigation.core.router.external.ExternalRouter
 import com.edugma.core.utils.lce.launchLce
 import com.edugma.features.account.domain.model.payments.PaymentMethod
@@ -10,9 +10,12 @@ import com.edugma.features.account.domain.repository.PaymentsRepository
 class PaymentsViewModel(
     private val repository: PaymentsRepository,
     private val externalRouter: ExternalRouter,
-) : BaseActionViewModel<PaymentsUiState, PaymentsAction>(PaymentsUiState()) {
+) : FeatureLogic<PaymentsUiState, PaymentsAction>() {
+    override fun initialState(): PaymentsUiState {
+        return PaymentsUiState()
+    }
 
-    init {
+    override fun onCreate() {
         loadPayments(isRefreshing = false)
     }
 

@@ -1,12 +1,9 @@
 package com.edugma.core.arch.mvi.utils
 
-import androidx.lifecycle.viewModelScope
 import com.edugma.core.api.api.CrashAnalytics
 import com.edugma.core.api.utils.IO
 import com.edugma.core.arch.mvi.delegate.DebounceDelegate
-import com.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
-import com.edugma.core.arch.mvi.viewmodel.ViewModelDelegate
-import com.edugma.core.arch.viewmodel.RestrictedApi
+import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -16,7 +13,7 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.AbstractCoroutineContextElement
 import kotlin.coroutines.CoroutineContext
 
-inline fun BaseActionViewModel<*, *>.launchCoroutine(
+inline fun FeatureLogic<*, *>.launchCoroutine(
     dispatcher: CoroutineDispatcher = Dispatchers.IO,
     crossinline onError: (Throwable) -> Unit = {},
     noinline block: suspend CoroutineScope.() -> Unit,
@@ -28,6 +25,25 @@ inline fun BaseActionViewModel<*, *>.launchCoroutine(
             onError(it)
             CrashAnalytics.logException("launchCoroutine", "ViewModel launchCoroutine error: ", it)
         },
+        block = block,
+    )
+}
+
+@PublishedApi
+internal fun FeatureLogic<*, *>.launchCoroutine(
+    dispatcher: CoroutineDispatcher = Dispatchers.IO,
+    errorHandler: CoroutineExceptionHandler? = null,
+    block: suspend CoroutineScope.() -> Unit,
+): Job {
+    val coroutineContext = if (errorHandler != null) {
+        dispatcher + errorHandler
+    } else {
+        dispatcher + ErrorHandler { _, it ->
+            CrashAnalytics.logException("launchCoroutine", "launchCoroutine: ", it)
+        }
+    }
+    return scope.launch(
+        context = coroutineContext,
         block = block,
     )
 }
@@ -67,61 +83,6 @@ internal fun DebounceDelegate.launchCoroutine(
             block = block,
         )
     }
-}
-
-@PublishedApi
-internal fun BaseActionViewModel<*, *>.launchCoroutine(
-    dispatcher: CoroutineDispatcher = Dispatchers.IO,
-    errorHandler: CoroutineExceptionHandler? = null,
-    block: suspend CoroutineScope.() -> Unit,
-): Job {
-    val coroutineContext = if (errorHandler != null) {
-        dispatcher + errorHandler
-    } else {
-        dispatcher + ErrorHandler { _, it ->
-            CrashAnalytics.logException("launchCoroutine", "launchCoroutine: ", it)
-        }
-    }
-    return viewModelScope.launch(
-        context = coroutineContext,
-        block = block,
-    )
-}
-
-inline fun ViewModelDelegate<*>.launchCoroutine(
-    dispatcher: CoroutineDispatcher = Dispatchers.IO,
-    crossinline onError: (Throwable) -> Unit = {},
-    noinline block: suspend CoroutineScope.() -> Unit,
-): Job {
-    return launchCoroutineInternal(
-        dispatcher = dispatcher,
-        errorHandler = ErrorHandler { cont, it ->
-            errorHandler?.handleException(cont, it)
-            onError(it)
-            CrashAnalytics.logException("launchCoroutine", "launchCoroutine: ", it)
-        },
-        block = block,
-    )
-}
-
-@PublishedApi
-internal fun ViewModelDelegate<*>.launchCoroutineInternal(
-    dispatcher: CoroutineDispatcher = Dispatchers.IO,
-    errorHandler: CoroutineExceptionHandler? = null,
-    block: suspend CoroutineScope.() -> Unit,
-): Job {
-    val coroutineContext = if (errorHandler != null) {
-        dispatcher + errorHandler
-    } else {
-        dispatcher + ErrorHandler { _, it ->
-            CrashAnalytics.logException("launchCoroutine", "launchCoroutine: ", it)
-        }
-    }
-    @OptIn(RestrictedApi::class)
-    return viewModelScope.launch(
-        context = coroutineContext,
-        block = block,
-    )
 }
 
 @Suppress("FunctionName")

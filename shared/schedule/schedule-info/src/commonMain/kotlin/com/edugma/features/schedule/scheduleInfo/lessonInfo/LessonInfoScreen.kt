@@ -40,7 +40,8 @@ import com.edugma.core.icons.EdIcons
 import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.ClickListener
 import com.edugma.core.utils.Typed1Listener
-import com.edugma.core.utils.viewmodel.getViewModel
+import com.edugma.core.utils.viewmodel.collectAsState
+import com.edugma.core.utils.viewmodel.getViewModel2
 import com.edugma.features.schedule.domain.model.attentdee.AttendeeInfo
 import com.edugma.features.schedule.domain.model.place.Place
 import com.edugma.features.schedule.domain.model.teacher.description
@@ -51,11 +52,11 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun LessonInfoScreen(
-    viewModel: LessonInfoViewModel = getViewModel(),
+    viewModel: LessonInfoViewModel = getViewModel2(),
     eventId: String,
     currentDate: LocalDate,
 ) {
-    val state by viewModel.stateFlow.collectAsState()
+    val state by viewModel.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.onLessonInfo(

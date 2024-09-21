@@ -13,10 +13,12 @@ import com.edugma.features.schedule.domain.model.source.ScheduleSource
 import com.edugma.features.schedule.domain.model.source.ScheduleSourceType
 import com.edugma.features.schedule.domain.model.teacher.TeacherInfo
 import com.edugma.features.schedule.domain.repository.ScheduleRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Instant
 import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.seconds
 
 class ScheduleRepositoryImpl(
     private val scheduleCacheRepository: ScheduleCacheRepository,
@@ -33,6 +35,8 @@ class ScheduleRepositoryImpl(
 
     private val scheduleStore0 = store<ScheduleSource, CompactSchedule> {
         fetcher { key ->
+            // TODO TEST123
+            delay(5.seconds)
             scheduleService.getCompactSchedule(
                 type = key.type,
                 key = key.key,

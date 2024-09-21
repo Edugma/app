@@ -33,7 +33,8 @@ import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.ClickListener
 import com.edugma.core.utils.Typed1Listener
 import com.edugma.core.utils.isNull
-import com.edugma.core.utils.viewmodel.getViewModel
+import com.edugma.core.utils.viewmodel.collectAsState
+import com.edugma.core.utils.viewmodel.getViewModel2
 import com.edugma.features.account.domain.model.performance.GradePosition
 import com.edugma.features.account.performance.bottomSheets.FiltersBottomSheetContent
 import com.edugma.features.account.performance.bottomSheets.PerformanceBottomSheetContent
@@ -45,8 +46,8 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
-    val state by viewModel.stateFlow.collectAsState()
+fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel2()) {
+    val state by viewModel.collectAsState()
     val onAction = viewModel.rememberOnAction()
 
     val bottomState = rememberModalBottomSheetState()

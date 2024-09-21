@@ -2,7 +2,7 @@ package com.edugma.features.account.people.presentation
 
 import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
-import com.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
+import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
 import com.edugma.core.arch.pagination.PagingViewModel
 import com.edugma.core.navigation.core.router.external.ExternalRouter
 import com.edugma.core.navigation.schedule.ScheduleInfoScreens
@@ -10,20 +10,22 @@ import com.edugma.features.account.domain.model.peoples.Person
 import com.edugma.features.account.domain.repository.PeoplesRepository
 import com.edugma.features.account.people.PeopleScreenType
 import com.edugma.features.account.people.common.utlis.convertAndShare
-import kotlinx.coroutines.flow.map
 
 class PeopleViewModel(
     private val repository: PeoplesRepository,
     private val externalRouter: ExternalRouter,
     private val pagingViewModel: PagingViewModel<Person>,
-) : BaseActionViewModel<PeopleUiState, PeopleAction>(PeopleUiState()) {
+) : FeatureLogic<PeopleUiState, PeopleAction>() {
 
-    init {
-        pagingViewModel.init(
-            parentViewModel = this,
-            initialState = state.paginationState,
-            stateFlow = stateFlow.map { it.paginationState },
-            setState = { newState { copy(paginationState = it) } },
+    override fun initialState(): PeopleUiState {
+        return PeopleUiState()
+    }
+
+    override fun onCreate() {
+        addDelegate(
+            logic = pagingViewModel,
+            transform = { it.paginationState },
+            updateSource = { copy(paginationState = it) }
         )
         pagingViewModel.request = {
             repository.getPeople(

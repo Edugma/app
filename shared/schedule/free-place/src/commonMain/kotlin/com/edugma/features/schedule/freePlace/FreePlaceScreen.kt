@@ -35,7 +35,8 @@ import com.edugma.core.designSystem.theme.EdTheme
 import com.edugma.core.designSystem.utils.SecondaryContent
 import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.ClickListener
-import com.edugma.core.utils.viewmodel.getViewModel
+import com.edugma.core.utils.viewmodel.collectAsState
+import com.edugma.core.utils.viewmodel.getViewModel2
 import edugma.shared.core.icons.generated.resources.*
 import edugma.shared.core.resources.generated.resources.Res
 import edugma.shared.core.resources.generated.resources.schedule_fre_pla_find_free_place
@@ -44,8 +45,8 @@ import kotlinx.datetime.LocalTime
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun FreePlaceScreen(viewModel: FreePlaceViewModel = getViewModel()) {
-    val state by viewModel.stateFlow.collectAsState()
+fun FreePlaceScreen(viewModel: FreePlaceViewModel = getViewModel2()) {
+    val state by viewModel.collectAsState()
 
     FeatureScreen {
         FreePlaceContent(

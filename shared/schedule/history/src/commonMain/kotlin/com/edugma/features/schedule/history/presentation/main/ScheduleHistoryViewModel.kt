@@ -2,14 +2,18 @@ package com.edugma.features.schedule.history.presentation.main
 
 import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
-import com.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
+import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
 import com.edugma.core.navigation.schedule.ScheduleHistoryScreens
 import com.edugma.features.schedule.domain.usecase.ScheduleHistoryUseCase
 
 class ScheduleHistoryViewModel(
     private val useCase: ScheduleHistoryUseCase,
-) : BaseActionViewModel<ScheduleHistoryUiState, ScheduleHistoryAction>(ScheduleHistoryUiState()) {
-    init {
+) : FeatureLogic<ScheduleHistoryUiState, ScheduleHistoryAction>() {
+    override fun initialState(): ScheduleHistoryUiState {
+        return ScheduleHistoryUiState()
+    }
+
+    override fun onCreate() {
         launchCoroutine {
             useCase.getHistory().collect {
                 newState {

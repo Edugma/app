@@ -39,7 +39,8 @@ import com.edugma.core.designSystem.tokens.shapes.bottom
 import com.edugma.core.designSystem.utils.SecondaryContent
 import com.edugma.core.icons.EdIcons
 import com.edugma.core.ui.screen.FeatureScreen
-import com.edugma.core.utils.viewmodel.getViewModel
+import com.edugma.core.utils.viewmodel.collectAsState
+import com.edugma.core.utils.viewmodel.getViewModel2
 import edugma.shared.core.icons.generated.resources.*
 import edugma.shared.core.resources.generated.resources.*
 import edugma.shared.core.resources.generated.resources.Res
@@ -49,8 +50,8 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun ScheduleHistoryScreen(viewModel: ScheduleHistoryViewModel = getViewModel()) {
-    val state by viewModel.stateFlow.collectAsState()
+fun ScheduleHistoryScreen(viewModel: ScheduleHistoryViewModel = getViewModel2()) {
+    val state by viewModel.collectAsState()
 
     FeatureScreen(
         statusBarPadding = false,

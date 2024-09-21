@@ -4,21 +4,24 @@ import com.edugma.core.api.utils.onFailure
 import com.edugma.core.api.utils.onSuccess
 import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
-import com.edugma.core.arch.mvi.viewmodel.BaseViewModel
-import com.edugma.core.arch.mvi.viewmodel.prop
+import com.edugma.core.arch.mvi.viewmodel.FeatureLogic2
 import com.edugma.features.schedule.domain.model.compact.CompactPlaceInfo
 import com.edugma.features.schedule.domain.model.place.PlaceDailyOccupancy
 import com.edugma.features.schedule.domain.model.source.ScheduleSource
 import com.edugma.features.schedule.domain.repository.FreePlaceRepository
 import com.edugma.features.schedule.domain.repository.ScheduleInfoRepository
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.mapNotNull
 
 class PlaceInfoViewModel(
     private val repository: ScheduleInfoRepository,
     private val freePlaceRepository: FreePlaceRepository,
-) : BaseViewModel<PlaceInfoState>(PlaceInfoState()) {
-    init {
+) : FeatureLogic2<PlaceInfoState>() {
+    override fun initialState(): PlaceInfoState {
+        return PlaceInfoState()
+    }
+
+    override fun onCreate() {
         // TODO
 //        launchCoroutine {
 //            stateFlow.prop { id }.filterNotNull().collect {
@@ -39,7 +42,7 @@ class PlaceInfoViewModel(
 //        }
 
         launchCoroutine {
-            stateFlow.prop { id }.filterNotNull().collect {
+            stateFlow.mapNotNull { it.id }.collect {
                 freePlaceRepository.getPlaceOccupancy(it)
                     .onSuccess {
                         newState {

@@ -22,8 +22,7 @@ class CacheRepositoryImpl(
 
     @InternalApi
     override suspend fun <T : Any> getInternal(key: String, type: KType): CachedResult<T>? {
-        val timestamp = preferenceRepository.getLong("$VERSION_PREFIX$key") ?: return null
-        val cacheInstant = Instant.fromEpochMilliseconds(timestamp)
+        val cacheInstant = getTimestamp(key) ?: return null
 
         val data = preferenceRepository.getObjectInternal<T>(key, type) ?: return null
         return CachedResult(data, cacheInstant)
@@ -35,9 +34,7 @@ class CacheRepositoryImpl(
         type: KType,
     ): Flow<CachedResult<T>?> {
         // TODO Посмотреть и переделать устаревание
-        val timestamp = preferenceRepository.getLong("$VERSION_PREFIX$key")
-            ?: return flowOf(null)
-        val cacheInstant = Instant.fromEpochMilliseconds(timestamp)
+        val cacheInstant = getTimestamp(key) ?: return flowOf(null)
 
         val objectFlow = preferenceRepository.getObjectFlowInternal<T>(key, type)
         return objectFlow.map { obj ->
@@ -50,8 +47,7 @@ class CacheRepositoryImpl(
         Logger.d("Save cache by key=$key", tag = TAG)
         preferenceRepository.saveObjectInternal(key, value, type)
 
-        val now = Clock.System.now().epochSeconds
-        preferenceRepository.saveLong("$VERSION_PREFIX$key", now)
+        saveTimestamp(key)
     }
 
     override suspend fun remove(key: String) {
@@ -61,6 +57,11 @@ class CacheRepositoryImpl(
     override suspend fun getTimestamp(key: String): Instant? {
         val epochSeconds = preferenceRepository.getLong(VERSION_PREFIX + key) ?: return null
         return Instant.fromEpochSeconds(epochSeconds)
+    }
+
+    private suspend fun saveTimestamp(key: String) {
+        val now = Clock.System.now().epochSeconds
+        preferenceRepository.saveLong("$VERSION_PREFIX$key", now)
     }
 
     companion object {

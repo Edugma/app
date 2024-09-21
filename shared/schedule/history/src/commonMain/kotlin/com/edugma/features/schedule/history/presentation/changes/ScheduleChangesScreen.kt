@@ -27,6 +27,7 @@ import com.edugma.core.api.utils.DateFormat
 import com.edugma.core.api.utils.TimeFormat
 import com.edugma.core.api.utils.formatDate
 import com.edugma.core.api.utils.formatTime
+import com.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import com.edugma.core.arch.viewmodel.bind
 import com.edugma.core.designSystem.atoms.label.EdLabel
 import com.edugma.core.designSystem.atoms.spacer.SpacerHeight
@@ -41,7 +42,8 @@ import com.edugma.core.icons.EdIcons
 import com.edugma.core.navigation.schedule.ScheduleHistoryScreens
 import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.ClickListener
-import com.edugma.core.utils.viewmodel.getViewModel
+import com.edugma.core.utils.viewmodel.collectAsState
+import com.edugma.core.utils.viewmodel.getViewModel2
 import com.edugma.features.schedule.domain.model.attentdee.AttendeeInfo
 import com.edugma.features.schedule.domain.model.lesson.LessonEvent
 import com.edugma.features.schedule.domain.model.lessonSubject.LessonSubject
@@ -56,12 +58,13 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun ScheduleChangesScreen(
-    viewModel: ScheduleChangesViewModel = getViewModel(),
+    viewModel: ScheduleChangesViewModel = getViewModel2(),
     args: NavArgs<ScheduleHistoryScreens.Changes>,
 ) {
-    val state by viewModel.stateFlow.collectAsState()
+    val state by viewModel.collectAsState()
+    val onAction = viewModel.rememberOnAction()
     viewModel.bind {
-        viewModel.onAction(
+        onAction(
             ScheduleChangesAction.OnArguments(
                 args = args,
             ),

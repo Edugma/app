@@ -1,14 +1,17 @@
 package com.edugma.features.schedule.scheduleInfo.groupInfo
 
 import com.edugma.core.arch.mvi.newState
-import com.edugma.core.arch.mvi.viewmodel.BaseViewModel
+import com.edugma.core.arch.mvi.viewmodel.FeatureLogic2
 import com.edugma.features.schedule.domain.model.group.GroupInfo
 import com.edugma.features.schedule.domain.model.source.ScheduleSource
 import com.edugma.features.schedule.domain.repository.ScheduleInfoRepository
 
 class GroupInfoViewModel(
     private val repository: ScheduleInfoRepository,
-) : BaseViewModel<GroupInfoState>(GroupInfoState()) {
+) : FeatureLogic2<GroupInfoState>() {
+    override fun initialState(): GroupInfoState {
+        return GroupInfoState()
+    }
     init {
 //        launchCoroutine {
 //            stateFlow.prop { id }.filterNotNull().collect {

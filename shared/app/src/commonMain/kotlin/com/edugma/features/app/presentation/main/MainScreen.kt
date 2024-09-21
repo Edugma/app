@@ -45,7 +45,8 @@ import com.edugma.core.designSystem.utils.LocalEdImageLoader
 import com.edugma.core.navigation.MainDestination
 import com.edugma.core.navigation.core.rememberRouterNavigator
 import com.edugma.core.navigation.nodes.NodesScreens
-import com.edugma.core.utils.viewmodel.getViewModel
+import com.edugma.core.utils.viewmodel.collectAsState
+import com.edugma.core.utils.viewmodel.getViewModel2
 import com.edugma.features.app.core.appScreens
 import com.edugma.features.app.presentation.main.widgets.BottomNav
 import com.edugma.features.app.presentation.main.widgets.TabContent
@@ -61,9 +62,9 @@ import kotlin.time.Duration.Companion.seconds
 
 @Composable
 fun MainScreen(
-    viewModel: MainAppViewModel = getViewModel(),
+    viewModel: MainAppViewModel = getViewModel2(),
 ) {
-    val state by viewModel.stateFlow.collectAsState()
+    val state by viewModel.collectAsState()
     val appState = remember {
         derivedStateOf {
             state.appState
@@ -92,7 +93,7 @@ fun MainScreen(
 @Composable
 fun MainContent(
     appState: State<AppState>,
-    viewModel: MainViewModel = getViewModel(),
+    viewModel: MainViewModel = getViewModel2(),
 ) {
     val (tabNavigator, isNavigationBarVisible) = rememberTabNavigator(viewModel)
 
@@ -120,7 +121,7 @@ fun MainContent(
         }
     }
 
-    val state by viewModel.stateFlow.collectAsState()
+    val state by viewModel.collectAsState()
 
     val onAction = viewModel.rememberOnAction()
 

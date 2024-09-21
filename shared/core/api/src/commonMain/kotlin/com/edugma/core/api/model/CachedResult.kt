@@ -1,5 +1,6 @@
 package com.edugma.core.api.model
 
+import co.touchlab.kermit.Logger
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
@@ -12,7 +13,10 @@ data class CachedResult<T>(
 ) {
     fun isExpired(expiresIn: Duration): Boolean {
         val now = Clock.System.now()
+        val expiredTime = timestamp.plus(expiresIn)
+        // TODO TEST123
+        Logger.d("IsExpired: now=$now, expiredTime=$expiredTime", tag = "Store")
 
-        return timestamp.plus(expiresIn) > now
+        return expiredTime <= now || true
     }
 }

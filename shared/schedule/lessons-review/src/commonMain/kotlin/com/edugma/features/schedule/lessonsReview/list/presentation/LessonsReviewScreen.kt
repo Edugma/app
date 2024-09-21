@@ -40,7 +40,8 @@ import com.edugma.core.designSystem.utils.SecondaryContent
 import com.edugma.core.icons.EdIcons
 import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.ClickListener
-import com.edugma.core.utils.viewmodel.getViewModel
+import com.edugma.core.utils.viewmodel.collectAsState
+import com.edugma.core.utils.viewmodel.getViewModel2
 import com.edugma.features.schedule.domain.model.compact.CompactLessonEvent
 import com.edugma.features.schedule.domain.model.rrule.Frequency
 import com.edugma.features.schedule.lessonsReview.list.domain.LessonReviewEvent
@@ -55,9 +56,9 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun LessonsReviewScreen(
-    viewModel: LessonsReviewViewModel = getViewModel(),
+    viewModel: LessonsReviewViewModel = getViewModel2(),
 ) {
-    val state by viewModel.stateFlow.collectAsState()
+    val state by viewModel.collectAsState()
 
     FeatureScreen(
         statusBarPadding = false,

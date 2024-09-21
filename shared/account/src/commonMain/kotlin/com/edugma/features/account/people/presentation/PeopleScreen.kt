@@ -31,7 +31,8 @@ import com.edugma.core.ui.screen.FeatureBottomSheetScreen
 import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.ClickListener
 import com.edugma.core.utils.Typed1Listener
-import com.edugma.core.utils.viewmodel.getViewModel
+import com.edugma.core.utils.viewmodel.collectAsState
+import com.edugma.core.utils.viewmodel.getViewModel2
 import com.edugma.features.account.domain.model.peoples.Person
 import com.edugma.features.account.people.PeopleScreenType
 import com.edugma.features.account.people.common.bottomSheets.SearchBottomSheet
@@ -42,10 +43,10 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun PeopleScreen(
-    viewModel: PeopleViewModel = getViewModel(),
+    viewModel: PeopleViewModel = getViewModel2(),
     type: PeopleScreenType,
 ) {
-    val state by viewModel.stateFlow.collectAsState()
+    val state by viewModel.collectAsState()
     val onAction = viewModel.rememberOnAction()
 
     LaunchedEffect(type) {

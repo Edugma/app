@@ -1,29 +1,31 @@
 package com.edugma.features.schedule.sources
 
 import com.edugma.core.api.model.PagingDto
-import com.edugma.core.api.model.map
 import com.edugma.core.arch.mvi.delegate.debounce
 import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
-import com.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
+import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
 import com.edugma.core.arch.pagination.PagingViewModel
 import com.edugma.features.schedule.domain.model.source.ScheduleSourceFull
 import com.edugma.features.schedule.domain.model.source.ScheduleSourceType
 import com.edugma.features.schedule.domain.usecase.ScheduleSourcesUseCase
 import com.edugma.features.schedule.sources.model.ScheduleSourceUiModel
 import com.edugma.features.schedule.sources.model.toDtoModel
-import kotlinx.coroutines.flow.map
 
 class ScheduleSourcesViewModel(
     private val useCase: ScheduleSourcesUseCase,
     private val pagingViewModel: PagingViewModel<ScheduleSourceFull>,
-) : BaseActionViewModel<ScheduleSourceUiState, ScheduleSourcesAction>(ScheduleSourceUiState()) {
-    init {
-        pagingViewModel.init(
-            parentViewModel = this,
-            initialState = state.paginationState,
-            stateFlow = stateFlow.map { it.paginationState },
-            setState = { newState { setPagination(it).updatePaginationUi() } },
+) : FeatureLogic<ScheduleSourceUiState, ScheduleSourcesAction>() {
+
+    override fun initialState(): ScheduleSourceUiState {
+        return ScheduleSourceUiState()
+    }
+
+    override fun onCreate() {
+        addDelegate(
+            logic = pagingViewModel,
+            transform = { it.paginationState },
+            updateSource = { setPagination(it).updatePaginationUi() },
         )
         pagingViewModel.request = {
             val selectedTab = state.selectedTab

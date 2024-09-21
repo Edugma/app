@@ -16,7 +16,7 @@ import com.edugma.core.designSystem.theme.EdTheme
 import com.edugma.core.designSystem.tokens.shapes.bottom
 import com.edugma.core.icons.EdIcons
 import com.edugma.core.ui.screen.FeatureScreen
-import com.edugma.core.utils.viewmodel.getViewModel
+import com.edugma.core.utils.viewmodel.getViewModel2
 import edugma.shared.core.icons.generated.resources.*
 import edugma.shared.core.resources.generated.resources.*
 import edugma.shared.core.resources.generated.resources.Res
@@ -24,7 +24,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun SettingsMainScreen(viewModel: SettingsMainViewModel = getViewModel()) {
+fun SettingsMainScreen(viewModel: SettingsMainViewModel = getViewModel2()) {
     FeatureScreen(
         statusBarPadding = false,
     ) {

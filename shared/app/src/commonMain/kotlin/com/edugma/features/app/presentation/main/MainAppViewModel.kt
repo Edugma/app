@@ -8,14 +8,18 @@ import com.edugma.core.api.repository.ThemeRepository
 import com.edugma.core.api.repository.UrlTemplateRepository
 import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
-import com.edugma.core.arch.mvi.viewmodel.BaseViewModel
+import com.edugma.core.arch.mvi.viewmodel.FeatureLogic2
 
 class MainAppViewModel(
     private val themeRepository: ThemeRepository,
     private val appStateRepository: AppStateRepository,
     private val urlRepository: UrlTemplateRepository
-) : BaseViewModel<MainAppUiState>(MainAppUiState()) {
-    init {
+) : FeatureLogic2<MainAppUiState>() {
+    override fun initialState(): MainAppUiState {
+        return MainAppUiState()
+    }
+
+    override fun onCreate() {
         launchCoroutine {
             themeRepository.init()
             themeRepository.getTheme().collect {

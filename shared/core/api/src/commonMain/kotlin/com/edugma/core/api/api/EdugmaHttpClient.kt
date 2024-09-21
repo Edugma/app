@@ -8,8 +8,8 @@ import io.ktor.http.isSuccess
 import io.ktor.serialization.JsonConvertException
 import io.ktor.util.reflect.TypeInfo
 import io.ktor.util.reflect.typeInfo
-import kotlinx.io.IOException
 import kotlinx.coroutines.CancellationException
+import kotlinx.io.IOException
 
 interface EdugmaHttpClient {
 

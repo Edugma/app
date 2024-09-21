@@ -1,8 +1,6 @@
 package com.edugma.core.arch.mvi.delegate
 
-import androidx.lifecycle.viewModelScope
-import com.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
-import com.edugma.core.arch.viewmodel.RestrictedApi
+import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
@@ -37,11 +35,10 @@ class DebounceDelegate(
     }
 }
 
-@OptIn(RestrictedApi::class)
-fun BaseActionViewModel<*, *>.debounce(timeout: Long = DebounceConst.SEARCH_TIMEOUT): DebounceDelegate {
+fun FeatureLogic<*, *>.debounce(timeout: Long = DebounceConst.SEARCH_TIMEOUT): DebounceDelegate {
     return DebounceDelegate(
         timeout = timeout,
-        scope = viewModelScope,
+        scope = scope,
         errorHandler = errorHandler,
     )
 }

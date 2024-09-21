@@ -1,15 +1,18 @@
 package com.edugma.features.account.personal
 
 import com.edugma.core.arch.mvi.newState
-import com.edugma.core.arch.mvi.viewmodel.BaseActionViewModel
+import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
 import com.edugma.core.utils.lce.launchLce
 import com.edugma.features.account.domain.repository.PersonalRepository
 
 class PersonalViewModel(
     private val repository: PersonalRepository,
-) : BaseActionViewModel<PersonalUiState, PersonalAction>(PersonalUiState()) {
+) : FeatureLogic<PersonalUiState, PersonalAction>() {
+    override fun initialState(): PersonalUiState {
+        return PersonalUiState()
+    }
 
-    init {
+    override fun onCreate() {
         load(isRefreshing = false)
     }
 
