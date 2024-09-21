@@ -17,7 +17,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,7 +35,7 @@ import com.edugma.core.utils.ClickListener
 import com.edugma.core.utils.Typed1Listener
 import com.edugma.core.utils.ui.pxToDp
 import com.edugma.core.utils.viewmodel.collectAsState
-import com.edugma.core.utils.viewmodel.getViewModel2
+import com.edugma.core.utils.viewmodel.getViewModel
 import com.edugma.features.schedule.domain.model.group.description
 import com.edugma.features.schedule.elements.verticalSchedule.VerticalScheduleComponent
 import edugma.shared.core.icons.generated.resources.*
@@ -44,7 +43,7 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun GroupInfoScreen(viewModel: GroupInfoViewModel = getViewModel2(), id: String) {
+fun GroupInfoScreen(viewModel: GroupInfoViewModel = getViewModel(), id: String) {
     val state by viewModel.collectAsState()
 
     LaunchedEffect(id) {

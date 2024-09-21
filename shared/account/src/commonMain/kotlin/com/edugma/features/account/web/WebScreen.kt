@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,13 +18,13 @@ import com.edugma.core.designSystem.theme.EdTheme
 import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.isNotNull
 import com.edugma.core.utils.viewmodel.collectAsState
-import com.edugma.core.utils.viewmodel.getViewModel2
+import com.edugma.core.utils.viewmodel.getViewModel
 
 @Composable
 fun WebScreen(
     url: String,
     isFullScreen: Boolean,
-    viewModel: WebViewModel = getViewModel2(),
+    viewModel: WebViewModel = getViewModel(),
 ) {
     val state by viewModel.collectAsState()
 

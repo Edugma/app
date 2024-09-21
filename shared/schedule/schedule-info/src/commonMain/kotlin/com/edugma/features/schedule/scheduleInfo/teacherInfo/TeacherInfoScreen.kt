@@ -8,7 +8,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -19,7 +18,7 @@ import com.edugma.core.icons.EdIcons
 import com.edugma.core.utils.ClickListener
 import com.edugma.core.utils.Typed1Listener
 import com.edugma.core.utils.viewmodel.collectAsState
-import com.edugma.core.utils.viewmodel.getViewModel2
+import com.edugma.core.utils.viewmodel.getViewModel
 import com.edugma.features.schedule.domain.model.teacher.description
 import com.edugma.features.schedule.elements.verticalSchedule.VerticalScheduleComponent
 import com.edugma.features.schedule.scheduleInfo.groupInfo.InfoScaffold
@@ -28,7 +27,7 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun TeacherInfoScreen(viewModel: TeacherInfoViewModel = getViewModel2(), id: String) {
+fun TeacherInfoScreen(viewModel: TeacherInfoViewModel = getViewModel(), id: String) {
     val state by viewModel.collectAsState()
 
     LaunchedEffect(id) {

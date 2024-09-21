@@ -15,7 +15,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,8 +35,7 @@ import com.edugma.core.designSystem.utils.SecondaryContent
 import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.ClickListener
 import com.edugma.core.utils.viewmodel.collectAsState
-import com.edugma.core.utils.viewmodel.getViewModel2
-import edugma.shared.core.icons.generated.resources.*
+import com.edugma.core.utils.viewmodel.getViewModel
 import edugma.shared.core.resources.generated.resources.Res
 import edugma.shared.core.resources.generated.resources.schedule_fre_pla_find_free_place
 import kotlinx.datetime.LocalDate
@@ -45,7 +43,7 @@ import kotlinx.datetime.LocalTime
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun FreePlaceScreen(viewModel: FreePlaceViewModel = getViewModel2()) {
+fun FreePlaceScreen(viewModel: FreePlaceViewModel = getViewModel()) {
     val state by viewModel.collectAsState()
 
     FeatureScreen {

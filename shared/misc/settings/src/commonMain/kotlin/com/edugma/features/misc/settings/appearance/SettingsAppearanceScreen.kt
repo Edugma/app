@@ -31,8 +31,7 @@ import com.edugma.core.icons.EdIcons
 import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.ClickListener
 import com.edugma.core.utils.viewmodel.collectAsState
-import com.edugma.core.utils.viewmodel.getViewModel2
-import edugma.shared.core.icons.generated.resources.*
+import com.edugma.core.utils.viewmodel.getViewModel
 import edugma.shared.core.icons.generated.resources.ic_fluent_dark_theme_24_filled
 import edugma.shared.core.resources.generated.resources.*
 import edugma.shared.core.resources.generated.resources.Res
@@ -40,7 +39,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun SettingsAppearanceScreen(viewModel: SettingsAppearanceViewModel = getViewModel2()) {
+fun SettingsAppearanceScreen(viewModel: SettingsAppearanceViewModel = getViewModel()) {
     val state by viewModel.collectAsState()
 
     FeatureScreen(

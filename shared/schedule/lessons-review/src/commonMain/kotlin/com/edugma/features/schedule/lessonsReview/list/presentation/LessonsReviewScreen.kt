@@ -12,10 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -35,13 +33,12 @@ import com.edugma.core.designSystem.organism.topAppBar.EdTopAppBarDefaults
 import com.edugma.core.designSystem.theme.EdTheme
 import com.edugma.core.designSystem.tokens.elevation.EdElevation
 import com.edugma.core.designSystem.tokens.shapes.bottom
-import com.edugma.core.designSystem.tokens.shapes.top
 import com.edugma.core.designSystem.utils.SecondaryContent
 import com.edugma.core.icons.EdIcons
 import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.ClickListener
 import com.edugma.core.utils.viewmodel.collectAsState
-import com.edugma.core.utils.viewmodel.getViewModel2
+import com.edugma.core.utils.viewmodel.getViewModel
 import com.edugma.features.schedule.domain.model.compact.CompactLessonEvent
 import com.edugma.features.schedule.domain.model.rrule.Frequency
 import com.edugma.features.schedule.lessonsReview.list.domain.LessonReviewEvent
@@ -56,7 +53,7 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun LessonsReviewScreen(
-    viewModel: LessonsReviewViewModel = getViewModel2(),
+    viewModel: LessonsReviewViewModel = getViewModel(),
 ) {
     val state by viewModel.collectAsState()
 

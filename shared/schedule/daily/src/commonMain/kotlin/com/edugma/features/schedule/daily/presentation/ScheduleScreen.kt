@@ -23,7 +23,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,7 +47,7 @@ import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.ui.bindTo
 import com.edugma.core.utils.ui.onPageChanged
 import com.edugma.core.utils.viewmodel.collectAsState
-import com.edugma.core.utils.viewmodel.getViewModel2
+import com.edugma.core.utils.viewmodel.getViewModel
 import edugma.shared.core.icons.generated.resources.*
 import edugma.shared.core.resources.generated.resources.*
 import edugma.shared.core.resources.generated.resources.Res
@@ -58,7 +57,7 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun ScheduleScreen(
-    viewModel: ScheduleViewModel = getViewModel2(),
+    viewModel: ScheduleViewModel = getViewModel(),
     date: LocalDate? = null,
 ) {
     val state by viewModel.collectAsState()

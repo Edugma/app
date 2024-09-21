@@ -15,7 +15,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,10 +31,10 @@ import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.ClickListener
 import com.edugma.core.utils.Typed1Listener
 import com.edugma.core.utils.viewmodel.collectAsState
-import com.edugma.core.utils.viewmodel.getViewModel2
+import com.edugma.core.utils.viewmodel.getViewModel
 
 @Composable
-fun NodesMainScreen(viewModel: NodesMainViewModel = getViewModel2()) {
+fun NodesMainScreen(viewModel: NodesMainViewModel = getViewModel()) {
     val state by viewModel.collectAsState()
 
     FeatureScreen {

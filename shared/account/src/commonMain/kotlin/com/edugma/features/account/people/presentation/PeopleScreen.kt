@@ -11,7 +11,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
@@ -32,7 +31,7 @@ import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.ClickListener
 import com.edugma.core.utils.Typed1Listener
 import com.edugma.core.utils.viewmodel.collectAsState
-import com.edugma.core.utils.viewmodel.getViewModel2
+import com.edugma.core.utils.viewmodel.getViewModel
 import com.edugma.features.account.domain.model.peoples.Person
 import com.edugma.features.account.people.PeopleScreenType
 import com.edugma.features.account.people.common.bottomSheets.SearchBottomSheet
@@ -43,7 +42,7 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun PeopleScreen(
-    viewModel: PeopleViewModel = getViewModel2(),
+    viewModel: PeopleViewModel = getViewModel(),
     type: PeopleScreenType,
 ) {
     val state by viewModel.collectAsState()

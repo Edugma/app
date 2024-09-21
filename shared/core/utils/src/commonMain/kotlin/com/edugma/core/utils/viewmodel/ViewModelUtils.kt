@@ -16,19 +16,16 @@ import org.koin.compose.koinInject
 
 @Suppress("UNCHECKED_CAST")
 @Composable
-inline fun <TState, TAction, reified T : FeatureLogic<TState, TAction>> getViewModel2(): T {
+inline fun <TState, TAction, reified T : FeatureLogic<TState, TAction>> getViewModel(): T {
     val storeViewModel = viewModel { StoreViewModel() }
 
     val featureStoreRef = remember { Ref<FeatureStore<TState, TAction>>() }
-    val featureLogicRef = remember { Ref<T>() }
 
     if (featureStoreRef.value == null) {
         val featureLogicKey = T::class.getFullClassName()
         featureStoreRef.value = storeViewModel.getOrPut(featureLogicKey) {
             val newFeatureLogic = koinInject<T>()
-            featureLogicRef.value = newFeatureLogic
             val defaultErrorHandler = koinInject<DefaultErrorHandler>()
-            newFeatureLogic.onCreate()
             val store = buildFeatureStore(
                 logic = newFeatureLogic,
                 errorHandler = defaultErrorHandler,
@@ -38,7 +35,7 @@ inline fun <TState, TAction, reified T : FeatureLogic<TState, TAction>> getViewM
         } as FeatureStore<TState, TAction>
     }
 
-    return featureLogicRef.value!!
+    return featureStoreRef.value!!.logic as T
 }
 
 public class StoreViewModel : ViewModel() {

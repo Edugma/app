@@ -17,7 +17,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,7 +40,7 @@ import com.edugma.core.icons.EdIcons
 import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.ClickListener
 import com.edugma.core.utils.viewmodel.collectAsState
-import com.edugma.core.utils.viewmodel.getViewModel2
+import com.edugma.core.utils.viewmodel.getViewModel
 import com.edugma.features.account.domain.model.Order
 import com.edugma.features.account.domain.model.Personal
 import com.edugma.features.account.domain.model.applications.Application
@@ -49,7 +48,7 @@ import edugma.shared.core.icons.generated.resources.*
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun PersonalScreen(viewModel: PersonalViewModel = getViewModel2()) {
+fun PersonalScreen(viewModel: PersonalViewModel = getViewModel()) {
     val state by viewModel.collectAsState()
 
     FeatureScreen(statusBarPadding = false) {

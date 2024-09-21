@@ -35,7 +35,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -68,13 +67,12 @@ import com.edugma.core.utils.ClickListener
 import com.edugma.core.utils.Typed1Listener
 import com.edugma.core.utils.ui.isItemFullyVisible
 import com.edugma.core.utils.viewmodel.collectAsState
-import com.edugma.core.utils.viewmodel.getViewModel2
+import com.edugma.core.utils.viewmodel.getViewModel
 import com.edugma.features.schedule.calendar.model.CalendarDayVO
 import com.edugma.features.schedule.calendar.model.CalendarLessonVO
 import com.edugma.features.schedule.calendar.model.CalendarWeekVO
 import com.edugma.features.schedule.calendar.model.ScheduleCalendarVO
 import com.edugma.features.schedule.domain.model.compact.Importance
-import edugma.shared.core.icons.generated.resources.*
 import edugma.shared.core.icons.generated.resources.ic_fluent_calendar_today_24_regular
 import edugma.shared.core.resources.generated.resources.*
 import edugma.shared.core.resources.generated.resources.Res
@@ -85,7 +83,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun ScheduleCalendarScreen(viewModel: ScheduleCalendarViewModel = getViewModel2()) {
+fun ScheduleCalendarScreen(viewModel: ScheduleCalendarViewModel = getViewModel()) {
     val state by viewModel.collectAsState()
 
     FeatureScreen(

@@ -11,7 +11,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -26,7 +25,7 @@ import com.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import com.edugma.core.designSystem.theme.EdTheme
 import com.edugma.core.designSystem.utils.withAlpha
 import com.edugma.core.utils.viewmodel.collectAsState
-import com.edugma.core.utils.viewmodel.getViewModel2
+import com.edugma.core.utils.viewmodel.getViewModel
 import com.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
 import com.edugma.features.schedule.domain.model.lesson.LessonEvent
 import com.edugma.features.schedule.domain.model.source.ScheduleSource
@@ -39,7 +38,7 @@ import kotlinx.datetime.LocalDate
 
 @Composable
 fun VerticalScheduleComponent(
-    viewModel: VerticalScheduleViewModel = getViewModel2(),
+    viewModel: VerticalScheduleViewModel = getViewModel(),
     scheduleSource: ScheduleSource,
 ) {
     val state by viewModel.collectAsState()

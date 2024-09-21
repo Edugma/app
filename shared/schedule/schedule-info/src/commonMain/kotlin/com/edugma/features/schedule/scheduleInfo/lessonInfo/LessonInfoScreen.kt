@@ -13,7 +13,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,10 +40,9 @@ import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.ClickListener
 import com.edugma.core.utils.Typed1Listener
 import com.edugma.core.utils.viewmodel.collectAsState
-import com.edugma.core.utils.viewmodel.getViewModel2
+import com.edugma.core.utils.viewmodel.getViewModel
 import com.edugma.features.schedule.domain.model.attentdee.AttendeeInfo
 import com.edugma.features.schedule.domain.model.place.Place
-import com.edugma.features.schedule.domain.model.teacher.description
 import edugma.shared.core.icons.generated.resources.*
 import kotlinx.datetime.LocalDate
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -52,7 +50,7 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun LessonInfoScreen(
-    viewModel: LessonInfoViewModel = getViewModel2(),
+    viewModel: LessonInfoViewModel = getViewModel(),
     eventId: String,
     currentDate: LocalDate,
 ) {

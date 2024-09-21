@@ -19,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,7 +45,7 @@ import com.edugma.core.navigation.MainDestination
 import com.edugma.core.navigation.core.rememberRouterNavigator
 import com.edugma.core.navigation.nodes.NodesScreens
 import com.edugma.core.utils.viewmodel.collectAsState
-import com.edugma.core.utils.viewmodel.getViewModel2
+import com.edugma.core.utils.viewmodel.getViewModel
 import com.edugma.features.app.core.appScreens
 import com.edugma.features.app.presentation.main.widgets.BottomNav
 import com.edugma.features.app.presentation.main.widgets.TabContent
@@ -62,7 +61,7 @@ import kotlin.time.Duration.Companion.seconds
 
 @Composable
 fun MainScreen(
-    viewModel: MainAppViewModel = getViewModel2(),
+    viewModel: MainAppViewModel = getViewModel(),
 ) {
     val state by viewModel.collectAsState()
     val appState = remember {
@@ -93,7 +92,7 @@ fun MainScreen(
 @Composable
 fun MainContent(
     appState: State<AppState>,
-    viewModel: MainViewModel = getViewModel2(),
+    viewModel: MainViewModel = getViewModel(),
 ) {
     val (tabNavigator, isNavigationBarVisible) = rememberTabNavigator(viewModel)
 

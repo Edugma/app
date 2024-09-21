@@ -19,10 +19,10 @@ import com.edugma.core.designSystem.theme.EdTheme
 import com.edugma.core.designSystem.tokens.shapes.bottom
 import com.edugma.core.designSystem.utils.rememberCachedIconPainter
 import com.edugma.core.ui.screen.FeatureScreen
-import com.edugma.core.utils.viewmodel.getViewModel2
+import com.edugma.core.utils.viewmodel.getViewModel
 
 @Composable
-fun MiscMenuScreen(viewModel: MiscMenuViewModel = getViewModel2()) {
+fun MiscMenuScreen(viewModel: MiscMenuViewModel = getViewModel()) {
     FeatureScreen(
         statusBarPadding = false,
     ) {

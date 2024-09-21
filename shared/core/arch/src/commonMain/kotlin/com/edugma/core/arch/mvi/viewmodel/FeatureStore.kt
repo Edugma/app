@@ -6,7 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 
 class FeatureStoreImpl<TState, TAction>(
-    private val logic: FeatureLogic<TState, TAction>,
+    override val logic: FeatureLogic<TState, TAction>,
     state: MutableFeatureState<TState>,
     private val errorHandler: CombinedErrorHandler?,
 ) : FeatureStore<TState, TAction> {
@@ -43,6 +43,7 @@ class FeatureStoreImpl<TState, TAction>(
 }
 
 interface FeatureStore<TState, TAction> {
+    val logic: FeatureLogic<TState, TAction>
     fun onAction(action: TAction)
     val state: FeatureState<TState>
     fun create()

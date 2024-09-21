@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -46,7 +45,7 @@ import com.edugma.core.ui.screen.FeatureBottomSheetScreen
 import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.ClickListener
 import com.edugma.core.utils.viewmodel.collectAsState
-import com.edugma.core.utils.viewmodel.getViewModel2
+import com.edugma.core.utils.viewmodel.getViewModel
 import com.edugma.features.account.domain.model.payments.PaymentMethod
 import com.edugma.features.account.payments.bottomSheet.PaymentBottomSheet
 import com.edugma.features.account.payments.model.ContractUiModel
@@ -56,7 +55,7 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel2()) {
+fun PaymentsScreen(viewModel: PaymentsViewModel = getViewModel()) {
     val state by viewModel.collectAsState()
     val onAction = viewModel.rememberOnAction()
 

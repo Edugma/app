@@ -15,7 +15,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
@@ -34,7 +33,7 @@ import com.edugma.core.icons.EdIcons
 import com.edugma.core.utils.ClickListener
 import com.edugma.core.utils.Typed1Listener
 import com.edugma.core.utils.viewmodel.collectAsState
-import com.edugma.core.utils.viewmodel.getViewModel2
+import com.edugma.core.utils.viewmodel.getViewModel
 import com.edugma.features.schedule.domain.model.compact.CompactPlaceInfo
 import com.edugma.features.schedule.elements.verticalSchedule.VerticalScheduleComponent
 import com.edugma.features.schedule.scheduleInfo.groupInfo.InfoScaffold
@@ -46,7 +45,7 @@ import org.jetbrains.compose.resources.stringResource
 import edugma.shared.core.resources.generated.resources.Res as CommonRes
 
 @Composable
-fun PlaceInfoScreen(viewModel: PlaceInfoViewModel = getViewModel2(), id: String) {
+fun PlaceInfoScreen(viewModel: PlaceInfoViewModel = getViewModel(), id: String) {
     val state by viewModel.collectAsState()
 
     LaunchedEffect(id) {

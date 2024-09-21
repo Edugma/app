@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -34,7 +33,7 @@ import com.edugma.core.utils.ClickListener
 import com.edugma.core.utils.Typed1Listener
 import com.edugma.core.utils.isNull
 import com.edugma.core.utils.viewmodel.collectAsState
-import com.edugma.core.utils.viewmodel.getViewModel2
+import com.edugma.core.utils.viewmodel.getViewModel
 import com.edugma.features.account.domain.model.performance.GradePosition
 import com.edugma.features.account.performance.bottomSheets.FiltersBottomSheetContent
 import com.edugma.features.account.performance.bottomSheets.PerformanceBottomSheetContent
@@ -46,7 +45,7 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel2()) {
+fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
     val state by viewModel.collectAsState()
     val onAction = viewModel.rememberOnAction()
 

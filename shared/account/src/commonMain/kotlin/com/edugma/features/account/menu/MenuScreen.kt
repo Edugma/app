@@ -1,17 +1,16 @@
 package com.edugma.features.account.menu
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.viewmodel.collectAsState
-import com.edugma.core.utils.viewmodel.getViewModel2
+import com.edugma.core.utils.viewmodel.getViewModel
 import com.edugma.features.account.menu.screens.AuthorizationScreen
 import com.edugma.features.account.menu.screens.LoadingScreen
 import com.edugma.features.account.menu.screens.MainScreen
 
 @Composable
-fun MenuScreen(viewModel: MenuViewModel = getViewModel2()) {
+fun MenuScreen(viewModel: MenuViewModel = getViewModel()) {
     val state by viewModel.collectAsState()
 
     FeatureScreen(statusBarPadding = false) {
