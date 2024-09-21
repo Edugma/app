@@ -2,7 +2,6 @@ package com.edugma.features.misc.settings.appearance
 
 import com.edugma.core.api.model.ThemeMode
 import com.edugma.core.api.repository.ThemeRepository
-import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
 import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
 import kotlinx.coroutines.flow.collect

@@ -1,6 +1,5 @@
 package com.edugma.features.account.personal
 
-import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
 import com.edugma.core.utils.lce.launchLce
 import com.edugma.features.account.domain.repository.PersonalRepository
@@ -21,8 +20,8 @@ class PersonalViewModel(
             lceProvider = {
                 repository.getPersonalInfo(forceUpdate = isRefreshing)
             },
-            getLceState = state::lceState,
-            setLceState = { newState { copy(lceState = it) } },
+            getLceState = { lceState },
+            setLceState = { copy(lceState = it) },
             isContentEmpty = { false },
             isRefreshing = isRefreshing,
             onSuccess = {

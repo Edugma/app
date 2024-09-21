@@ -1,6 +1,5 @@
 package com.edugma.features.schedule.lessonsReview.list.presentation
 
-import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
 import com.edugma.core.utils.lce.launchLce
 import com.edugma.features.schedule.lessonsReview.list.domain.LessonsReviewUseCase
@@ -27,8 +26,8 @@ class LessonsReviewViewModel(
             lceProvider = {
                 useCase.getLessonsReview()
             },
-            getLceState = state::lceState,
-            setLceState = { newState { copy(lceState = it) } },
+            getLceState = { lceState },
+            setLceState = { copy(lceState = it) },
             isContentEmpty = { state.lessons.isEmpty() },
             isRefreshing = isRefreshing,
             onSuccess = {

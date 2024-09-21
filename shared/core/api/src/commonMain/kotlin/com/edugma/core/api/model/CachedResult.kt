@@ -17,6 +17,6 @@ data class CachedResult<T>(
         // TODO TEST123
         Logger.d("IsExpired: now=$now, expiredTime=$expiredTime", tag = "Store")
 
-        return expiredTime <= now || true
+        return expiredTime <= now
     }
 }

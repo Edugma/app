@@ -1,7 +1,6 @@
 package com.edugma.features.account.menu
 
 import com.edugma.core.api.utils.IO
-import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
 import com.edugma.core.arch.mvi.viewmodel.FeatureLogic2
 import com.edugma.core.designSystem.organism.accountSelector.AccountSelectorVO

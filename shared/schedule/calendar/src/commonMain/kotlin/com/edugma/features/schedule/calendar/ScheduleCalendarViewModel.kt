@@ -1,6 +1,5 @@
 package com.edugma.features.schedule.calendar
 
-import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
 import com.edugma.core.navigation.ScheduleScreens
 import com.edugma.core.utils.lce.launchLce
@@ -26,8 +25,8 @@ class ScheduleCalendarViewModel(
             lceProvider = {
                 useCase.getCurrentScheduleFlow()
             },
-            getLceState = state::lceState,
-            setLceState = { newState { copy(lceState = it) } },
+            getLceState = { lceState },
+            setLceState = { copy(lceState = it) },
             // TODO isContentEmpty false
             isContentEmpty = { false },
             isRefreshing = isRefreshing,

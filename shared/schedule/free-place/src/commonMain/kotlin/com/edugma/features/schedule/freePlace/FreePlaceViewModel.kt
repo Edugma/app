@@ -3,7 +3,6 @@ package com.edugma.features.schedule.freePlace
 import com.edugma.core.api.utils.MAX
 import com.edugma.core.api.utils.MIN
 import com.edugma.core.api.utils.nowLocalDate
-import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
 import com.edugma.core.arch.mvi.viewmodel.FeatureLogic2
 import com.edugma.features.schedule.domain.model.compact.CompactPlaceInfo

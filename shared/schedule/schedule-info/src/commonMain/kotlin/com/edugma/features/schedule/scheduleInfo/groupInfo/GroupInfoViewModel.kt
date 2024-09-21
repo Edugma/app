@@ -1,6 +1,5 @@
 package com.edugma.features.schedule.scheduleInfo.groupInfo
 
-import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.viewmodel.FeatureLogic2
 import com.edugma.features.schedule.domain.model.group.GroupInfo
 import com.edugma.features.schedule.domain.model.source.ScheduleSource

@@ -44,9 +44,9 @@ fun <TSource, TDerived> MutableFeatureState<TSource>.derideState(
     )
 }
 
-private class DerivedFeatureState<TDerived, TSource>(
+internal class DerivedFeatureState<TDerived, TSource>(
     private val sourceState: MutableFeatureState<TSource>,
-    private val transform: (a: TSource) -> TDerived,
+    private val transform: (TSource) -> TDerived,
     private val updateSource: TSource.(TDerived) -> TSource,
 ) : MutableFeatureState<TDerived> {
 

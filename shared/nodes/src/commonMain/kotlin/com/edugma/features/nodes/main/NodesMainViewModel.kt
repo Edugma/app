@@ -5,7 +5,6 @@ import com.edugma.core.api.model.NodeState
 import com.edugma.core.api.repository.AppStateRepository
 import com.edugma.core.api.repository.NodesRepository
 import com.edugma.core.api.repository.UrlTemplateRepository
-import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
 import com.edugma.core.arch.mvi.viewmodel.FeatureLogic2
 import com.edugma.core.navigation.MainDestination

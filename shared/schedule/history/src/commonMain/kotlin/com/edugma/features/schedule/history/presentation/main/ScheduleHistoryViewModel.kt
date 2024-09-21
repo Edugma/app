@@ -1,6 +1,5 @@
 package com.edugma.features.schedule.history.presentation.main
 
-import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
 import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
 import com.edugma.core.navigation.schedule.ScheduleHistoryScreens

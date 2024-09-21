@@ -103,7 +103,7 @@ abstract class FeatureLogic<TState, TAction> :
         updateSource: TState.(TDerived) -> TState,
     ) {
         logic.init(
-            _state!!.derideState(
+            derideState(
                 transform = transform,
                 updateSource = updateSource,
             ),
@@ -111,6 +111,17 @@ abstract class FeatureLogic<TState, TAction> :
             errorHandler = _errorHandler,
         )
         delegates.add(logic)
+    }
+
+    fun <TDerived> derideState(
+        transform: (TState) -> TDerived,
+        updateSource: TState.(TDerived) -> TState,
+    ): MutableFeatureState<TDerived> {
+        return DerivedFeatureState(
+            sourceState = this._state!!,
+            transform = transform,
+            updateSource = updateSource,
+        )
     }
 
     private companion object {

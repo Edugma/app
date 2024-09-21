@@ -2,7 +2,6 @@ package com.edugma.features.schedule.scheduleInfo.placeInfo
 
 import com.edugma.core.api.utils.onFailure
 import com.edugma.core.api.utils.onSuccess
-import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
 import com.edugma.core.arch.mvi.viewmodel.FeatureLogic2
 import com.edugma.features.schedule.domain.model.compact.CompactPlaceInfo

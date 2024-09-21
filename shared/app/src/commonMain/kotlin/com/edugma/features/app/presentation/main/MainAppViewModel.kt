@@ -6,7 +6,6 @@ import com.edugma.core.api.model.ThemeMode
 import com.edugma.core.api.repository.AppStateRepository
 import com.edugma.core.api.repository.ThemeRepository
 import com.edugma.core.api.repository.UrlTemplateRepository
-import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
 import com.edugma.core.arch.mvi.viewmodel.FeatureLogic2
 

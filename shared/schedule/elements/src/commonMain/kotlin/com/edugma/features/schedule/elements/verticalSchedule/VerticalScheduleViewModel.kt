@@ -1,6 +1,5 @@
 package com.edugma.features.schedule.elements.verticalSchedule
 
-import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.viewmodel.FeatureLogic2
 import com.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
 import com.edugma.features.schedule.domain.model.lesson.LessonEvent

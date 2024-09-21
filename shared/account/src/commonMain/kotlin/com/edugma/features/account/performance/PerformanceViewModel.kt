@@ -1,7 +1,6 @@
 package com.edugma.features.account.performance
 
 import com.edugma.core.api.model.ListItemUiModel
-import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
 import com.edugma.core.utils.lce.launchLce
 import com.edugma.features.account.domain.model.performance.GradePosition
@@ -30,10 +29,8 @@ class PerformanceViewModel(
                     forceUpdate = isRefreshing,
                 )
             },
-            getLceState = state::lceState,
-            setLceState = {
-                newState { copy(lceState = it) }
-            },
+            getLceState = { lceState },
+            setLceState = { copy(lceState = it) },
             isContentEmpty = { state.performanceList == null },
             isRefreshing = isRefreshing,
             onSuccess = {

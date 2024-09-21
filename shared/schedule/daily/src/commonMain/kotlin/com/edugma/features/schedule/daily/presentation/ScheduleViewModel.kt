@@ -1,7 +1,6 @@
 package com.edugma.features.schedule.daily.presentation
 
 import com.edugma.core.api.utils.nowLocalDate
-import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
 import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
 import com.edugma.core.navigation.schedule.ScheduleInfoScreens
@@ -51,8 +50,8 @@ class ScheduleViewModel(
             lceProvider = {
                 useCase.getCurrentScheduleFlow(forceUpdate = isRefreshing)
             },
-            getLceState = state::lceState,
-            setLceState = { newState { copy(lceState = it) } },
+            getLceState = { lceState },
+            setLceState = { copy(lceState = it) },
             // TODO isContentEmpty
             isContentEmpty = { false },
             isRefreshing = isRefreshing,

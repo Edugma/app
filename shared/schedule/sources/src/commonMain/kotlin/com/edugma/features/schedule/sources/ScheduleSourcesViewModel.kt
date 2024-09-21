@@ -2,7 +2,6 @@ package com.edugma.features.schedule.sources
 
 import com.edugma.core.api.model.PagingDto
 import com.edugma.core.arch.mvi.delegate.debounce
-import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
 import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
 import com.edugma.core.arch.pagination.PagingViewModel
@@ -57,7 +56,9 @@ class ScheduleSourcesViewModel(
         }
     }
 
-    private val queryDebounce = debounce()
+    private val queryDebounce by lazy {
+        debounce()
+    }
 
     override fun processAction(action: ScheduleSourcesAction) {
         when (action) {

@@ -1,6 +1,5 @@
 package com.edugma.features.account.payments
 
-import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
 import com.edugma.core.navigation.core.router.external.ExternalRouter
 import com.edugma.core.utils.lce.launchLce
@@ -27,8 +26,8 @@ class PaymentsViewModel(
                     forceUpdate = isRefreshing,
                 )
             },
-            getLceState = state::lceState,
-            setLceState = { newState { copy(lceState = it) } },
+            getLceState = { lceState },
+            setLceState = { copy(lceState = it) },
             isContentEmpty = { state.contract == null },
             isRefreshing = isRefreshing,
             onSuccess = {

@@ -27,7 +27,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import co.touchlab.kermit.Logger
 import com.edugma.core.api.utils.DateFormat
 import com.edugma.core.api.utils.format
 import com.edugma.core.arch.mvi.viewmodel.rememberOnAction
@@ -98,11 +97,6 @@ fun ScheduleContent(
                         subtitle = state.selectedDate.format(DateFormat.FULL_PRETTY),
                         onNavigationClick = { onAction(ScheduleDailyAction.OnBack) },
                         actions = {
-                            // TODO TEST123
-                            Logger.d(
-                                "state.lceState.showContentLoader=${state.lceState.showContentLoader}",
-                                tag = "StateStore"
-                            )
                             if (state.lceState.showContentLoader) {
                                 EdLoader(
                                     size = EdLoaderSize.medium,

@@ -4,7 +4,6 @@ import com.edugma.core.api.model.SnackbarCommand
 import com.edugma.core.api.repository.MainSnackbarRepository
 import com.edugma.core.api.repository.UrlTemplateRepository
 import com.edugma.core.api.utils.sendResult
-import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
 import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
 import com.edugma.core.designSystem.utils.CommonImageLoader

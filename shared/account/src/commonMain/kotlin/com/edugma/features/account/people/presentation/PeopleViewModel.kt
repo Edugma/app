@@ -1,6 +1,5 @@
 package com.edugma.features.account.people.presentation
 
-import com.edugma.core.arch.mvi.newState
 import com.edugma.core.arch.mvi.utils.launchCoroutine
 import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
 import com.edugma.core.arch.pagination.PagingViewModel
