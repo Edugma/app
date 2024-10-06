@@ -30,7 +30,7 @@ fun MenuScreen(viewModel: MenuViewModel = getViewModel()) {
                 MainScreen(
                     state = state as MenuState.Menu,
                     onSignOut = viewModel::logout,
-                    onPersonalClick = viewModel::openPersonal,
+                    onAccountClick = viewModel::onAccountClick,
                     cardClick = viewModel::cardClick,
                 )
             }

@@ -20,6 +20,7 @@ interface CacheRepository {
     @InternalApi
     suspend fun <T : Any> saveInternal(key: String, value: T, type: KType)
     suspend fun remove(key: String)
+    suspend fun removeWithPrefix(prefix: String)
     suspend fun getTimestamp(key: String): Instant?
 }
 

@@ -2,6 +2,7 @@ package com.edugma.features.account
 
 import com.edugma.core.navigation.AccountScreens
 import com.edugma.core.navigation.MainDestination
+import com.edugma.features.account.accounts.AccountsScreen
 import com.edugma.features.account.menu.MenuScreen
 import com.edugma.features.account.payments.PaymentsScreen
 import com.edugma.features.account.people.PeopleScreenType
@@ -17,6 +18,7 @@ import com.edugma.navigation.core.graph.graph
 fun NavGraphBuilder.accountScreens() {
     graph(MainDestination.Account, AccountScreens.Menu) {
         composeScreen(AccountScreens.Menu) { MenuScreen() }
+        composeScreen(AccountScreens.Accounts) { AccountsScreen() }
         composeScreen(AccountScreens.Payments) { PaymentsScreen() }
         composeScreen(AccountScreens.Teachers) {
             PeopleScreen(type = PeopleScreenType.teachers())

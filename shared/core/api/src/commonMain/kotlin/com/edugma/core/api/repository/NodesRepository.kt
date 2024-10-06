@@ -10,6 +10,6 @@ interface NodesRepository {
     suspend fun selectNode(node: Node)
     suspend fun getSelectNode(): String?
     fun getNodeContract(url: String): LceFlow<EdugmaApi>
-    suspend fun getSelectedContract(): EdugmaApi?
+    suspend fun getSelectedContract(): LceFlow<EdugmaApi>?
     suspend fun getNodeList(): List<Node>
 }

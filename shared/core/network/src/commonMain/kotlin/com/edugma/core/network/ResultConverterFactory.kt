@@ -1,5 +1,6 @@
 package com.edugma.core.network
 
+import com.edugma.core.api.api.ApiError
 import com.edugma.core.api.api.CrashAnalytics
 import com.edugma.core.api.model.ResponseError
 import de.jensklingenberg.ktorfit.Ktorfit
@@ -8,6 +9,7 @@ import de.jensklingenberg.ktorfit.converter.KtorfitResult
 import de.jensklingenberg.ktorfit.converter.TypeData
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.isSuccess
 import io.ktor.serialization.JsonConvertException
 import kotlinx.io.IOException
@@ -47,8 +49,16 @@ class ResultConverterFactory : Converter.Factory {
                             Result.success<Any>(body)
                         } else {
                             val body = runCatching {
-                                response.body<Any>(typeData.typeArgs.first().typeInfo)
+                                response.body<List<ApiError>>()
+                            }.recoverCatching {
+                                listOf(
+                                    ApiError(
+                                        code = "",
+                                        message = response.bodyAsText(),
+                                    ),
+                                )
                             }.getOrNull()
+
                             val e = ResponseError.HttpError(body, response.status.value)
                             CrashAnalytics.logException(TAG, "wrapSuspendResponse: ", e)
                             Result.failure<Any>(e)

@@ -10,6 +10,8 @@ object AccountScreens {
 
     object Menu : NoArgDestination("accountMenu")
 
+    object Accounts : NoArgDestination("accountAccounts")
+
     object Applications : NoArgDestination("accountApplications")
 
     object Personal : NoArgDestination("accountPersonal")

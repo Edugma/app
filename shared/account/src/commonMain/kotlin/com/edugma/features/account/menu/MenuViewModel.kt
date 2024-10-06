@@ -142,12 +142,13 @@ class MenuViewModel(
         }
     }
 
-    fun openPersonal() {
-        accountRouter.navigateTo(AccountScreens.Personal())
+    fun onAccountClick() {
+        accountRouter.navigateTo(AccountScreens.Accounts())
     }
 
     fun cardClick(type: CardType, url: String?) {
         when (type) {
+            CardType.Profile -> accountRouter.navigateTo(AccountScreens.Personal())
             Students -> accountRouter.navigateTo(AccountScreens.Students())
             Teachers -> accountRouter.navigateTo(AccountScreens.Teachers())
             Classmates -> accountRouter.navigateTo(AccountScreens.Classmates())

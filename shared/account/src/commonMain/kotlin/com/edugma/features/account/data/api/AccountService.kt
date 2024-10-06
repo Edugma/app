@@ -6,6 +6,7 @@ import com.edugma.core.api.api.getResult
 import com.edugma.core.api.api.postResult
 import com.edugma.core.api.model.PagingDto
 import com.edugma.features.account.domain.model.Personal
+import com.edugma.features.account.domain.model.accounts.AccountsModel
 import com.edugma.features.account.domain.model.applications.Application
 import com.edugma.features.account.domain.model.auth.Login
 import com.edugma.features.account.domain.model.auth.Token
@@ -22,6 +23,9 @@ class AccountService(
         client.postResult("$PREFIX-login") {
             body(login)
         }
+
+    suspend fun getAccounts(): AccountsModel =
+        client.get("$PREFIX-accounts")
 
     suspend fun getLkToken(): Result<Token> =
         client.getResult("$PREFIX-lk-token")

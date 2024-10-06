@@ -86,9 +86,6 @@ suspend inline fun <reified T> EdugmaHttpClient.postResult(
     return convert(resultResponse, typeInfo<T>())
 }
 
-// TODO replace
-private class TempError
-
 @Suppress("UNCHECKED_CAST")
 suspend fun <T> EdugmaHttpClient.convert(
     responseResult: Result<HttpResponse>,
@@ -100,9 +97,16 @@ suspend fun <T> EdugmaHttpClient.convert(
             val body = response.call.bodyNullable(typeInfo)
             Result.success<T>(body as T)
         } else {
-            val body: Any = runCatching {
-                response.body<TempError>()
-            }.getOrNull() ?: response.bodyAsText()
+            var body: List<ApiError>? = runCatching {
+                response.body<ApiErrorResponse>()
+            }.getOrNull()?.errors
+
+            if (body == null) {
+                val errorText = response.bodyAsText()
+                if (errorText.isNotBlank()) {
+                    body = listOf(ApiError(code = "UNKNOWN_SERVER_ERROR", message = errorText))
+                }
+            }
 
             val e = ResponseError.HttpError(body, response.status.value)
             CrashAnalytics.logException(TAG, "wrapSuspendResponse: response status error", e)

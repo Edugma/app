@@ -147,6 +147,17 @@ class PreferenceRepositoryImpl : PreferenceRepository {
         dataStore.removeItem(key)
     }
 
+    override suspend fun removeByteArrayWithPrefix(prefix: String) {
+        snapshot.tryEmit(Unit)
+        (0..<dataStore.length)
+        repeat(dataStore.length) { keyIndex ->
+            val key = dataStore.key(keyIndex)
+            if (key != null && key.startsWith(prefix)) {
+                dataStore.removeItem(key)
+            }
+        }
+    }
+
     override suspend fun removeObject(key: String) {
         snapshot.tryEmit(Unit)
         dataStore.removeItem(key)

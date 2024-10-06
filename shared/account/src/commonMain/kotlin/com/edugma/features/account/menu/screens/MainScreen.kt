@@ -37,7 +37,7 @@ import org.jetbrains.compose.resources.painterResource
 fun MainScreen(
     state: MenuState.Menu,
     onSignOut: ClickListener,
-    onPersonalClick: ClickListener,
+    onAccountClick: ClickListener,
     cardClick: Typed2Listener<CardType, String?>,
 ) {
     Column(
@@ -73,7 +73,7 @@ fun MainScreen(
                 } else {
                     EdAccountSelector(
                         state = state.account,
-                        onClick = onPersonalClick,
+                        onClick = onAccountClick,
                     )
                 }
                 SpacerHeight(height = 14.dp)

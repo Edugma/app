@@ -40,6 +40,7 @@ interface PreferenceRepository {
     suspend fun removeInt(key: String)
     suspend fun removeLong(key: String)
     suspend fun removeByteArray(key: String)
+    suspend fun removeByteArrayWithPrefix(prefix: String)
     suspend fun removeObject(key: String)
 }
 

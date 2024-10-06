@@ -160,6 +160,14 @@ class PreferenceRepositoryImpl(
             settings.remove(byteArrayPreferencesKey(key))
         }
     }
+    override suspend fun removeByteArrayWithPrefix(prefix: String) {
+        dataStore.edit { settings ->
+            val keys = settings.asMap().keys.filter { it.name.startsWith(prefix) }
+            keys.forEach { key ->
+                settings.remove(key)
+            }
+        }
+    }
 
     override suspend fun removeObject(key: String) {
         dataStore.edit { settings ->

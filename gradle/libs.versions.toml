@@ -1,19 +1,19 @@
 [versions]
-compileSdk = "34"
+compileSdk = "35"
 minSdk = "26"
-targetSdk = "34"
+targetSdk = "35"
 java = "17"
 
-ksp = "2.0.20-1.0.25" # https://github.com/google/ksp/releases
-kotlin = "2.0.20" # https://github.com/JetBrains/kotlin/releases
-androidGradlePlugin = "8.6.0" # https://developer.android.com/build/releases/gradle-plugin
-detekt = "1.23.6" # https://github.com/detekt/detekt/releases
+ksp = "2.0.21-RC-1.0.25" # https://github.com/google/ksp/releases
+kotlin = "2.0.21-RC" # https://github.com/JetBrains/kotlin/releases
+androidGradlePlugin = "8.6.1" # https://developer.android.com/build/releases/gradle-plugin
+detekt = "1.23.7" # https://github.com/detekt/detekt/releases
 
 
 # common
 androidxAnnotations = "1.8.2" # https://developer.android.com/jetpack/androidx/releases/annotation
 androidxDatastore = "1.1.1" # https://developer.android.com/jetpack/androidx/releases/datastore
-androidxCollections = "1.4.3" # https://developer.android.com/jetpack/androidx/releases/collection
+androidxCollections = "1.4.4" # https://developer.android.com/jetpack/androidx/releases/collection
 
 # jetbrains
 androidxLifecycle = "2.8.2" # https://github.com/JetBrains/compose-multiplatform/releases
@@ -22,17 +22,17 @@ androidxCore = "1.0.1" # https://mvnrepository.com/artifact/org.jetbrains.androi
 
 buildKonfig = "0.15.2" # https://github.com/yshrsmz/BuildKonfig/releases
 
-composeBom = "2024.09.01"
-composeMultiplatform = "1.7.0-beta02" # https://github.com/JetBrains/compose-multiplatform/releases
+composeBom = "2024.09.03"
+composeMultiplatform = "1.7.0-rc01" # https://github.com/JetBrains/compose-multiplatform/releases
 
 kotlinxDateTime = "0.6.1" # https://github.com/Kotlin/kotlinx-datetime/releases
 kotlinxCoroutines = "1.9.0" # https://github.com/Kotlin/kotlinx.coroutines/releases
-kotlinxSerialization = "1.7.2" # https://github.com/Kotlin/kotlinx.serialization/releases
+kotlinxSerialization = "1.7.3" # https://github.com/Kotlin/kotlinx.serialization/releases
 kotlinxAtomic = "0.25.0" # https://github.com/Kotlin/kotlinx-atomicfu/releases
 
-koinBom = "4.0.0-RC2" # https://github.com/InsertKoinIO/koin/releases
+koinBom = "4.0.0" # https://github.com/InsertKoinIO/koin/releases
 ktorfit = "2.1.0" # https://github.com/Foso/Ktorfit/releases
-ktor = "3.0.0-rc-1" # https://github.com/ktorio/ktor/releases
+ktor = "3.0.0-rc-2" # https://github.com/ktorio/ktor/releases
 
 okio = "3.9.1" # https://github.com/square/okio/blob/master/CHANGELOG.md
 
@@ -54,7 +54,7 @@ tracer = "0.4.5" # https://t.me/tracer_changelog
 composeActivity = "1.9.2" # https://developer.android.com/jetpack/androidx/releases/activity
 coreKtx = "1.13.1" # https://developer.android.com/jetpack/androidx/releases/core
 appcompat = "1.7.0" # https://developer.android.com/jetpack/androidx/releases/appcompat
-startup = "1.1.1" # https://developer.android.com/jetpack/androidx/releases/startup
+startup = "1.2.0" # https://developer.android.com/jetpack/androidx/releases/startup
 
 
 [libraries]

@@ -52,9 +52,8 @@ class NodesRepositoryImpl(
         return nodeStore.get(url)
     }
 
-    override suspend fun getSelectedContract(): EdugmaApi? {
-        // TODO Cache
-        return cacheRepository.get<EdugmaApi>(CacheConst.SelectedContract)?.data
+    override suspend fun getSelectedContract(): LceFlow<EdugmaApi>? {
+        return getSelectNode()?.let { nodeStore.get(it) }
     }
 
     private val testNode = Node(

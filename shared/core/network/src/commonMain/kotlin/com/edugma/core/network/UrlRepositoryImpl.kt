@@ -1,5 +1,6 @@
 package com.edugma.core.network
 
+import com.edugma.core.api.api.CrashAnalytics
 import com.edugma.core.api.api.EdugmaApi
 import com.edugma.core.api.model.NodeState
 import com.edugma.core.api.repository.CacheRepository
@@ -8,7 +9,17 @@ import com.edugma.core.api.repository.SettingsRepository
 import com.edugma.core.api.repository.UrlRepository
 import com.edugma.core.api.repository.UrlTemplateRepository
 import com.edugma.core.api.repository.get
+import com.edugma.core.api.utils.IO
+import com.edugma.core.api.utils.onResult
 import io.ktor.http.HttpMethod
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.takeWhile
+import kotlinx.coroutines.launch
 
 class UrlRepositoryImpl(
     private val settingsRepository: SettingsRepository,
@@ -16,10 +27,31 @@ class UrlRepositoryImpl(
     private val nodesRepository: NodesRepository,
 ) : UrlRepository, UrlTemplateRepository {
 
-    private var edugmaApi: EdugmaApi? = null
+    private val flag = MutableStateFlow<Boolean>(false)
+    private val _edugmaApi = MutableStateFlow<EdugmaApi?>(null)
+    private val edugmaApi: EdugmaApi? get() = _edugmaApi.value
+
+    // TODO делать все скоупы только через фабрики, чтобы мы собирали их одинаково
+    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     override suspend fun init(): NodeState {
-        edugmaApi = nodesRepository.getSelectedContract()
+        scope.launch(
+            CoroutineExceptionHandler { coroutineContext, throwable ->
+                CrashAnalytics.logException(throwable)
+            }
+        ) {
+            nodesRepository.getSelectedContract()?.onResult(
+                onSuccess = {
+                    _edugmaApi.value = it.valueOrThrow
+                    flag.value = true
+                },
+                onFailure = {
+                    CrashAnalytics.logException(it.exceptionOrThrow)
+                }
+            )
+        }
+        flag.takeWhile { !it }.collect()
+
         if (edugmaApi == null) {
             return NodeState.Selection
         } else {

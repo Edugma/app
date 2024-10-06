@@ -9,6 +9,7 @@ import kotlinx.serialization.encoding.Encoder
 
 @kotlinx.serialization.Serializable(with = CardTypeSerializer::class)
 enum class CardType {
+    Profile,
     Students,
     Teachers,
     Classmates,

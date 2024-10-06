@@ -30,7 +30,7 @@ interface SettingsRepository {
 
     @InternalApi
     suspend fun <T : Any> saveInternal(key: String, value: T, type: KType)
-    suspend fun <T : Any> remove(key: String)
+    suspend fun removeObject(key: String)
 }
 
 @OptIn(InternalApi::class)
@@ -51,7 +51,7 @@ suspend inline fun <reified T : Any> SettingsRepository.save(key: String, value:
 @OptIn(InternalApi::class)
 suspend inline fun <reified T : Any> SettingsRepository.saveOrRemove(key: String, value: T?) {
     if (value == null) {
-        this.remove<T>(key)
+        this.removeObject(key)
     } else {
         this.saveInternal<T>(key, value, typeOf<T>())
     }

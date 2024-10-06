@@ -18,15 +18,15 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val coreStorageModule = module {
-    single { TokenInterceptor(get()) }
-    single { ApiVersionInterceptor() }
+    singleOf(::TokenInterceptor)
+    singleOf(::ApiVersionInterceptor)
 
     scheduleClient()
     accountClient()
     otherClient()
     edugmaStatic()
 
-    single { EventRepository() }
+    singleOf(::EventRepository)
     singleOf(::SettingsRepositoryImpl) { bind<SettingsRepository>() }
     singleOf(::CacheRepositoryImpl) { bind<CacheRepository>() }
 } + coreStorageModulePlatform + coreStorageModulePlatform2

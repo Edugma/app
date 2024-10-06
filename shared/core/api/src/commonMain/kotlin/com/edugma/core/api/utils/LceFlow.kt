@@ -1,6 +1,7 @@
 package com.edugma.core.api.utils
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
@@ -78,8 +79,12 @@ suspend inline fun <T> LceFlow<T>.onResult(
     }
 }
 
-suspend inline fun <T> LceFlow<T>.first(): Result<T> {
+suspend fun <T> LceFlow<T>.first(): Result<T> {
     return this.flow.first().result
+}
+
+suspend fun LceFlow<*>.awaitFinished() {
+    return this.flow.collect()
 }
 
 class LceData<out T>(

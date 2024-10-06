@@ -1,6 +1,8 @@
 package com.edugma.features.account
 
+import com.edugma.features.account.accounts.AccountsViewModel
 import com.edugma.features.account.data.api.AccountService
+import com.edugma.features.account.data.repository.AccountRepositoryImpl
 import com.edugma.features.account.data.repository.ApplicationsRepositoryImpl
 import com.edugma.features.account.data.repository.AuthorizationRepositoryImpl
 import com.edugma.features.account.data.repository.CardsRepositoryImpl
@@ -29,7 +31,8 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val accountFeaturesModule = module {
-    single { AccountService(get()) }
+    singleOf(::AccountService)
+    singleOf(::AccountRepositoryImpl)
     singleOf(::ApplicationsRepositoryImpl) { bind<ApplicationsRepository>() }
     singleOf(::PaymentsRepositoryImpl) { bind<PaymentsRepository>() }
     singleOf(::PeoplesRepositoryImpl) { bind<PeoplesRepository>() }
@@ -42,6 +45,7 @@ val accountFeaturesModule = module {
     factoryOf(::MenuDataConverterUseCase)
 
     factoryOf(::MenuViewModel)
+    factoryOf(::AccountsViewModel)
     factoryOf(::PaymentsViewModel)
     factoryOf(::PeopleViewModel)
     factoryOf(::PerformanceViewModel)

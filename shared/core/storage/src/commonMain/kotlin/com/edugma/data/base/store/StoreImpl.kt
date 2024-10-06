@@ -28,6 +28,9 @@ class StoreImpl<TKey, TData>(
     private val scope = coroutineContext?.let { CoroutineScope(it) }
     private val currentRequests = ConcurrentMap<TKey, Job>()
 
+    // TODO перейти на то, чтобы читался бесконечно кэш после загрузки
+    //  но проверить моменты, как п2р делается и где это может сломать всё
+    //  + awaitFinished
     override fun get(key: TKey, forceUpdate: Boolean): LceFlow<TData> {
         Logger.d(
             "Get data from store#${this.hashCode()} " +

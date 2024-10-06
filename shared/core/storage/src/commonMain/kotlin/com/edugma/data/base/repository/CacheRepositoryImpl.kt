@@ -54,6 +54,10 @@ class CacheRepositoryImpl(
         preferenceRepository.removeByteArray(key)
     }
 
+    override suspend fun removeWithPrefix(prefix: String) {
+        preferenceRepository.removeByteArrayWithPrefix(prefix)
+    }
+
     override suspend fun getTimestamp(key: String): Instant? {
         val epochSeconds = preferenceRepository.getLong(VERSION_PREFIX + key) ?: return null
         return Instant.fromEpochSeconds(epochSeconds)

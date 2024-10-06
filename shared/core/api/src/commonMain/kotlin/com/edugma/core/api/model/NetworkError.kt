@@ -1,5 +1,6 @@
 package com.edugma.core.api.model
 
+import com.edugma.core.api.api.ApiError
 import io.ktor.serialization.JsonConvertException
 import kotlinx.io.IOException
 
@@ -20,5 +21,5 @@ sealed interface ResponseError {
      * Failure response with body.
      * Represents server (50x) and client (40x) errors.
      */
-    data class HttpError(val body: Any?, val code: Int) : Exception(), ResponseError
+    data class HttpError(val body: List<ApiError>?, val code: Int) : Exception(), ResponseError
 }

@@ -5,14 +5,18 @@ import com.edugma.core.api.repository.SettingsRepository
 import com.edugma.core.api.utils.IO
 import com.edugma.core.api.utils.mapResult
 import com.edugma.core.api.utils.onSuccess
+import com.edugma.data.base.consts.CacheConst.AccountGroupIdListKey
+import com.edugma.data.base.consts.CacheConst.AccountGroupKey
 import com.edugma.data.base.consts.CacheConst.ApplicationsKey
 import com.edugma.data.base.consts.CacheConst.ClassmatesKey
 import com.edugma.data.base.consts.CacheConst.CourseKey
+import com.edugma.data.base.consts.CacheConst.CurrentTokenKey
 import com.edugma.data.base.consts.CacheConst.LkTokenKey
 import com.edugma.data.base.consts.CacheConst.PaymentsKey
 import com.edugma.data.base.consts.CacheConst.PerformanceKey
 import com.edugma.data.base.consts.CacheConst.PersonalKey
-import com.edugma.data.base.consts.CacheConst.TokenKey
+import com.edugma.data.base.consts.CacheConst.SelectedAccountGroupIdKey
+import com.edugma.data.base.consts.CacheConst.SelectedAccountKey
 import com.edugma.features.account.data.api.AccountService
 import com.edugma.features.account.domain.model.auth.Login
 import com.edugma.features.account.domain.repository.AuthorizationRepository
@@ -52,8 +56,12 @@ class AuthorizationRepositoryImpl(
         cacheRepository.remove(CourseKey)
         cacheRepository.remove(PaymentsKey)
         cacheRepository.remove(ClassmatesKey)
+        cacheRepository.removeWithPrefix(AccountGroupKey)
 
-        settingsRepository.removeString(TokenKey)
+        settingsRepository.removeString(CurrentTokenKey)
+        settingsRepository.removeObject(AccountGroupIdListKey)
+        settingsRepository.removeString(SelectedAccountGroupIdKey)
+        settingsRepository.removeObject(SelectedAccountKey)
     }
 
     override suspend fun getLkToken(): Result<String> {
@@ -63,11 +71,11 @@ class AuthorizationRepositoryImpl(
     }
 
     override suspend fun getSavedToken(): String? {
-        return settingsRepository.getString(TokenKey)
+        return settingsRepository.getString(CurrentTokenKey)
     }
 
     private suspend fun saveToken(token: String) {
-        settingsRepository.saveString(TokenKey, token)
+        settingsRepository.saveString(CurrentTokenKey, token)
     }
     private suspend fun saveLkToken(token: String) {
         settingsRepository.saveString(LkTokenKey, token)
