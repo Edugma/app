@@ -4,14 +4,6 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AccountGroup(
-    @SerialName("id")
-    val id: String,
-    @SerialName("accounts")
-    val accounts: List<AccountModel>,
-)
-
-@Serializable
 data class AccountModel(
     @SerialName("id")
     val id: String,

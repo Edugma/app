@@ -1,6 +1,7 @@
 package com.edugma.features.account
 
 import com.edugma.features.account.accounts.AccountsViewModel
+import com.edugma.features.account.addAccount.AddAccountViewModel
 import com.edugma.features.account.data.api.AccountService
 import com.edugma.features.account.data.repository.AccountRepositoryImpl
 import com.edugma.features.account.data.repository.ApplicationsRepositoryImpl
@@ -46,6 +47,7 @@ val accountFeaturesModule = module {
 
     factoryOf(::MenuViewModel)
     factoryOf(::AccountsViewModel)
+    factoryOf(::AddAccountViewModel)
     factoryOf(::PaymentsViewModel)
     factoryOf(::PeopleViewModel)
     factoryOf(::PerformanceViewModel)

@@ -93,7 +93,7 @@ class SettingsRepositoryImpl(
         preferenceRepository.saveByteArray(key, byteArray)
     }
 
-    override suspend fun <T : Any> removeObject(key: String) {
+    override suspend fun removeObject(key: String) {
         preferenceRepository.removeByteArray(key)
     }
 

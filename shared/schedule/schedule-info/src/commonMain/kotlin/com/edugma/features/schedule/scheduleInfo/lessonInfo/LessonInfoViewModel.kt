@@ -1,8 +1,10 @@
 package com.edugma.features.schedule.scheduleInfo.lessonInfo
 
 import com.edugma.core.api.model.Coordinates
+import com.edugma.core.api.utils.isUrl
 import com.edugma.core.arch.mvi.utils.launchCoroutine
 import com.edugma.core.arch.mvi.viewmodel.FeatureLogic2
+import com.edugma.core.navigation.core.router.external.ExternalRouter
 import com.edugma.core.navigation.schedule.ScheduleInfoScreens
 import com.edugma.features.schedule.domain.model.compact.CompactPlaceInfo
 import com.edugma.features.schedule.domain.model.lesson.LessonEvent
@@ -12,6 +14,7 @@ import kotlinx.datetime.LocalDate
 
 class LessonInfoViewModel(
     private val scheduleUseCase: ScheduleUseCase,
+    private val externalRouter: ExternalRouter,
 ) : FeatureLogic2<LessonInfoState>() {
     override fun initialState(): LessonInfoState {
         return LessonInfoState()
@@ -74,7 +77,12 @@ class LessonInfoViewModel(
     }
 
     fun onPlaceClick(id: String) {
-        scheduleRouter.navigateTo(ScheduleInfoScreens.PlaceInfo(id))
+        val description = state.lessonInfo?.places?.firstOrNull { it.id == id }?.description
+        if (description != null && isUrl(description)) {
+            externalRouter.openUri(description)
+        } else {
+            scheduleRouter.navigateTo(ScheduleInfoScreens.PlaceInfo(id))
+        }
     }
 
     fun exit() {

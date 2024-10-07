@@ -2,6 +2,7 @@ package com.edugma.features.account.accounts
 
 import com.edugma.core.arch.mvi.utils.launchCoroutine
 import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
+import com.edugma.core.navigation.AccountScreens
 import com.edugma.features.account.data.repository.AccountRepositoryImpl
 import kotlinx.coroutines.flow.collectIndexed
 
@@ -49,6 +50,18 @@ class AccountsViewModel(
             // TODO проверять текущую группу на актуальность
 
             // TODO если текущей группы нет, то создать. Если нет текущего аккаунта, то обновить
+            AccountsAction.AddNewGroup -> {
+                accountRouter.navigateTo(AccountScreens.AddAccount())
+            }
+
+            is AccountsAction.DeleteAccountGroup -> deleteAccountGroup(action.accountGroupId)
+            is AccountsAction.SelectAccount -> selectAccount(action)
         }
+    }
+
+    private fun selectAccount(action: AccountsAction.SelectAccount) {
+    }
+
+    private fun deleteAccountGroup(accountGroupId: String) {
     }
 }

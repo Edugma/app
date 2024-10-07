@@ -12,6 +12,8 @@ object AccountScreens {
 
     object Accounts : NoArgDestination("accountAccounts")
 
+    object AddAccount : NoArgDestination("accountAddAccount")
+
     object Applications : NoArgDestination("accountApplications")
 
     object Personal : NoArgDestination("accountPersonal")
