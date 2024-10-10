@@ -6,7 +6,8 @@ object CacheConst {
     const val FavoriteScheduleSources = "ScheduleSources"
 
     // account
-    const val CurrentTokenKey = "token"
+    const val CurrentAccountGroupAccessTokenKey = "token"
+    const val CurrentAccountGroupRefreshTokenKey = "refreshToken"
     const val AccountGroupKey = "AccountGroup"
     const val AccountGroupIdListKey = "AccountGroupIds"
     const val SelectedAccountGroupIdKey = "SelectedAccountGroupId"

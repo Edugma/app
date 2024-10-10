@@ -21,20 +21,14 @@ class AuthWithCachingDataUseCase(
     private val performanceRepository: PerformanceRepository,
 ) {
 
-    suspend fun isAuthorized() = authorizationRepository.getSavedToken() != null
+    suspend fun isAuthorized() = authorizationRepository.getAccessToken() != null
 
     suspend fun authorize(
         login: String,
         password: String,
-        onAuthSuccess: () -> Unit,
-        onAuthFailure: (Throwable) -> Unit,
-        onGetData: (DataDto) -> Unit,
-    ) {
-        val authResult = authorizationRepository.authorizationSuspend(login, password)
-            .onFailure { onAuthFailure(it) }
-            .onSuccess { onAuthSuccess() }
-        if (authResult.isFailure) return
-        withContext(Dispatchers.IO) { onGetData(getData()) }
+    ): DataDto {
+        authorizationRepository.authorizationSuspend(login, password)
+        return withContext(Dispatchers.IO) { getData() }
     }
 
     suspend fun getData(): DataDto =

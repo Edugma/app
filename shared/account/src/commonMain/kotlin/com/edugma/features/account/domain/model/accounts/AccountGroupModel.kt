@@ -11,6 +11,10 @@ data class AccountGroupModel(
     val default: String?,
     @SerialName("selected")
     val selected: String?,
+    @SerialName("accessToken")
+    val accessToken: String,
+    @SerialName("refreshToken")
+    val refreshToken: String?,
     @SerialName("accounts")
     val accounts: List<AccountModel>,
 )

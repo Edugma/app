@@ -1,10 +1,12 @@
 package com.edugma.features.account
 
+import com.edugma.core.api.repository.AuthInterceptorRepository
 import com.edugma.features.account.accounts.AccountsViewModel
 import com.edugma.features.account.addAccount.AddAccountViewModel
 import com.edugma.features.account.data.api.AccountService
 import com.edugma.features.account.data.repository.AccountRepositoryImpl
 import com.edugma.features.account.data.repository.ApplicationsRepositoryImpl
+import com.edugma.features.account.data.repository.AuthInterceptorRepositoryImpl
 import com.edugma.features.account.data.repository.AuthorizationRepositoryImpl
 import com.edugma.features.account.data.repository.CardsRepositoryImpl
 import com.edugma.features.account.data.repository.PaymentsRepositoryImpl
@@ -34,6 +36,7 @@ import org.koin.dsl.module
 val accountFeaturesModule = module {
     singleOf(::AccountService)
     singleOf(::AccountRepositoryImpl)
+    singleOf(::AuthInterceptorRepositoryImpl) { bind<AuthInterceptorRepository>() }
     singleOf(::ApplicationsRepositoryImpl) { bind<ApplicationsRepository>() }
     singleOf(::PaymentsRepositoryImpl) { bind<PaymentsRepository>() }
     singleOf(::PeoplesRepositoryImpl) { bind<PeoplesRepository>() }

@@ -76,7 +76,12 @@ class MenuViewModel(
     }
 
     fun authorize() {
-        launchCoroutine {
+        launchCoroutine(
+            onError = {
+                setLoading(false)
+                setError(it)
+            }
+        ) {
             lateinit var login: String
             lateinit var password: String
             (state as? MenuState.Authorization)
@@ -97,16 +102,12 @@ class MenuViewModel(
                 } ?: return@launchCoroutine
             setLoading(true)
             setError(null)
-            authCachingUseCase.authorize(
+            val data = authCachingUseCase.authorize(
                 login = login,
                 password = password,
-                onAuthSuccess = ::setAuthorizedState,
-                onAuthFailure = {
-                    setLoading(false)
-                    setError(it)
-                },
-                onGetData = ::setData,
             )
+            setAuthorizedState()
+            setData(data)
         }
     }
 

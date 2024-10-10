@@ -1,15 +1,19 @@
 package com.edugma.features.account.domain.repository
 
-import kotlinx.coroutines.flow.Flow
-
 interface AuthorizationRepository {
-    fun authorization(login: String, password: String): Flow<Result<String>>
+    suspend fun authorizationSuspend(login: String, password: String)
 
-    suspend fun authorizationSuspend(login: String, password: String): Result<String>
+    suspend fun setCurrentToken(
+        accessToken: String,
+        refreshToken: String?,
+    )
 
     suspend fun logout()
 
-    suspend fun getSavedToken(): String?
+    suspend fun clearAccountCache()
+
+    suspend fun getAccessToken(): String?
+    suspend fun getRefreshToken(): String?
 
     suspend fun getLkToken(): Result<String>
 }

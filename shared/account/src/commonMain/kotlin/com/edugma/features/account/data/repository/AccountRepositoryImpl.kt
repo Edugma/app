@@ -15,44 +15,59 @@ import com.edugma.features.account.data.api.AccountService
 import com.edugma.features.account.domain.model.accounts.AccountGroupModel
 import com.edugma.features.account.domain.model.accounts.AccountModel
 import com.edugma.features.account.domain.model.accounts.AccountsModel
+import com.edugma.features.account.domain.repository.AuthorizationRepository
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapNotNull
 import kotlin.time.Duration.Companion.days
 
 class AccountRepositoryImpl(
     private val api: AccountService,
     private val settingsRepository: SettingsRepository,
     private val cacheRepository: CacheRepository,
+    private val authorizationRepository: AuthorizationRepository,
 ) {
     private val accountsStore: Store<String, AccountGroupModel> = store {
-        fetcher { accountGroupId -> api.getAccounts().toAccountGroup(accountGroupId) }
+        fetcher { accountGroupId ->
+            val accountsModel = api.getAccounts()
+            val currentAccountGroup = cacheRepository.getOnlyData<AccountGroupModel>(
+                CacheConst.AccountGroupKey + accountGroupId,
+            )
+            currentAccountGroup!!.updateWith(accountsModel)
+        }
         cache {
             reader { accountGroupId ->
                 cacheRepository.getFlow<AccountGroupModel>(CacheConst.AccountGroupKey + accountGroupId)
             }
             writer { accountGroupId, data ->
-                val accountGroupIdList = settingsRepository.get<List<String>>(CacheConst.AccountGroupIdListKey)
-                if (accountGroupIdList == null || accountGroupId !in accountGroupIdList) {
-                    settingsRepository.save(CacheConst.AccountGroupIdListKey, listOf(accountGroupId))
-                }
-                val previousAccountGroup = cacheRepository.getOnlyData<AccountGroupModel>(
-                    CacheConst.AccountGroupKey + accountGroupId
-                )
-                val resData = if (previousAccountGroup != null) {
-                    data.copy(
-                        selected = previousAccountGroup.selected,
-                    )
-                } else {
-                    data
-                }
-                cacheRepository.save(CacheConst.AccountGroupKey + accountGroupId, resData)
-                accountGroupUpdated.tryEmit(Unit)
+                updateCache(accountGroupId, data)
             }
             expiresIn(1.days)
         }
+    }
+
+    private suspend fun updateCache(
+        accountGroupId: String,
+        newData: AccountGroupModel,
+    ) {
+        val accountGroupIdList =
+            settingsRepository.get<List<String>>(CacheConst.AccountGroupIdListKey)
+        if (accountGroupIdList == null || accountGroupId !in accountGroupIdList) {
+            settingsRepository.save(CacheConst.AccountGroupIdListKey, listOf(accountGroupId))
+        }
+        val previousAccountGroup = cacheRepository.getOnlyData<AccountGroupModel>(
+            CacheConst.AccountGroupKey + accountGroupId,
+        )
+        val resData = if (previousAccountGroup != null) {
+            newData.copy(
+                selected = previousAccountGroup.selected,
+            )
+        } else {
+            newData
+        }
+        cacheRepository.save(CacheConst.AccountGroupKey + accountGroupId, resData)
+        accountGroupUpdated.tryEmit(Unit)
     }
 
     private val accountGroupUpdated = MutableSharedFlow<Unit>(
@@ -65,6 +80,8 @@ class AccountRepositoryImpl(
 
     // TODO читать токены аккаунта и отправлять их
     suspend fun selectAccount(accountGroupId: String, accountId: String) {
+        val previousAccountGroupId = settingsRepository.getString(CacheConst.SelectedAccountGroupIdKey)
+
         val accountGroup = cacheRepository.getOnlyData<AccountGroupModel>(CacheConst.AccountGroupKey + accountGroupId)
         checkNotNull(accountGroup)
         val selectedAccount = accountGroup.accounts.first { it.id == accountId }
@@ -75,6 +92,15 @@ class AccountRepositoryImpl(
         settingsRepository.save(CacheConst.SelectedAccountKey, selectedAccount)
         settingsRepository.save(CacheConst.SelectedAccountGroupIdKey, accountGroupId)
         accountGroupUpdated.tryEmit(Unit)
+
+        if (previousAccountGroupId != accountGroupId) {
+            authorizationRepository.setCurrentToken(
+                accessToken = accountGroup.accessToken,
+                refreshToken = accountGroup.refreshToken,
+            )
+        }
+
+        authorizationRepository.clearAccountCache()
     }
 
     suspend fun selectAccountGroup(accountGroupId: String) {
@@ -99,6 +125,25 @@ class AccountRepositoryImpl(
         return settingsRepository.getFlow(CacheConst.SelectedAccountGroupIdKey)
     }
 
+    suspend fun addNewAccountGroupFromToken(accessToken: String, refreshToken: String?): String {
+        val newAccountGroupId = UUID.get()
+        val newAccountGroup = AccountGroupModel(
+            id = newAccountGroupId,
+            default = null,
+            selected = null,
+            accessToken = accessToken,
+            refreshToken = refreshToken,
+            accounts = emptyList(),
+        )
+
+        updateCache(
+            accountGroupId = newAccountGroupId,
+            newData = newAccountGroup
+        )
+
+        return newAccountGroupId
+    }
+
     // TODO очистка всего лишнего кэша, где есть ключ + id
     fun getAllAccountGroups(): Flow<List<AccountGroupModel>?> {
         return accountGroupUpdated.map {
@@ -116,18 +161,23 @@ class AccountRepositoryImpl(
      * Only for migration from first version of app.
      */
     suspend fun createNewAccountGroupFromCurrentToken(): String {
-        val newAccountGroupId = UUID.get()
+        val accessToken = authorizationRepository.getAccessToken()!!
+        val refreshToken = authorizationRepository.getRefreshToken()
+
+        val newAccountGroupId = addNewAccountGroupFromToken(
+            accessToken = accessToken,
+            refreshToken = refreshToken,
+        )
         accountsStore.get(newAccountGroupId).awaitFinished()
         return newAccountGroupId
     }
-}
 
-private fun AccountsModel.toAccountGroup(accountGroupId: String): AccountGroupModel {
-    val selectedAccountId = this.default ?: this.accounts.firstOrNull()?.id
-    return AccountGroupModel(
-        id = accountGroupId,
-        default = this.default,
-        selected = selectedAccountId,
-        accounts = this.accounts,
-    )
+    private fun AccountGroupModel.updateWith(response: AccountsModel): AccountGroupModel {
+        val selectedAccountId = response.default ?: response.accounts.firstOrNull()?.id
+        return copy(
+            default = response.default,
+            selected = selectedAccountId,
+            accounts = response.accounts,
+        )
+    }
 }
