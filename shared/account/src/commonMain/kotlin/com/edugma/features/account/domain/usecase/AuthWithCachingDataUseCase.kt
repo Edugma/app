@@ -2,6 +2,7 @@ package com.edugma.features.account.domain.usecase
 
 import com.edugma.core.api.utils.IO
 import com.edugma.core.api.utils.first
+import com.edugma.features.account.data.repository.AccountRepositoryImpl
 import com.edugma.features.account.domain.model.Personal
 import com.edugma.features.account.domain.model.payments.Contract
 import com.edugma.features.account.domain.model.performance.GradePosition
@@ -19,6 +20,7 @@ class AuthWithCachingDataUseCase(
     private val personalRepository: PersonalRepository,
     private val paymentsRepository: PaymentsRepository,
     private val performanceRepository: PerformanceRepository,
+    private val accountRepository: AccountRepositoryImpl,
 ) {
 
     suspend fun isAuthorized() = authorizationRepository.getAccessToken() != null
@@ -27,7 +29,11 @@ class AuthWithCachingDataUseCase(
         login: String,
         password: String,
     ): DataDto {
-        authorizationRepository.authorizationSuspend(login, password)
+        val token = authorizationRepository.authorize(login, password)
+        accountRepository.addNewAccountGroupFromToken(
+            accessToken = token.accessToken,
+            refreshToken = token.refreshToken,
+        )
         return withContext(Dispatchers.IO) { getData() }
     }
 

@@ -1,7 +1,9 @@
 package com.edugma.features.account.domain.repository
 
+import com.edugma.features.account.domain.model.auth.Token
+
 interface AuthorizationRepository {
-    suspend fun authorizationSuspend(login: String, password: String)
+    suspend fun authorize(login: String, password: String): Token
 
     suspend fun setCurrentToken(
         accessToken: String,

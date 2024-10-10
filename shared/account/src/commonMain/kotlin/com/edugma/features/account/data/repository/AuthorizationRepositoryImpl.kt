@@ -17,25 +17,22 @@ import com.edugma.data.base.consts.CacheConst.SelectedAccountGroupIdKey
 import com.edugma.data.base.consts.CacheConst.SelectedAccountKey
 import com.edugma.features.account.data.api.AccountService
 import com.edugma.features.account.domain.model.auth.Login
+import com.edugma.features.account.domain.model.auth.Token
 import com.edugma.features.account.domain.repository.AuthorizationRepository
 
 class AuthorizationRepositoryImpl(
     private val api: AccountService,
     private val settingsRepository: SettingsRepository,
     private val cacheRepository: CacheRepository,
-    private val accountRepository: AccountRepositoryImpl,
 ) : AuthorizationRepository {
 
-    override suspend fun authorizationSuspend(login: String, password: String) {
+    override suspend fun authorize(login: String, password: String): Token {
         val token = api.login(Login(login, password)).getOrThrow()
         setCurrentToken(
             accessToken = token.accessToken,
             refreshToken = token.refreshToken,
         )
-        accountRepository.addNewAccountGroupFromToken(
-            accessToken = token.accessToken,
-            refreshToken = token.refreshToken,
-        )
+        return token
     }
 
     override suspend fun setCurrentToken(accessToken: String, refreshToken: String?) {
