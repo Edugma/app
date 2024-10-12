@@ -46,6 +46,7 @@ class AuthorizationRepositoryImpl(
         cacheRepository.removeWithPrefix(AccountGroupKey)
 
         settingsRepository.removeString(CurrentAccountGroupAccessTokenKey)
+        settingsRepository.removeString(CurrentAccountGroupRefreshTokenKey)
         settingsRepository.removeObject(AccountGroupIdListKey)
         settingsRepository.removeString(SelectedAccountGroupIdKey)
         settingsRepository.removeObject(SelectedAccountKey)

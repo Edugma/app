@@ -18,7 +18,7 @@ interface CacheRepository {
     ): Flow<CachedResult<T>?>
 
     @InternalApi
-    suspend fun <T : Any> saveInternal(key: String, value: T, type: KType)
+    suspend fun <T : Any> saveInternal(key: String, value: T, type: KType, updateTimestamp: Boolean)
     suspend fun remove(key: String)
     suspend fun removeWithPrefix(prefix: String)
     suspend fun getTimestamp(key: String): Instant?
@@ -50,6 +50,10 @@ suspend inline fun <reified T : Any> CacheRepository.getFlow(
 // }
 
 @OptIn(InternalApi::class)
-suspend inline fun <reified T : Any> CacheRepository.save(key: String, value: T) {
-    this.saveInternal<T>(key, value, typeOf<T>())
+suspend inline fun <reified T : Any> CacheRepository.save(
+    key: String,
+    value: T,
+    updateTimestamp: Boolean = true,
+) {
+    this.saveInternal<T>(key, value, typeOf<T>(), updateTimestamp = updateTimestamp)
 }

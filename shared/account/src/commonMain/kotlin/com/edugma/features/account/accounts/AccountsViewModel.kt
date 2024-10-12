@@ -15,6 +15,11 @@ class AccountsViewModel(
 
     override fun onCreate() {
         launchCoroutine {
+            // TODO тест
+//            accountRepository.clearAccountGroupDataTest()
+//            val newAccountGroupId =
+//                accountRepository.createNewAccountGroupFromCurrentToken()
+//            accountRepository.selectAccountGroup(newAccountGroupId)
             accountRepository.getAllAccountGroups().collectIndexed { index, value ->
                 if (index == 0 && value == null) {
                     val newAccountGroupId =
@@ -60,8 +65,19 @@ class AccountsViewModel(
     }
 
     private fun selectAccount(action: AccountsAction.SelectAccount) {
+        launchCoroutine {
+            accountRepository.selectAccount(
+                accountGroupId = action.accountGroupId,
+                accountId = action.accountId,
+            )
+        }
     }
 
     private fun deleteAccountGroup(accountGroupId: String) {
+        launchCoroutine {
+            accountRepository.deleteAccountGroup(
+                accountGroupId = accountGroupId,
+            )
+        }
     }
 }

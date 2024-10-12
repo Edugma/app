@@ -43,11 +43,20 @@ class CacheRepositoryImpl(
     }
 
     @InternalApi
-    override suspend fun <T : Any> saveInternal(key: String, value: T, type: KType) {
+    override suspend fun <T : Any> saveInternal(
+        key: String,
+        value: T,
+        type: KType,
+        updateTimestamp: Boolean
+    ) {
         Logger.d("Save cache by key=$key", tag = TAG)
         preferenceRepository.saveObjectInternal(key, value, type)
 
-        saveTimestamp(key)
+        if (updateTimestamp) {
+            saveTimestamp(key)
+        } else {
+            saveTimestamp(key, Instant.DISTANT_PAST)
+        }
     }
 
     override suspend fun remove(key: String) {
@@ -63,9 +72,8 @@ class CacheRepositoryImpl(
         return Instant.fromEpochSeconds(epochSeconds)
     }
 
-    private suspend fun saveTimestamp(key: String) {
-        val now = Clock.System.now().epochSeconds
-        preferenceRepository.saveLong("$VERSION_PREFIX$key", now)
+    private suspend fun saveTimestamp(key: String, timestamp: Instant = Clock.System.now()) {
+        preferenceRepository.saveLong("$VERSION_PREFIX$key", timestamp.epochSeconds)
     }
 
     companion object {
