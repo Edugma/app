@@ -98,7 +98,7 @@ class AccountRepositoryImpl(
         )
         cacheRepository.save(CacheConst.AccountGroupKey + accountGroupId, updatedAccountGroup)
         settingsRepository.save(CacheConst.SelectedAccountKey, selectedAccount)
-        settingsRepository.save(CacheConst.SelectedAccountGroupIdKey, accountGroupId)
+        settingsRepository.saveString(CacheConst.SelectedAccountGroupIdKey, accountGroupId)
 
         if (previousAccountGroupId != accountGroupId) {
             authorizationRepository.setCurrentToken(
@@ -117,7 +117,7 @@ class AccountRepositoryImpl(
     }
 
     fun getSelectedAccountGroupId(): Flow<String?> {
-        return settingsRepository.getFlow(CacheConst.SelectedAccountGroupIdKey)
+        return settingsRepository.getStringFlow(CacheConst.SelectedAccountGroupIdKey)
     }
 
     // TODO так как мы при логине сохраняем в кэш неполноценную модель, то нужно сохранять её с минимальной датой
@@ -166,7 +166,7 @@ class AccountRepositoryImpl(
         )
         cacheRepository.save(CacheConst.AccountGroupKey + accountGroupId, updatedAccountGroup)
         settingsRepository.save(CacheConst.SelectedAccountKey, selectedAccount)
-        settingsRepository.save(CacheConst.SelectedAccountGroupIdKey, accountGroupId)
+        settingsRepository.saveString(CacheConst.SelectedAccountGroupIdKey, accountGroupId)
         accountGroupUpdated.tryEmit(Unit)
     }
 

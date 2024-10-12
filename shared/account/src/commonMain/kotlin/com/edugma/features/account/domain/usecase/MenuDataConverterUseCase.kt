@@ -1,14 +1,23 @@
 package com.edugma.features.account.domain.usecase
 
 import com.edugma.features.account.domain.model.Personal
+import com.edugma.features.account.domain.model.accounts.AccountModel
 import com.edugma.features.account.domain.model.payments.Contract
 import com.edugma.features.account.domain.model.performance.GradePosition
 import kotlin.math.roundToInt
 
 class MenuDataConverterUseCase {
 
-    fun convert(personal: Personal): PersonalData {
+    fun convert(personal: Personal): SelectedAccountUiModel {
         return personal.toPersonalData()
+    }
+
+    fun convert(account: AccountModel): SelectedAccountUiModel {
+        return SelectedAccountUiModel(
+            description = account.description,
+            avatar = account.avatar,
+            name = account.name,
+        )
     }
 
     fun convert(contracts: List<Contract>): CurrentPayments? {
@@ -19,8 +28,8 @@ class MenuDataConverterUseCase {
         return performance.getCurrent()
     }
 
-    private fun Personal.toPersonalData(): PersonalData {
-        return PersonalData(
+    private fun Personal.toPersonalData(): SelectedAccountUiModel {
+        return SelectedAccountUiModel(
             description = description,
             avatar = avatar,
             name = name,
@@ -68,7 +77,7 @@ class MenuDataConverterUseCase {
     }
 }
 
-data class PersonalData(
+data class SelectedAccountUiModel(
     val description: String,
     val avatar: String?,
     val name: String,

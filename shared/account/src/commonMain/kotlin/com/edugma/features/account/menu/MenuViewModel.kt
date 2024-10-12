@@ -19,9 +19,10 @@ import com.edugma.features.account.domain.usecase.CurrentPayments
 import com.edugma.features.account.domain.usecase.CurrentPerformance
 import com.edugma.features.account.domain.usecase.DataDto
 import com.edugma.features.account.domain.usecase.MenuDataConverterUseCase
-import com.edugma.features.account.domain.usecase.PersonalData
+import com.edugma.features.account.domain.usecase.SelectedAccountUiModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.withContext
 
 class MenuViewModel(
@@ -42,7 +43,7 @@ class MenuViewModel(
             if (authCachingUseCase.isAuthorized()) {
                 setAuthorizedState()
                 setLoading(true)
-                setData(authCachingUseCase.getData())
+                startDataUpdate()
                 setLoading(false)
             } else {
                 setNotAuthorizedState()
@@ -102,12 +103,20 @@ class MenuViewModel(
                 } ?: return@launchCoroutine
             setLoading(true)
             setError(null)
-            val data = authCachingUseCase.authorize(
+            authCachingUseCase.authorize(
                 login = login,
                 password = password,
             )
+            startDataUpdate()
             setAuthorizedState()
-            setData(data)
+        }
+    }
+
+    private fun startDataUpdate() {
+        launchCoroutine {
+            authCachingUseCase.getDataFlow().collect {
+                setData(it)
+            }
         }
     }
 
@@ -162,8 +171,10 @@ class MenuViewModel(
     // common
     private fun setData(dataDto: DataDto) {
         mutateStateWithCheck<MenuState.Menu> { state ->
+            val selectedAccount = dataDto.selectedAccount?.let { converterUseCase.convert(it) }
+                ?: dataDto.personal?.let { converterUseCase.convert(it) }
             state.copy(
-                personalData = dataDto.personal?.let { converterUseCase.convert(it) },
+                selectedAccount = selectedAccount,
                 currentPayments = dataDto.contracts?.let { converterUseCase.convert(it) },
                 currentPerformance = dataDto.performance?.let { converterUseCase.convert(it) },
             )
@@ -219,13 +230,13 @@ sealed class MenuState {
 
     data class Menu(
         val isLoading: Boolean = false,
-        val personalData: PersonalData? = null,
+        val selectedAccount: SelectedAccountUiModel? = null,
         val currentPayments: CurrentPayments? = null,
         val currentPerformance: CurrentPerformance? = null,
         val cards: List<List<Card>> = emptyList(),
     ) : MenuState() {
-        val account: AccountSelectorVO? = personalData
-            ?.let { AccountSelectorVO(personalData.name, personalData.description, personalData.avatar) }
+        val account: AccountSelectorVO? = selectedAccount
+            ?.let { AccountSelectorVO(selectedAccount.name, selectedAccount.description, selectedAccount.avatar) }
     }
 }
 
