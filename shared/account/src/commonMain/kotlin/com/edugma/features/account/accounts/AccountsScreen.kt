@@ -25,6 +25,8 @@ import com.edugma.core.designSystem.atoms.surface.EdSurface
 import com.edugma.core.designSystem.molecules.button.EdButton
 import com.edugma.core.designSystem.organism.EdScaffold
 import com.edugma.core.designSystem.organism.cell.EdCell
+import com.edugma.core.designSystem.organism.cell.EdCellPlaceholder
+import com.edugma.core.designSystem.organism.lceScaffold.EdLceScaffold
 import com.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
 import com.edugma.core.designSystem.theme.EdTheme
 import com.edugma.core.designSystem.tokens.shapes.top
@@ -72,38 +74,45 @@ private fun AccountsContent(
         EdSurface(
             shape = EdTheme.shapes.large.top(),
         ) {
-            Column(Modifier.fillMaxSize()) {
-                AccountGroupList(
-                    state = state,
-                    modifier = Modifier.weight(1f),
-                    onAccountClick = { accountGroupId, accountId ->
-                        onAction(
-                            AccountsAction.SelectAccount(
-                                accountGroupId = accountGroupId,
-                                accountId = accountId,
-                            ),
-                        )
-                    },
-                    onDeleteAccountGroup = {
-                        onAction(
-                            AccountsAction.DeleteAccountGroup(
-                                accountGroupId = it,
-                            ),
-                        )
-                    }
-                )
-                EdButton(
-                    text = "Добавить",
-                    onClick = {
-                        onAction(AccountsAction.AddNewGroup)
-                    },
-                    modifier = Modifier
-                        .padding(
-                            horizontal = 16.dp,
-                            vertical = 5.dp,
-                        )
-                        .fillMaxWidth()
-                )
+            EdLceScaffold(
+                lceState = state.lceState,
+                onRefresh = { },
+                pullToRefreshEnabled = false,
+                placeholder = { AccountsPlaceholder() },
+            ) {
+                Column(Modifier.fillMaxSize()) {
+                    AccountGroupList(
+                        state = state,
+                        modifier = Modifier.weight(1f),
+                        onAccountClick = { accountGroupId, accountId ->
+                            onAction(
+                                AccountsAction.SelectAccount(
+                                    accountGroupId = accountGroupId,
+                                    accountId = accountId,
+                                ),
+                            )
+                        },
+                        onDeleteAccountGroup = {
+                            onAction(
+                                AccountsAction.DeleteAccountGroup(
+                                    accountGroupId = it,
+                                ),
+                            )
+                        }
+                    )
+                    EdButton(
+                        text = "Добавить",
+                        onClick = {
+                            onAction(AccountsAction.AddNewGroup)
+                        },
+                        modifier = Modifier
+                            .padding(
+                                horizontal = 16.dp,
+                                vertical = 5.dp,
+                            )
+                            .fillMaxWidth()
+                    )
+                }
             }
         }
     }
@@ -167,7 +176,7 @@ private fun AccountGroupTitle(
             RadioButton(
                 selected = isSelected,
                 onClick = null,
-                modifier = Modifier.padding(end = 16.dp)
+                modifier = Modifier.padding(end = 8.dp)
             )
         }
 
@@ -213,6 +222,15 @@ private fun AccountContent(
                 enabled = isAccountGroupSelected,
                 onClick = null,
             )
+        }
+    }
+}
+
+@Composable
+private fun AccountsPlaceholder(modifier: Modifier = Modifier) {
+    Column(modifier.fillMaxWidth()) {
+        repeat(3) {
+            EdCellPlaceholder()
         }
     }
 }

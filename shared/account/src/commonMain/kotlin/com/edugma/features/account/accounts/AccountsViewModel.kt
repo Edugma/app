@@ -24,7 +24,7 @@ class AccountsViewModel(
             accountRepository.getAllAccountGroups().collectIndexed { index, value ->
                 legacyMigration(index, value)
                 newState {
-                    copy(accountGroups = value?.map { it.toUiModel() } ?: emptyList())
+                    toContent(value?.map { it.toUiModel() } ?: emptyList())
                 }
             }
         }

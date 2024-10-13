@@ -84,7 +84,7 @@ data class LceUiState(
         fun init(): LceUiState {
             return LceUiState(
                 content = null,
-                loading = null,
+                loading = Loading(false),
                 error = null,
             )
         }
