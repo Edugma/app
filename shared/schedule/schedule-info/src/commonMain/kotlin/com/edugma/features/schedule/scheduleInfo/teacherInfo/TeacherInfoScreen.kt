@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,7 +22,6 @@ import com.edugma.features.schedule.domain.model.teacher.description
 import com.edugma.features.schedule.elements.verticalSchedule.VerticalScheduleComponent
 import com.edugma.features.schedule.scheduleInfo.groupInfo.InfoScaffold
 import edugma.shared.core.icons.generated.resources.*
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -41,7 +39,6 @@ fun TeacherInfoScreen(viewModel: TeacherInfoViewModel = getViewModel(), id: Stri
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalResourceApi::class)
 @Composable
 private fun TeacherInfoContent(
     state: TeacherInfoState,

@@ -39,7 +39,6 @@ import com.edugma.core.utils.viewmodel.getViewModel
 import com.edugma.features.schedule.domain.model.group.description
 import com.edugma.features.schedule.elements.verticalSchedule.VerticalScheduleComponent
 import edugma.shared.core.icons.generated.resources.*
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -57,7 +56,6 @@ fun GroupInfoScreen(viewModel: GroupInfoViewModel = getViewModel(), id: String) 
     )
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun GroupInfoContent(
     state: GroupInfoState,

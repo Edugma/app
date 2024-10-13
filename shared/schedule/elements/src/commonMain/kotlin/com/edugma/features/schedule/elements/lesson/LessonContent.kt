@@ -43,7 +43,6 @@ import com.edugma.features.schedule.domain.model.lessonSubject.LessonSubject
 import com.edugma.features.schedule.domain.model.place.Place
 import com.edugma.features.schedule.elements.lesson.model.ScheduleEventUiModel
 import edugma.shared.core.icons.generated.resources.*
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -136,7 +135,6 @@ fun LessonTitle(subject: LessonSubject, isLoading: Boolean = false) {
     )
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun TeachersContent(teachers: List<AttendeeInfo>, isLoading: Boolean = false) {
     val teachersText = remember(teachers) {
@@ -158,7 +156,6 @@ fun TeachersContent(teachers: List<AttendeeInfo>, isLoading: Boolean = false) {
     )
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun GroupsContent(groups: List<AttendeeInfo>, isLoading: Boolean = false) {
     val groupsText = remember(groups) { groups.joinToString { it.name } }
@@ -174,7 +171,6 @@ fun GroupsContent(groups: List<AttendeeInfo>, isLoading: Boolean = false) {
     )
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun PlacesContent(places: List<Place>, isLoading: Boolean = false) {
     val placesText = remember(places) { places.joinToString { it.title } }

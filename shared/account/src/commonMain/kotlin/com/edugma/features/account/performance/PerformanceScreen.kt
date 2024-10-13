@@ -41,7 +41,6 @@ import com.edugma.features.account.performance.model.FiltersRow
 import com.edugma.features.account.performance.model.PerformanceItem
 import com.edugma.features.account.performance.model.PerformancePlaceholder
 import edugma.shared.core.icons.generated.resources.*
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -82,7 +81,6 @@ fun PerformanceScreen(viewModel: PerformanceViewModel = getViewModel()) {
     }
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun PerformanceContent(
     state: PerformanceUiState,
@@ -152,6 +150,7 @@ fun PerformanceList(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
+        contentPadding = PaddingValues(top = 8.dp)
     ) {
         items(
             count = state.filteredData?.size ?: 0,
@@ -160,7 +159,6 @@ fun PerformanceList(
             PerformanceItem(
                 performance = state.filteredData!![it],
                 onClick = { onItemClick(state.filteredData?.get(it)) },
-                modifier = Modifier.padding(bottom = 3.dp),
             )
         }
 

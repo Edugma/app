@@ -51,7 +51,6 @@ import com.edugma.features.account.payments.bottomSheet.PaymentBottomSheet
 import com.edugma.features.account.payments.model.ContractUiModel
 import com.edugma.features.account.payments.model.PaymentUiModel
 import edugma.shared.core.icons.generated.resources.*
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -138,7 +137,6 @@ private fun PaymentsContent(
     }
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun Payments(
     contract: ContractUiModel,

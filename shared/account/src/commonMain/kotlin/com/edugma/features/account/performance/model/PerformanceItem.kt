@@ -23,6 +23,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.edugma.core.designSystem.atoms.label.EdLabel
+import com.edugma.core.designSystem.atoms.spacer.SpacerHeight
 import com.edugma.core.designSystem.molecules.chip.EdChip
 import com.edugma.core.designSystem.molecules.chip.EdChipForm
 import com.edugma.core.designSystem.molecules.chip.EdChipLabel
@@ -46,18 +47,17 @@ fun PerformanceItem(
             .clickable(
                 onClick = onClick,
             )
-            .padding(vertical = 10.dp, horizontal = 12.dp),
+            .padding(vertical = 9.dp, horizontal = 12.dp),
     ) {
         Column(
             modifier = modifier
                 .weight(1f),
         ) {
-            Row {
-                EdChipLabel(
-                    text = performance.type,
-                    size = EdChipSize.small,
-                )
-            }
+            EdChipLabel(
+                text = performance.type,
+                size = EdChipSize.small,
+                modifier = Modifier.padding(bottom = 3.dp)
+            )
             EdLabel(
                 text = performance.title,
                 style = EdTheme.typography.titleSmall,
@@ -65,7 +65,7 @@ fun PerformanceItem(
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
             )
-
+            SpacerHeight(2.dp)
             SecondaryContent {
                 EdLabel(
                     text = performance.description,
@@ -88,7 +88,8 @@ fun PerformanceItem(
 
         Box(
             contentAlignment = Alignment.Center,
-            modifier = Modifier.align(Alignment.CenterVertically),
+            modifier = Modifier.align(Alignment.CenterVertically)
+                .padding(start = 4.dp),
         ) {
             val progress = performance.grade?.let { grade ->
                 val range = grade.maxValue - grade.minValue

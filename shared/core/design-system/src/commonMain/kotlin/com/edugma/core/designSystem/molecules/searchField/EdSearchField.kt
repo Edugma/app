@@ -22,7 +22,6 @@ import com.edugma.core.designSystem.theme.EdTheme
 import com.edugma.core.icons.EdIcons
 import edugma.shared.core.icons.generated.resources.ic_fluent_dismiss_20_filled
 import edugma.shared.core.icons.generated.resources.ic_fluent_search_24_regular
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -76,7 +75,6 @@ fun EdSearchField(
     )
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun SearchIcon24() {
     Icon(
@@ -85,7 +83,6 @@ private fun SearchIcon24() {
     )
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun DismissIcon20(onClick: () -> Unit) {
     IconButton(onClick = onClick) {

@@ -10,10 +10,8 @@ import com.edugma.core.designSystem.organism.cell.EdCellSize
 import com.edugma.core.designSystem.theme.EdTheme
 import com.edugma.core.icons.EdIcons
 import edugma.shared.core.icons.generated.resources.ic_fluent_chevron_right_20_filled
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun EdAccountSelector(
     state: AccountSelectorVO,

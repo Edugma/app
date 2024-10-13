@@ -17,19 +17,23 @@ class TokenInterceptor(
         // TODO: Переделать
 
         val accessToken = authInterceptorRepository.getAccessToken()
-        return if (accessToken.isNullOrEmpty()) {
-            sender.execute(request)
-        } else {
+        if (!accessToken.isNullOrEmpty()) {
             if (accessToken.startsWith("Bearer ")) {
                 request.header(AuthHeader, accessToken)
             } else {
                 request.header(AuthHeader, "Bearer $accessToken")
             }
-            sender.execute(request)
         }
+
+        val accountId = authInterceptorRepository.getAccountId()
+        if (!accountId.isNullOrEmpty()) {
+            request.header(EdugmaAccountIdHeader, accountId)
+        }
+        return sender.execute(request)
     }
 
     companion object {
         private const val AuthHeader = "Authorization"
+        private const val EdugmaAccountIdHeader = "X-Edugma-Account-Id"
     }
 }

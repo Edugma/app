@@ -45,7 +45,6 @@ import com.edugma.features.schedule.domain.model.attentdee.AttendeeInfo
 import com.edugma.features.schedule.domain.model.place.Place
 import edugma.shared.core.icons.generated.resources.*
 import kotlinx.datetime.LocalDate
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -167,7 +166,6 @@ private fun LessonTitle(title: String) {
     )
 }
 
-// @OptIn(ExperimentalResourceApi::class)
 // @Composable
 // private fun LessonDateTime(lessonDateTime: LessonEvent) {
 //    Row(
@@ -196,7 +194,6 @@ private fun LessonTitle(title: String) {
 //    }
 // }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun LessonTeachers(
     teachers: List<AttendeeInfo>,
@@ -239,7 +236,6 @@ private fun LessonTeachers(
     }
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun LessonPlaces(
     places: List<Place>,
@@ -301,7 +297,6 @@ private fun LessonPlaces(
     }
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun LessonGroups(
     groups: List<AttendeeInfo>,

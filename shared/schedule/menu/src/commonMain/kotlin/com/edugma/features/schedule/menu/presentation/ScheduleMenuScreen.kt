@@ -39,7 +39,6 @@ import com.edugma.features.schedule.menu.model.MenuItem
 import edugma.shared.core.icons.generated.resources.*
 import edugma.shared.core.resources.generated.resources.*
 import edugma.shared.core.resources.generated.resources.Res
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -57,7 +56,6 @@ fun ScheduleMenuScreen(viewModel: ScheduleMenuViewModel = getViewModel()) {
     }
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun ScheduleMenuContent(
     state: ScheduleMenuUiState,

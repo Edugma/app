@@ -5,10 +5,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.edugma.core.designSystem.theme.EdTheme
 import com.edugma.core.icons.EdIcons
 import edugma.shared.core.icons.generated.resources.*
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
-@OptIn(ExperimentalResourceApi::class)
 @Preview
 @Composable
 private fun EdIconCardPreview() {

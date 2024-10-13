@@ -1,7 +1,6 @@
 package com.edugma.features.schedule.calendar
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
@@ -78,7 +77,6 @@ import edugma.shared.core.resources.generated.resources.*
 import edugma.shared.core.resources.generated.resources.Res
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -226,7 +224,6 @@ private fun LazyListState.isItemVisible(itemIndex: Int): Boolean {
     }.value
 }
 
-@OptIn(ExperimentalAnimationApi::class, ExperimentalResourceApi::class)
 @Composable
 private fun BoxScope.Fab(scrollState: LazyListState, currentWeekIndex: Int, onClick: () -> Unit) {
     AnimatedVisibility(

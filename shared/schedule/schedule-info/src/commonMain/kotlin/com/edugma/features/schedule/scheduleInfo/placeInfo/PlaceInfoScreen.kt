@@ -39,7 +39,6 @@ import com.edugma.features.schedule.elements.verticalSchedule.VerticalScheduleCo
 import com.edugma.features.schedule.scheduleInfo.groupInfo.InfoScaffold
 import edugma.shared.core.icons.generated.resources.*
 import edugma.shared.core.resources.generated.resources.*
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import edugma.shared.core.resources.generated.resources.Res as CommonRes
@@ -59,7 +58,6 @@ fun PlaceInfoScreen(viewModel: PlaceInfoViewModel = getViewModel(), id: String) 
     )
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun PlaceInfoContent(
     state: PlaceInfoState,
@@ -154,7 +152,6 @@ private fun OccupancyTab(
     }
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun PlaceBuilding(place: CompactPlaceInfo.Building) {
     Column(
@@ -185,7 +182,6 @@ private fun PlaceBuilding(place: CompactPlaceInfo.Building) {
     }
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun PlaceOnline(place: CompactPlaceInfo.Online) {
     Column(Modifier.fillMaxWidth()) {
@@ -222,7 +218,6 @@ private fun PlaceOnline(place: CompactPlaceInfo.Online) {
     }
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 private fun PlaceOther(place: CompactPlaceInfo.Other) {
     Column(Modifier.fillMaxWidth()) {

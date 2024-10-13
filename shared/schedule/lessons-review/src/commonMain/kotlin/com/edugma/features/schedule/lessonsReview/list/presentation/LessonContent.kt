@@ -20,7 +20,6 @@ import com.edugma.features.schedule.domain.model.attentdee.AttendeeInfo
 import com.edugma.features.schedule.domain.model.lessonSubject.LessonSubject
 import com.edugma.features.schedule.domain.model.place.Place
 import edugma.shared.core.icons.generated.resources.*
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -34,7 +33,6 @@ fun LessonTitle(subject: LessonSubject, isLoading: Boolean = false) {
     )
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun TeachersContent(teachers: List<AttendeeInfo>, isLoading: Boolean = false) {
     Row(
@@ -67,7 +65,6 @@ fun TeachersContent(teachers: List<AttendeeInfo>, isLoading: Boolean = false) {
     }
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun GroupsContent(groups: List<AttendeeInfo>, isLoading: Boolean = false) {
     Row(
@@ -94,7 +91,6 @@ fun GroupsContent(groups: List<AttendeeInfo>, isLoading: Boolean = false) {
     }
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun PlacesContent(places: List<Place>, isLoading: Boolean = false) {
     Row(

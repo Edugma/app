@@ -75,20 +75,25 @@ private fun AddAccountContent(
                 modifier = Modifier
                     .padding(horizontal = 24.dp)
                     .fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
             ) {
                 Image(
-                    modifier = Modifier.size(150.dp)
+                    modifier = Modifier
+                        .padding(vertical = 24.dp)
+                        .size(150.dp)
                         .clip(CircleShape)
                         .align(Alignment.CenterHorizontally),
                     painter = rememberCachedIconPainter("https://edugma.com/assets/img/edugma-logo.png"),
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
                 )
-                SpacerHeight(24.dp)
                 EdLabel(
-                    "Версия приложения: " + state.version.orEmpty() +
-                        state.buildType?.let { "-$it" }.orEmpty(),
+                    "Версия приложения",
+                    style = EdTheme.typography.titleMedium,
+                )
+                SpacerHeight(4.dp)
+                EdLabel(
+                    state.version.orEmpty() + state.buildType?.let { "-$it" }.orEmpty(),
+                    style = EdTheme.typography.titleLarge,
                 )
                 SpacerHeight(16.dp)
                 EdLabel(

@@ -4,14 +4,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.edugma.core.designSystem.atoms.lottie.LottieSource
 import com.edugma.core.designSystem.organism.fullScreenMessage.EdFullScreenMessage
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 /**
  * @param title Reason for error.
  * @param subtitle What the user to do.
  * @param onRetry Action on retry click.
  */
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun EdErrorRetry(
     modifier: Modifier = Modifier,

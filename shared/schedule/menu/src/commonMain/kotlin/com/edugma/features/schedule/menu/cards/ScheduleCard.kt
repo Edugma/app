@@ -44,7 +44,7 @@ fun ScheduleCard(
         modifier = modifier,
     ) {
         if (count == 0) {
-            Box(Modifier.padding(horizontal = 15.dp, vertical = 10.dp)) {
+            Box(Modifier.padding(horizontal = 15.dp)) {
                 EdLottie(
                     lottieSource = LottieSource.FileRes("files/sch_relax_2.json"),
                     modifier = Modifier
