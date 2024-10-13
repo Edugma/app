@@ -51,6 +51,7 @@ kotlin {
 
                 implementation(projects.shared.misc.menu)
                 implementation(projects.shared.misc.settings)
+                implementation(projects.shared.misc.aboutApp)
                 implementation(projects.shared.misc.other)
 
                 implementation(projects.shared.schedule.data)

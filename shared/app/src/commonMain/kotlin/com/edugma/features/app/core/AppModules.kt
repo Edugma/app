@@ -7,6 +7,7 @@ import com.edugma.core.utils.coreUtilsModule
 import com.edugma.data.base.coreStorageModule
 import com.edugma.data.schedule.ScheduleDataModule
 import com.edugma.features.account.accountFeaturesModule
+import com.edugma.features.misc.aboutApp.aboutAppFeaturesModule
 import com.edugma.features.misc.menu.miscMenuFeaturesModule
 import com.edugma.features.misc.other.inAppUpdate.miscOtherFeaturesModule
 import com.edugma.features.misc.settings.settingsFeaturesModule
@@ -57,6 +58,7 @@ val appModules: List<Module> = buildList {
     +accountFeaturesModule
     +miscMenuFeaturesModule
     +settingsFeaturesModule
+    +aboutAppFeaturesModule
     +miscOtherFeaturesModule
     +coreModule
     +coreSystemModule

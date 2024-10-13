@@ -3,7 +3,6 @@ package com.edugma.core.designSystem.molecules.textField
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.TextField
@@ -21,7 +20,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.edugma.core.designSystem.atoms.label.EdLabel
 import com.edugma.core.designSystem.theme.EdTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EdTextField(
     value: String,

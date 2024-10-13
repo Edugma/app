@@ -19,12 +19,8 @@ class CheckUpdateUseCase(
     private val settingsRepository: SettingsRepository,
     private val router: ExternalRouter,
 ) {
+    // TODO перепродумать и проверить время
     suspend operator fun invoke() {
-        val version = inAppUpdateService.getLastVersion().getOrThrow()
-        val minVersion = parseSemVerUseCase(version.min)
-        val lastVersion = parseSemVerUseCase(version.last)
-        val appVersion = parseSemVerUseCase(buildConfigRepository.getVersion())
-
         val lastUpdateIso = settingsRepository.getString(LastUpdateKey)
         val lastUpdate = if (lastUpdateIso == null) {
             Instant.DISTANT_PAST
@@ -33,10 +29,19 @@ class CheckUpdateUseCase(
         }
 
         val now = Clock.System.now()
+        val timeToCheck = 1.days
+        val timeToShowRequired = 1.days
+        val timeToShowSoft = 1.days
+
+        if (now - lastUpdate < timeToCheck) return
+
+        val version = inAppUpdateService.getLastVersion().getOrThrow()
+        val minVersion = parseSemVerUseCase(version.min)
+        val lastVersion = parseSemVerUseCase(version.last)
+        val appVersion = parseSemVerUseCase(buildConfigRepository.getVersion())
 
         if (appVersion < minVersion) {
-            val timeToShow = 1.days
-            if (now - lastUpdate > timeToShow) {
+            if (now - lastUpdate > timeToShowRequired) {
                 val actionResult = appSnackbarRepository.sendWarningWithResult(
                     title = "Срочно обновите приложение",
                     subtitle = "Версия приложения устарела и больше не поддерживается!",
@@ -49,8 +54,7 @@ class CheckUpdateUseCase(
                 }
             }
         } else if (appVersion < lastVersion) {
-            val timeToShow = 1.days
-            if (now - lastUpdate > timeToShow) {
+            if (now - lastUpdate > timeToShowSoft) {
                 val actionResult = appSnackbarRepository.sendWarningWithResult(
                     title = "Обновите приложение",
                     subtitle = "Доступна новая версия приложения",
@@ -62,6 +66,8 @@ class CheckUpdateUseCase(
                     router.openStore()
                 }
             }
+        } else {
+            settingsRepository.saveString(LastUpdateKey, now.toString())
         }
     }
 

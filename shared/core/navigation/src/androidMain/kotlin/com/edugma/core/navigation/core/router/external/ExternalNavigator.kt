@@ -59,6 +59,7 @@ class ExternalNavigator(
         val intent = Intent().apply {
             action = Intent.ACTION_VIEW
             data = Uri.parse(command.uri)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
 
         context.startActivity(intent)

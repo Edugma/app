@@ -10,13 +10,12 @@ kotlin {
                 implementation(projects.shared.core.ui)
 
                 implementation(projects.shared.core.navigation)
-                implementation(projects.shared.misc.settings)
-                implementation(projects.shared.misc.aboutApp)
+                implementation(projects.shared.core.api)
             }
         }
     }
 }
 
 android {
-    namespace = "com.edugma.features.misc.menu"
+    namespace = "com.edugma.features.misc.aboutApp"
 }
