@@ -119,7 +119,7 @@ fun AccountGroupList(
     LazyColumn(
         modifier = modifier,
     ) {
-        state.accountGroups.forEachIndexed { index, accountGroup ->
+        state.accountGroups.forEachIndexed { groupIndex, accountGroup ->
             item(
                 key = accountGroup.id,
                 contentType = null,
@@ -127,7 +127,7 @@ fun AccountGroupList(
                 AccountGroupTitle(
                     accountGroup = accountGroup,
                     isSelected = state.selectedAccountGroupId == accountGroup.id,
-                    index = index,
+                    index = groupIndex,
                     onDelete = onDeleteAccountGroup,
                 )
             }
@@ -137,7 +137,7 @@ fun AccountGroupList(
                     accountGroup.id + account.id
                 },
                 contentType = { _, _ -> null },
-            ) { index, account ->
+            ) { _, account ->
                 AccountContent(
                     account = account,
                     isSelected = accountGroup.selected == account.id,
@@ -167,7 +167,7 @@ private fun AccountGroupTitle(
             RadioButton(
                 selected = isSelected,
                 onClick = null,
-                modifier = Modifier.padding(end = 4.dp)
+                modifier = Modifier.padding(end = 16.dp)
             )
         }
 

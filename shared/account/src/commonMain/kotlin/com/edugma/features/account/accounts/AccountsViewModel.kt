@@ -4,6 +4,7 @@ import com.edugma.core.arch.mvi.utils.launchCoroutine
 import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
 import com.edugma.core.navigation.AccountScreens
 import com.edugma.features.account.data.repository.AccountRepositoryImpl
+import com.edugma.features.account.domain.model.accounts.AccountGroupModel
 import kotlinx.coroutines.flow.collectIndexed
 
 class AccountsViewModel(
@@ -21,11 +22,7 @@ class AccountsViewModel(
 //                accountRepository.createNewAccountGroupFromCurrentToken()
 //            accountRepository.selectAccountGroup(newAccountGroupId)
             accountRepository.getAllAccountGroups().collectIndexed { index, value ->
-                if (index == 0 && value == null) {
-                    val newAccountGroupId =
-                        accountRepository.createNewAccountGroupFromCurrentToken()
-                    accountRepository.selectAccountGroup(newAccountGroupId)
-                }
+                legacyMigration(index, value)
                 newState {
                     copy(accountGroups = value?.map { it.toUiModel() } ?: emptyList())
                 }
@@ -49,12 +46,24 @@ class AccountsViewModel(
         }
     }
 
+    private suspend fun legacyMigration(
+        index: Int,
+        groups: List<AccountGroupModel>?,
+    ) {
+        // only for first time and only if list empty
+        if (index == 0 && groups.isNullOrEmpty()) {
+            accountRepository.clearSelectedAccount()
+            val newAccountGroupId = accountRepository.createNewAccountGroupFromCurrentToken()
+            if (newAccountGroupId != null) {
+                accountRepository.selectAccountGroup(newAccountGroupId)
+            }
+        }
+    }
+
     override fun processAction(action: AccountsAction) {
         when (action) {
             AccountsAction.OnBack -> accountRouter.back()
-            // TODO проверять текущую группу на актуальность
 
-            // TODO если текущей группы нет, то создать. Если нет текущего аккаунта, то обновить
             AccountsAction.AddNewGroup -> {
                 accountRouter.navigateTo(AccountScreens.AddAccount())
             }

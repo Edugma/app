@@ -9,7 +9,6 @@ import com.edugma.core.api.repository.save
 import com.edugma.core.api.utils.UUID
 import com.edugma.core.api.utils.UpdateFlow
 import com.edugma.core.api.utils.awaitFinished
-import com.edugma.data.base.consts.CacheConst
 import com.edugma.data.base.consts.CacheConst.AccountGroupIdListKey
 import com.edugma.data.base.consts.CacheConst.AccountGroupKey
 import com.edugma.data.base.consts.CacheConst.SelectedAccountGroupIdKey
@@ -35,13 +34,13 @@ class AccountRepositoryImpl(
         fetcher { accountGroupId ->
             val accountsModel = api.getAccounts()
             val currentAccountGroup = cacheRepository.getOnlyData<AccountGroupModel>(
-                CacheConst.AccountGroupKey + accountGroupId,
+                AccountGroupKey + accountGroupId,
             )
             currentAccountGroup!!.updateWith(accountsModel)
         }
         cache {
             reader { accountGroupId ->
-                cacheRepository.getFlow<AccountGroupModel>(CacheConst.AccountGroupKey + accountGroupId)
+                cacheRepository.getFlow<AccountGroupModel>(AccountGroupKey + accountGroupId)
             }
             writer { accountGroupId, data ->
                 updateCache(accountGroupId, data, true)
@@ -56,14 +55,14 @@ class AccountRepositoryImpl(
         updateTimestamp: Boolean,
     ) {
         val accountGroupIdList =
-            settingsRepository.get<List<String>>(CacheConst.AccountGroupIdListKey)
+            settingsRepository.get<List<String>>(AccountGroupIdListKey)
         if (accountGroupIdList == null) {
-            settingsRepository.save(CacheConst.AccountGroupIdListKey, listOf(accountGroupId))
+            settingsRepository.save(AccountGroupIdListKey, listOf(accountGroupId))
         } else if (accountGroupId !in accountGroupIdList) {
-            settingsRepository.save(CacheConst.AccountGroupIdListKey, accountGroupIdList + accountGroupId)
+            settingsRepository.save(AccountGroupIdListKey, accountGroupIdList + accountGroupId)
         }
         val previousAccountGroup = cacheRepository.getOnlyData<AccountGroupModel>(
-            CacheConst.AccountGroupKey + accountGroupId,
+            AccountGroupKey + accountGroupId,
         )
         val resData = if (previousAccountGroup?.selected != null) {
             newData.copy(
@@ -73,7 +72,7 @@ class AccountRepositoryImpl(
             newData
         }
         cacheRepository.save(
-            CacheConst.AccountGroupKey + accountGroupId,
+            AccountGroupKey + accountGroupId,
             resData,
             updateTimestamp = updateTimestamp,
         )
@@ -83,17 +82,17 @@ class AccountRepositoryImpl(
     private val accountGroupUpdated = UpdateFlow()
 
     suspend fun selectAccount(accountGroupId: String, accountId: String) {
-        val previousAccountGroupId = settingsRepository.getString(CacheConst.SelectedAccountGroupIdKey)
+        val previousAccountGroupId = settingsRepository.getString(SelectedAccountGroupIdKey)
 
-        val accountGroup = cacheRepository.getOnlyData<AccountGroupModel>(CacheConst.AccountGroupKey + accountGroupId)
+        val accountGroup = cacheRepository.getOnlyData<AccountGroupModel>(AccountGroupKey + accountGroupId)
         checkNotNull(accountGroup)
         val selectedAccount = accountGroup.accounts.first { it.id == accountId }
         val updatedAccountGroup = accountGroup.copy(
             selected = selectedAccount.id
         )
-        cacheRepository.save(CacheConst.AccountGroupKey + accountGroupId, updatedAccountGroup)
-        settingsRepository.save(CacheConst.SelectedAccountKey, selectedAccount)
-        settingsRepository.saveString(CacheConst.SelectedAccountGroupIdKey, accountGroupId)
+        cacheRepository.save(AccountGroupKey + accountGroupId, updatedAccountGroup)
+        settingsRepository.save(SelectedAccountKey, selectedAccount)
+        settingsRepository.saveString(SelectedAccountGroupIdKey, accountGroupId)
 
         if (previousAccountGroupId != accountGroupId) {
             authorizationRepository.setCurrentToken(
@@ -108,11 +107,11 @@ class AccountRepositoryImpl(
     }
 
     fun getSelectedAccount(): Flow<AccountModel?> {
-        return settingsRepository.getFlow<AccountModel>(CacheConst.SelectedAccountKey)
+        return settingsRepository.getFlow<AccountModel>(SelectedAccountKey)
     }
 
     fun getSelectedAccountGroupId(): Flow<String?> {
-        return settingsRepository.getStringFlow(CacheConst.SelectedAccountGroupIdKey)
+        return settingsRepository.getStringFlow(SelectedAccountGroupIdKey)
     }
 
     private suspend fun addNewEmptyAccountGroupFromToken(
@@ -141,30 +140,31 @@ class AccountRepositoryImpl(
     fun getAllAccountGroups(): Flow<List<AccountGroupModel>?> {
         return accountGroupUpdated.map {
             val accountGroupIdList =
-                settingsRepository.get<List<String>>(CacheConst.AccountGroupIdListKey)
+                settingsRepository.get<List<String>>(AccountGroupIdListKey)
             accountGroupIdList?.mapNotNull { accountGroupId ->
                 cacheRepository.getOnlyData<AccountGroupModel>(
-                    CacheConst.AccountGroupKey + accountGroupId,
+                    AccountGroupKey + accountGroupId,
                 )
             }
         }
     }
 
-    /**
-     * Only for migration from first version of app.
-     */
     suspend fun selectAccountGroup(accountGroupId: String) {
-        val accountGroup = cacheRepository.getOnlyData<AccountGroupModel>(CacheConst.AccountGroupKey + accountGroupId)
+        val accountGroup = cacheRepository.getOnlyData<AccountGroupModel>(AccountGroupKey + accountGroupId)
         checkNotNull(accountGroup)
         val selectedAccountId = accountGroup.selected ?: accountGroup.default
         val selectedAccount = accountGroup.accounts.first { it.id == selectedAccountId }
         val updatedAccountGroup = accountGroup.copy(
             selected = selectedAccount.id
         )
-        cacheRepository.save(CacheConst.AccountGroupKey + accountGroupId, updatedAccountGroup)
-        settingsRepository.save(CacheConst.SelectedAccountKey, selectedAccount)
-        settingsRepository.saveString(CacheConst.SelectedAccountGroupIdKey, accountGroupId)
+        cacheRepository.save(AccountGroupKey + accountGroupId, updatedAccountGroup)
+        settingsRepository.save(SelectedAccountKey, selectedAccount)
+        settingsRepository.saveString(SelectedAccountGroupIdKey, accountGroupId)
         accountGroupUpdated.updated()
+    }
+
+    suspend fun clearSelectedAccount() {
+        settingsRepository.removeObject(SelectedAccountKey)
     }
 
     suspend fun createNewAccountGroupFromToken(
@@ -182,9 +182,10 @@ class AccountRepositoryImpl(
     /**
      * Only for migration from first version of app.
      */
-    suspend fun createNewAccountGroupFromCurrentToken(): String {
+    suspend fun createNewAccountGroupFromCurrentToken(): String? {
+        val accessToken = authorizationRepository.getAccessToken() ?: return null
         return createNewAccountGroupFromToken(
-            accessToken = authorizationRepository.getAccessToken()!!,
+            accessToken = accessToken,
             refreshToken = authorizationRepository.getRefreshToken()
         )
     }
@@ -198,8 +199,28 @@ class AccountRepositoryImpl(
         )
     }
 
-    fun deleteAccountGroup(accountGroupId: String) {
-        TODO("Not yet implemented")
+    suspend fun deleteAccountGroup(accountGroupId: String) {
+        val accountGroupIdList =
+            settingsRepository.get<List<String>>(AccountGroupIdListKey)
+        if (accountGroupIdList != null) {
+            settingsRepository.save(AccountGroupIdListKey, accountGroupIdList - accountGroupId)
+        }
+        cacheRepository.remove(AccountGroupKey + accountGroupId)
+
+        val selectedAccountGroupId = settingsRepository.getString(SelectedAccountGroupIdKey)
+
+        if (selectedAccountGroupId == selectedAccountGroupId) {
+            val newAccountGroupIdList =
+                settingsRepository.get<List<String>>(AccountGroupIdListKey)
+            if (newAccountGroupIdList.isNullOrEmpty()) {
+                authorizationRepository.logout()
+            } else {
+                selectAccountGroup(newAccountGroupIdList.first())
+                authorizationRepository.clearAccountCache()
+            }
+        }
+
+        accountGroupUpdated.updated()
     }
 
     // TODO убрать при релизе

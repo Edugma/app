@@ -16,6 +16,7 @@ class LoginAndSelectAccountUseCase(
             accessToken = token.accessToken,
             refreshToken = token.refreshToken,
         )
+        accountRepository.clearSelectedAccount()
         val newAccountGroupId = accountRepository.createNewAccountGroupFromToken(
             accessToken = token.accessToken,
             refreshToken = token.refreshToken,
