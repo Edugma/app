@@ -27,12 +27,7 @@ class AuthorizationRepositoryImpl(
 ) : AuthorizationRepository {
 
     override suspend fun authorize(login: String, password: String): Token {
-        val token = api.login(Login(login, password)).getOrThrow()
-        setCurrentToken(
-            accessToken = token.accessToken,
-            refreshToken = token.refreshToken,
-        )
-        return token
+        return api.login(Login(login, password))
     }
 
     override suspend fun setCurrentToken(accessToken: String, refreshToken: String?) {

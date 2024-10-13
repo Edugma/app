@@ -23,17 +23,6 @@ class AuthWithCachingDataUseCase(
 
     suspend fun isAuthorized() = authorizationRepository.getAccessToken() != null
 
-    suspend fun authorize(
-        login: String,
-        password: String,
-    ) {
-        val token = authorizationRepository.authorize(login, password)
-        accountRepository.addNewAccountGroupFromToken(
-            accessToken = token.accessToken,
-            refreshToken = token.refreshToken,
-        )
-    }
-
     fun getDataFlow(): Flow<DataDto> = accountRepository.getSelectedAccount().map {
         // val marks = async { performanceRepository.getLocalMarks() ?: performanceRepository.getPerformance() }
         // val payments = async { paymentsRepository.getPaymentsLocal() ?: paymentsRepository.getPayments() }

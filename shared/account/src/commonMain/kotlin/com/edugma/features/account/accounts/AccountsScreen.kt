@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -33,8 +32,6 @@ import com.edugma.core.icons.EdIcons
 import com.edugma.core.ui.screen.FeatureScreen
 import com.edugma.core.utils.viewmodel.collectAsState
 import com.edugma.core.utils.viewmodel.getViewModel
-import com.edugma.features.account.domain.model.accounts.AccountGroupModel
-import com.edugma.features.account.domain.model.accounts.AccountModel
 import edugma.shared.core.icons.generated.resources.ic_fluent_delete_24_filled
 import org.jetbrains.compose.resources.painterResource
 
@@ -129,18 +126,22 @@ fun AccountGroupList(
             ) {
                 AccountGroupTitle(
                     accountGroup = accountGroup,
+                    isSelected = state.selectedAccountGroupId == accountGroup.id,
                     index = index,
                     onDelete = onDeleteAccountGroup,
                 )
             }
             itemsIndexed(
                 items = accountGroup.accounts,
-                key = { _, account -> accountGroup.id + account.id },
+                key = { _, account ->
+                    accountGroup.id + account.id
+                },
                 contentType = { _, _ -> null },
             ) { index, account ->
                 AccountContent(
                     account = account,
-                    isSelected = state.selectedAccountId == account.id,
+                    isSelected = accountGroup.selected == account.id,
+                    isAccountGroupSelected = state.selectedAccountGroupId == accountGroup.id,
                     onClick = {
                         onAccountClick(accountGroup.id, account.id)
                     }
@@ -152,7 +153,8 @@ fun AccountGroupList(
 
 @Composable
 private fun AccountGroupTitle(
-    accountGroup: AccountGroupModel,
+    accountGroup: AccountGroupUiModel,
+    isSelected: Boolean,
     index: Int,
     onDelete: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -161,6 +163,14 @@ private fun AccountGroupTitle(
         Modifier.fillMaxWidth().padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
+        if (isSelected) {
+            RadioButton(
+                selected = isSelected,
+                onClick = null,
+                modifier = Modifier.padding(end = 4.dp)
+            )
+        }
+
         EdLabel(
             text = "Группа аккаунтов ${index + 1}",
             style = EdTheme.typography.titleMedium,
@@ -184,8 +194,9 @@ private fun AccountGroupTitle(
 
 @Composable
 private fun AccountContent(
-    account: AccountModel,
+    account: AccountUiModel,
     isSelected: Boolean,
+    isAccountGroupSelected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -199,6 +210,7 @@ private fun AccountContent(
         if (isSelected) {
             RadioButton(
                 selected = isSelected,
+                enabled = isAccountGroupSelected,
                 onClick = null,
             )
         }

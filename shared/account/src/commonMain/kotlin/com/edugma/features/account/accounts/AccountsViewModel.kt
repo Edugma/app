@@ -27,7 +27,7 @@ class AccountsViewModel(
                     accountRepository.selectAccountGroup(newAccountGroupId)
                 }
                 newState {
-                    copy(accountGroups = value ?: emptyList())
+                    copy(accountGroups = value?.map { it.toUiModel() } ?: emptyList())
                 }
             }
         }

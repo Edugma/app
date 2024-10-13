@@ -21,6 +21,7 @@ import com.edugma.features.account.domain.repository.PeoplesRepository
 import com.edugma.features.account.domain.repository.PerformanceRepository
 import com.edugma.features.account.domain.repository.PersonalRepository
 import com.edugma.features.account.domain.usecase.AuthWithCachingDataUseCase
+import com.edugma.features.account.domain.usecase.LoginAndSelectAccountUseCase
 import com.edugma.features.account.domain.usecase.MenuDataConverterUseCase
 import com.edugma.features.account.menu.MenuViewModel
 import com.edugma.features.account.payments.PaymentsViewModel
@@ -46,6 +47,7 @@ val accountFeaturesModule = module {
     singleOf(::CardsRepositoryImpl) { bind<CardsRepository>() }
 
     factoryOf(::AuthWithCachingDataUseCase)
+    factoryOf(::LoginAndSelectAccountUseCase)
     factoryOf(::MenuDataConverterUseCase)
 
     factoryOf(::MenuViewModel)

@@ -3,22 +3,22 @@ package com.edugma.features.schedule.menu.model
 sealed class MenuItem(
     val weight: Float,
 ) {
-    object DailySchedule : MenuItem(
+    data object DailySchedule : MenuItem(
         weight = 2f,
     )
-    object Calendar : MenuItem(
+    data object Calendar : MenuItem(
         weight = 1f,
     )
-    object LessonsReview : MenuItem(
+    data object LessonsReview : MenuItem(
         weight = 1f,
     )
-    object ChaneHistory : MenuItem(
+    data object ChaneHistory : MenuItem(
         weight = 1f,
     )
-    object AppWidget : MenuItem(
+    data object AppWidget : MenuItem(
         weight = 1f,
     )
-    object FindFreePlace : MenuItem(
+    data object FindFreePlace : MenuItem(
         weight = 1.5f,
     )
     class Empty(

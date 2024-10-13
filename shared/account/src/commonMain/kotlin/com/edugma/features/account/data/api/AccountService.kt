@@ -3,7 +3,7 @@ package com.edugma.features.account.data.api
 import com.edugma.core.api.api.EdugmaHttpClient
 import com.edugma.core.api.api.get
 import com.edugma.core.api.api.getResult
-import com.edugma.core.api.api.postResult
+import com.edugma.core.api.api.post
 import com.edugma.core.api.model.PagingDto
 import com.edugma.features.account.domain.model.Personal
 import com.edugma.features.account.domain.model.accounts.AccountsModel
@@ -19,8 +19,8 @@ class AccountService(
     private val client: EdugmaHttpClient,
 ) {
 
-    suspend fun login(@Body login: Login): Result<Token> =
-        client.postResult("$PREFIX-login") {
+    suspend fun login(@Body login: Login): Token =
+        client.post("$PREFIX-login") {
             body(login)
         }
 

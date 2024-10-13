@@ -2,8 +2,11 @@ package com.edugma.features.account.addAccount
 
 import com.edugma.core.arch.mvi.utils.launchCoroutine
 import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
+import com.edugma.features.account.domain.usecase.LoginAndSelectAccountUseCase
 
-class AddAccountViewModel : FeatureLogic<AddAccountUiState, AddAccountAction>() {
+class AddAccountViewModel(
+    private val loginAndSelectAccountUseCase: LoginAndSelectAccountUseCase,
+) : FeatureLogic<AddAccountUiState, AddAccountAction>() {
     override fun initialState(): AddAccountUiState {
         return AddAccountUiState()
     }
@@ -25,37 +28,33 @@ class AddAccountViewModel : FeatureLogic<AddAccountUiState, AddAccountAction>() 
     }
 
     private fun authorize() {
-        return
-        launchCoroutine {
-            lateinit var login: String
-            lateinit var password: String
-            state.let {
-                login = it.login
-                password = it.password
-                if (login.isEmpty()) {
-                    setLoginError()
-                }
-                if (password.isEmpty()) {
-                    setPasswordError()
-                }
-                if (login.isEmpty() || password.isEmpty()) {
-                    setError("Заполните все поля")
-                    return@launchCoroutine
-                }
-                if (it.isLoading) return@launchCoroutine
+        launchCoroutine(
+            onError = {
+                setLoading(false)
+                setError(it)
             }
-//            setLoading(true)
-//            setError(null)
-//            authCachingUseCase.authorize(
-//                login = login,
-//                password = password,
-//                onAuthSuccess = ::setAuthorizedState,
-//                onAuthFailure = {
-//                    setLoading(false)
-//                    setError(it)
-//                },
-//                onGetData = ::setData,
-//            )
+        ) {
+            val login: String = state.login
+            val password: String = state.password
+
+            if (login.isEmpty()) {
+                setLoginError()
+            }
+            if (password.isEmpty()) {
+                setPasswordError()
+            }
+            if (login.isEmpty() || password.isEmpty()) {
+                setError("Заполните все поля")
+                return@launchCoroutine
+            }
+            if (state.isLoading) return@launchCoroutine
+            setLoading(true)
+            setError(null)
+            loginAndSelectAccountUseCase(
+                login = login,
+                password = password,
+            )
+            accountRouter.back()
         }
     }
 
@@ -66,6 +65,12 @@ class AddAccountViewModel : FeatureLogic<AddAccountUiState, AddAccountAction>() 
     private fun setError(error: String?) {
         newState {
             copy(error = error.orEmpty())
+        }
+    }
+
+    private fun setLoading(isLoading: Boolean) {
+        newState {
+            copy(isLoading = isLoading)
         }
     }
 

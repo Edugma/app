@@ -18,6 +18,7 @@ import com.edugma.features.account.domain.usecase.AuthWithCachingDataUseCase
 import com.edugma.features.account.domain.usecase.CurrentPayments
 import com.edugma.features.account.domain.usecase.CurrentPerformance
 import com.edugma.features.account.domain.usecase.DataDto
+import com.edugma.features.account.domain.usecase.LoginAndSelectAccountUseCase
 import com.edugma.features.account.domain.usecase.MenuDataConverterUseCase
 import com.edugma.features.account.domain.usecase.SelectedAccountUiModel
 import kotlinx.coroutines.Dispatchers
@@ -29,6 +30,7 @@ class MenuViewModel(
     private val authCachingUseCase: AuthWithCachingDataUseCase,
     private val converterUseCase: MenuDataConverterUseCase,
     private val cardsRepository: CardsRepository,
+    private val loginAndSelectAccountUseCase: LoginAndSelectAccountUseCase,
 ) : FeatureLogic2<MenuState>() {
     override fun initialState(): MenuState {
         return MenuState.Loading
@@ -103,7 +105,7 @@ class MenuViewModel(
                 } ?: return@launchCoroutine
             setLoading(true)
             setError(null)
-            authCachingUseCase.authorize(
+            loginAndSelectAccountUseCase(
                 login = login,
                 password = password,
             )
