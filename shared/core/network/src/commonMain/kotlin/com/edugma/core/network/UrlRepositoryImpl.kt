@@ -40,15 +40,22 @@ class UrlRepositoryImpl(
                 CrashAnalytics.logException(throwable)
             }
         ) {
-            nodesRepository.getSelectedContract()?.onResult(
-                onSuccess = {
-                    _edugmaApi.value = it.valueOrThrow
-                    flag.value = true
-                },
-                onFailure = {
-                    CrashAnalytics.logException(it.exceptionOrThrow)
-                }
-            )
+            val selectedContractLce = nodesRepository.getSelectedContract()
+
+            if (selectedContractLce == null) {
+                flag.value = true
+            } else {
+                selectedContractLce.onResult(
+                    onSuccess = {
+                        _edugmaApi.value = it.valueOrThrow
+                        flag.value = true
+                    },
+                    onFailure = {
+                        CrashAnalytics.logException(it.exceptionOrThrow)
+                        flag.value = true
+                    }
+                )
+            }
         }
         flag.takeWhile { !it }.collect()
 
