@@ -33,3 +33,4 @@ shared/shared.podspec
 # custom
 secrets-dev.properties
 secrets-prod.properties
+.env

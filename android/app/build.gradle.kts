@@ -73,6 +73,12 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
+    applicationVariants.all {
+        outputs.all {
+            val output = this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
+            output.outputFileName = "Edugma-${versionName}-${buildType.name}.apk"
+        }
+    }
     kotlinOptions {
         jvmTarget = libs.versions.java.get()
     }

@@ -58,14 +58,24 @@ Edugma - децентрализованное приложение для уче
 ./gradlew :ios:shared:embedAndSignAppleFrameworkForXcode
 ```
 
+Make all scripts executable
+```shell
+chmod -R +x scripts/
+```
+
 Build release apk
 ```shell
-./gradlew :android:app:assembleRelease -Pbuildkonfig.flavor=release
+./scripts/build_release_apk.sh
 ```
 
 Build release bundle
 ```shell
-./gradlew :android:app:bundleRelease -Pbuildkonfig.flavor=release
+./scripts/build_release_bundle.sh
+```
+
+Build qa apk
+```shell
+./gradlew :android:app:assembleQa -Pbuildkonfig.flavor=qa
 ```
 
 Build debug apk
