@@ -92,6 +92,11 @@ class ScheduleCacheRepository(
         }
     }
 
+    suspend fun clearAll() {
+        preferenceRepository.removeByteArrayWithPrefix(CacheConst.Schedule)
+        cacheRepository.removeWithPrefix(CacheConst.Schedule)
+    }
+
     companion object {
         private const val PATH = "ds_schedule_cache"
         private const val SCHEDULE_HISTORY_MAX_SIZE = 5

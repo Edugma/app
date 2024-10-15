@@ -61,4 +61,9 @@ class ScheduleSourcesRepositoryImpl(
     override suspend fun getSelectedSourceSuspend(): ScheduleSourceFull? {
         return settingsRepository.get(PrefConst.SelectedScheduleSource)
     }
+
+    override suspend fun clearAll() {
+        settingsRepository.removeObject(PrefConst.SelectedScheduleSource)
+        cacheRepository.removeWithPrefix(CacheConst.FavoriteScheduleSources)
+    }
 }

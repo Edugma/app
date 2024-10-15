@@ -30,6 +30,9 @@ class AboutAppViewModel(
             AboutAppAction.VkClick -> {
                 externalRouter.openUri("https://vk.com/edugma")
             }
+            AboutAppAction.SourceCodeClick -> {
+                externalRouter.openUri("https://github.com/Edugma/app")
+            }
         }
     }
 }

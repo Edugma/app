@@ -3,6 +3,7 @@ package com.edugma.features.nodes.main
 import com.edugma.core.api.api.Node
 import com.edugma.core.api.model.NodeState
 import com.edugma.core.api.repository.AppStateRepository
+import com.edugma.core.api.repository.CleanupRepository
 import com.edugma.core.api.repository.NodesRepository
 import com.edugma.core.api.repository.UrlTemplateRepository
 import com.edugma.core.arch.mvi.utils.launchCoroutine
@@ -14,6 +15,7 @@ class NodesMainViewModel(
     private val nodesRepository: NodesRepository,
     private val appStateRepository: AppStateRepository,
     private val urlTemplateRepository: UrlTemplateRepository,
+    private val cleanupRepository: CleanupRepository,
 ) : FeatureLogic2<NodesMainState>() {
     override fun initialState(): NodesMainState {
         return NodesMainState()
@@ -40,7 +42,10 @@ class NodesMainViewModel(
 
     fun onEnterNodeUrl() {
         launchCoroutine {
-            nodesRepository.selectNode(state.nodeUrl)
+            val changed = nodesRepository.selectNode(state.nodeUrl)
+            if (changed) {
+                cleanupRepository.cleanAll()
+            }
             urlTemplateRepository.init()
             appStateRepository.newState(
                 appStateRepository.state.value.copy(
@@ -66,7 +71,10 @@ class NodesMainViewModel(
 
     fun onNodeItemClick(node: Node) {
         launchCoroutine {
-            nodesRepository.selectNode(node.contract)
+            val changed = nodesRepository.selectNode(node.contract)
+            if (changed) {
+                cleanupRepository.cleanAll()
+            }
             urlTemplateRepository.init()
             appStateRepository.newState(
                 appStateRepository.state.value.copy(

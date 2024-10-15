@@ -1,7 +1,6 @@
 package com.edugma.features.misc.aboutApp
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -10,7 +9,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.edugma.core.arch.mvi.viewmodel.rememberOnAction
 import com.edugma.core.designSystem.atoms.label.EdLabel
 import com.edugma.core.designSystem.atoms.spacer.SpacerHeight
+import com.edugma.core.designSystem.atoms.spacer.SpacerWidth
 import com.edugma.core.designSystem.atoms.surface.EdSurface
 import com.edugma.core.designSystem.organism.EdScaffold
 import com.edugma.core.designSystem.organism.topAppBar.EdTopAppBar
@@ -74,7 +76,8 @@ private fun AddAccountContent(
             Column(
                 modifier = Modifier
                     .padding(horizontal = 24.dp)
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
             ) {
                 Image(
                     modifier = Modifier
@@ -110,7 +113,6 @@ private fun AddAccountContent(
                 SpacerHeight(8.dp)
                 Row(
                     Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
                 ) {
                     IconButton(
                         modifier = Modifier.size(75.dp),
@@ -125,6 +127,7 @@ private fun AddAccountContent(
                             contentScale = ContentScale.Fit,
                         )
                     }
+                    SpacerWidth(16.dp)
                     IconButton(
                         modifier = Modifier.size(75.dp),
                         onClick = {
@@ -139,7 +142,26 @@ private fun AddAccountContent(
                         )
                     }
                 }
-                SpacerHeight(32.dp)
+                SpacerHeight(8.dp)
+                EdLabel(
+                    "Исходный код",
+                    style = EdTheme.typography.titleMedium,
+                )
+                SpacerHeight(8.dp)
+                IconButton(
+                    modifier = Modifier.size(75.dp),
+                    onClick = {
+                        onAction(AboutAppAction.SourceCodeClick)
+                    },
+                ) {
+                    Image(
+                        modifier = Modifier.size(50.dp),
+                        painter = rememberCachedIconPainter("https://img.icons8.com/fluency/96/github.png"),
+                        contentDescription = null,
+                        contentScale = ContentScale.Fit,
+                    )
+                }
+                SpacerHeight(16.dp)
             }
         }
     }

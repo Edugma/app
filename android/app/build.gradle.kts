@@ -76,7 +76,7 @@ android {
     applicationVariants.all {
         outputs.all {
             val output = this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
-            output.outputFileName = "Edugma-${versionName}-${buildType.name}.apk"
+            output.outputFileName = "Edugma-$versionName-${buildType.name}.apk"
         }
     }
     kotlinOptions {

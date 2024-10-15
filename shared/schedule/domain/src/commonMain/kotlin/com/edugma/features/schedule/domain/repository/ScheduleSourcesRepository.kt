@@ -21,4 +21,5 @@ interface ScheduleSourcesRepository {
     suspend fun getSelectedSourceSuspend(): ScheduleSourceFull?
 
     suspend fun getSourceTypes(): List<ScheduleSourceType>
+    suspend fun clearAll()
 }

@@ -18,4 +18,5 @@ interface ScheduleRepository {
     fun getHistory(source: ScheduleSource): Flow<List<ScheduleRecord>>
     suspend fun getHistoryRecord(source: ScheduleSource, timestamp: Instant): ScheduleRecord?
     fun getTeacher(source: ScheduleSource, id: String): LceFlow<TeacherInfo?>
+    suspend fun clearAll()
 }

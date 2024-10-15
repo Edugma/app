@@ -70,6 +70,10 @@ class ScheduleRepositoryImpl(
         }
     }
 
+    override suspend fun clearAll() {
+        scheduleCacheRepository.clearAll()
+    }
+
     // TODO
     override fun getTeacher(source: ScheduleSource, id: String) =
         scheduleStore0.get(source)

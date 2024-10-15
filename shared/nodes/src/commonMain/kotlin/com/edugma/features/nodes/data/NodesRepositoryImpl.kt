@@ -34,14 +34,12 @@ class NodesRepositoryImpl(
         }
     }
 
-    override suspend fun selectNode(url: String) {
+    override suspend fun selectNode(url: String): Boolean {
+        val previousUrl = settingsRepository.getString(PrefConst.SelectedNode)
         settingsRepository.saveString(PrefConst.SelectedNode, url)
         val contract = service.getNodeContract(url)
         cacheRepository.save<EdugmaApi>(CacheConst.SelectedContract, contract)
-    }
-
-    override suspend fun selectNode(node: Node) {
-        settingsRepository.saveString(PrefConst.SelectedNode, node.contract)
+        return previousUrl != url
     }
 
     override suspend fun getSelectNode(): String? {
