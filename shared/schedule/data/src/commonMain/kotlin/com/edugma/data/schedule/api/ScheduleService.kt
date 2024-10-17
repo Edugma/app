@@ -2,8 +2,7 @@ package com.edugma.data.schedule.api
 
 import com.edugma.core.api.api.EdugmaHttpClient
 import com.edugma.core.api.api.get
-import com.edugma.core.api.api.getResult
-import com.edugma.core.api.api.postResult
+import com.edugma.core.api.api.post
 import com.edugma.core.api.model.PagingDto
 import com.edugma.features.schedule.domain.model.ScheduleComplexFilter
 import com.edugma.features.schedule.domain.model.compact.CompactPlaceInfo
@@ -25,8 +24,8 @@ class ScheduleService(
             param("key", key)
         }
 
-    suspend fun getComplexSchedule(filter: ScheduleComplexFilter): Result<CompactSchedule> =
-        client.postResult("$PREFIX-compact-complex") {
+    suspend fun getComplexSchedule(filter: ScheduleComplexFilter): CompactSchedule =
+        client.post("$PREFIX-compact-complex") {
             body(filter)
         }
 
@@ -61,13 +60,13 @@ class ScheduleService(
             param("id", id)
         }
 
-    suspend fun findFreePlaces(filters: PlaceFilters): Result<Map<CompactPlaceInfo, Int>> =
-        client.postResult("$PREFIX-places-free") {
+    suspend fun findFreePlaces(filters: PlaceFilters): Map<CompactPlaceInfo, Int> =
+        client.post("$PREFIX-places-free") {
             body(filters)
         }
 
-    suspend fun getPlaceOccupancy(placeId: String): Result<List<PlaceDailyOccupancy>> =
-        client.getResult("$PREFIX-places-occupancy") {
+    suspend fun getPlaceOccupancy(placeId: String): List<PlaceDailyOccupancy> =
+        client.get("$PREFIX-places-occupancy") {
             param("placeId", placeId)
         }
 

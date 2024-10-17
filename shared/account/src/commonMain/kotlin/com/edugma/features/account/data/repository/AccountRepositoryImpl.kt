@@ -215,20 +215,20 @@ class AccountRepositoryImpl(
             if (newAccountGroupIdList.isNullOrEmpty()) {
                 authorizationRepository.logout()
             } else {
-                selectAccountGroup(newAccountGroupIdList.first())
+                val newSelectedAccountGroupId = newAccountGroupIdList.first()
+                val accountGroup = cacheRepository.getOnlyData<AccountGroupModel>(
+                    AccountGroupKey + newSelectedAccountGroupId,
+                )
+                checkNotNull(accountGroup)
+                authorizationRepository.setCurrentToken(
+                    accessToken = accountGroup.accessToken,
+                    refreshToken = accountGroup.refreshToken,
+                )
+                selectAccountGroup(newSelectedAccountGroupId)
                 authorizationRepository.clearAccountCache()
             }
         }
 
         accountGroupUpdated.updated()
-    }
-
-    // TODO убрать при релизе
-    suspend fun clearAccountGroupDataTest() {
-        cacheRepository.removeWithPrefix(AccountGroupKey)
-
-        settingsRepository.removeObject(AccountGroupIdListKey)
-        settingsRepository.removeString(SelectedAccountGroupIdKey)
-        settingsRepository.removeObject(SelectedAccountKey)
     }
 }

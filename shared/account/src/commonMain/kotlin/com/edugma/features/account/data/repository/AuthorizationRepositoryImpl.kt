@@ -2,6 +2,7 @@ package com.edugma.features.account.data.repository
 
 import com.edugma.core.api.repository.CacheRepository
 import com.edugma.core.api.repository.SettingsRepository
+import com.edugma.core.api.utils.runCoCatching
 import com.edugma.data.base.consts.CacheConst.AccountGroupIdListKey
 import com.edugma.data.base.consts.CacheConst.AccountGroupKey
 import com.edugma.data.base.consts.CacheConst.ApplicationsKey
@@ -59,7 +60,9 @@ class AuthorizationRepositoryImpl(
 
     override suspend fun getLkToken(): Result<String> {
         val local = getSavedLkToken()?.let { Result.success(it) }
-        val remote = api.getLkToken().map { it.accessToken }.onSuccess { saveLkToken(it) }
+        val remote = runCoCatching {
+            api.getLkToken().accessToken
+        }.onSuccess { saveLkToken(it) }
         return local ?: remote
     }
 

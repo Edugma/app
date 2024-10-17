@@ -16,14 +16,14 @@ androidxDatastore = "1.1.1" # https://developer.android.com/jetpack/androidx/rel
 androidxCollections = "1.4.4" # https://developer.android.com/jetpack/androidx/releases/collection
 
 # jetbrains
-androidxLifecycle = "2.8.2" # https://github.com/JetBrains/compose-multiplatform/releases
+androidxLifecycle = "2.8.3" # https://github.com/JetBrains/compose-multiplatform/releases
 androidxNavigation = "2.8.0-alpha10" # https://github.com/JetBrains/compose-multiplatform/releases
 androidxCore = "1.0.1" # https://mvnrepository.com/artifact/org.jetbrains.androidx.core/core-bundle
 
 buildKonfig = "0.15.2" # https://github.com/yshrsmz/BuildKonfig/releases
 
 composeBom = "2024.09.03"
-composeMultiplatform = "1.7.0-rc01" # https://github.com/JetBrains/compose-multiplatform/releases
+composeMultiplatform = "1.7.0" # https://github.com/JetBrains/compose-multiplatform/releases
 
 kotlinxDateTime = "0.6.1" # https://github.com/Kotlin/kotlinx-datetime/releases
 kotlinxCoroutines = "1.9.0" # https://github.com/Kotlin/kotlinx.coroutines/releases
@@ -31,6 +31,7 @@ kotlinxSerialization = "1.7.3" # https://github.com/Kotlin/kotlinx.serialization
 kotlinxAtomic = "0.25.0" # https://github.com/Kotlin/kotlinx-atomicfu/releases
 
 koinBom = "4.0.0" # https://github.com/InsertKoinIO/koin/releases
+# TODO remove ktorfit
 ktorfit = "2.1.0" # https://github.com/Foso/Ktorfit/releases
 ktorfitKsp = "2.1.0-1.0.25" # https://github.com/Foso/Ktorfit/releases
 ktor = "3.0.0" # https://github.com/ktorio/ktor/releases

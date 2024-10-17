@@ -3,6 +3,7 @@ package com.edugma.data.schedule.repository
 import com.edugma.core.api.utils.LceFlow
 import com.edugma.core.api.utils.lce
 import com.edugma.core.api.utils.map
+import com.edugma.core.api.utils.runCoCatching
 import com.edugma.data.base.store.store
 import com.edugma.data.schedule.api.ScheduleService
 import com.edugma.features.schedule.domain.model.ScheduleComplexFilter
@@ -86,9 +87,9 @@ class ScheduleRepositoryImpl(
         return if (source.type == ScheduleSourceType.COMPLEX) {
             lce {
                 emitResult(
-                    result = scheduleService.getComplexSchedule(
-                        ScheduleComplexFilter(),
-                    ),
+                    result = runCoCatching {
+                        scheduleService.getComplexSchedule(ScheduleComplexFilter())
+                    },
                     isLoading = false,
                 )
             }.map { ScheduleCalendar(it) }

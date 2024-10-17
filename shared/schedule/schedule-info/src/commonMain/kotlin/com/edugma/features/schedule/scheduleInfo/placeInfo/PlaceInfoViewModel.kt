@@ -1,7 +1,5 @@
 package com.edugma.features.schedule.scheduleInfo.placeInfo
 
-import com.edugma.core.api.utils.onFailure
-import com.edugma.core.api.utils.onSuccess
 import com.edugma.core.arch.mvi.utils.launchCoroutine
 import com.edugma.core.arch.mvi.viewmodel.FeatureLogic2
 import com.edugma.features.schedule.domain.model.compact.CompactPlaceInfo
@@ -42,13 +40,10 @@ class PlaceInfoViewModel(
 
         launchCoroutine {
             stateFlow.mapNotNull { it.id }.collect {
-                freePlaceRepository.getPlaceOccupancy(it)
-                    .onSuccess {
-                        newState {
-                            copy(placeOccupancy = it)
-                        }
-                    }.onFailure {
-                    }.collect()
+                val placeOccupancy = freePlaceRepository.getPlaceOccupancy(it)
+                newState {
+                    copy(placeOccupancy = placeOccupancy)
+                }
             }
         }
     }

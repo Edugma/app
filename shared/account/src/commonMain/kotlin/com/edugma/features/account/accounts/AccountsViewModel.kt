@@ -16,11 +16,6 @@ class AccountsViewModel(
 
     override fun onCreate() {
         launchCoroutine {
-            // TODO тест
-//            accountRepository.clearAccountGroupDataTest()
-//            val newAccountGroupId =
-//                accountRepository.createNewAccountGroupFromCurrentToken()
-//            accountRepository.selectAccountGroup(newAccountGroupId)
             accountRepository.getAllAccountGroups().collectIndexed { index, value ->
                 legacyMigration(index, value)
                 newState {

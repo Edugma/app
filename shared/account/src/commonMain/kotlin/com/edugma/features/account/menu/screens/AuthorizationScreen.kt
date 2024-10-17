@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.widthIn
@@ -56,8 +57,10 @@ fun AuthorizationScreen(
             modifier = Modifier
                 .padding(horizontal = 24.dp)
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
+                .verticalScroll(rememberScrollState())
+                .imePadding(),
         ) {
+            SpacerHeight(height = 16.dp)
             EdTextField(
                 value = state.login,
                 placeholder = "Логин",
@@ -113,6 +116,7 @@ fun AuthorizationScreen(
                 isLoading = state.isLoading,
                 text = "Войти",
             )
+            SpacerHeight(height = 16.dp)
         }
     }
 }

@@ -56,16 +56,6 @@ suspend inline fun <reified T> EdugmaHttpClient.get(
     return convert<T>(resultResponse, typeInfo<T>()).getOrThrow()
 }
 
-suspend inline fun <reified T> EdugmaHttpClient.getResult(
-    name: String,
-    build: EdugmaHttpClient.Builder.() -> Unit = {},
-): Result<T> {
-    val resultResponse = runCatching {
-        getInternal(name, EdugmaHttpClient.Builder().apply(build))
-    }
-    return convert<T>(resultResponse, typeInfo<T>())
-}
-
 suspend inline fun <reified T> EdugmaHttpClient.post(
     name: String,
     build: EdugmaHttpClient.PostBuilder.() -> Unit = {},
@@ -74,16 +64,6 @@ suspend inline fun <reified T> EdugmaHttpClient.post(
         postInternal(name, EdugmaHttpClient.PostBuilder().apply(build))
     }
     return convert<T>(resultResponse, typeInfo<T>()).getOrThrow()
-}
-
-suspend inline fun <reified T> EdugmaHttpClient.postResult(
-    name: String,
-    build: EdugmaHttpClient.PostBuilder.() -> Unit = {},
-): Result<T> {
-    val resultResponse = runCatching {
-        postInternal(name, EdugmaHttpClient.PostBuilder().apply(build))
-    }
-    return convert(resultResponse, typeInfo<T>())
 }
 
 @Suppress("UNCHECKED_CAST")

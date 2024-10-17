@@ -84,16 +84,15 @@ class FreePlaceViewModel(
                 }
             },
         ) {
-            repository.findFreePlaces(
+            val freePlaces = repository.findFreePlaces(
                 PlaceFilters(
                     ids = state.places.map { it.id },
                     dateTimeFrom = LocalDateTime(state.date, state.timeFrom),
                     dateTimeTo = LocalDateTime(state.date, state.timeTo),
                 ),
-            ).collect {
-                newState {
-                    copy(freePlaces = it.getOrThrow())
-                }
+            )
+            newState {
+                copy(freePlaces = freePlaces)
             }
         }
     }

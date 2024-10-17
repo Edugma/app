@@ -2,7 +2,6 @@ package com.edugma.features.account.data.api
 
 import com.edugma.core.api.api.EdugmaHttpClient
 import com.edugma.core.api.api.get
-import com.edugma.core.api.api.getResult
 import com.edugma.core.api.api.post
 import com.edugma.core.api.model.PagingDto
 import com.edugma.features.account.domain.model.Personal
@@ -27,8 +26,8 @@ class AccountService(
     suspend fun getAccounts(): AccountsModel =
         client.get("$PREFIX-accounts")
 
-    suspend fun getLkToken(): Result<Token> =
-        client.getResult("$PREFIX-lk-token")
+    suspend fun getLkToken(): Token =
+        client.get("$PREFIX-lk-token")
 
     suspend fun getPeople(
         url: String,
@@ -42,8 +41,8 @@ class AccountService(
             param("limit", limit)
         }
 
-    suspend fun getApplications(): Result<List<Application>> =
-        client.getResult("$PREFIX-applications")
+    suspend fun getApplications(): List<Application> =
+        client.get("$PREFIX-applications")
 
     suspend fun getPerformance(periodId: String?): PerformanceDto =
         client.get<PerformanceDto>("$PREFIX-performance") {
