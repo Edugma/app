@@ -6,7 +6,7 @@ plugins {
     kotlin("multiplatform")
     id("mp-android-lib")
     id("mp-ios-lib")
-    id("com.edugma.mp-web-js-lib")
+    //id("com.edugma.mp-web-js-lib")
     id("mp-lint")
 }
 
@@ -44,6 +44,10 @@ kotlin {
 
         iosMain {
             dependsOn(mobileCommonMain)
+        }
+
+        all {
+            languageSettings.optIn("kotlin.time.ExperimentalTime")
         }
     }
 }

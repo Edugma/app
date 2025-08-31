@@ -44,8 +44,8 @@ android {
                 keyAlias = gradleLocalProperties(rootDir, providers).getProperty("signing.key.alias")
                 keyPassword = gradleLocalProperties(rootDir, providers).getProperty("signing.key.password")
 
-                enableV2Signing = true
-                enableV3Signing = true
+//                enableV2Signing = true
+//                enableV3Signing = true
             }
         }
     }

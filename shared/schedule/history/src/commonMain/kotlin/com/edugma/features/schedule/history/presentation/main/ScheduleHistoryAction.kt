@@ -1,6 +1,6 @@
 package com.edugma.features.schedule.history.presentation.main
 
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 sealed interface ScheduleHistoryAction {
     data class OnScheduleSelected(val timestamp: Instant) : ScheduleHistoryAction

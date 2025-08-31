@@ -1,7 +1,7 @@
 package com.edugma.features.schedule.domain.model
 
 import com.edugma.features.schedule.domain.model.compact.CompactSchedule
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 data class ScheduleRecord(
     val schedule: CompactSchedule,

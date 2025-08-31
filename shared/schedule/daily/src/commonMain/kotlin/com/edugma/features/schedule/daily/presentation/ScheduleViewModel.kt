@@ -9,7 +9,7 @@ import com.edugma.features.schedule.domain.model.lesson.LessonDisplaySettings
 import com.edugma.features.schedule.domain.model.lesson.LessonEvent
 import com.edugma.features.schedule.domain.usecase.ScheduleUseCase
 import com.edugma.features.schedule.elements.utils.toUiModel
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 import kotlinx.datetime.LocalDate
 
 class ScheduleViewModel(

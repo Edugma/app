@@ -1,7 +1,7 @@
 package com.edugma.features.schedule.domain.model.schedule
 
 import com.edugma.core.api.utils.nowLocalDate
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.isoDayNumber
 

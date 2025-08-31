@@ -14,8 +14,8 @@ import com.edugma.features.schedule.domain.model.place.PlaceType
 import com.edugma.features.schedule.domain.model.teacher.Teacher
 import com.edugma.features.schedule.domain.usecase.ScheduleUseCase
 import kotlinx.coroutines.flow.last
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
+import kotlin.time.Clock
+import kotlin.time.Instant
 import kotlinx.datetime.LocalTime
 
 class CurrentLessonViewModel(

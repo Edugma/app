@@ -16,7 +16,7 @@ import com.edugma.features.schedule.domain.usecase.RemoveSelectedScheduleSourceU
 import com.edugma.features.schedule.domain.usecase.ScheduleUseCase
 import com.edugma.features.schedule.menu.model.MenuItem
 import com.edugma.features.schedule.menu.usecase.GetScheduleMenuItems
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 import kotlin.time.Duration

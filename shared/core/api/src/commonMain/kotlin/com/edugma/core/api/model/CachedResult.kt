@@ -1,8 +1,8 @@
 package com.edugma.core.api.model
 
 import co.touchlab.kermit.Logger
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
+import kotlin.time.Clock
+import kotlin.time.Instant
 import kotlinx.serialization.Serializable
 import kotlin.time.Duration
 

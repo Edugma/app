@@ -23,10 +23,6 @@ kotlin {
     }
 }
 
-dependencies {
-    kspAllPlatforms(libs.ktorfit.ksp)
-}
-
 android {
     namespace = "com.edugma.features.account"
 }

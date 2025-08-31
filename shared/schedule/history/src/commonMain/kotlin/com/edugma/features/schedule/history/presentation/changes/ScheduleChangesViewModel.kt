@@ -3,7 +3,7 @@ package com.edugma.features.schedule.history.presentation.changes
 import com.edugma.core.arch.mvi.utils.launchCoroutine
 import com.edugma.core.arch.mvi.viewmodel.FeatureLogic
 import com.edugma.features.schedule.domain.usecase.ScheduleHistoryUseCase
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 class ScheduleChangesViewModel(
     private val useCase: ScheduleHistoryUseCase,

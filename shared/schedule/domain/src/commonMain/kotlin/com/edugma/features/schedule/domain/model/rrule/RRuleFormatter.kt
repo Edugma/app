@@ -5,7 +5,7 @@ import com.edugma.core.api.utils.isMin
 import com.edugma.features.schedule.domain.model.rrule.RRuleFormatter.DateParser.parseRRuleInstant
 import com.edugma.features.schedule.domain.model.rrule.RRuleFormatter.DateParser.toRruleString
 import kotlinx.datetime.DatePeriod
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone

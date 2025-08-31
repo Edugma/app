@@ -13,8 +13,8 @@ import com.edugma.core.api.utils.runCoCatching
 import com.edugma.data.base.consts.CacheConst
 import com.edugma.features.schedule.domain.model.compact.CompactSchedule
 import kotlinx.coroutines.flow.Flow
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 class ScheduleCacheRepository(
     private val cacheRepository: CacheRepository,

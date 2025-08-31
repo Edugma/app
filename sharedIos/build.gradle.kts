@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.BitcodeEmbeddingMode
-
 plugins {
     id("mp-ios-lib")
     //id("org.jetbrains.kotlin.native.cocoapods")
@@ -30,7 +28,6 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "shared"
             isStatic = true
-            embedBitcodeMode = BitcodeEmbeddingMode.DISABLE
             export(projects.shared.app)
         }
     }

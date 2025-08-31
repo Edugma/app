@@ -4,7 +4,7 @@ import com.edugma.core.api.utils.TimeZones
 import com.edugma.core.api.utils.nowLocalTime
 import com.edugma.core.api.utils.plus
 import com.edugma.features.schedule.domain.model.schedule.LessonsByTime
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration

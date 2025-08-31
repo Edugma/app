@@ -4,7 +4,7 @@ import com.edugma.navigation.core.destination.Destination
 import com.edugma.navigation.core.destination.NoArgDestination
 import com.edugma.navigation.core.destination.reqArg
 import com.edugma.navigation.core.destination.toBundle
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 object ScheduleHistoryScreens {
     object Main : NoArgDestination("scheduleHistoryMain")

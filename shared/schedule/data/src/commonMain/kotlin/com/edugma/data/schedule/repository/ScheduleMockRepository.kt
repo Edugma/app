@@ -16,7 +16,7 @@ import com.edugma.features.schedule.domain.model.rrule.RRule
 import com.edugma.features.schedule.domain.model.rrule.Weekday
 import com.edugma.features.schedule.domain.model.rrule.WeekdayNum
 import kotlinx.coroutines.delay
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone

@@ -7,7 +7,7 @@ import com.edugma.features.schedule.domain.model.schedule.ScheduleCalendar
 import com.edugma.features.schedule.domain.model.source.ScheduleSource
 import com.edugma.features.schedule.domain.model.teacher.TeacherInfo
 import kotlinx.coroutines.flow.Flow
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 interface ScheduleRepository {
     fun getRawSchedule(

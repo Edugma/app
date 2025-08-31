@@ -1,4 +1,6 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
     alias(libs.plugins.kotlin.serialization) apply false
@@ -13,7 +15,7 @@ plugins {
 }
 
 subprojects {
-    tasks.withType<KotlinCompile>().configureEach {
-        kotlinOptions.jvmTarget = libs.versions.java.get()
+    tasks.withType<KotlinJvmCompile>().configureEach {
+        compilerOptions.jvmTarget.set(JvmTarget.fromTarget(libs.versions.java.get()))
     }
 }

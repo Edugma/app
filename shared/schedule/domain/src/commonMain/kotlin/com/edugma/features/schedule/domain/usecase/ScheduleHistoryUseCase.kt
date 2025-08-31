@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.transformLatest
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 class ScheduleHistoryUseCase(
     private val repository: ScheduleRepository,

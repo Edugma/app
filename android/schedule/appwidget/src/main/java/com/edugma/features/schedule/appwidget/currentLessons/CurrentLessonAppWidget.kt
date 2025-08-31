@@ -41,7 +41,7 @@ import com.edugma.features.schedule.appwidget.R
 import com.edugma.features.schedule.domain.model.lesson.Lesson
 import com.edugma.features.schedule.domain.model.lesson.LessonTime
 import com.edugma.features.schedule.domain.usecase.getShortName
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import org.koin.core.component.KoinComponent
