@@ -45,6 +45,7 @@ android {
                 keyPassword = gradleLocalProperties(rootDir, providers).getProperty("signing.key.password")
 
 //                enableV2Signing = true
+                // google play signed universal apk use v3
 //                enableV3Signing = true
             }
         }
@@ -76,23 +77,25 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
-    androidComponents {
-        onVariants() { variant ->
-            variant.outputs.forEach { output ->
-                (output as com.android.build.api.variant.impl.VariantOutputImpl).outputFileName =
-                    "Edugma-${output.versionName}-${variant.buildType}.apk"
-            }
-        }
-    }
-
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.fromTarget(libs.versions.java.get()))
-            freeCompilerArgs.add("-Xjdk-release=${libs.versions.java.get()}")
-        }
-    }
     buildFeatures {
         buildConfig = true
+        resValues = true
+    }
+}
+
+androidComponents {
+    onVariants { variant ->
+        variant.outputs.forEach { output ->
+            (output as com.android.build.api.variant.impl.VariantOutputImpl).outputFileName =
+                "Edugma-${output.versionName.get()}-${variant.buildType}.apk"
+        }
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.fromTarget(libs.versions.java.get()))
+        freeCompilerArgs.add("-Xjdk-release=${libs.versions.java.get()}")
     }
 }
 
@@ -152,11 +155,8 @@ dependencies {
     //implementation("androidx.compose.runtime:runtime-tracing:1.0.0-alpha03")
 
     // tracer
+    implementation(project.dependencies.platform(libs.tracer.bom))
     implementation(libs.tracer.crash)
-    implementation(libs.tracer.heap)
-    implementation(libs.tracer.disk)
-//    implementation(libs.tracer.profiler.sampling)
-//    implementation(libs.tracer.profiler.systrace)
 
     testImplementation(libs.test.junit)
     androidTestImplementation(libs.test.junit.ext)

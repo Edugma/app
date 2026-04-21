@@ -16,8 +16,6 @@ import ru.ok.tracer.HasTracerConfiguration
 import ru.ok.tracer.TracerConfiguration
 import ru.ok.tracer.crash.report.CrashFreeConfiguration
 import ru.ok.tracer.crash.report.CrashReportConfiguration
-import ru.ok.tracer.disk.usage.DiskUsageConfiguration
-import ru.ok.tracer.heap.dumps.HeapDumpConfiguration
 
 class App : Application(), HasTracerConfiguration {
 
@@ -31,12 +29,6 @@ class App : Application(), HasTracerConfiguration {
             },
             CrashFreeConfiguration.build {
                 // опции подсчета crash free
-            },
-            HeapDumpConfiguration.build {
-                // опции сборщика хипдампов при ООМ
-            },
-            DiskUsageConfiguration.build {
-                // опции анализатора дискового пространства
             },
         )
 

@@ -26,8 +26,8 @@ class GetScheduleMenuItems(
         } else {
             listOf(
                 listOf(
-                    MenuItem.FindFreePlace,
-                    MenuItem.Empty.forItem(MenuItem.FindFreePlace),
+//                    MenuItem.FindFreePlace,
+//                    MenuItem.Empty.forItem(MenuItem.FindFreePlace),
                 ),
             )
         }

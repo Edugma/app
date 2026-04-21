@@ -5,6 +5,7 @@ plugins {
 kotlin {
     sourceSets {
         androidMain.dependencies {
+            implementation(project.dependencies.platform(libs.tracer.bom))
             implementation(libs.tracer.crash)
         }
         commonMain.dependencies {

@@ -117,11 +117,8 @@ androidx-startup = { module = "androidx.startup:startup-runtime", version.ref = 
 
 compose-activity = { module = "androidx.activity:activity-compose", version.ref = "composeActivity" }
 
-tracer-crash = { module = "ru.ok.tracer:tracer-crash-report", version.ref = "tracer" }
-tracer-heap = { module = "ru.ok.tracer:tracer-heap-dumps", version.ref = "tracer" }
-tracer-disk = { module = "ru.ok.tracer:tracer-disk-usage", version.ref = "tracer" }
-tracer-profiler-sampling = { module = "ru.ok.tracer:tracer-profiler-sampling", version.ref = "tracer" }
-tracer-profiler-systrace = { module = "ru.ok.tracer:tracer-profiler-systrace", version.ref = "tracer" }
+tracer-bom = { group = "ru.ok.tracer", name = "tracer-platform", version.ref = "tracer" }
+tracer-crash = { module = "ru.ok.tracer:tracer-crash-report" }
 
 koin-android = { module = "io.insert-koin:koin-android" }
 
