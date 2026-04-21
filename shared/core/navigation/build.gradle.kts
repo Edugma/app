@@ -17,7 +17,7 @@ kotlin {
     }
 }
 
-android {
+kotlin.android {
     namespace = "com.edugma.core.navigation"
-    resourcePrefix("core_nav_")
+    //resourcePrefix("core_nav_")
 }

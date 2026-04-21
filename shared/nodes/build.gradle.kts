@@ -1,8 +1,6 @@
 plugins {
     id("mp-feature-lib")
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.ktorfit)
 }
 
 kotlin {
@@ -19,14 +17,14 @@ kotlin {
 
                 implementation(project.dependencies.platform(libs.koin.bom))
                 implementation(libs.koin.core)
+                implementation(libs.ktor.client.core)
 
                 implementation(projects.shared.core.storage)
-                implementation(libs.ktorfit)
             }
         }
     }
 }
 
-android {
+kotlin.android {
     namespace = "com.edugma.features.nodes"
 }

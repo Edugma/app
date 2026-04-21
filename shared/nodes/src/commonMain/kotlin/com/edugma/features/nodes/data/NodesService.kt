@@ -2,22 +2,26 @@ package com.edugma.features.nodes.data
 
 import com.edugma.core.api.api.EdugmaApi
 import com.edugma.core.api.api.Node
-import de.jensklingenberg.ktorfit.http.GET
-import de.jensklingenberg.ktorfit.http.Url
+import com.edugma.core.api.api.convert
+import io.ktor.client.HttpClient
+import io.ktor.client.request.get
 
-interface NodesService {
+class NodesService(
+    private val client: HttpClient,
+) {
     companion object {
         private const val nodeListUrl =
             "https://raw.githubusercontent.com/Edugma/nodes/main/local/Russia/Moscow/list.json"
     }
 
-    @GET
-    suspend fun getNodeContract(
-        @Url url: String,
-    ): EdugmaApi
+    suspend fun getNodeContract(url: String): EdugmaApi {
+        val response = runCatching { client.get(url) }
+        return client.convert<EdugmaApi>(response).getOrThrow()
+    }
 
-    @GET
-    suspend fun getNodeList(
-        @Url url: String = nodeListUrl,
-    ): Result<List<Node>>
+
+    suspend fun getNodeList(url: String = nodeListUrl): Result<List<Node>> {
+        val response = runCatching { client.get(url) }
+        return client.convert<List<Node>>(response)
+    }
 }

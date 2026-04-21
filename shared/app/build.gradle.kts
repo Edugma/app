@@ -126,6 +126,6 @@ buildkonfig {
     }
 }
 
-android {
+kotlin.android {
     namespace = "com.edugma.features.app"
 }

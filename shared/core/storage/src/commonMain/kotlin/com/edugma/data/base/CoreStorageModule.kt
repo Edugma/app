@@ -5,7 +5,6 @@ import com.edugma.core.api.repository.BuildConfigRepository
 import com.edugma.core.api.repository.CacheRepository
 import com.edugma.core.api.repository.SettingsRepository
 import com.edugma.core.network.buildKtorClient
-import com.edugma.core.network.buildKtorfit
 import com.edugma.core.network.interceptors.ApiVersionInterceptor
 import com.edugma.core.network.interceptors.TokenInterceptor
 import com.edugma.data.base.repository.CacheRepositoryImpl
@@ -39,11 +38,6 @@ private fun Module.otherClient() {
             isLogsEnabled = buildConfigRepository.isNetworkLogsEnabled(),
         )
     }
-    single(named(DiConst.OtherClient)) {
-        buildKtorfit(
-            client = get(named(DiConst.OtherClient)),
-        )
-    }
 }
 
 private fun Module.edugmaStatic() {
@@ -52,12 +46,6 @@ private fun Module.edugmaStatic() {
         buildKtorClient(
             interceptors = listOf(),
             isLogsEnabled = buildConfigRepository.isNetworkLogsEnabled(),
-        )
-    }
-    single(named(DiConst.EdugmaStatic)) {
-        buildKtorfit(
-            client = get(named(DiConst.EdugmaStatic)),
-            baseUrl = "https://raw.githubusercontent.com/Edugma/resources/main/",
         )
     }
 }

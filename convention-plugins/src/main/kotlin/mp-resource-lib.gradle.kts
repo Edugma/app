@@ -5,9 +5,11 @@ plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
     id("org.jetbrains.kotlin.plugin.compose")
+    id("com.android.kotlin.multiplatform.library")
 }
 
 kotlin {
+    android.androidResources.enable = true
     sourceSets {
         commonMain.dependencies {
             api(compose.components.resources)

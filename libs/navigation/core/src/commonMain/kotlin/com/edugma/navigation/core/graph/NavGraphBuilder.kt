@@ -3,6 +3,7 @@ package com.edugma.navigation.core.graph
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.core.bundle.bundleOf
 import androidx.navigation.compose.composable
+import androidx.savedstate.savedState
 import com.edugma.navigation.core.compose.ComposeArgumentsStore
 import com.edugma.navigation.core.compose.LocalArguments
 import com.edugma.navigation.core.navDestination.ComposeDestination
@@ -50,7 +51,7 @@ class NavGraphBuilder(
             popExitTransition = destination.popExitTransition,
             content = {
                 CompositionLocalProvider(
-                    LocalArguments provides ComposeArgumentsStore(it.arguments ?: bundleOf()),
+                    LocalArguments provides ComposeArgumentsStore(it.arguments ?: savedState()),
                     //LocalNavBackStackEntry provides JetpackNavBackStackEntry(it),
                 ) {
                     destination.composeScreen()

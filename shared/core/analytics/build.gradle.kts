@@ -13,4 +13,4 @@ kotlin {
     }
 }
 
-android.namespace = "com.edugma.core.analytics"
+kotlin.android.namespace = "com.edugma.core.analytics"

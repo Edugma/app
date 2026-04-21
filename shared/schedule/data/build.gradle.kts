@@ -1,8 +1,6 @@
 plugins {
     id("mp-common-lib")
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.ktorfit)
 }
 
 kotlin {
@@ -11,11 +9,9 @@ kotlin {
             dependencies {
                 api(projects.shared.core.storage)
                 api(projects.shared.schedule.domain)
-
-                implementation(libs.ktorfit)
             }
         }
     }
 }
 
-android.namespace = "com.edugma.data.schedule"
+kotlin.android.namespace = "com.edugma.data.schedule"

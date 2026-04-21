@@ -1,14 +1,22 @@
 plugins {
-    kotlin("android")
     id("com.edugma.android-lib")
 }
 
-android {
+kotlin.android {
     namespace = "com.edugma.core.androidResources"
-    resourcePrefix("core_ed_")
+    androidResources {
+        enable = true
+        //resourcePrefix = "core_ed_"
+    }
 }
 
-dependencies {
-    implementation(libs.material3)
+kotlin {
+    sourceSets {
+        androidMain {
+            dependencies {
+                implementation(libs.material3)
+            }
+        }
+    }
 }
 

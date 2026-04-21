@@ -32,10 +32,6 @@
 -dontwarn org.bouncycastle.**
 -dontwarn org.openjsse.**
 
-# https://github.com/Foso/Ktorfit/issues/382
--keep class de.jensklingenberg.ktorfit.** { *; }
--keepclassmembers class de.jensklingenberg.ktorfit.** { *; }
-
 # Fix for some strange bug with ktorfit
 -keep class io.ktor.http.* { *; }
 

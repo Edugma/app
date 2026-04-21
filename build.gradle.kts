@@ -4,8 +4,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
     alias(libs.plugins.kotlin.serialization) apply false
-    alias(libs.plugins.ksp) apply false
-    alias(libs.plugins.ktorfit) apply false
 
     alias(libs.plugins.jetbrains.multiplatform).apply(false)
     alias(libs.plugins.jetbrains.composePlugin).apply(false)

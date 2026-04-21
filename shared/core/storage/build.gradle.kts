@@ -1,8 +1,6 @@
 plugins {
     id("mp-common-lib")
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.ktorfit)
 }
 
 kotlin {
@@ -12,7 +10,6 @@ kotlin {
                 implementation(projects.shared.core.api)
                 implementation(projects.shared.core.network)
 
-                implementation(libs.ktorfit)
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.client.logging)
                 implementation(libs.ktor.client.contentNegotiation)
@@ -30,4 +27,4 @@ kotlin {
     }
 }
 
-android.namespace = "com.edugma.core.storage"
+kotlin.android.namespace = "com.edugma.core.storage"

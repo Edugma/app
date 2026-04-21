@@ -20,7 +20,7 @@ kotlin {
     }
 }
 
-android {
+kotlin.android {
     namespace = "com.edugma.core.utils"
-    resourcePrefix("core_utils_")
+    //resourcePrefix("core_utils_")
 }

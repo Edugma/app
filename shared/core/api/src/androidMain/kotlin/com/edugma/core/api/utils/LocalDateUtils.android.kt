@@ -6,6 +6,7 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.Month
 import kotlinx.datetime.isoDayNumber
+import kotlinx.datetime.number
 import kotlinx.datetime.plus
 import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.toJavaLocalDateTime
@@ -34,4 +35,4 @@ actual fun DayOfWeek.format(
 
 actual fun Month.format(
     format: String,
-): String = DateTimeFormatter.ofPattern(format).format(java.time.Month.of(this.value))
+): String = DateTimeFormatter.ofPattern(format).format(java.time.Month.of(this.number))

@@ -1,26 +1,23 @@
 import org.gradle.accessors.dm.LibrariesForLibs
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    id("com.android.library")
+    kotlin("multiplatform")
+    id("com.android.kotlin.multiplatform.library")
 }
 
 // https://github.com/gradle/gradle/issues/15383
 val libs = the<LibrariesForLibs>()
 
-android {
+kotlin.android {
     compileSdk = libs.versions.compileSdk.get().toInt()
-
-    defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
+    minSdk = libs.versions.minSdk.get().toInt()
+    compilerOptions {
+        jvmTarget.set(JvmTarget.fromTarget(libs.versions.java.get()))
+        freeCompilerArgs.add("-Xjdk-release=${libs.versions.java.get()}")
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.toVersion(libs.versions.java.get())
-        targetCompatibility = JavaVersion.toVersion(libs.versions.java.get())
-    }
-    packaging {
-        resources {
-            excludes.add("META-INF/**")
-            pickFirsts.add("MR/**")
-        }
+    packaging.resources {
+        excludes.add("META-INF/**")
+        pickFirsts.add("MR/**")
     }
 }

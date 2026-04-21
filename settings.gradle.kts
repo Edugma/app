@@ -10,7 +10,7 @@ pluginManagement {
         }
         mavenCentral()
         gradlePluginPortal()
-        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        //maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
         maven { setUrl("https://artifactory-external.vkpartner.ru/artifactory/maven/") }
     }
 }
@@ -26,7 +26,7 @@ dependencyResolutionManagement {
             }
         }
         mavenCentral()
-        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        //maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
         maven { setUrl("https://artifactory-external.vkpartner.ru/artifactory/maven/") }
     }
 }

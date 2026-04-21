@@ -1,8 +1,6 @@
 plugins {
     id("mp-feature-lib")
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.ktorfit)
 }
 
 kotlin {
@@ -16,13 +14,11 @@ kotlin {
                 implementation(projects.shared.core.navigation)
 
                 api(projects.shared.core.storage)
-
-                implementation(libs.ktorfit)
             }
         }
     }
 }
 
-android {
+kotlin.android {
     namespace = "com.edugma.features.account"
 }

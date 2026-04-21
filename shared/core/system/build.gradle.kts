@@ -17,7 +17,7 @@ kotlin {
     }
 }
 
-android {
+kotlin.android {
     namespace = "com.edugma.core.system"
-    resourcePrefix("core_system_")
+    //resourcePrefix("core_system_")
 }

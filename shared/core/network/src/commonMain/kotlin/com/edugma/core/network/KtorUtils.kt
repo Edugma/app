@@ -1,7 +1,5 @@
 package com.edugma.core.network
 
-import de.jensklingenberg.ktorfit.Ktorfit
-import de.jensklingenberg.ktorfit.ktorfit
 import io.ktor.client.HttpClient
 import io.ktor.client.call.HttpClientCall
 import io.ktor.client.plugins.HttpSend
@@ -18,16 +16,6 @@ import io.ktor.serialization.kotlinx.json.json
 import io.ktor.util.AttributeKey
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
-
-fun buildKtorfit(client: HttpClient, baseUrl: String = ""): Ktorfit {
-    return ktorfit {
-        if (baseUrl.isNotEmpty()) {
-            baseUrl(baseUrl)
-        }
-        httpClient(client)
-        converterFactories(ResultConverterFactory())
-    }
-}
 
 @OptIn(ExperimentalSerializationApi::class)
 fun buildKtorClient(

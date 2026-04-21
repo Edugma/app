@@ -43,10 +43,8 @@ kotlin {
     }
 }
 
-android {
-    dependencies {
-        debugImplementation(libs.compose.uiTooling)
-    }
+dependencies {
+    "androidRuntimeClasspath"(libs.compose.uiTooling)
 }
 
 composeCompiler {

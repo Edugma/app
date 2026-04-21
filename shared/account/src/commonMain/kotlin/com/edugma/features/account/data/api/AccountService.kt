@@ -12,13 +12,12 @@ import com.edugma.features.account.domain.model.auth.Token
 import com.edugma.features.account.domain.model.payments.PaymentsDto
 import com.edugma.features.account.domain.model.peoples.Person
 import com.edugma.features.account.domain.model.performance.PerformanceDto
-import de.jensklingenberg.ktorfit.http.Body
 
 class AccountService(
     private val client: EdugmaHttpClient,
 ) {
 
-    suspend fun login(@Body login: Login): Token =
+    suspend fun login(login: Login): Token =
         client.post("$PREFIX-login") {
             body(login)
         }

@@ -21,4 +21,4 @@ kotlin {
     }
 }
 
-android.namespace = "com.edugma.core.arch"
+kotlin.android.namespace = "com.edugma.core.arch"

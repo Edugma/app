@@ -8,7 +8,7 @@ import kotlinx.datetime.LocalDate
 object ScheduleInfoScreens {
     object LessonInfo : Destination("scheduleInfoLesson") {
         val eventId = reqArg<String>("eventId")
-        val currentDate = reqArg<Int>("currentDate")
+        val currentDate = reqArg<Long>("currentDate")
 
         operator fun invoke(
             eventId: String,

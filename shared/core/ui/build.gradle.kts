@@ -14,7 +14,7 @@ kotlin {
     }
 }
 
-android {
+kotlin.android {
     namespace = "com.edugma.core.ui"
-    resourcePrefix("core_ui_")
+    //resourcePrefix("core_ui_")
 }

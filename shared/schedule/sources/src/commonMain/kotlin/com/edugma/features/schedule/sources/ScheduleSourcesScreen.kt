@@ -413,7 +413,7 @@ private fun ColumnScope.ScheduleSourceList(
                 onItemClick = onSourceClick,
                 onAddFavorite = onAddFavorite,
                 onDeleteFavorite = onDeleteFavorite,
-                modifier = Modifier.animateItemPlacement(),
+                modifier = Modifier.animateItem(),
             )
         }
         item { PagingFooter(paging, onLoadPage) }

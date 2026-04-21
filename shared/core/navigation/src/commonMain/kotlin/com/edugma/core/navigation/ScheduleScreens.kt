@@ -10,7 +10,7 @@ object ScheduleScreens {
     object Menu : NoArgDestination("scheduleMenu")
 
     object Main : Destination("scheduleMain") {
-        val date = optArg<Int>("date", 0)
+        val date = optArg<Long>("date", 0)
 
         operator fun invoke(
             date: LocalDate? = null,

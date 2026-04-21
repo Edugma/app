@@ -1,10 +1,10 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
     id("com.edugma.android-app")
-    kotlin("android")
     id("mp-lint")
     alias(libs.plugins.jetbrains.composePlugin)
     alias(libs.plugins.jetbrains.compose.compiler)
@@ -76,14 +76,20 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
-    applicationVariants.all {
-        outputs.all {
-            val output = this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
-            output.outputFileName = "Edugma-$versionName-${buildType.name}.apk"
+    androidComponents {
+        onVariants() { variant ->
+            variant.outputs.forEach { output ->
+                (output as com.android.build.api.variant.impl.VariantOutputImpl).outputFileName =
+                    "Edugma-${output.versionName}-${variant.buildType}.apk"
+            }
         }
     }
-    kotlinOptions {
-        jvmTarget = libs.versions.java.get()
+
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.fromTarget(libs.versions.java.get()))
+            freeCompilerArgs.add("-Xjdk-release=${libs.versions.java.get()}")
+        }
     }
     buildFeatures {
         buildConfig = true
