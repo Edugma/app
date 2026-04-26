@@ -12,8 +12,6 @@ import io.ktor.util.reflect.typeInfo
 import kotlinx.coroutines.CancellationException
 import kotlinx.io.IOException
 
-
-
 suspend inline fun <reified T> HttpClient.convert(
     responseResult: Result<HttpResponse>,
 ): Result<T> {

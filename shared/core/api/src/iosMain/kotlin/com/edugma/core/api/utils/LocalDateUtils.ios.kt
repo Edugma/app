@@ -1,7 +1,6 @@
 package com.edugma.core.api.utils
 
 import kotlinx.datetime.DayOfWeek
-import kotlin.time.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
@@ -13,6 +12,7 @@ import kotlinx.datetime.isoDayNumber
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toNSDate
 import platform.Foundation.NSDateFormatter
+import kotlin.time.Instant
 
 private fun Instant.format(format: String): String {
     val dateFormatter = NSDateFormatter()

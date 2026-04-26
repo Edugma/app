@@ -7,8 +7,8 @@ import com.edugma.core.api.utils.nowLocalDate
 import com.edugma.features.account.domain.model.payments.Contract
 import com.edugma.features.account.domain.model.payments.Payment
 import com.edugma.features.account.domain.model.payments.PaymentMethod
-import kotlin.time.Clock
 import kotlinx.datetime.LocalDate
+import kotlin.time.Clock
 
 @Immutable
 data class ContractUiModel(

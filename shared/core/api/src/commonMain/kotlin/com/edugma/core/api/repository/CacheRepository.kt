@@ -3,9 +3,9 @@ package com.edugma.core.api.repository
 import com.edugma.core.api.model.CachedResult
 import com.edugma.core.api.utils.InternalApi
 import kotlinx.coroutines.flow.Flow
-import kotlin.time.Instant
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
+import kotlin.time.Instant
 
 interface CacheRepository {
     @InternalApi

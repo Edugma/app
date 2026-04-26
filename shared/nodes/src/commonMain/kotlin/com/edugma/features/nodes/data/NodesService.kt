@@ -19,7 +19,6 @@ class NodesService(
         return client.convert<EdugmaApi>(response).getOrThrow()
     }
 
-
     suspend fun getNodeList(url: String = nodeListUrl): Result<List<Node>> {
         val response = runCatching { client.get(url) }
         return client.convert<List<Node>>(response)

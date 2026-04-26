@@ -10,10 +10,10 @@ import com.edugma.features.schedule.domain.model.place.Place
 import com.edugma.features.schedule.domain.model.place.PlaceFilters
 import com.edugma.features.schedule.domain.repository.FreePlaceRepository
 import com.edugma.features.schedule.domain.usecase.ScheduleUseCase
-import kotlin.time.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
+import kotlin.time.Clock
 
 class FreePlaceViewModel(
     private val repository: FreePlaceRepository,

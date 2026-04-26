@@ -5,7 +5,6 @@ import com.edugma.core.api.utils.isMin
 import com.edugma.features.schedule.domain.model.rrule.RRuleFormatter.DateParser.parseRRuleInstant
 import com.edugma.features.schedule.domain.model.rrule.RRuleFormatter.DateParser.toRruleString
 import kotlinx.datetime.DatePeriod
-import kotlin.time.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
@@ -13,6 +12,7 @@ import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Instant
 
 open class RRuleFormatter() {
     private val name = "RRULE"

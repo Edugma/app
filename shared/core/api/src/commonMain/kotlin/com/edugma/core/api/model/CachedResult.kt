@@ -1,10 +1,10 @@
 package com.edugma.core.api.model
 
 import co.touchlab.kermit.Logger
-import kotlin.time.Clock
-import kotlin.time.Instant
 import kotlinx.serialization.Serializable
+import kotlin.time.Clock
 import kotlin.time.Duration
+import kotlin.time.Instant
 
 @Serializable
 data class CachedResult<T>(

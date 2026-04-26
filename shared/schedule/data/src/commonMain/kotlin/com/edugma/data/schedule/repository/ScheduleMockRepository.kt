@@ -16,13 +16,13 @@ import com.edugma.features.schedule.domain.model.rrule.RRule
 import com.edugma.features.schedule.domain.model.rrule.Weekday
 import com.edugma.features.schedule.domain.model.rrule.WeekdayNum
 import kotlinx.coroutines.delay
-import kotlin.time.Clock
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atTime
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
+import kotlin.time.Clock
 import kotlin.time.Duration.Companion.seconds
 
 class ScheduleMockRepository {

@@ -7,7 +7,7 @@ java = "17"
 ksp = "2.3.6" # https://github.com/google/ksp/releases
 kotlin = "2.3.20" # https://github.com/JetBrains/kotlin/releases
 androidGradlePlugin = "9.1.1" # https://developer.android.com/build/releases/gradle-plugin
-detekt = "1.23.7" # https://github.com/detekt/detekt/releases
+detekt = "1.23.8" # https://github.com/detekt/detekt/releases
 
 
 # common
@@ -35,7 +35,6 @@ ktor = "3.4.2" # https://github.com/ktorio/ktor/releases
 
 okio = "3.17.0" # https://github.com/square/okio/blob/master/CHANGELOG.md
 
-# TODO replace coil https://github.com/coil-kt/coil/releases
 coil = "3.4.0"
 compottie = "2.1.0" # https://github.com/alexzhirkevich/compottie/releases
 

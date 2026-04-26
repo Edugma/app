@@ -33,8 +33,8 @@ import com.edugma.features.schedule.elements.lesson.LessonPlace
 import com.edugma.features.schedule.elements.lesson.LessonWindow
 import com.edugma.features.schedule.elements.lesson.model.ScheduleEventUiModel
 import com.edugma.features.schedule.elements.model.ScheduleDayUiModel
-import kotlin.time.Clock
 import kotlinx.datetime.LocalDate
+import kotlin.time.Clock
 
 @Composable
 fun VerticalScheduleComponent(

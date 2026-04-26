@@ -1,9 +1,9 @@
 package com.edugma.features.schedule.domain.model.schedule
 
 import com.edugma.core.api.utils.nowLocalDate
-import kotlin.time.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.isoDayNumber
+import kotlin.time.Clock
 
 data class CalendarSettings(
     val today: LocalDate,

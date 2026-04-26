@@ -16,8 +16,8 @@ import com.edugma.features.schedule.domain.model.teacher.TeacherInfo
 import com.edugma.features.schedule.domain.repository.ScheduleRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlin.time.Instant
 import kotlin.time.Duration.Companion.days
+import kotlin.time.Instant
 
 class ScheduleRepositoryImpl(
     private val scheduleCacheRepository: ScheduleCacheRepository,

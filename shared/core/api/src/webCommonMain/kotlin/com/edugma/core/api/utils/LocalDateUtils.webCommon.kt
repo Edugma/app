@@ -1,7 +1,6 @@
 package com.edugma.core.api.utils
 
 import kotlinx.datetime.DayOfWeek
-import kotlin.time.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
@@ -11,6 +10,7 @@ import kotlinx.datetime.atDate
 import kotlinx.datetime.atTime
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toJSDate
+import kotlin.time.Instant
 
 private fun Instant.format(format: String): String {
     return this.toJSDate()

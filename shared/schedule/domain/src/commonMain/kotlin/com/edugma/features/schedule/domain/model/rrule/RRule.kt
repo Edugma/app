@@ -1,13 +1,13 @@
 package com.edugma.features.schedule.domain.model.rrule
 
 import com.edugma.core.api.utils.MAX
-import kotlin.time.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atTime
 import kotlinx.datetime.toInstant
+import kotlin.time.Instant
 
 /**
  * @param frequency (required)

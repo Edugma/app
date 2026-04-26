@@ -7,9 +7,9 @@ import com.edugma.core.api.utils.sendWarningWithResult
 import com.edugma.core.navigation.core.router.external.ExternalRouter
 import com.edugma.features.misc.other.inAppUpdate.data.InAppUpdateService
 import kotlin.time.Clock
-import kotlin.time.Instant
 import kotlin.time.Duration.Companion.INFINITE
 import kotlin.time.Duration.Companion.days
+import kotlin.time.Instant
 
 class CheckUpdateUseCase(
     private val inAppUpdateService: InAppUpdateService,

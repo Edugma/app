@@ -16,6 +16,7 @@ kotlin {
                 api(projects.shared.core.icons)
                 api(projects.shared.core.resources)
                 implementation(libs.coil.compose)
+                implementation(libs.coil.ktor)
                 implementation(libs.compottie)
                 implementation(libs.compottie.resources)
                 implementation(libs.compottie.dot)
