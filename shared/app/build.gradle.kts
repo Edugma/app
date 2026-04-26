@@ -55,6 +55,8 @@ kotlin {
                 implementation(projects.shared.misc.other)
 
                 implementation(projects.shared.schedule.data)
+
+                implementation(libs.coil.compose)
             }
         }
     }

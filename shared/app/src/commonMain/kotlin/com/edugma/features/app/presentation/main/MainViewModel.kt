@@ -1,5 +1,7 @@
 package com.edugma.features.app.presentation.main
 
+import coil3.SingletonImageLoader
+import coil3.compose.setSingletonImageLoaderFactory
 import com.edugma.core.api.model.SnackbarCommand
 import com.edugma.core.api.repository.MainSnackbarRepository
 import com.edugma.core.api.repository.UrlTemplateRepository
@@ -23,6 +25,7 @@ class MainViewModel(
     }
 
     override fun onCreate() {
+        SingletonImageLoader.setUnsafe(commonImageLoader.loader)
         launchCoroutine {
             mainSnackbarRepository.messageFlow
                 .filterIsInstance<SnackbarCommand.Message>()

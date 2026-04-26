@@ -1,18 +1,19 @@
 package com.edugma.core.designSystem.utils
 
+import coil3.PlatformContext
 import com.edugma.core.api.repository.PathRepository
-import com.seiko.imageloader.component.setupDefaultComponents
 
 actual class IconImageLoader(
     pathRepository: PathRepository,
 ) : BaseImageLoader() {
     init {
         this.init(
-            diskCache = DiskCache(path = pathRepository.getIconCachePath()),
-            componentSetup = {
-                this.setupDefaultComponents()
+            diskCacheConfig = {
+                DiskCacheConfig(path = pathRepository.getIconCachePath())
             },
-        )
+            context = PlatformContext.INSTANCE,
+        ) {
+        }
     }
 }
 
@@ -21,10 +22,11 @@ actual open class CommonImageLoader(
 ) : BaseImageLoader() {
     init {
         this.init(
-            diskCache = DiskCache(path = pathRepository.getImageCachePath()),
-            componentSetup = {
-                this.setupDefaultComponents()
+            diskCacheConfig = {
+                DiskCacheConfig(path = pathRepository.getImageCachePath())
             },
-        )
+            context = PlatformContext.INSTANCE,
+        ) {
+        }
     }
 }

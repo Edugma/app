@@ -15,7 +15,7 @@ kotlin {
                 implementation(projects.shared.core.storage)
                 api(projects.shared.core.icons)
                 api(projects.shared.core.resources)
-                implementation(libs.imageLoader)
+                implementation(libs.coil.compose)
                 implementation(libs.compottie)
                 implementation(libs.compottie.resources)
                 implementation(libs.compottie.dot)

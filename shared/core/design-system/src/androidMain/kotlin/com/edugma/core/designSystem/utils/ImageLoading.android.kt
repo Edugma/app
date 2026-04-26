@@ -2,7 +2,6 @@ package com.edugma.core.designSystem.utils
 
 import android.content.Context
 import com.edugma.core.api.repository.PathRepository
-import com.seiko.imageloader.component.setupDefaultComponents
 
 actual class IconImageLoader(
     pathRepository: PathRepository,
@@ -10,14 +9,12 @@ actual class IconImageLoader(
 ) : BaseImageLoader() {
     init {
         this.init(
-            diskCache = DiskCache(path = pathRepository.getIconCachePath()),
-            componentSetup = {
-                // Android
-                setupDefaultComponents(appContext)
-                // iOS
-                // this.setupDefaultComponents()
+            diskCacheConfig = {
+                DiskCacheConfig(path = pathRepository.getIconCachePath())
             },
-        )
+            context = appContext,
+        ) {
+        }
     }
 }
 
@@ -27,13 +24,11 @@ actual open class CommonImageLoader(
 ) : BaseImageLoader() {
     init {
         this.init(
-            // diskCache = DiskCache(path = pathRepository.getImageCachePath()),
-            componentSetup = {
-                // Android
-                setupDefaultComponents(appContext)
-                // iOS
-                // this.setupDefaultComponents()
+            diskCacheConfig = {
+                DiskCacheConfig(path = pathRepository.getImageCachePath())
             },
-        )
+            context = appContext,
+        ) {
+        }
     }
 }

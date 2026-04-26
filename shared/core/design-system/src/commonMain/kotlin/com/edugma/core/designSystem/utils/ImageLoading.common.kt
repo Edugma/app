@@ -1,49 +1,36 @@
 package com.edugma.core.designSystem.utils
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.drawscope.DrawScope.Companion.DefaultFilterQuality
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import co.touchlab.kermit.Severity
+import coil3.ImageLoader
+import coil3.PlatformContext
+import coil3.disk.DiskCache
+import coil3.intercept.Interceptor
+import coil3.memory.MemoryCache
+import coil3.request.ImageResult
+import coil3.util.Logger
 import com.edugma.core.api.api.CrashAnalytics
-import com.seiko.imageloader.ImageLoader
-import com.seiko.imageloader.component.ComponentRegistryBuilder
-import com.seiko.imageloader.intercept.Interceptor
-import com.seiko.imageloader.intercept.bitmapMemoryCacheConfig
-import com.seiko.imageloader.model.ImageAction
-import com.seiko.imageloader.model.ImageRequest
-import com.seiko.imageloader.option.toScale
-import com.seiko.imageloader.rememberImageAction
-import com.seiko.imageloader.rememberImageActionPainter
-import com.seiko.imageloader.rememberImageSuccessPainter
-import com.seiko.imageloader.util.LogPriority
-import com.seiko.imageloader.util.Logger
 import io.ktor.http.decodeURLPart
 import io.ktor.utils.io.charsets.Charsets
-import okio.FileSystem
 import okio.Path.Companion.toPath
-import okio.fakefilesystem.FakeFileSystem
 
 @Composable
 fun rememberCachedIconPainter(
     model: String,
     contentScale: ContentScale = ContentScale.Fit,
     filterQuality: FilterQuality = DefaultFilterQuality,
-    placeholderPainter: (@Composable () -> Painter)? = null,
-    errorPainter: (@Composable () -> Painter)? = null,
 ): Painter {
     return rememberAsyncImagePainter(
         model = model,
         imageLoader = LocalEdIconLoader.current,
         contentScale = contentScale,
         filterQuality = filterQuality,
-        placeholderPainter = placeholderPainter,
-        errorPainter = errorPainter,
     )
 }
 
@@ -60,190 +47,127 @@ fun rememberAsyncImagePainter(
     imageLoader: BaseImageLoader = LocalEdImageLoader.current,
     contentScale: ContentScale = ContentScale.Fit,
     filterQuality: FilterQuality = DefaultFilterQuality,
-    placeholderPainter: (@Composable () -> Painter)? = null,
-    errorPainter: (@Composable () -> Painter)? = null,
 ): Painter {
-    val request = remember(model, contentScale, placeholderPainter, errorPainter) {
-        ImageRequest {
-            data(model)
-            scale(contentScale.toScale())
-        }
-    }
-
-    val action by rememberImageAction(request, imageLoader.loader)
-    LaunchedEffect(action) {
-        if (action is ImageAction.Failure) {
-            val error = (action as ImageAction.Failure).error
-            CrashAnalytics.logException(error)
-        }
-    }
-    return rememberImageActionPainter(
-        action = action,
+    return coil3.compose.rememberAsyncImagePainter(
+        model = model,
+        imageLoader = imageLoader.loader,
+        contentScale = contentScale,
+        onError = {
+            CrashAnalytics.logException(it.result.throwable)
+        },
         filterQuality = filterQuality,
-        placeholderPainter = placeholderPainter,
-        errorPainter = errorPainter,
     )
 }
 
 @Composable
 fun AsyncImage(
     model: String?,
+    modifier: Modifier = Modifier,
     imageLoader: BaseImageLoader = LocalEdImageLoader.current,
     contentScale: ContentScale = ContentScale.Fit,
     filterQuality: FilterQuality = DefaultFilterQuality,
-    image: @Composable (Painter) -> Unit,
     placeholder: @Composable () -> Unit,
 ) {
     if (model == null) {
         placeholder()
     } else {
-        val request = remember(model, contentScale) {
-            ImageRequest {
-                data(model)
-                scale(contentScale.toScale())
-            }
-        }
-
-        val action by rememberImageAction(request, imageLoader.loader)
-
-        if (action is ImageAction.Failure || action is ImageAction.Loading) {
-            placeholder()
-        } else {
-            val painter = rememberImageSuccessPainter(action as ImageAction.Success, filterQuality)
-            image(painter)
-        }
+        coil3.compose.AsyncImage(
+            model = model,
+            contentDescription = null,
+            modifier = modifier,
+            contentScale = contentScale,
+            filterQuality = filterQuality,
+            imageLoader = imageLoader.loader,
+        )
     }
 }
-
-// @Composable
-// fun rememberAsyncImagePainter(
-//    model: Int,
-//    imageLoader: BaseImageLoader = LocalEdImageLoader.current,
-//    contentScale: ContentScale = ContentScale.Fit,
-//    filterQuality: FilterQuality = DefaultFilterQuality,
-//    placeholderPainter: (@Composable () -> Painter)? = null,
-//    errorPainter: (@Composable () -> Painter)? = null,
-// ): Painter {
-//    return rememberLibPainter2(
-//        resId = model,
-//        imageLoader = imageLoader.loader,
-//        contentScale = contentScale,
-//        filterQuality = filterQuality,
-//        placeholderPainter = placeholderPainter,
-//        errorPainter = errorPainter,
-//    )
-// }
-//
-// @Composable
-// fun rememberAsyncImagePainter(
-//    model: ImageRequest,
-//    imageLoader: BaseImageLoader = LocalEdImageLoader.current,
-//    contentScale: ContentScale = ContentScale.Fit,
-//    filterQuality: FilterQuality = DefaultFilterQuality,
-// ): Painter {
-//    return rememberLibPainter2(
-//        request = model,
-//        imageLoader = imageLoader.loader,
-//        contentScale = contentScale,
-//        filterQuality = filterQuality,
-//    )
-// }
 
 expect class IconImageLoader : BaseImageLoader
 
 expect open class CommonImageLoader : BaseImageLoader
 
 abstract class BaseImageLoader {
-    internal lateinit var loader: ImageLoader
+    lateinit var loader: ImageLoader
+        private set
 
     internal fun init(
-        memCacheSize: Int = 32 * 1024 * 1024, // 32MB
-        diskCache: DiskCache? = null,
-        isJs: Boolean = false,
-        componentSetup: ComponentRegistryBuilder.() -> Unit,
+        memCacheSize: Long = 32 * 1024 * 1024, // 32MB
+        diskCacheConfig: (() -> DiskCacheConfig)? = null,
+        context: PlatformContext,
+        setup: ImageLoader.Builder.() -> Unit,
     ) {
-        this.loader = ImageLoader {
-            interceptor {
-                addInterceptor(
-                    Interceptor {
-                        if (it.request.data is String) {
-                            val newRequest = ImageRequest {
-                                takeFrom(it.request)
-                                val url = it.request.data as String
-                                // TODO
-                                data(url.decodeURLPart(charset = Charsets.ISO_8859_1))
-                            }
-                            it.proceed(newRequest)
-                        } else {
-                            it.proceed(it.request)
-                        }
-                    }
-                )
-                bitmapMemoryCacheConfig {
-                    maxSize(memCacheSize)
-                }
-                if (diskCache == null) {
-                    diskCacheConfig(FakeFileSystem().apply { emulateUnix() }) {
-                        directory(FileSystem.SYSTEM_TEMPORARY_DIRECTORY)
-                        maxSizeBytes(256L * 1024 * 1024) // 256MB
-                    }
-                } else {
-                    diskCacheConfig {
-                        directory(diskCache.path.toPath())
-                        maxSizeBytes(diskCache.size.toLong())
-                    }
-                }
-                diskCache?.let {
-                    diskCacheConfig {
-                        directory(diskCache.path.toPath())
-                        maxSizeBytes(diskCache.size.toLong())
+        // TODO setup config in percents
+        this.loader = ImageLoader.Builder(context)
+            .components {
+                add(FixIosUrlInterceptor())
+            }
+            .memoryCache {
+                MemoryCache.Builder()
+                    .maxSizeBytes(memCacheSize)
+                    .build()
+            }
+            .apply {
+                if (diskCacheConfig != null) {
+                    diskCache {
+                        val config = diskCacheConfig()
+                        DiskCache.Builder()
+                            .directory(config.path.toPath())
+                            .maxSizeBytes(config.size)
+                            .build()
                     }
                 }
             }
-            components {
-                componentSetup()
-            }
-            logger = object : Logger {
-                override fun isLoggable(priority: LogPriority): Boolean {
-                    return true
-                }
+            .logger(CoilLogger())
+            .apply { setup() }.build()
+    }
+}
 
-                override fun log(
-                    priority: LogPriority,
-                    tag: String,
-                    data: Any?,
-                    throwable: Throwable?,
-                    message: String,
-                ) {
-                    val severity = when (priority) {
-                        LogPriority.VERBOSE -> Severity.Verbose
-                        LogPriority.DEBUG -> Severity.Debug
-                        LogPriority.INFO -> Severity.Info
-                        LogPriority.WARN -> Severity.Warn
-                        LogPriority.ERROR -> Severity.Error
-                        LogPriority.ASSERT -> Severity.Assert
-                    }
-                    co.touchlab.kermit.Logger.log(
-                        severity = severity,
-                        tag = tag,
-                        throwable = throwable,
-                        message = buildString {
-                            if (data != null) {
-                                append("[image data]")
-                                append(data.toString().take(100))
-                                append("\n")
-                            }
-                            append("[message] ")
-                            append(message)
-                        }
-                    )
-                }
-            }
+private class CoilLogger : Logger {
+
+    override var minLevel: Logger.Level = Logger.Level.Info
+
+    override fun log(
+        tag: String,
+        level: Logger.Level,
+        message: String?,
+        throwable: Throwable?,
+    ) {
+        val severity = when (level) {
+            Logger.Level.Verbose -> Severity.Verbose
+            Logger.Level.Debug -> Severity.Debug
+            Logger.Level.Info -> Severity.Info
+            Logger.Level.Warn -> Severity.Warn
+            Logger.Level.Error -> Severity.Error
+        }
+        co.touchlab.kermit.Logger.log(
+            severity = severity,
+            tag = tag,
+            throwable = throwable,
+            message = message.orEmpty(),
+        )
+    }
+}
+
+private class FixIosUrlInterceptor : Interceptor {
+    override suspend fun intercept(chain: Interceptor.Chain): ImageResult {
+        val request = chain.request
+        return if (request.data is String) {
+            val url = request.data as String
+            // fix for iOS
+            val newUrl = url.decodeURLPart(charset = Charsets.ISO_8859_1)
+            val newRequest = request.newBuilder()
+                .data(newUrl)
+                .build()
+
+            chain.withRequest(newRequest)
+            chain.proceed()
+        } else {
+            chain.proceed()
         }
     }
 }
 
-internal class DiskCache(
+internal class DiskCacheConfig(
     val path: String,
-    val size: Int = 512 * 1024 * 1024, // 512MB,
+    val size: Long = 512 * 1024 * 1024, // 512MB,
 )

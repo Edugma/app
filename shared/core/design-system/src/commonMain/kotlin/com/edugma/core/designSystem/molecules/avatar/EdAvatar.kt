@@ -1,6 +1,5 @@
 package com.edugma.core.designSystem.molecules.avatar
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -31,16 +30,10 @@ fun EdAvatar(
 ) {
     AsyncImage(
         model = url?.takeIf { it.isNotEmpty() },
-        image = { painter ->
-            Image(
-                painter = painter,
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = modifier
-                    .size(size.size)
-                    .clip(CircleShape),
-            )
-        },
+        modifier = modifier
+            .size(size.size)
+            .clip(CircleShape),
+        contentScale = ContentScale.Crop,
         placeholder = {
             val fixedInitials = initials?.take(5).orEmpty()
             val textSize = size.textSizes[fixedInitials.length]
